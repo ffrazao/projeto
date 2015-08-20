@@ -1,0 +1,2 @@
+framework do angular https://github.com/cgross/generator-cg-angular
+multi upload https://github.com/flowjs/ng-flow

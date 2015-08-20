@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html ng-app="principal" class="no-js" lang="{{localizacao}}">
+<head>
+	<meta charset="utf-8">
+  <title>ATER web</title>
+  <meta name="description" content="Controle de Atividades Operacionais, Táticas e Estratégicas de ATER">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="app.less" type="text/css" rel="stylesheet/less">
+  <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+  <link rel="stylesheet" type="text/css" href="bower_components/angular-toastr/dist/angular-toastr.css" />
+  <link rel="stylesheet" type="text/css" href="node_modules/ui-navbar/release/css/ui-navbar.css" />
+  <link rel="stylesheet" type="text/css" href="css/main.css">
+  <link rel="stylesheet" type="text/css" href="css/painel-vidro.css">
+  <style type="text/css">
+      [ng\:cloak], [ng-cloak], .ng-cloak {
+          display: none !important;
+      }
+  </style>
+  <base href="/" />
+</head>
+<body ng-cloak class="ng-cloak" flow-prevent-drop>
+  <!--[if lt IE 7]>
+    <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+  <![endif]-->
+  <!-- directive: painel-vidro -->
+  <div ui-view></div>
+
+  <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+  <script>
+     !function(A,n,g,u,l,a,r){A.GoogleAnalyticsObject=l,A[l]=A[l]||function(){
+     (A[l].q=A[l].q||[]).push(arguments)},A[l].l=+new Date,a=n.createElement(g),
+     r=n.getElementsByTagName(g)[0],a.src=u,r.parentNode.insertBefore(a,r)
+     }(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+     ga('create', 'UA-XXXXX-X');
+     ga('send', 'pageview');
+  </script>
+
+  <!-- Livereload script for development only (stripped during dist build) -->
+  <script src="http://localhost:35729/livereload.js" data-concat="false"></script>
+
+  <!-- JS from Bower Components -->
+  <script src="bower_components/less.js/dist/less.js" data-concat="false"></script>
+  <script src="bower_components/jquery/dist/jquery.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+  <script src="bower_components/underscore/underscore.js"></script>
+  <script src="bower_components/moment/moment.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-animate/angular-animate.js"></script>
+  <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+  <script src="bower_components/angular-i18n/angular-locale_pt-BR.js"></script>
+  <script src="bower_components/angular-input-masks/angular-input-masks-standalone.js"></script>
+  <script src="bower_components/angular-resource/angular-resource.js"></script>
+  <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+  <script src="bower_components/angular-toastr/dist/angular-toastr.tpls.js"></script>
+  <script src="bower_components/angular-ui-event/dist/event.js"></script>
+  <script src="bower_components/angular-ui-indeterminate/dist/indeterminate.js"></script>
+  <script src="bower_components/angular-ui-mask/dist/mask.js"></script>
+  <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+  <script src="bower_components/angular-ui-scroll/dist/ui-scroll.js"></script>
+  <script src="bower_components/angular-ui-scrollpoint/dist/scrollpoint.js"></script>
+  <script src="bower_components/angular-ui-uploader/dist/uploader.js"></script>
+  <script src="bower_components/angular-ui-utils/index.js"></script>
+  <script src="bower_components/angular-ui-validate/dist/validate.js"></script>
+  <script src="bower_components/ng-flow/dist/ng-flow-standalone.js"></script>
+  <script src="bower_components/ngSticky/lib/sticky.js"></script>
+  <script src="node_modules/ui-navbar/release/js/ui-navbar.js"></script>
+  <!-- Add New Bower Component JS Above -->
+
+  <script src="js/frz-arquivo.js" data-concat="false"></script>
+  <script src="js/frz-painel-vidro.js" data-concat="false"></script>
+  <script src="js/frz-endereco.js" data-concat="false"></script>
+  <script src="directive/frz-navegador/frz-navegador.js"></script>
+
+  <!-- Main App JS -->
+  <script src="app.js"></script>
+  <script src="casa/casa.js"></script>
+  <script src="casa/menu.js"></script>
+  <script src="contrato/contrato.js"></script>
+  <script src="contrato/sub-documento.js"></script>
+  <script src="login/esqueci-minha-senha.js"></script>
+  <script src="login/login.js"></script>
+  <script src="login/renove-sua-senha.js"></script>
+  <script src="pessoa/pessoa.js"></script>
+  <script src="pessoa/filtro-sub-grupo-social.js"></script>
+  <!-- Add New Component JS Above -->
+  
+</body>
+</html>

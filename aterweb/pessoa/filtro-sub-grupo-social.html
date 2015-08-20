@@ -1,0 +1,101 @@
+<div class="panel panel-default">
+  <div class="panel-heading container-fluid">
+    <frz-navegador ng-model="subGrupoSocialNvg" 
+      exibe-nome-botao = "false"
+      on-abrir = "abrir()"
+      on-agir = "agir()"
+      on-ajudar = "ajudar()"
+      on-alterar-tamanho-pagina = "alterarTamanhoPagina()"
+      on-cancelar = "cancelar()"
+      on-cancelar-editar = "cancelarEditar()"
+      on-cancelar-excluir = "cancelarExcluir()"
+      on-cancelar-filtrar = "cancelarFiltrar()"
+      on-cancelar-incluir = "cancelarIncluir()"
+      on-confirmar = "confirmar()"
+      on-confirmar-editar = "confirmarEditar()"
+      on-confirmar-excluir = "confirmarExcluir()"
+      on-confirmar-filtrar = "confirmarFiltrar()"
+      on-confirmar-incluir = "confirmarIncluir()"
+      on-editar = "editar()"
+      on-excluir = "excluir()"
+      on-filtrar = "filtrar()"
+      on-folhear-anterior = "folhearAnterior()"
+      on-folhear-primeiro = "folhearPrimeiro()"
+      on-folhear-proximo = "folhearProximo()"
+      on-folhear-ultimo = "folhearUltimo()"
+      on-incluir = "incluir()"
+      on-informacao = "informacao()"
+      on-limpar = "limpar()"
+      on-paginar-anterior = "paginarAnterior()"
+      on-paginar-primeiro = "paginarPrimeiro()"
+      on-paginar-proximo = "paginarProximo()"
+      on-paginar-ultimo = "paginarUltimo()"
+      on-restaurar = "restaurar()"
+      on-visualizar = "visualizar()"
+      on-voltar = "voltar()"
+      on-tem-mais-registros = "temMaisRegistros()">
+    </frz-navegador>
+  </div>
+  <div class="painel-body"  ng-if="!subGrupoSocialNvg.dados.length">
+    <div class="alert alert-warning" role="alert">
+      <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+      Nenhum registro localizado!
+    </div>
+  </div>
+  <div class="table-responsible" ng-if="subGrupoSocialNvg.dados.length">
+    <table class="table table-hover table-striped">
+      <thead>
+        <tr>
+          <th><frz-seletor ng-model="subGrupoSocialNvg"></frz-seletor></th>
+          <th width="30">#</th>
+          <th>Arquivo</th>
+          <th>Descrição</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="item in subGrupoSocialNvg.dados | orderBy: 'nome' | pagina: subGrupoSocialNvg.paginaAtual : subGrupoSocialNvg.tamanhoPagina | limitTo: subGrupoSocialNvg.tamanhoPagina" ng-click="seleciona(item); subGrupoSocialNvg.folhaAtual = $index + ((subGrupoSocialNvg.paginaAtual-1) * subGrupoSocialNvg.tamanhoPagina)" ng-form name="documentoFrm">
+          <td width="30px">
+            <input type="radio" ng-show="subGrupoSocialNvg.selecao.tipo === 'U'" ng-model="subGrupoSocialNvg.selecao.item" ng-value="item"/>
+            <input type="checkbox" ng-show="subGrupoSocialNvg.selecao.tipo === 'M'" checklist-model="subGrupoSocialNvg.selecao.items" checklist-value="item" ng-click="mataClick($event);"/>
+          </td>
+          <td>
+            {{$index + 1 + ((subGrupoSocialNvg.paginaAtual-1) * subGrupoSocialNvg.tamanhoPagina)}}
+          </td>
+          <td>{{item.nome}}</td>
+          <td>
+            <div>
+              <textarea ng-model="item.descricao" name="documentoDescricao" id="documentoDescricao" required min="1"></textarea>
+              <div class="label label-danger" ng-show="navegador.submitido && documentoFrm.documentoDescricao.$invalid">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                Campo Obrigatório
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+      </tfoot>
+    </table>
+  </div>
+  <div class="panel-footer">
+  </div>
+</div>
+
+<script type="text/ng-template" id="grupoSocialFrm.html">
+  <div class="modal-header">
+    <h3 class="modal-title">Upload de Arquivos</h3>
+  </div>
+  <div class="modal-body">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <frz-arquivo ng-model="teste"></frz-arquivo>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" ng-click="modalOk()" ng-show="$flow.files.length">OK</button>
+    <button class="btn btn-warning" ng-click="modalCancel()">Cancelar</button>
+  </div>
+</script>

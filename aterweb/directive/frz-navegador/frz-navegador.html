@@ -1,0 +1,23 @@
+<div class="btn-toolbar" role="toolbar" aria-label="Barra de Ferramentas" style=".ng-valid {border: 0px;}; z-index: 1; display: block;">
+  <div class="btn-group" role="group" ng-repeat="grupo in grupoBotoes | orderBy: 'ordem'" ng-if="!grupo.exibir || (grupo.exibir && grupo.exibir())">
+    <span ng-repeat="botao in grupo.botoes | orderBy: 'ordem'" ng-switch="botao.tipo">
+      <button ng-switch-default class="btn btn-sm {{botao.classe}}" title="{{botao.descricao}}" ng-click="botao.acao()" ng-show="botao.visivel && (!botao.exibir || (botao.exibir && botao.exibir()))" ng-disabled="botao.desabilitado">
+        <i class="glyphicon {{botao.glyphicon}}"></i>
+        <small ng-show="exibeNomeBotao || botao.nomeSempreVisivel">{{botao.nome}}</small>
+      </button>
+      <button ng-switch-when="dropdown" class="btn btn-sm dropdown-toggle {{botao.classe}}" title="{{botao.descricao}}" ng-click="botao.acao()" ng-show="botao.visivel && (!botao.exibir || (botao.exibir && botao.exibir()))" ng-disabled="botao.desabilitado" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="glyphicon {{botao.glyphicon}}"></i>
+        <small ng-show="exibeNomeBotao || botao.nomeSempreVisivel">{{botao.nome}}</small>
+        <span class="caret"></span>
+      </button>
+      <ul ng-switch-when="dropdown" class="dropdown-menu pull-right" ng-show="botao.visivel && (!botao.exibir || (botao.exibir && botao.exibir()))" ng-disabled="botao.desabilitado">
+        <li ng-repeat="subFuncao in botao.subFuncoes | orderBy: 'ordem'">
+          <a ng-click="subFuncao.acao()" title="{{subFuncao.descricao}}" ng-show="!subFuncao.exibir || (subFuncao.exibir && subFuncao.exibir())">{{subFuncao.nome}}</a>
+        </li>
+      </ul>
+    </span>
+  </div>
+  <div class="btn-group" role="group" ng-show="exibeEstadoAtual" ng-click="exibeNomeBotao = !exibeNomeBotao">
+    <small class="label label-default" >{{ngModel.estadoAtual()}}</small>
+  </div>
+</div>

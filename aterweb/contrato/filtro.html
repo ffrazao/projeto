@@ -1,0 +1,59 @@
+<div class="panel panel-default">
+  <div class="panel-heading"><h4>{{nomeFormulario}}</h4></div>
+  <div class="panel-body">
+    <form class="form-horizontal" name="frm.filtro" novalidate>
+      <fieldset>
+
+        <!-- Select Basic -->
+        <div class="form-group" title="Tipo de contrato ou convênio">
+            <label class="col-md-4 control-label" for="tipoContratoConvenio">Tipo</label>
+            <div class="col-md-3">
+                <select id="tipoContratoConvenio" name="tipoContratoConvenio" class="form-control" ng-model="cadastro.filtro.tipoContratoConvenio">
+                    <option value="1">CONTRATO</option>
+                    <option value="2">CONVÊNIO</option>
+                    <option value="3">COOPERAÇÃO INTERNACIONAL</option>
+                    <option value="4">COOPERAÇÃO</option>
+                </select>
+                <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.tipoContratoConvenio.$error.required">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    Campo Obrigatório
+                </div>
+            </div>
+        </div>
+        <!-- Text input-->
+        <div class="form-group" title="Número do Processo">
+            <label class="col-md-4 control-label" for="numeroProcesso">Processo</label>  
+            <div class="col-md-3">
+                <input id="numeroProcesso" name="numeroProcesso" type="text" class="form-control input-md" ng-model="cadastro.filtro.numeroProcesso" ui-mask="9999.999.999/9999">
+                <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.numeroProcesso.$error.required">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    Campo Obrigatório
+                </div>
+            </div>
+        </div>
+        <!-- Select Basic -->
+        <div class="form-group" title="Instrumento">
+            <label class="col-md-4 control-label" for="instrumento">Instrumento</label>
+            <div class="col-md-4">
+                <select id="instrumento" name="instrumento" class="form-control" ng-model="cadastro.filtro.instrumento">
+                    <option value="1">TERMO DE CONTRATO</option>
+                    <option value="2">CONTRATAÇÃO DE SERVIÇO</option>
+                    <option value="3">CONTRATO</option>
+                    <option value="4">Inexigibilidade de licitação</option>
+                    <option value="5">NOTA DE EMPENHO</option>
+                    <option value="6">TERMO DE CONTRATO</option>
+                    <option value="7">TERMO DE CONVÊNIO</option>
+                    <option value="8">TERMO DE COOPERAÇÃO</option>
+                    <option value="9">TERMO DE COOPERAÇÃO INTERNACIONAL</option>
+                </select>
+                <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.instrumento.$error.required">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    Campo Obrigatório
+                </div>
+            </div>
+        </div>
+
+      </fieldset>
+    </form>
+  </div>
+</div>

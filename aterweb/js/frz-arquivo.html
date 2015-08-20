@@ -1,0 +1,28 @@
+<div flow-init="{target: '/upload'}" flow-files-submitted="$flow.upload()" class="ng-scope"  flow-file-success="$file.msg = $message">
+  <div class="drop" flow-drop="" flow-drag-enter="style={border:'4px solid green'}" flow-drag-leave="style={}" ng-style="style" style="padding: 15px; border: 2px #f1f1f1 dashed; border-radius: 5px; line-height: 34px;">
+    <span class="btn btn-default" flow-btn>Upload de Arquivo<input type="file" multiple="multiple" style="visibility: hidden; position: absolute;"></span>
+    <span class="btn btn-default" flow-btn flow-directory ng-show="$flow.supportDirectory">Upload de Diretório<input type="file" multiple="multiple" webkitdirectory="webkitdirectory" style="visibility: hidden; position: absolute;"></span>
+    <b>OU</b>
+    <span>Arraste e Solte arquivos aqui</span>
+  </div>
+  <div class="well">
+    <a class="btn btn-small btn-success" ng-click="$flow.resume()">Executar Todos</a>
+    <a class="btn btn-small btn-danger" ng-click="$flow.pause()">Pausar Todos</a>
+    <a class="btn btn-small btn-info" ng-click="$flow.cancel()">Cancelar Todos</a>
+    <span class="label label-info ng-binding">Tamanho Total: {{$flow.sizeUploaded()}} bytes</span>
+  </div>
+  <table class="table" ng-show="$flow.files.length">
+    <tr>
+      <td>#</td>
+      <td>imagem</td>
+      <td>nome</td>
+      <td>tamanho</td>
+    </tr>
+    <tr ng-repeat="f in $flow.files">
+      <td>{{$index+1}}</td>
+      <td><img flow-img="f" width="20px" height="20px" /></td>
+      <td>{{f.name}}</td>
+      <td>{{f.size}}</td>
+    </tr>
+  </table>
+</div>

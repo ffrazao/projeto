@@ -1,0 +1,82 @@
+<div class="panel panel-default">
+    <div class="panel-heading"><h4>{{nomeFormulario}}</h4></div>
+    <div class="panel-body" ng-if="!navegador.dados.length">
+        <div class="alert alert-warning" role="alert">
+            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+            Nenhum registro localizado!
+        </div>
+    </div>
+    <div class="table-responsive" ng-if="navegador.dados.length">
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        <frz-seletor ng-model="navegador"></frz-seletor>
+                    </th>
+                    <th width="30">
+                        #
+                    </th>
+                    <th>Tipo</th>
+                    <th>Número do Processo</th>
+                    <th>Instrumento</th>
+                    <th>número</th>
+                    <th>CNPJ</th>
+                    <th>Contraparte</th>
+                    <th>Objeto</th>
+                    <th>Valor do Contrato </th>
+                    <th>Valor Pago </th>
+                    <th>Valor Remanescente </th>
+                    <th>Situação</th>
+                    <th>Início</th>
+                    <th>Fim</th>
+                    <th>Dias Restantes</th>
+                    <th>Unidade Gestora</th>
+                    <th>Executor</th>
+                    <th>Prorrogável</th>
+                    <th>Aditivos</th>
+                    <th>Local</th>
+                    <th>Garantia Contrapartida</th>
+                    <th>Documentos</th>
+                    <th>Observação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in navegador.dados | orderBy: 'nome' | pagina: navegador.paginaAtual : navegador.tamanhoPagina | limitTo: navegador.tamanhoPagina" ng-click="seleciona(item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)">
+                    <td width="30px">
+                        <input type="radio" ng-show="navegador.selecao.tipo === 'U'" ng-model="navegador.selecao.item" ng-value="item"/>
+                        <input type="checkbox" ng-show="navegador.selecao.tipo === 'M'" checklist-model="navegador.selecao.items" checklist-value="item" ng-click="mataClick($event);"/>
+                    </td>
+                    <td>
+                        {{$index + 1 + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)}}
+                    </td>
+                    <td>{{item.tipo}}</td>
+                    <td>{{item.numeroProcesso}}</td>
+                    <td>{{item.instrumento}}</td>
+                    <td>{{item.numero}}</td>
+                    <td>{{item.cnpj}}</td>
+                    <td>{{item.contraparte}}</td>
+                    <td>{{item.objeto}}</td>
+                    <td>{{item.valorContrato }}</td>
+                    <td>{{item.valorPago }}</td>
+                    <td>{{item.valorRemanescente }}</td>
+                    <td>{{item.situacao}}</td>
+                    <td>{{item.inicio}}</td>
+                    <td>{{item.fim}}</td>
+                    <td>{{item.diasRestantes}}</td>
+                    <td>{{item.unidadeGestora}}</td>
+                    <td>{{item.executor}}</td>
+                    <td>{{item.prorrogavel}}</td>
+                    <td>{{item.aditivos}}</td>
+                    <td>{{item.local}}</td>
+                    <td>{{item.garantiaContrapartida}}</td>
+                    <td>
+                        <ul>
+                            <li ng-repeat="d in item.documento" title="{{d.descricao}}"><a>{{d.nome}}</a></li>
+                        </ul>
+                    </td>
+                    <td>{{item.observacao}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
