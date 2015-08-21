@@ -31,6 +31,10 @@
       {
         "name": "pessoa",
         "file": "pessoa\\pessoa.js"
+      },
+      {
+        "name": "propriedade",
+        "file": "propriedade\\propriedade.js"
       }
     ]
   }

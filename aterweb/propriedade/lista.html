@@ -1,0 +1,44 @@
+<div class="panel panel-default">
+    <div class="panel-heading"><h4>{{nomeFormulario}}</h4></div>
+    <div class="panel-body" ng-if="!navegador.dados.length">
+        <div class="alert alert-warning" role="alert">
+            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+            Nenhum registro localizado!
+        </div>
+    </div>
+    <div class="table-responsive" ng-if="navegador.dados.length">
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        <frz-seletor ng-model="navegador"></frz-seletor>
+                    </th>
+                    <th width="30">
+                        #
+                    </th>
+                    <th>Foto</th>
+                    <th>Nome</th>
+                    <th>Tipo</th>
+                    <th>CPF/CNPJ</th>
+                    <th>Beneficiário</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in navegador.dados | orderBy: 'nome' | pagina: navegador.paginaAtual : navegador.tamanhoPagina | limitTo: navegador.tamanhoPagina" ng-click="seleciona(item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)">
+                    <td width="30px">
+                        <input type="radio" ng-show="navegador.selecao.tipo === 'U'" ng-model="navegador.selecao.item" ng-value="item"/>
+                        <input type="checkbox" ng-show="navegador.selecao.tipo === 'M'" checklist-model="navegador.selecao.items" checklist-value="item" ng-click="mataClick($event);"/>
+                    </td>
+                    <td>
+                        {{$index + 1 + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)}}
+                    </td>
+                    <td width="96px"><img ng-src="{{item.foto}}"/></td>
+                    <td>{{item.nome}}</td>
+                    <td>{{item.tipoPessoa}}</td>
+                    <td>{{item.cpf}}{{item.cnpj}}</td>
+                    <td>{{item.beneficiario}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

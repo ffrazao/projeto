@@ -21,7 +21,7 @@
       },
       {
         name: 'Propriedade Rural',
-        link: 'p.propriedadeRural.filtro',
+        link: 'p.propriedade.filtro',
       },
       {
         name: 'Contratos & Convênios',

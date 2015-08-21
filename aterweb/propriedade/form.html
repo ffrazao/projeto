@@ -1,0 +1,64 @@
+<div class="panel panel-default">
+    <div class="panel-heading"><h4>{{nomeFormulario}}</h4></div>
+    <div class="panel-body">
+        <form class="form-horizontal" name="frm.formulario" novalidate>
+            <fieldset ng-disabled="['INCLUINDO', 'EDITANDO'].indexOf(navegador.estadoAtual()) < 0">
+                <!-- Select Basic -->
+                <div class="form-group" title="Tipo de propriedade ou convênio">
+                    <label class="col-md-4 control-label" for="tipoPropriedade">Tipo</label>
+                    <div class="col-md-3">
+                        <select id="tipoPropriedade" name="tipoPropriedade" class="form-control" required ng-model="cadastro.registro.tipoPropriedade">
+                            <option value="PF">Física</option>
+                            <option value="PJ">Jurídica</option>
+                        </select>
+                        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.tipoPropriedade.$error.required">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Campo Obrigatório
+                        </div>
+                    </div>
+                </div>
+                <!-- Text input-->
+                <div class="form-group" title="Cadastro de Propriedade Física" ng-show="cadastro.registro.tipoPropriedade === 'PF'">
+                    <label class="col-md-4 control-label" for="cpf">CPF</label> 
+                    <div class="col-md-3">
+                        <input id="cpf" name="cpf" type="text" placeholder="" class="form-control input-md" ng-required="cadastro.registro.tipoPropriedade === 'PF'" ng-model="cadastro.registro.cpf" ui-br-cpf-mask>
+                        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.cpf.$error.required">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Campo Obrigatório
+                        </div>
+                        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.cpf.$error.cpf">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Número inválido!
+                        </div>
+                    </div>
+                </div>
+                <!-- Text input-->
+                <div class="form-group" title="Cadastro Nacional de Propriedade Jurídica" ng-show="cadastro.registro.tipoPropriedade === 'PJ'">
+                    <label class="col-md-4 control-label" for="cnpj">CNPJ</label> 
+                    <div class="col-md-3">
+                        <input id="cnpj" name="cnpj" type="text" placeholder="" class="form-control input-md" ng-required="cadastro.registro.tipoPropriedade === 'PJ'" ng-model="cadastro.registro.cnpj" ui-br-cnpj-mask>
+                        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.cnpj.$error.required">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Campo Obrigatório
+                        </div>
+                        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.cnpj.$error.cnpj">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Número inválido!
+                        </div>
+                    </div>
+                </div>
+                <!-- Text input-->
+                <div class="form-group" title="Nome">
+                    <label class="col-md-4 control-label" for="nome">Nome</label>  
+                    <div class="col-md-4">
+                        <input id="nome" name="nome" type="text" placeholder="" class="form-control input-md" required ng-model="cadastro.registro.nome">
+                        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.nome.$error.required">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Campo Obrigatório
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>

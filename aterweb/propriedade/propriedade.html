@@ -1,0 +1,49 @@
+<div class="row">
+    <div class="col-sm-11">
+        <frz-navegador style="position:fixed; right:10%"
+            ng-model="navegador" 
+            exibe-nome-botao = "false"
+            exibe-estado-atual = "true"
+            on-abrir = "abrir()"
+            on-agir = "agir()"
+            on-ajudar = "ajudar()"
+            on-alterar-tamanho-pagina = "alterarTamanhoPagina()"
+            on-cancelar = "cancelar()"
+            on-cancelar-editar = "cancelarEditar()"
+            on-cancelar-excluir = "cancelarExcluir()"
+            on-cancelar-filtrar = "cancelarFiltrar()"
+            on-cancelar-incluir = "cancelarIncluir()"
+            on-confirmar = "confirmar()"
+            on-confirmar-editar = "confirmarEditar()"
+            on-confirmar-excluir = "confirmarExcluir()"
+            on-confirmar-filtrar = "confirmarFiltrar()"
+            on-confirmar-incluir = "confirmarIncluir()"
+            on-editar = "editar()"
+            on-excluir = "excluir()"
+            on-filtrar = "filtrar()"
+            on-folhear-anterior = "folhearAnterior()"
+            on-folhear-primeiro = "folhearPrimeiro()"
+            on-folhear-proximo = "folhearProximo()"
+            on-folhear-ultimo = "folhearUltimo()"
+            on-incluir = "incluir()"
+            on-informacao = "informacao()"
+            on-limpar = "limpar()"
+            on-paginar-anterior = "paginarAnterior()"
+            on-paginar-primeiro = "paginarPrimeiro()"
+            on-paginar-proximo = "paginarProximo()"
+            on-paginar-ultimo = "paginarUltimo()"
+            on-restaurar = "restaurar()"
+            on-visualizar = "visualizar()"
+            on-voltar = "voltar()"
+            on-tem-mais-registros = "temMaisRegistros()">
+        </frz-navegador>
+    </div>
+</div>
+<div ng-switch="modalEstado">
+    <span ng-switch-when="null">
+        <div ui-view></div>
+    </span>
+    <span ng-switch-default>
+        <ng-include src="'propriedade/' + modalEstado + '.html'"></div>
+    </span>
+</div>
