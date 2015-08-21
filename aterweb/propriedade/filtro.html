@@ -3,443 +3,74 @@
     <div class="panel-body">
         <form class="form-horizontal" name="frm.filtro" novalidate>
             <fieldset>
-                <legend>Dados Propriedadeis</legend>
-                <!-- Text input-->
-                <div class="form-group" title="Razao Social/Sigla ou Nome/Apelido">
-                    <label class="col-md-4 control-label" for="nome">
-                        <span ng-hide="cadastro.filtro.tipoPropriedade.length === 1 && cadastro.filtro.tipoPropriedade.indexOf('PF') >= 0">Razao Social/Sigla</span>
-                        <span ng-hide="cadastro.filtro.tipoPropriedade.length === 1">ou</span>
-                        <span ng-hide="cadastro.filtro.tipoPropriedade.length === 1 && cadastro.filtro.tipoPropriedade.indexOf('PJ') >= 0">Nome/Apelido</span>
-                    </label>
-                    <div class="col-md-6">
-                        <input id="nome" name="nome" type="text" placeholder="" class="form-control input-md" ng-model="cadastro.filtro.nome">
-                        <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.nome.$error.required">
-                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                            Campo Obrigatório
-                        </div>
-                    </div>
-                </div>
-                <!-- Multiple Checkboxes (inline) -->
-                <div class="form-group" title="Tipo de Propriedade">
-                    <label class="col-md-4 control-label" for="tipoPropriedade">Tipo de Propriedade</label>
-                    <div class="col-md-6">
-                        <label class="checkbox-inline" for="tipoPropriedade-2">
-                            <input type="checkbox" name="tipoPropriedade" id="tipoPropriedade-2" checklist-model="cadastro.filtro.tipoPropriedade" checklist-value="'PJ'">
-                            Propriedade Jurídica
-                        </label>
-                        <label class="checkbox-inline" for="tipoPropriedade-1">
-                            <input type="checkbox" name="tipoPropriedade" id="tipoPropriedade-1" checklist-model="cadastro.filtro.tipoPropriedade" checklist-value="'PF'">
-                            Propriedade Física
-                        </label>
-                    </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.tipoPropriedade.$error.required">
-                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                        Campo Obrigatório
-                    </div>
-                </div>
-                <!-- Text input-->
-                <div class="form-group" title="Cadastro Nacional de Propriedade Jurídica" ng-hide="cadastro.filtro.tipoPropriedade.length === 1 && cadastro.filtro.tipoPropriedade.indexOf('PF') >= 0">
-                    <label class="col-md-4 control-label" for="cnpj">CNPJ</label> 
-                    <div class="col-md-3">
-                        <input id="cnpj" name="cnpj" type="text" placeholder="" class="form-control input-md" ng-model="cadastro.filtro.cnpj" ui-br-cnpj-mask>
-                        <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.cnpj.$error.cnpj">
-                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                            Número inválido!
-                        </div>
-                    </div>
-                </div>
-                <!-- Text input-->
-                <div class="form-group" title="Cadastro de Propriedade Física" ng-hide="cadastro.filtro.tipoPropriedade.length === 1 && cadastro.filtro.tipoPropriedade.indexOf('PJ') >= 0">
-                    <label class="col-md-4 control-label" for="cpf">CPF</label> 
-                    <div class="col-md-3">
-                        <input id="cpf" name="cpf" type="text" placeholder="" class="form-control input-md" ng-model="cadastro.filtro.cpf" ui-br-cpf-mask>
-                        <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.cpf.$error.cpf">
-                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                            Número inválido!
-                        </div>
-                    </div>
-                </div>
-                <!-- Multiple Checkboxes (inline) -->
-                <div class="form-group" title="Gênero da Propriedade" ng-hide="cadastro.filtro.tipoPropriedade.length === 1 && cadastro.filtro.tipoPropriedade.indexOf('PJ') >= 0">
-                    <label class="col-md-4 control-label" for="genero">Gênero da Propriedade</label>
-                    <div class="col-md-6">
-                        <label class="checkbox-inline" for="genero-1">
-                            <input type="checkbox" name="genero" id="genero-1" checklist-model="cadastro.filtro.genero" checklist-value="'M'">
-                            Masculino
-                        </label>
-                        <label class="checkbox-inline" for="genero-2">
-                            <input type="checkbox" name="genero" id="genero-2" checklist-model="cadastro.filtro.genero" checklist-value="'F'">
-                            Feminino
-                        </label>
-                    </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.genero.$error.required">
-                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                        Campo Obrigatório
-                    </div>
-                </div>
-                <!-- Multiple Checkboxes (inline) -->
-                <div class="form-group" title="Geração da Propriedade" ng-hide="cadastro.filtro.tipoPropriedade.length === 1 && cadastro.filtro.tipoPropriedade.indexOf('PJ') >= 0">
-                    <label class="col-md-4 control-label" for="geracao">Geração da Propriedade</label>
-                    <div class="col-md-6">
-                        <label class="checkbox-inline" for="geracao-1">
-                            <input type="checkbox" name="geracao" id="geracao-1" checklist-model="cadastro.filtro.geracao" checklist-value="'I'">
-                            Idoso
-                        </label>
-                        <label class="checkbox-inline" for="geracao-2">
-                            <input type="checkbox" name="geracao" id="geracao-2" checklist-model="cadastro.filtro.geracao" checklist-value="'A'">
-                            Adulto
-                        </label>
-                        <label class="checkbox-inline" for="geracao-3">
-                            <input type="checkbox" name="geracao" id="geracao-3" checklist-model="cadastro.filtro.geracao" checklist-value="'J'">
-                            Jovem
-                        </label>
-                        <label class="checkbox-inline" for="geracao-4">
-                            <input type="checkbox" name="geracao" id="geracao-4" checklist-model="cadastro.filtro.geracao" checklist-value="'C'">
-                            Crianca
-                        </label>
-                    </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.geracao.$error.required">
-                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                        Campo Obrigatório
-                    </div>
-                </div>
-                <!-- Multiple Checkboxes (inline) -->
-                <div class="form-group" title="Situação da Propriedade">
-                    <label class="col-md-4 control-label" for="situacao">Situação da Propriedade</label>
-                    <div class="col-md-7">
-                        <label class="checkbox-inline" for="situacao-1">
-                            <input type="checkbox" name="situacao" id="situacao-1" checklist-model="cadastro.filtro.situacao" checklist-value="'A'">
-                            Ativo
-                        </label>
-                        <label class="checkbox-inline" for="situacao-2">
-                            <input type="checkbox" name="situacao" id="situacao-2" checklist-model="cadastro.filtro.situacao" checklist-value="'U'">
-                            Inativo falta de uso
-                        </label>
-                        <label class="checkbox-inline" for="situacao-3">
-                            <input type="checkbox" name="situacao" id="situacao-3" checklist-model="cadastro.filtro.situacao" checklist-value="'F'">
-                            Inativo falecimento
-                        </label>
-                        <label class="checkbox-inline" for="situacao-4">
-                            <input type="checkbox" name="situacao" id="situacao-4" checklist-model="cadastro.filtro.situacao" checklist-value="'O'">
-                            Inativo outro motivo
-                        </label>
-                    </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.situacao.$error.required">
-                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                        Campo Obrigatório
-                    </div>
-                </div>
-                <!-- Textarea -->
-                <div class="form-group" title="Grupos Sociais">
-                    <label class="col-md-4 control-label" for="grupoSocial">Grupos Sociais</label>
-                    <div class="col-md-7">
-                        <input type="hidden" name="grupoSocial" id="grupoSocial" ng-model="cadastro.filtro.grupoSocial.length" required ng-min="1">
-                        <ng-include src="'propriedade/filtro-sub-grupo-social.html'" ng-controller="FiltroSubGrupoSocialCtrl"></ng-include>
-                        <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.grupoSocial.$error.required">
-                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                            Campo Obrigatório
-                        </div>
-                    </div>
-                </div>
-                <legend>Beneficiário</legend>
-                <!-- Multiple Checkboxes (inline) -->
-                <div class="form-group" title="Categoria">
-                    <label class="col-md-4 control-label" for="categoria">Categoria</label>
-                    <div class="col-md-8">
-                        <label class="checkbox-inline" for="categoria-1">
-                            <input type="checkbox" name="categoria" id="categoria-1" checklist-model="cadastro.filtro.categoria" checklist-value="'EP'">
-                            Empreendedor Patronal
-                        </label>
-                        <label class="checkbox-inline" for="categoria-2">
-                            <input type="checkbox" name="categoria" id="categoria-2" checklist-model="cadastro.filtro.categoria" checklist-value="'EF'">
-                            Empreendedor Familiar
-                        </label>
-                        <label class="checkbox-inline" for="categoria-3">
-                            <input type="checkbox" name="categoria" id="categoria-3" checklist-model="cadastro.filtro.categoria" checklist-value="'HP'">
-                            Habitante Patronal
-                        </label>
-                        <label class="checkbox-inline" for="categoria-4">
-                            <input type="checkbox" name="categoria" id="categoria-4" checklist-model="cadastro.filtro.categoria" checklist-value="'HF'">
-                            Habitante Familiar
-                        </label>
-                        <label class="checkbox-inline" for="categoria-5">
-                            <input type="checkbox" name="categoria" id="categoria-5" checklist-model="cadastro.filtro.categoria" checklist-value="'T'">
-                            Trabalhador
-                        </label>
-                    </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.categoria.$error.required">
-                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                        Campo Obrigatório
-                    </div>
-                </div>
+                <legend>Dados das Propriedades</legend>
                 <!-- Select Basic -->
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="setor">Setor</label>
-                    <div class="col-md-4">
-                        <select id="setor" name="setor" class="form-control">
-                            <option value="1">A</option>
-                            <option value="2">B</option>
+                    <label class="col-md-4 control-label" for="unidade">Unidade</label>
+                    <div class="col-md-5">
+                        <select id="unidade" name="unidade" class="form-control">
+                            <option value="1">Tabatinga</option>
+                            <option value="2">Vargem Bonita</option>
                         </select>
                     </div>
                 </div>
-                <!-- Select Basic -->
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="espacoRural">Espaco Rural</label>
-                    <div class="col-md-4">
-                        <select id="espacoRural" name="espacoRural" class="form-control">
-                            <option value="1">A</option>
-                            <option value="2">B</option>
-                        </select>
+                <!-- Text input-->
+                <div class="form-group" title="Nome da Propriedade" >
+                    <label class="col-md-4 control-label" for="nome">Nome da Propriedade</label> 
+                    <div class="col-md-5">
+                        <input id="nome" name="nome" type="text" placeholder="" class="form-control input-md" >
+                    </div>
+                </div>
+                <!-- Text input-->
+                <div class="form-group" title="Pessoa Vinculada" >
+                    <label class="col-md-4 control-label" for="pessoa">Pessoa Vinculada</label> 
+                    <div class="col-md-5">
+                        <input id="pessoa" name="pessoa" type="text" placeholder="" class="form-control input-md" >
                     </div>
                 </div>
                 <!-- Select Basic -->
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="comunidade">Comunidade</label>
-                    <div class="col-md-4">
+                    <div class="col-md-5">
                         <select id="comunidade" name="comunidade" class="form-control">
-                            <option value="1">A</option>
-                            <option value="2">B</option>
+                            <option value="1">Taboquinha</option>
+                            <option value="2">Vila Verde</option>
                         </select>
                     </div>
                 </div>
-                <!-- Multiple Checkboxes (inline) -->
-                <div class="form-group" title="ATER">
-                    <label class="col-md-4 control-label" for="ater">ATER</label>
-                    <div class="col-md-6">
-                        <label class="checkbox-inline" for="ater-1">
-                            <input type="checkbox" name="ater" id="ater-1" checklist-model="cadastro.filtro.ater" checklist-value="'S'">
-                            Sim
-                        </label>
-                        <label class="checkbox-inline" for="ater-2">
-                            <input type="checkbox" name="ater" id="ater-2" checklist-model="cadastro.filtro.ater" checklist-value="'N'">
-                            Nao
-                        </label>
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="sitFundiaria">Situação Fundiarias</label>
+                    <div class="col-md-2">
+                        <select id="sitFundiaria" name="sitFundiaria" class="form-control">
+                            <option value="1">Ativo</option>
+                            <option value="2">Inativo</option>
+                        </select>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.ater.$error.required">
-                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                        Campo Obrigatório
+                    <label class="col-md-1 control-label" for="areaUtil">Área Útil</label>
+                    <div class="col-md-2">
+                        <select id="areaUtil" name="areaUtil" class="form-control">
+                            <option value="1">< 2ha </option>
+                            <option value="2">de 2ha a 4ha</option>
+                            <option value="2">de 4ha a 6ha</option>
+                        </select>
                     </div>
-                </div>
-                <!-- Multiple Checkboxes (inline) -->
-                <div class="form-group" title="DAP">
-                    <label class="col-md-4 control-label" for="dap">DAP</label>
-                    <div class="col-md-6">
-                        <label class="checkbox-inline" for="dap-1">
-                            <input type="checkbox" name="dap" id="dap-1" checklist-model="cadastro.filtro.dap" checklist-value="'S'">
-                            Sim
-                        </label>
-                        <label class="checkbox-inline" for="dap-2">
-                            <input type="checkbox" name="dap" id="dap-2" checklist-model="cadastro.filtro.dap" checklist-value="'N'">
-                            Nao
-                        </label>
-                        <label class="checkbox-inline" for="dap-3">
-                            <input type="checkbox" name="dap" id="dap-3" checklist-model="cadastro.filtro.dap" checklist-value="'ND'">
-                            Nao Dapeavel
-                        </label>
+                </div>    
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="sisProducao">Sistema de Produção</label>
+                    <div class="col-md-2">
+                        <select id="sisProducao" name="sisProducao" class="form-control">
+                            <option value="1">Convencional</option>
+                            <option value="2">Orgânico</option>
+                        </select>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.dap.$error.required">
-                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                        Campo Obrigatório
+                    <label class="col-md-1 control-label" for="outroga">Outorga</label>
+                    <div class="col-md-2">
+                        <select id="outorga" name="outorga" class="form-control">
+                            <option value="1">Sim</option>
+                            <option value="2">Não</option>
+                        </select>
                     </div>
-                </div>
-                <!-- Multiple Checkboxes (inline) -->
-                <div class="form-group" title="Compras Institucionais">
-                    <label class="col-md-4 control-label" for="comprasInstitucionais">Compras Institucionais</label>
-                    <div class="col-md-6">
-                        <label class="checkbox-inline" for="comprasInstitucionais-1">
-                            <input type="checkbox" name="comprasInstitucionais" id="comprasInstitucionais-1" checklist-model="cadastro.filtro.comprasInstitucionais" checklist-value="'S'">
-                            Sim
-                        </label>
-                        <label class="checkbox-inline" for="comprasInstitucionais-2">
-                            <input type="checkbox" name="comprasInstitucionais" id="comprasInstitucionais-2" checklist-model="cadastro.filtro.comprasInstitucionais" checklist-value="'N'">
-                            Nao
-                        </label>
-                    </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.comprasInstitucionais.$error.required">
-                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                        Campo Obrigatório
-                    </div>
-                </div>
-                <!-- Multiple Checkboxes (inline) -->
-                <div class="form-group" title="Beneficio Social">
-                    <label class="col-md-4 control-label" for="beneficioSocial">Beneficio Social</label>
-                    <div class="col-md-6">
-                        <label class="checkbox-inline" for="beneficioSocial-1">
-                            <input type="checkbox" name="beneficioSocial" id="beneficioSocial-1" checklist-model="cadastro.filtro.beneficioSocial" checklist-value="'S'">
-                            Sim
-                        </label>
-                        <label class="checkbox-inline" for="beneficioSocial-2">
-                            <input type="checkbox" name="beneficioSocial" id="beneficioSocial-2" checklist-model="cadastro.filtro.beneficioSocial" checklist-value="'N'">
-                            Nao
-                        </label>
-                    </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.beneficioSocial.$error.required">
-                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                        Campo Obrigatório
-                    </div>
-                </div>
-                <!-- Multiple Checkboxes (inline) -->
-                <div class="form-group" title="Incra">
-                    <label class="col-md-4 control-label" for="incra">Incra</label>
-                    <div class="col-md-6">
-                        <label class="checkbox-inline" for="incra-1">
-                            <input type="checkbox" name="incra" id="incra-1" checklist-model="cadastro.filtro.incra" checklist-value="'S'">
-                            Sim
-                        </label>
-                        <label class="checkbox-inline" for="incra-2">
-                            <input type="checkbox" name="incra" id="incra-2" checklist-model="cadastro.filtro.incra" checklist-value="'N'">
-                            Nao
-                        </label>
-                    </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.incra.$error.required">
-                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                        Campo Obrigatório
-                    </div>
-                </div>
-                <!-- Multiple Checkboxes (inline) -->
-                <div class="form-group" title="Atepa">
-                    <label class="col-md-4 control-label" for="atepa">Atepa</label>
-                    <div class="col-md-6">
-                        <label class="checkbox-inline" for="atepa-1">
-                            <input type="checkbox" name="atepa" id="atepa-1" checklist-model="cadastro.filtro.atepa" checklist-value="'S'">
-                            Sim
-                        </label>
-                        <label class="checkbox-inline" for="atepa-2">
-                            <input type="checkbox" name="atepa" id="atepa-2" checklist-model="cadastro.filtro.atepa" checklist-value="'N'">
-                            Nao
-                        </label>
-                    </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.atepa.$error.required">
-                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                        Campo Obrigatório
-                    </div>
-                </div>
-                <!-- Multiple Checkboxes (inline) -->
-                <div class="form-group" title="BSM">
-                    <label class="col-md-4 control-label" for="bsm">BSM</label>
-                    <div class="col-md-6">
-                        <label class="checkbox-inline" for="bsm-1">
-                            <input type="checkbox" name="bsm" id="bsm-1" checklist-model="cadastro.filtro.bsm" checklist-value="'S'">
-                            Sim
-                        </label>
-                        <label class="checkbox-inline" for="bsm-2">
-                            <input type="checkbox" name="bsm" id="bsm-2" checklist-model="cadastro.filtro.bsm" checklist-value="'N'">
-                            Nao
-                        </label>
-                    </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.bsm.$error.required">
-                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                        Campo Obrigatório
-                    </div>
-                </div>
-                <!-- Multiple Checkboxes (inline) -->
-                <div class="form-group" title="Sustentabilidade">
-                    <label class="col-md-4 control-label" for="sustentabilidade">Sustentabilidade</label>
-                    <div class="col-md-6">
-                        <label class="checkbox-inline" for="sustentabilidade-1">
-                            <input type="checkbox" name="sustentabilidade" id="sustentabilidade-1" checklist-model="cadastro.filtro.sustentabilidade" checklist-value="'S'">
-                            Sim
-                        </label>
-                        <label class="checkbox-inline" for="sustentabilidade-2">
-                            <input type="checkbox" name="sustentabilidade" id="sustentabilidade-2" checklist-model="cadastro.filtro.sustentabilidade" checklist-value="'N'">
-                            Nao
-                        </label>
-                    </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.sustentabilidade.$error.required">
-                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                        Campo Obrigatório
-                    </div>
-                </div>
-                <!-- Multiple Checkboxes (inline) -->
-                <div class="form-group" title="IPA Agricola">
-                    <label class="col-md-4 control-label" for="ipaAgricola">IPA Agricola</label>
-                    <div class="col-md-6">
-                        <label class="checkbox-inline" for="ipaAgricola-1">
-                            <input type="checkbox" name="ipaAgricola" id="ipaAgricola-1" checklist-model="cadastro.filtro.ipaAgricola" checklist-value="'S'">
-                            Sim
-                        </label>
-                        <label class="checkbox-inline" for="ipaAgricola-2">
-                            <input type="checkbox" name="ipaAgricola" id="ipaAgricola-2" checklist-model="cadastro.filtro.ipaAgricola" checklist-value="'N'">
-                            Nao
-                        </label>
-                    </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.ipaAgricola.$error.required">
-                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                        Campo Obrigatório
-                    </div>
-                </div>
-                <!-- Multiple Checkboxes (inline) -->
-                <div class="form-group" title="IPA Animal">
-                    <label class="col-md-4 control-label" for="ipaAnimal">IPA Animal</label>
-                    <div class="col-md-6">
-                        <label class="checkbox-inline" for="ipaAnimal-1">
-                            <input type="checkbox" name="ipaAnimal" id="ipaAnimal-1" checklist-model="cadastro.filtro.ipaAnimal" checklist-value="'S'">
-                            Sim
-                        </label>
-                        <label class="checkbox-inline" for="ipaAnimal-2">
-                            <input type="checkbox" name="ipaAnimal" id="ipaAnimal-2" checklist-model="cadastro.filtro.ipaAnimal" checklist-value="'N'">
-                            Nao
-                        </label>
-                    </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.ipaAnimal.$error.required">
-                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                        Campo Obrigatório
-                    </div>
-                </div>
-                <!-- Multiple Checkboxes (inline) -->
-                <div class="form-group" title="IPA Nao Agricola">
-                    <label class="col-md-4 control-label" for="ipaNaoAgricola">IPA Nao Agricola</label>
-                    <div class="col-md-6">
-                        <label class="checkbox-inline" for="ipaNaoAgricola-1">
-                            <input type="checkbox" name="ipaNaoAgricola" id="ipaNaoAgricola-1" checklist-model="cadastro.filtro.ipaNaoAgricola" checklist-value="'S'">
-                            Sim
-                        </label>
-                        <label class="checkbox-inline" for="ipaNaoAgricola-2">
-                            <input type="checkbox" name="ipaNaoAgricola" id="ipaNaoAgricola-2" checklist-model="cadastro.filtro.ipaNaoAgricola" checklist-value="'N'">
-                            Nao
-                        </label>
-                    </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.ipaNaoAgricola.$error.required">
-                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                        Campo Obrigatório
-                    </div>
-                </div>
-                <!-- Multiple Checkboxes (inline) -->
-                <div class="form-group" title="IPA Flores">
-                    <label class="col-md-4 control-label" for="ipaFlores">IPA Flores</label>
-                    <div class="col-md-6">
-                        <label class="checkbox-inline" for="ipaFlores-1">
-                            <input type="checkbox" name="ipaFlores" id="ipaFlores-1" checklist-model="cadastro.filtro.ipaFlores" checklist-value="'S'">
-                            Sim
-                        </label>
-                        <label class="checkbox-inline" for="ipaFlores-2">
-                            <input type="checkbox" name="ipaFlores" id="ipaFlores-2" checklist-model="cadastro.filtro.ipaFlores" checklist-value="'N'">
-                            Nao
-                        </label>
-                    </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.ipaFlores.$error.required">
-                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                        Campo Obrigatório
-                    </div>
-                </div>
-                <!-- Multiple Checkboxes (inline) -->
-                <div class="form-group" title="Organizacao">
-                    <label class="col-md-4 control-label" for="organizacao">Organizacao</label>
-                    <div class="col-md-6">
-                        <label class="checkbox-inline" for="organizacao-1">
-                            <input type="checkbox" name="organizacao" id="organizacao-1" checklist-model="cadastro.filtro.organizacao" checklist-value="'S'">
-                            Sim
-                        </label>
-                        <label class="checkbox-inline" for="organizacao-2">
-                            <input type="checkbox" name="organizacao" id="organizacao-2" checklist-model="cadastro.filtro.organizacao" checklist-value="'N'">
-                            Nao
-                        </label>
-                    </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.organizacao.$error.required">
-                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                        Campo Obrigatório
-                    </div>
-                </div>
+                </div>    
 
             </fieldset>
         </form>

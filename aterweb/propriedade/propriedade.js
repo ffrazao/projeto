@@ -318,34 +318,9 @@ angular.module('propriedade').controller('PropriedadeCtrl',
         verRegistro();
     };
     $scope.incluir = function() {
-        var conf =  '<div class="form-group">' +
-                    '    <label class="col-md-4 control-label" for="cnfTipoPropriedade">Incluir que tipo de Propriedade?</label>' +
-                    '    <div class="col-md-8">' +
-                    '        <label class="radio-inline" for="cnfTipoPropriedade-0">' +
-                    '            <input type="radio" name="cnfTipoPropriedade" id="cnfTipoPropriedade-0" value="PJ" ng-model="confirmacao.tipoPropriedade" required>' +
-                    '            Propriedade Jurídica' +
-                    '        </label>' +
-                    '        <label class="radio-inline" for="cnfTipoPropriedade-1">' +
-                    '            <input type="radio" name="cnfTipoPropriedade" id="cnfTipoPropriedade-1" value="PF" ng-model="confirmacao.tipoPropriedade" required>' +
-                    '            Propriedade Física' +
-                    '        </label>' +
-                    '         <div class="label label-danger" ng-show="confirmacaoFrm.cnfTipoPropriedade.$error.required">' +
-                    '            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' +
-                    '             Campo Obrigatório' +
-                    '        </div>' +
-                    '    </div>' +
-                    '</div>';
-        $scope.pegarConfirmacao(conf).then(function (cadastroModificado) {
-            // processar o retorno positivo da modal
-            $scope.cadastro.original = {tipoPropriedade: cadastroModificado.tipoPropriedade};
-            $scope.cadastro.registro = angular.copy($scope.cadastro.original);
             $scope.navegador.mudarEstado('INCLUINDO');
             vaiPara('form');
             $scope.navegador.submitido = false;
-        }, function () {
-            // processar o retorno negativo da modal
-            //$log.info('Modal dismissed at: ' + new Date());
-        });
     };
     $scope.informacao = function() {};
     $scope.limpar = function() {
