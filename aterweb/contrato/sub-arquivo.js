@@ -1,16 +1,17 @@
-(function() {
+(function(pNmModulo, pNmController, pNmFormulario) {
 
-	'use strict';
+'use strict';
 
-	angular.module('contrato').controller('ContratoDocumentoCtrl', ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr', 'utilSrv',
-		function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, utilSrv) {
+angular.module(pNmModulo).controller(pNmController,
+    ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr', 'utilSrv',
+    function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, utilSrv) {
 
     // inicializacao
     var init = function() {
-		if (!angular.isObject($scope.cadastro.registro.documento)) {
-			$scope.cadastro.registro.documento = [];
-		}
-        $scope.contratoArquivoNvg = new FrzNavegadorParams($scope.cadastro.registro.documento);
+        if (!angular.isObject($scope.cadastro.registro.arquivo)) {
+            $scope.cadastro.registro.arquivo = [];
+        }
+        $scope.contratoArquivoNvg = new FrzNavegadorParams($scope.cadastro.registro.arquivo);
     };
     if (!$modalInstance) {
         init();
@@ -246,7 +247,7 @@
         var modalInstance = $modal.open({
             animation: true,
             templateUrl: 'contratoArquivoFrm.html',
-            controller: 'ContratoDocumentoCtrl',
+            controller: pNmController,
             size: 'lg',
             resolve: {
                 modalCadastro: function () {
@@ -257,13 +258,13 @@
         // processar retorno da modal
         modalInstance.result.then(function (cadastroModificado) {
             // processar o retorno positivo da modal
-            if (!$scope.cadastro.registro.documento) {
-                $scope.cadastro.registro.documento = [];
+            if (!$scope.cadastro.registro.arquivo) {
+                $scope.cadastro.registro.arquivo = [];
             }
             for (var i in cadastroModificado) {
-                $scope.cadastro.registro.documento.push(cadastroModificado[i]);
+                $scope.cadastro.registro.arquivo.push(cadastroModificado[i]);
             }
-            $scope.contratoArquivoNvg.setDados($scope.cadastro.registro.documento);
+            $scope.contratoArquivoNvg.setDados($scope.cadastro.registro.arquivo);
         }, function () {
             // processar o retorno negativo da modal
         });
@@ -304,4 +305,5 @@
 
 } // fim função
 ]);
-})();
+
+})('contrato', 'ContratoArquivoCtrl', 'Cadastro de Arquivos de Contratos & Convênios');

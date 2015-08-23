@@ -1,31 +1,35 @@
-angular.module('propriedade', ['ui.bootstrap','ui.utils','ui.router','ngAnimate', 'frz.navegador']);
+(function(pNmModulo, pNmController, pNmFormulario) {
 
-angular.module('propriedade').config(['$stateProvider', function($stateProvider) {
+'use strict';
 
-    $stateProvider.state('p.propriedade', {
+angular.module(pNmModulo, ['ui.bootstrap','ui.utils','ui.router','ngAnimate', 'frz.navegador']);
+
+angular.module(pNmModulo).config(['$stateProvider', function($stateProvider) {
+
+    $stateProvider.state('p.' + pNmModulo, {
         abstract: true,
-        controller: 'PropriedadeCtrl',
-        templateUrl: 'propriedade/propriedade.html',
-        url: '/propriedade',
+        controller: pNmController,
+        templateUrl: pNmModulo + '/' + pNmModulo + '.html',
+        url: '/' + pNmModulo,
     });
-    $stateProvider.state('p.propriedade.filtro', {
-        templateUrl: 'propriedade/filtro.html',
+    $stateProvider.state('p.' + pNmModulo + '.filtro', {
+        templateUrl: pNmModulo + '/filtro.html',
         url: '',
     });
-    $stateProvider.state('p.propriedade.lista', {
-        templateUrl: 'propriedade/lista.html',
+    $stateProvider.state('p.' + pNmModulo + '.lista', {
+        templateUrl: pNmModulo + '/lista.html',
         url: '/lista',
     });
-    $stateProvider.state('p.propriedade.form', {
-        templateUrl: 'propriedade/form.html',
+    $stateProvider.state('p.' + pNmModulo + '.form', {
+        templateUrl: pNmModulo + '/form.html',
         url: '/form/:id',
     });
     /* Add New States Above */
 
 }]);
 
-angular.module('propriedade').controller('PropriedadeCtrl', 
-    ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$modal', '$log', '$modalInstance', 'modalCadastro', 'utilSrv', 
+angular.module(pNmModulo).controller(pNmController,
+    ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$modal', '$log', '$modalInstance', 'modalCadastro', 'utilSrv',
     function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $modal, $log, $modalInstance, modalCadastro, utilSrv) {
 
     $scope.dateOptions = {
@@ -38,7 +42,7 @@ angular.module('propriedade').controller('PropriedadeCtrl',
 
     // inicializacao
     var init = function(cadastro) {
-        $scope.nomeFormulario = 'Cadastro de Propriedades';
+        $scope.nomeFormulario = pNmFormulario;
         $scope.frm = {};
         $scope.cadastro = cadastro != null ? cadastro : {filtro: {}, lista: [], registro: {}, original: {}};
         $scope.navegador = new FrzNavegadorParams($scope.cadastro.lista);
@@ -62,10 +66,11 @@ angular.module('propriedade').controller('PropriedadeCtrl',
     };
     $scope.modalAbrir = function (size) {
         // abrir a modal
+        var template = '<ng-include src=\"\'' + pNmModulo + '/' + pNmModulo + '-modal.html\'\"></ng-include>';
         var modalInstance = $modal.open({
             animation: true,
-            template: '<ng-include src=\"\'propriedade/propriedade-modal.html\'\"></ng-include>',
-            controller: 'PropriedadeCtrl',
+            template: template,
+            controller: pNmController,
             size: size,
             resolve: {
                 modalCadastro: function () {
@@ -145,14 +150,14 @@ angular.module('propriedade').controller('PropriedadeCtrl',
     // fim rotinas de apoio
 
     // inicio rotina para sincronizar estado da tela e navegador
-    $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){ 
+    $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
         var estadoAtual = $scope.navegador.estadoAtual();
         if (meuEstado('filtro') && ['FILTRANDO'].indexOf(estadoAtual) < 0) {
             $scope.navegador.mudarEstado('FILTRANDO');
-        } else 
+        } else
         if (meuEstado('lista') && ['LISTANDO', 'ESPECIAL'].indexOf(estadoAtual) < 0) {
             $scope.navegador.mudarEstado('LISTANDO');
-        } else 
+        } else
         if (meuEstado('form') && ['INCLUINDO', 'VISUALIZANDO', 'EDITANDO'].indexOf(estadoAtual) < 0) {
             $scope.navegador.mudarEstado('INCLUINDO');
         }
@@ -370,3 +375,5 @@ angular.module('propriedade').controller('PropriedadeCtrl',
     // fim ações especiais
 
 }]);
+
+})('propriedade', 'PropriedadeCtrl', 'Cadastro de Propriedades Rurais');

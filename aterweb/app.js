@@ -1,20 +1,26 @@
-angular.module('principal', ['ui.bootstrap', 'ui.utils', 'ui.router', 'ngSanitize', 'ngAnimate', 'toastr', 'sticky', 'ui.mask', 'ui.utils.masks', 'ui.navbar', 'frz.arquivo', 'frz.endereco', 'frz.painel.vidro', 'frz.navegador', 'casa', 'contrato', 'pessoa', 'propriedade']);
+(function(pNmModulo, pNmController, pNmFormulario) {
+
+'use strict';
+
+angular.module(pNmModulo, ['ui.bootstrap', 'ui.utils', 'ui.router', 'ngSanitize', 'ngAnimate', 'toastr', 'sticky',
+  'ui.mask', 'ui.utils.masks', 'ui.navbar', 'frz.arquivo', 'frz.endereco', 'frz.painel.vidro', 'frz.navegador',
+  'casa', 'contrato', 'pessoa', 'propriedade']);
 
 // inicio: codigo para habilitar o modal recursivo
-angular.module('principal').factory('$modalInstance', function () {
+angular.module(pNmModulo).factory('$modalInstance', function () {
   return null;
 });
-angular.module('principal').factory('modalCadastro', function () {
+angular.module(pNmModulo).factory('modalCadastro', function () {
   return null;
 });
 // fim: codigo para habilitar o modal recursivo
 
-angular.module('principal').config(['$stateProvider', '$urlRouterProvider', 'toastrConfig', '$locationProvider',
+angular.module(pNmModulo).config(['$stateProvider', '$urlRouterProvider', 'toastrConfig', '$locationProvider',
   function($stateProvider, $urlRouterProvider, toastrConfig, $locationProvider) {
 
     //$locationProvider.html5Mode(true);
     $stateProvider.state('p', {templateUrl: 'casa/principal.html'});
-    
+
     $stateProvider.state('p.bem-vindo', {
       url: '/',
       templateUrl: 'casa/bem-vindo.html'
@@ -40,6 +46,7 @@ angular.module('principal').config(['$stateProvider', '$urlRouterProvider', 'toa
 
       $state.go('casa', {mensagem: 'Endereço não localizado!' + $location.$$absUrl}, {'location': true});
     });
+
     // configuracao do toastr
     angular.extend(toastrConfig, {
       allowHtml: false,
@@ -54,7 +61,7 @@ angular.module('principal').config(['$stateProvider', '$urlRouterProvider', 'toa
         success: 'toast-success',
         warning: 'toast-warning'
       },
-      maxOpened: 0,    
+      maxOpened: 0,
       messageClass: 'toast-message',
       newestOnTop: true,
       onHidden: null,
@@ -76,7 +83,7 @@ angular.module('principal').config(['$stateProvider', '$urlRouterProvider', 'toa
 
   }]);
 
-angular.module('principal').run(['$rootScope', '$modal', 
+angular.module(pNmModulo).run(['$rootScope', '$modal',
   function($rootScope, $modal) {
     $rootScope.localizacao = "pt-br";
     $rootScope.safeApply = function(fn) {
@@ -91,3 +98,5 @@ angular.module('principal').run(['$rootScope', '$modal',
     };
     // fim funcoes de apoio
 }]);
+
+})('principal', null, 'Módulo Principal do Sistema');

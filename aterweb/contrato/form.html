@@ -21,7 +21,7 @@
                 </div>
                 <!-- Text input-->
                 <div class="form-group" title="Número do Processo">
-                    <label class="col-md-4 control-label" for="numeroProcesso">Processo</label>  
+                    <label class="col-md-4 control-label" for="numeroProcesso">Processo</label>
                     <div class="col-md-3">
                         <input id="numeroProcesso" name="numeroProcesso" type="text" class="form-control input-md" required ng-model="cadastro.registro.numeroProcesso" ui-mask="9999.999.999/9999">
                         <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.numeroProcesso.$error.required">
@@ -89,7 +89,7 @@
                 <!-- Textarea -->
                 <div class="form-group" title="Objeto do Contrato/Convênio">
                     <label class="col-md-4 control-label" for="objeto">Objeto</label>
-                    <div class="col-md-7">                     
+                    <div class="col-md-7">
                         <textarea class="form-control" id="objeto" name="objeto" required ng-model="cadastro.registro.objeto">default text</textarea>
                         <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.objeto.$error.required">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -99,7 +99,7 @@
                 </div>
                 <!-- Text input-->
                 <div class="form-group" title="Valor do Contrato">
-                    <label class="col-md-4 control-label" for="valorContrato">Valor do Contrato</label>  
+                    <label class="col-md-4 control-label" for="valorContrato">Valor do Contrato</label>
                     <div class="col-md-2">
                         <input id="valorContrato" name="valorContrato" type="text" placeholder="" class="form-control input-md text-right" required ng-model="cadastro.registro.valorContrato" ui-money-mask="2">
                         <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.valorContrato.$error.required">
@@ -110,7 +110,7 @@
                 </div>
                 <!-- Text input-->
                 <div class="form-group" title="Valor Pago">
-                    <label class="col-md-4 control-label" for="valorPago">Valor Pago</label>  
+                    <label class="col-md-4 control-label" for="valorPago">Valor Pago</label>
                     <div class="col-md-2">
                         <input id="valorPago" name="valorPago" type="text" placeholder="" class="form-control input-md text-right" required ng-model="cadastro.registro.valorPago" ui-money-mask="2">
                         <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.valorPago.$error.required">
@@ -121,7 +121,7 @@
                 </div>
                 <!-- Text input-->
                 <div class="form-group" title="Valor Remanescente">
-                    <label class="col-md-4 control-label" for="valorRemanescente">Valor Remanescente</label>  
+                    <label class="col-md-4 control-label" for="valorRemanescente">Valor Remanescente</label>
                     <div class="col-md-2">
                         <input id="valorRemanescente" name="valorRemanescente" type="text" placeholder="" class="form-control input-md text-right" required value="{{cadastro.registro.valorContrato - cadastro.registro.valorPago | currency }}" readonly>
                         <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.valorRemanescente.$error.required">
@@ -138,7 +138,7 @@
                             <label class="radio-inline" for="situacao-0">
                                 <input type="radio" name="situacao" id="situacao-0" value="1"  required ng-model="cadastro.registro.situacao">
                                 Em Execução
-                            </label> 
+                            </label>
                             <label class="radio-inline" for="situacao-1">
                                 <input type="radio" name="situacao" id="situacao-1" value="2" required ng-model="cadastro.registro.situacao">
                                 Encerrado
@@ -152,7 +152,7 @@
                 </div>
                 <!-- Text input-->
                 <div class="form-group" title="Início do Contrato">
-                    <label class="col-md-4 control-label" for="inicio">Início</label>  
+                    <label class="col-md-4 control-label" for="inicio">Início</label>
                     <div class="col-md-3">
                         <input id="inicio" name="inicio" type="date" placeholder="" class="form-control input-md" required ng-model="cadastro.registro.inicio" ui-mask="99/99/9999">
                         <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.inicio.$error.required">
@@ -163,7 +163,7 @@
                 </div>
                 <!-- Text input-->
                 <div class="form-group" title="Fim do Contrato">
-                    <label class="col-md-4 control-label" for="fim">Fim</label>  
+                    <label class="col-md-4 control-label" for="fim">Fim</label>
                     <div class="col-md-3">
                         <input id="fim" name="fim" type="date" placeholder="" class="form-control input-md" required ng-model="cadastro.registro.fim" ui-mask="99/99/9999">
                         <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.fim.$error.required">
@@ -174,7 +174,7 @@
                 </div>
                 <!-- Text input-->
                 <div class="form-group" title="Dias Restantes para o término do Contrato">
-                    <label class="col-md-4 control-label" for="diaRestante">Dias Restantes</label>  
+                    <label class="col-md-4 control-label" for="diaRestante">Dias Restantes</label>
                     <div class="col-md-2">
                         <input id="diaRestante" name="diaRestante" type="text" placeholder="" class="form-control input-md text-right" required value="{{cadastro.registro.fim - cadastro.registro.inicio}}" readonly>
                         <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.diaRestante.$error.required">
@@ -224,12 +224,12 @@
                 <!-- Multiple Radios (inline) -->
                 <div class="form-group" title="Prorrogável">
                     <label class="col-md-4 control-label" for="prorrogavel">Prorrogável</label>
-                    <div class="col-md-4"> 
+                    <div class="col-md-4">
                         <div>
                             <label class="radio-inline" for="prorrogavel-0">
                                 <input type="radio" name="prorrogavel" id="prorrogavel-0" value="S"  required ng-model="cadastro.registro.prorrogavel">
                                 Sim
-                            </label> 
+                            </label>
                             <label class="radio-inline" for="prorrogavel-1">
                                 <input type="radio" name="prorrogavel" id="prorrogavel-1" value="N" required ng-model="cadastro.registro.prorrogavel">
                                 Não
@@ -291,11 +291,11 @@
                             <label class="radio-inline" for="garantiaContrapartida-0">
                                 <input type="radio" name="garantiaContrapartida" id="garantiaContrapartida-0" value="S"  required ng-model="cadastro.registro.garantiaContrapartida">
                                 Sim
-                            </label> 
+                            </label>
                             <label class="radio-inline" for="garantiaContrapartida-1">
                                 <input type="radio" name="garantiaContrapartida" id="garantiaContrapartida-1" value="N" required ng-model="cadastro.registro.garantiaContrapartida">
                                 Não
-                            </label> 
+                            </label>
                         </div>
                         <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.garantiaContrapartida.$error.required">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -304,12 +304,12 @@
                     </div>
                 </div>
                 <!-- Textarea -->
-                <div class="form-group" title="Documentos">
-                    <label class="col-md-4 control-label" for="documento">Documentos</label>
+                <div class="form-group" title="Arquivos">
+                    <label class="col-md-4 control-label" for="arquivo">Arquivos</label>
                     <div class="col-md-7">
-                        <input type="hidden" name="documento" id="documento" ng-model="cadastro.registro.documento.length" required ng-min="1">
-                        <ng-include src="'contrato/sub-documento.html'" ng-controller="ContratoDocumentoCtrl"></ng-include>
-                        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.documento.$error.required">
+                        <input type="hidden" name="arquivo" id="arquivo" ng-model="cadastro.registro.arquivo.length" required ng-min="1">
+                        <ng-include src="'contrato/sub-arquivo.html'" ng-controller="ContratoArquivoCtrl"></ng-include>
+                        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.arquivo.$error.required">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             Campo Obrigatório
                         </div>
@@ -318,7 +318,7 @@
                 <!-- Textarea -->
                 <div class="form-group" title="Observações do Contrato">
                     <label class="col-md-4 control-label" for="observacao">Observação</label>
-                    <div class="col-md-7">                     
+                    <div class="col-md-7">
                         <textarea class="form-control" id="observacao" name="observacao" required ng-model="cadastro.registro.observacao">default text</textarea>
                         <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.observacao.$error.required">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>

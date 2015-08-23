@@ -1,31 +1,35 @@
-angular.module('contrato', ['ui.bootstrap','ui.utils','ui.router','ngAnimate', 'frz.navegador']);
+(function(pNmModulo, pNmController, pNmFormulario) {
 
-angular.module('contrato').config(['$stateProvider', function($stateProvider) {
+'use strict';
 
-    $stateProvider.state('p.contrato', {
+angular.module(pNmModulo, ['ui.bootstrap','ui.utils','ui.router','ngAnimate', 'frz.navegador']);
+
+angular.module(pNmModulo).config(['$stateProvider', function($stateProvider) {
+
+    $stateProvider.state('p.' + pNmModulo, {
         abstract: true,
-        controller: 'ContratoCtrl',
-        templateUrl: 'contrato/contrato.html',
-        url: '/contrato',
+        controller: pNmController,
+        templateUrl: pNmModulo + '/' + pNmModulo + '.html',
+        url: '/' + pNmModulo,
     });
-    $stateProvider.state('p.contrato.filtro', {
-        templateUrl: 'contrato/filtro.html',
+    $stateProvider.state('p.' + pNmModulo + '.filtro', {
+        templateUrl: pNmModulo + '/filtro.html',
         url: '',
     });
-    $stateProvider.state('p.contrato.lista', {
-        templateUrl: 'contrato/lista.html',
+    $stateProvider.state('p.' + pNmModulo + '.lista', {
+        templateUrl: pNmModulo + '/lista.html',
         url: '/lista',
     });
-    $stateProvider.state('p.contrato.form', {
-        templateUrl: 'contrato/form.html',
+    $stateProvider.state('p.' + pNmModulo + '.form', {
+        templateUrl: pNmModulo + '/form.html',
         url: '/form/:id',
     });
     /* Add New States Above */
 
 }]);
 
-angular.module('contrato').controller('ContratoCtrl', 
-    ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$modal', '$log', '$modalInstance', 'modalCadastro', 'utilSrv', 
+angular.module(pNmModulo).controller(pNmController,
+    ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$modal', '$log', '$modalInstance', 'modalCadastro', 'utilSrv',
     function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $modal, $log, $modalInstance, modalCadastro, utilSrv) {
 
     $scope.dateOptions = {
@@ -38,7 +42,7 @@ angular.module('contrato').controller('ContratoCtrl',
 
     // inicializacao
     var init = function(cadastro) {
-        $scope.nomeFormulario = 'Cadastro de Contratos & Convênios';
+        $scope.nomeFormulario = pNmFormulario;
         $scope.frm = {};
         $scope.cadastro = cadastro != null ? cadastro : {filtro: {}, lista: [], registro: {}, original: {}};
         $scope.navegador = new FrzNavegadorParams($scope.cadastro.lista);
@@ -62,10 +66,11 @@ angular.module('contrato').controller('ContratoCtrl',
     };
     $scope.modalAbrir = function (size) {
         // abrir a modal
+        var template = '<ng-include src=\"\'' + pNmModulo + '/' + pNmModulo + '-modal.html\'\"></ng-include>';
         var modalInstance = $modal.open({
             animation: true,
-            template: '<ng-include src=\"\'contrato/contrato-modal.html\'\"></ng-include>',
-            controller: 'ContratoCtrl',
+            template: template,
+            controller: pNmController,
             size: size,
             resolve: {
                 modalCadastro: function () {
@@ -145,14 +150,14 @@ angular.module('contrato').controller('ContratoCtrl',
     // fim rotinas de apoio
 
     // inicio rotina para sincronizar estado da tela e navegador
-    $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){ 
+    $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
         var estadoAtual = $scope.navegador.estadoAtual();
         if (meuEstado('filtro') && ['FILTRANDO'].indexOf(estadoAtual) < 0) {
             $scope.navegador.mudarEstado('FILTRANDO');
-        } else 
+        } else
         if (meuEstado('lista') && ['LISTANDO', 'ESPECIAL'].indexOf(estadoAtual) < 0) {
             $scope.navegador.mudarEstado('LISTANDO');
-        } else 
+        } else
         if (meuEstado('form') && ['INCLUINDO', 'VISUALIZANDO', 'EDITANDO'].indexOf(estadoAtual) < 0) {
             $scope.navegador.mudarEstado('INCLUINDO');
         }
@@ -408,7 +413,7 @@ angular.module('contrato').controller('ContratoCtrl',
         // processar retorno da modal
         modalInstance.result.then(function (cadastroModificado) {
             // processar o retorno positivo da modal
-            
+
         }, function () {
             // processar o retorno negativo da modal
             $log.info('Modal dismissed at: ' + new Date());
@@ -455,7 +460,7 @@ angular.module('contrato').controller('ContratoCtrl',
         // processar retorno da modal
         modalInstance.result.then(function (cadastroModificado) {
             // processar o retorno positivo da modal
-            
+
         }, function () {
             // processar o retorno negativo da modal
             $log.info('Modal dismissed at: ' + new Date());
@@ -463,3 +468,5 @@ angular.module('contrato').controller('ContratoCtrl',
     };
 
 }]);
+
+})('contrato', 'ContratoCtrl', 'Cadastro de Contratos & Convênios');

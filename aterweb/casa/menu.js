@@ -1,109 +1,110 @@
-(function() {
+(function(pNmModulo, pNmController, pNmFormulario) {
 
-  'use strict';
+'use strict';
 
-  angular.module('principal').controller('MenuCtrl', ['$scope', function ($scope) {
-    $scope.tree = 
-    [
-    {
-      name: 'Dashboard',
-    }, 
-    {
-      name: 'Cadastro',
-      subtree: [
-      {
-        name: 'Pessoa',
-        link: 'p.pessoa.filtro',
-      },
-      {
-        name: 'Grupo Social',
-        link: 'p.grupoSocial.filtro',
-      },
-      {
-        name: 'Propriedade Rural',
-        link: 'p.propriedade.filtro',
-      },
-      {
-        name: 'Contratos & Convênios',
-        link: 'p.contrato.filtro',
-      },
-      ]
-    },
-    {
-      name: 'Atividade',
-      link: '#',
-      subtree: [
-      {
-        name: 'Planejar',
-        link: '#',
-      },
-      {
-        name: 'Registrar',
-        link: 'p.modeloCadastro.filtro',
-      },
-      {
-        name: 'Agenda',
-        link: 'login',
-      }
-      ]
-    },
-    {
-      name: 'Diagnóstico',
-      link: '#',
-      subtree: [
-      {
-        name: 'Índices de Produção',
-        link: 'p.indiceProducao.filtro',
-      },
-      {
-        name: 'Índices Sociais',
-        link: 'p.modeloCadastro.filtro',
-      },
-      {
-        name: 'Enquete',
-        link: 'login',
-        subtree: [
-        {
-          name: 'Configuração',
-          link: '#',
-        },
-        {
-          name: 'Responder',
-          link: 'p.modeloCadastro.filtro',
-          subtree: [
-          {
-            name: 'Anônimo',
-            link: '#',
-          },
-          {
-            name: 'Identificado',
-            link: 'p.modeloCadastro.filtro',
-          },
-          ],
-        },
-        ],
-      },
-      ],
-    },
-    {
-      name: 'Configuração',
-      link: 'login',
-      subtree: [
-      {
-        name: 'Usuário',
-        link: 'p.usuario.filtro',
-      },
-      {
-        name: 'Perfil',
-        link: 'p.perfil.filtro',
-      },
-      {
-        name: 'Log',
-        link: 'p.log.filtro',
-      },
-      ],
-    },
-    ];
+  angular.module(pNmModulo).controller(pNmController, ['$scope', function ($scope) {
+    // este menu sera carregado pelo login do usuario
+    $scope.tree =
+        [
+            {
+                name: 'Dashboard',
+            },
+            {
+                name: 'Cadastro',
+                subtree: [
+                    {
+                        name: 'Pessoa',
+                        link: 'p.pessoa.filtro',
+                        },
+                    {
+                        name: 'Grupo Social',
+                        link: 'p.grupoSocial.filtro',
+                    },
+                    {
+                        name: 'Propriedade Rural',
+                        link: 'p.propriedade.filtro',
+                    },
+                    {
+                        name: 'Contratos & Convênios',
+                        link: 'p.contrato.filtro',
+                    },
+                ]
+            },
+            {
+                name: 'Atividade',
+                link: '#',
+                subtree: [
+                    {
+                        name: 'Planejar',
+                        link: '#',
+                    },
+                    {
+                        name: 'Registrar',
+                        link: 'p.modeloCadastro.filtro',
+                    },
+                    {
+                        name: 'Agenda',
+                        link: 'login',
+                    }
+                ]
+            },
+            {
+                    name: 'Diagnóstico',
+                    link: '#',
+                    subtree: [
+                        {
+                            name: 'Índices de Produção',
+                            link: 'p.indiceProducao.filtro',
+                        },
+                        {
+                            name: 'Índices Sociais',
+                            link: 'p.modeloCadastro.filtro',
+                        },
+                        {
+                            name: 'Enquete',
+                            link: 'login',
+                            subtree: [
+                                {
+                                    name: 'Configuração',
+                                    link: '#',
+                                },
+                                {
+                                    name: 'Responder',
+                                    link: 'p.modeloCadastro.filtro',
+                                    subtree: [
+                                        {
+                                            name: 'Anônimo',
+                                            link: '#',
+                                        },
+                                        {
+                                            name: 'Identificado',
+                                            link: 'p.modeloCadastro.filtro',
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    name: 'Configuração',
+                    link: 'login',
+                    subtree: [
+                        {
+                            name: 'Usuário',
+                            link: 'p.usuario.filtro',
+                        },
+                        {
+                            name: 'Perfil',
+                            link: 'p.perfil.filtro',
+                        },
+                        {
+                            name: 'Log',
+                            link: 'p.log.filtro',
+                        },
+                    ],
+                },
+            ];
   }]);
 
-})();
+})('principal', 'MenuCtrl', 'Menu da Tela Principal');

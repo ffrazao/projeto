@@ -1,6 +1,6 @@
 <div class="panel panel-default">
   <div class="panel-heading container-fluid">
-    <frz-navegador ng-model="contratoArquivoNvg" 
+    <frz-navegador ng-model="contratoArquivoNvg"
       exibe-nome-botao = "false"
       on-abrir = "abrir()"
       on-agir = "agir()"
@@ -53,7 +53,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="item in contratoArquivoNvg.dados | orderBy: 'nome' | pagina: contratoArquivoNvg.paginaAtual : contratoArquivoNvg.tamanhoPagina | limitTo: contratoArquivoNvg.tamanhoPagina" ng-click="seleciona(item); contratoArquivoNvg.folhaAtual = $index + ((contratoArquivoNvg.paginaAtual-1) * contratoArquivoNvg.tamanhoPagina)" ng-form name="documentoFrm">
+        <tr ng-repeat="item in contratoArquivoNvg.dados | orderBy: 'nome' | pagina: contratoArquivoNvg.paginaAtual : contratoArquivoNvg.tamanhoPagina | limitTo: contratoArquivoNvg.tamanhoPagina" ng-click="seleciona(item); contratoArquivoNvg.folhaAtual = $index + ((contratoArquivoNvg.paginaAtual-1) * contratoArquivoNvg.tamanhoPagina)" ng-form name="arquivoFrm">
           <td width="30px">
             <input type="radio" ng-show="contratoArquivoNvg.selecao.tipo === 'U'" ng-model="contratoArquivoNvg.selecao.item" ng-value="item"/>
             <input type="checkbox" ng-show="contratoArquivoNvg.selecao.tipo === 'M'" checklist-model="contratoArquivoNvg.selecao.items" checklist-value="item" ng-click="mataClick($event);"/>
@@ -64,8 +64,8 @@
           <td>{{item.nome}}</td>
           <td>
             <div>
-              <textarea ng-model="item.descricao" name="documentoDescricao" id="documentoDescricao" required min="1"></textarea>
-              <div class="label label-danger" ng-show="navegador.submitido && documentoFrm.documentoDescricao.$invalid">
+              <textarea ng-model="item.descricao" name="arquivoDescricao" id="arquivoDescricao" required min="1"></textarea>
+              <div class="label label-danger" ng-show="navegador.submitido && arquivoFrm.arquivoDescricao.$invalid">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                 Campo Obrigatório
               </div>

@@ -1,8 +1,9 @@
-(function () {
+(function(pNmModulo, pNmController, pNmFormulario) {
 
   'use strict';
 
-  angular.module('principal').controller('RenoveSuaSenhaCtrl', ['$scope', '$modalInstance', 'toastr', 'registroOrig', 
+angular.module(pNmModulo).controller(pNmController,
+      ['$scope', '$modalInstance', 'toastr', 'registroOrig',
     function ($scope, $modalInstance, toastr, registroOrig) {
     $scope.iniciar = function() {
     //$scope.registroOrig = {};
@@ -35,5 +36,5 @@
     $modalInstance.dismiss('cancel');
   };
 }]);
-  
-})();
+
+})('principal', 'RenoveSuaSenhaCtrl', 'Renovação de Senha');

@@ -1,8 +1,13 @@
-angular.module('casa', ['ui.bootstrap','ui.utils','ui.router','ngAnimate']);
+(function(pNmModulo, pNmController, pNmFormulario) {
 
-angular.module('casa').config(['$stateProvider', function($stateProvider) {
+'use strict';
+
+angular.module(pNmModulo, ['ui.bootstrap','ui.utils','ui.router','ngAnimate']);
+
+angular.module(pNmModulo).config(['$stateProvider', function($stateProvider) {
 
     /* Add New States Above */
 
 }]);
 
+})('casa');

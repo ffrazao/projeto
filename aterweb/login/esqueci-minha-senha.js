@@ -1,8 +1,10 @@
-(function () {
+(function(pNmModulo, pNmController, pNmFormulario) {
 
   'use strict';
 
-  angular.module('principal').controller('EsqueciMinhaSenhaCtrl', ['$scope', '$modalInstance', 'toastr', function ($scope, $modalInstance, toastr) {
+angular.module(pNmModulo).controller(pNmController,
+      ['$scope', '$modalInstance', 'toastr',
+    function ($scope, $modalInstance, toastr) {
     $scope.iniciar = function() {
       $scope.registroOrig = {};
       $scope.reiniciar();
@@ -32,7 +34,7 @@
   $scope.cancelar = function () {
     $modalInstance.dismiss('cancel');
   };
-  
+
 }]);
 
-})();
+})('principal', 'EsqueciMinhaSenhaCtrl', 'Recuperar Senha');

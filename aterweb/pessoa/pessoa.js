@@ -1,30 +1,34 @@
-angular.module('pessoa', ['ui.bootstrap','ui.utils','ui.router','ngAnimate', 'frz.navegador']);
+(function(pNmModulo, pNmController, pNmFormulario) {
 
-angular.module('pessoa').config(['$stateProvider', function($stateProvider) {
+'use strict';
 
-    $stateProvider.state('p.pessoa', {
+angular.module(pNmModulo, ['ui.bootstrap','ui.utils','ui.router','ngAnimate', 'frz.navegador']);
+
+angular.module(pNmModulo).config(['$stateProvider', function($stateProvider) {
+
+    $stateProvider.state('p.' + pNmModulo, {
         abstract: true,
-        controller: 'PessoaCtrl',
-        templateUrl: 'pessoa/pessoa.html',
-        url: '/pessoa',
+        controller: pNmController,
+        templateUrl: pNmModulo + '/' + pNmModulo + '.html',
+        url: '/' + pNmModulo,
     });
-    $stateProvider.state('p.pessoa.filtro', {
-        templateUrl: 'pessoa/filtro.html',
+    $stateProvider.state('p.' + pNmModulo + '.filtro', {
+        templateUrl: pNmModulo + '/filtro.html',
         url: '',
     });
-    $stateProvider.state('p.pessoa.lista', {
-        templateUrl: 'pessoa/lista.html',
+    $stateProvider.state('p.' + pNmModulo + '.lista', {
+        templateUrl: pNmModulo + '/lista.html',
         url: '/lista',
     });
-    $stateProvider.state('p.pessoa.form', {
-        templateUrl: 'pessoa/form.html',
+    $stateProvider.state('p.' + pNmModulo + '.form', {
+        templateUrl: pNmModulo + '/form.html',
         url: '/form/:id',
     });
     /* Add New States Above */
 
 }]);
 
-angular.module('pessoa').controller('PessoaCtrl',
+angular.module(pNmModulo).controller(pNmController,
     ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$modal', '$log', '$modalInstance', 'modalCadastro', 'mensagemSrv', 'utilSrv',
     function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $modal, $log, $modalInstance, modalCadastro, mensagemSrv, utilSrv) {
 
@@ -38,7 +42,7 @@ angular.module('pessoa').controller('PessoaCtrl',
 
     // inicializacao
     var init = function(cadastro) {
-        $scope.nomeFormulario = 'Cadastro de Pessoas';
+        $scope.nomeFormulario = pNmFormulario;
         $scope.frm = {};
         $scope.cadastro = cadastro != null ? cadastro : {filtro: {}, lista: [], registro: {}, original: {}};
         $scope.navegador = new FrzNavegadorParams($scope.cadastro.lista);
@@ -62,10 +66,11 @@ angular.module('pessoa').controller('PessoaCtrl',
     };
     $scope.modalAbrir = function (size) {
         // abrir a modal
+        var template = '<ng-include src=\"\'' + pNmModulo + '/' + pNmModulo + '-modal.html\'\"></ng-include>';
         var modalInstance = $modal.open({
             animation: true,
-            template: '<ng-include src=\"\'pessoa/pessoa-modal.html\'\"></ng-include>',
-            controller: 'PessoaCtrl',
+            template: template,
+            controller: pNmController,
             size: size,
             resolve: {
                 modalCadastro: function () {
@@ -393,3 +398,5 @@ angular.module('pessoa').controller('PessoaCtrl',
     // fim ações especiais
 
 }]);
+
+})('pessoa', 'PessoaCtrl', 'Cadastro de Pessoas');

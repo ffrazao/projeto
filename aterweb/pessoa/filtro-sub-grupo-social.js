@@ -1,15 +1,16 @@
-(function() {
+(function(pNmModulo, pNmController, pNmFormulario) {
 
-	'use strict';
+'use strict';
 
-	angular.module('pessoa').controller('FiltroSubGrupoSocialCtrl', ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr', 'utilSrv',
-		function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, utilSrv) {
+angular.module(pNmModulo).controller(pNmController,
+    ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr', 'utilSrv',
+    function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, utilSrv) {
 
     // inicializacao
     var init = function() {
-		if (!angular.isObject($scope.cadastro.filtro.grupoSocial)) {
-			$scope.cadastro.filtro.grupoSocial = [];
-		}
+        if (!angular.isObject($scope.cadastro.filtro.grupoSocial)) {
+            $scope.cadastro.filtro.grupoSocial = [];
+        }
         $scope.subGrupoSocialNvg = new FrzNavegadorParams($scope.cadastro.filtro.grupoSocial);
     };
     if (!$modalInstance) {
@@ -246,7 +247,7 @@
         var modalInstance = $modal.open({
             animation: true,
             templateUrl: 'grupoSocialFrm.html',
-            controller: 'FiltroSubGrupoSocialCtrl',
+            controller: pNmController,
             size: 'lg',
             resolve: {
                 modalCadastro: function () {
@@ -304,4 +305,5 @@
 
 } // fim função
 ]);
-})();
+
+})('pessoa', 'FiltroSubGrupoSocialCtrl', 'Filtro de Grupos Sociais');

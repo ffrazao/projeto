@@ -1,8 +1,9 @@
-(function () {
+(function(pNmModulo, pNmController, pNmFormulario) {
 
   'use strict';
 
-  angular.module('principal').controller('LoginCtrl', ['$scope', '$location', '$modal', 'toastr', '$state', '$http',
+angular.module(pNmModulo).controller(pNmController,
+      ['$scope', '$location', '$modal', 'toastr', '$state', '$http',
     function ($scope, $location, $modal, toastr, $state, $http) {
     $scope.iniciar = function() {
       $scope.registroOrig = $location.search();
@@ -79,4 +80,4 @@ $scope.mensagens = [
 
   }]);
 
-})();
+})('principal', 'LoginCtrl', 'Efetuar Login');
