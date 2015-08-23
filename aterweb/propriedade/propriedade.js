@@ -25,8 +25,8 @@ angular.module('propriedade').config(['$stateProvider', function($stateProvider)
 }]);
 
 angular.module('propriedade').controller('PropriedadeCtrl', 
-    ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$modal', '$log', '$modalInstance', 'modalCadastro', 
-    function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $modal, $log, $modalInstance, modalCadastro) {
+    ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$modal', '$log', '$modalInstance', 'modalCadastro', 'utilSrv', 
+    function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $modal, $log, $modalInstance, modalCadastro, utilSrv) {
 
     $scope.dateOptions = {
         formatYear: 'yyyy',
@@ -233,14 +233,14 @@ angular.module('propriedade').controller('PropriedadeCtrl',
     $scope.confirmarExcluir = function() {
         if (meuEstado('form')) {
             if ($scope.navegador.selecao.tipo === 'U') {
-                $scope.navegador.dados.splice($scope.indiceDe($scope.navegador.dados, $scope.navegador.selecao.item), 1);
+                $scope.navegador.dados.splice(utilSrv.indiceDe($scope.navegador.dados, $scope.navegador.selecao.item), 1);
                 $scope.navegador.selecao.item = null;
                 $scope.navegador.mudarEstado('LISTANDO');
                 vaiPara('lista');
             } else {
                 var reg = $scope.navegador.selecao.items[$scope.navegador.folhaAtual];
-                $scope.navegador.dados.splice($scope.indiceDe($scope.navegador.dados, reg), 1);
-                $scope.navegador.selecao.items.splice($scope.indiceDe($scope.navegador.selecao.items, reg), 1);
+                $scope.navegador.dados.splice(utilSrv.indiceDe($scope.navegador.dados, reg), 1);
+                $scope.navegador.selecao.items.splice(utilSrv.indiceDe($scope.navegador.selecao.items, reg), 1);
                 if (!$scope.navegador.selecao.items.length) {
                     $scope.navegador.mudarEstado('LISTANDO');
                     vaiPara('lista');
@@ -254,11 +254,11 @@ angular.module('propriedade').controller('PropriedadeCtrl',
             }
         } else if (meuEstado('lista')) {
             if ($scope.navegador.selecao.tipo === 'U') {
-                $scope.navegador.dados.splice($scope.indiceDe($scope.navegador.dados, $scope.navegador.selecao.item), 1);
+                $scope.navegador.dados.splice(utilSrv.indiceDe($scope.navegador.dados, $scope.navegador.selecao.item), 1);
                 $scope.navegador.selecao.item = null;
             } else {
                 for (var item = $scope.navegador.selecao.items.length; item--;) {
-                    $scope.navegador.dados.splice($scope.indiceDe($scope.navegador.dados, $scope.navegador.selecao.items[item]), 1);
+                    $scope.navegador.dados.splice(utilSrv.indiceDe($scope.navegador.dados, $scope.navegador.selecao.items[item]), 1);
                 }
                 $scope.navegador.selecao.items = [];
             }

@@ -25,8 +25,8 @@ angular.module('pessoa').config(['$stateProvider', function($stateProvider) {
 }]);
 
 angular.module('pessoa').controller('PessoaCtrl', 
-    ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$modal', '$log', '$modalInstance', 'modalCadastro', 
-    function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $modal, $log, $modalInstance, modalCadastro) {
+    ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$modal', '$log', '$modalInstance', 'modalCadastro', 'mensagemSrv', 'utilSrv', 
+    function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $modal, $log, $modalInstance, modalCadastro, mensagemSrv, utilSrv) {
 
     $scope.dateOptions = {
         formatYear: 'yyyy',
@@ -233,14 +233,14 @@ angular.module('pessoa').controller('PessoaCtrl',
     $scope.confirmarExcluir = function() {
         if (meuEstado('form')) {
             if ($scope.navegador.selecao.tipo === 'U') {
-                $scope.navegador.dados.splice($scope.indiceDe($scope.navegador.dados, $scope.navegador.selecao.item), 1);
+                $scope.navegador.dados.splice(utilSrv.indiceDe($scope.navegador.dados, $scope.navegador.selecao.item), 1);
                 $scope.navegador.selecao.item = null;
                 $scope.navegador.mudarEstado('LISTANDO');
                 vaiPara('lista');
             } else {
                 var reg = $scope.navegador.selecao.items[$scope.navegador.folhaAtual];
-                $scope.navegador.dados.splice($scope.indiceDe($scope.navegador.dados, reg), 1);
-                $scope.navegador.selecao.items.splice($scope.indiceDe($scope.navegador.selecao.items, reg), 1);
+                $scope.navegador.dados.splice(utilSrv.indiceDe($scope.navegador.dados, reg), 1);
+                $scope.navegador.selecao.items.splice(utilSrv.indiceDe($scope.navegador.selecao.items, reg), 1);
                 if (!$scope.navegador.selecao.items.length) {
                     $scope.navegador.mudarEstado('LISTANDO');
                     vaiPara('lista');
@@ -254,11 +254,11 @@ angular.module('pessoa').controller('PessoaCtrl',
             }
         } else if (meuEstado('lista')) {
             if ($scope.navegador.selecao.tipo === 'U') {
-                $scope.navegador.dados.splice($scope.indiceDe($scope.navegador.dados, $scope.navegador.selecao.item), 1);
+                $scope.navegador.dados.splice(utilSrv.indiceDe($scope.navegador.dados, $scope.navegador.selecao.item), 1);
                 $scope.navegador.selecao.item = null;
             } else {
                 for (var item = $scope.navegador.selecao.items.length; item--;) {
-                    $scope.navegador.dados.splice($scope.indiceDe($scope.navegador.dados, $scope.navegador.selecao.items[item]), 1);
+                    $scope.navegador.dados.splice(utilSrv.indiceDe($scope.navegador.dados, $scope.navegador.selecao.items[item]), 1);
                 }
                 $scope.navegador.selecao.items = [];
             }
@@ -322,11 +322,11 @@ angular.module('pessoa').controller('PessoaCtrl',
                     '    <label class="col-md-4 control-label" for="cnfTipoPessoa">Incluir que tipo de Pessoa?</label>' +
                     '    <div class="col-md-8">' +
                     '        <label class="radio-inline" for="cnfTipoPessoa-0">' +
-                    '            <input type="radio" name="cnfTipoPessoa" id="cnfTipoPessoa-0" value="PJ" ng-model="confirmacao.tipoPessoa" required>' +
+                    '            <input type="radio" name="cnfTipoPessoa" id="cnfTipoPessoa-0" value="PJ" ng-model="conteudo.tipoPessoa" required>' +
                     '            Pessoa Jurídica' +
                     '        </label>' +
                     '        <label class="radio-inline" for="cnfTipoPessoa-1">' +
-                    '            <input type="radio" name="cnfTipoPessoa" id="cnfTipoPessoa-1" value="PF" ng-model="confirmacao.tipoPessoa" required>' +
+                    '            <input type="radio" name="cnfTipoPessoa" id="cnfTipoPessoa-1" value="PF" ng-model="conteudo.tipoPessoa" required>' +
                     '            Pessoa Física' +
                     '        </label>' +
                     '         <div class="label label-danger" ng-show="confirmacaoFrm.cnfTipoPessoa.$error.required">' +
@@ -335,9 +335,9 @@ angular.module('pessoa').controller('PessoaCtrl',
                     '        </div>' +
                     '    </div>' +
                     '</div>';
-        $scope.pegarConfirmacao(conf).then(function (cadastroModificado) {
+        mensagemSrv.confirmacao(conf, {tipoPessoa: null}).then(function (conteudo) {
             // processar o retorno positivo da modal
-            $scope.cadastro.original = {tipoPessoa: cadastroModificado.tipoPessoa};
+            $scope.cadastro.original = {tipoPessoa: conteudo.tipoPessoa};
             $scope.cadastro.registro = angular.copy($scope.cadastro.original);
             $scope.navegador.mudarEstado('INCLUINDO');
             vaiPara('form');
@@ -383,10 +383,8 @@ angular.module('pessoa').controller('PessoaCtrl',
 
     // inicio ações especiais
     $scope.enviarEmailConfirmacao = function () {
-        var conf = $scope.pegarConfirmacao('Confirme o envio do e-mail?');
-
-        conf.result.then(function () {
-          $scope.exibirAlerta('E-mail enviado');
+        mensagemSrv.confirmacao('<h2>Confirma o envio do e-mail?</h2>').then(function () {
+        	mensagemSrv.alerta('E-mail enviado');
         }, function () {
           toastr.warning('O e-mail não foi enviado...', 'Atenção!');
         });

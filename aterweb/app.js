@@ -4,7 +4,6 @@ angular.module('principal', ['ui.bootstrap', 'ui.utils', 'ui.router', 'ngSanitiz
 angular.module('principal').factory('$modalInstance', function () {
   return null;
 });
-
 angular.module('principal').factory('modalCadastro', function () {
   return null;
 });
@@ -79,7 +78,7 @@ angular.module('principal').config(['$stateProvider', '$urlRouterProvider', 'toa
 
 angular.module('principal').run(['$rootScope', '$modal', 
   function($rootScope, $modal) {
-    $rootScope.localizacao = "pt-BR";
+    $rootScope.localizacao = "pt-br";
     $rootScope.safeApply = function(fn) {
       var phase = $rootScope.$$phase;
       if (phase === '$apply' || phase === '$digest') {
@@ -89,62 +88,6 @@ angular.module('principal').run(['$rootScope', '$modal',
       } else {
         this.$apply(fn);
       }
-    };
-    // inicio funcoes de apoio
-    $rootScope.exibirAlerta = function (mensagem) {
-      var modalInstance = $modal.open({
-        animation: true,
-        template: 
-        '<div class="modal-header">' +
-        '  <h3 class="modal-title">Atenção!</h3>' +
-        '</div>' +
-        '<div class="modal-body">' +
-        '<p class=\"bg-info\">' + mensagem + '</p>' +
-        '</div>' +
-        '<div class="modal-footer">' +
-        '  <button class="btn btn-primary" ng-click=\"$dismiss(\'ok\')\">OK</button>' +
-        '</div>',
-        resolve: {},
-      });
-    };
-    $rootScope.pegarConfirmacao = function (mensagem) {
-      $rootScope.modalOk = function (confirmacao) {
-          // Retorno da modal
-          modalInstance.close(confirmacao);
-      };
-      $rootScope.modalCancelar = function () {
-          // Cancelar a modal
-          modalInstance.dismiss('cancel');
-      };
-
-      var modalInstance = $modal.open({
-        animation: true,
-        template: 
-        '<div class="modal-header">' +
-        '  <h3 class="modal-title">Confirme!</h3>' +
-        '</div>' +
-        '<div class="modal-body">' +
-        '  <form name="confirmacaoFrm" class="form-horizontal" novalidate>' +
-        '     <fieldset>' +
-        mensagem +
-        '     <fieldset>' +
-        '  </form>' +
-        '</div>' +
-        '<div class="modal-footer">' +
-        '  <button class="btn btn-primary" ng-click=\"modalOk(confirmacao)\" ng-show="confirmacaoFrm.$valid">OK</button>' +
-        '  <button class="btn btn-warning" ng-click=\"modalCancelar()\">Cancelar</button>' +
-        '</div>',
-        resolve: {},
-      });
-      return modalInstance.result;
-    };
-    $rootScope.indiceDe = function(arr, item) {
-      for (var i = arr.length; i--;) {
-        if (angular.equals(arr[i], item)) {
-          return i;
-        }
-      }
-      return null;
     };
     // fim funcoes de apoio
 }]);
