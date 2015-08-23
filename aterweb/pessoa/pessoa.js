@@ -24,8 +24,8 @@ angular.module('pessoa').config(['$stateProvider', function($stateProvider) {
 
 }]);
 
-angular.module('pessoa').controller('PessoaCtrl', 
-    ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$modal', '$log', '$modalInstance', 'modalCadastro', 'mensagemSrv', 'utilSrv', 
+angular.module('pessoa').controller('PessoaCtrl',
+    ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$modal', '$log', '$modalInstance', 'modalCadastro', 'mensagemSrv', 'utilSrv',
     function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $modal, $log, $modalInstance, modalCadastro, mensagemSrv, utilSrv) {
 
     $scope.dateOptions = {
@@ -145,14 +145,14 @@ angular.module('pessoa').controller('PessoaCtrl',
     // fim rotinas de apoio
 
     // inicio rotina para sincronizar estado da tela e navegador
-    $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){ 
+    $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
         var estadoAtual = $scope.navegador.estadoAtual();
         if (meuEstado('filtro') && ['FILTRANDO'].indexOf(estadoAtual) < 0) {
             $scope.navegador.mudarEstado('FILTRANDO');
-        } else 
+        } else
         if (meuEstado('lista') && ['LISTANDO', 'ESPECIAL'].indexOf(estadoAtual) < 0) {
             $scope.navegador.mudarEstado('LISTANDO');
-        } else 
+        } else
         if (meuEstado('form') && ['INCLUINDO', 'VISUALIZANDO', 'EDITANDO'].indexOf(estadoAtual) < 0) {
             $scope.navegador.mudarEstado('INCLUINDO');
         }
@@ -384,9 +384,9 @@ angular.module('pessoa').controller('PessoaCtrl',
     // inicio ações especiais
     $scope.enviarEmailConfirmacao = function () {
         mensagemSrv.confirmacao('<h2>Confirma o envio do e-mail?</h2>').then(function () {
-        	mensagemSrv.alerta('E-mail enviado');
+            mensagemSrv.alerta('E-mail enviado');
         }, function () {
-          toastr.warning('O e-mail não foi enviado...', 'Atenção!');
+            toastr.warning('O e-mail não foi enviado...', 'Atenção!');
         });
 
     };
