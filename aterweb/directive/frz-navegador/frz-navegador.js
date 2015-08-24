@@ -529,6 +529,14 @@
                                 glyphicon: '',
                                 subFuncoes: [
                                     {
+                                        nome: 5,
+                                        descricao: 'Exibir 5 registros',
+                                        acao: function() {
+                                            scope.onAlterarTamanhoPagina();
+                                            scope.ngModel.setTamanhoPagina(this.nome);
+                                        },
+                                    }, 
+                                    {
                                         nome: 10,
                                         descricao: 'Exibir 10 registros',
                                         acao: function() {

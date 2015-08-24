@@ -169,7 +169,7 @@ angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'to
         if (modalInstance === null) {
             // se objeto modal esta vazio abrir de forma normal
             scp.modalEstado = null;
-            for (var i = 0; i < 2000; i++) {
+            for (var i = 0; i < 200; i++) {
                 scp.navegador.dados.push({id: i, nome: 'nome ' + i});
             }
         } else {

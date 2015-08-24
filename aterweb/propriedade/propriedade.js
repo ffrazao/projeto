@@ -24,6 +24,8 @@ angular.module(pNmModulo).controller(pNmController,
     // código para verificar se o modal está ou não ativo
     $scope.verificaEstado($modalInstance, $scope, 'filtro', modalCadastro, pNmFormulario);
 
+
+
     // inicio: atividades do Modal
     $scope.modalOk = function () {
         // Retorno da modal
@@ -73,3 +75,5 @@ angular.module(pNmModulo).controller(pNmController,
 }]);
 
 })('propriedade', 'PropriedadeCtrl', 'Cadastro de Propriedades Rurais');
+
+    

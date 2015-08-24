@@ -14,32 +14,92 @@
 
                 <tabset justified="true" >
                     <tab heading="Principal" >
-                        <div class="col-xs-3" >
-                            <label class="control-label" for="sitFundiaria">Situação Fundiaria</label><BR>
-                            <select id="sitFundiaria" name="sitFundiaria" class="form-control">
-                                <option value="1">Ativo</option>
-                                <option value="2">Inativo</option>
-                            </select>
-                        </div>
-                        <div class="col-xs-3">
-                            <label class="control-label" for="areaUtil">Área Útil</label><BR>
-                                <select id="areaUtil" name="areaUtil" class="form-control">
-                                    <option value="1">< 2ha </option>
-                                    <option value="2">de 2ha a 4ha</option>
-                                    <option value="2">de 4ha a 6ha</option>
+
+                        <div class="row"> 
+
+                            <div class="col-xs-2" >
+                                <label class="control-label" for="identficacao">&nbsp;</label><BR>
+                                <button id="identficacao" name="identficacao" >Indetificação da Propriedade</button>
+                            </div>
+
+                            <div class="col-xs-2" >
+                                <label class="control-label" for="codPropriedade">Código da Propriedade</label><BR>
+                                <input id="codPropriedade" name="codPropriedade" type="text" class="form-control input-md" ng-disabled="['INCLUINDO'].indexOf(navegador.estadoAtual()) < 0" ng-model="cadastro.registro.codPropriedaede">
+                            </div>
+                            <div class="col-xs-3" >
+                                <label class="control-label" for="sitFundiaria">Situação Fundiaria</label><BR>
+                                <select id="sitFundiaria" name="sitFundiaria" class="form-control">
+                                    <option value="C">Concessão de Uso</option>
+                                    <option value="E">Escritura Definitiva</option>
+                                    <option value="P">Posse</option>
                                 </select>
+                            </div>
+                            <div class="col-xs-2">
+                                <label class="control-label" for="areaUtil">Área Útil</label><BR>
+                                    <select id="areaUtil" name="areaUtil" class="form-control">
+                                        <option value="1">< 2ha </option>
+                                        <option value="2">de 2ha a 4ha</option>
+                                        <option value="2">de 4ha a 6ha</option>
+                                    </select>
+                            </div>
+                            <div class="col-xs-3"> 
+                                <label class="control-label" for="ativo">&nbsp;</label><BR>
+                                    <input type="checkbox" name="ativo" id="ativo-1" checklist-model="cadastro.filtro.ativo" checklist-value="'S'">&nbsp;Ativo
+                                </label>
+                            </div>
                         </div>
-                        <div class="col-xs-3">
-                            <label class="control-label" for="atepa">Atepa</label><BR>
-                            <label class="checkbox-inline" for="atepa-1">
-                                <input type="checkbox" name="atepa" id="atepa-1" checklist-model="cadastro.filtro.atepa" checklist-value="'S'">
-                                Sim
-                            </label>
-                            <label class="checkbox-inline" for="atepa-2">
-                                <input type="checkbox" name="atepa" id="atepa-2" checklist-model="cadastro.filtro.atepa" checklist-value="'N'">
-                                Nao
-                            </label>
+
+                       
+                        <div class="form-group" title="Pessoas Vinculadas" style="padding: 10px;">
+                            <input type="hidden" name="vinculado" id="Vinculado" ng-model="cadastro.registro.vinculado.length" required ng-min="1">
+                            <ng-include src="'propriedade/registro-sub-vinculado.html'" ng-controller="RegistroVinculadoCtrl"></ng-include>
+                            <div class="label label-danger" ng-show="navegador.submitido && frm.registro.vinculado.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
                         </div>
+
+
+                        <div class="row">
+                            <div class="col-xs-2" >
+                                <label class="control-label" for="area">Área da Propriedade</label><BR>
+                                <input id="area" name="area" type="number" class="form-control input-md" ng-model="cadastro.registro.area">
+                            </div>
+                            <div class="col-xs-3" >
+                                <label class="control-label" for="identificacao">Identificação</label><br>
+                                    <textarea class="form-control" id="identificacao" name="identificacao" ng-model="cadastro.registro.identificacao">
+                                    </textarea>
+                            </div>
+                            <div class="col-xs-3" >
+                                <label class="control-label" for="comunidade">Comuniade</label><br>
+                                    <textarea class="form-control" id="comunidade" name="comunidade" ng-model="cadastro.registro.comunidade">
+                                    </textarea>
+                            </div>
+
+                            <div class="col-xs-3" rowspan=2 >
+                                <label class="control-label" for="roteiro">Roteiro de Acesso ou Referência</label><br>
+                                    <textarea class="form-control" id="roteiro" name="roteiro" ng-model="cadastro.registro.roteiro">
+                                    </textarea>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-2"   >
+                                <label class="control-label" for="area">Área da Propriedade</label><BR>
+                                <input id="area" name="area" type="number" class="form-control input-md" ng-model="cadastro.registro.area">
+                            </div>
+
+                            <div class="col-xs-2"   >
+                                <label class="control-label" for="area">Área da Propriedade</label><BR>
+                                <input id="area" name="area" type="number" class="form-control input-md" ng-model="cadastro.registro.area">
+                            </div>
+
+                            <div class="col-xs-2"   >
+                                <label class="control-label" for="area">Área da Propriedade</label><BR>
+                                <input id="area" name="area" type="number" class="form-control input-md" ng-model="cadastro.registro.area">
+                            </div>
+                        </div>
+
                     </tab>
                     
                     <tab heading="Uso do Solo">
