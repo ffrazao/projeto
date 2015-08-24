@@ -10,4 +10,10 @@ angular.module(pNmModulo).config(['$stateProvider', function($stateProvider) {
 
 }]);
 
-})('casa');
+angular.module(pNmModulo).controller(pNmController,
+    ['$stateParams', 'toastr',
+    function($stateParams, toastr) {
+        console.log($stateParams.mensagem);
+}]);
+
+})('casa', 'CasaCtrl');
