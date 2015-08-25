@@ -11,7 +11,7 @@ angular.module(pNmModulo).controller(pNmController,
         if (!angular.isObject($scope.cadastro.registro.vinculado)) {
             $scope.cadastro.registro.vinculado = [];
         }
-        $scope.subVinculadoNvg = new FrzNavegadorParams($scope.cadastro.registro.vinculado);
+        $scope.subVinculadoNvg = new FrzNavegadorParams($scope.cadastro.registro.vinculado, 4);
     };
     if (!$modalInstance) {
         init();
@@ -306,6 +306,10 @@ angular.module(pNmModulo).controller(pNmController,
         }
     };
     // fim das operaçoes atribuidas ao navagador
+
+
+
+
 
 } // fim função
 ]);

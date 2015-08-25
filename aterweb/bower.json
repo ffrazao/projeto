@@ -28,6 +28,10 @@
     "angular-input-masks": "~2.0.0",
     "angular-i18n": "~1.4.3",
     "ng-flow": "~2",
-    "angular-sanitize": "~1.4.3"
+    "angular-sanitize": "~1.4.3",
+    "angular-google-maps": "~2.1.5"
+  },
+  "devDependencies": {
+    "angular-google-maps": "~2.1.5"
   }
 }

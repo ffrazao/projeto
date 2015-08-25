@@ -4,7 +4,7 @@
     var frzNavegadorModule = angular.module('frz.navegador', []);
 
     frzNavegadorModule.factory('FrzNavegadorParams', function() {
-        var FrzNavegadorParams = function (dados) {
+        var FrzNavegadorParams = function (dados, tamanhoPadrao) {
             this.scopeNavegador = null;
             this.scopeSeletor = null;
             this.refresh = function () {
@@ -23,7 +23,7 @@
                     btn.nome = '0/' + dados.length;
                 }
             };
-            this.tamanhoPagina = 10;
+            this.tamanhoPagina = tamanhoPadrao ? tamanhoPadrao : 10;
             this.setTamanhoPagina = function(tamanho) {
                 this.tamanhoPagina = parseInt(tamanho, 10);
                 this.botao('tamanhoPagina').nome = this.tamanhoPagina;
