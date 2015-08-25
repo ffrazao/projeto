@@ -13,7 +13,7 @@
                 </div>
 
                 <tabset justified="true" >
-                    <tab heading="{{($index+1) +') '+ t.nome}}" ng-repeat="t in tab"  >
+                    <tab heading="{{($index+1) +') '+ t.nome}}" ng-repeat="t in tab"  active="t.def"  >
                         <ng-include src="t.url" ></ng-include>
                     </tab>
                 </tabset>
