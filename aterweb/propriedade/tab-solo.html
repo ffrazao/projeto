@@ -24,7 +24,7 @@
                                <input id="unitario{{$index}}" name="unitario{{$index}}" type="text" class="form-control input-md text-right" ng-model="item.unitario" ui-money-mask="2" ng-disabled="!item.detalhe">
                             </td>
                             <td> 
-                               <input id="total{{$index}}" name="total{{$index}}" type="text" class="form-control input-md text-right" ng-model="item.area*item.unitario" ui-money-mask="2" ng-readonly="true" >
+                               <input id="total{{$index}}" name="total{{$index}}" type="text" class="form-control input-md text-right" value="{{item.area*item.unitario | currency}}" ng-disabled="true">
                             </td>
                             <td> 
                                <button type="button" class="btn btn-default" aria-label="Center Align" id="map{{$index}}" name="map{{$index}}" ng-click="mapaModalAbrir(item.nome,item.mapa)">

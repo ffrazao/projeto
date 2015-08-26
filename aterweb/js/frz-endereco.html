@@ -51,7 +51,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr data-ng-repeat="item in pessoaList | filter: filtroPessoa | offset : filtroPessoaPagina : tamanhoPagina | limitTo: tamanhoPagina">
+								<tr data-ng-repeat="item in pessoaList | filter: filtroPessoa | pagina : filtroPessoaPagina : tamanhoPagina | limitTo: tamanhoPagina">
 									<td>{{$index + 1 + ((filtroPessoaPagina-1)*tamanhoPagina)}}</td>
 									<td><input type="radio" name="pessoaSelecionadaRadio" data-ng-click="selecionaEnderecos(item.enderecos)"></td>
 									<td>{{item.nome}}</td>
