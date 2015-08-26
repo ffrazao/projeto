@@ -77,13 +77,13 @@ angular.module(pNmModulo).controller(pNmController,
                     '            <input type="radio" name="cnfTipoPessoa" id="cnfTipoPessoa-1" value="PF" ng-model="conteudo.tipoPessoa" required>' +
                     '            Pessoa Física' +
                     '        </label>' +
-                    '         <div class="label label-danger" ng-show="confirmacaoFrm.cnfTipoPessoa.$error.required">' +
+                    '        <div class="label label-danger" ng-show="confirmacaoFrm.cnfTipoPessoa.$error.required">' +
                     '            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' +
                     '             Campo Obrigatório' +
                     '        </div>' +
                     '    </div>' +
                     '</div>';
-        mensagemSrv.confirmacao(conf, {tipoPessoa: null}).then(function (conteudo) {
+        mensagemSrv.confirmacao(false, conf, null, {tipoPessoa: null}).then(function (conteudo) {
             // processar o retorno positivo da modal
             $rootScope.incluir($scope);
             $scope.cadastro.original = {tipoPessoa: conteudo.tipoPessoa};
