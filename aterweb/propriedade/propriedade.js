@@ -218,10 +218,9 @@ angular.module(pNmModulo).controller(pNmController,
 '        </div>' +
 '    </div>' +
 '' +
-'</div>' +
-;
+'</div>';
 
-        mensagemSrv.confirmacao(conf, {dados: item}).then(function (conteudo) {
+        mensagemSrv.confirmacao(true, 'propriedade/tab-solo-pastagem-modal.html', 'Detalhoe dfa sdlfas', {dados: item}).then(function (conteudo) {
             // processar o retorno positivo da modal
             $rootScope.incluir($scope);
             $scope.cadastro.original = {tipoPessoa: conteudo.tipoPessoa};

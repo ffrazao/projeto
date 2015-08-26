@@ -20,14 +20,13 @@ angular.module(pNmModulo).controller(pNmController,
 angular.module(pNmModulo).factory(pNmFactory,
   ['$modal',
     function($modal) {
-        var formModal =  function (tipo, mensagem, conteudo) {
-            var titulo = null;
+        var formModal =  function (tipo, url, mensagem, titulo, conteudo) {
             var botaoCancelar = null;
             if ('alerta' === tipo) {
-                titulo = 'Atenção!';
+                if (!titulo) {titulo = 'Atenção!'};
                  botaoCancelar = '';
             } else if ('confirmacao' === tipo) {
-                 titulo = 'Confirme!';
+                if (!titulo) {titulo = 'Confirme!'};
                  botaoCancelar = '<button class="btn btn-warning" ng-click=\"modalCancelar()\">Cancelar</button>';
             }
             var nomeForm = tipo + 'Frm';
@@ -41,13 +40,12 @@ angular.module(pNmModulo).factory(pNmFactory,
                       '<div class="modal-body">' +
                       '  <ng-form name="' + nomeForm + '" class="form-horizontal" novalidate>' +
                       '     <fieldset>' +
-                      mensagem +
+                      (url ? '<ng-include src="\'' + mensagem + '\'"></ng-include>' : mensagem) +
                       '     <fieldset>' +
                       '  </ng-form>' +
                       '</div>' +
                       '<div class="modal-footer">' +
-                      '  <button class="btn btn-primary" ng-click=\"modalOk()\" ng-show="' + nomeForm + '.$valid">OK</button>' +
-                      botaoCancelar +
+                      '  <button class="btn btn-primary" ng-click=\"modalOk()\" ng-show="' + nomeForm + '.$valid">OK</button>' + botaoCancelar +
                       '</div>',
                       resolve: {
                           conteudo: function() {
@@ -59,11 +57,11 @@ angular.module(pNmModulo).factory(pNmFactory,
         };
 
         var mensagemSrv = {
-            alerta : function (mensagem, conteudo) {
-                return formModal('alerta', mensagem, conteudo);
+            alerta : function (url, mensagem, titulo, conteudo) {
+                return formModal('alerta', url, mensagem, titulo, conteudo);
             },
-            confirmacao: function (mensagem, conteudo) {
-                return formModal('confirmacao', mensagem, conteudo);
+            confirmacao: function (url, mensagem, titulo, conteudo) {
+                return formModal('confirmacao', url, mensagem, titulo, conteudo);
             },
         };
         return mensagemSrv;

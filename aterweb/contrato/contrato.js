@@ -92,10 +92,8 @@ angular.module(pNmModulo).controller(pNmController,
 
     // inicio ações especiais
     $scope.enviarEmailConfirmacao = function () {
-        var conf = $scope.pegarConfirmacao('Confirme o envio do e-mail?');
-
-        conf.result.then(function () {
-          $scope.exibirAlerta('E-mail enviado');
+        mensagemSrv.confirmacao(false, 'Confirme o envio do e-mail?').then(function () {
+          mensagemSrv.alerta(false, 'E-mail enviado');
         }, function () {
           toastr.warning('O e-mail não foi enviado...', 'Atenção!');
         });
