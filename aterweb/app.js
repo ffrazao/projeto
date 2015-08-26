@@ -87,7 +87,8 @@ angular.module(pNmModulo).config(['$stateProvider', '$urlRouterProvider', 'toast
 
 angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'toastr', 'utilSrv',
   function($rootScope, $modal, FrzNavegadorParams, toastr, utilSrv) {
-    $rootScope.localizacao = "pt-br";
+    $rootScope.globalLocalizacao = "pt-br";
+    $rootScope.globalFracaoHectares = "3";
     $rootScope.safeApply = function(fn) {
       var phase = $rootScope.$$phase;
       if (phase === '$apply' || phase === '$digest') {
