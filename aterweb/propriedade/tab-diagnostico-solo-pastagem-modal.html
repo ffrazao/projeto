@@ -8,15 +8,23 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="item in tabSoloItem.dados" >
+                <tr ng-repeat="item in conteudo.dados" >
                     <td style="vertical-align:middle">                    
                         <label>{{item.nome}}</label>
                     </td>
                     <td> 
-                       <input id="area{{$index}}" name="area{{$index}}" type="text" class="form-control input-md text-right" ng-model="item.area" ui-number-mask="3" >
+                       <input id="area{{$index}}" name="area{{$index}}" type="text" class="form-control input-md text-right" ng-model="item.area" ui-number-mask="globalFracaoHectares" >
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
 </div>
+<div class="row">
+    <div class="col-md-12" >
+        <label class="control-label" for="observacao">Observações</label><br>
+        <textarea class="form-control" id="observacao" name="observacao" ng-model="conteudo.dados.observacao">
+        </textarea>
+    </div>
+</div>
+ 

@@ -1,0 +1,79 @@
+
+<div class="panel panel-default" ng-controller="DiagnosticoCtrl">
+  <div class="panel-heading container-fluid">
+    <frz-navegador ng-model="DiagnosticoNvg" 
+      exibe-nome-botao = "false"
+      on-abrir = "abrir()"
+      on-agir = "agir()"
+      on-ajudar = "ajudar()"
+      on-alterar-tamanho-pagina = "alterarTamanhoPagina()"
+      on-cancelar = "cancelar()"
+      on-cancelar-editar = "cancelarEditar()"
+      on-cancelar-excluir = "cancelarExcluir()"
+      on-cancelar-filtrar = "cancelarFiltrar()"
+      on-cancelar-incluir = "cancelarIncluir()"
+      on-confirmar = "confirmar()"
+      on-confirmar-editar = "confirmarEditar()"
+      on-confirmar-excluir = "confirmarExcluir()"
+      on-confirmar-filtrar = "confirmarFiltrar()"
+      on-confirmar-incluir = "confirmarIncluir()"
+      on-editar = "editar()"
+      on-excluir = "excluir()"
+      on-filtrar = "filtrar()"
+      on-folhear-anterior = "folhearAnterior()"
+      on-folhear-primeiro = "folhearPrimeiro()"
+      on-folhear-proximo = "folhearProximo()"
+      on-folhear-ultimo = "folhearUltimo()"
+      on-incluir = "incluir()"
+      on-informacao = "informacao()"
+      on-limpar = "limpar()"
+      on-paginar-anterior = "paginarAnterior()"
+      on-paginar-primeiro = "paginarPrimeiro()"
+      on-paginar-proximo = "paginarProximo()"
+      on-paginar-ultimo = "paginarUltimo()"
+      on-restaurar = "restaurar()"
+      on-visualizar = "visualizar()"
+      on-voltar = "voltar()"
+      on-tem-mais-registros = "temMaisRegistros()">
+    </frz-navegador>
+  </div>
+
+  <div class="painel-body"  ng-if="!DiagnosticoNvg.dados.length">
+    <div class="alert alert-warning" role="alert">
+      <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+      Nenhum registro localizado!
+    </div>
+  </div>
+  <div class="table-responsible" ng-if="DiagnosticoNvg.dados.length">
+    <table class="table table-hover table-striped">
+      <thead>
+        <tr>
+          <th width="30">#</th>
+          <th>Data da Coleta</th>
+          <th>Nome da Coleta</th>
+          <th>Situação</th>
+          <th>Versão</th>
+          <th>Tc. Responsável</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="item in DiagnosticoNvg.dados | orderBy: 'nome' | pagina: DiagnosticoNvg.paginaAtual : DiagnosticoNvg.tamanhoPagina | limitTo: DiagnosticoNvg.tamanhoPagina" ng-click="seleciona(item); DiagnosticoNvg.folhaAtual = $index + ((DiagnosticoNvg.paginaAtual-1) * DiagnosticoNvg.tamanhoPagina)" ng-form name="documentoFrm">
+          <td width="30px">
+            <input type="radio" ng-show="DiagnosticoNvg.selecao.tipo === 'U'" ng-model="DiagnosticoNvg.selecao.item" ng-value="item"/>
+            <input type="checkbox" ng-show="DiagnosticoNvg.selecao.tipo === 'M'" checklist-model="DiagnosticoNvg.selecao.items" checklist-value="item" ng-click="mataClick($event);"/>
+          </td>
+          <td class="text-center">{{item.data}}</td>
+          <td class="text-left">{{item.nome}}</td>
+          <td class="text-left">{{item.situacao.descricao}}</td>
+          <td class="text-center">{{item.versao.descricao}}</td>
+          <td class="text-left">{{item.responsavel.descricao}}</td>
+        </tr>
+      </tbody>
+      <tfoot>
+      </tfoot>
+    </table>
+  </div>
+  <div class="panel-footer">
+  </div>
+</div>
+

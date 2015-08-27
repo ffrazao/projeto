@@ -134,6 +134,7 @@ angular.module(pNmModulo).controller(pNmController,
         $modalInstance.dismiss('cancel');
         toastr.warning('Operação cancelada!', 'Atenção!');
     };
+
     $scope.mapaModalAbrir = function (tipo, mapa) {
         // abrir a modal
         $scope.map = mapa; 
@@ -171,101 +172,25 @@ angular.module(pNmModulo).controller(pNmController,
     };
     // fim: mapa
 
-    // inicio: solo-pastagem
-    $scope.soloPastagemModalOk = function () {
-        // Retorno da modal
-        $scope.cadastro.lista = [];
-        $scope.cadastro.lista.push({id: 21, nome: 'Fernando'});
-        $scope.cadastro.lista.push({id: 12, nome: 'Frazao'});
 
-        $modalInstance.close($scope.cadastro);
-        toastr.info('Operação realizada!', 'Informação');
-    };
-    $scope.soloPastagemModalCancelar = function () {
-        // Cancelar a modal
-        $modalInstance.dismiss('cancel');
-        toastr.warning('Operação cancelada!', 'Atenção!');
-    };
-    $scope.soloPastagemModalAbrir = function (item) {
+    // inicio: abre modal
+    $scope.abreModal = function (item) {
         // abrir a modal
-        var conf =
-'<div class="modal-header">' +
-'    <h3 class="modal-title">Pastagem</h3>' +
-'    {{conteudo}}' +
-'</div>' +
-'<div class="modal-body">' +
-'' +
-'    <div class="row"> ' +
-'        <div class="panel-body">' +
-'            <table class="table table-hover table-striped table-vcenter">' +
-'                <thead>' +
-'                    <tr>' +
-'                        <th>Tipo de Pastagem</th>' +
-'                        <th>Área (ha)</th>' +
-'                    </tr>' +
-'                </thead>' +
-'                <tbody>' +
-'                    <tr ng-repeat="item in conteudo.dados" >' +
-'                        <td style="vertical-align:middle">                    ' +
-'                            <label>{{item.nome}}</label>' +
-'                        </td>' +
-'                        <td> ' +
-'                           <input id="area{{$index}}" name="area{{$index}}" type="text" class="form-control input-md text-right" ng-model="item.area" ui-number-mask="3" >' +
-'                        </td>' +
-'                    </tr>' +
-'                </tbody>' +
-'            </table>' +
-'        </div>' +
-'    </div>' +
-'' +
-'</div>';
-
-        mensagemSrv.confirmacao(true, 'propriedade/tab-solo-pastagem-modal.html', 'Detalhoe dfa sdlfas', {dados: item}).then(function (conteudo) {
+        mensagemSrv.confirmacao(true, 'propriedade/'+item.arquivo, item.descricao, item, item.tamanho ).then(function (conteudo) {
             // processar o retorno positivo da modal
             $rootScope.incluir($scope);
-            $scope.cadastro.original = {tipoPessoa: conteudo.tipoPessoa};
-            $scope.cadastro.registro = angular.copy($scope.cadastro.original);
         }, function () {
             // processar o retorno negativo da modal
             //$log.info('Modal dismissed at: ' + new Date());
         });
 
-
-        /*$scope.tabSoloItem = item;
-        var modalInstance = $modal.open({
-            animation: true,
-            templateUrl: 'propriedade/tab-solo-pastagem-modal.html',
-            controller: pNmController,
-            size: 500,
-            resolve: {
-                modalCadastro: function () {
-                    $scope.tabSoloItem = item;
-                }
-            }
-        });
-        // processar retorno da modal
-        modalInstance.result.then(function (cadastroModificado) {
-            // processar o retorno positivo da modal
-            $scope.navegador.setDados(cadastroModificado.lista);
-        }, function () {
-            // processar o retorno negativo da modal
-            $log.info('Modal dismissed at: ' + new Date());
-        });*/
     };
-    // fim: mapa
 
-
-    // inicio das operaçoes atribuidas ao navagador
-    // fim das operaçoes atribuidas ao navagador
-
-    // inicio ações especiais
-    // fim ações especiais
 
     // Inicio Trabalho com tabs
        $scope.tab=[{nome:'Principal',url:'propriedade/tab-principal.html' },
-                   {nome:'Uso do Solo',url:'propriedade/tab-solo.html', def:'true'}, 
+                   {nome:'Diagonóstico',url:'propriedade/tab-diagnostico.html', def:'true'}, 
                    {nome:'Registro IPA',url:'propriedade/tab-ipa.html'}, 
-                   {nome:'Diagonóstico',url:'propriedade/tab-diagnostico.html'}, 
                    {nome:'Resultados',url:'propriedade/tab-resultado.html'}, 
                    {nome:'Pendências',url:'propriedade/tab-pendencia.html'}, 
                    {nome:'Arquivos',url:'propriedade/tab-arquivo.html'}, 
@@ -273,26 +198,49 @@ angular.module(pNmModulo).controller(pNmController,
                   ];
     // Fim Trabalho com tabs
 
-
  // Inicio Trabalho com uso do solo
-       $scope.cadastro.registro.solo=[{nome:'Culturas Perenes',      area: 120, unitario: 250, mapa : { center: { latitude: -15.732687616157767, longitude: -47.90378594955473 }, zoom: 15 } },
-                                      {nome:'Culturas Temporárias',  area: 13,  unitario: 250, mapa : { center: { latitude: -15.732687616157767, longitude: -47.90378594955473 }, zoom: 15 } },
-                                      {nome:'Pastagens',             area: 32,  unitario: 250, mapa : { center: { latitude: -15.732687616157767, longitude: -47.90378594955473 }, zoom: 15 }, 
-                                       detalhe:{ arquivo: 'tab-solo-pastagem-modal.html', funcao: 'soloPastagemModalAbrir', observacao: '', total : 0,
-                                                 dados: [ {nome:'Área de Canavial',             valor: 12.00}, {nome:'Área de Capineira',          valor: 5.00},
-                                                          {nome:'Área para Silagem',            valor:  0.00}, {nome:'Área para Feno',             valor: 1.20},
-                                                          {nome:'Área de Pastagem Natural',     valor:  3.30}, {nome:'Área de Pastagem Artifical', valor: 5.00},
-                                                          {nome:'Área de Pastagem Rotacionada', valor:  0.00}, {nome:'Área  ILP/ILPF',             valor: 0.00}
-                                                        ]
-                                               } 
-                                      },
-                                      {nome:'Benfeitorias',          area: 0.3, unitario: 250, mapa : { center: { latitude: -15.732687616157767, longitude: -47.90378594955473 }, zoom: 15 } },
-                                      {nome:'Reserva Legal',         area: 54,  unitario: 250, mapa : { center: { latitude: -15.732687616157767, longitude: -47.90378594955473 }, zoom: 15 } },
-                                      {nome:'Preservação Permanete', area: 88,  unitario: 250, mapa : { center: { latitude: -15.732687616157767, longitude: -47.90378594955473 }, zoom: 15 } },
-                                      {nome:'Áreas Irrigadas',       area: 134, unitario: 250, mapa : { center: { latitude: -15.732687616157767, longitude: -47.90378594955473 }, zoom: 15 } },
-                                      {nome:'Outras',                area: 12,  unitario: 250, mapa : { center: { latitude: -15.732687616157767, longitude: -47.90378594955473 }, zoom: 15 } },
-                                     ];
     // Fim Trabalho com uso do solo
+
+ // inicio diagnostico
+    $scope.cadastro.registro.diagnostico =
+    [ { data: '19/02/1970', nome: 'Coleta X', 
+        situacao: { codigo: '1', descricao: 'Em Aberto'}, 
+        versao: { codigo:'1', descricao: '1.01'},
+        responsavel: {codigo: '154', descricao: 'Fulano de Tal'},
+        formaUtilizacao: {codigo: '1', descricao: 'Lazer'},
+        fontePrincipal: {codigo: '1', descricao: 'Canal'}, fonteVazao: 54, fontDomestico : {codigo: '3', descricao:'Poço'},
+        maoObraContratada: 4, maoObraTemporaria: 23, maoObraFamiliar: 4, moraProprieda :12, moraFamilia : 5,
+        solo :[ {nome:'Culturas Perenes',      area: 120, unitario: 250, mapa : { center: { latitude: -15.732687616157767, longitude: -47.90378594955473 }, zoom: 15 } },
+                {nome:'Culturas Temporárias',  area: 13,  unitario: 250, mapa : { center: { latitude: -15.732687616157767, longitude: -47.90378594955473 }, zoom: 15 } },
+                {nome:'Pastagens',             area: 32,  unitario: 250, mapa : { center: { latitude: -15.732687616157767, longitude: -47.90378594955473 }, zoom: 15 }, 
+                     detalhe:{arquivo: 'tab-solo-pastagem-modal.html', descricao: 'Detalahemento da Pastagem', observacao: '', total : 0,
+                              dados: [ {nome:'Área de Canavial',             area: 12.00}, {nome:'Área de Capineira',          area: 5.00},
+                                       {nome:'Área para Silagem',            area:  0.00}, {nome:'Área para Feno',             area: 1.20},
+                                       {nome:'Área de Pastagem Natural',     area:  3.30}, {nome:'Área de Pastagem Artifical', area: 5.00},
+                                       {nome:'Área de Pastagem Rotacionada', area:  0.00}, {nome:'Área  ILP/ILPF',             area: 0.00}
+                                     ]
+                             } 
+                },
+                {nome:'Reserva Legal',         area: 54,  unitario: 250, mapa : { center: { latitude: -15.732687616157767, longitude: -47.90378594955473 }, zoom: 15 } },
+                {nome:'Preservação Permanete', area: 88,  unitario: 250, mapa : { center: { latitude: -15.732687616157767, longitude: -47.90378594955473 }, zoom: 15 } },
+                {nome:'Áreas Irrigadas',       area: 134, unitario: 250, mapa : { center: { latitude: -15.732687616157767, longitude: -47.90378594955473 }, zoom: 15 }, 
+                     detalhe:{arquivo: 'tab-solo-irrigada-modal.html', descricao: 'Detalahamento da Irrigação', observacao: '2332', total : 0, tamanho:1000,
+                              dados:[ {nome:'Aspersão Convencinal',  area: 12.00}, {nome:'Auto-propelido', area: 5.00},
+                                      {nome:'Pivô Central',          area:  0.00}, {nome:'Gotejamento',    area: 1.20},
+                                      {nome:'Micro-aspersão',        area:  3.30}, {nome:'Superfície',     area: 5.00},
+                                      {nome:'Outros',                area:  0.00}
+                                   ]
+                             } 
+                },
+                {nome:'Outras',                area: 12,  unitario: 250, mapa : { center: { latitude: -15.732687616157767, longitude: -47.90378594955473 }, zoom: 15 } },
+              ], //solo
+        benfeitoria: [ {nome:'Aspersão Convencinal', descricao:'Casa Principal',     unidade:'m²', area: 12.00, valor:123.87, dtAtul:'19/02/1970' }, 
+                       {nome:'Outros',               descricao:'Galpão de Trabalho', unidade:'m²', area:  0.00, valor:458.56, dtAtul:'19/02/1980' }
+                     ],
+       }, //diagnostico
+    ];
+ // fim diagnostico
+
 
 
     //Trabalho com mapas

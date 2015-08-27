@@ -20,19 +20,20 @@ angular.module(pNmModulo).controller(pNmController,
 angular.module(pNmModulo).factory(pNmFactory,
   ['$modal',
     function($modal) {
-        var formModal =  function (tipo, url, mensagem, titulo, conteudo) {
+        var formModal =  function (tipo, url, mensagem, titulo, conteudo, tamanho ) {
             var botaoCancelar = null;
             if ('alerta' === tipo) {
-                if (!titulo) {titulo = 'Atenção!'};
+                if (!titulo){titulo = 'Atenção!'; }
                  botaoCancelar = '';
             } else if ('confirmacao' === tipo) {
-                if (!titulo) {titulo = 'Confirme!'};
+                if (!titulo){titulo = 'Confirme!'; }
                  botaoCancelar = '<button class="btn btn-warning" ng-click=\"modalCancelar()\">Cancelar</button>';
             }
             var nomeForm = tipo + 'Frm';
             var modalInstance = $modal.open({
                       animation: true,
                       controller: 'MensagemCtrl',
+                      size : (tamanho ? tamanho : 'lg' ),
                       template:
                       '<div class="modal-header">' +
                       '  <h3 class="modal-title">' + titulo + '</h3>' +
