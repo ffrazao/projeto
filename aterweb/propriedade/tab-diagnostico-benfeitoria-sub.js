@@ -16,12 +16,18 @@ angular.module(pNmModulo).controller(pNmController,
         if (!angular.isObject($scope.DiagnosticoNvg.selecao.item.benfeitoria)) {
             $scope.DiagnosticoNvg.selecao.item.benfeitoria = [];
         }
-        $scope.soloBenfeitoriaNvg = new FrzNavegadorParams($scope.DiagnosticoNvg.selecao.item.benfeitoria, 4);
+        $scope.DiagnosticoBenfeitoriaNvg = new FrzNavegadorParams($scope.DiagnosticoNvg.selecao.item.benfeitoria, 4);
 
     };
     if (!$modalInstance) {
         init();
     }
+
+    $scope.$watch("DiagnosticoNvg.selecao.item", function () {
+        if ($scope.DiagnosticoNvg.selecao.item !== null) {
+            init();
+        }
+    });
 
     // inicio: atividades do Modal
     $scope.modalOk = function () {
@@ -54,7 +60,7 @@ angular.module(pNmModulo).controller(pNmController,
         // processar retorno da modal
         modalInstance.result.then(function (cadastroModificado) {
             // processar o retorno positivo da modal
-            $scope.soloBenfeitoriaNvg.setDados(cadastroModificado);
+            $scope.DiagnosticoBenfeitoriaNvg.setDados(cadastroModificado);
         }, function () {
             // processar o retorno negativo da modal
         });
@@ -63,7 +69,7 @@ angular.module(pNmModulo).controller(pNmController,
         // se objeto modal esta vazio abrir de forma normal
         $scope.modalEstado = null;
 //        $scope.navegador.dados[0].vinculado = $scope.cadastro.registro.solo[3];
- //       $scope.soloBenfeitoriaNvg.setDados($scope.navegador.dados[0].vinculado);
+ //       $scope.DiagnosticoBenfeitoriaNvg.setDados($scope.navegador.dados[0].vinculado);
         // até aki
     } else {
         // recuperar o item
@@ -89,30 +95,30 @@ angular.module(pNmModulo).controller(pNmController,
         }
     };
     var verRegistro = function() {
-        if ($scope.soloBenfeitoriaNvg.selecao.tipo === 'U') {
-            $scope.cadastro.original = $scope.soloBenfeitoriaNvg.selecao.item;
+        if ($scope.DiagnosticoBenfeitoriaNvg.selecao.tipo === 'U') {
+            $scope.cadastro.original = $scope.DiagnosticoBenfeitoriaNvg.selecao.item;
         } else {
-            $scope.cadastro.original = $scope.soloBenfeitoriaNvg.selecao.items[$scope.soloBenfeitoriaNvg.folhaAtual];
+            $scope.cadastro.original = $scope.DiagnosticoBenfeitoriaNvg.selecao.items[$scope.DiagnosticoBenfeitoriaNvg.folhaAtual];
         }
         $scope.cadastro.registro = angular.copy($scope.cadastro.original);
-        $scope.soloBenfeitoriaNvg.refresh();
+        $scope.DiagnosticoBenfeitoriaNvg.refresh();
     };
     $scope.seleciona = function(item) {
         if (!angular.isObject(item)) {
             return;
         }
         // apoio a selecao de linhas na listagem
-        if ($scope.soloBenfeitoriaNvg.selecao.tipo === 'U') {
-            $scope.soloBenfeitoriaNvg.selecao.item = item;
+        if ($scope.DiagnosticoBenfeitoriaNvg.selecao.tipo === 'U') {
+            $scope.DiagnosticoBenfeitoriaNvg.selecao.item = item;
         } else {
-            var its = $scope.soloBenfeitoriaNvg.selecao.items;
+            var its = $scope.DiagnosticoBenfeitoriaNvg.selecao.items;
             for (var i in its) {
                 if (angular.equals(its[i], item)) {
                     its.splice(i, 1);
                     return;
                 }
             }
-            $scope.soloBenfeitoriaNvg.selecao.items.push(item);
+            $scope.DiagnosticoBenfeitoriaNvg.selecao.items.push(item);
         }
     };
     $scope.mataClick = function(event, item) {
@@ -124,8 +130,8 @@ angular.module(pNmModulo).controller(pNmController,
     // inicio das operaçoes atribuidas ao navagador
     $scope.abrir = function() {
         // ajustar o menu das acoes especiais
-        $scope.soloBenfeitoriaNvg.mudarEstado('ESPECIAL');
-        $scope.soloBenfeitoriaNvg.botao('edicao').visivel = false;
+        $scope.DiagnosticoBenfeitoriaNvg.mudarEstado('ESPECIAL');
+        $scope.DiagnosticoBenfeitoriaNvg.botao('edicao').visivel = false;
     };
     $scope.agir = function() {};
     $scope.ajudar = function() {};
@@ -147,15 +153,15 @@ angular.module(pNmModulo).controller(pNmController,
         $scope.cancelar();
     };
     $scope.confirmar = function() {
-        $scope.soloBenfeitoriaNvg.submitido = true;
+        $scope.DiagnosticoBenfeitoriaNvg.submitido = true;
         if ($scope.frm.formulario.$invalid) {
             toastr.error('Verifique os campos marcados', 'Erro');
             return false;
         }
-        $scope.soloBenfeitoriaNvg.voltar();
-        $scope.soloBenfeitoriaNvg.mudarEstado('VISUALIZANDO');
+        $scope.DiagnosticoBenfeitoriaNvg.voltar();
+        $scope.DiagnosticoBenfeitoriaNvg.mudarEstado('VISUALIZANDO');
         vaiPara('form');
-        $scope.soloBenfeitoriaNvg.submitido = false;
+        $scope.DiagnosticoBenfeitoriaNvg.submitido = false;
         return true;
     };
     $scope.confirmarEditar = function() {
@@ -167,62 +173,62 @@ angular.module(pNmModulo).controller(pNmController,
     };
     $scope.confirmarExcluir = function() {
         if (meuEstado('form')) {
-            if ($scope.soloBenfeitoriaNvg.selecao.tipo === 'U') {
-                $scope.soloBenfeitoriaNvg.dados.splice(utilSrv.indiceDe($scope.soloBenfeitoriaNvg.dados, $scope.soloBenfeitoriaNvg.selecao.item), 1);
-                $scope.soloBenfeitoriaNvg.selecao.item = null;
-                $scope.soloBenfeitoriaNvg.mudarEstado('LISTANDO');
+            if ($scope.DiagnosticoBenfeitoriaNvg.selecao.tipo === 'U') {
+                $scope.DiagnosticoBenfeitoriaNvg.dados.splice(utilSrv.indiceDe($scope.DiagnosticoBenfeitoriaNvg.dados, $scope.DiagnosticoBenfeitoriaNvg.selecao.item), 1);
+                $scope.DiagnosticoBenfeitoriaNvg.selecao.item = null;
+                $scope.DiagnosticoBenfeitoriaNvg.mudarEstado('LISTANDO');
                 vaiPara('lista');
             } else {
-                var reg = $scope.soloBenfeitoriaNvg.selecao.items[$scope.soloBenfeitoriaNvg.folhaAtual];
-                $scope.soloBenfeitoriaNvg.dados.splice(utilSrv.indiceDe($scope.soloBenfeitoriaNvg.dados, reg), 1);
-                $scope.soloBenfeitoriaNvg.selecao.items.splice(utilSrv.indiceDe($scope.soloBenfeitoriaNvg.selecao.items, reg), 1);
-                if (!$scope.soloBenfeitoriaNvg.selecao.items.length) {
-                    $scope.soloBenfeitoriaNvg.mudarEstado('LISTANDO');
+                var reg = $scope.DiagnosticoBenfeitoriaNvg.selecao.items[$scope.DiagnosticoBenfeitoriaNvg.folhaAtual];
+                $scope.DiagnosticoBenfeitoriaNvg.dados.splice(utilSrv.indiceDe($scope.DiagnosticoBenfeitoriaNvg.dados, reg), 1);
+                $scope.DiagnosticoBenfeitoriaNvg.selecao.items.splice(utilSrv.indiceDe($scope.DiagnosticoBenfeitoriaNvg.selecao.items, reg), 1);
+                if (!$scope.DiagnosticoBenfeitoriaNvg.selecao.items.length) {
+                    $scope.DiagnosticoBenfeitoriaNvg.mudarEstado('LISTANDO');
                     vaiPara('lista');
                 } else {
-                    if ($scope.soloBenfeitoriaNvg.folhaAtual >= $scope.soloBenfeitoriaNvg.selecao.items.length) {
-                        $scope.soloBenfeitoriaNvg.folhaAtual = $scope.soloBenfeitoriaNvg.selecao.items.length -1;
+                    if ($scope.DiagnosticoBenfeitoriaNvg.folhaAtual >= $scope.DiagnosticoBenfeitoriaNvg.selecao.items.length) {
+                        $scope.DiagnosticoBenfeitoriaNvg.folhaAtual = $scope.DiagnosticoBenfeitoriaNvg.selecao.items.length -1;
                     }
                     verRegistro();
                     $scope.voltar();
                 }
             }
         } else if (meuEstado('lista')) {
-            if ($scope.soloBenfeitoriaNvg.selecao.tipo === 'U') {
-                $scope.soloBenfeitoriaNvg.dados.splice(utilSrv.indiceDe($scope.soloBenfeitoriaNvg.dados, $scope.soloBenfeitoriaNvg.selecao.item), 1);
-                $scope.soloBenfeitoriaNvg.selecao.item = null;
+            if ($scope.DiagnosticoBenfeitoriaNvg.selecao.tipo === 'U') {
+                $scope.DiagnosticoBenfeitoriaNvg.dados.splice(utilSrv.indiceDe($scope.DiagnosticoBenfeitoriaNvg.dados, $scope.DiagnosticoBenfeitoriaNvg.selecao.item), 1);
+                $scope.DiagnosticoBenfeitoriaNvg.selecao.item = null;
             } else {
-                for (var item = $scope.soloBenfeitoriaNvg.selecao.items.length; item--;) {
-                    $scope.soloBenfeitoriaNvg.dados.splice(utilSrv.indiceDe($scope.soloBenfeitoriaNvg.dados, $scope.soloBenfeitoriaNvg.selecao.items[item]), 1);
+                for (var item = $scope.DiagnosticoBenfeitoriaNvg.selecao.items.length; item--;) {
+                    $scope.DiagnosticoBenfeitoriaNvg.dados.splice(utilSrv.indiceDe($scope.DiagnosticoBenfeitoriaNvg.dados, $scope.DiagnosticoBenfeitoriaNvg.selecao.items[item]), 1);
                 }
-                $scope.soloBenfeitoriaNvg.selecao.items = [];
+                $scope.DiagnosticoBenfeitoriaNvg.selecao.items = [];
             }
             $scope.voltar();
         }
         toastr.info('Operação realizada!', 'Informação');
     };
     $scope.confirmarFiltrar = function() {
-        $scope.soloBenfeitoriaNvg.mudarEstado('LISTANDO');
+        $scope.DiagnosticoBenfeitoriaNvg.mudarEstado('LISTANDO');
         vaiPara('lista');
-        $scope.soloBenfeitoriaNvg.setDados($scope.cadastro.lista);
+        $scope.DiagnosticoBenfeitoriaNvg.setDados($scope.cadastro.lista);
     };
     $scope.confirmarIncluir = function() {
         if (!$scope.confirmar()) {
             return;
         }
-        $scope.soloBenfeitoriaNvg.dados.push($scope.cadastro.registro);
-        if ($scope.soloBenfeitoriaNvg.selecao.tipo === 'U') {
-            $scope.soloBenfeitoriaNvg.selecao.item = $scope.cadastro.registro;
+        $scope.DiagnosticoBenfeitoriaNvg.dados.push($scope.cadastro.registro);
+        if ($scope.DiagnosticoBenfeitoriaNvg.selecao.tipo === 'U') {
+            $scope.DiagnosticoBenfeitoriaNvg.selecao.item = $scope.cadastro.registro;
         } else {
-            $scope.soloBenfeitoriaNvg.folhaAtual = $scope.soloBenfeitoriaNvg.selecao.items.length;
-            $scope.soloBenfeitoriaNvg.selecao.items.push($scope.cadastro.registro);
+            $scope.DiagnosticoBenfeitoriaNvg.folhaAtual = $scope.DiagnosticoBenfeitoriaNvg.selecao.items.length;
+            $scope.DiagnosticoBenfeitoriaNvg.selecao.items.push($scope.cadastro.registro);
         }
-        $scope.soloBenfeitoriaNvg.refresh();
+        $scope.DiagnosticoBenfeitoriaNvg.refresh();
 
         toastr.info('Operação realizada!', 'Informação');
     };
     $scope.editar = function() {
-        $scope.soloBenfeitoriaNvg.mudarEstado('EDITANDO');
+        $scope.DiagnosticoBenfeitoriaNvg.mudarEstado('EDITANDO');
         vaiPara('form');
         verRegistro();
     };
@@ -234,7 +240,7 @@ angular.module(pNmModulo).controller(pNmController,
         });
     };
     $scope.filtrar = function() {
-        $scope.soloBenfeitoriaNvg.mudarEstado('FILTRANDO');
+        $scope.DiagnosticoBenfeitoriaNvg.mudarEstado('FILTRANDO');
         vaiPara('filtro');
     };
     $scope.folhearAnterior = function() {
@@ -270,14 +276,14 @@ angular.module(pNmModulo).controller(pNmController,
             for (var i in cadastroModificado) {
                 $scope.cadastro.registro.vinculado.push(cadastroModificado[i]);
             }
-            $scope.soloBenfeitoriaNvg.setDados($scope.cadastro.registro.vinculado);
+            $scope.DiagnosticoBenfeitoriaNvg.setDados($scope.cadastro.registro.vinculado);
         }, function () {
             // processar o retorno negativo da modal
         });
     };
     $scope.informacao = function() {};
     $scope.limpar = function() {
-        var e = $scope.soloBenfeitoriaNvg.estadoAtual();
+        var e = $scope.DiagnosticoBenfeitoriaNvg.estadoAtual();
         if ('FILTRANDO' === e) {
             $scope.cadastro.filtro = {};
         } else {
@@ -292,13 +298,13 @@ angular.module(pNmModulo).controller(pNmController,
         angular.copy($scope.cadastro.original, $scope.cadastro.registro);
     };
     $scope.visualizar = function() {
-        $scope.soloBenfeitoriaNvg.mudarEstado('VISUALIZANDO');
+        $scope.DiagnosticoBenfeitoriaNvg.mudarEstado('VISUALIZANDO');
         vaiPara('form');
         verRegistro();
     };
     $scope.voltar = function() {
-        $scope.soloBenfeitoriaNvg.voltar();
-        var estadoAtual = $scope.soloBenfeitoriaNvg.estadoAtual();
+        $scope.DiagnosticoBenfeitoriaNvg.voltar();
+        var estadoAtual = $scope.DiagnosticoBenfeitoriaNvg.estadoAtual();
         if (!meuEstado('filtro') && ['FILTRANDO'].indexOf(estadoAtual) >= 0) {
             vaiPara('filtro');
         } else if (!meuEstado('lista') && ['LISTANDO', 'ESPECIAL'].indexOf(estadoAtual) >= 0) {
