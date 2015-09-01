@@ -77,7 +77,7 @@
           </td>
           <td>
             <div class="col-xs-4" >
-              <input id="ha" name="ha" type="number" class="form-control input-md" ng-model="item.ha">
+              <input id="ha{{$index}}" name="ha{{$index}}" type="text" class="form-control input-md text-right" ng-model="item.ha" ui-number-mask="globalFracaoHectares" >
             </div>
           </td>
           <td >

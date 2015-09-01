@@ -9,10 +9,14 @@ angular.module(pNmModulo).controller(pNmController,
 
     // inicializacao
     var init = function() {
-        if (!angular.isObject($scope.conteudo.dados)) {
-            $scope.conteudo.dados = [];
+        console.log($scope.DiagnosticoNvg.selecao);
+        if (!angular.isObject($scope.DiagnosticoNvg.selecao.item)) {
+            return;
+        }        
+        if (!angular.isObject($scope.DiagnosticoNvg.selecao.item.benfeitoria)) {
+            $scope.DiagnosticoNvg.selecao.item.benfeitoria = [];
         }
-        $scope.soloBenfeitoriaNvg = new FrzNavegadorParams($scope.cadastro.registro.diagnostico, 4);
+        $scope.soloBenfeitoriaNvg = new FrzNavegadorParams($scope.DiagnosticoNvg.selecao.item.benfeitoria, 4);
 
     };
     if (!$modalInstance) {
@@ -39,7 +43,7 @@ angular.module(pNmModulo).controller(pNmController,
         var modalInstance = $modal.open({
             animation: true,
             template: '<ng-include src=\"\'pessoa/pessoa-modal.html\'\"></ng-include>',
-            controller: 'SoloBenfeitoriaCtrl',
+            controller: 'DiagnosticoBenfeitoriaSubCtrl',
             size: size,
             resolve: {
                 modalCadastro: function () {
@@ -312,4 +316,4 @@ angular.module(pNmModulo).controller(pNmController,
 } // fim função
 ]);
 
-})('propriedade', 'SoloBenfeitoriaCtrl', 'Pessoas Vinculadas à Propriedade');
+})('propriedade', 'DiagnosticoBenfeitoriaSubCtrl', 'Pessoas Vinculadas à Propriedade');

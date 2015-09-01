@@ -1,7 +1,7 @@
 
-<div class="panel panel-default" ng-controller="SoloBenfeitoriaCtrl">
+<div class="panel panel-default">
   <div class="panel-heading container-fluid">
-    <frz-navegador ng-model="soloBenfeitoriaNvg" 
+    <frz-navegador ng-model="DiagnosticoBenfeitoriaNvg" 
       exibe-nome-botao = "false"
       on-abrir = "abrir()"
       on-agir = "agir()"
@@ -38,13 +38,13 @@
     </frz-navegador>
   </div>
 
-  <div class="painel-body"  ng-if="!soloBenfeitoriaNvg.dados.length">
+  <div class="painel-body"  ng-if="!DiagnosticoBenfeitoriaNvg.dados.length">
     <div class="alert alert-warning" role="alert">
       <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
       Nenhum registro localizado!
     </div>
   </div>
-  <div class="table-responsible" ng-if="soloBenfeitoriaNvg.dados.length">
+  <div class="table-responsible" ng-if="DiagnosticoBenfeitoriaNvg.dados.length">
     <table class="table table-hover table-striped">
       <thead>
         <tr>
@@ -59,10 +59,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="item in soloBenfeitoriaNvg.dados | orderBy: 'nome' | pagina: soloBenfeitoriaNvg.paginaAtual : soloBenfeitoriaNvg.tamanhoPagina | limitTo: soloBenfeitoriaNvg.tamanhoPagina" ng-click="seleciona(item); soloBenfeitoriaNvg.folhaAtual = $index + ((soloBenfeitoriaNvg.paginaAtual-1) * soloBenfeitoriaNvg.tamanhoPagina)" ng-form name="documentoFrm">
+        <tr ng-repeat="item in DiagnosticoBenfeitoriaNvg.dados | orderBy: 'nome' | pagina: DiagnosticoBenfeitoriaNvg.paginaAtual : DiagnosticoBenfeitoriaNvg.tamanhoPagina | limitTo: DiagnosticoBenfeitoriaNvg.tamanhoPagina" ng-click="seleciona(item); DiagnosticoBenfeitoriaNvg.folhaAtual = $index + ((DiagnosticoBenfeitoriaNvg.paginaAtual-1) * DiagnosticoBenfeitoriaNvg.tamanhoPagina)" ng-form name="documentoFrm">
           <td width="30px">
-            <input type="radio" ng-show="soloBenfeitoriaNvg.selecao.tipo === 'U'" ng-model="soloBenfeitoriaNvg.selecao.item" ng-value="item"/>
-            <input type="checkbox" ng-show="soloBenfeitoriaNvg.selecao.tipo === 'M'" checklist-model="soloBenfeitoriaNvg.selecao.items" checklist-value="item" ng-click="mataClick($event);"/>
+            <input type="radio" ng-show="DiagnosticoBenfeitoriaNvg.selecao.tipo === 'U'" ng-model="DiagnosticoBenfeitoriaNvg.selecao.item" ng-value="item"/>
+            <input type="checkbox" ng-show="DiagnosticoBenfeitoriaNvg.selecao.tipo === 'M'" checklist-model="DiagnosticoBenfeitoriaNvg.selecao.items" checklist-value="item" ng-click="mataClick($event);"/>
           </td>
           <td class="">{{item.nome}}</td>
           <td class="">{{item.descricao}}</td>
@@ -81,11 +81,3 @@
   </div>
 </div>
 
-<div class="row">
-    <div class="col-md-12" >
-        <label class="control-label" for="observacao">Observações</label><br>
-        <textarea class="form-control" id="observacao" name="observacao" ng-model="conteudo.observacao">
-        </textarea>
-    </div>
-</div>
- 

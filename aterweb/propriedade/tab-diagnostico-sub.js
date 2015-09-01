@@ -9,11 +9,11 @@ angular.module(pNmModulo).controller(pNmController,
 
     // inicializacao
     var init = function() {
-        if (!angular.isObject($scope.conteudo.dados)) {
-            $scope.conteudo.dados = [];
+        if (!angular.isObject($scope.cadastro.registro.diagnostico)) {
+            $scope.cadastro.registro.diagnostico = [];
         }
-        $scope.DiagnosticoNvg = new FrzNavegadorParams($scope.conteudo.dados, 8);
-
+        $scope.DiagnosticoNvg = new FrzNavegadorParams($scope.cadastro.registro.diagnostico, 8);
+console.log( $scope.DiagnosticoNvg  );
     };
     if (!$modalInstance) {
         init();
@@ -312,4 +312,4 @@ angular.module(pNmModulo).controller(pNmController,
 } // fim função
 ]);
 
-})('propriedade', 'DiagnosticoCtrl', 'Pessoas Vinculadas à Propriedade');
+})('propriedade', 'DiagnosticoSubCtrl', 'Pessoas Vinculadas à Propriedade');
