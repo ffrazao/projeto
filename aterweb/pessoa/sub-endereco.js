@@ -31,8 +31,11 @@ angular.module('pessoa').controller('PessoaEnderecoCtrl', ['$scope', 'FrzNavegad
   $scope.abreModal = function (item) {
 
     // abrir a modal
-    mensagemSrv.confirmacao(true, 'pessoaEnderecoFrm.html', 'Cadastro de Endereço', item, 'lg').then(function (conteudo) {
+    mensagemSrv.confirmacao(false, '<frz-endereco conteudo="conteudo"/>', 'Cadastro de Endereço', item, 'lg').then(function (conteudo) {
         // processar o retorno positivo da modal
+        if (!angular.isArray($scope.cadastro.registro.enderecoList)) {
+          init();
+        }
         $scope.cadastro.registro.enderecoList.push(conteudo);
     }, function () {
         // processar o retorno negativo da modal
@@ -43,7 +46,7 @@ angular.module('pessoa').controller('PessoaEnderecoCtrl', ['$scope', 'FrzNavegad
 
 
   $scope.incluir = function (size) {
-    $scope.abreModal({});
+    $scope.abreModal({cep: '12345678'});
 
     /*var modalInstance = $modal.open({
       animation: $scope.animationsEnabled,
