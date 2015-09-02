@@ -48,7 +48,7 @@
     <table class="table table-hover table-striped">
       <thead>
         <tr>
-          <th width="30">#</th>
+          <th><frz-seletor ng-show="false" ng-model="DiagnosticoBenfeitoriaNvg"></frz-seletor></th>        
           <th>Especificação</th>
           <th>Característica</th>
           <th>Unidade</th>
@@ -59,10 +59,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="item in DiagnosticoBenfeitoriaNvg.dados | orderBy: 'nome' | pagina: DiagnosticoBenfeitoriaNvg.paginaAtual : DiagnosticoBenfeitoriaNvg.tamanhoPagina | limitTo: DiagnosticoBenfeitoriaNvg.tamanhoPagina" ng-click="seleciona(item); DiagnosticoBenfeitoriaNvg.folhaAtual = $index + ((DiagnosticoBenfeitoriaNvg.paginaAtual-1) * DiagnosticoBenfeitoriaNvg.tamanhoPagina)" ng-form name="documentoFrm">
+        <tr ng-repeat="item in DiagnosticoBenfeitoriaNvg.dados | orderBy: 'nome' | pagina: DiagnosticoBenfeitoriaNvg.paginaAtual : DiagnosticoBenfeitoriaNvg.tamanhoPagina | limitTo: DiagnosticoBenfeitoriaNvg.tamanhoPagina" ng-click="seleciona(DiagnosticoBenfeitoriaNvg, item); DiagnosticoBenfeitoriaNvg.folhaAtual = $index + ((DiagnosticoBenfeitoriaNvg.paginaAtual-1) * DiagnosticoBenfeitoriaNvg.tamanhoPagina)" ng-form name="documentoFrm">
           <td width="30px">
             <input type="radio" ng-show="DiagnosticoBenfeitoriaNvg.selecao.tipo === 'U'" ng-model="DiagnosticoBenfeitoriaNvg.selecao.item" ng-value="item"/>
-            <input type="checkbox" ng-show="DiagnosticoBenfeitoriaNvg.selecao.tipo === 'M'" checklist-model="DiagnosticoBenfeitoriaNvg.selecao.items" checklist-value="item" ng-click="mataClick($event);"/>
+            <input type="checkbox" ng-show="DiagnosticoBenfeitoriaNvg.selecao.tipo === 'M'" checklist-model="DiagnosticoBenfeitoriaNvg.selecao.items" checklist-value="item" ng-click="mataClick(DiagnosticoBenfeitoriaNvg, $event);"/>
           </td>
           <td class="">{{item.nome}}</td>
           <td class="">{{item.descricao}}</td>

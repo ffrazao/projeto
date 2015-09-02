@@ -240,7 +240,7 @@ angular.module(pNmModulo).controller(pNmController,
       }, //diagnostico1
       { data: '26/03/2015', nome: 'Coleta Y', 
         situacao: { codigo: '2', descricao: 'Fechado'}, 
-        versao: { codigo:'1', descricao: '1.02'},
+        versao: { codigo:'2', descricao: '1.02'},
         responsavel: {codigo: '222', descricao: 'Beltrano de Tal'},
         formaUtilizacao: {codigo: '1', descricao: 'Lazer'},
         fontePrincipal: {codigo: '1', descricao: 'Canal'}, fonteVazao: 333, fonteDomestico : {codigo: '3', descricao:'Poço'},

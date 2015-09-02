@@ -368,6 +368,32 @@ angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'to
             scp.crudVaiPara(scp, scp.stt, 'form');
         }
     };
+
+
+    // inicio rotinas de apoio
+    $rootScope.seleciona = function(navegador, item) {
+        if (!angular.isObject(item)) { return; }
+        // apoio a selecao de linhas na listagem
+        if (navegador.selecao.tipo === 'U') {
+            navegador.selecao.item = item;
+        } else {
+            var its = navegador.selecao.items;
+            for (var i in its) {
+                if (angular.equals(its[i], item)) {
+                    its.splice(i, 1);
+                    return;
+                }
+            }
+            navegador.selecao.items.push(item);
+        }
+    };
+
+    $rootScope.mataClick = function(navegador, event, item) {
+        event.stopPropagation();
+        $rootScope.seleciona(navegador, item);
+    };
+
+
     // fim funcoes crud
 }]);
 

@@ -56,10 +56,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="item in subVinculadoNvg.dados | orderBy: 'nome' | pagina: subVinculadoNvg.paginaAtual : subVinculadoNvg.tamanhoPagina | limitTo: subVinculadoNvg.tamanhoPagina" ng-click="seleciona(item); subVinculadoNvg.folhaAtual = $index + ((subVinculadoNvg.paginaAtual-1) * subVinculadoNvg.tamanhoPagina)" ng-form name="documentoFrm">
+        <tr ng-repeat="item in subVinculadoNvg.dados | orderBy: 'nome' | pagina: subVinculadoNvg.paginaAtual : subVinculadoNvg.tamanhoPagina | limitTo: subVinculadoNvg.tamanhoPagina" ng-click="seleciona(subVinculadoNvg, item); subVinculadoNvg.folhaAtual = $index + ((subVinculadoNvg.paginaAtual-1) * subVinculadoNvg.tamanhoPagina)" ng-form name="documentoFrm">
           <td width="30px">
             <input type="radio" ng-show="subVinculadoNvg.selecao.tipo === 'U'" ng-model="subVinculadoNvg.selecao.item" ng-value="item"/>
-            <input type="checkbox" ng-show="subVinculadoNvg.selecao.tipo === 'M'" checklist-model="subVinculadoNvg.selecao.items" checklist-value="item" ng-click="mataClick($event);"/>
+            <input type="checkbox" ng-show="subVinculadoNvg.selecao.tipo === 'M'" checklist-model="subVinculadoNvg.selecao.items" checklist-value="item" ng-click="mataClick(subVinculadoNvg, $event);"/>
           </td>
           <td>
             {{$index + 1 + ((subVinculadoNvg.paginaAtual-1) * subVinculadoNvg.tamanhoPagina)}}
@@ -94,6 +94,7 @@
     </table>
   </div>
   <div class="panel-footer">
+
   </div>
 </div>
 

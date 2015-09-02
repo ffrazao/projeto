@@ -49,23 +49,23 @@
     <table class="table table-hover table-striped">
       <thead>
         <tr>
-          <th><frz-seletor ng-model="DiagnosticoNvg"></frz-seletor></th>        
-          <th>Data da Coleta</th>
-          <th>Nome da Coleta</th>
-          <th>Situação</th>
-          <th>Versão</th>
-          <th>Tc. Responsável</th>
+          <th><frz-seletor ng-show="false" ng-model="DiagnosticoNvg"></frz-seletor></th>        
+          <th class="text-center col-md-2">Data da Coleta</th>
+          <th class="text-center col-md-3">Nome da Coleta</th>
+          <th class="text-center col-md-2">Situação</th>
+          <th class="text-center col-md-1">Versão</th>
+          <th class="text-center col-md-4">Tc. Responsável</th>
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="item in DiagnosticoNvg.dados | orderBy: 'nome' | pagina: DiagnosticoNvg.paginaAtual : DiagnosticoNvg.tamanhoPagina | limitTo: DiagnosticoNvg.tamanhoPagina" ng-click="seleciona(item); DiagnosticoNvg.folhaAtual = $index + ((DiagnosticoNvg.paginaAtual-1) * DiagnosticoNvg.tamanhoPagina)" ng-form name="documentoFrm">
+        <tr ng-repeat="item in DiagnosticoNvg.dados | orderBy: 'nome' | pagina: DiagnosticoNvg.paginaAtual : DiagnosticoNvg.tamanhoPagina | limitTo: DiagnosticoNvg.tamanhoPagina" ng-click="seleciona(DiagnosticoNvg, item); DiagnosticoNvg.folhaAtual = $index + ((DiagnosticoNvg.paginaAtual-1) * DiagnosticoNvg.tamanhoPagina)" ng-form name="documentoFrm">
           <td width="30px">
             <input type="radio" ng-show="DiagnosticoNvg.selecao.tipo === 'U'" ng-model="DiagnosticoNvg.selecao.item" ng-value="item"/>
-            <input type="checkbox" ng-show="DiagnosticoNvg.selecao.tipo === 'M'" checklist-model="DiagnosticoNvg.selecao.items" checklist-value="item" ng-click="mataClick($event);"/>
+            <input type="checkbox" ng-show="DiagnosticoNvg.selecao.tipo === 'M'" checklist-model="DiagnosticoNvg.selecao.items" checklist-value="item" ng-click="mataClick(DiagnosticoNvg, $event);"/>
           </td>
-          <td class="text-center">{{item.data}}</td>
+          <td class="text-left">{{item.data}}</td>
           <td class="text-left">{{item.nome}}</td>
-          <td class="text-left">{{item.situacao.descricao}}</td>
+          <td class="text-center">{{item.situacao.descricao}}</td>
           <td class="text-center">{{item.versao.descricao}}</td>
           <td class="text-left">{{item.responsavel.descricao}}</td>
         </tr>
