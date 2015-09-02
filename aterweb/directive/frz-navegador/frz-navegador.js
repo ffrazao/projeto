@@ -646,9 +646,7 @@
                                     scope.onVisualizar();
                                 },
                                 exibir: function() {
-                                    return (scope.ngModel.dados && scope.ngModel.dados.length) && 
-                                        ((scope.ngModel.selecao.tipo === 'U' && scope.ngModel.selecao.selecionado) ||
-                                        (scope.ngModel.selecao.tipo === 'M' && scope.ngModel.selecao.marcado > 0));
+                                    return (scope.ngModel.dados && scope.ngModel.dados.length && scope.ngModel.selecao.selecionado);
                                 },
                             },
                         ],
@@ -666,9 +664,7 @@
                                     scope.onEditar();
                                 },
                                 exibir: function() {
-                                    return (scope.ngModel.dados && scope.ngModel.dados.length) && 
-                                        ((scope.ngModel.selecao.tipo === 'U' && scope.ngModel.selecao.selecionado) ||
-                                        (scope.ngModel.selecao.tipo === 'M' && scope.ngModel.selecao.marcado > 0));
+                                    return (scope.ngModel.dados && scope.ngModel.dados.length && scope.ngModel.selecao.selecionado);
                                 },
                             },
                         ],
@@ -686,9 +682,7 @@
                                     scope.onExcluir();
                                 },
                                 exibir: function() {
-                                    return (scope.ngModel.dados && scope.ngModel.dados.length) && 
-                                        ((scope.ngModel.selecao.tipo === 'U' && scope.ngModel.selecao.selecionado) ||
-                                        (scope.ngModel.selecao.tipo === 'M' && scope.ngModel.selecao.marcado > 0));
+                                    return (scope.ngModel.dados && scope.ngModel.dados.length && scope.ngModel.selecao.selecionado);
                                 },
                             },
                         ],
@@ -775,7 +769,7 @@
                 scope.$watch('ngModel.selecao.tipo', function() {
                     var info = '0/' + scope.ngModel.dados.length;
                     if (scope.ngModel.selecao.tipo === 'U') {
-                        scope.ngModel.selecao.selecionado = angular.isDefined(scope.ngModel.selecao.item) && scope.ngModel.selecao.item;
+                        scope.ngModel.selecao.selecionado = angular.isObject(scope.ngModel.selecao.item);
                         if (scope.ngModel.selecao.selecionado) {
                             info = '1/' + scope.ngModel.dados.length;
                         }
@@ -789,7 +783,7 @@
                 scope.$watch('ngModel.selecao.item', function(newItem) {
                     var info = '0/' + scope.ngModel.dados.length;
                     if (scope.ngModel.selecao.tipo === 'U') {
-                        scope.ngModel.selecao.selecionado = angular.isDefined(scope.ngModel.selecao.item) && scope.ngModel.selecao.item;
+                        scope.ngModel.selecao.selecionado = angular.isObject(scope.ngModel.selecao.item);
                         if (scope.ngModel.selecao.selecionado) {
                             info = '1/' + scope.ngModel.dados.length;
                         }
