@@ -98,6 +98,68 @@ angular.module(pNmModulo).controller(pNmController,
     // inicio ações especiais
     // fim ações especiais
 
+    // inicio trabalho tab
+    $scope.tabs = [{
+        'nome': 'Principal',
+        'include': 'pessoa/tab-principal.html',
+        'visivel': true,
+    }, {
+        'nome': 'Beneficiário',
+        'include': 'pessoa/tab-beneficiario.html',
+        'visivel': false,
+    }, {
+        'nome': 'Colaborador',
+        'include': 'pessoa/tab-colaborador.html',
+        'visivel': false,
+    }, {
+        'nome': 'Diagnósticos',
+        'include': 'pessoa/tab-diagnostico.html',
+        'visivel': false,
+    }, {
+        'nome': 'Grupos Sociais',
+        'include': 'pessoa/tab-grupo-social.html',
+        'visivel': true,
+    }, {
+        'nome': 'Atividades',
+        'include': 'pessoa/tab-atividade.html',
+        'visivel': true,
+    }, {
+        'nome': 'Arquivos',
+        'include': 'pessoa/tab-arquivo.html',
+        'visivel': true,
+    }, {
+        'nome': 'Pendências',
+        'include': 'pessoa/tab-pendencia.html',
+        'visivel': true,
+    }, ];
+    $scope.tabs.activeTab = 'Arquivos';
+
+    $scope.tabVisivelBeneficiario = function(visivel) {
+      $scope.tabVisivel('Beneficiário', visivel); 
+      var outro = $scope.tabVisivel('Colaborador');
+      $scope.tabVisivel('Diagnósticos', visivel || outro);
+    };
+
+    $scope.tabVisivelColaborador = function(visivel) {
+      $scope.tabVisivel('Colaborador', visivel); 
+      var outro = $scope.tabVisivel('Beneficiário');
+      $scope.tabVisivel('Diagnósticos', visivel || outro);
+    };
+
+    $scope.tabVisivel = function(tabNome, visivel) {
+      for (var t in $scope.tabs) {
+        if ($scope.tabs[t].nome === tabNome) {
+          if (angular.isDefined(visivel)) {
+            $scope.tabs[t].visivel = visivel;
+            return;
+          } else {
+            return $scope.tabs[t].visivel;
+          }
+        }
+      }
+    };
+    // fim trabalho tab
+
 }]);
 
 })('pessoa', 'PessoaCtrl', 'Cadastro de Pessoas');
