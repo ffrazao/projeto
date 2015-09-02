@@ -13,49 +13,13 @@ angular.module(pNmModulo).controller(pNmController,
             $scope.cadastro.registro.diagnostico = [];
         }
         $scope.DiagnosticoNvg = new FrzNavegadorParams($scope.cadastro.registro.diagnostico, 8);
-console.log( $scope.DiagnosticoNvg  );
     };
+
     if (!$modalInstance) {
         init();
     }
 
-    // inicio: atividades do Modal
-    $scope.modalOk = function () {
-        // Retorno da modal
-        var resultado = [];
-        for (var file in $scope.$flow.files) {
-            resultado.push({nome: $scope.$flow.files[file].name});
-        }
-        $modalInstance.close(resultado);
-        toastr.info('Operação realizada!', 'Informação');
-    };
-    $scope.modalCancelar = function () {
-        // Cancelar a modal
-        $modalInstance.dismiss('cancel');
-        toastr.warning('Operação cancelada!', 'Atenção!');
-    };
-    $scope.modalAbrir = function (size) {
-        // abrir a modal
-        var modalInstance = $modal.open({
-            animation: true,
-            template: '<ng-include src=\"\'pessoa/pessoa-modal.html\'\"></ng-include>',
-            controller: 'DiagnosticoCtrl',
-            size: size,
-            resolve: {
-                modalCadastro: function () {
-                    return angular.copy($scope.cadastro);
-                }
-            }
-        });
-        // processar retorno da modal
-        modalInstance.result.then(function (cadastroModificado) {
-            // processar o retorno positivo da modal
-            $scope.DiagnosticoNvg.setDados(cadastroModificado);
-        }, function () {
-            // processar o retorno negativo da modal
-        });
-    };
-    if ($modalInstance === null) {
+        if ($modalInstance === null) {
         // se objeto modal esta vazio abrir de forma normal
         $scope.modalEstado = null;
 //        $scope.navegador.dados[0].vinculado = $scope.cadastro.registro.solo[3];
@@ -246,31 +210,14 @@ console.log( $scope.DiagnosticoNvg  );
         verRegistro();
     };
     $scope.incluir = function() {
-        var modalInstance = $modal.open({
-            animation: true,
-            templateUrl: 'vinculadoFrm.html',
-            controller: pNmController,
-            size: 'lg',
-            resolve: {
-                modalCadastro: function () {
-                    return angular.copy($scope.cadastro);
-                }
-            }
-        });
-        // processar retorno da modal
-        modalInstance.result.then(function (cadastroModificado) {
-            // processar o retorno positivo da modal
-            if (!$scope.cadastro.registro.vinculado) {
-                $scope.cadastro.registro.vinculado = [];
-            }
-            for (var i in cadastroModificado) {
-                $scope.cadastro.registro.vinculado.push(cadastroModificado[i]);
-            }
-            $scope.DiagnosticoNvg.setDados($scope.cadastro.registro.vinculado);
-        }, function () {
-            // processar o retorno negativo da modal
-        });
+        var tmp = $scope.DiagnosticoNvg.selecao.item;
+        var item = { arquivo: 'tab-diagnostico-sub-modal.html', descricao: 'Diagnóstico', tamanho :800,
+                     dados: tmp
+                    };
+        $scope.abreModal(item);
     };
+
+
     $scope.informacao = function() {};
     $scope.limpar = function() {
         var e = $scope.DiagnosticoNvg.estadoAtual();
@@ -304,10 +251,6 @@ console.log( $scope.DiagnosticoNvg  );
         }
     };
     // fim das operaçoes atribuidas ao navagador
-
-
-
-
 
 } // fim função
 ]);

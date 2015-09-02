@@ -45,10 +45,11 @@
     </div>
   </div>
   <div class="table-responsible" ng-if="DiagnosticoNvg.dados.length">
+   
     <table class="table table-hover table-striped">
       <thead>
         <tr>
-          <th width="30">#</th>
+          <th><frz-seletor ng-model="DiagnosticoNvg"></frz-seletor></th>        
           <th>Data da Coleta</th>
           <th>Nome da Coleta</th>
           <th>Situação</th>
@@ -192,9 +193,9 @@
     </div>
 </div>
 
-// {{DiagnosticoNvg.selecao.item.benfeitoria.length}} //
+
 <div class="row">
-    <div class="form-group" title="Benfeitorias" style="padding: 10px;">
+    <div class="form-group" title="Benfeitorias" style="padding: 30px;">
         <input type="hidden" name="benfeitoria" id="benfeitoria" ng-model="DiagnosticoNvg.selecao.item.benfeitoria.length" required ng-min="1">
         <ng-include src="'propriedade/tab-diagnostico-benfeitoria-sub.html'" ng-controller="DiagnosticoBenfeitoriaSubCtrl"></ng-include>
     </div>

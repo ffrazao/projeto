@@ -9,15 +9,11 @@ angular.module(pNmModulo).controller(pNmController,
 
     // inicializacao
     var init = function() {
-        console.log($scope.DiagnosticoNvg.selecao);
-        if (!angular.isObject($scope.DiagnosticoNvg.selecao.item)) {
-            return;
-        }        
-        if (!angular.isObject($scope.DiagnosticoNvg.selecao.item.benfeitoria)) {
-            $scope.DiagnosticoNvg.selecao.item.benfeitoria = [];
+        var tmp=[];
+        if ( angular.isObject($scope.DiagnosticoNvg.selecao.item )) {
+            tmp = $scope.DiagnosticoNvg.selecao.item.benfeitoria;
         }
-        $scope.DiagnosticoBenfeitoriaNvg = new FrzNavegadorParams($scope.DiagnosticoNvg.selecao.item.benfeitoria, 4);
-
+        $scope.DiagnosticoBenfeitoriaNvg = new FrzNavegadorParams(tmp, 4);
     };
     if (!$modalInstance) {
         init();
