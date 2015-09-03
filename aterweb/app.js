@@ -16,7 +16,8 @@ angular.module(pNmModulo).factory('modalCadastro', function () {
 // fim: codigo para habilitar o modal recursivo
 
 angular.module(pNmModulo).config(['$stateProvider', '$urlRouterProvider', 'toastrConfig', '$locationProvider',
-  function($stateProvider, $urlRouterProvider, toastrConfig, $locationProvider) {
+    'uiGmapGoogleMapApiProvider',
+  function($stateProvider, $urlRouterProvider, toastrConfig, $locationProvider, GoogleMapApiProviders) {
 
     //$locationProvider.html5Mode(true);
     $stateProvider.state('p', {templateUrl: 'casa/principal.html'});
@@ -81,6 +82,10 @@ angular.module(pNmModulo).config(['$stateProvider', '$urlRouterProvider', 'toast
       timeOut: 4000,
       titleClass: 'toast-title',
       toastClass: 'toast'
+    });
+
+    GoogleMapApiProviders.configure({
+        china: true
     });
 
   }]);

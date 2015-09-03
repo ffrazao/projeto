@@ -1,130 +1,89 @@
+(function(pNmModulo, pNmController, pNmFormulario) {
 
-'use strict';
+    'use strict';
 
-angular.module('pessoa').controller('PessoaEmailCtrl', ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr',
-	function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr) {
+    angular.module(pNmModulo).controller(pNmController, ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr', 'utilSrv', 'mensagemSrv',
 
-  $scope.acaoXpto = function() {
-  	alert('xpto');
-  };
-  $scope.acaoZyz = function() {
-  	alert('Zyz');
-  };
+        function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, utilSrv, mensagemSrv) {
+            // inicializacao
+            var init = function() {
+                if (!angular.isObject($scope.cadastro.registro.emailList)) {
+                    $scope.cadastro.registro.emailList = [];
+                }
+                $scope.pessoaEmailNvg = new FrzNavegadorParams($scope.cadastro.registro.emailList, 5);
+            };
+            if (!$modalInstance) {
+                init();
+            }
+            if ($modalInstance === null) {
+                $scope.navegador.dados[0].emailList = [];
+                for (var i = 0; i < 11; i++) {
+                    $scope.navegador.dados[0].emailList.push({
+                        id: i,
+                        nome: 'nome ' + i,
+                        cpf: (333 * i),
+                        tpExploracao: 'P',
+                        ha: (2.7 * i),
+                        situacao: 'S'
+                    });
+                }
+                $scope.pessoaEmailNvg.setDados($scope.navegador.dados[0].emailList);
+            }
+            // inicio rotinas de apoio
+            // $scope.seleciona = function(pessoaEmailNvg, item) { };
+            // $scope.mataClick = function(pessoaEmailNvg, event, item){ };
+            // fim rotinas de apoio
+            // inicio das operaçoes atribuidas ao navagador
+            $scope.abrir = function() {
+                $scope.pessoaEmailNvg.mudarEstado('ESPECIAL');
+            };
+            $scope.agir = function() {};
+            $scope.ajudar = function() {};
+            $scope.alterarTamanhoPagina = function() {};
+            $scope.cancelar = function() {};
+            $scope.cancelarEditar = function() {};
+            $scope.cancelarExcluir = function() {};
+            $scope.cancelarFiltrar = function() {};
+            $scope.cancelarIncluir = function() {};
+            $scope.confirmar = function() {};
+            $scope.confirmarEditar = function() {};
+            $scope.confirmarExcluir = function() {};
+            $scope.confirmarFiltrar = function() {};
+            $scope.confirmarIncluir = function() {};
+            $scope.excluir = function() {};
+            $scope.filtrar = function() {};
+            $scope.folhearAnterior = function() {};
+            $scope.folhearPrimeiro = function() {};
+            $scope.folhearProximo = function() {};
+            $scope.folhearUltimo = function() {};
+            $scope.editar = function() {
+                $scope.incluir();
+            };
+            $scope.incluir = function() {
+                var item = {};
+                $scope.abreModal(item);
+            };
+            $scope.informacao = function() {};
+            $scope.limpar = function() {};
+            $scope.paginarAnterior = function() {};
+            $scope.paginarPrimeiro = function() {};
+            $scope.paginarProximo = function() {};
+            $scope.paginarUltimo = function() {};
+            $scope.restaurar = function() {};
+            $scope.visualizar = function() {};
+            $scope.voltar = function() {};
+            // fim das operaçoes atribuidas ao navagador
+            $scope.abreModal = function(item) {
+                // abrir a modal
+                mensagemSrv.confirmacao(true, 'pessoa/' + item.arquivo, item.descricao, item, item.tamanho).then(function(conteudo) {
+                    // processar o retorno positivo da modal
 
-  // FIXME so pra teste 
-  $scope.acoesEspeciais = [
-    {estado: ['ESPECIAL'], descricao: 'ZYZ', acao: $scope.acaoZyz, selecaoAtiva: false, quantidadeSelecionados: 0},
-    {estado: ['ESPECIAL'], descricao: 'XPTO', acao: $scope.acaoXpto, selecaoAtiva: true, quantidadeSelecionados: 1},
-  ];
+                }, function() {
+                    // processar o retorno negativo da modal
+                    //$log.info('Modal dismissed at: ' + new Date());
+                });
+            };
+        } // fim função
+    ]);
 
-  $scope.pessoaEmailNvg = new FrzNavegadorParams();
-
-  $scope.abrir = function () {
-	$scope.pessoaEmailNvg.mudarEstado('ESPECIAL');
-  };
-
-  $scope.especial = function () {
-	$scope.pessoaEmailNvg.especialBotoesVisiveis(['agir', 'editar', 'excluir', 'incluir', 'navegar', 'tamanhoPagina', ]);
-  };
-
-  $scope.editar = function (id) {
-
-  };
-
-  $scope.excluir = function () {
-
-  };
-
-  $scope.incluir = function (size) {
-    var modalInstance = $modal.open({
-      animation: $scope.animationsEnabled,
-      templateUrl: 'pessoaEmailFrm.html',
-      controller: 'PessoaEmailCtrl',
-      size: size,
-      resolve: {
-        registro: function () {
-          return $scope.cadastro.registro;
-        }
-      }
-    });
-
-    modalInstance.result.then(function (registro) {
-    	if (!registro) {
-    		return;
-    	}
-      if (!$scope.cadastro.registro) {
-        $scope.cadastro.registro = {};
-      }
-      if (!$scope.cadastro.registro.email) {
-        $scope.cadastro.registro.email = [];
-      }
-    	if (angular.isArray(registro)) {
-    		for (var r in registro) {
-    			$scope.cadastro.registro.email.push(r);
-    		}
-    	} else {
-    		$scope.cadastro.registro.email.push(registro);
-    	}
-    }, function () {
-      console.log('Modal dismissed at: ' + new Date());
-    });
-  };
-
-  $scope.pesquisaPessoa = function(size) {
-
-    var modalInstance = $modal.open({
-      animation: $scope.animationsEnabled,
-      templateUrl: 'views/pessoa/_modal.html',
-      controller: 'PessoaCtrl',
-      size: size,
-      resolve: {
-        registro: function () {
-          //return $scope.cadastro.registro;
-        }
-      }
-    });
-
-    modalInstance.result.then(function (registro) {
-      if (!registro) {
-        return;
-      }
-      if (!$scope.email) {
-        $scope.email = {};
-      }
-      if (angular.isArray(registro)) {
-        $scope.email.pessoa = angular.copy(registro[0]);
-      } else {
-        $scope.email.pessoa = angular.copy(registro);
-      }
-    }, function () {
-      console.log('Modal dismissed at: ' + new Date());
-    });
-  }
-
-  $scope.items = [];
-  $scope.selected = {
-    item: $scope.items[0]
-  };
-
-  $scope.ok = function () {
-  	$modalInstance.close($scope.email);
-  };
-
-  $scope.cancel = function () {
-    $modalInstance.dismiss('cancel');
-  };
-
-  $scope.navegarPrimeiro = function () {
-  };
-
-  $scope.navegarAnterior = function () {
-  };
-
-  $scope.navegarPosterior = function () {
-  };
-
-  $scope.navegarUltimo = function () {
-  };
-
-} // fim função
-]);
+})('pessoa', 'PessoaEmailCtrl', 'Email vinculado à pessoa');

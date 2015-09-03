@@ -77,6 +77,7 @@
 
                 // funcao generica para captacao das tabelas de apoio do endereco 
                 scope.getDominio = function(entidade, nomePrimaryKey, valorPrimaryKey, lista) {
+                  return;
                   lista.splice(0, lista.length);
                   return $http.get(dominio, {
                     params : {
@@ -95,7 +96,11 @@
                   }, true);
                 };
                 scope.atualizaPais = function(lista) {
+                  /*
                   $q.all([scope.getDominio("PessoaGrupoPaisVi", null, null, lista)]).then(function(response) {
+                    if (!scope.conteudo.pessoaGrupoCidadeVi) {
+                      return;
+                    }
                     if (isUndefOrNull(scope.brasil)) {
                       for (var idx in response[0].data.resultado) {
                         if (response[0].data.resultado[idx].sigla === 'BR') {
@@ -107,10 +112,10 @@
                     if (isUndefOrNull(scope.conteudo.pessoaGrupoCidadeVi.pessoaGrupoMunicipioVi.pessoaGrupoEstadoVi.pessoaGrupoPaisVi.id)) {
                       scope.conteudo.pessoaGrupoCidadeVi.pessoaGrupoMunicipioVi.pessoaGrupoEstadoVi.pessoaGrupoPaisVi.id = scope.brasil.id;
                     }
-                  });
+                  });*/
                 };
                 scope.atualizaEstado = function(lista, paiId) {
-                  $q.all([scope.getDominio("PessoaGrupoEstadoVi", "pessoaGrupoPaisVi.id", paiId, lista)]).then(function(response) {
+                  /*$q.all([scope.getDominio("PessoaGrupoEstadoVi", "pessoaGrupoPaisVi.id", paiId, lista)]).then(function(response) {
                     if (isUndefOrNull(scope.distritoFederal)) {
                       for (var idx in response[0].data.resultado) {
                         if (response[0].data.resultado[idx].sigla === 'DF') {
@@ -122,10 +127,11 @@
                     if (!isUndefOrNull(scope.distritoFederal) && isUndefOrNull(scope.conteudo.pessoaGrupoCidadeVi.pessoaGrupoMunicipioVi.pessoaGrupoEstadoVi.id)) {
                       scope.conteudo.pessoaGrupoCidadeVi.pessoaGrupoMunicipioVi.pessoaGrupoEstadoVi.id = scope.distritoFederal.id;
                     }
-                  });
+                  });*/
                 };
+                scope.map = { center: { latitude: -15.732687616157767, longitude: -47.90378594955473 }, zoom: 15 };
                 scope.atualizaMunicipio = function(lista, paiId) {
-                  $q.all([scope.getDominio("PessoaGrupoMunicipioVi", "pessoaGrupoEstadoVi.id", paiId, lista)]).then(function(response) {
+                  /*$q.all([scope.getDominio("PessoaGrupoMunicipioVi", "pessoaGrupoEstadoVi.id", paiId, lista)]).then(function(response) {
                     if (!isUndefOrNull(response[0].data.resultado) && !isUndefOrNull(response[0].data.resultado[0])) {
                       if (isUndefOrNull(scope.brasilia)) {
                         scope.brasilia = response[0].data.resultado[0]; 
@@ -134,16 +140,16 @@
                         scope.conteudo.pessoaGrupoCidadeVi.pessoaGrupoMunicipioVi.id = scope.brasilia.id;
                       }
                     }
-                  });
+                  });*/
                 };
                 scope.atualizaCidade = function(lista, paiId) {
-                  return scope.getDominio("PessoaGrupoCidadeVi", "pessoaGrupoMunicipioVi.id", paiId, lista);
+                  //return scope.getDominio("PessoaGrupoCidadeVi", "pessoaGrupoMunicipioVi.id", paiId, lista);
                 };
                 scope.atualizaBaciaHidrografica = function(lista, paiId) {
-                  return scope.getDominio("PessoaRelacionamentoCidadeBaciaHidrograficaVi", "cidId", paiId, lista);
+                  //return scope.getDominio("PessoaRelacionamentoCidadeBaciaHidrograficaVi", "cidId", paiId, lista);
                 };
                 scope.atualizaComunidade = function(lista, paiId) {
-                  return scope.getDominio("PessoaRelacionamentoCidadeComunidadeVi", "cidId", paiId, lista);
+                  //return scope.getDominio("PessoaRelacionamentoCidadeComunidadeVi", "cidId", paiId, lista);
                 };
 
                 if (isUndefOrNull(scope.lista)) {
@@ -198,6 +204,9 @@
                 });
 
                 scope.$watch("conteudo.logradouro + conteudo.pessoaGrupoCidadeVi.id + conteudo.pessoaGrupoCidadeVi.pessoaGrupoMunicipioVi.id + conteudo.pessoaGrupoCidadeVi.pessoaGrupoMunicipioVi.pessoaGrupoEstadoVi.id + conteudo.pessoaGrupoCidadeVi.pessoaGrupoMunicipioVi.pessoaGrupoEstadoVi.pessoaGrupoPaisVi.id + conteudo.cep", function(newValue, oldValue, scope) {
+                  if (!scope.conteudo.pessoaGrupoCidadeVi) {
+                    return;
+                  }
                   console.log("pesquisa");
                   scope.pesquisaGoogle = nn(scope.conteudo.logradouro) + " " + 
                   nn(pessoaGrupo(scope.conteudo.pessoaGrupoCidadeVi.pessoaGrupoMunicipioVi.id, scope.lista.municipioList)) + " " + 

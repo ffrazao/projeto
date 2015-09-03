@@ -1,130 +1,89 @@
+(function(pNmModulo, pNmController, pNmFormulario) {
 
 'use strict';
 
-angular.module('pessoa').controller('PessoaGrupoSocialCtrl', ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr',
-	function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr) {
+angular.module(pNmModulo).controller(pNmController,
+    ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr', 'utilSrv', 'mensagemSrv',
+    function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, utilSrv, mensagemSrv) {
 
-  $scope.acaoXpto = function() {
-  	alert('xpto');
-  };
-  $scope.acaoZyz = function() {
-  	alert('Zyz');
-  };
-
-  // FIXME so pra teste 
-  $scope.acoesEspeciais = [
-    {estado: ['ESPECIAL'], descricao: 'ZYZ', acao: $scope.acaoZyz, selecaoAtiva: false, quantidadeSelecionados: 0},
-    {estado: ['ESPECIAL'], descricao: 'XPTO', acao: $scope.acaoXpto, selecaoAtiva: true, quantidadeSelecionados: 1},
-  ];
-
-  $scope.pessoaGrupoSocialNvg = new FrzNavegadorParams();
-
-  $scope.abrir = function () {
-	$scope.pessoaGrupoSocialNvg.mudarEstado('ESPECIAL');
-  };
-
-  $scope.especial = function () {
-	$scope.pessoaGrupoSocialNvg.especialBotoesVisiveis(['agir', 'editar', 'excluir', 'incluir', 'navegar', 'tamanhoPagina', ]);
-  };
-
-  $scope.editar = function (id) {
-
-  };
-
-  $scope.excluir = function () {
-
-  };
-
-  $scope.incluir = function (size) {
-    var modalInstance = $modal.open({
-      animation: $scope.animationsEnabled,
-      templateUrl: 'pessoaGrupoSocialFrm.html',
-      controller: 'PessoaGrupoSocialCtrl',
-      size: size,
-      resolve: {
-        registro: function () {
-          return $scope.cadastro.registro;
+    // inicializacao
+    var init = function() {
+        if (!angular.isObject($scope.cadastro.registro.grupoSocialList)) {
+            $scope.cadastro.registro.grupoSocialList = [];
         }
-      }
-    });
+        $scope.pessoaGrupoSocialNvg = new FrzNavegadorParams($scope.cadastro.registro.grupoSocialList, 5);
+    };
+    if (!$modalInstance) { init(); }
 
-    modalInstance.result.then(function (registro) {
-    	if (!registro) {
-    		return;
-    	}
-      if (!$scope.cadastro.registro) {
-        $scope.cadastro.registro = {};
-      }
-      if (!$scope.cadastro.registro.grupoSocial) {
-        $scope.cadastro.registro.grupoSocial = [];
-      }
-    	if (angular.isArray(registro)) {
-    		for (var r in registro) {
-    			$scope.cadastro.registro.grupoSocial.push(r);
-    		}
-    	} else {
-    		$scope.cadastro.registro.grupoSocial.push(registro);
-    	}
-    }, function () {
-      console.log('Modal dismissed at: ' + new Date());
-    });
-  };
 
-  $scope.pesquisaPessoa = function(size) {
-
-    var modalInstance = $modal.open({
-      animation: $scope.animationsEnabled,
-      templateUrl: 'views/pessoa/_modal.html',
-      controller: 'PessoaCtrl',
-      size: size,
-      resolve: {
-        registro: function () {
-          //return $scope.cadastro.registro;
+    if ($modalInstance === null) {
+        $scope.navegador.dados[0].grupoSocialList = [];
+        for (var i = 0; i < 11; i++) {
+            $scope.navegador.dados[0].grupoSocialList.push({id: i, nome: 'nome ' + i, cpf: (333*i), tpExploracao: 'P', ha :(2.7*i), situacao : 'S' });
         }
-      }
-    });
+        $scope.pessoaGrupoSocialNvg.setDados($scope.navegador.dados[0].grupoSocialList);
+    } 
 
-    modalInstance.result.then(function (registro) {
-      if (!registro) {
-        return;
-      }
-      if (!$scope.grupoSocial) {
-        $scope.grupoSocial = {};
-      }
-      if (angular.isArray(registro)) {
-        $scope.grupoSocial.pessoa = angular.copy(registro[0]);
-      } else {
-        $scope.grupoSocial.pessoa = angular.copy(registro);
-      }
-    }, function () {
-      console.log('Modal dismissed at: ' + new Date());
-    });
-  }
 
-  $scope.items = [];
-  $scope.selected = {
-    item: $scope.items[0]
-  };
+    // inicio rotinas de apoio
+    // $scope.seleciona = function(pessoaGrupoSocialNvg, item) { };
+    // $scope.mataClick = function(pessoaGrupoSocialNvg, event, item){ };
+    // fim rotinas de apoio
 
-  $scope.ok = function () {
-  	$modalInstance.close($scope.grupoSocial);
-  };
+    // inicio das operaçoes atribuidas ao navagador
+    $scope.abrir = function() { $scope.pessoaGrupoSocialNvg.mudarEstado('ESPECIAL'); };
 
-  $scope.cancel = function () {
-    $modalInstance.dismiss('cancel');
-  };
+    $scope.agir = function() {};
+    $scope.ajudar = function() {};
+    $scope.alterarTamanhoPagina = function() {};
+    $scope.cancelar = function() {};
+    $scope.cancelarEditar = function() {};
+    $scope.cancelarExcluir = function() {};
+    $scope.cancelarFiltrar = function() {};
+    $scope.cancelarIncluir = function() {};
+    $scope.confirmar = function() {};
+    $scope.confirmarEditar = function() {};
+    $scope.confirmarExcluir = function() {};
+    $scope.confirmarFiltrar = function() {};
+    $scope.confirmarIncluir = function() {};
+    $scope.excluir = function() {};
+    $scope.filtrar = function() {};
+    $scope.folhearAnterior = function() {};
+    $scope.folhearPrimeiro = function() {};
+    $scope.folhearProximo = function() {};
+    $scope.folhearUltimo = function() {};
 
-  $scope.navegarPrimeiro = function () {
-  };
+    $scope.editar = function() {  $scope.incluir(); };
 
-  $scope.navegarAnterior = function () {
-  };
+    $scope.incluir = function() {
+        var item = {};
+        $scope.abreModal(item);
+    };
 
-  $scope.navegarPosterior = function () {
-  };
+    $scope.informacao = function() {};
+    $scope.limpar = function() {};
+    $scope.paginarAnterior = function() {};
+    $scope.paginarPrimeiro = function() {};
+    $scope.paginarProximo = function() {};
+    $scope.paginarUltimo = function() {};
+    $scope.restaurar = function() {};
+    $scope.visualizar = function() {};
+    $scope.voltar = function() {};
+    // fim das operaçoes atribuidas ao navagador
 
-  $scope.navegarUltimo = function () {
-  };
+    $scope.abreModal = function (item) {
+        // abrir a modal
+        mensagemSrv.confirmacao(true, 'pessoa/'+item.arquivo, item.descricao, item, item.tamanho ).then(function (conteudo) {
+            // processar o retorno positivo da modal
+
+        }, function () {
+            // processar o retorno negativo da modal
+            //$log.info('Modal dismissed at: ' + new Date());
+        });
+
+    };    
 
 } // fim função
 ]);
+
+})('pessoa', 'PessoaGrupoSocialCtrl', 'Grupo Social vinculado à pessoa');

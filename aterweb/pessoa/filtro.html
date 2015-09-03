@@ -39,7 +39,7 @@
                 </div>
                 <!-- Text input-->
                 <div class="form-group" title="Cadastro Nacional de Pessoa Jurídica" ng-hide="cadastro.filtro.tipoPessoa.length === 1 && cadastro.filtro.tipoPessoa.indexOf('PF') >= 0">
-                    <label class="col-md-4 control-label" for="cnpj">CNPJ</label> 
+                    <label class="col-md-4 control-label" for="cnpj">CNPJ</label>
                     <div class="col-md-3">
                         <input id="cnpj" name="cnpj" type="text" placeholder="" class="form-control input-md" ng-model="cadastro.filtro.cnpj" ui-br-cnpj-mask>
                         <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.cnpj.$error.cnpj">
@@ -50,7 +50,7 @@
                 </div>
                 <!-- Text input-->
                 <div class="form-group" title="Cadastro de Pessoa Física" ng-hide="cadastro.filtro.tipoPessoa.length === 1 && cadastro.filtro.tipoPessoa.indexOf('PJ') >= 0">
-                    <label class="col-md-4 control-label" for="cpf">CPF</label> 
+                    <label class="col-md-4 control-label" for="cpf">CPF</label>
                     <div class="col-md-3">
                         <input id="cpf" name="cpf" type="text" placeholder="" class="form-control input-md" ng-model="cadastro.filtro.cpf" ui-br-cpf-mask>
                         <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.cpf.$error.cpf">
@@ -440,7 +440,6 @@
                         Campo Obrigatório
                     </div>
                 </div>
-
             </fieldset>
         </form>
     </div>

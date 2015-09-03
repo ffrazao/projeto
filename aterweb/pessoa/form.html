@@ -2,7 +2,8 @@
     <div class="panel-heading"><h4>{{nomeFormulario}}</h4></div>
     <div class="panel-body">
         <form name="frm.formulario" novalidate>
-            <fieldset ng-disabled="['INCLUINDO', 'EDITANDO'].indexOf(navegador.estadoAtual()) < 0">
+            <!--<fieldset ng-disabled="['INCLUINDO', 'EDITANDO'].indexOf(navegador.estadoAtual()) < 0">-->
+            <fieldset>
                 <input type="hidden" ng-model="cadastro.registro.id" />
                 <div class="row">
                     <div class="col-md-2">
@@ -36,7 +37,7 @@
                             </div>
                             <div class="form-group col-md-3">
                                 <label class="control-label">Apelido</label>
-                                <input class="form-control" type="text" /> 
+                                <input class="form-control" type="text" />
                             </div>
                         </div>
                         <div class="row">
@@ -59,7 +60,6 @@
                                     Número inválido!
                                 </div>
                             </div>
-
                             <div class="form-group col-md-4" title="Cadastro Nacional de Pessoa Jurídica" ng-show="cadastro.registro.tipoPessoa === 'PJ'">
                                 <label class="control-label" for="cnpj">CNPJ</label>
                                 <input id="cnpj" name="cnpj" type="text" placeholder="" class="form-control input-md" ng-required="cadastro.registro.tipoPessoa === 'PJ'" ng-model="cadastro.registro.cnpj" ui-br-cnpj-mask>
@@ -72,17 +72,16 @@
                                     Número inválido!
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
                 <tabset>
-                    <tab ng-repeat="tab in tabs | filter: {'visivel': true}">
-                        <tab-heading>
-                            {{$index + 1}} {{tab.nome}} <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                        </tab-heading>
-                        <ng-include src="tab.include"/>
-                    </tab>
+                <tab ng-repeat="tab in tabs | filter: {'visivel': true}">
+                <tab-heading>
+                {{$index + 1}} {{tab.nome}} <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                </tab-heading>
+                <ng-include src="tab.include"/>
+                </tab>
                 </tabset>
                 <div class="row">
                     <div class="col-md-6">
