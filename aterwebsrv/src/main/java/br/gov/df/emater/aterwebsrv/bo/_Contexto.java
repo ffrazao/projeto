@@ -6,20 +6,20 @@ import java.util.Map;
 
 import org.apache.commons.chain.impl.ContextBase;
 
-@SuppressWarnings({ "rawtypes", "unchecked" })
+@SuppressWarnings({ "rawtypes" })
 public class _Contexto extends ContextBase {
-
-	private static final String ACAO = "acao";
-
-	private static final String ERRO = "erro";
-
-	private static final String REQUISICAO = "requisicao";
-
-	private static final String RESPOSTA = "resposta";
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String USUARIO = "usuario";
+	private String acao;
+
+	private Object erro;
+
+	private Object requisicao;
+
+	private Object resposta;
+
+	public Principal usuario;
 
 	public _Contexto(Principal usuario, String acao) {
 		this(usuario, acao, (Map) null);
@@ -38,43 +38,43 @@ public class _Contexto extends ContextBase {
 	}
 
 	public String getAcao() {
-		return (String) super.get(ACAO);
+		return this.acao;
 	}
 
 	public Object getErro() {
-		return super.get(ERRO);
+		return this.erro;
 	}
 
 	public Object getRequisicao() {
-		return super.get(REQUISICAO);
+		return requisicao;
 	}
 
 	public Object getResposta() {
-		return super.get(RESPOSTA);
+		return resposta;
 	}
 
 	public Principal getUsuario() {
-		return (Principal) super.get(USUARIO);
+		return usuario;
 	}
 
-	public void setAcao(String erro) {
-		super.putIfAbsent(ACAO, erro);
+	public void setAcao(String acao) {
+		this.acao = acao;
 	}
 
 	public void setErro(Object erro) {
-		super.putIfAbsent(ERRO, erro);
+		this.erro = erro;
 	}
 
 	public void setRequisicao(Object requisicao) {
-		super.putIfAbsent(REQUISICAO, requisicao);
+		this.requisicao = requisicao;
 	}
 
 	public void setResposta(Object resposta) {
-		super.putIfAbsent(RESPOSTA, resposta);
+		this.resposta = resposta;
 	}
 
-	public void setUsuario(Principal erro) {
-		super.putIfAbsent(USUARIO, erro);
+	public void setUsuario(Principal usuario) {
+		this.usuario = usuario;
 	}
 
 }

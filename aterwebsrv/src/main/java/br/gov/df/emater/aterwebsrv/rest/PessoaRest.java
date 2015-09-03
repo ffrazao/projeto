@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
+import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.PessoaCadFiltroDto;
 
 @RestController
@@ -23,7 +24,8 @@ public class PessoaRest {
 	@RequestMapping("/filtro-novo")
 	public Resposta filtroNovo(Principal usuario) {
 		try {
-			return new Resposta(facadeBo.pessoaFiltroNovo(usuario));
+			return new Resposta(facadeBo.pessoaFiltroNovo(usuario).values());
+//			return new Resposta("Teste");
 		} catch (Exception e) {
 			return new Resposta(e);
 		}
