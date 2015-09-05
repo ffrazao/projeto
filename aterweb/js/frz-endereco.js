@@ -77,7 +77,7 @@
 
                 // funcao generica para captacao das tabelas de apoio do endereco 
                 scope.getDominio = function(entidade, nomePrimaryKey, valorPrimaryKey, lista) {
-                  return;
+                  if (1===1) {return;}
                   lista.splice(0, lista.length);
                   return $http.get(dominio, {
                     params : {
