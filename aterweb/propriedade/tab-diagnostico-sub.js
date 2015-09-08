@@ -4,8 +4,8 @@
 
 
 angular.module(pNmModulo).controller(pNmController,
-    ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr', 'utilSrv',
-    function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, utilSrv) {
+    ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr', 'utilSrv', 'mensagemSrv',
+    function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, utilSrv, mensagemSrv) {
 
     // inicializacao
     var init = function() {
@@ -28,6 +28,13 @@ angular.module(pNmModulo).controller(pNmController,
     // inicio das operaçoes atribuidas ao navagador
     $scope.abrir = function() { $scope.DiagnosticoNvg.mudarEstado('ESPECIAL'); };
 
+    $scope.editar = function() {  $scope.incluir(); };
+
+    $scope.incluir = function() {
+        $scope.abreModal(  { arquivo: 'tab-diagnostico-sub-modal.html', descricao: 'Diagnóstico', tamanho :800,  dados: $scope.DiagnosticoNvg.selecao.item } );
+    };
+
+
     $scope.agir = function() {};
     $scope.ajudar = function() {};
     $scope.alterarTamanhoPagina = function() {};
@@ -47,16 +54,6 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.folhearPrimeiro = function() {};
     $scope.folhearProximo = function() {};
     $scope.folhearUltimo = function() {};
-
-    $scope.editar = function() {  $scope.incluir(); };
-
-    $scope.incluir = function() {
-        var tmp = $scope.DiagnosticoNvg.selecao.item;
-        var item = { arquivo: 'tab-diagnostico-sub-modal.html', descricao: 'Diagnóstico', tamanho :800,
-                     dados: tmp
-                    };
-        $scope.abreModal(item);
-    };
 
     $scope.informacao = function() {};
     $scope.limpar = function() {};

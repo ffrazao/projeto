@@ -188,13 +188,13 @@ angular.module(pNmModulo).controller(pNmController,
 
 
     // Inicio Trabalho com tabs
-       $scope.tab=[{nome:'Principal',url:'propriedade/tab-principal.html' },
-                   {nome:'Diagonóstico',url:'propriedade/tab-diagnostico.html', def:'true'}, 
+       $scope.tab=[{nome:'Principal',url:'propriedade/tab-principal.html' , def:'true'},
+                   {nome:'Diagonóstico',url:'propriedade/tab-diagnostico.html'}, 
                    {nome:'Registro IPA',url:'propriedade/tab-ipa.html'}, 
                    {nome:'Resultados',url:'propriedade/tab-resultado.html'}, 
                    {nome:'Pendências',url:'propriedade/tab-pendencia.html'}, 
                    {nome:'Arquivos',url:'propriedade/tab-arquivo.html'}, 
-                   {nome:'Complementos',url:'propriedade/tab-complemento.html'}, 
+//                   {nome:'Complementos',url:'propriedade/tab-complemento.html'}, 
                   ];
     // Fim Trabalho com tabs
 

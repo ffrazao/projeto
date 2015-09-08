@@ -49,13 +49,13 @@
       <thead>
         <tr>
           <th><frz-seletor ng-show="false" ng-model="DiagnosticoBenfeitoriaNvg"></frz-seletor></th>        
-          <th>Especificação</th>
-          <th>Característica</th>
-          <th>Unidade</th>
-          <th>Quantidade</th>
-          <th>Valor Unitário</th>
-          <th>Valor Total</th>
-          <th>Dt. Última Atualização</th>
+          <th class="text-center col-md-3">Especificação</th>
+          <th class="text-center col-md-3">Característica</th>
+          <th class="text-center col-md-1">Unidade</th>
+          <th class="text-center col-md-1">Quantidade</th>
+          <th class="text-center col-md-1">Valor Unitário</th>
+          <th class="text-center col-md-1">Valor Total</th>
+          <th class="text-center col-md-2">Dt. Última Atualização</th>
         </tr>
       </thead>
       <tbody>
@@ -66,7 +66,7 @@
           </td>
           <td class="">{{item.nome}}</td>
           <td class="">{{item.descricao}}</td>
-          <td class="">{{item.unidade}}</td>
+          <td class="text-center">{{item.unidade}}</td>
           <td class="text-right">{{item.area}}</td>
           <td class="text-right">{{item.valor|currency}}</td>
           <td class="text-right">{{(item.area*item.valor)|currency}}</td>
