@@ -5,11 +5,13 @@ import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
@@ -34,7 +36,24 @@ public class _SegurancaConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		// trocar a linha a seguir
-		http.authorizeRequests().anyRequest().access("permitAll").and().csrf().csrfTokenRepository(csrfTokenRepository()).and().addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
+//		http.authorizeRequests().anyRequest().access("permitAll").and().csrf().csrfTokenRepository(csrfTokenRepository()).and().addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
+		
+		//http.authorizeRequests().anyRequest().access("permitAll").and().csrf().csrfTokenRepository(csrfTokenRepository()).and().addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
+		
+	    /*http
+	      .csrf()
+	      	.disable()
+	      .authorizeRequests()
+	        .antMatchers("/pessoa/**").authenticated()
+	        .anyRequest().permitAll()
+	        .and()
+	      .formLogin()
+            .loginPage("/login").permitAll()
+            .and()
+          .logout()                                    
+            .permitAll().and()
+	      .sessionManagement()
+	      .sessionCreationPolicy(SessionCreationPolicy.STATELESS);*/
 	}
 
 	@Override
