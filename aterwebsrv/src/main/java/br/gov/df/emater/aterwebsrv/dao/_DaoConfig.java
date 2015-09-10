@@ -1,8 +1,14 @@
 package br.gov.df.emater.aterwebsrv.dao;
 
+import javax.persistence.EntityManagerFactory;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.orm.jpa.EntityScan;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
@@ -10,11 +16,11 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EntityScan(basePackages = "br.gov.df.emater.aterwebsrv.modelo")
 @EnableTransactionManagement
 public class _DaoConfig {
-	
-	public _DaoConfig() {
-		System.out.println("novo _DaoConfig");
-	}
 
+	@Autowired
+	private EntityManagerFactory entityManagerFactory;
+
+	// TODO descomentar esta linha para o ambiente de produção
 	// @Bean(name = "dataSource")
 	// public DataSource dataSource() {
 	// JndiDataSourceLookup dsLookup = new JndiDataSourceLookup();
@@ -23,29 +29,19 @@ public class _DaoConfig {
 	// return dataSource;
 	// }
 
-	// @Bean
-	// public EntityManagerFactory entityManagerFactory() {
-	//
-	// HibernateJpaVendorAdapter vendorAdapter = new
-	// HibernateJpaVendorAdapter();
-	// vendorAdapter.setGenerateDdl(false);
-	//
-	// LocalContainerEntityManagerFactoryBean factory = new
-	// LocalContainerEntityManagerFactoryBean();
-	// factory.setJpaVendorAdapter(vendorAdapter);
-	// factory.setPackagesToScan("br.gov.df.emater.aterwebsrv.modelo");
-	// factory.setDataSource(dataSource());
-	// factory.afterPropertiesSet();
-	//
-	// return factory.getObject();
-	// }
+	public _DaoConfig() {
+		System.out.println("novo _DaoConfig");
+	}
 
-	// @Bean
-	// public PlatformTransactionManager transactionManager() {
-	//
-	// JpaTransactionManager txManager = new JpaTransactionManager();
-	// txManager.setEntityManagerFactory(entityManagerFactory());
-	// return txManager;
-	// }
+	public EntityManagerFactory getEntityManagerFactory() {
+		return entityManagerFactory;
+	}
+
+	@Bean
+	public PlatformTransactionManager transactionManager() {
+		JpaTransactionManager txManager = new JpaTransactionManager();
+		txManager.setEntityManagerFactory(this.entityManagerFactory);
+		return txManager;
+	}
 
 }
