@@ -12,20 +12,24 @@ import br.gov.df.emater.aterwebsrv.modelo.dto.PessoaCadFiltroDto;
 @RestController
 @RequestMapping("/pessoa")
 public class PessoaRest {
-	
+
 	public PessoaRest() {
 		System.out.println("novo PessoaRest");
 	}
 
 	@Autowired
 	private FacadeBo facadeBo;
-	
+
 	@RequestMapping("/filtro-novo")
 	public Resposta filtroNovo(Principal usuario) {
 		try {
 			return new Resposta(facadeBo.pessoaFiltroNovo(usuario).values());
-//			return new Resposta("Teste");
 		} catch (Exception e) {
+			try {
+				facadeBo.rollBack();
+			} catch (Exception e2) {
+				return new Resposta(e2);
+			}
 			return new Resposta(e);
 		}
 	}
@@ -35,6 +39,11 @@ public class PessoaRest {
 		try {
 			return new Resposta(facadeBo.pessoaFiltroExecutar(usuario, filtro));
 		} catch (Exception e) {
+			try {
+				facadeBo.rollBack();
+			} catch (Exception e2) {
+				return new Resposta(e2);
+			}
 			return new Resposta(e);
 		}
 	}

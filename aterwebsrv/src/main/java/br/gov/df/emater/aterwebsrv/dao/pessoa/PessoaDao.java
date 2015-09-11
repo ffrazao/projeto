@@ -9,5 +9,7 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 @Repository
 @Qualifier(value = "pessoaDao")
 public interface PessoaDao extends JpaRepository<Pessoa, Integer> {
+	
+	Pessoa findByNome( String nome );
 
 }
