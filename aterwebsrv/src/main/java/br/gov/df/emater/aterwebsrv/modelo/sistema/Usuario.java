@@ -1,6 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.sistema;
 
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -27,6 +28,8 @@ import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Store;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
@@ -49,9 +52,21 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @Entity
 @Table(name = "usuario", schema = EntidadeBase.SISTEMA_SCHEMA)
 @Indexed
-public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, UserDetails {
 
 	private static final long serialVersionUID = 1L;
+	
+	public long getExpires() {
+		return expires;
+	}
+
+	@Transient
+	private long expires;
+	
+	public void setExpires(long expires) {
+		this.expires = expires;
+	}
+
 
 	@Column(name = "acesso_expira_em")
 	@Temporal(TemporalType.DATE)
@@ -94,14 +109,14 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer> {
 	@Transient
 	private String sessaoNumeroIp;
 
-	@OneToMany(mappedBy = "usuario", targetEntity = UsuarioModulo.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<UsuarioModulo> usuarioModuloList;
+//	@OneToMany(mappedBy = "usuario", targetEntity = UsuarioModulo.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+//	private List<UsuarioModulo> usuarioModuloList;
 
-	@OneToMany(mappedBy = "usuario", targetEntity = UsuarioPerfil.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<UsuarioPerfil> usuarioPerfilList;
+//	@OneToMany(mappedBy = "usuario", targetEntity = UsuarioPerfil.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+//	private List<UsuarioPerfil> usuarioPerfilList;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "status_conta")
+	@Column(name = "situacao")
 	@NotNull
 	private UsuarioStatusConta usuarioStatusConta;
 
@@ -203,13 +218,13 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return sessaoNumeroIp;
 	}
 
-	public List<UsuarioModulo> getUsuarioModuloList() {
-		return usuarioModuloList;
-	}
+//	public List<UsuarioModulo> getUsuarioModuloList() {
+//		return usuarioModuloList;
+//	}
 
-	public List<UsuarioPerfil> getUsuarioPerfilList() {
-		return usuarioPerfilList;
-	}
+//	public List<UsuarioPerfil> getUsuarioPerfilList() {
+//		return usuarioPerfilList;
+//	}
 
 	public UsuarioStatusConta getUsuarioStatusConta() {
 		return usuarioStatusConta;
@@ -265,13 +280,13 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.sessaoNumeroIp = sessaoNumeroIp;
 	}
 
-	public void setUsuarioModuloList(List<UsuarioModulo> usuarioModuloList) {
-		this.usuarioModuloList = usuarioModuloList;
-	}
+//	public void setUsuarioModuloList(List<UsuarioModulo> usuarioModuloList) {
+//		this.usuarioModuloList = usuarioModuloList;
+//	}
 
-	public void setUsuarioPerfilList(List<UsuarioPerfil> usuarioPerfilList) {
-		this.usuarioPerfilList = usuarioPerfilList;
-	}
+//	public void setUsuarioPerfilList(List<UsuarioPerfil> usuarioPerfilList) {
+//		this.usuarioPerfilList = usuarioPerfilList;
+//	}
 
 	public void setUsuarioStatusConta(UsuarioStatusConta usuarioStatusConta) {
 		this.usuarioStatusConta = usuarioStatusConta;
@@ -282,6 +297,48 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return (pessoa == null ? this.nomeUsuario
 				: (pessoa.getApelidoSigla() == null ? pessoa.getNome() : pessoa
 						.getApelidoSigla()));
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getPassword() {
+		// TODO Auto-generated method stub
+		return this.senha;
+	}
+
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return this.nomeUsuario;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return true;
 	}
 
 }

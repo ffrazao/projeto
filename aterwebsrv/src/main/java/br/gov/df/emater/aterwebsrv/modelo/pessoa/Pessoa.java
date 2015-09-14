@@ -60,9 +60,9 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	@Field(index = Index.YES, store = Store.YES)
 	private String apelidoSigla;
 
-	@OneToMany(mappedBy = "pessoa")
-	@IndexedEmbedded
-	private List<PessoaArquivo> arquivoList;
+//	@OneToMany(mappedBy = "pessoa")
+//	@IndexedEmbedded
+//	private List<PessoaArquivo> arquivoList;
 
 	@Transient
 	private String fotoPerfil;
@@ -79,20 +79,20 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	@Field(index = Index.YES, store = Store.YES)
 	private String observacoes;
 
-	@OneToMany(mappedBy = "pessoa")
-	@IndexedEmbedded
-	private List<PessoaMeioContato> pessoaMeioContatos;
+//	@OneToMany(mappedBy = "pessoa")
+//	@IndexedEmbedded
+//	private List<PessoaMeioContato> pessoaMeioContatos;
 
-	@OneToMany(mappedBy = "pessoa")
-	@IndexedEmbedded
-	private List<PessoaRelacionamento> pessoaRelacionamentos;
+//	@OneToMany(mappedBy = "pessoa")
+//	@IndexedEmbedded
+//	private List<PessoaRelacionamento> pessoaRelacionamentos;
 
 	@Column(name = "pessoa_tipo")
 	@Enumerated(EnumType.STRING)
 	private PessoaTipo pessoaTipo;
 
-	@OneToOne(mappedBy = "pessoa", fetch = FetchType.LAZY)
-	private PublicoAlvo publicoAlvo;
+//	@OneToOne(mappedBy = "pessoa", fetch = FetchType.LAZY)
+//	private PublicoAlvo publicoAlvo;
 
 	@Column(name = "publico_alvo")
 	@Enumerated(EnumType.STRING)
@@ -110,8 +110,8 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	@JsonDeserialize(using = JsonDeserializerData.class)
 	private Calendar situacaoData;
 
-	@OneToOne(mappedBy = "pessoa", fetch = FetchType.LAZY)
-	private Usuario usuario;
+//	@OneToOne(mappedBy = "pessoa", fetch = FetchType.LAZY)
+//	private Usuario usuario;
 
 	public Pessoa() {
 	}
@@ -130,9 +130,9 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		return apelidoSigla;
 	}
 
-	public List<PessoaArquivo> getArquivoList() {
-		return arquivoList;
-	}
+//	public List<PessoaArquivo> getArquivoList() {
+//		return arquivoList;
+//	}
 
 	public String getFotoPerfil() {
 		return this.fotoPerfil;
@@ -151,21 +151,21 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		return observacoes;
 	}
 
-	public List<PessoaMeioContato> getPessoaMeioContatos() {
-		return pessoaMeioContatos;
-	}
-
-	public List<PessoaRelacionamento> getPessoaRelacionamentos() {
-		return pessoaRelacionamentos;
-	}
+//	public List<PessoaMeioContato> getPessoaMeioContatos() {
+//		return pessoaMeioContatos;
+//	}
+//
+//	public List<PessoaRelacionamento> getPessoaRelacionamentos() {
+//		return pessoaRelacionamentos;
+//	}
 
 	public PessoaTipo getPessoaTipo() {
 		return pessoaTipo;
 	}
 
-	public PublicoAlvo getPublicoAlvo() {
-		return publicoAlvo;
-	}
+//	public PublicoAlvo getPublicoAlvo() {
+//		return publicoAlvo;
+//	}
 
 	public Confirmacao getPublicoAlvoConfirmacao() {
 		return publicoAlvoConfirmacao;
@@ -179,17 +179,17 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		return situacaoData;
 	}
 
-	public Usuario getUsuario() {
-		return usuario;
-	}
+//	public Usuario getUsuario() {
+//		return usuario;
+//	}
 
 	public void setApelidoSigla(String apelidoSigla) {
 		this.apelidoSigla = apelidoSigla;
 	}
 
-	public void setArquivoList(List<PessoaArquivo> arquivoList) {
-		this.arquivoList = arquivoList;
-	}
+//	public void setArquivoList(List<PessoaArquivo> arquivoList) {
+//		this.arquivoList = arquivoList;
+//	}
 
 	public void setFotoPerfil(String fotoPerfil) {
 		this.fotoPerfil = fotoPerfil;
@@ -208,21 +208,21 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		this.observacoes = observacoes;
 	}
 
-	public void setPessoaMeioContatos(List<PessoaMeioContato> pessoaMeioContatos) {
-		this.pessoaMeioContatos = pessoaMeioContatos;
-	}
-
-	public void setPessoaRelacionamentos(List<PessoaRelacionamento> pessoaRelacionamentos) {
-		this.pessoaRelacionamentos = pessoaRelacionamentos;
-	}
+//	public void setPessoaMeioContatos(List<PessoaMeioContato> pessoaMeioContatos) {
+//		this.pessoaMeioContatos = pessoaMeioContatos;
+//	}
+//
+//	public void setPessoaRelacionamentos(List<PessoaRelacionamento> pessoaRelacionamentos) {
+//		this.pessoaRelacionamentos = pessoaRelacionamentos;
+//	}
 
 	public void setPessoaTipo(PessoaTipo pessoaTipo) {
 		this.pessoaTipo = pessoaTipo;
 	}
 
-	public void setPublicoAlvo(PublicoAlvo publicoAlvo) {
-		this.publicoAlvo = publicoAlvo;
-	}
+//	public void setPublicoAlvo(PublicoAlvo publicoAlvo) {
+//		this.publicoAlvo = publicoAlvo;
+//	}
 
 	public void setPublicoAlvoConfirmacao(Confirmacao publicoAlvoConfirmacao) {
 		this.publicoAlvoConfirmacao = publicoAlvoConfirmacao;
@@ -236,8 +236,8 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		this.situacaoData = situacaoData;
 	}
 
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
+//	public void setUsuario(Usuario usuario) {
+//		this.usuario = usuario;
+//	}
 
 }
