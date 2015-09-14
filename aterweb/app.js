@@ -14,10 +14,48 @@ angular.module(pNmModulo).factory('modalCadastro', function () {
   return null;
 });
 // fim: codigo para habilitar o modal recursivo
+// inicio: modulo de autenticação
+angular.module(pNmModulo).factory('TokenStorage', function() {
+    var storageKey = 'auth_token';
+    return {        
+        store : function(token) {
+            return localStorage.setItem(storageKey, token);
+        },
+        retrieve : function() {
+            return localStorage.getItem(storageKey);
+        },
+        clear : function() {
+            return localStorage.removeItem(storageKey);
+        }
+    };
+});
+angular.module(pNmModulo).factory('TokenAuthInterceptor', function($q, TokenStorage) {
+    return {
+        request: function(config) {
+            var authToken = TokenStorage.retrieve();
+            if (authToken) {
+                config.headers['X-Auth-Token'] = authToken;
+            }
+            return config;
+        },
+        responseError: function(error) {
+            if (error.status === 401 || error.status === 403) {
+                TokenStorage.clear();
+            }
+            return $q.reject(error);
+        }
+    };
+});
+// fim: modulo de autenticação
 
 angular.module(pNmModulo).config(['$stateProvider', '$urlRouterProvider', 'toastrConfig', '$locationProvider',
-    'uiGmapGoogleMapApiProvider',
-  function($stateProvider, $urlRouterProvider, toastrConfig, $locationProvider, GoogleMapApiProviders) {
+    'uiGmapGoogleMapApiProvider', '$httpProvider',
+  function($stateProvider, $urlRouterProvider, toastrConfig, $locationProvider, GoogleMapApiProviders, $httpProvider) {
+
+    // inicio: modulo de autenticação
+    // captar os dados do usuario logado
+    $httpProvider.interceptors.push('TokenAuthInterceptor');
+    // inicio: modulo de autenticação
 
     //$locationProvider.html5Mode(true);
     $stateProvider.state('p', {templateUrl: 'casa/principal.html'});
@@ -400,6 +438,39 @@ angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'to
 
 
     // fim funcoes crud
+}]);
+
+angular.module(pNmModulo).controller('AuthCtrl', ['$scope', '$http', 'TokenStorage', function ($scope, $http, TokenStorage) {
+    $scope.authenticated = false;
+    $scope.token = null; // For display purposes only
+    
+    $scope.init = function () {
+        $http.get('http://localhost:8080/api/users/current').success(function (user) {
+            if(user && user.username !== 'anonymousUser'){
+                $scope.authenticated = true;
+                $scope.username = user.username;
+                
+                // For display purposes only
+                $scope.token = JSON.parse(atob(TokenStorage.retrieve().split('.')[0]));
+            }
+        });
+    };
+
+    $scope.login = function () {
+        $http.post('http://localhost:8080/api/login', { username: $scope.username, password: $scope.password }).success(function (result, status, headers) {
+            $scope.authenticated = true;
+            TokenStorage.store(headers('X-Auth-Token'));
+            
+            // For display purposes only
+            $scope.token = JSON.parse(atob(TokenStorage.retrieve().split('.')[0]));
+        });  
+    };
+
+    $scope.logout = function () {
+        // Just clear the local storage
+        TokenStorage.clear();   
+        $scope.authenticated = false;
+    };
 }]);
 
 })('principal', null, 'Módulo Principal do Sistema');

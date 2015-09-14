@@ -3,8 +3,8 @@
   'use strict';
 
 angular.module(pNmModulo).controller(pNmController,
-      ['$scope', '$location', '$modal', 'toastr', '$state', '$http',
-    function ($scope, $location, $modal, toastr, $state, $http) {
+      ['$scope', '$location', '$modal', 'toastr', '$state', '$http', 'TokenStorage',
+    function ($scope, $location, $modal, toastr, $state, $http, TokenStorage) {
     $scope.iniciar = function() {
       $scope.registroOrig = $location.search();
       $scope.reiniciar();
@@ -28,11 +28,14 @@ angular.module(pNmModulo).controller(pNmController,
       //$scope.mensagens.push({ tipo: 'danger', texto: 'Verifique os campos marcados' });
       return;
     }
-    $scope.renoveSuaSenha();
-    // $http.get("http://localhost:8080/login").success(function(data) {
-    //   console.log('OK');
-    // });
-
+    //$scope.renoveSuaSenha();
+    $http.post('http://localhost:8080/api/login', { nomeUsuario: $scope.registro.usuario, senha: $scope.registro.senha }).success(function (result, status, headers) {
+        $scope.authenticated = true;
+        TokenStorage.store(headers('X-Auth-Token'));
+        
+        // For display purposes only
+        $scope.token = JSON.parse(atob(TokenStorage.retrieve().split('.')[0]));
+    });
 };
 
 $scope.mensagens = [
