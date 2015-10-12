@@ -1,24 +1,18 @@
 package br.gov.df.emater.aterwebsrv.modelo.sistema;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
@@ -27,23 +21,14 @@ import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Store;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.UsuarioStatusConta;
-import br.gov.df.emater.aterwebsrv.modelo.funcional.EmpregoVi;
-import br.gov.df.emater.aterwebsrv.modelo.funcional.LotacaoVi;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
-import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
-import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerTimestamp;
-import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
-import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerTimestamp;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * Classe persistente dos usuarios do sistema.
@@ -55,65 +40,35 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, UserDetails {
 
 	private static final long serialVersionUID = 1L;
-	
-	public long getExpires() {
-		return expires;
-	}
 
 	@Transient
-	private long expires;
-	
-	public void setExpires(long expires) {
-		this.expires = expires;
-	}
-
+	private Collection<? extends GrantedAuthority> authorities;
 
 	@Column(name = "acesso_expira_em")
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	@JsonSerialize(using = JsonSerializerData.class)
-	@JsonDeserialize(using = JsonDeserializerData.class)
-	private Calendar acessoExpiraEm;
-
-	@Transient
-	private List<EmpregoVi> empregoList;
+	private Long expires;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
 	@Transient
-	private List<LotacaoVi> lotacaoList;
+	private String modulo;
 
-	@Column(name = "nome_usuario")
-	@NotEmpty
-	@Field(index = Index.YES, store = Store.YES)
-	private String nomeUsuario;
+	@Transient
+	private String newPassword;
+
+	@Column(name = "senha")
+	private String password;
 
 	@OneToOne
 	@JoinColumn(name = "pessoa_id")
 	@NotNull
 	private Pessoa pessoa;
 
-	private String senha;
-
-	@Transient
-	private String sessaoId;
-
-	@Transient
-	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss:SSS")
-	@JsonSerialize(using = JsonSerializerTimestamp.class)
-	@JsonDeserialize(using = JsonDeserializerTimestamp.class)
-	private Calendar sessaoInicio;
-
-	@Transient
-	private String sessaoNumeroIp;
-
-//	@OneToMany(mappedBy = "usuario", targetEntity = UsuarioModulo.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-//	private List<UsuarioModulo> usuarioModuloList;
-
-//	@OneToMany(mappedBy = "usuario", targetEntity = UsuarioPerfil.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-//	private List<UsuarioPerfil> usuarioPerfilList;
+	@Column(name = "nome_usuario")
+	@NotEmpty
+	@Field(index = Index.YES, store = Store.YES)
+	private String username;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "situacao")
@@ -123,41 +78,8 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 	public Usuario() {
 	}
 
-	public Usuario(Integer id) {
-		super(id);
-	}
-
-	public Usuario(Integer id, String nomeUsuario) {
-		this(id);
-		setNomeUsuario(nomeUsuario);
-	}
-
-	public Usuario(String nomeUsuario) {
-		this();
-		setNomeUsuario(nomeUsuario);
-	}
-
-	public Usuario(String nomeUsuario, String senha) {
-		this(nomeUsuario);
-		setSenha(senha);
-	}
-
-	public Usuario(Integer id, String nomeUsuario, Pessoa pessoa) {
-		this(id, nomeUsuario);
-		setPessoa(pessoa);
-	}
-	
-	public Usuario simplificar() {
-		try {
-			Pessoa p = this.getPessoa().getClass().newInstance();
-			p.setId(this.getPessoa().getId());
-			p.setNome(this.getPessoa().getNome());
-			p.setApelidoSigla(this.getPessoa().getApelidoSigla());
-			p.setPessoaTipo(this.getPessoa().getPessoaTipo());
-			return new Usuario(this.getId(), this.getNomeUsuario(), p);
-		} catch (Exception e) {
-		}
-		return null;
+	public Usuario(String name) {
+		setUsername(name);
 	}
 
 	@Override
@@ -169,20 +91,21 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 		if (getClass() != obj.getClass())
 			return false;
 		Usuario other = (Usuario) obj;
-		if (nomeUsuario == null) {
-			if (other.nomeUsuario != null)
+		if (username == null) {
+			if (other.username != null)
 				return false;
-		} else if (!nomeUsuario.equals(other.nomeUsuario))
+		} else if (!username.equals(other.username))
 			return false;
 		return true;
 	}
 
-	public Calendar getAcessoExpiraEm() {
-		return acessoExpiraEm;
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return authorities;
 	}
 
-	public List<EmpregoVi> getEmpregoList() {
-		return empregoList;
+	public Long getExpires() {
+		return expires;
 	}
 
 	@Override
@@ -190,41 +113,27 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 		return id;
 	}
 
-	public List<LotacaoVi> getLotacaoList() {
-		return lotacaoList;
+	public String getModulo() {
+		return modulo;
 	}
 
-	public String getNomeUsuario() {
-		return nomeUsuario;
+	public String getNewPassword() {
+		return newPassword;
+	}
+
+	@Override
+	public String getPassword() {
+		return password;
 	}
 
 	public Pessoa getPessoa() {
 		return pessoa;
 	}
 
-	public String getSenha() {
-		return senha;
+	@Override
+	public String getUsername() {
+		return username;
 	}
-
-	public String getSessaoId() {
-		return sessaoId;
-	}
-
-	public Calendar getSessaoInicio() {
-		return sessaoInicio;
-	}
-
-	public String getSessaoNumeroIp() {
-		return sessaoNumeroIp;
-	}
-
-//	public List<UsuarioModulo> getUsuarioModuloList() {
-//		return usuarioModuloList;
-//	}
-
-//	public List<UsuarioPerfil> getUsuarioPerfilList() {
-//		return usuarioPerfilList;
-//	}
 
 	public UsuarioStatusConta getUsuarioStatusConta() {
 		return usuarioStatusConta;
@@ -234,17 +143,40 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result
-				+ ((nomeUsuario == null) ? 0 : nomeUsuario.hashCode());
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
 
-	public void setAcessoExpiraEm(Calendar acessoExpiraEm) {
-		this.acessoExpiraEm = acessoExpiraEm;
+	@Override
+	@JsonIgnore
+	public boolean isAccountNonExpired() {
+		return isEnabled() && isCredentialsNonExpired();
 	}
 
-	public void setEmpregoList(List<EmpregoVi> empregoList) {
-		this.empregoList = empregoList;
+	@Override
+	@JsonIgnore
+	public boolean isAccountNonLocked() {
+		return Arrays.asList(UsuarioStatusConta.A, UsuarioStatusConta.R).contains(getUsuarioStatusConta());
+	}
+
+	@Override
+	@JsonIgnore
+	public boolean isCredentialsNonExpired() {
+		return getExpires() == null || getExpires() == 0 || Calendar.getInstance().getTimeInMillis() > getExpires();
+	}
+
+	@Override
+	@JsonIgnore
+	public boolean isEnabled() {
+		return UsuarioStatusConta.A.equals(getUsuarioStatusConta());
+	}
+
+	public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+		this.authorities = authorities;
+	}
+
+	public void setExpires(Long expires) {
+		this.expires = expires;
 	}
 
 	@Override
@@ -252,41 +184,33 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 		this.id = id;
 	}
 
-	public void setLotacaoList(List<LotacaoVi> lotacaoList) {
-		this.lotacaoList = lotacaoList;
+	public void setModulo(String modulo) {
+		this.modulo = modulo;
 	}
 
-	public void setNomeUsuario(String nomeUsuario) {
-		this.nomeUsuario = nomeUsuario;
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public void setPessoa(Pessoa pessoa) {
 		this.pessoa = pessoa;
 	}
 
-	public void setSenha(String senha) {
-		this.senha = senha;
+	// @OneToMany(mappedBy = "usuario", targetEntity = UsuarioModulo.class,
+	// fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	// private List<UsuarioModulo> usuarioModuloList;
+
+	// @OneToMany(mappedBy = "usuario", targetEntity = UsuarioPerfil.class,
+	// fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	// private List<UsuarioPerfil> usuarioPerfilList;
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
-
-	public void setSessaoId(String sessaoId) {
-		this.sessaoId = sessaoId;
-	}
-
-	public void setSessaoInicio(Calendar sessaoInicio) {
-		this.sessaoInicio = sessaoInicio;
-	}
-
-	public void setSessaoNumeroIp(String sessaoNumeroIp) {
-		this.sessaoNumeroIp = sessaoNumeroIp;
-	}
-
-//	public void setUsuarioModuloList(List<UsuarioModulo> usuarioModuloList) {
-//		this.usuarioModuloList = usuarioModuloList;
-//	}
-
-//	public void setUsuarioPerfilList(List<UsuarioPerfil> usuarioPerfilList) {
-//		this.usuarioPerfilList = usuarioPerfilList;
-//	}
 
 	public void setUsuarioStatusConta(UsuarioStatusConta usuarioStatusConta) {
 		this.usuarioStatusConta = usuarioStatusConta;
@@ -294,51 +218,6 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 
 	@Override
 	public String toString() {
-		return (pessoa == null ? this.nomeUsuario
-				: (pessoa.getApelidoSigla() == null ? pessoa.getNome() : pessoa
-						.getApelidoSigla()));
+		return (pessoa == null ? this.username : (pessoa.getApelidoSigla() == null ? pessoa.getNome() : pessoa.getApelidoSigla()));
 	}
-
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getPassword() {
-		// TODO Auto-generated method stub
-		return this.senha;
-	}
-
-	@Override
-	public String getUsername() {
-		// TODO Auto-generated method stub
-		return this.nomeUsuario;
-	}
-
-	@Override
-	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	@Override
-	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	@Override
-	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	@Override
-	public boolean isEnabled() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
 }

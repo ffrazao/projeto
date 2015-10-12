@@ -1,5 +1,8 @@
 package br.gov.df.emater.aterwebsrv.seguranca;
 
+import java.io.IOException;
+
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.DatatypeConverter;
@@ -14,8 +17,11 @@ import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 @Service
 public class TokenAuthenticationService {
 
-	private static final String AUTH_HEADER_NAME = "X-Auth-Token";
-	private static final long TEN_DAYS = 1000 * 60 * 60 * 24 * 1;
+	private static final String AUTH_HEADER_NAME = "X-AUTH-TOKEN";
+	private static final long TEN_DAYS = 1000 * 60 * 60 * 24 * 10;
+//	private static final long ONE_DAYS = 1000 * 60 * 60 * 24 * 1;
+//	private static final long ONE_HOUR = 1000 * 60 * 60 * 1;
+	private static final long EXPIRES_TIME = TEN_DAYS;
 
 	private final TokenHandler tokenHandler;
 
@@ -24,10 +30,20 @@ public class TokenAuthenticationService {
 		tokenHandler = new TokenHandler(DatatypeConverter.parseBase64Binary(secret));
 	}
 
-	public void addAuthentication(HttpServletResponse response, UserAuthentication authentication) {
+	public void addAuthentication(HttpServletResponse response, UserAuthentication authentication) throws IOException {
 		final Usuario user = authentication.getDetails();
-		user.setExpires(System.currentTimeMillis() + TEN_DAYS);
-		response.addHeader(AUTH_HEADER_NAME, tokenHandler.createTokenForUser(user));
+		user.setExpires(System.currentTimeMillis() + EXPIRES_TIME);
+		String token = tokenHandler.createTokenForUser(user);
+//		StringBuffer buf = new StringBuffer();
+//		for (int i = 0; i < 2; i++) {
+//			buf.append("0");
+//		}
+//		response.addHeader(AUTH_HEADER_NAME, buf.toString());
+		response.addHeader(AUTH_HEADER_NAME, token);
+		response.addCookie(new Cookie(AUTH_HEADER_NAME, token));
+		response.getWriter().print(token);
+		response.getWriter().flush();
+		response.flushBuffer();
 	}
 
 	public Authentication getAuthentication(HttpServletRequest request) {

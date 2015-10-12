@@ -31,3 +31,23 @@ dia 22/06/2015 reiniciei o projeto para comecar pelo Hibernate. Tudo apagado e u
 http://shruubi.com/2014/12/03/spring-boot-hibernate-and-spring-security-a-step-in-the-right-direction-for-java/
 
 para produzir o resultado
+
+Para Configurar SSL ver https://drissamri.be/blog/java/enable-https-in-spring-boot/
+
+keytool -genkey -alias emater -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore keystore.p12 -validity 3650
+
+Informe novamente a nova senha: emater
+Qual é o seu nome e o seu sobrenome?
+  [Unknown]:  EMATER DF
+Qual é o nome da sua unidade organizacional?
+  [Unknown]:  GETIN
+Qual é o nome da sua empresa?
+  [Unknown]:  EMATER
+Qual é o nome da sua Cidade ou Localidade?
+  [Unknown]:  Brasilia
+Qual é o nome do seu Estado ou Município?
+  [Unknown]:  DF
+Quais são as duas letras do código do país desta unidade?
+  [Unknown]:  BR
+CN=EMATER DF, OU=GETIN, O=EMATER, L=Brasilia, ST=DF, C=BR Está correto?
+  [não]:  s

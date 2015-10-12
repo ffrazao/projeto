@@ -9,7 +9,10 @@ import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 
 public class UserAuthentication implements Authentication {
 
+	private static final long serialVersionUID = 1L;
+
 	private final Usuario user;
+
 	private boolean authenticated = true;
 
 	public UserAuthentication(Usuario user) {
@@ -18,17 +21,17 @@ public class UserAuthentication implements Authentication {
 
 	@Override
 	public String getName() {
-		return user.getPessoa().getNome();
+		return user.getUsername();
 	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return null;//user.getAuthorities();
+		return user.getAuthorities();
 	}
 
 	@Override
 	public Object getCredentials() {
-		return user.getSenha();
+		return user.getPassword();
 	}
 
 	@Override
@@ -38,7 +41,7 @@ public class UserAuthentication implements Authentication {
 
 	@Override
 	public Object getPrincipal() {
-		return user.getNomeUsuario();
+		return user.getUsername();
 	}
 
 	@Override

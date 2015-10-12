@@ -8,6 +8,6 @@ import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 @Repository
 public interface UsuarioDao extends JpaRepository<Usuario, Integer> {
 
-	Usuario findByNomeUsuario(String nomeUsuario);
+	Usuario findByUsername(String nomeUsuario);
 
 }

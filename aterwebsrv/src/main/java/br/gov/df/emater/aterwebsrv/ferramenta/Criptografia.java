@@ -15,7 +15,7 @@ import org.springframework.util.DigestUtils;
 
 public final class Criptografia {
 
-	public static final synchronized String md5(String text) throws NoSuchAlgorithmException {
+	public static final synchronized String MD5(String text) throws NoSuchAlgorithmException {
 		MessageDigest messageDigest = MessageDigest.getInstance("MD5");
 		messageDigest.update(text.getBytes(), 0, text.length());
 		String result = new BigInteger(1, messageDigest.digest()).toString(16);
@@ -25,7 +25,7 @@ public final class Criptografia {
 		return result;
 	}
 
-	public static final synchronized String md5File(byte[] bytes) throws IOException {
+	public static final synchronized String MD5_FILE(byte[] bytes) throws IOException {
 		return DigestUtils.md5DigestAsHex(bytes);
 	}
 	
