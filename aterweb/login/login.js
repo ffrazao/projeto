@@ -29,13 +29,17 @@ angular.module(pNmModulo).controller(pNmController,
       return;
     }
     //$scope.renoveSuaSenha();
-    $http.post('http://localhost:8080/api/login', { nomeUsuario: $scope.registro.usuario, senha: $scope.registro.senha }).success(function (result, status, headers) {
-        $scope.authenticated = true;
-        TokenStorage.store(headers('X-Auth-Token'));
-        
-        // For display purposes only
-        $scope.token = JSON.parse(atob(TokenStorage.retrieve().split('.')[0]));
-    });
+    $http.post('https://localhost:8443/api/login', { "username": $scope.registro.username, "password": $scope.registro.password, "modulo": $scope.registro.modulo }).success(function (result, status, headers, config) {
+      $scope.authenticated = true;
+      var auth = result;//headers('X-AUTH-TOKEN');
+      if (auth === null) {
+        auth = $cookies.get('X-AUTH-TOKEN');
+      }
+      TokenStorage.store(auth);
+      
+      // For display purposes only
+      $scope.token = JSON.parse(atob(auth.split('.')[0]));
+    }); 
 };
 
 $scope.mensagens = [

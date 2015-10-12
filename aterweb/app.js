@@ -3,7 +3,7 @@
 'use strict';
 
 angular.module(pNmModulo, ['ui.bootstrap', 'ui.utils', 'ui.router', 'ngSanitize', 'ngAnimate', 'toastr', 'sticky',
-  'ui.mask', 'ui.utils.masks', 'ui.navbar', 'frz.arquivo', 'frz.endereco', 'frz.painel.vidro', 'frz.navegador',
+  'ui.mask', 'ui.utils.masks', 'ui.navbar', 'ngCookies', 'frz.arquivo', 'frz.endereco', 'frz.painel.vidro', 'frz.navegador',
   'casa', 'contrato', 'pessoa', 'propriedade','uiGmapgoogle-maps']);
 
 // inicio: codigo para habilitar o modal recursivo
@@ -15,26 +15,41 @@ angular.module(pNmModulo).factory('modalCadastro', function () {
 });
 // fim: codigo para habilitar o modal recursivo
 // inicio: modulo de autenticação
-angular.module(pNmModulo).factory('TokenStorage', function() {
+angular.module(pNmModulo).factory('TokenStorage', function($cookieStore) {
     var storageKey = 'auth_token';
-    return {        
-        store : function(token) {
-            return localStorage.setItem(storageKey, token);
-        },
-        retrieve : function() {
-            return localStorage.getItem(storageKey);
-        },
-        clear : function() {
-            return localStorage.removeItem(storageKey);
-        }
-    };
+    if (!localStorage) {
+        return {
+            store : function(token) {
+                return localStorage.setItem(storageKey, token);
+            },
+            retrieve : function() {
+                return localStorage.getItem(storageKey);
+            },
+            clear : function() {
+                return localStorage.removeItem(storageKey);
+            }
+        };      
+    } else {
+        return {
+            store : function(token) {
+                return $cookieStore.put(storageKey, token);
+            },
+            retrieve : function() {
+                return $cookieStore.get(storageKey);
+            },
+            clear : function() {
+                return $cookieStore.remove(storageKey);
+            }
+        };      
+    }
 });
 angular.module(pNmModulo).factory('TokenAuthInterceptor', function($q, TokenStorage) {
     return {
         request: function(config) {
             var authToken = TokenStorage.retrieve();
             if (authToken) {
-                config.headers['X-Auth-Token'] = authToken;
+                config.headers['X-AUTH-TOKEN'] = authToken;
+                config.headers["X-Requested-With"] = 'XMLHttpRequest';
             }
             return config;
         },
@@ -445,8 +460,8 @@ angular.module(pNmModulo).controller('AuthCtrl', ['$scope', '$http', 'TokenStora
     $scope.token = null; // For display purposes only
     
     $scope.init = function () {
-        $http.get('http://localhost:8080/api/users/current').success(function (user) {
-            if(user && user.username !== 'anonymousUser'){
+        $http.get('https://localhost:8443/api/users/current').success(function (user) {
+            if(user.username !== 'anonymousUser'){
                 $scope.authenticated = true;
                 $scope.username = user.username;
                 
@@ -455,17 +470,6 @@ angular.module(pNmModulo).controller('AuthCtrl', ['$scope', '$http', 'TokenStora
             }
         });
     };
-
-    $scope.login = function () {
-        $http.post('http://localhost:8080/api/login', { username: $scope.username, password: $scope.password }).success(function (result, status, headers) {
-            $scope.authenticated = true;
-            TokenStorage.store(headers('X-Auth-Token'));
-            
-            // For display purposes only
-            $scope.token = JSON.parse(atob(TokenStorage.retrieve().split('.')[0]));
-        });  
-    };
-
     $scope.logout = function () {
         // Just clear the local storage
         TokenStorage.clear();   

@@ -10,11 +10,11 @@
 
 			<!-- Text input-->
 			<div class="form-group">
-				<label class="col-xs-4 control-label" for="usuario" title="Nome do Usuário do Sistema" accesskey="U"><u>U</u>suário *</label>  
+				<label class="col-xs-4 control-label" for="username" title="Nome do Usuário do Sistema" accesskey="U"><u>U</u>suário *</label>  
 				<div class="col-xs-6">
-					<input id="usuario" name="usuario" type="text" placeholder="Nome do Usuário" class="form-control input-md" autofocus ng-model="registro.usuario" required="true">
-					<div ng-show="($parent.loginForm.usuario.$dirty || submitted) && $parent.loginForm.usuario.$invalid">
-						<div class="label label-danger" ng-show="$parent.loginForm.usuario.$error.required">
+					<input id="username" name="username" type="text" placeholder="Nome do Usuário" class="form-control input-md" autofocus ng-model="registro.username" required="true">
+					<div ng-show="($parent.loginForm.username.$dirty || submitted) && $parent.loginForm.username.$invalid">
+						<div class="label label-danger" ng-show="$parent.loginForm.username.$error.required">
 							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
 							Campo Obrigatório
 						</div>
@@ -24,11 +24,11 @@
 
 			<!-- Password input-->
 			<div class="form-group">
-				<label class="col-xs-4 control-label" for="senha" title="Senha de Acesso ao Sistema" accesskey="S"><u>S</u>enha *</label>
+				<label class="col-xs-4 control-label" for="password" title="Senha de Acesso ao Sistema" accesskey="S"><u>S</u>enha *</label>
 				<div class="col-xs-6">
-					<input id="senha" name="senha" type="password" placeholder="Senha de Acesso" class="form-control input-md" ng-model="registro.senha" required="true">
-					<div ng-show="($parent.loginForm.senha.$dirty || submitted) && $parent.loginForm.senha.$invalid">
-						<div class="label label-danger" ng-show="$parent.loginForm.senha.$error.required">
+					<input id="password" name="password" type="password" placeholder="Senha de Acesso" class="form-control input-md" ng-model="registro.password" required="true">
+					<div ng-show="($parent.loginForm.password.$dirty || submitted) && $parent.loginForm.password.$invalid">
+						<div class="label label-danger" ng-show="$parent.loginForm.password.$error.required">
 							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
 							Campo Obrigatório
 						</div>
