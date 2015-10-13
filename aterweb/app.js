@@ -14,10 +14,11 @@ angular.module(pNmModulo).factory('modalCadastro', function () {
   return null;
 });
 // fim: codigo para habilitar o modal recursivo
+
 // inicio: modulo de autenticação
 angular.module(pNmModulo).factory('TokenStorage', function($cookieStore) {
     var storageKey = 'auth_token';
-    if (!localStorage) {
+    if (localStorage) {
         return {
             store : function(token) {
                 return localStorage.setItem(storageKey, token);
@@ -145,6 +146,8 @@ angular.module(pNmModulo).config(['$stateProvider', '$urlRouterProvider', 'toast
 
 angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'toastr', 'utilSrv',
   function($rootScope, $modal, FrzNavegadorParams, toastr, utilSrv) {
+    $rootScope.authenticated = false;
+    $rootScope.token = null;
     $rootScope.globalLocalizacao = "pt-br";
     $rootScope.globalFracaoHectares = "3";
     $rootScope.globalFracaoSem = "0";
@@ -455,25 +458,46 @@ angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'to
     // fim funcoes crud
 }]);
 
-angular.module(pNmModulo).controller('AuthCtrl', ['$scope', '$http', 'TokenStorage', function ($scope, $http, TokenStorage) {
-    $scope.authenticated = false;
-    $scope.token = null; // For display purposes only
+angular.module(pNmModulo).controller('AuthCtrl', ['$scope', '$rootScope', '$http', 'TokenStorage', 'mensagemSrv', '$modal', '$modalInstance', '$state', 
+    function ($scope, $rootScope, $http, TokenStorage, mensagemSrv, $modal, $modalInstance, $state) {
+    $rootScope.authenticated = false;
+    $rootScope.token = null; // For display purposes only
     
     $scope.init = function () {
         $http.get('https://localhost:8443/api/users/current').success(function (user) {
             if(user.username !== 'anonymousUser'){
-                $scope.authenticated = true;
-                $scope.username = user.username;
-                
+                $rootScope.authenticated = true;
                 // For display purposes only
-                $scope.token = JSON.parse(atob(TokenStorage.retrieve().split('.')[0]));
+                var token = TokenStorage.retrieve();
+                if (token) {
+                    $rootScope.token = JSON.parse(atob(token.split('.')[0]));
+                } else {
+                    $rootScope.token = null;
+                }
             }
         });
     };
-    $scope.logout = function () {
+    $scope.executarLogout = function () {
         // Just clear the local storage
         TokenStorage.clear();   
-        $scope.authenticated = false;
+        $rootScope.authenticated = false;
+        $rootScope.token = null;
+        $state.go('p.bem-vindo');
+    };
+    $scope.exibeLogin = function ()  {
+        var modalInstance = $modal.open({
+                  animation: true,
+                  controller: 'LoginCtrl',
+                  size : 'lg',
+                  templateUrl: '/login/login.html',
+            });
+        modalInstance.result.then(function(conteudo) {
+            // processar o retorno positivo da modal
+            console.log(conteudo);
+        }, function() {
+            // processar o retorno negativo da modal
+            //$log.info('Modal dismissed at: ' + new Date());
+        });
     };
 }]);
 

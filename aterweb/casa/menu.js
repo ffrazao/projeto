@@ -49,62 +49,95 @@
                 ]
             },
             {
-                    name: 'Diagnóstico',
-                    link: '#',
-                    subtree: [
-                        {
-                            name: 'Índices de Produção',
-                            link: 'p.indiceProducao.filtro',
-                        },
-                        {
-                            name: 'Índices Sociais',
-                            link: 'p.modeloCadastro.filtro',
-                        },
-                        {
-                            name: 'Enquete',
-                            link: 'login',
-                            subtree: [
-                                {
-                                    name: 'Configuração',
-                                    link: '#',
-                                },
-                                {
-                                    name: 'Responder',
-                                    link: 'p.modeloCadastro.filtro',
-                                    subtree: [
-                                        {
-                                            name: 'Anônimo',
-                                            link: '#',
-                                        },
-                                        {
-                                            name: 'Identificado',
-                                            link: 'p.modeloCadastro.filtro',
-                                        },
-                                    ],
-                                },
-                            ],
-                        },
-                    ],
-                },
-                {
-                    name: 'Configuração',
-                    link: 'login',
-                    subtree: [
-                        {
-                            name: 'Usuário',
-                            link: 'p.usuario.filtro',
-                        },
-                        {
-                            name: 'Perfil',
-                            link: 'p.perfil.filtro',
-                        },
-                        {
-                            name: 'Log',
-                            link: 'p.log.filtro',
-                        },
-                    ],
-                },
-            ];
+                name: 'Diagnóstico',
+                link: '#',
+                subtree: [
+                    {
+                        name: 'Índices de Produção',
+                        link: 'p.indiceProducao.filtro',
+                    },
+                    {
+                        name: 'Índices Sociais',
+                        link: 'p.modeloCadastro.filtro',
+                    },
+                    {
+                        name: 'Enquete',
+                        link: 'login',
+                        subtree: [
+                            {
+                                name: 'Configuração',
+                                link: '#',
+                            },
+                            {
+                                name: 'Responder',
+                                link: 'p.modeloCadastro.filtro',
+                                subtree: [
+                                    {
+                                        name: 'Anônimo',
+                                        link: '#',
+                                    },
+                                    {
+                                        name: 'Identificado',
+                                        link: 'p.modeloCadastro.filtro',
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                name: 'Configuração',
+                link: 'login',
+                subtree: [
+                    {
+                        name: 'Usuário',
+                        link: 'p.usuario.filtro',
+                    },
+                    {
+                        name: 'Perfil',
+                        link: 'p.perfil.filtro',
+                    },
+                    {
+                        name: 'Log',
+                        link: 'p.log.filtro',
+                    },
+                ],
+            },
+        ];
+    $scope.tree =
+        [
+            {
+                name: 'Dashboard',
+            },
+        ];
+
+    $scope.cadastro = {apoio: {moduloList: []}};
+    $scope.cadastro.apoio.moduloList = [{
+        codigo: 1,
+        nome: 'Principal'
+    }, {
+        codigo: 2,
+        nome: 'Compras'
+    }, {
+        codigo: 3,
+
+        nome: 'Crédito'
+    }, {
+        codigo: 4,
+        nome: 'Funcional'
+    }, {
+        codigo: 5,
+        nome: 'Institucinal'
+    }, {
+        codigo: 6,
+        nome: 'Orçamento'
+    }, {
+        codigo: 7,
+        nome: 'Patrimônio'
+    }, ];
+    $scope.moduloAcesso = 1;
+
   }]);
 
 })('principal', 'MenuCtrl', 'Menu da Tela Principal');
