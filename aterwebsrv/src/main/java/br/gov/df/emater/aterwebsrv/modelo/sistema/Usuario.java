@@ -2,7 +2,8 @@ package br.gov.df.emater.aterwebsrv.modelo.sistema;
 
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collection;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -21,10 +23,10 @@ import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Store;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.UsuarioStatusConta;
@@ -41,8 +43,8 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 
 	private static final long serialVersionUID = 1L;
 
-	@Transient
-	private Collection<? extends GrantedAuthority> authorities;
+	@OneToMany(mappedBy="usuario")
+	private Set<UsuarioPerfil> authorities;
 
 	@Column(name = "acesso_expira_em")
 	private Long expires;
@@ -100,7 +102,7 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 	}
 
 	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
+	public Set<UsuarioPerfil> getAuthorities() {
 		return authorities;
 	}
 
@@ -171,7 +173,7 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 		return UsuarioStatusConta.A.equals(getUsuarioStatusConta());
 	}
 
-	public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+	public void setAuthorities(Set<UsuarioPerfil> authorities) {
 		this.authorities = authorities;
 	}
 
@@ -200,14 +202,6 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 		this.pessoa = pessoa;
 	}
 
-	// @OneToMany(mappedBy = "usuario", targetEntity = UsuarioModulo.class,
-	// fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	// private List<UsuarioModulo> usuarioModuloList;
-
-	// @OneToMany(mappedBy = "usuario", targetEntity = UsuarioPerfil.class,
-	// fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	// private List<UsuarioPerfil> usuarioPerfilList;
-
 	public void setUsername(String username) {
 		this.username = username;
 	}
@@ -218,6 +212,6 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 
 	@Override
 	public String toString() {
-		return (pessoa == null ? this.username : (pessoa.getApelidoSigla() == null ? pessoa.getNome() : pessoa.getApelidoSigla()));
+		return (pessoa == null ? getUsername() : (pessoa.getApelidoSigla() == null ? pessoa.getNome() : pessoa.getApelidoSigla()));
 	}
 }

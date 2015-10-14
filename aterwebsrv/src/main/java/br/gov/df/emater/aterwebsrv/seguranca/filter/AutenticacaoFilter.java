@@ -9,6 +9,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.filter.GenericFilterBean;
 
 import br.gov.df.emater.aterwebsrv.seguranca.TokenAuthenticationService;
@@ -22,6 +23,7 @@ public class AutenticacaoFilter extends GenericFilterBean {
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
 		SecurityContextHolder.getContext().setAuthentication(tokenAuthenticationService.getAuthentication((HttpServletRequest) req));
 		chain.doFilter(req, res); // always continue

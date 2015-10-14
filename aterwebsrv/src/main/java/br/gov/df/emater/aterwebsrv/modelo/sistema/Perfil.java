@@ -2,7 +2,10 @@ package br.gov.df.emater.aterwebsrv.modelo.sistema;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,6 +14,7 @@ import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 
 /**
  * The persistent class for the perfil database table.
@@ -22,14 +26,21 @@ public class Perfil extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
 
+	@Enumerated(EnumType.STRING)
+	@Column
+	private Confirmacao ativo;
+
+	@Column
+	private String codigo;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
-	@OneToMany(mappedBy = "perfil")
-	private List<ModuloPerfil> moduloPerfils;
-
 	private String nome;
+
+	@OneToMany(mappedBy = "perfil")
+	private List<PerfilFuncionalidadeComando> perfilFuncionalidadeComandoList;
 
 	public Perfil() {
 	}
@@ -43,17 +54,20 @@ public class Perfil extends EntidadeBase implements _ChavePrimaria<Integer> {
 		if (getClass() != obj.getClass())
 			return false;
 		Perfil other = (Perfil) obj;
-		if (id == null) {
-			if (other.id != null)
+		if (codigo == null) {
+			if (other.codigo != null)
 				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (nome == null) {
-			if (other.nome != null)
-				return false;
-		} else if (!nome.equals(other.nome))
+		} else if (!codigo.equals(other.codigo))
 			return false;
 		return true;
+	}
+
+	public Confirmacao getAtivo() {
+		return ativo;
+	}
+
+	public String getCodigo() {
+		return this.codigo;
 	}
 
 	@Override
@@ -61,21 +75,28 @@ public class Perfil extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return id;
 	}
 
-	public List<ModuloPerfil> getModuloPerfils() {
-		return moduloPerfils;
-	}
-
 	public String getNome() {
 		return nome;
+	}
+
+	public List<PerfilFuncionalidadeComando> getPerfilFuncionalidadeComandoList() {
+		return perfilFuncionalidadeComandoList;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
 		return result;
+	}
+
+	public void setAtivo(Confirmacao ativo) {
+		this.ativo = ativo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
 	}
 
 	@Override
@@ -83,12 +104,12 @@ public class Perfil extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.id = id;
 	}
 
-	public void setModuloPerfils(List<ModuloPerfil> moduloPerfils) {
-		this.moduloPerfils = moduloPerfils;
-	}
-
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public void setPerfilFuncionalidadeComandoList(List<PerfilFuncionalidadeComando> perfilFuncionalidadeComandoList) {
+		this.perfilFuncionalidadeComandoList = perfilFuncionalidadeComandoList;
 	}
 
 }

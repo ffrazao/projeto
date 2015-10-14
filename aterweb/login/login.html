@@ -40,7 +40,7 @@
 			<div class="form-group sr-only">
 				<label class="col-xs-4 control-label" for="modulo" title="Módulo do Sistema" accesskey="M"><u>M</u>ódulo *</label>
 				<div class="col-xs-6">
-					<select id="modulo" name="modulo" class="form-control" required="true" ng-model="cadastro.registro.modulo" ng-options="item.codigo as item.nome for item in cadastro.apoio.moduloList">
+					<select id="modulo" name="modulo" class="form-control" ng-model="cadastro.registro.modulo" ng-options="item.codigo as item.nome for item in cadastro.apoio.moduloList">
 					</select>
 					<div ng-show="($parent.loginForm.modulo.$dirty || submitted) && $parent.loginForm.modulo.$invalid">
 						<div class="label label-danger" ng-show="$parent.loginForm.modulo.$error.required">

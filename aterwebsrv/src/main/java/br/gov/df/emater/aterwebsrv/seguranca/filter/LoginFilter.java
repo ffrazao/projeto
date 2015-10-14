@@ -16,6 +16,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -36,13 +37,15 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
 		final Usuario user = new ObjectMapper().readValue(request.getInputStream(), Usuario.class);
 		final UsernamePasswordAuthenticationToken loginToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
 		Map<String, Object> details = new HashMap<String, Object>();
 		details.put(MODULO, user.getModulo());
 		loginToken.setDetails(details);
-		return getAuthenticationManager().authenticate(loginToken);
+		Authentication result = getAuthenticationManager().authenticate(loginToken);
+		return result;
 	}
 
 	@Override
@@ -57,8 +60,5 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
 
 		// Add the authentication to the Security context
 		SecurityContextHolder.getContext().setAuthentication(userAuthentication);
-		// response.getWriter().close();
-		// response.flushBuffer();
-		// chain.doFilter(request, response);
 	}
 }

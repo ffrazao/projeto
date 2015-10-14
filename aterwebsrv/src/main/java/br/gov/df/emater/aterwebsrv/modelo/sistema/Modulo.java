@@ -1,10 +1,8 @@
 package br.gov.df.emater.aterwebsrv.modelo.sistema;
 
-import java.util.List;
+import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,12 +22,14 @@ public class Modulo extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
 
+	private String codigo;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
-	@OneToMany(mappedBy = "modulo", targetEntity = ModuloPerfil.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<ModuloPerfil> moduloPerfilList;
+	@OneToMany(mappedBy = "modulo")
+	private Set<ModuloFuncionalidade> moduloFuncionalidadeList;
 
 	private String nome;
 
@@ -45,17 +45,16 @@ public class Modulo extends EntidadeBase implements _ChavePrimaria<Integer> {
 		if (getClass() != obj.getClass())
 			return false;
 		Modulo other = (Modulo) obj;
-		if (id == null) {
-			if (other.id != null)
+		if (codigo == null) {
+			if (other.codigo != null)
 				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (nome == null) {
-			if (other.nome != null)
-				return false;
-		} else if (!nome.equals(other.nome))
+		} else if (!codigo.equals(other.codigo))
 			return false;
 		return true;
+	}
+
+	public String getCodigo() {
+		return codigo;
 	}
 
 	@Override
@@ -63,8 +62,8 @@ public class Modulo extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return id;
 	}
 
-	public List<ModuloPerfil> getModuloPerfilList() {
-		return moduloPerfilList;
+	public Set<ModuloFuncionalidade> getModuloFuncionalidadeList() {
+		return moduloFuncionalidadeList;
 	}
 
 	public String getNome() {
@@ -75,9 +74,12 @@ public class Modulo extends EntidadeBase implements _ChavePrimaria<Integer> {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
 		return result;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
 	}
 
 	@Override
@@ -85,8 +87,8 @@ public class Modulo extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.id = id;
 	}
 
-	public void setModuloPerfilList(List<ModuloPerfil> moduloPerfilList) {
-		this.moduloPerfilList = moduloPerfilList;
+	public void setModuloFuncionalidadeList(Set<ModuloFuncionalidade> moduloFuncionalidadeList) {
+		this.moduloFuncionalidadeList = moduloFuncionalidadeList;
 	}
 
 	public void setNome(String nome) {

@@ -465,12 +465,14 @@ angular.module(pNmModulo).controller('AuthCtrl', ['$scope', '$rootScope', '$http
     
     $scope.init = function () {
         $http.get('https://localhost:8443/api/users/current').success(function (user) {
-            if(user.username !== 'anonymousUser'){
+            if(user && user.username !== 'anonymousUser'){
                 $rootScope.authenticated = true;
                 // For display purposes only
                 var token = TokenStorage.retrieve();
                 if (token) {
                     $rootScope.token = JSON.parse(atob(token.split('.')[0]));
+                    console.log(JSON.parse(atob(token.split('.')[0])));
+                    console.log(JSON.parse(atob(token.split('.')[1])));
                 } else {
                     $rootScope.token = null;
                 }

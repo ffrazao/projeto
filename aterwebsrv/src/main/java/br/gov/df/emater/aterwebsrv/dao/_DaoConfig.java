@@ -29,10 +29,6 @@ public class _DaoConfig {
 	// return dataSource;
 	// }
 
-	public _DaoConfig() {
-		System.out.println("novo _DaoConfig");
-	}
-
 	public EntityManagerFactory getEntityManagerFactory() {
 		return entityManagerFactory;
 	}
