@@ -4,6 +4,7 @@ import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
 import org.apache.tomcat.util.descriptor.web.SecurityCollection;
 import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
+import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
 import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
@@ -16,8 +17,6 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
-import org.springframework.web.servlet.config.annotation.DelegatingWebMvcConfiguration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -26,13 +25,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = { "br.gov.df.emater.aterwebsrv" })
-public class _RestConfig extends DelegatingWebMvcConfiguration {
+public class _RestConfig extends WebMvcAutoConfiguration/*DelegatingWebMvcConfiguration*/ {
 
-	@Override
-	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-		configurer.enable();
-	}
-// inicio redirecionamento http para https
+//	@Override
+//	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+//		configurer.enable();
+//	}
+	
+	// inicio redirecionamento http para https
 	@Bean
 	public EmbeddedServletContainerFactory servletContainer() {
 		TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory() {
@@ -86,7 +86,7 @@ public class _RestConfig extends DelegatingWebMvcConfiguration {
 	// contentViewResolver.setDefaultViews(Arrays.<View> asList(defaultView));
 	// return contentViewResolver;
 	// }
-
+	
 	@Bean
 	@Primary
 	public HttpMessageConverter<Object> mappingJackson2HttpMessageConverter() {
