@@ -471,8 +471,8 @@ angular.module(pNmModulo).controller('AuthCtrl', ['$scope', '$rootScope', '$http
                 var token = TokenStorage.retrieve();
                 if (token) {
                     $rootScope.token = JSON.parse(atob(token.split('.')[0]));
-                    console.log(JSON.parse(atob(token.split('.')[0])));
-                    console.log(JSON.parse(atob(token.split('.')[1])));
+                    //console.log(JSON.parse(atob(token.split('.')[0])));
+                    //console.log(atob(token.split('.')[1]));
                 } else {
                     $rootScope.token = null;
                 }
