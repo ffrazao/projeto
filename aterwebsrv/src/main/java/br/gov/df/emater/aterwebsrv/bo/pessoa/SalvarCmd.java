@@ -8,6 +8,7 @@ import br.gov.df.emater.aterwebsrv.bo._Contexto;
 @Service("PessoaSalvarCmd")
 public class SalvarCmd extends _Comando {
 
+	@SuppressWarnings("unused")
 	@Override
 	public boolean executar(_Contexto context) throws Exception {
 		// TODO Auto-generated method stub

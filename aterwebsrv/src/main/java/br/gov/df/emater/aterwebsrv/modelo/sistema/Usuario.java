@@ -2,6 +2,7 @@ package br.gov.df.emater.aterwebsrv.modelo.sistema;
 
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -43,11 +44,14 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 
 	private static final long serialVersionUID = 1L;
 
-	@OneToMany(mappedBy="usuario")
+	@OneToMany(mappedBy = "usuario")
 	private Set<UsuarioPerfil> authorities;
 
 	@Column(name = "acesso_expira_em")
 	private Long expires;
+
+	@Transient
+	private Map<String, Set<String>> funcionalidadeComandoList;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -108,6 +112,10 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 
 	public Long getExpires() {
 		return expires;
+	}
+
+	public Map<String, Set<String>> getFuncionalidadeComandoList() {
+		return funcionalidadeComandoList;
 	}
 
 	@Override
@@ -179,6 +187,10 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 
 	public void setExpires(Long expires) {
 		this.expires = expires;
+	}
+
+	public void setFuncionalidadeComandoList(Map<String, Set<String>> funcionalidadeComandoList) {
+		this.funcionalidadeComandoList = funcionalidadeComandoList;
 	}
 
 	@Override

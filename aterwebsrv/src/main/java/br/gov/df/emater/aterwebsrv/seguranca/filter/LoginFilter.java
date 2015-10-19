@@ -29,7 +29,7 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
 	private static final String MODULO = "MODULO";
 
 	private final TokenAuthenticationService tokenAuthenticationService;
-	
+
 	public LoginFilter(String urlMapping, TokenAuthenticationService tokenAuthenticationService, AuthenticationManager authManager) {
 		super(new AntPathRequestMatcher(urlMapping, "POST"));
 		this.tokenAuthenticationService = tokenAuthenticationService;
@@ -37,7 +37,7 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
 	}
 
 	@Override
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
 		final Usuario user = new ObjectMapper().readValue(request.getInputStream(), Usuario.class);
 		final UsernamePasswordAuthenticationToken loginToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
@@ -50,10 +50,11 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
 
 	@Override
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
+		Usuario usuario = (Usuario) authentication.getPrincipal();
 
 		// Lookup the complete User object from the database and create an
 		// Authentication for it
-		final UserAuthentication userAuthentication = new UserAuthentication((Usuario) authentication.getPrincipal());
+		final UserAuthentication userAuthentication = new UserAuthentication(usuario);
 
 		// Add the custom token as HTTP header to the response
 		tokenAuthenticationService.addAuthentication(response, userAuthentication);

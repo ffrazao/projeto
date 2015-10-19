@@ -38,12 +38,11 @@ public class AutenticacaoProvider extends DaoAuthenticationProvider {
 	public Authentication authenticate(Authentication autenticacao) throws AuthenticationException {
 		Authentication result = super.authenticate(autenticacao);
 		if (result.isAuthenticated()) {
-			// testar modulo
+			Usuario u = ((Usuario)result.getPrincipal());
+			u.setId(null);
+			u.setPassword(null);
+			u.setNewPassword(null);
 		}
-		Usuario u = ((Usuario)result.getPrincipal());
-		u.setId(null);
-		u.setPassword(null);
-		u.setNewPassword(null);
 		return result;
 	}
 
