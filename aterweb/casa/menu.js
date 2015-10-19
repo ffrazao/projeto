@@ -214,7 +214,6 @@
             }
             removerInvisiveis($scope.tree);
         }
-        console.log($scope.tree);
     });
 
     $scope.cadastro = {apoio: {moduloList: []}};

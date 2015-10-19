@@ -3,12 +3,12 @@
 'use strict';
 
 angular.module(pNmModulo).factory(pNmFactory,
-  ['$http',
-    function($http) {
+  ['$rootScope', '$http', 'toastr', 
+    function($rootScope, $http, toastr) {
         var PessoaSrv = {
             funcionalidade: 'PESSOA',
             abrir : function() {
-                    $http.get('https://localhost:8443/api/acesso', {data: {'funcionalidade': this.funcionalidade}})
+                    $http.get($rootScope.servicoUrl + '/api/acesso', {funcionalidade: this.funcionalidade})
                     .success(function (retorno) {
                         console.log(retorno);
                     })
