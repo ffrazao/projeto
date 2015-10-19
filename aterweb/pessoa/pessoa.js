@@ -5,10 +5,10 @@
     angular.module(pNmModulo).config(['$stateProvider', function($stateProvider) {
         criarEstadosPadrao($stateProvider, pNmModulo, pNmController);
     }]);
-    angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$modal', '$log', '$modalInstance', 'modalCadastro', 'utilSrv', 'mensagemSrv',
-        function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $modal, $log, $modalInstance, modalCadastro, utilSrv, mensagemSrv) {
+    angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$modal', '$log', '$modalInstance', 'modalCadastro', 'utilSrv', 'mensagemSrv', 'PessoaSrv',
+        function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $modal, $log, $modalInstance, modalCadastro, utilSrv, mensagemSrv, PessoaSrv) {
             // inicializacao
-            $scope.crudInit($scope, $state, null, pNmFormulario);
+            $scope.crudInit($scope, $state, null, pNmFormulario, PessoaSrv);
             // código para verificar se o modal está ou não ativo
             $scope.verificaEstado($modalInstance, $scope, 'filtro', modalCadastro, pNmFormulario);
             // inicio: atividades do Modal

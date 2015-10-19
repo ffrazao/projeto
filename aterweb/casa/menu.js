@@ -5,7 +5,7 @@
   angular.module(pNmModulo).controller(pNmController, ['$scope', '$rootScope', 'TokenStorage', '$http', function ($scope, $rootScope, TokenStorage, $http) {
 
     $scope.init = function () {
-        $http.get('https://localhost:8443/api/users/current').success(function (user) {
+        $http.get($scope.servicoUrl + '/api/users/current').success(function (user) {
             if(user && user.username && user.username !== 'anonymousUser'){
                 // For display purposes only
                 var token = TokenStorage.retrieve();

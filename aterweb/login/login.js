@@ -62,7 +62,7 @@
                     return;
                 }
                 //$scope.renoveSuaSenha();
-                $http.post('https://localhost:8443/api/login', {
+                $http.post($scope.servicoUrl + '/api/login', {
                     "username": $scope.cadastro.registro.username,
                     "password": $scope.cadastro.registro.password,
                     "modulo": $scope.cadastro.registro.modulo

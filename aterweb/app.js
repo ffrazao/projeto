@@ -146,6 +146,7 @@ angular.module(pNmModulo).config(['$stateProvider', '$urlRouterProvider', 'toast
 
 angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'toastr', 'utilSrv',
   function($rootScope, $modal, FrzNavegadorParams, toastr, utilSrv) {
+    $rootScope.servicoUrl = "https://localhost:8443";
     $rootScope.authenticated = false;
     $rootScope.token = null;
     $rootScope.globalLocalizacao = "pt-br";
@@ -166,7 +167,10 @@ angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'to
     // inicio funcoes crud
 
     // inicializacao
-    $rootScope.crudInit = function(scope, state, cadastro, nomeFormulario) {
+    $rootScope.crudInit = function(scope, state, cadastro, nomeFormulario, servico) {
+        if (servico) {
+            servico.abrir();
+        }
         scope.scp = scope; // esta foi a forma encontrada para fazer com que o escopo seja transferido entre funcoes ver $rootScope.crudSeleciona e  $rootScope.crudMataClick
         scope.stt = state; // esta foi a forma encontrada para fazer com que o escopo seja transferido entre funcoes ver $rootScope.crudSeleciona e  $rootScope.crudMataClick
         scope.nomeFormulario = nomeFormulario;
