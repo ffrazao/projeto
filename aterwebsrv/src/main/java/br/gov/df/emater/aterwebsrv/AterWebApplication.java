@@ -14,8 +14,8 @@ public class AterWebApplication {
 
 	public static void main(String[] args) throws Exception {
 		
-		System.out.println(Criptografia.MD5("2a"));
-		System.out.println(Criptografia.MD5("3a"));
+//		System.out.println(Criptografia.MD5("2a"));
+//		System.out.println(Criptografia.MD5("3a"));
 		
 		SpringApplication.run(AterWebApplication.class, args);
 	}
