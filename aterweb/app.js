@@ -463,22 +463,6 @@ angular.module(pNmModulo).controller('AuthCtrl', ['$scope', '$rootScope', '$http
     $rootScope.authenticated = false;
     $rootScope.token = null; // For display purposes only
     
-    $scope.init = function () {
-        $http.get('https://localhost:8443/api/users/current').success(function (user) {
-            if(user && user.username !== 'anonymousUser'){
-                $rootScope.authenticated = true;
-                // For display purposes only
-                var token = TokenStorage.retrieve();
-                if (token) {
-                    $rootScope.token = JSON.parse(atob(token.split('.')[0]));
-                    //console.log(JSON.parse(atob(token.split('.')[0])));
-                    //console.log(atob(token.split('.')[1]));
-                } else {
-                    $rootScope.token = null;
-                }
-            }
-        });
-    };
     $scope.executarLogout = function () {
         // Just clear the local storage
         TokenStorage.clear();   

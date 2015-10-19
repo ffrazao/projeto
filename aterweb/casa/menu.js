@@ -2,115 +2,220 @@
 
 'use strict';
 
-  angular.module(pNmModulo).controller(pNmController, ['$scope', function ($scope) {
+  angular.module(pNmModulo).controller(pNmController, ['$scope', '$rootScope', 'TokenStorage', '$http', function ($scope, $rootScope, TokenStorage, $http) {
+
+    $scope.init = function () {
+        $http.get('https://localhost:8443/api/users/current').success(function (user) {
+            if(user && user.username && user.username !== 'anonymousUser'){
+                // For display purposes only
+                var token = TokenStorage.retrieve();
+                if (token) {
+                    $rootScope.authenticated = true;
+                    $rootScope.token = JSON.parse(atob(token.split('.')[0]));
+                    //console.log(JSON.parse(atob(token.split('.')[0])));
+                    //console.log(atob(token.split('.')[1]));
+                    return;
+                }
+            }
+            $scope.executarLogout();
+        });
+    };
+
     // este menu sera carregado pelo login do usuario
-    $scope.tree =
-        [
-            {
-                name: 'Dashboard',
-            },
-            {
-                name: 'Cadastro',
-                subtree: [
-                    {
-                        name: 'Pessoa',
-                        link: 'p.pessoa.filtro',
+    var initTree = function() {
+        $scope.tree =
+            [
+                {
+                    name: 'Dashboard',
+                    funcionalidade: 'DASHBOARD',
+                    visivel: true,
+                },
+                {
+                    name: 'Cadastro',
+                    visivel: false,
+                    subtree: [
+                        {
+                            name: 'Pessoa',
+                            link: 'p.pessoa.filtro',
+                            funcionalidade: 'PESSOA',
+                            visivel: false,
+                            },
+                        {
+                            name: 'Grupo Social',
+                            link: 'p.grupoSocial.filtro',
+                            funcionalidade: 'GRUPO_SOCIAL',
+                            visivel: false,
                         },
-                    {
-                        name: 'Grupo Social',
-                        link: 'p.grupoSocial.filtro',
-                    },
-                    {
-                        name: 'Propriedade Rural',
-                        link: 'p.propriedade.filtro',
-                    },
-                    {
-                        name: 'Contratos & Convênios',
-                        link: 'p.contrato.filtro',
-                    },
-                ]
-            },
-            {
-                name: 'Atividade',
-                link: '#',
-                subtree: [
-                    {
-                        name: 'Planejar',
-                        link: '#',
-                    },
-                    {
-                        name: 'Registrar',
-                        link: 'p.modeloCadastro.filtro',
-                    },
-                    {
-                        name: 'Agenda',
-                        link: 'login',
+                        {
+                            name: 'Propriedade Rural',
+                            link: 'p.propriedade.filtro',
+                            funcionalidade: 'PROPRIEDADE',
+                            visivel: false,
+                        },
+                        {
+                            name: 'Contratos & Convênios',
+                            link: 'p.contrato.filtro',
+                            funcionalidade: 'CONTRATOS',
+                            visivel: false,
+                        },
+                    ]
+                },
+                {
+                    name: 'Atividade',
+                    link: '#',
+                    visivel: false,
+                    subtree: [
+                        {
+                            name: 'Planejar',
+                            link: '#',
+                            funcionalidade: 'PLANEJAR',
+                            visivel: false,
+                        },
+                        {
+                            name: 'Registrar',
+                            link: 'p.modeloCadastro.filtro',
+                            funcionalidade: 'REGISTRAR',
+                            visivel: false,
+                        },
+                        {
+                            name: 'Agenda',
+                            link: 'login',
+                            funcionalidade: 'AGENDA',
+                            visivel: false,
+                        }
+                    ]
+                },
+                {
+                    name: 'Diagnóstico',
+                    link: '#',
+                    visivel: false,
+                    subtree: [
+                        {
+                            name: 'Índices de Produção',
+                            link: 'p.indiceProducao.filtro',
+                            funcionalidade: 'IPA',
+                            visivel: false,
+                        },
+                        {
+                            name: 'Índices Sociais',
+                            link: 'p.modeloCadastro.filtro',
+                            funcionalidade: 'IDCR',
+                            visivel: false,
+                        },
+                        {
+                            name: 'Enquete',
+                            link: 'login',
+                            visivel: false,
+                            subtree: [
+                                {
+                                    name: 'Configuração',
+                                    link: '#',
+                                    funcionalidade: 'ENQUETE_CONFIGURACAO',
+                                    visivel: false,
+                                },
+                                {
+                                    name: 'Responder',
+                                    link: 'p.modeloCadastro.filtro',
+                                    subtree: [
+                                        {
+                                            name: 'Anônimo',
+                                            link: '#',
+                                            funcionalidade: 'ENQUETE_ANONIMO',
+                                            visivel: false,
+                                        },
+                                        {
+                                            name: 'Identificado',
+                                            link: 'p.modeloCadastro.filtro',
+                                            funcionalidade: 'ENQUETE_RESPONDER',
+                                            visivel: false,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    name: 'Configuração',
+                    link: 'login',
+                    visivel: false,
+                    subtree: [
+                        {
+                            name: 'Usuário',
+                            link: 'p.usuario.filtro',
+                            funcionalidade: 'USUARIO',
+                            visivel: false,
+                        },
+                        {
+                            name: 'Perfil',
+                            link: 'p.perfil.filtro',
+                            funcionalidade: 'PERFIL',
+                            visivel: false,
+                        },
+                        {
+                            name: 'Log',
+                            link: 'p.log.filtro',
+                            funcionalidade: 'LOG',
+                            visivel: false,
+                        },
+                    ],
+                },
+            ];
+    };
+
+    var ativar = function(item, arvore, raiz) {
+        for (var ramo in arvore) {
+            if (arvore[ramo].funcionalidade === item) {
+                arvore[ramo].visivel = true;
+                if (raiz) {
+                    for (var r in raiz) {
+                        raiz[r].visivel = true;
                     }
-                ]
-            },
-            {
-                name: 'Diagnóstico',
-                link: '#',
-                subtree: [
-                    {
-                        name: 'Índices de Produção',
-                        link: 'p.indiceProducao.filtro',
-                    },
-                    {
-                        name: 'Índices Sociais',
-                        link: 'p.modeloCadastro.filtro',
-                    },
-                    {
-                        name: 'Enquete',
-                        link: 'login',
-                        subtree: [
-                            {
-                                name: 'Configuração',
-                                link: '#',
-                            },
-                            {
-                                name: 'Responder',
-                                link: 'p.modeloCadastro.filtro',
-                                subtree: [
-                                    {
-                                        name: 'Anônimo',
-                                        link: '#',
-                                    },
-                                    {
-                                        name: 'Identificado',
-                                        link: 'p.modeloCadastro.filtro',
-                                    },
-                                ],
-                            },
-                        ],
-                    },
-                ],
-            },
-            {
-                name: 'Configuração',
-                link: 'login',
-                subtree: [
-                    {
-                        name: 'Usuário',
-                        link: 'p.usuario.filtro',
-                    },
-                    {
-                        name: 'Perfil',
-                        link: 'p.perfil.filtro',
-                    },
-                    {
-                        name: 'Log',
-                        link: 'p.log.filtro',
-                    },
-                ],
-            },
-        ];
-    $scope.tree =
-        [
-            {
-                name: 'Dashboard',
-            },
-        ];
+                }
+                return true;
+            } 
+            if (arvore[ramo].subtree) {
+                if (!angular.isArray(raiz)) {
+                    raiz = [];
+                }
+                raiz.push(arvore[ramo]);
+                if (ativar(item, arvore[ramo].subtree, raiz)) {
+                    return true;
+                } else {
+                    raiz = [];
+                }
+            }
+        }
+        return false;
+    };
+
+    var removerInvisiveis = function (arvore) {
+        if (!arvore) {
+            return;
+        }
+        var tot = arvore.length -1;
+        for (var ramo = tot; ramo >= 0; ramo--) {            
+            if (!arvore[ramo].visivel) {
+                arvore.splice(ramo, 1);
+            } else {
+                if (arvore[ramo].subtree) {
+                    removerInvisiveis(arvore[ramo].subtree);
+                }
+            }
+        }
+    };
+
+    $scope.$watch('token', function (newValue) {
+        if (!newValue) {
+            initTree();
+        } else {
+            for (var fc in newValue.funcionalidadeComandoList) {
+                ativar(fc, $scope.tree);
+            }
+            removerInvisiveis($scope.tree);
+        }
+        console.log($scope.tree);
+    });
 
     $scope.cadastro = {apoio: {moduloList: []}};
     $scope.cadastro.apoio.moduloList = [{
