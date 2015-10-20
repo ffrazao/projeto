@@ -5,8 +5,8 @@
 angular.module(pNmModulo).factory(pNmFactory,
   ['$rootScope', '$http', 'toastr', 'SegurancaSrv',
     function($rootScope, $http, toastr, SegurancaSrv) {
-        var PessoaSrv = {
-            funcionalidade: 'PESSOA',
+        var PropriedadeSrv = {
+            funcionalidade: 'PROPRIEDADE',
             abrir : function() {
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
             },
@@ -18,21 +18,19 @@ angular.module(pNmModulo).factory(pNmFactory,
             },
             incluir : function() {
                 SegurancaSrv.acesso(this.funcionalidade, 'INCLUIR');
-                
             },
             visualizar : function() {
                 SegurancaSrv.acesso(this.funcionalidade, 'VISUALIZAR');
             },
             editar : function() {
                 SegurancaSrv.acesso(this.funcionalidade, 'EDITAR');
-                
             },
             excluir : function() {
                 SegurancaSrv.acesso(this.funcionalidade, 'EXCLUIR');
             },
         };
-        return PessoaSrv;
+        return PropriedadeSrv;
     }
 ]);
 
-})('principal', 'PessoaSrv');
+})('principal', 'PropriedadeSrv');

@@ -8,7 +8,9 @@
     angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$modal', '$log', '$modalInstance', 'modalCadastro', 'utilSrv', 'mensagemSrv', 'PessoaSrv',
         function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $modal, $log, $modalInstance, modalCadastro, utilSrv, mensagemSrv, PessoaSrv) {
             // inicializacao
+            $scope.funcionalidade = PessoaSrv.funcionalidade;
             $scope.crudInit($scope, $state, null, pNmFormulario, PessoaSrv);
+
             // código para verificar se o modal está ou não ativo
             $scope.verificaEstado($modalInstance, $scope, 'filtro', modalCadastro, pNmFormulario);
             // inicio: atividades do Modal

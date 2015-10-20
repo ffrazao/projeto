@@ -56,7 +56,7 @@ angular.module(pNmModulo).factory('TokenAuthInterceptor', function($q, TokenStor
         },
         responseError: function(error) {
             if (error.status === 401 || error.status === 403) {
-                TokenStorage.clear();
+                //TokenStorage.clear();
             }
             return $q.reject(error);
         }

@@ -1,0 +1,7 @@
+Roteiro para ativar a funcionalidade
+
+Os servicos manterao um atributo chamado funcionalidade. Este atributo mantem o nome da funcionalidade que o serviço focaliza
+
+Este atributo deve ser usado para informar ao controller qual é a sua funcionalidade
+
+A barra de navegação faz uso desse atributo.

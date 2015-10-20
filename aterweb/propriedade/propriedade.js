@@ -14,17 +14,16 @@ angular.module(pNmModulo).config(['$stateProvider', function($stateProvider) {
 
 angular.module(pNmModulo).controller(pNmController,
     ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$modal', '$log', '$modalInstance',
-    'modalCadastro', 'utilSrv', 'mensagemSrv',
+    'modalCadastro', 'utilSrv', 'mensagemSrv', 'PropriedadeSrv',
     function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $modal, $log, $modalInstance,
-        modalCadastro, utilSrv, mensagemSrv) {
+        modalCadastro, utilSrv, mensagemSrv, PropriedadeSrv) {
 
     // inicializacao
-    $scope.crudInit($scope, $state, null, pNmFormulario);
+    $scope.funcionalidade = PropriedadeSrv.funcionalidade;
+    $scope.crudInit($scope, $state, null, pNmFormulario, PropriedadeSrv);
 
     // código para verificar se o modal está ou não ativo
     $scope.verificaEstado($modalInstance, $scope, 'filtro', modalCadastro, pNmFormulario);
-
-
 
     // inicio: atividades do Modal
     $scope.modalOk = function () {

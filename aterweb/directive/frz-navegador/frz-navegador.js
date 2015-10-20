@@ -342,7 +342,7 @@
     }]);
 
     // diretiva da barra de navegação de dados
-    frzNavegadorModule.directive('frzNavegador', function() {
+    frzNavegadorModule.directive('frzNavegador', ['$rootScope', function($rootScope) {
         return {
             require: ['^ngModel'],
             restrict: 'E', 
@@ -353,6 +353,8 @@
 
                 exibeNomeBotao: '=',
                 exibeEstadoAtual: '=',
+
+                funcionalidade: '=',
 
                 onAbrir: '&',
 
@@ -392,6 +394,7 @@
             link: function(scope, element, attributes) {
                 scope.exibeNomeBotao = !angular.isUndefined(attributes.exibeNomeBotao) && (attributes.exibeNomeBotao.toLowerCase() === 'true');
                 scope.exibeEstadoAtual = !angular.isUndefined(attributes.exibeEstadoAtual) && (attributes.exibeEstadoAtual.toLowerCase() === 'true');
+                scope.funcionalidade = !angular.isUndefined(scope.funcionalidade) && scope.funcionalidade ? scope.funcionalidade.toUpperCase().trim() : null;
                 scope.estados = {
                     'FILTRANDO': {botoes: ['ok', 'inclusao', 'limpar', 'voltar', 'acao', 'ajuda', ], },
                     'LISTANDO': {botoes: ['informacao', 'filtro', 'inclusao', 'primeiro', 'anterior', 'tamanhoPagina', 'proximo', 'ultimo', 'visualizacao', 'exclusao', 'acao', 'ajuda', ], }, 
@@ -411,6 +414,9 @@
                                 descricao: 'Registro(s) Selecionado(s) / Total de registros',
                                 nomeSempreVisivel: true,
                                 acao: function() {scope.onInformacao();},
+                                exibir: function() {
+                                    return (!scope.funcionalidade) || (!$rootScope.token) || (scope.funcionalidade && $rootScope.token && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade] && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade].indexOf('CONSULTAR') >= 0);
+                                },
                             },
                         ],
                     },
@@ -488,7 +494,8 @@
                         codigo: 'navegacao',
                         exibir: function() {
                             var e = scope.ngModel.estadoAtual();
-                            return scope.ngModel.dados.length && (e !== 'VISUALIZANDO' || (e === 'VISUALIZANDO' && scope.ngModel.selecao.tipo === 'M'));
+                            return scope.ngModel.dados.length && (e !== 'VISUALIZANDO' || (e === 'VISUALIZANDO' && scope.ngModel.selecao.tipo === 'M')) && 
+                                (!scope.funcionalidade) || (!$rootScope.token) || (scope.funcionalidade && $rootScope.token && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade] && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade].indexOf('CONSULTAR') >= 0);
                         },
                         botoes: [
                             {
@@ -504,6 +511,9 @@
                                         default: scope.onPaginarPrimeiro(); break;
                                     }
                                 },
+                                exibir: function() {
+                                    return (!scope.funcionalidade) || (!$rootScope.token) || (scope.funcionalidade && $rootScope.token && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade] && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade].indexOf('CONSULTAR') >= 0);
+                                },
                             },
                             {
                                 codigo: 'anterior',
@@ -517,6 +527,9 @@
                                         case 'VISUALIZANDO': scope.onFolhearAnterior(); break;
                                         default: scope.onPaginarAnterior(); break;
                                     }
+                                },
+                                exibir: function() {
+                                    return (!scope.funcionalidade) || (!$rootScope.token) || (scope.funcionalidade && $rootScope.token && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade] && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade].indexOf('CONSULTAR') >= 0);
                                 },
                             },
                             {
@@ -569,6 +582,9 @@
                                         },
                                     }, 
                                 ],
+                                exibir: function() {
+                                    return (!scope.funcionalidade) || (!$rootScope.token) || (scope.funcionalidade && $rootScope.token && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade] && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade].indexOf('CONSULTAR') >= 0);
+                                },
                             },
                             {
                                 codigo: 'proximo',
@@ -583,6 +599,9 @@
                                         default: scope.onPaginarProximo(); break;
                                     }
                                 },
+                                exibir: function() {
+                                    return (!scope.funcionalidade) || (!$rootScope.token) || (scope.funcionalidade && $rootScope.token && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade] && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade].indexOf('CONSULTAR') >= 0);
+                                },
                             },
                             {
                                 codigo: 'ultimo',
@@ -596,6 +615,9 @@
                                         case 'VISUALIZANDO': scope.onFolhearUltimo(); break;
                                         default: scope.onPaginarUltimo(); break;
                                     }
+                                },
+                                exibir: function() {
+                                    return (!scope.funcionalidade) || (!$rootScope.token) || (scope.funcionalidade && $rootScope.token && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade] && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade].indexOf('CONSULTAR') >= 0);
                                 },
                             },
                         ],
@@ -612,6 +634,9 @@
                                 acao: function() {
                                     scope.onFiltrar();
                                 },
+                                exibir: function() {
+                                    return (!scope.funcionalidade) || (!$rootScope.token) || (scope.funcionalidade && $rootScope.token && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade] && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade].indexOf('CONSULTAR') >= 0);
+                                },
                             },
                         ],
                     },
@@ -626,6 +651,9 @@
                                 glyphicon: 'glyphicon-plus',
                                 acao: function() {
                                     scope.onIncluir();
+                                },
+                                exibir: function() {
+                                    return (!scope.funcionalidade) || (!$rootScope.token) || (scope.funcionalidade && $rootScope.token && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade] && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade].indexOf('INCLUIR') >= 0);
                                 },
                             },
                         ],
@@ -646,7 +674,8 @@
                                     scope.onVisualizar();
                                 },
                                 exibir: function() {
-                                    return (scope.ngModel.dados && scope.ngModel.dados.length && scope.ngModel.selecao.selecionado);
+                                    return (scope.ngModel.dados && scope.ngModel.dados.length && scope.ngModel.selecao.selecionado) &&
+                                        (!scope.funcionalidade) || (!$rootScope.token) || (scope.funcionalidade && $rootScope.token && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade] && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade].indexOf('VISUALIZAR') >= 0);
                                 },
                             },
                         ],
@@ -664,7 +693,8 @@
                                     scope.onEditar();
                                 },
                                 exibir: function() {
-                                    return (scope.ngModel.dados && scope.ngModel.dados.length && scope.ngModel.selecao.selecionado);
+                                    return (scope.ngModel.dados && scope.ngModel.dados.length && scope.ngModel.selecao.selecionado) &&
+                                        (!scope.funcionalidade) || (!$rootScope.token) || (scope.funcionalidade && $rootScope.token && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade] && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade].indexOf('ALTERAR') >= 0);
                                 },
                             },
                         ],
@@ -682,7 +712,8 @@
                                     scope.onExcluir();
                                 },
                                 exibir: function() {
-                                    return (scope.ngModel.dados && scope.ngModel.dados.length && scope.ngModel.selecao.selecionado);
+                                    return (scope.ngModel.dados && scope.ngModel.dados.length && scope.ngModel.selecao.selecionado) &&
+                                        (!scope.funcionalidade) || (!$rootScope.token) || (scope.funcionalidade && $rootScope.token && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade] && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade].indexOf('EXCLUIR') >= 0);
                                 },
                             },
                         ],
@@ -703,7 +734,9 @@
                                 exibir: function() {
                                     if (this['subFuncoes']) {
                                         for (var subFuncao in this['subFuncoes']) {
-                                            if (this['subFuncoes'][subFuncao].exibir && this['subFuncoes'][subFuncao].exibir()) {
+                                            if (this['subFuncoes'][subFuncao].exibir && this['subFuncoes'][subFuncao].exibir() && 
+                                                    (!scope.funcionalidade) || (!$rootScope.token) || (!this['subFuncoes'][subFuncao].comando) || 
+                                                        (scope.funcionalidade && $rootScope.token && this['subFuncoes'][subFuncao].comando && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade] && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade].indexOf(this['subFuncoes'][subFuncao].comando) >= 0)) {
                                                 return true;
                                             }
                                         }
@@ -733,7 +766,7 @@
                 scope.onAbrir();
             },
         };
-    });
+    }]);
 
     frzNavegadorModule.directive('frzSeletor', ['FrzNavegadorParams', function(FrzNavegadorParams) {
         return {
