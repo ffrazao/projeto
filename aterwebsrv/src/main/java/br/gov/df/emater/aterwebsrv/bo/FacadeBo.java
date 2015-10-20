@@ -37,7 +37,6 @@ public class FacadeBo implements BeanFactoryAware {
 		return this._executar(usuario, "PessoaFiltroNovoCmd");
 	}
 
-
 	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
 		this.beanFactory = beanFactory;
 	}

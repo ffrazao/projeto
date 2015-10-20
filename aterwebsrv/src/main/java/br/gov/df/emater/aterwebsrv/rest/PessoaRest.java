@@ -3,7 +3,9 @@ package br.gov.df.emater.aterwebsrv.rest;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
@@ -33,8 +35,8 @@ public class PessoaRest {
 		}
 	}
 
-	@RequestMapping("/filtro-executar")
-	public Resposta filtroExecutar(PessoaCadFiltroDto filtro, Principal usuario) {
+	@RequestMapping(value = "/filtro-executar", method = RequestMethod.POST)
+	public Resposta filtroExecutar(@RequestBody PessoaCadFiltroDto filtro, Principal usuario) {
 		try {
 			return new Resposta(facadeBo.pessoaFiltroExecutar(usuario, filtro));
 		} catch (Exception e) {
