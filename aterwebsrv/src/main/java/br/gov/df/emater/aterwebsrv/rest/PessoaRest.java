@@ -14,7 +14,6 @@ import br.gov.df.emater.aterwebsrv.modelo.dto.PessoaCadFiltroDto;
 public class PessoaRest {
 
 	public PessoaRest() {
-		System.out.println("novo PessoaRest");
 	}
 
 	@Autowired

@@ -1,6 +1,7 @@
 package br.gov.df.emater.aterwebsrv.rest;
 
 import java.security.Principal;
+import java.util.Set;
 
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,11 +22,11 @@ public class SegurancaRest {
 	}
 
 	@RequestMapping(value = "/acesso", method = RequestMethod.GET)
-	public void acesso(@RequestParam String funcionalidade, Principal principal) {
+	public void acesso(@RequestParam String funcionalidade, @RequestParam(required=false) String comando, Principal principal) {
 		Usuario usuario = (Usuario)((UserAuthentication) principal).getDetails();
-		if (!usuario.getFuncionalidadeComandoList().containsKey(funcionalidade)) {
+		Set<String> comandoList = usuario.getFuncionalidadeComandoList().get(funcionalidade);
+		if (comandoList == null || (comando != null && !comandoList.contains(comando))) {
 			throw new BadCredentialsException("Recurso não disponível");
 		}
 	}
-
 }

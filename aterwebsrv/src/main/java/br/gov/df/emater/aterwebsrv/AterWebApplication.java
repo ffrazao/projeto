@@ -6,7 +6,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import br.gov.df.emater.aterwebsrv.ferramenta.Criptografia;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 
 @SpringBootApplication
