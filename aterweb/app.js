@@ -168,8 +168,10 @@ angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'to
 
     // inicializacao
     $rootScope.crudInit = function(scope, state, cadastro, nomeFormulario, servico) {
+        scope.servico = {};
         if (servico) {
-            servico.abrir();
+            scope.servico = servico;
+            scope.servico.abrir();
         }
         scope.scp = scope; // esta foi a forma encontrada para fazer com que o escopo seja transferido entre funcoes ver $rootScope.crudSeleciona e  $rootScope.crudMataClick
         scope.stt = state; // esta foi a forma encontrada para fazer com que o escopo seja transferido entre funcoes ver $rootScope.crudSeleciona e  $rootScope.crudMataClick
@@ -350,10 +352,15 @@ angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'to
             toastr.error('Verifique os campos marcados', 'Erro');
             return false;
         }
-        scp.navegador.mudarEstado('LISTANDO');
-        scp.crudVaiPara(scp, scp.stt, 'lista');
-        scp.navegador.setDados(scp.cadastro.lista);
-        scp.navegador.submitido = false;
+        scp.servico.filtrar(scp.cadastro.filtro).success(function(response) {
+            scp.navegador.mudarEstado('LISTANDO');
+            scp.crudVaiPara(scp, scp.stt, 'lista');
+            scp.navegador.setDados(scp.cadastro.lista);
+            scp.navegador.submitido = false;
+        }).error(function(erro){
+            toastr.error(error, 'Erro ao filtrar');
+        });
+
     };
     $rootScope.confirmarIncluir = function(scp) {
         if (!scp.confirmar(scp)) {

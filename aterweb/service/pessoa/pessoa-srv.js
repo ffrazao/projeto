@@ -7,11 +7,13 @@ angular.module(pNmModulo).factory(pNmFactory,
     function($rootScope, $http, toastr, SegurancaSrv) {
         var PessoaSrv = {
             funcionalidade: 'PESSOA',
+            endereco: $rootScope.servicoUrl + '/pessoa',
             abrir : function() {
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
             },
-            filtrar : function() {
+            filtrar : function(filtro) {
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
+                return $http.post(this.endereco + '/filtro-executar', filtro);
             },
             executarFiltro : function() {
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
