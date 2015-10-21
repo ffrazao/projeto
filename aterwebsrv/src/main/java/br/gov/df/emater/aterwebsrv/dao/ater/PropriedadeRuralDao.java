@@ -9,11 +9,11 @@ import org.springframework.stereotype.Repository;
 
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 
-@Repository
+@Repository("PropriedadeRuralDao")
 public interface PropriedadeRuralDao extends JpaRepository<PropriedadeRural, Integer> {
 
 	List<PropriedadeRural> findByAreaIrrigadaGotejamento(String valor);
-	
+
 	@Query(value = "SELECT count(*) FROM pessoa.pessoa WHERE nome like :valor", nativeQuery = true)
 	Integer filtroPorCount(@Param("valor") String valor);
 }

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import br.gov.df.emater.aterwebsrv.modelo.funcional.LotacaoVi;
 
-@Repository
+@Repository("LotacaoViDao")
 public interface LotacaoViDao extends JpaRepository<LotacaoVi, Long> {
 
 	List<LotacaoVi> findByEmpregadoId(Integer empregadoId);

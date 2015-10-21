@@ -5,14 +5,15 @@ import org.springframework.stereotype.Repository;
 
 import br.gov.df.emater.aterwebsrv.modelo.teste.Teste;
 
-@Repository("testeDao")
+@Repository("TesteDao")
 public interface TesteDao extends JpaRepository<Teste, Long> {
 
-//	public Teste findByNome(String nome);
+	// public Teste findByNome(String nome);
 
-//	@Query(value = "SELECT count(*) FROM teste.teste WHERE nome like :nome", nativeQuery = true)
-//	public Integer contarPorNome(@Param("nome") String nome);
+	// @Query(value = "SELECT count(*) FROM teste.teste WHERE nome like :nome",
+	// nativeQuery = true)
+	// public Integer contarPorNome(@Param("nome") String nome);
 
-//	public Integer countByNomeContainingIgnoreCase(String nome);
+	// public Integer countByNomeContainingIgnoreCase(String nome);
 
 }

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import br.gov.df.emater.aterwebsrv.modelo.funcional.EmpregoVi;
 
-@Repository
+@Repository("EmpregoViDao")
 public interface EmpregoViDao extends JpaRepository<EmpregoVi, Long> {
 
 	List<EmpregoVi> findByEmpregadoId(Integer empregadoId);

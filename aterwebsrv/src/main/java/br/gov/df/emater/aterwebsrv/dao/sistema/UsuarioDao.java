@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 
-@Repository
+@Repository("UsuarioDao")
 public interface UsuarioDao extends JpaRepository<Usuario, Integer> {
 
 	Usuario findByUsername(String nomeUsuario);
