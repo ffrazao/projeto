@@ -21,7 +21,6 @@ public class FiltroNovoCmd implements Command {
 		System.out.println(pessoaDao.count());
 		
 		PessoaCadFiltroDto filtro = new PessoaCadFiltroDto();
-		filtro.setTipoPessoa(PessoaTipo.PF);
 		context.put("resultado", filtro);
 		System.out.println(filtro.toString());
 		return false;

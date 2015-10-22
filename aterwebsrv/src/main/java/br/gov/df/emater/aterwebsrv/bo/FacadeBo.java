@@ -7,6 +7,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.df.emater.aterwebsrv.modelo.dto.PessoaCadFiltroDto;
 
@@ -19,6 +20,7 @@ public class FacadeBo implements BeanFactoryAware {
 		return this._executar(usuario, comandoNome, null);
 	}
 
+	@Transactional
 	private _Contexto _executar(Principal usuario, String comandoNome, Object requisicao) throws Exception {
 		_Contexto result = new _Contexto(usuario, comandoNome, requisicao);
 		this._getComando(comandoNome).execute(result);
@@ -29,10 +31,12 @@ public class FacadeBo implements BeanFactoryAware {
 		return (Command) this.beanFactory.getBean(comandoNome);
 	}
 
+	@Transactional
 	public _Contexto pessoaFiltroExecutar(Principal usuario, PessoaCadFiltroDto filtro) throws Exception {
 		return this._executar(usuario, "PessoaFiltroExecutarCh", filtro);
 	}
 
+	@Transactional
 	public _Contexto pessoaFiltroNovo(Principal usuario) throws Exception {
 		return this._executar(usuario, "PessoaFiltroNovoCmd");
 	}

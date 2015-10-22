@@ -1,6 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.dto;
 
 import java.util.List;
+import java.util.Set;
 
 import br.gov.df.emater.aterwebsrv.modelo.ater.Setor;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.ConfirmacaoOpcional;
@@ -69,7 +70,7 @@ public class PessoaCadFiltroDto implements FiltroDto {
 
 	private Integer registrosPagina;
 
-	private PessoaTipo tipoPessoa;
+	private Set<PessoaTipo> tipoPessoa;
 
 	public String getCnpj() {
 		return cnpj;
@@ -176,7 +177,7 @@ public class PessoaCadFiltroDto implements FiltroDto {
 		return registrosPagina;
 	}
 
-	public PessoaTipo getTipoPessoa() {
+	public Set<PessoaTipo> getTipoPessoa() {
 		return tipoPessoa;
 	}
 
@@ -292,7 +293,7 @@ public class PessoaCadFiltroDto implements FiltroDto {
 		this.registrosPagina = registrosPagina;
 	}
 
-	public void setTipoPessoa(PessoaTipo tipoPessoa) {
+	public void setTipoPessoa(Set<PessoaTipo> tipoPessoa) {
 		this.tipoPessoa = tipoPessoa;
 	}
 }

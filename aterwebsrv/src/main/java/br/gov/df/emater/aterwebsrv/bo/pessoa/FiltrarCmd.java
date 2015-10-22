@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaDao;
+import br.gov.df.emater.aterwebsrv.modelo.dto.PessoaCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 
 @Service("PessoaFiltrarCmd")
@@ -19,8 +20,9 @@ public class FiltrarCmd extends _Comando {
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		System.out.println("Filtrando pessoa...");
+		PessoaCadFiltroDto filtro = (PessoaCadFiltroDto) contexto.getRequisicao();
 		List<Pessoa> result = null;
-		result = pessoaDao.findAll();
+		result = pessoaDao.filtrar(filtro);
 		contexto.setResposta(result);
 		return false;
 	}
