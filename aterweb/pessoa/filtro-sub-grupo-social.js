@@ -6,10 +6,10 @@
         function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, utilSrv, mensagemSrv) {
             // inicializacao
             var init = function() {
-                if (!angular.isObject($scope.cadastro.filtro.grupoSocial)) {
-                    $scope.cadastro.filtro.grupoSocial = [];
+                if (!angular.isObject($scope.cadastro.filtro.grupoSocialList)) {
+                    $scope.cadastro.filtro.grupoSocialList = [];
                 }
-                $scope.subGrupoSocialNvg = new FrzNavegadorParams($scope.cadastro.filtro.grupoSocial);
+                $scope.subGrupoSocialNvg = new FrzNavegadorParams($scope.cadastro.filtro.grupoSocialList);
             };
             if (!$modalInstance) {
                 init();
@@ -257,13 +257,13 @@
                 // processar retorno da modal
                 modalInstance.result.then(function(cadastroModificado) {
                     // processar o retorno positivo da modal
-                    if (!$scope.cadastro.filtro.grupoSocial) {
-                        $scope.cadastro.filtro.grupoSocial = [];
+                    if (!$scope.cadastro.filtro.grupoSocialList) {
+                        $scope.cadastro.filtro.grupoSocialList = [];
                     }
                     for (var i in cadastroModificado) {
-                        $scope.cadastro.filtro.grupoSocial.push(cadastroModificado[i]);
+                        $scope.cadastro.filtro.grupoSocialList.push(cadastroModificado[i]);
                     }
-                    $scope.subGrupoSocialNvg.setDados($scope.cadastro.filtro.grupoSocial);
+                    $scope.subGrupoSocialNvg.setDados($scope.cadastro.filtro.grupoSocialList);
                 }, function() {
                     // processar o retorno negativo da modal
                 });

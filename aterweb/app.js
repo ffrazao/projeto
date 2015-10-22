@@ -358,7 +358,7 @@ angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'to
             scp.navegador.setDados(scp.cadastro.lista);
             scp.navegador.submitido = false;
         }).error(function(erro){
-            toastr.error(error, 'Erro ao filtrar');
+            toastr.error(erro, 'Erro ao filtrar');
         });
 
     };

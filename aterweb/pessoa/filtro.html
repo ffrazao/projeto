@@ -3,7 +3,7 @@
     <div class="panel-body">
         <form class="form-horizontal" name="frm.filtro" novalidate>
             <fieldset>
-                <legend>Dados Pessoais</legend>
+                <legend>Dados Pessoais/{{cadastro.filtro}}/</legend>
                 <!-- Text input-->
                 <div class="form-group" title="Razao Social/Sigla ou Nome/Apelido">
                     <label class="col-md-4 control-label" for="nome">
@@ -61,81 +61,81 @@
                 </div>
                 <!-- Multiple Checkboxes (inline) -->
                 <div class="form-group" title="Gênero da Pessoa" ng-hide="cadastro.filtro.tipoPessoa.length === 1 && cadastro.filtro.tipoPessoa.indexOf('PJ') >= 0">
-                    <label class="col-md-4 control-label" for="genero">Gênero da Pessoa</label>
+                    <label class="col-md-4 control-label" for="pessoaGenero">Gênero da Pegessoa</label>
                     <div class="col-md-6">
-                        <label class="checkbox-inline" for="genero-1">
-                            <input type="checkbox" name="genero" id="genero-1" checklist-model="cadastro.filtro.genero" checklist-value="'M'">
+                        <label class="checkbox-inline" for="pessoaGenero-1">
+                            <input type="checkbox" name="pessoaGenero" id="pessoaGenero-1" checklist-model="cadastro.filtro.pessoaGenero" checklist-value="'M'">
                             Masculino
                         </label>
-                        <label class="checkbox-inline" for="genero-2">
-                            <input type="checkbox" name="genero" id="genero-2" checklist-model="cadastro.filtro.genero" checklist-value="'F'">
+                        <label class="checkbox-inline" for="pessoaGenero-2">
+                            <input type="checkbox" name="pessoaGenero" id="pessoaGenero-2" checklist-model="cadastro.filtro.pessoaGenero" checklist-value="'F'">
                             Feminino
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.genero.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.pessoaGenero.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
                 </div>
                 <!-- Multiple Checkboxes (inline) -->
                 <div class="form-group" title="Geração da Pessoa" ng-hide="cadastro.filtro.tipoPessoa.length === 1 && cadastro.filtro.tipoPessoa.indexOf('PJ') >= 0">
-                    <label class="col-md-4 control-label" for="geracao">Geração da Pessoa</label>
+                    <label class="col-md-4 control-label" for="pessoaGeracao">Geração da Pessoa</label>
                     <div class="col-md-6">
-                        <label class="checkbox-inline" for="geracao-1">
-                            <input type="checkbox" name="geracao" id="geracao-1" checklist-model="cadastro.filtro.geracao" checklist-value="'I'">
+                        <label class="checkbox-inline" for="pessoaGeracao-1">
+                            <input type="checkbox" name="pessoaGeracao" id="pessoaGeracao-1" checklist-model="cadastro.filtro.pessoaGeracao" checklist-value="'I'">
                             Idoso
                         </label>
-                        <label class="checkbox-inline" for="geracao-2">
-                            <input type="checkbox" name="geracao" id="geracao-2" checklist-model="cadastro.filtro.geracao" checklist-value="'A'">
+                        <label class="checkbox-inline" for="pessoaGeracao-2">
+                            <input type="checkbox" name="pessoaGeracao" id="pessoaGeracao-2" checklist-model="cadastro.filtro.pessoaGeracao" checklist-value="'A'">
                             Adulto
                         </label>
-                        <label class="checkbox-inline" for="geracao-3">
-                            <input type="checkbox" name="geracao" id="geracao-3" checklist-model="cadastro.filtro.geracao" checklist-value="'J'">
+                        <label class="checkbox-inline" for="pessoaGeracao-3">
+                            <input type="checkbox" name="pessoaGeracao" id="pessoaGeracao-3" checklist-model="cadastro.filtro.pessoaGeracao" checklist-value="'J'">
                             Jovem
                         </label>
-                        <label class="checkbox-inline" for="geracao-4">
-                            <input type="checkbox" name="geracao" id="geracao-4" checklist-model="cadastro.filtro.geracao" checklist-value="'C'">
+                        <label class="checkbox-inline" for="pessoaGeracao-4">
+                            <input type="checkbox" name="pessoaGeracao" id="pessoaGeracao-4" checklist-model="cadastro.filtro.pessoaGeracao" checklist-value="'C'">
                             Crianca
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.geracao.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.pessoaGeracao.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
                 </div>
                 <!-- Multiple Checkboxes (inline) -->
                 <div class="form-group" title="Situação da Pessoa">
-                    <label class="col-md-4 control-label" for="situacao">Situação da Pessoa</label>
+                    <label class="col-md-4 control-label" for="pessoaSituacao">Situação da Pessoa</label>
                     <div class="col-md-7">
-                        <label class="checkbox-inline" for="situacao-1">
-                            <input type="checkbox" name="situacao" id="situacao-1" checklist-model="cadastro.filtro.situacao" checklist-value="'A'">
+                        <label class="checkbox-inline" for="pessoaSituacao-1">
+                            <input type="checkbox" name="pessoaSituacao" id="pessoaSituacao-1" checklist-model="cadastro.filtro.pessoaSituacao" checklist-value="'A'">
                             Ativo
                         </label>
-                        <label class="checkbox-inline" for="situacao-2">
-                            <input type="checkbox" name="situacao" id="situacao-2" checklist-model="cadastro.filtro.situacao" checklist-value="'U'">
+                        <label class="checkbox-inline" for="pessoaSituacao-2">
+                            <input type="checkbox" name="pessoaSituacao" id="pessoaSituacao-2" checklist-model="cadastro.filtro.pessoaSituacao" checklist-value="'U'">
                             Inativo falta de uso
                         </label>
-                        <label class="checkbox-inline" for="situacao-3">
-                            <input type="checkbox" name="situacao" id="situacao-3" checklist-model="cadastro.filtro.situacao" checklist-value="'F'">
+                        <label class="checkbox-inline" for="pessoaSituacao-3">
+                            <input type="checkbox" name="pessoaSituacao" id="pessoaSituacao-3" checklist-model="cadastro.filtro.pessoaSituacao" checklist-value="'F'">
                             Inativo falecimento
                         </label>
-                        <label class="checkbox-inline" for="situacao-4">
-                            <input type="checkbox" name="situacao" id="situacao-4" checklist-model="cadastro.filtro.situacao" checklist-value="'O'">
+                        <label class="checkbox-inline" for="pessoaSituacao-4">
+                            <input type="checkbox" name="pessoaSituacao" id="pessoaSituacao-4" checklist-model="cadastro.filtro.pessoaSituacao" checklist-value="'O'">
                             Inativo outro motivo
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.situacao.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.pessoaSituacao.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
                 </div>
                 <!-- Textarea -->
                 <div class="form-group" title="Grupos Sociais">
-                    <label class="col-md-4 control-label" for="grupoSocial">Grupos Sociais</label>
+                    <label class="col-md-4 control-label" for="grupoSocialList">Grupos Sociais</label>
                     <div class="col-md-7">
-                        <input type="hidden" name="grupoSocial" id="grupoSocial" ng-model="cadastro.filtro.grupoSocial.length" required ng-min="1">
+                        <input type="hidden" name="grupoSocialList" id="grupoSocialList" ng-model="cadastro.filtro.grupoSocialList.length">
                         <ng-include src="'pessoa/filtro-sub-grupo-social.html'" ng-controller="FiltroSubGrupoSocialCtrl"></ng-include>
-                        <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.grupoSocial.$error.required">
+                        <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.grupoSocialList.$error.required">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             Campo Obrigatório
                         </div>
@@ -144,39 +144,39 @@
                 <legend>Beneficiário</legend>
                 <!-- Multiple Checkboxes (inline) -->
                 <div class="form-group" title="Categoria">
-                    <label class="col-md-4 control-label" for="categoria">Categoria</label>
+                    <label class="col-md-4 control-label" for="publicoAlvoCategoria">Categoria</label>
                     <div class="col-md-8">
-                        <label class="checkbox-inline" for="categoria-1">
-                            <input type="checkbox" name="categoria" id="categoria-1" checklist-model="cadastro.filtro.categoria" checklist-value="'EP'">
+                        <label class="checkbox-inline" for="publicoAlvoCategoria-1">
+                            <input type="checkbox" name="publicoAlvoCategoria" id="publicoAlvoCategoria-1" checklist-model="cadastro.filtro.publicoAlvoCategoria" checklist-value="'EP'">
                             Empreendedor Patronal
                         </label>
-                        <label class="checkbox-inline" for="categoria-2">
-                            <input type="checkbox" name="categoria" id="categoria-2" checklist-model="cadastro.filtro.categoria" checklist-value="'EF'">
+                        <label class="checkbox-inline" for="publicoAlvoCategoria-2">
+                            <input type="checkbox" name="publicoAlvoCategoria" id="publicoAlvoCategoria-2" checklist-model="cadastro.filtro.publicoAlvoCategoria" checklist-value="'EF'">
                             Empreendedor Familiar
                         </label>
-                        <label class="checkbox-inline" for="categoria-3">
-                            <input type="checkbox" name="categoria" id="categoria-3" checklist-model="cadastro.filtro.categoria" checklist-value="'HP'">
+                        <label class="checkbox-inline" for="publicoAlvoCategoria-3">
+                            <input type="checkbox" name="publicoAlvoCategoria" id="publicoAlvoCategoria-3" checklist-model="cadastro.filtro.publicoAlvoCategoria" checklist-value="'HP'">
                             Habitante Patronal
                         </label>
-                        <label class="checkbox-inline" for="categoria-4">
-                            <input type="checkbox" name="categoria" id="categoria-4" checklist-model="cadastro.filtro.categoria" checklist-value="'HF'">
+                        <label class="checkbox-inline" for="publicoAlvoCategoria-4">
+                            <input type="checkbox" name="publicoAlvoCategoria" id="publicoAlvoCategoria-4" checklist-model="cadastro.filtro.publicoAlvoCategoria" checklist-value="'HF'">
                             Habitante Familiar
                         </label>
-                        <label class="checkbox-inline" for="categoria-5">
-                            <input type="checkbox" name="categoria" id="categoria-5" checklist-model="cadastro.filtro.categoria" checklist-value="'T'">
+                        <label class="checkbox-inline" for="publicoAlvoCategoria-5">
+                            <input type="checkbox" name="publicoAlvoCategoria" id="publicoAlvoCategoria-5" checklist-model="cadastro.filtro.publicoAlvoCategoria" checklist-value="'T'">
                             Trabalhador
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.categoria.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.publicoAlvoCategoria.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
                 </div>
                 <!-- Select Basic -->
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="setor">Setor</label>
+                    <label class="col-md-4 control-label" for="publicoAlvoSetor">Setor</label>
                     <div class="col-md-4">
-                        <select id="setor" name="setor" class="form-control">
+                        <select id="publicoAlvoSetor" name="publicoAlvoSetor" class="form-control" ng-model="cadastro.filtro.publicoAlvoSetor">
                             <option value="1">A</option>
                             <option value="2">B</option>
                         </select>
@@ -184,9 +184,9 @@
                 </div>
                 <!-- Select Basic -->
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="espacoRural">Espaco Rural</label>
+                    <label class="col-md-4 control-label" for="publicoAlvoPropriedadeUtilizacaoEspacoRural">Espaco Rural</label>
                     <div class="col-md-4">
-                        <select id="espacoRural" name="espacoRural" class="form-control">
+                        <select id="publicoAlvoPropriedadeUtilizacaoEspacoRural" name="publicoAlvoPropriedadeUtilizacaoEspacoRural" class="form-control" ng-model="cadastro.filtro.publicoAlvoPropriedadeUtilizacaoEspacoRural">
                             <option value="1">A</option>
                             <option value="2">B</option>
                         </select>
@@ -204,238 +204,238 @@
                 </div>
                 <!-- Multiple Checkboxes (inline) -->
                 <div class="form-group" title="ATER">
-                    <label class="col-md-4 control-label" for="ater">ATER</label>
+                    <label class="col-md-4 control-label" for="publicoAlvoAter">ATER</label>
                     <div class="col-md-6">
-                        <label class="checkbox-inline" for="ater-1">
-                            <input type="checkbox" name="ater" id="ater-1" checklist-model="cadastro.filtro.ater" checklist-value="'S'">
+                        <label class="checkbox-inline" for="publicoAlvoAter-1">
+                            <input type="checkbox" name="publicoAlvoAter" id="publicoAlvoAter-1" checklist-model="cadastro.filtro.publicoAlvoAter" checklist-value="'S'">
                             Sim
                         </label>
-                        <label class="checkbox-inline" for="ater-2">
-                            <input type="checkbox" name="ater" id="ater-2" checklist-model="cadastro.filtro.ater" checklist-value="'N'">
+                        <label class="checkbox-inline" for="publicoAlvoAter-2">
+                            <input type="checkbox" name="publicoAlvoAter" id="publicoAlvoAter-2" checklist-model="cadastro.filtro.publicoAlvoAter" checklist-value="'N'">
                             Nao
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.ater.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.publicoAlvoAter.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
                 </div>
                 <!-- Multiple Checkboxes (inline) -->
                 <div class="form-group" title="DAP">
-                    <label class="col-md-4 control-label" for="dap">DAP</label>
+                    <label class="col-md-4 control-label" for="publicoAlvoDap">DAP</label>
                     <div class="col-md-6">
-                        <label class="checkbox-inline" for="dap-1">
-                            <input type="checkbox" name="dap" id="dap-1" checklist-model="cadastro.filtro.dap" checklist-value="'S'">
+                        <label class="checkbox-inline" for="publicoAlvoDap-1">
+                            <input type="checkbox" name="publicoAlvoDap" id="publicoAlvoDap-1" checklist-model="cadastro.filtro.publicoAlvoDap" checklist-value="'S'">
                             Sim
                         </label>
-                        <label class="checkbox-inline" for="dap-2">
-                            <input type="checkbox" name="dap" id="dap-2" checklist-model="cadastro.filtro.dap" checklist-value="'N'">
+                        <label class="checkbox-inline" for="publicoAlvoDap-2">
+                            <input type="checkbox" name="publicoAlvoDap" id="publicoAlvoDap-2" checklist-model="cadastro.filtro.publicoAlvoDap" checklist-value="'N'">
                             Nao
                         </label>
-                        <label class="checkbox-inline" for="dap-3">
-                            <input type="checkbox" name="dap" id="dap-3" checklist-model="cadastro.filtro.dap" checklist-value="'ND'">
+                        <label class="checkbox-inline" for="publicoAlvoDap-3">
+                            <input type="checkbox" name="publicoAlvoDap" id="publicoAlvoDap-3" checklist-model="cadastro.filtro.publicoAlvoDap" checklist-value="'ND'">
                             Nao Dapeavel
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.dap.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.publicoAlvoDap.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
                 </div>
                 <!-- Multiple Checkboxes (inline) -->
                 <div class="form-group" title="Compras Institucionais">
-                    <label class="col-md-4 control-label" for="comprasInstitucionais">Compras Institucionais</label>
+                    <label class="col-md-4 control-label" for="publicoAlvoComprasInstitucionais">Compras Institucionais</label>
                     <div class="col-md-6">
-                        <label class="checkbox-inline" for="comprasInstitucionais-1">
-                            <input type="checkbox" name="comprasInstitucionais" id="comprasInstitucionais-1" checklist-model="cadastro.filtro.comprasInstitucionais" checklist-value="'S'">
+                        <label class="checkbox-inline" for="publicoAlvoComprasInstitucionais-1">
+                            <input type="checkbox" name="publicoAlvoComprasInstitucionais" id="publicoAlvoComprasInstitucionais-1" checklist-model="cadastro.filtro.publicoAlvoComprasInstitucionais" checklist-value="'S'">
                             Sim
                         </label>
-                        <label class="checkbox-inline" for="comprasInstitucionais-2">
-                            <input type="checkbox" name="comprasInstitucionais" id="comprasInstitucionais-2" checklist-model="cadastro.filtro.comprasInstitucionais" checklist-value="'N'">
+                        <label class="checkbox-inline" for="publicoAlvoComprasInstitucionais-2">
+                            <input type="checkbox" name="publicoAlvoComprasInstitucionais" id="publicoAlvoComprasInstitucionais-2" checklist-model="cadastro.filtro.publicoAlvoComprasInstitucionais" checklist-value="'N'">
                             Nao
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.comprasInstitucionais.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.publicoAlvoComprasInstitucionais.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
                 </div>
                 <!-- Multiple Checkboxes (inline) -->
                 <div class="form-group" title="Beneficio Social">
-                    <label class="col-md-4 control-label" for="beneficioSocial">Beneficio Social</label>
+                    <label class="col-md-4 control-label" for="publicoAlvoBeneficioSocial">Beneficio Social</label>
                     <div class="col-md-6">
-                        <label class="checkbox-inline" for="beneficioSocial-1">
-                            <input type="checkbox" name="beneficioSocial" id="beneficioSocial-1" checklist-model="cadastro.filtro.beneficioSocial" checklist-value="'S'">
+                        <label class="checkbox-inline" for="publicoAlvoBeneficioSocial-1">
+                            <input type="checkbox" name="publicoAlvoBeneficioSocial" id="publicoAlvoBeneficioSocial-1" checklist-model="cadastro.filtro.publicoAlvoBeneficioSocial" checklist-value="'S'">
                             Sim
                         </label>
-                        <label class="checkbox-inline" for="beneficioSocial-2">
-                            <input type="checkbox" name="beneficioSocial" id="beneficioSocial-2" checklist-model="cadastro.filtro.beneficioSocial" checklist-value="'N'">
+                        <label class="checkbox-inline" for="publicoAlvoBeneficioSocial-2">
+                            <input type="checkbox" name="publicoAlvoBeneficioSocial" id="publicoAlvoBeneficioSocial-2" checklist-model="cadastro.filtro.publicoAlvoBeneficioSocial" checklist-value="'N'">
                             Nao
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.beneficioSocial.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.publicoAlvoBeneficioSocial.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
                 </div>
                 <!-- Multiple Checkboxes (inline) -->
                 <div class="form-group" title="Incra">
-                    <label class="col-md-4 control-label" for="incra">Incra</label>
+                    <label class="col-md-4 control-label" for="publicoAlvoIncra">Incra</label>
                     <div class="col-md-6">
-                        <label class="checkbox-inline" for="incra-1">
-                            <input type="checkbox" name="incra" id="incra-1" checklist-model="cadastro.filtro.incra" checklist-value="'S'">
+                        <label class="checkbox-inline" for="publicoAlvoIncra-1">
+                            <input type="checkbox" name="publicoAlvoIncra" id="publicoAlvoIncra-1" checklist-model="cadastro.filtro.publicoAlvoIncra" checklist-value="'S'">
                             Sim
                         </label>
-                        <label class="checkbox-inline" for="incra-2">
-                            <input type="checkbox" name="incra" id="incra-2" checklist-model="cadastro.filtro.incra" checklist-value="'N'">
+                        <label class="checkbox-inline" for="publicoAlvoIncra-2">
+                            <input type="checkbox" name="publicoAlvoIncra" id="publicoAlvoIncra-2" checklist-model="cadastro.filtro.publicoAlvoIncra" checklist-value="'N'">
                             Nao
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.incra.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.publicoAlvoIncra.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
                 </div>
                 <!-- Multiple Checkboxes (inline) -->
                 <div class="form-group" title="Atepa">
-                    <label class="col-md-4 control-label" for="atepa">Atepa</label>
+                    <label class="col-md-4 control-label" for="publicoAlvoAtepa">Atepa</label>
                     <div class="col-md-6">
-                        <label class="checkbox-inline" for="atepa-1">
-                            <input type="checkbox" name="atepa" id="atepa-1" checklist-model="cadastro.filtro.atepa" checklist-value="'S'">
+                        <label class="checkbox-inline" for="publicoAlvoAtepa-1">
+                            <input type="checkbox" name="publicoAlvoAtepa" id="publicoAlvoAtepa-1" checklist-model="cadastro.filtro.publicoAlvoAtepa" checklist-value="'S'">
                             Sim
                         </label>
-                        <label class="checkbox-inline" for="atepa-2">
-                            <input type="checkbox" name="atepa" id="atepa-2" checklist-model="cadastro.filtro.atepa" checklist-value="'N'">
+                        <label class="checkbox-inline" for="publicoAlvoAtepa-2">
+                            <input type="checkbox" name="publicoAlvoAtepa" id="publicoAlvoAtepa-2" checklist-model="cadastro.filtro.publicoAlvoAtepa" checklist-value="'N'">
                             Nao
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.atepa.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.publicoAlvoAtepa.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
                 </div>
                 <!-- Multiple Checkboxes (inline) -->
                 <div class="form-group" title="BSM">
-                    <label class="col-md-4 control-label" for="bsm">BSM</label>
+                    <label class="col-md-4 control-label" for="publicoAlvoBsm">BSM</label>
                     <div class="col-md-6">
-                        <label class="checkbox-inline" for="bsm-1">
-                            <input type="checkbox" name="bsm" id="bsm-1" checklist-model="cadastro.filtro.bsm" checklist-value="'S'">
+                        <label class="checkbox-inline" for="publicoAlvoBsm-1">
+                            <input type="checkbox" name="publicoAlvoBsm" id="publicoAlvoBsm-1" checklist-model="cadastro.filtro.publicoAlvoBsm" checklist-value="'S'">
                             Sim
                         </label>
-                        <label class="checkbox-inline" for="bsm-2">
-                            <input type="checkbox" name="bsm" id="bsm-2" checklist-model="cadastro.filtro.bsm" checklist-value="'N'">
+                        <label class="checkbox-inline" for="publicoAlvoBsm-2">
+                            <input type="checkbox" name="publicoAlvoBsm" id="publicoAlvoBsm-2" checklist-model="cadastro.filtro.publicoAlvoBsm" checklist-value="'N'">
                             Nao
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.bsm.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.publicoAlvoBsm.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
                 </div>
                 <!-- Multiple Checkboxes (inline) -->
                 <div class="form-group" title="Sustentabilidade">
-                    <label class="col-md-4 control-label" for="sustentabilidade">Sustentabilidade</label>
+                    <label class="col-md-4 control-label" for="publicoAlvoSustentabilidade">Sustentabilidade</label>
                     <div class="col-md-6">
-                        <label class="checkbox-inline" for="sustentabilidade-1">
-                            <input type="checkbox" name="sustentabilidade" id="sustentabilidade-1" checklist-model="cadastro.filtro.sustentabilidade" checklist-value="'S'">
+                        <label class="checkbox-inline" for="publicoAlvoSustentabilidade-1">
+                            <input type="checkbox" name="publicoAlvoSustentabilidade" id="publicoAlvoSustentabilidade-1" checklist-model="cadastro.filtro.publicoAlvoSustentabilidade" checklist-value="'S'">
                             Sim
                         </label>
-                        <label class="checkbox-inline" for="sustentabilidade-2">
-                            <input type="checkbox" name="sustentabilidade" id="sustentabilidade-2" checklist-model="cadastro.filtro.sustentabilidade" checklist-value="'N'">
+                        <label class="checkbox-inline" for="publicoAlvoSustentabilidade-2">
+                            <input type="checkbox" name="publicoAlvoSustentabilidade" id="publicoAlvoSustentabilidade-2" checklist-model="cadastro.filtro.publicoAlvoSustentabilidade" checklist-value="'N'">
                             Nao
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.sustentabilidade.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.publicoAlvoSustentabilidade.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
                 </div>
                 <!-- Multiple Checkboxes (inline) -->
                 <div class="form-group" title="IPA Agricola">
-                    <label class="col-md-4 control-label" for="ipaAgricola">IPA Agricola</label>
+                    <label class="col-md-4 control-label" for="publicoAlvoIpaAgricola">IPA Agricola</label>
                     <div class="col-md-6">
-                        <label class="checkbox-inline" for="ipaAgricola-1">
-                            <input type="checkbox" name="ipaAgricola" id="ipaAgricola-1" checklist-model="cadastro.filtro.ipaAgricola" checklist-value="'S'">
+                        <label class="checkbox-inline" for="publicoAlvoIpaAgricola-1">
+                            <input type="checkbox" name="publicoAlvoIpaAgricola" id="publicoAlvoIpaAgricola-1" checklist-model="cadastro.filtro.publicoAlvoIpaAgricola" checklist-value="'S'">
                             Sim
                         </label>
-                        <label class="checkbox-inline" for="ipaAgricola-2">
-                            <input type="checkbox" name="ipaAgricola" id="ipaAgricola-2" checklist-model="cadastro.filtro.ipaAgricola" checklist-value="'N'">
+                        <label class="checkbox-inline" for="publicoAlvoIpaAgricola-2">
+                            <input type="checkbox" name="publicoAlvoIpaAgricola" id="publicoAlvoIpaAgricola-2" checklist-model="cadastro.filtro.publicoAlvoIpaAgricola" checklist-value="'N'">
                             Nao
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.ipaAgricola.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.publicoAlvoIpaAgricola.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
                 </div>
                 <!-- Multiple Checkboxes (inline) -->
                 <div class="form-group" title="IPA Animal">
-                    <label class="col-md-4 control-label" for="ipaAnimal">IPA Animal</label>
+                    <label class="col-md-4 control-label" for="publicoAlvoIpaAnimal">IPA Animal</label>
                     <div class="col-md-6">
-                        <label class="checkbox-inline" for="ipaAnimal-1">
-                            <input type="checkbox" name="ipaAnimal" id="ipaAnimal-1" checklist-model="cadastro.filtro.ipaAnimal" checklist-value="'S'">
+                        <label class="checkbox-inline" for="publicoAlvoIpaAnimal-1">
+                            <input type="checkbox" name="publicoAlvoIpaAnimal" id="publicoAlvoIpaAnimal-1" checklist-model="cadastro.filtro.publicoAlvoIpaAnimal" checklist-value="'S'">
                             Sim
                         </label>
-                        <label class="checkbox-inline" for="ipaAnimal-2">
-                            <input type="checkbox" name="ipaAnimal" id="ipaAnimal-2" checklist-model="cadastro.filtro.ipaAnimal" checklist-value="'N'">
+                        <label class="checkbox-inline" for="publicoAlvoIpaAnimal-2">
+                            <input type="checkbox" name="publicoAlvoIpaAnimal" id="publicoAlvoIpaAnimal-2" checklist-model="cadastro.filtro.publicoAlvoIpaAnimal" checklist-value="'N'">
                             Nao
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.ipaAnimal.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.publicoAlvoIpaAnimal.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
                 </div>
                 <!-- Multiple Checkboxes (inline) -->
                 <div class="form-group" title="IPA Nao Agricola">
-                    <label class="col-md-4 control-label" for="ipaNaoAgricola">IPA Nao Agricola</label>
+                    <label class="col-md-4 control-label" for="publicoAlvoIpaNaoAgricola">IPA Nao Agricola</label>
                     <div class="col-md-6">
-                        <label class="checkbox-inline" for="ipaNaoAgricola-1">
-                            <input type="checkbox" name="ipaNaoAgricola" id="ipaNaoAgricola-1" checklist-model="cadastro.filtro.ipaNaoAgricola" checklist-value="'S'">
+                        <label class="checkbox-inline" for="publicoAlvoIpaNaoAgricola-1">
+                            <input type="checkbox" name="publicoAlvoIpaNaoAgricola" id="publicoAlvoIpaNaoAgricola-1" checklist-model="cadastro.filtro.publicoAlvoIpaNaoAgricola" checklist-value="'S'">
                             Sim
                         </label>
-                        <label class="checkbox-inline" for="ipaNaoAgricola-2">
-                            <input type="checkbox" name="ipaNaoAgricola" id="ipaNaoAgricola-2" checklist-model="cadastro.filtro.ipaNaoAgricola" checklist-value="'N'">
+                        <label class="checkbox-inline" for="publicoAlvoIpaNaoAgricola-2">
+                            <input type="checkbox" name="publicoAlvoIpaNaoAgricola" id="publicoAlvoIpaNaoAgricola-2" checklist-model="cadastro.filtro.publicoAlvoIpaNaoAgricola" checklist-value="'N'">
                             Nao
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.ipaNaoAgricola.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.publicoAlvoIpaNaoAgricola.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
                 </div>
                 <!-- Multiple Checkboxes (inline) -->
                 <div class="form-group" title="IPA Flores">
-                    <label class="col-md-4 control-label" for="ipaFlores">IPA Flores</label>
+                    <label class="col-md-4 control-label" for="publicoAlvoIpaFlores">IPA Flores</label>
                     <div class="col-md-6">
-                        <label class="checkbox-inline" for="ipaFlores-1">
-                            <input type="checkbox" name="ipaFlores" id="ipaFlores-1" checklist-model="cadastro.filtro.ipaFlores" checklist-value="'S'">
+                        <label class="checkbox-inline" for="publicoAlvoIpaFlores-1">
+                            <input type="checkbox" name="publicoAlvoIpaFlores" id="publicoAlvoIpaFlores-1" checklist-model="cadastro.filtro.publicoAlvoIpaFlores" checklist-value="'S'">
                             Sim
                         </label>
-                        <label class="checkbox-inline" for="ipaFlores-2">
-                            <input type="checkbox" name="ipaFlores" id="ipaFlores-2" checklist-model="cadastro.filtro.ipaFlores" checklist-value="'N'">
+                        <label class="checkbox-inline" for="publicoAlvoIpaFlores-2">
+                            <input type="checkbox" name="publicoAlvoIpaFlores" id="publicoAlvoIpaFlores-2" checklist-model="cadastro.filtro.publicoAlvoIpaFlores" checklist-value="'N'">
                             Nao
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.ipaFlores.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.publicoAlvoIpaFlores.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
                 </div>
                 <!-- Multiple Checkboxes (inline) -->
-                <div class="form-group" title="Organizacao">
-                    <label class="col-md-4 control-label" for="organizacao">Organizacao</label>
+                <div class="form-group" title="Organização">
+                    <label class="col-md-4 control-label" for="publicoAlvoOrganizacao">Organização</label>
                     <div class="col-md-6">
-                        <label class="checkbox-inline" for="organizacao-1">
-                            <input type="checkbox" name="organizacao" id="organizacao-1" checklist-model="cadastro.filtro.organizacao" checklist-value="'S'">
+                        <label class="checkbox-inline" for="publicoAlvoOrganizacao-1">
+                            <input type="checkbox" name="publicoAlvoOrganizacao" id="publicoAlvoOrganizacao-1" checklist-model="cadastro.filtro.publicoAlvoOrganizacao" checklist-value="'S'">
                             Sim
                         </label>
-                        <label class="checkbox-inline" for="organizacao-2">
-                            <input type="checkbox" name="organizacao" id="organizacao-2" checklist-model="cadastro.filtro.organizacao" checklist-value="'N'">
+                        <label class="checkbox-inline" for="publicoAlvoOrganizacao-2">
+                            <input type="checkbox" name="publicoAlvoOrganizacao" id="publicoAlvoOrganizacao-2" checklist-model="cadastro.filtro.publicoAlvoOrganizacao" checklist-value="'N'">
                             Nao
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.organizacao.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.publicoAlvoOrganizacao.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>

@@ -9,6 +9,8 @@
         function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $modal, $log, $modalInstance, modalCadastro, utilSrv, mensagemSrv, PessoaSrv) {
             // inicializacao
             $scope.crudInit($scope, $state, null, pNmFormulario, PessoaSrv);
+            $scope.cadastro.filtro['numeroPagina'] = $scope.navegador.paginaAtual;
+            $scope.cadastro.filtro['registrosPagina'] = $scope.navegador.tamanhoPagina;
 
             // código para verificar se o modal está ou não ativo
             $scope.verificaEstado($modalInstance, $scope, 'filtro', modalCadastro, pNmFormulario);
