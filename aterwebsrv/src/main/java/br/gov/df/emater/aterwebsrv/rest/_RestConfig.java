@@ -1,66 +1,81 @@
 package br.gov.df.emater.aterwebsrv.rest;
 
+import java.util.List;
+
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
 import org.apache.tomcat.util.descriptor.web.SecurityCollection;
 import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
-import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
 import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
 
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = { "br.gov.df.emater.aterwebsrv" })
-public class _RestConfig extends WebMvcAutoConfiguration/*DelegatingWebMvcConfiguration*/ {
+public class _RestConfig extends WebMvcConfigurerAdapter /*
+															 * WebMvcAutoConfiguration
+															 * DelegatingWebMvcConfiguration
+															 */ {
 
-//	@Override
-//	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-//		configurer.enable();
-//	}
-	
-	// inicio redirecionamento http para https
+	// @Override
+	// public void
+	// configureDefaultServletHandling(DefaultServletHandlerConfigurer
+	// configurer) {
+	// configurer.enable();
+	// }
+
+	@Override
+	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+
+		Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
+		builder.serializationInclusion(Include.NON_NULL);
+		builder.serializationInclusion(Include.NON_EMPTY);
+		builder.failOnEmptyBeans(false);
+		builder.failOnUnknownProperties(false);
+		builder.indentOutput(true).dateFormat(new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss"));
+		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter(builder.build());
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.setSerializationInclusion(Include.NON_NULL);
+		mapper.setSerializationInclusion(Include.NON_EMPTY);
+		mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		mapper.registerModule(new Hibernate4Module());
+		converter.setObjectMapper(mapper);
+		
+		converters.add(converter);
+		
+		super.configureMessageConverters(converters);
+	}
+
 	@Bean
-	public EmbeddedServletContainerFactory servletContainer() {
-		TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory() {
-			@Override
-			protected void postProcessContext(Context context) {
-				SecurityConstraint securityConstraint = new SecurityConstraint();
-				securityConstraint.setUserConstraint("CONFIDENTIAL");
-				SecurityCollection collection = new SecurityCollection();
-				collection.addPattern("/*");
-				securityConstraint.addCollection(collection);
-				context.addConstraint(securityConstraint);
-			}
-		};
-
-		tomcat.addAdditionalTomcatConnectors(initiateHttpConnector());
-		return tomcat;
+	public FilterRegistrationBean filterRegistrationBean() {
+		// cuidado com o filtro a seguir, pode causar problemas com o spring
+		// security
+		FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+		CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+		characterEncodingFilter.setEncoding("UTF-8");
+		characterEncodingFilter.setForceEncoding(true);
+		characterEncodingFilter.setBeanName("CharacterEncodingFilter");
+		registrationBean.setFilter(characterEncodingFilter);
+		return registrationBean;
 	}
-
-	private Connector initiateHttpConnector() {
-		Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
-		connector.setScheme("http");
-		connector.setPort(8080);
-		connector.setSecure(false);
-		connector.setRedirectPort(8443);
-
-		return connector;
-	}
-	// fim redirecionamento http para https
 
 	// @Bean
 	// public ContentNegotiatingViewResolver contentViewResolver() throws
@@ -86,57 +101,45 @@ public class _RestConfig extends WebMvcAutoConfiguration/*DelegatingWebMvcConfig
 	// contentViewResolver.setDefaultViews(Arrays.<View> asList(defaultView));
 	// return contentViewResolver;
 	// }
-	
-	@Bean
-	@Primary
-	public HttpMessageConverter<Object> mappingJackson2HttpMessageConverter() {
-		Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
-		builder.serializationInclusion(Include.NON_NULL);
-		builder.serializationInclusion(Include.NON_EMPTY);
-		builder.failOnEmptyBeans(false);
-		builder.failOnUnknownProperties(false);
-		builder.indentOutput(true).dateFormat(new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss"));
-		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter(builder.build());
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.setSerializationInclusion(Include.NON_NULL);
-		mapper.setSerializationInclusion(Include.NON_EMPTY);
-		converter.setObjectMapper(mapper);
-		return converter;
+
+	private Connector initiateHttpConnector() {
+		// inicio redirecionamento http para https
+		Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
+		connector.setScheme("http");
+		connector.setPort(8080);
+		connector.setSecure(false);
+		connector.setRedirectPort(8443);
+		// fim redirecionamento http para https
+
+		return connector;
 	}
 
-	// @Override
-	// public void configureMessageConverters(List<HttpMessageConverter<?>>
-	// converters) {
-	// Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
-	// builder.serializationInclusion(Include.NON_NULL);
-	// builder.serializationInclusion(Include.NON_EMPTY);
-	//
-	// builder.failOnEmptyBeans(false);
-	// builder.failOnUnknownProperties(false);
-	//
-	// builder.indentOutput(true).dateFormat(new
-	// java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss"));
-	// converters.add(new MappingJackson2HttpMessageConverter(builder.build()));
-	// }
+	@Bean
+	public EmbeddedServletContainerFactory servletContainer() {
+		// inicio redirecionamento http para https
+		TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory() {
+			@Override
+			protected void postProcessContext(Context context) {
+				SecurityConstraint securityConstraint = new SecurityConstraint();
+				securityConstraint.setUserConstraint("CONFIDENTIAL");
+				SecurityCollection collection = new SecurityCollection();
+				collection.addPattern("/*");
+				securityConstraint.addCollection(collection);
+				context.addConstraint(securityConstraint);
+			}
+		};
+
+		tomcat.addAdditionalTomcatConnectors(initiateHttpConnector());
+		
+		// fim redirecionamento http para https
+		return tomcat;
+	}
 
 	@Bean(name = "multipartResolver")
 	public CommonsMultipartResolver setupCommonsMultipartResolver() {
 		// Manipulação de Arquivos
 		CommonsMultipartResolver result = new CommonsMultipartResolver();
 		return result;
-	}
-
-	@Bean
-	public FilterRegistrationBean filterRegistrationBean() {
-		// cuidado com o filtro a seguir, pode causar problemas com o spring
-		// security
-		FilterRegistrationBean registrationBean = new FilterRegistrationBean();
-		CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
-		characterEncodingFilter.setEncoding("UTF-8");
-		characterEncodingFilter.setForceEncoding(true);
-		characterEncodingFilter.setBeanName("CharacterEncodingFilter");
-		registrationBean.setFilter(characterEncodingFilter);
-		return registrationBean;
 	}
 
 	// TODO Habilitar o log4j

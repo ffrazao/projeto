@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 // para evitar o acesso recursivo as classes do conjunto de objetos serializados
 // @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class,
 // property = "@jsonId")
-@JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@jsonId")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@jsonId")
 public class EntidadeBase implements Serializable {
 
 	public static final String ATER_SCHEMA = "ater";

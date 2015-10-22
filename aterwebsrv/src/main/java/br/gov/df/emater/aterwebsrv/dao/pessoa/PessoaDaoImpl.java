@@ -11,6 +11,7 @@ import javax.persistence.TypedQuery;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.dto.PessoaCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 
@@ -27,13 +28,11 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 
 		StringBuilder sql = new StringBuilder();
 		sql.append("select p from Pessoa p").append("\n");
-//		sql.append("join p.pessoaFisica pf").append("\n");
-//		sql.append("join p.pessoaJuridica pj").append("\n");
 		sql.append("where 1 = 1").append("\n");
 		if (!StringUtils.isEmpty(filtro.getNome())) {
-			params.add(filtro.getNome());
+			params.add(String.format("%%%s%%", filtro.getNome()));
 			sql.append("and (p.nome like ?").append(params.size());
-			params.add(filtro.getNome());
+			params.add(String.format("%%%s%%", filtro.getNome()));
 			sql.append(" or p.apelidoSigla like ?").append(params.size()).append(")").append("\n");
 		}
 		if (filtro.getTipoPessoa() != null && !(Arrays.asList(0, 2).contains(filtro.getTipoPessoa().size()))) {
@@ -41,12 +40,11 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 			sql.append("and p.pessoaTipo = ?").append(params.size()).append("\n");;
 		}
 		if (!StringUtils.isEmpty(filtro.getCpf())) {
-			//params.add(filtro.getCpf());
-			params.add("723.553.427-33");
+			params.add(UtilitarioString.formataCpf(filtro.getCpf()));
 			sql.append("and p.cpf = ?").append(params.size()).append("\n");;
 		}
 		if (!StringUtils.isEmpty(filtro.getCnpj())) {
-			params.add(filtro.getCnpj());
+			params.add(UtilitarioString.formataCnpj(filtro.getCnpj()));
 			sql.append("and p.cnpj = ?").append(params.size()).append("\n");;
 		}
 		sql.append("order by p.nome, p.apelidoSigla").append("\n");

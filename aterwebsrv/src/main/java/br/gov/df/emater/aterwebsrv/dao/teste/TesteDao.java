@@ -14,6 +14,6 @@ public interface TesteDao extends JpaRepository<Teste, Long> {
 	// nativeQuery = true)
 	// public Integer contarPorNome(@Param("nome") String nome);
 
-	// public Integer countByNomeContainingIgnoreCase(String nome);
+	 public Integer countByNomeContainingIgnoreCase(String nome);
 
 }

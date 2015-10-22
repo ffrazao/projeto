@@ -51,3 +51,7 @@ Quais são as duas letras do código do país desta unidade?
   [Unknown]:  BR
 CN=EMATER DF, OU=GETIN, O=EMATER, L=Brasilia, ST=DF, C=BR Está correto?
   [não]:  s
+
+  
+dia 22/10/2015 A classe AbstractJackson2HttpMessageConverter linha 216 é responsável por escrever a resposta JSON
+               A classe DefaultSerializerProvider linha 128 também

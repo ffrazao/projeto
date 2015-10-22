@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import br.gov.df.emater.aterwebsrv.modelo.ater.Setor;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.ConfirmacaoOpcional;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGeracao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaTipo;
@@ -28,37 +28,37 @@ public class PessoaCadFiltroDto implements FiltroDto {
 
 	private Integer numeroPagina;
 
-	private Sexo pessoaGenero;
+	private Set<Sexo> pessoaGenero;
 
 	private PessoaGeracao pessoaGeracao;
 
 	private PessoaSituacao pessoaSituacao;
 
-	private ConfirmacaoOpcional publicoAlvoAtepa;
+	private Set<Confirmacao> publicoAlvoAtepa;
 
-	private ConfirmacaoOpcional publicoAlvoAter;
+	private Set<Confirmacao> publicoAlvoAter;
 
-	private ConfirmacaoOpcional publicoAlvoBeneficioSocial;
+	private Set<Confirmacao> publicoAlvoBeneficioSocial;
 
-	private ConfirmacaoOpcional publicoAlvoBsm;
+	private Set<Confirmacao> publicoAlvoBsm;
 
 	private PublicoAlvoCategoria publicoAlvoCategoria;
 
-	private ConfirmacaoOpcional publicoAlvoComprasInstitucionais;
+	private Set<Confirmacao> publicoAlvoComprasInstitucionais;
 
-	private ConfirmacaoOpcional publicoAlvoDap;
+	private Set<Confirmacao> publicoAlvoDap;
 
-	private ConfirmacaoOpcional publicoAlvoIncra;
+	private Set<Confirmacao> publicoAlvoIncra;
 
-	private ConfirmacaoOpcional publicoAlvoIpaAgricola;
+	private Set<Confirmacao> publicoAlvoIpaAgricola;
 
-	private ConfirmacaoOpcional publicoAlvoIpaAnimal;
+	private Set<Confirmacao> publicoAlvoIpaAnimal;
 
-	private ConfirmacaoOpcional publicoAlvoIpaFlores;
+	private Set<Confirmacao> publicoAlvoIpaFlores;
 
-	private ConfirmacaoOpcional publicoAlvoIpaNaoAgricola;
+	private Set<Confirmacao> publicoAlvoIpaNaoAgricola;
 
-	private ConfirmacaoOpcional publicoAlvoOrganizacao;
+	private Set<Confirmacao> publicoAlvoOrganizacao;
 
 	private PessoaGrupoComunidadeVi publicoAlvoPessoaGrupoComunidadeVi;
 
@@ -66,7 +66,7 @@ public class PessoaCadFiltroDto implements FiltroDto {
 
 	private Setor publicoAlvoSetor;
 
-	private ConfirmacaoOpcional publicoAlvoSustentabilidade;
+	private Set<Confirmacao> publicoAlvoSustentabilidade;
 
 	private Integer registrosPagina;
 
@@ -93,7 +93,7 @@ public class PessoaCadFiltroDto implements FiltroDto {
 		return numeroPagina;
 	}
 
-	public Sexo getPessoaGenero() {
+	public Set<Sexo> getPessoaGenero() {
 		return pessoaGenero;
 	}
 
@@ -105,19 +105,19 @@ public class PessoaCadFiltroDto implements FiltroDto {
 		return pessoaSituacao;
 	}
 
-	public ConfirmacaoOpcional getPublicoAlvoAtepa() {
+	public Set<Confirmacao> getPublicoAlvoAtepa() {
 		return publicoAlvoAtepa;
 	}
 
-	public ConfirmacaoOpcional getPublicoAlvoAter() {
+	public Set<Confirmacao> getPublicoAlvoAter() {
 		return publicoAlvoAter;
 	}
 
-	public ConfirmacaoOpcional getPublicoAlvoBeneficioSocial() {
+	public Set<Confirmacao> getPublicoAlvoBeneficioSocial() {
 		return publicoAlvoBeneficioSocial;
 	}
 
-	public ConfirmacaoOpcional getPublicoAlvoBsm() {
+	public Set<Confirmacao> getPublicoAlvoBsm() {
 		return publicoAlvoBsm;
 	}
 
@@ -125,35 +125,35 @@ public class PessoaCadFiltroDto implements FiltroDto {
 		return publicoAlvoCategoria;
 	}
 
-	public ConfirmacaoOpcional getPublicoAlvoComprasInstitucionais() {
+	public Set<Confirmacao> getPublicoAlvoComprasInstitucionais() {
 		return publicoAlvoComprasInstitucionais;
 	}
 
-	public ConfirmacaoOpcional getPublicoAlvoDap() {
+	public Set<Confirmacao> getPublicoAlvoDap() {
 		return publicoAlvoDap;
 	}
 
-	public ConfirmacaoOpcional getPublicoAlvoIncra() {
+	public Set<Confirmacao> getPublicoAlvoIncra() {
 		return publicoAlvoIncra;
 	}
 
-	public ConfirmacaoOpcional getPublicoAlvoIpaAgricola() {
+	public Set<Confirmacao> getPublicoAlvoIpaAgricola() {
 		return publicoAlvoIpaAgricola;
 	}
 
-	public ConfirmacaoOpcional getPublicoAlvoIpaAnimal() {
+	public Set<Confirmacao> getPublicoAlvoIpaAnimal() {
 		return publicoAlvoIpaAnimal;
 	}
 
-	public ConfirmacaoOpcional getPublicoAlvoIpaFlores() {
+	public Set<Confirmacao> getPublicoAlvoIpaFlores() {
 		return publicoAlvoIpaFlores;
 	}
 
-	public ConfirmacaoOpcional getPublicoAlvoIpaNaoAgricola() {
+	public Set<Confirmacao> getPublicoAlvoIpaNaoAgricola() {
 		return publicoAlvoIpaNaoAgricola;
 	}
 
-	public ConfirmacaoOpcional getPublicoAlvoOrganizacao() {
+	public Set<Confirmacao> getPublicoAlvoOrganizacao() {
 		return publicoAlvoOrganizacao;
 	}
 
@@ -169,7 +169,7 @@ public class PessoaCadFiltroDto implements FiltroDto {
 		return publicoAlvoSetor;
 	}
 
-	public ConfirmacaoOpcional getPublicoAlvoSustentabilidade() {
+	public Set<Confirmacao> getPublicoAlvoSustentabilidade() {
 		return publicoAlvoSustentabilidade;
 	}
 
@@ -202,7 +202,7 @@ public class PessoaCadFiltroDto implements FiltroDto {
 		this.numeroPagina = numeroPagina;
 	}
 
-	public void setPessoaGenero(Sexo pessoaGenero) {
+	public void setPessoaGenero(Set<Sexo> pessoaGenero) {
 		this.pessoaGenero = pessoaGenero;
 	}
 
@@ -214,20 +214,19 @@ public class PessoaCadFiltroDto implements FiltroDto {
 		this.pessoaSituacao = pessoaSituacao;
 	}
 
-	public void setPublicoAlvoAtepa(ConfirmacaoOpcional publicoAlvoAtepa) {
+	public void setPublicoAlvoAtepa(Set<Confirmacao> publicoAlvoAtepa) {
 		this.publicoAlvoAtepa = publicoAlvoAtepa;
 	}
-	
-	public void setPublicoAlvoAter(ConfirmacaoOpcional publicoAlvoAter) {
+
+	public void setPublicoAlvoAter(Set<Confirmacao> publicoAlvoAter) {
 		this.publicoAlvoAter = publicoAlvoAter;
 	}
-	
-	public void setPublicoAlvoBeneficioSocial(
-			ConfirmacaoOpcional publicoAlvoBeneficioSocial) {
+
+	public void setPublicoAlvoBeneficioSocial(Set<Confirmacao> publicoAlvoBeneficioSocial) {
 		this.publicoAlvoBeneficioSocial = publicoAlvoBeneficioSocial;
 	}
-	
-	public void setPublicoAlvoBsm(ConfirmacaoOpcional publicoAlvoBsm) {
+
+	public void setPublicoAlvoBsm(Set<Confirmacao> publicoAlvoBsm) {
 		this.publicoAlvoBsm = publicoAlvoBsm;
 	}
 
@@ -235,48 +234,43 @@ public class PessoaCadFiltroDto implements FiltroDto {
 		this.publicoAlvoCategoria = publicoAlvoCategoria;
 	}
 
-	public void setPublicoAlvoComprasInstitucionais(
-			ConfirmacaoOpcional publicoAlvoComprasInstitucionais) {
+	public void setPublicoAlvoComprasInstitucionais(Set<Confirmacao> publicoAlvoComprasInstitucionais) {
 		this.publicoAlvoComprasInstitucionais = publicoAlvoComprasInstitucionais;
 	}
 
-	public void setPublicoAlvoDap(ConfirmacaoOpcional publicoAlvoDap) {
+	public void setPublicoAlvoDap(Set<Confirmacao> publicoAlvoDap) {
 		this.publicoAlvoDap = publicoAlvoDap;
 	}
 
-
-	public void setPublicoAlvoIncra(ConfirmacaoOpcional publicoAlvoIncra) {
+	public void setPublicoAlvoIncra(Set<Confirmacao> publicoAlvoIncra) {
 		this.publicoAlvoIncra = publicoAlvoIncra;
 	}
 
-	public void setPublicoAlvoIpaAgricola(ConfirmacaoOpcional publicoAlvoIpaAgricola) {
+	public void setPublicoAlvoIpaAgricola(Set<Confirmacao> publicoAlvoIpaAgricola) {
 		this.publicoAlvoIpaAgricola = publicoAlvoIpaAgricola;
 	}
 
-	public void setPublicoAlvoIpaAnimal(ConfirmacaoOpcional publicoAlvoIpaAnimal) {
+	public void setPublicoAlvoIpaAnimal(Set<Confirmacao> publicoAlvoIpaAnimal) {
 		this.publicoAlvoIpaAnimal = publicoAlvoIpaAnimal;
 	}
 
-	public void setPublicoAlvoIpaFlores(ConfirmacaoOpcional publicoAlvoIpaFlores) {
+	public void setPublicoAlvoIpaFlores(Set<Confirmacao> publicoAlvoIpaFlores) {
 		this.publicoAlvoIpaFlores = publicoAlvoIpaFlores;
 	}
 
-	public void setPublicoAlvoIpaNaoAgricola(
-			ConfirmacaoOpcional publicoAlvoIpaNaoAgricola) {
+	public void setPublicoAlvoIpaNaoAgricola(Set<Confirmacao> publicoAlvoIpaNaoAgricola) {
 		this.publicoAlvoIpaNaoAgricola = publicoAlvoIpaNaoAgricola;
 	}
 
-	public void setPublicoAlvoOrganizacao(ConfirmacaoOpcional publicoAlvoOrganizacao) {
+	public void setPublicoAlvoOrganizacao(Set<Confirmacao> publicoAlvoOrganizacao) {
 		this.publicoAlvoOrganizacao = publicoAlvoOrganizacao;
 	}
 
-	public void setPublicoAlvoPessoaGrupoComunidadeVi(
-			PessoaGrupoComunidadeVi publicoAlvoPessoaGrupoComunidadeVi) {
+	public void setPublicoAlvoPessoaGrupoComunidadeVi(PessoaGrupoComunidadeVi publicoAlvoPessoaGrupoComunidadeVi) {
 		this.publicoAlvoPessoaGrupoComunidadeVi = publicoAlvoPessoaGrupoComunidadeVi;
 	}
 
-	public void setPublicoAlvoPropriedadeUtilizacaoEspacoRural(
-			PropriedadeUtilizacaoEspacoRural publicoAlvoPropriedadeUtilizacaoEspacoRural) {
+	public void setPublicoAlvoPropriedadeUtilizacaoEspacoRural(PropriedadeUtilizacaoEspacoRural publicoAlvoPropriedadeUtilizacaoEspacoRural) {
 		this.publicoAlvoPropriedadeUtilizacaoEspacoRural = publicoAlvoPropriedadeUtilizacaoEspacoRural;
 	}
 
@@ -284,8 +278,7 @@ public class PessoaCadFiltroDto implements FiltroDto {
 		this.publicoAlvoSetor = publicoAlvoSetor;
 	}
 
-	public void setPublicoAlvoSustentabilidade(
-			ConfirmacaoOpcional publicoAlvoSustentabilidade) {
+	public void setPublicoAlvoSustentabilidade(Set<Confirmacao> publicoAlvoSustentabilidade) {
 		this.publicoAlvoSustentabilidade = publicoAlvoSustentabilidade;
 	}
 

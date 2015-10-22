@@ -1,13 +1,10 @@
 package br.gov.df.emater.aterwebsrv.ferramenta;
 
 import java.util.Collection;
+import java.util.regex.Pattern;
 
 // Singleton utilitario para Strings
 public class UtilitarioString {
-
-	public static boolean isEmpty(String vlr) {
-		return vlr == null || vlr.trim().length() == 0;
-	}
 
 	public static String collectionToString(Collection<?> objetos) {
 		return collectionToString(objetos, false);
@@ -32,6 +29,42 @@ public class UtilitarioString {
 		return result.toString();
 	}
 
+	public static String complemento(char c, int tam) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < tam; i++) {
+			sb.append(c);
+		}
+		return sb.toString();
+	}
+
+	public static String formataCep(String cep) {
+		if (cep == null) {
+			return null;
+		}
+		cep = zeroEsquerda(soNumero(cep.trim()), 8);
+		return Pattern.compile("(\\d{2})(\\d{3})(\\d{3})").matcher(cep).replaceAll("$1.$2-$3");
+	}
+
+	public static String formataCnpj(String cnpj) {
+		if (cnpj == null) {
+			return null;
+		}
+		cnpj = zeroEsquerda(soNumero(cnpj.trim()), 14);
+		return Pattern.compile("(\\d{2})(\\d{3})(\\d{3})(\\d{4})(\\d{2})").matcher(cnpj).replaceAll("$1.$2.$3/$4-$5");
+	}
+
+	public static String formataCpf(String cpf) {
+		if (cpf == null) {
+			return null;
+		}
+		cpf = zeroEsquerda(soNumero(cpf.trim()), 11);
+		return Pattern.compile("(\\d{3})(\\d{3})(\\d{3})(\\d{2})").matcher(cpf).replaceAll("$1.$2.$3-$4");
+	}
+
+	public static boolean isEmpty(String vlr) {
+		return vlr == null || vlr.trim().length() == 0;
+	}
+
 	public static String removeAspas(String valor) {
 		// remover as aspas da string
 		if (valor.startsWith("\"")) {
@@ -43,28 +76,6 @@ public class UtilitarioString {
 		return valor;
 	}
 
-	public static String zeroEsquerda(int num, int tam) {
-		StringBuilder sb = new StringBuilder();
-		sb.append(complemento('0', tam));
-		sb.append(num);
-		return sb.substring(sb.length() - tam, sb.length());
-	}
-
-	public static String zeroDireita(int num, int tam) {
-		StringBuilder sb = new StringBuilder();
-		sb.append(num);
-		sb.append(complemento('0', tam));
-		return sb.substring(0, tam);
-	}
-
-	public static String complemento(char c, int tam) {
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < tam; i++) {
-			sb.append(c);
-		}
-		return sb.toString();
-	}
-
 	public static String soNumero(String numero) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < numero.length(); i++) {
@@ -74,12 +85,27 @@ public class UtilitarioString {
 		}
 		return sb.toString();
 	}
-	
-	public static String formataCep(String cep) {
+
+	public static String zeroDireita(int num, int tam) {
+		return zeroDireita(String.valueOf(num), tam);
+	}
+
+	public static String zeroDireita(String num, int tam) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(complemento('0', 8));
-		sb.append(soNumero(cep.trim()));
-		return String.format("%s-%s", sb.substring(sb.length() - 8, sb.length() - 3), sb.substring(sb.length() - 3, sb.length()));
+		sb.append(num);
+		sb.append(complemento('0', tam));
+		return sb.substring(0, tam);
+	}
+
+	public static String zeroEsquerda(int num, int tam) {
+		return zeroEsquerda(String.valueOf(num), tam);
+	}
+
+	public static String zeroEsquerda(String num, int tam) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(complemento('0', tam));
+		sb.append(num);
+		return sb.substring(sb.length() - tam, sb.length());
 	}
 
 }
