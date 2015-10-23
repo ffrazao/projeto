@@ -346,19 +346,62 @@ angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'to
         }
         toastr.info('Operação realizada!', 'Informação');
     };
-    $rootScope.confirmarFiltrar = function(scp) {
+    $rootScope.temMaisRegistros = function(scp) {
+        if (!scp.cadastro.filtro.ultimaPagina) {
+            $rootScope.confirmarFiltrar(scp, Math.ceil((scp.cadastro.lista.length  / 100) + 1), 'PROXIMA_PAGINA');
+        } else {
+            toastr.warning('Última pagina!', 'Atenção!');
+        }
+    };
+    $rootScope.confirmarFiltrar = function(scp, numeroPagina, temMaisRegistros) {
         scp.navegador.submitido = true;
-        if (scp.frm.filtro.$invalid) {
+
+        if (scp.frm.filtro && scp.frm.filtro.$invalid) {
             toastr.error('Verifique os campos marcados', 'Erro');
             return false;
         }
+
+        numeroPagina = numeroPagina ? numeroPagina : 1;
+        temMaisRegistros = temMaisRegistros ? temMaisRegistros : null;
+
+        scp.cadastro.filtro['numeroPagina'] = numeroPagina;
+        scp.cadastro.filtro['temMaisRegistros'] = temMaisRegistros;
+
         scp.servico.filtrar(scp.cadastro.filtro).success(function(resposta) {
             if (resposta.mensagem === 'OK') {
-                scp.navegador.mudarEstado('LISTANDO');
-                scp.crudVaiPara(scp, scp.stt, 'lista');
-                scp.cadastro.lista = resposta.resultado;
-                scp.navegador.setDados(scp.cadastro.lista);
-                scp.navegador.submitido = false;
+                if (!resposta.resultado || !resposta.resultado.length) {
+                    if (scp.cadastro.filtro.temMaisRegistros) {
+                        toastr.warning('Última pagina!', 'Atenção!');
+                        scp.cadastro.filtro.ultimaPagina = true;
+                        return;
+                    } else {
+                        toastr.warning('Registro não localizado!', 'Atenção!');
+                    }
+                }
+                if (scp.cadastro.filtro.temMaisRegistros && resposta.resultado && resposta.resultado.length) {
+                    for (var i = 0; i < resposta.resultado.length; i++) {
+                        scp.cadastro.lista.push(resposta.resultado[i]);
+                    }
+                    var btn = scp.navegador.botao('informacao');
+                    if (btn) {
+                        var selec = '0';
+                        if (scp.navegador.selecao.tipo === 'U') {
+                            selec = scp.navegador.selecao.item != null ? '1' : '0';
+                        } else {
+                            selec = scp.navegador.selecao.items.length;
+                        }
+                        btn.nome = selec + '/' + scp.cadastro.lista.length;
+                    }
+                } else {
+                    scp.cadastro.lista = resposta.resultado;
+                    scp.navegador.setDados(scp.cadastro.lista);
+                    scp.navegador.paginaAtual = 1;
+                    scp.navegador.mudarEstado('LISTANDO');
+                    scp.crudVaiPara(scp, scp.stt, 'lista');
+                    scp.navegador.submitido = false;
+                    scp.cadastro.filtro.ultimaPagina = false;
+                }
+                scp.cadastro.filtro.temMaisRegistros = null;
             }
         }).error(function(erro){
             toastr.error(erro, 'Erro ao filtrar');

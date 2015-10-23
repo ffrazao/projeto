@@ -14,7 +14,7 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.Sexo;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaGrupo;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaGrupoComunidadeVi;
 
-public class PessoaCadFiltroDto implements FiltroDto {
+public class PessoaCadFiltroDto extends FiltroDtoCustom {
 
 	private static final long serialVersionUID = 1L;
 
@@ -25,8 +25,6 @@ public class PessoaCadFiltroDto implements FiltroDto {
 	private List<PessoaGrupo> grupoSocialList;
 
 	private String nome;
-
-	private Integer numeroPagina;
 
 	private Set<Sexo> pessoaGenero;
 
@@ -42,7 +40,7 @@ public class PessoaCadFiltroDto implements FiltroDto {
 
 	private Set<Confirmacao> publicoAlvoBsm;
 
-	private PublicoAlvoCategoria publicoAlvoCategoria;
+	private Set<PublicoAlvoCategoria> publicoAlvoCategoria;
 
 	private Set<Confirmacao> publicoAlvoComprasInstitucionais;
 
@@ -68,8 +66,6 @@ public class PessoaCadFiltroDto implements FiltroDto {
 
 	private Set<Confirmacao> publicoAlvoSustentabilidade;
 
-	private Integer registrosPagina;
-
 	private Set<PessoaTipo> tipoPessoa;
 
 	public String getCnpj() {
@@ -86,11 +82,6 @@ public class PessoaCadFiltroDto implements FiltroDto {
 
 	public String getNome() {
 		return nome;
-	}
-
-	@Override
-	public Integer getNumeroPagina() {
-		return numeroPagina;
 	}
 
 	public Set<Sexo> getPessoaGenero() {
@@ -121,7 +112,7 @@ public class PessoaCadFiltroDto implements FiltroDto {
 		return publicoAlvoBsm;
 	}
 
-	public PublicoAlvoCategoria getPublicoAlvoCategoria() {
+	public Set<PublicoAlvoCategoria> getPublicoAlvoCategoria() {
 		return publicoAlvoCategoria;
 	}
 
@@ -173,10 +164,6 @@ public class PessoaCadFiltroDto implements FiltroDto {
 		return publicoAlvoSustentabilidade;
 	}
 
-	public Integer getRegistrosPagina() {
-		return registrosPagina;
-	}
-
 	public Set<PessoaTipo> getTipoPessoa() {
 		return tipoPessoa;
 	}
@@ -195,11 +182,6 @@ public class PessoaCadFiltroDto implements FiltroDto {
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	@Override
-	public void setNumeroPagina(Integer numeroPagina) {
-		this.numeroPagina = numeroPagina;
 	}
 
 	public void setPessoaGenero(Set<Sexo> pessoaGenero) {
@@ -230,7 +212,7 @@ public class PessoaCadFiltroDto implements FiltroDto {
 		this.publicoAlvoBsm = publicoAlvoBsm;
 	}
 
-	public void setPublicoAlvoCategoria(PublicoAlvoCategoria publicoAlvoCategoria) {
+	public void setPublicoAlvoCategoria(Set<PublicoAlvoCategoria> publicoAlvoCategoria) {
 		this.publicoAlvoCategoria = publicoAlvoCategoria;
 	}
 
@@ -280,10 +262,6 @@ public class PessoaCadFiltroDto implements FiltroDto {
 
 	public void setPublicoAlvoSustentabilidade(Set<Confirmacao> publicoAlvoSustentabilidade) {
 		this.publicoAlvoSustentabilidade = publicoAlvoSustentabilidade;
-	}
-
-	public void setRegistrosPagina(Integer registrosPagina) {
-		this.registrosPagina = registrosPagina;
 	}
 
 	public void setTipoPessoa(Set<PessoaTipo> tipoPessoa) {

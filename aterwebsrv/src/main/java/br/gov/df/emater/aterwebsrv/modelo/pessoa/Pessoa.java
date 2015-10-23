@@ -1,6 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.pessoa;
 
 import java.util.Calendar;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Lob;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -43,7 +45,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 @Entity
 @Table(name = "pessoa", schema = EntidadeBase.PESSOA_SCHEMA)
 @Inheritance(strategy = InheritanceType.JOINED)
-// para identificar classes dentro de contextos polim�rficos
+// para identificar classes dentro de contextos polimórficos
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
 public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Integer> {
 
@@ -53,9 +55,17 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	@Field(index = Index.YES, store = Store.YES)
 	private String apelidoSigla;
 
-	// @OneToMany(mappedBy = "pessoa")
-	// @IndexedEmbedded
-	// private List<PessoaArquivo> arquivoList;
+	@OneToMany(mappedBy = "pessoa")
+	//@IndexedEmbedded
+	private List<PessoaArquivo> arquivoList;
+
+	public List<PessoaArquivo> getArquivoList() {
+		return arquivoList;
+	}
+
+	public void setArquivoList(List<PessoaArquivo> arquivoList) {
+		this.arquivoList = arquivoList;
+	}
 
 	@Transient
 	private String fotoPerfil;
@@ -123,10 +133,6 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		return apelidoSigla;
 	}
 
-	// public List<PessoaArquivo> getArquivoList() {
-	// return arquivoList;
-	// }
-
 	public String getFotoPerfil() {
 		return this.fotoPerfil;
 	}
@@ -179,10 +185,6 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	public void setApelidoSigla(String apelidoSigla) {
 		this.apelidoSigla = apelidoSigla;
 	}
-
-	// public void setArquivoList(List<PessoaArquivo> arquivoList) {
-	// this.arquivoList = arquivoList;
-	// }
 
 	public void setFotoPerfil(String fotoPerfil) {
 		this.fotoPerfil = fotoPerfil;
