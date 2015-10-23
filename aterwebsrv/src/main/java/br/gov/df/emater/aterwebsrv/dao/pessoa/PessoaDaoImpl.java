@@ -13,7 +13,6 @@ import org.springframework.util.StringUtils;
 
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.dto.PessoaCadFiltroDto;
-import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 
 public class PessoaDaoImpl implements PessoaDaoCustom {
 
@@ -22,12 +21,19 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Pessoa> filtrar(PessoaCadFiltroDto filtro) {
-		List<Pessoa> result = null;
+	public List<Object[]> filtrar(PessoaCadFiltroDto filtro) {
+		List<Object[]> result = null;
 		List<Object> params = new ArrayList<Object>();
 
 		StringBuilder sql = new StringBuilder();
-		sql.append("select p from Pessoa p").append("\n");
+		sql.append("select p.id").append("\n");
+		sql.append("     , p.nome").append("\n");
+		sql.append("     , p.apelidoSigla").append("\n");
+		sql.append("     , p.pessoaTipo").append("\n");
+		sql.append("     , p.cpf").append("\n");
+		sql.append("     , p.cnpj").append("\n");
+		sql.append("     , p.publicoAlvoConfirmacao").append("\n");
+		sql.append("from Pessoa p").append("\n");
 		sql.append("where 1 = 1").append("\n");
 		if (!StringUtils.isEmpty(filtro.getNome())) {
 			params.add(String.format("%%%s%%", filtro.getNome()));
@@ -37,19 +43,22 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 		}
 		if (filtro.getTipoPessoa() != null && !(Arrays.asList(0, 2).contains(filtro.getTipoPessoa().size()))) {
 			params.add(filtro.getTipoPessoa().toArray()[0]);
-			sql.append("and p.pessoaTipo = ?").append(params.size()).append("\n");;
+			sql.append("and p.pessoaTipo = ?").append(params.size()).append("\n");
+			;
 		}
 		if (!StringUtils.isEmpty(filtro.getCpf())) {
 			params.add(UtilitarioString.formataCpf(filtro.getCpf()));
-			sql.append("and p.cpf = ?").append(params.size()).append("\n");;
+			sql.append("and p.cpf = ?").append(params.size()).append("\n");
+			;
 		}
 		if (!StringUtils.isEmpty(filtro.getCnpj())) {
 			params.add(UtilitarioString.formataCnpj(filtro.getCnpj()));
-			sql.append("and p.cnpj = ?").append(params.size()).append("\n");;
+			sql.append("and p.cnpj = ?").append(params.size()).append("\n");
+			;
 		}
 		sql.append("order by p.nome, p.apelidoSigla").append("\n");
 
-		TypedQuery<Pessoa> query = em.createQuery(sql.toString(), Pessoa.class);
+		TypedQuery<Object[]> query = em.createQuery(sql.toString(), Object[].class);
 
 		for (int i = 1; i <= params.size(); i++) {
 			query.setParameter(i, params.get(i - 1));

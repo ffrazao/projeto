@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public class Resposta implements Serializable {
 
+	private static final String OK = "OK";
+
 	private static final long serialVersionUID = 1L;
 
 	private String mensagem;
@@ -13,12 +15,13 @@ public class Resposta implements Serializable {
 	public Resposta() {
 	}
 
-	public Resposta(Object resultado) {
+	public Resposta(Exception resultado) {
 		this.resultado = resultado;
 	}
 
-	public Resposta(Exception resultado) {
+	public Resposta(Object resultado) {
 		this.resultado = resultado;
+		this.mensagem = OK;
 	}
 
 	public Resposta(String mensagem) {

@@ -30,13 +30,13 @@
                         <input type="checkbox" ng-show="navegador.selecao.tipo === 'M'" checklist-model="navegador.selecao.items" checklist-value="item" ng-click="crudMataClick(scp, $event);"/>
                     </td>
                     <td>
-                        {{$index + 1 + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)}}
+                        {{$index + 1 + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)}} /{{item}}/
                     </td>
                     <td width="96px"><img ng-src="{{item.foto}}"/></td>
-                    <td>{{item.nome}}</td>
-                    <td>{{item.tipoPessoa}}</td>
-                    <td>{{item.cpf}}{{item.cnpj}}</td>
-                    <td>{{item.beneficiario}}</td>
+                    <td>{{item[1]}}</td>
+                    <td>{{item[2]}}</td>
+                    <td>{{item[3]}}{{item[4]}}</td>
+                    <td>{{item[5]}}</td>
                 </tr>
             </tbody>
         </table>

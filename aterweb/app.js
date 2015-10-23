@@ -352,11 +352,14 @@ angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'to
             toastr.error('Verifique os campos marcados', 'Erro');
             return false;
         }
-        scp.servico.filtrar(scp.cadastro.filtro).success(function(response) {
-            scp.navegador.mudarEstado('LISTANDO');
-            scp.crudVaiPara(scp, scp.stt, 'lista');
-            scp.navegador.setDados(scp.cadastro.lista);
-            scp.navegador.submitido = false;
+        scp.servico.filtrar(scp.cadastro.filtro).success(function(resposta) {
+            if (resposta.mensagem === 'OK') {
+                scp.navegador.mudarEstado('LISTANDO');
+                scp.crudVaiPara(scp, scp.stt, 'lista');
+                scp.cadastro.lista = resposta.resultado;
+                scp.navegador.setDados(scp.cadastro.lista);
+                scp.navegador.submitido = false;
+            }
         }).error(function(erro){
             toastr.error(erro, 'Erro ao filtrar');
         });
