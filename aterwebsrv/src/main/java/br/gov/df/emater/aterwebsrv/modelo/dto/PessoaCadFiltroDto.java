@@ -28,9 +28,9 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 
 	private Set<Sexo> pessoaGenero;
 
-	private PessoaGeracao pessoaGeracao;
+	private Set<PessoaGeracao> pessoaGeracao;
 
-	private PessoaSituacao pessoaSituacao;
+	private Set<PessoaSituacao> pessoaSituacao;
 
 	private Set<Confirmacao> publicoAlvoAtepa;
 
@@ -88,11 +88,11 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 		return pessoaGenero;
 	}
 
-	public PessoaGeracao getPessoaGeracao() {
+	public Set<PessoaGeracao> getPessoaGeracao() {
 		return pessoaGeracao;
 	}
 
-	public PessoaSituacao getPessoaSituacao() {
+	public Set<PessoaSituacao> getPessoaSituacao() {
 		return pessoaSituacao;
 	}
 
@@ -188,11 +188,11 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 		this.pessoaGenero = pessoaGenero;
 	}
 
-	public void setPessoaGeracao(PessoaGeracao pessoaGeracao) {
+	public void setPessoaGeracao(Set<PessoaGeracao> pessoaGeracao) {
 		this.pessoaGeracao = pessoaGeracao;
 	}
 
-	public void setPessoaSituacao(PessoaSituacao pessoaSituacao) {
+	public void setPessoaSituacao(Set<PessoaSituacao> pessoaSituacao) {
 		this.pessoaSituacao = pessoaSituacao;
 	}
 

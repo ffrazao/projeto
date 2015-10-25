@@ -21,6 +21,7 @@ import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Store;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.CamOrgao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.CnhCategoria;
@@ -119,7 +120,7 @@ public class PessoaFisica extends Pessoa {
 
 	@Enumerated(EnumType.STRING)
 	private Escolaridade escolaridade;
-	
+
 	@Column(name = "estado_civil")
 	@Enumerated(EnumType.STRING)
 	private EstadoCivil estadoCivil;
@@ -196,7 +197,7 @@ public class PessoaFisica extends Pessoa {
 		super(id, nome, apelidoSigla);
 		setPessoaTipo(PessoaTipo.PF);
 	}
-	
+
 	public String getCamNumero() {
 		return camNumero;
 	}
@@ -284,9 +285,23 @@ public class PessoaFisica extends Pessoa {
 	public String getNisNumero() {
 		return nisNumero;
 	}
-
+	
 	public PessoaGeracao getPessoaGeracao() {
-		return pessoaGeracao;
+		if (this.nascimento == null) {
+			return null;
+		}
+		int idade = UtilitarioData.getInstance().qtdAnosEntre(this.nascimento, Calendar.getInstance());
+		if (idade > 0 && idade <= 12) {
+			return PessoaGeracao.C;
+		} else if (idade > 13 && idade <= 17) {
+			return PessoaGeracao.J;
+		} else if (idade > 18 && idade <= 69) {
+			return PessoaGeracao.A;
+		} else if (idade > 70 && idade <= 130) {
+			return PessoaGeracao.I;
+		} else {
+			return null;
+		}
 	}
 
 	public Profissao getProfissao() {

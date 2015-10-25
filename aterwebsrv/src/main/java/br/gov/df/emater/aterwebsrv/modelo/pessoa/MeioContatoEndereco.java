@@ -189,7 +189,7 @@ public class MeioContatoEndereco extends MeioContato {
 	}
 
 	public void setPessoaGrupoPaisVi(PessoaGrupoPaisVi pessoaGrupoPaisVi) {
-		this.setPessoaGrupoPaisVi(pessoaGrupoPaisVi);
+		this.pessoaGrupoPaisVi = pessoaGrupoPaisVi;
 	}
 
 	public PropriedadeRural getPropriedadeRural() {

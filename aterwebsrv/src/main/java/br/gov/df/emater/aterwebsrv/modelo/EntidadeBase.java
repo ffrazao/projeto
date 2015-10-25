@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 // para evitar o acesso recursivo as classes do conjunto de objetos serializados
 // @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class,
 // property = "@jsonId")
-//@JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@jsonId")
+@JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@jsonId")
 public class EntidadeBase implements Serializable {
 
 	public static final String ATER_SCHEMA = "ater";
@@ -43,7 +43,7 @@ public class EntidadeBase implements Serializable {
 		if (this instanceof _ChavePrimaria) {
 			((_ChavePrimaria<Serializable>) this).setId(id);
 		} else {
-			throw new IllegalArgumentException(String.format("A classe %s n�o implementa _ChavePrimaria<Serializable>", this.getClass().getName()));
+			throw new IllegalArgumentException(String.format("A classe %s não implementa _ChavePrimaria<Serializable>", this.getClass().getName()));
 		}
 	}
 

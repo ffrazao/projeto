@@ -12,6 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGeracao;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.Sexo;
+import br.gov.df.emater.aterwebsrv.modelo.dto.FiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.PessoaCadFiltroDto;
 
 public class PessoaDaoImpl implements PessoaDaoCustom {
@@ -25,9 +29,10 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 		// objetos de trabalho
 		List<Object[]> result = null;
 		List<Object> params = new ArrayList<Object>();
+		StringBuilder sql, sqlTemp;
 
 		// construção do sql
-		StringBuilder sql = new StringBuilder();
+		sql = new StringBuilder();
 		sql.append("select p.id").append("\n");
 		sql.append("     , p.nome").append("\n");
 		sql.append("     , p.apelidoSigla").append("\n");
@@ -38,21 +43,30 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 		sql.append("     , a.md5").append("\n");
 		sql.append("     , a.extensao").append("\n");
 		sql.append("     , a.tipo").append("\n");
+		sql.append("     , p.nascimento").append("\n");
 		sql.append("from Pessoa p").append("\n");
 		sql.append("left join p.arquivoList pa").append("\n");
 		sql.append("left join pa.arquivo a").append("\n");
-		sql.append("where (p.pessoaTipo in ('PF', 'PJ'))").append("\n");
+		sql.append("where p.pessoaTipo in ('PF', 'PJ')").append("\n");
 		sql.append("and   (pa is null or pa.perfil = 'S')").append("\n");
-		//sql.append("where 1 = 1").append("\n");
 		if (!StringUtils.isEmpty(filtro.getNome())) {
-			params.add(String.format("%%%s%%", filtro.getNome()));
-			sql.append("and (p.nome like ?").append(params.size());
-			params.add(String.format("%%%s%%", filtro.getNome()));
-			sql.append(" or p.apelidoSigla like ?").append(params.size()).append(")").append("\n");
+			sql.append("and (").append("\n");
+			sqlTemp = new StringBuilder();
+			for (String nome: filtro.getNome().split(FiltroDto.SEPARADOR_CAMPO)) {
+				if (sqlTemp.length() > 0) {
+					sqlTemp.append(" or ");
+				}
+				params.add(String.format("%%%s%%", nome.trim()));
+				sqlTemp.append(" (p.nome like ?").append(params.size());
+				params.add(String.format("%%%s%%", nome.trim()));
+				sqlTemp.append(" or p.apelidoSigla like ?").append(params.size()).append(")").append("\n");
+			}
+			sql.append(sqlTemp);
+			sql.append(" )").append("\n");
 		}
 		if (filtro.getTipoPessoa() != null && !(Arrays.asList(0, 2).contains(filtro.getTipoPessoa().size()))) {
-			params.add(filtro.getTipoPessoa().toArray()[0]);
-			sql.append("and p.pessoaTipo = ?").append(params.size()).append("\n");
+			params.add(filtro.getTipoPessoa());
+			sql.append("and p.pessoaTipo in ?").append(params.size()).append("\n");
 		}
 		if (!StringUtils.isEmpty(filtro.getCpf())) {
 			params.add(UtilitarioString.formataCpf(filtro.getCpf()));
@@ -61,6 +75,17 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 		if (!StringUtils.isEmpty(filtro.getCnpj())) {
 			params.add(UtilitarioString.formataCnpj(filtro.getCnpj()));
 			sql.append("and p.cnpj = ?").append(params.size()).append("\n");
+		}
+		if (filtro.getPessoaGenero() != null && (Sexo.values().length != (filtro.getPessoaGenero().size()))) {
+			params.add(filtro.getPessoaGenero());
+			sql.append("and p.sexo in ?").append(params.size()).append("\n");
+		}
+		if (filtro.getPessoaGeracao() != null && (PessoaGeracao.values().length != (filtro.getPessoaGeracao().size()))) {
+			// TODO fazer o filtro por geracao
+		}
+		if (filtro.getPessoaSituacao() != null && (PessoaSituacao.values().length != (filtro.getPessoaSituacao().size()))) {
+			params.add(filtro.getPessoaSituacao());
+			sql.append("and p.situacao in ?").append(params.size()).append("\n");
 		}
 		sql.append("order by p.nome, p.apelidoSigla").append("\n");
 
@@ -77,7 +102,7 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 
 		// executar a consulta
 		result = query.getResultList();
-
+		
 		// retornar
 		return result;
 	}

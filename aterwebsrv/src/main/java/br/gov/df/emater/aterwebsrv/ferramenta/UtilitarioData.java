@@ -5,6 +5,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import org.joda.time.Interval;
+import org.joda.time.Period;
+
 public class UtilitarioData {
 
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
@@ -14,12 +17,16 @@ public class UtilitarioData {
 	private static UtilitarioData instance;
 
 	private static final SimpleDateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss.SSS");
-	
+
 	private static final SimpleDateFormat MILISEGUNDOS_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+
+	private static Object lock = new Object();
 
 	public static UtilitarioData getInstance() {
 		if (instance == null) {
-			instance = new UtilitarioData();
+			synchronized (lock) {
+				instance = new UtilitarioData();
+			}
 		}
 		return instance;
 	}
@@ -82,6 +89,12 @@ public class UtilitarioData {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTimeInMillis(date.getTime());
 		return calendar;
+	}
+
+	public int qtdAnosEntre(Calendar inicio, Calendar fim) {
+		Interval interval = new Interval(inicio.getTimeInMillis(), fim.getTimeInMillis());
+		Period period = interval.toPeriod();
+		return period.getYears();
 	}
 
 }
