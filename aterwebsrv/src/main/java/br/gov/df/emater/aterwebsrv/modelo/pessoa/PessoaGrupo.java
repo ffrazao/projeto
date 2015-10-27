@@ -15,7 +15,6 @@ import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGrupoNivelGestao;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaTipo;
 
 /**
  * Classe persistente da tabela pessoa_grupo
@@ -46,17 +45,14 @@ public class PessoaGrupo extends Pessoa {
 	private PessoaGrupoTipo pessoaGrupoTipo;
 
 	public PessoaGrupo() {
-		setPessoaTipo(PessoaTipo.GS);
 	}
 
 	public PessoaGrupo(Integer id) {
 		super(id);
-		setPessoaTipo(PessoaTipo.GS);
 	}
 
 	public PessoaGrupo(Integer id, String nome, String apelidoSigla) {
 		super(id, nome, apelidoSigla);
-		setPessoaTipo(PessoaTipo.GS);
 	}
 
 	public List<PessoaGrupo> getFilhos() {

@@ -3,7 +3,7 @@
     <div class="panel-body">
         <form class="form-horizontal" name="frm.filtro" novalidate>
             <fieldset>
-                <legend>Dados Pessoais/{{cadastro.filtro}}/</legend>
+                <legend>Dados Pessoais</legend>
                 <!-- Text input-->
                 <div class="form-group" title="Razao Social/Sigla ou Nome/Apelido">
                     <label class="col-md-4 control-label" for="nome">
@@ -143,27 +143,38 @@
                 </div>
                 <legend>Beneficiário</legend>
                 <!-- Multiple Checkboxes (inline) -->
+                <div class="form-group" title="Segmento">
+                    <label class="col-md-4 control-label" for="publicoAlvoSegmento">Segmento</label>
+                    <div class="col-md-8">
+                        <label class="checkbox-inline" for="publicoAlvoSegmento-1">
+                            <input type="checkbox" name="publicoAlvoSegmento" id="publicoAlvoSegmento-1" checklist-model="cadastro.filtro.publicoAlvoSegmento" checklist-value="'P'">
+                            Patronal
+                        </label>
+                        <label class="checkbox-inline" for="publicoAlvoSegmento-2">
+                            <input type="checkbox" name="publicoAlvoSegmento" id="publicoAlvoSegmento-2" checklist-model="cadastro.filtro.publicoAlvoSegmento" checklist-value="'F'">
+                            Familiar
+                        </label>
+                    </div>
+                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.publicoAlvoSegmento.$error.required">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        Campo Obrigatório
+                    </div>
+                </div>
+
+                <!-- Multiple Checkboxes (inline) -->
                 <div class="form-group" title="Categoria">
                     <label class="col-md-4 control-label" for="publicoAlvoCategoria">Categoria</label>
                     <div class="col-md-8">
                         <label class="checkbox-inline" for="publicoAlvoCategoria-1">
-                            <input type="checkbox" name="publicoAlvoCategoria" id="publicoAlvoCategoria-1" checklist-model="cadastro.filtro.publicoAlvoCategoria" checklist-value="'EP'">
-                            Empreendedor Patronal
+                            <input type="checkbox" name="publicoAlvoCategoria" id="publicoAlvoCategoria-1" checklist-model="cadastro.filtro.publicoAlvoCategoria" checklist-value="'E'">
+                            Empreendedor
                         </label>
                         <label class="checkbox-inline" for="publicoAlvoCategoria-2">
-                            <input type="checkbox" name="publicoAlvoCategoria" id="publicoAlvoCategoria-2" checklist-model="cadastro.filtro.publicoAlvoCategoria" checklist-value="'EF'">
-                            Empreendedor Familiar
+                            <input type="checkbox" name="publicoAlvoCategoria" id="publicoAlvoCategoria-2" checklist-model="cadastro.filtro.publicoAlvoCategoria" checklist-value="'H'">
+                            Habitante
                         </label>
-                        <label class="checkbox-inline" for="publicoAlvoCategoria-3">
-                            <input type="checkbox" name="publicoAlvoCategoria" id="publicoAlvoCategoria-3" checklist-model="cadastro.filtro.publicoAlvoCategoria" checklist-value="'HP'">
-                            Habitante Patronal
-                        </label>
-                        <label class="checkbox-inline" for="publicoAlvoCategoria-4">
-                            <input type="checkbox" name="publicoAlvoCategoria" id="publicoAlvoCategoria-4" checklist-model="cadastro.filtro.publicoAlvoCategoria" checklist-value="'HF'">
-                            Habitante Familiar
-                        </label>
-                        <label class="checkbox-inline" for="publicoAlvoCategoria-5">
-                            <input type="checkbox" name="publicoAlvoCategoria" id="publicoAlvoCategoria-5" checklist-model="cadastro.filtro.publicoAlvoCategoria" checklist-value="'T'">
+                        <label class="checkbox-inline" for="publicoAlvoCategoria-3" ng-show="!cadastro.filtro.publicoAlvoSegmento || cadastro.filtro.publicoAlvoSegmento.indexOf('P') < 0">
+                            <input type="checkbox" name="publicoAlvoCategoria" id="publicoAlvoCategoria-3" checklist-model="cadastro.filtro.publicoAlvoCategoria" checklist-value="'T'">
                             Trabalhador
                         </label>
                     </div>

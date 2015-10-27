@@ -14,6 +14,8 @@ import org.springframework.util.StringUtils;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGeracao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoCategoria;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoSegmento;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Sexo;
 import br.gov.df.emater.aterwebsrv.modelo.dto.FiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.PessoaCadFiltroDto;
@@ -47,12 +49,21 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 		sql.append("from Pessoa p").append("\n");
 		sql.append("left join p.arquivoList pa").append("\n");
 		sql.append("left join pa.arquivo a").append("\n");
+		if (filtrarPublicoAlvo(filtro)) {
+			sql.append("left join p.publicoAlvo alvo").append("\n");
+			if (filtro.getPublicoAlvoSetor() != null) {
+				sql.append("left join alvo.publicoAlvoSetorList paSetor").append("\n");
+			}
+		}
 		sql.append("where p.pessoaTipo in ('PF', 'PJ')").append("\n");
 		sql.append("and   (pa is null or pa.perfil = 'S')").append("\n");
+		if (filtrarPublicoAlvo(filtro)) {
+			sql.append("and   p.publicoAlvoConfirmacao = 'S'").append("\n");
+		}
 		if (!StringUtils.isEmpty(filtro.getNome())) {
 			sql.append("and (").append("\n");
 			sqlTemp = new StringBuilder();
-			for (String nome: filtro.getNome().split(FiltroDto.SEPARADOR_CAMPO)) {
+			for (String nome : filtro.getNome().split(FiltroDto.SEPARADOR_CAMPO)) {
 				if (sqlTemp.length() > 0) {
 					sqlTemp.append(" or ");
 				}
@@ -82,10 +93,40 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 		}
 		if (filtro.getPessoaGeracao() != null && (PessoaGeracao.values().length != (filtro.getPessoaGeracao().size()))) {
 			// TODO fazer o filtro por geracao
+			sql.append("and (").append("\n");
+			sqlTemp = new StringBuilder();
+			for (PessoaGeracao pg : filtro.getPessoaGeracao()) {
+				if (sqlTemp.length() > 0) {
+					sqlTemp.append(" or ");
+				}
+				params.add(pg.getIdadeInicio());
+				sqlTemp.append("TIMESTAMPDIFF(YEAR, p.nascimento, CURDATE()) between ?").append(params.size());
+				params.add(pg.getIdadeFim());
+				sqlTemp.append(" and ?").append(params.size()).append("\n");
+			}
+			sql.append(sqlTemp).append("	)").append("\n");
 		}
 		if (filtro.getPessoaSituacao() != null && (PessoaSituacao.values().length != (filtro.getPessoaSituacao().size()))) {
 			params.add(filtro.getPessoaSituacao());
 			sql.append("and p.situacao in ?").append(params.size()).append("\n");
+		}
+		// filtro de publico alvo
+		if (filtro.getPublicoAlvoSegmento() != null && (PublicoAlvoSegmento.values().length != (filtro.getPublicoAlvoSegmento().size()))) {
+			params.add(filtro.getPublicoAlvoSegmento());
+			sql.append("and alvo.segmento in ?").append(params.size()).append("\n");
+		}
+		if (filtro.getPublicoAlvoCategoria() != null && (PublicoAlvoCategoria.values().length != (filtro.getPublicoAlvoCategoria().size()))) {
+			params.add(filtro.getPublicoAlvoCategoria());
+			sql.append("and alvo.categoria in ?").append(params.size()).append("\n");
+		}
+		if (!StringUtils.isEmpty(filtro.getPublicoAlvoSetor())) {
+			params.add(filtro.getPublicoAlvoSetor());
+			sql.append("and paSetor.setor.id = ?").append(params.size()).append("\n");
+		}
+		if (!StringUtils.isEmpty(filtro.getPublicoAlvoPropriedadeUtilizacaoEspacoRural())) {
+			// TODO Este campo nao foi implementado no BD - resolver
+//			params.add(filtro.getPublicoAlvoPropriedadeUtilizacaoEspacoRural().getId());
+//			sql.append("and paSetor.setor.id = ?").append(params.size()).append("\n");
 		}
 		sql.append("order by p.nome, p.apelidoSigla").append("\n");
 
@@ -102,9 +143,17 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 
 		// executar a consulta
 		result = query.getResultList();
-		
+
 		// retornar
 		return result;
+	}
+
+	private boolean filtrarPublicoAlvo(PessoaCadFiltroDto filtro) {
+		// TODO Auto-generated method stub
+		return 	(filtro.getPublicoAlvoSegmento() != null && (PublicoAlvoSegmento.values().length != (filtro.getPublicoAlvoSegmento().size()))) 
+				||  (filtro.getPublicoAlvoCategoria() != null && (PublicoAlvoCategoria.values().length != (filtro.getPublicoAlvoCategoria().size())))
+				||  (filtro.getPublicoAlvoSetor() != null)
+				||  (filtro.getPublicoAlvoPropriedadeUtilizacaoEspacoRural() != null);
 	}
 
 }

@@ -2,7 +2,7 @@ package br.gov.df.emater.aterwebsrv.modelo.dominio;
 
 public enum PessoaTipo {
 
-	GS("Grupo Social"), PF("Pessoa F�sica"), PJ("Pessoa Jur�dica");
+	PF("Pessoa Física"), PJ("Pessoa Jurídica");
 
 	private String descricao;
 

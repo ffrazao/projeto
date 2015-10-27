@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,6 +15,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -32,6 +34,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
+import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaTipo;
@@ -56,7 +59,7 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	private String apelidoSigla;
 
 	@OneToMany(mappedBy = "pessoa")
-	//@IndexedEmbedded
+	// @IndexedEmbedded
 	private List<PessoaArquivo> arquivoList;
 
 	public List<PessoaArquivo> getArquivoList() {
@@ -94,8 +97,8 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	@Enumerated(EnumType.STRING)
 	private PessoaTipo pessoaTipo;
 
-	// @OneToOne(mappedBy = "pessoa", fetch = FetchType.LAZY)
-	// private PublicoAlvo publicoAlvo;
+	@OneToOne(mappedBy = "pessoa", fetch = FetchType.LAZY)
+	private PublicoAlvo publicoAlvo;
 
 	@Column(name = "publico_alvo")
 	@Enumerated(EnumType.STRING)
@@ -162,9 +165,9 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		return pessoaTipo;
 	}
 
-	// public PublicoAlvo getPublicoAlvo() {
-	// return publicoAlvo;
-	// }
+	public PublicoAlvo getPublicoAlvo() {
+		return publicoAlvo;
+	}
 
 	public Confirmacao getPublicoAlvoConfirmacao() {
 		return publicoAlvoConfirmacao;
@@ -217,9 +220,9 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		this.pessoaTipo = pessoaTipo;
 	}
 
-	// public void setPublicoAlvo(PublicoAlvo publicoAlvo) {
-	// this.publicoAlvo = publicoAlvo;
-	// }
+	public void setPublicoAlvo(PublicoAlvo publicoAlvo) {
+		this.publicoAlvo = publicoAlvo;
+	}
 
 	public void setPublicoAlvoConfirmacao(Confirmacao publicoAlvoConfirmacao) {
 		this.publicoAlvoConfirmacao = publicoAlvoConfirmacao;

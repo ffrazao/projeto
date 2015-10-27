@@ -4,17 +4,16 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -29,15 +28,17 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoCategoria;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoSegmento;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonFormatarBigDecimal;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * The persistent class for the publico_alvo database table.
@@ -80,7 +81,8 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 	@Field(index = Index.YES, store = Store.YES)
 	private String carteiraProdutorNumero;
 
-	private String categoria;
+	@Enumerated(EnumType.STRING)
+	private PublicoAlvoCategoria categoria;
 
 	@Column(name = "compra_instituc_paa_conab")
 	private String compraInstitucPaaConab;
@@ -167,10 +169,18 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 	@Column(name = "projeto_espec_sustentabilidade")
 	private String projetoEspecSustentabilidade;
 
+//	@IndexedEmbedded
+//	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//	@JoinTable(
+//			name = "publico_alvo_setor", 
+//			catalog = EntidadeBase.ATER_SCHEMA, 
+//			joinColumns = { @JoinColumn(name = "publico_alvo_id", nullable = false, updatable = false) }, 
+//				inverseJoinColumns = { @JoinColumn(name = "setor_id", nullable = false, updatable = false) })
+//	private List<PublicoAlvoSetor> publicoAlvoSetorList;
+
 	@IndexedEmbedded
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinTable(name = "publico_alvo_setor", catalog = EntidadeBase.ATER_SCHEMA, joinColumns = { @JoinColumn(name = "publico_alvo_id", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "setor_id", nullable = false, updatable = false) })
-	private List<PublicoAlvoSetor> publicoAlvoSetors;
+	@OneToMany(mappedBy = "publicoAlvo")
+	private List<PublicoAlvoSetor> publicoAlvoSetorList;
 
 	@Column(name = "renda_bruta_anual_assalariado")
 	@NumberFormat(style = Style.CURRENCY)
@@ -192,7 +202,8 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
 	private BigDecimal salarioMensal;
 
-	private String segmento;
+	@Enumerated(EnumType.STRING)
+	private PublicoAlvoSegmento segmento;
 
 	private int tradicao;
 
@@ -227,7 +238,7 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 		return carteiraProdutorNumero;
 	}
 
-	public String getCategoria() {
+	public PublicoAlvoCategoria getCategoria() {
 		return categoria;
 	}
 
@@ -324,8 +335,8 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 		return projetoEspecSustentabilidade;
 	}
 
-	public List<PublicoAlvoSetor> getPublicoAlvoSetors() {
-		return publicoAlvoSetors;
+	public List<PublicoAlvoSetor> getPublicoAlvoSetorList() {
+		return publicoAlvoSetorList;
 	}
 
 	public BigDecimal getRendaBrutaAnualAssalariado() {
@@ -344,7 +355,7 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 		return salarioMensal;
 	}
 
-	public String getSegmento() {
+	public PublicoAlvoSegmento getSegmento() {
 		return segmento;
 	}
 
@@ -380,7 +391,7 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 		this.carteiraProdutorNumero = carteiraProdutorNumero;
 	}
 
-	public void setCategoria(String categoria) {
+	public void setCategoria(PublicoAlvoCategoria categoria) {
 		this.categoria = categoria;
 	}
 
@@ -477,8 +488,8 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 		this.projetoEspecSustentabilidade = projetoEspecSustentabilidade;
 	}
 
-	public void setPublicoAlvoSetors(List<PublicoAlvoSetor> publicoAlvoSetors) {
-		this.publicoAlvoSetors = publicoAlvoSetors;
+	public void setPublicoAlvoSetorList(List<PublicoAlvoSetor> publicoAlvoSetorList) {
+		this.publicoAlvoSetorList = publicoAlvoSetorList;
 	}
 
 	public void setRendaBrutaAnualAssalariado(BigDecimal rendaBrutaAnualAssalariado) {
@@ -497,7 +508,7 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 		this.salarioMensal = salarioMensal;
 	}
 
-	public void setSegmento(String segmento) {
+	public void setSegmento(PublicoAlvoSegmento segmento) {
 		this.segmento = segmento;
 	}
 

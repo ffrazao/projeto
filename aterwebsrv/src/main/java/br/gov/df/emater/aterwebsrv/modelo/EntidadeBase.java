@@ -3,9 +3,12 @@ package br.gov.df.emater.aterwebsrv.modelo;
 import java.io.Serializable;
 
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import br.gov.df.emater.aterwebsrv.modelo.dominio.CadastroAcao;
 
 // para marcar esta classe como o topo de hierarquia de entidades, por�m n�o
 // persiste informa��o
@@ -14,7 +17,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 // @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class,
 // property = "@jsonId")
 @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@jsonId")
-public class EntidadeBase implements Serializable {
+public abstract class EntidadeBase implements Serializable {
 
 	public static final String ATER_SCHEMA = "ater";
 
@@ -34,6 +37,9 @@ public class EntidadeBase implements Serializable {
 
 	public static final String SISTEMA_SCHEMA = "sistema";
 
+	@Transient
+	private CadastroAcao cadastroAcao;
+
 	public EntidadeBase() {
 
 	}
@@ -52,9 +58,17 @@ public class EntidadeBase implements Serializable {
 		return super.equals(obj);
 	}
 
+	public CadastroAcao getCadastroAcao() {
+		return cadastroAcao;
+	}
+
 	@Override
 	public int hashCode() {
 		return super.hashCode();
+	}
+
+	public void setCadastroAcao(CadastroAcao cadastroAcao) {
+		this.cadastroAcao = cadastroAcao;
 	}
 
 }

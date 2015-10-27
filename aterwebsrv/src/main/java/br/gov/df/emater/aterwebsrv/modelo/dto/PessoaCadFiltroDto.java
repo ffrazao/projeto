@@ -10,6 +10,7 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaTipo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PropriedadeUtilizacaoEspacoRural;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoCategoria;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoSegmento;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Sexo;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaGrupo;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaGrupoComunidadeVi;
@@ -62,7 +63,9 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 
 	private PropriedadeUtilizacaoEspacoRural publicoAlvoPropriedadeUtilizacaoEspacoRural;
 
-	private Setor publicoAlvoSetor;
+	private Set<PublicoAlvoSegmento> publicoAlvoSegmento;
+
+	private Integer publicoAlvoSetor;
 
 	private Set<Confirmacao> publicoAlvoSustentabilidade;
 
@@ -156,7 +159,11 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 		return publicoAlvoPropriedadeUtilizacaoEspacoRural;
 	}
 
-	public Setor getPublicoAlvoSetor() {
+	public Set<PublicoAlvoSegmento> getPublicoAlvoSegmento() {
+		return publicoAlvoSegmento;
+	}
+
+	public Integer getPublicoAlvoSetor() {
 		return publicoAlvoSetor;
 	}
 
@@ -256,7 +263,11 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 		this.publicoAlvoPropriedadeUtilizacaoEspacoRural = publicoAlvoPropriedadeUtilizacaoEspacoRural;
 	}
 
-	public void setPublicoAlvoSetor(Setor publicoAlvoSetor) {
+	public void setPublicoAlvoSegmento(Set<PublicoAlvoSegmento> publicoAlvoSegmento) {
+		this.publicoAlvoSegmento = publicoAlvoSegmento;
+	}
+
+	public void setPublicoAlvoSetor(Integer publicoAlvoSetor) {
 		this.publicoAlvoSetor = publicoAlvoSetor;
 	}
 

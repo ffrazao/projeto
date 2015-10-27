@@ -63,11 +63,7 @@
                     tipoPessoa: null
                 }).then(function(conteudo) {
                     // processar o retorno positivo da modal
-                    $rootScope.incluir($scope);
-                    $scope.cadastro.original = {
-                        tipoPessoa: conteudo.tipoPessoa
-                    };
-                    $scope.cadastro.registro = angular.copy($scope.cadastro.original);
+                    $rootScope.incluir($scope, conteudo.tipoPessoa);
                 }, function() {
                     // processar o retorno negativo da modal
                     //$log.info('Modal dismissed at: ' + new Date());

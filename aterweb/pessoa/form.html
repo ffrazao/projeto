@@ -1,6 +1,7 @@
 <div class="panel panel-default">
     <div class="panel-heading"><h4>{{nomeFormulario}}</h4></div>
     <div class="panel-body">
+        /{{cadastro.registro}}/
         <form name="frm.formulario" novalidate>
             <!--<fieldset ng-disabled="['INCLUINDO', 'EDITANDO'].indexOf(navegador.estadoAtual()) < 0">-->
             <fieldset>
@@ -42,7 +43,7 @@
                         </div>
                         <div class="row">
                             <div class="form-group col-md-3">
-                                <label class="control-label">Situação</label>
+                                <label class="control-label">Situação/{{cadastro.registro.situacao}}/</label>
                                 <select class="form-control" required ng-model="cadastro.registro.situacao">
                                     <option value"A">Ativo</option>
                                     <option value"I">Inativo</option>
@@ -50,7 +51,7 @@
                             </div>
                             <div class="form-group col-md-4" title="Cadastro de Pessoa Física" ng-show="cadastro.registro.tipoPessoa === 'PF'">
                                 <label class="control-label" for="cpf">CPF</label>
-                                <input id="cpf" name="cpf" type="text" placeholder="" class="form-control input-md" ng-required="cadastro.registro.tipoPessoa === 'PF'" ng-model="cadastro.registro.cpf" ui-br-cpf-mask>
+                                <input id="cpf" name="cpf" type="text" placeholder="" class="form-control input-md" ng-model="cadastro.registro.cpf" ui-br-cpf-mask>
                                 <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.cpf.$error.required">
                                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                     Campo Obrigatório
@@ -62,7 +63,7 @@
                             </div>
                             <div class="form-group col-md-4" title="Cadastro Nacional de Pessoa Jurídica" ng-show="cadastro.registro.tipoPessoa === 'PJ'">
                                 <label class="control-label" for="cnpj">CNPJ</label>
-                                <input id="cnpj" name="cnpj" type="text" placeholder="" class="form-control input-md" ng-required="cadastro.registro.tipoPessoa === 'PJ'" ng-model="cadastro.registro.cnpj" ui-br-cnpj-mask>
+                                <input id="cnpj" name="cnpj" type="text" placeholder="" class="form-control input-md" ng-model="cadastro.registro.cnpj" ui-br-cnpj-mask>
                                 <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.cnpj.$error.required">
                                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                     Campo Obrigatório
