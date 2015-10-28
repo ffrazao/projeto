@@ -5,8 +5,8 @@
     angular.module(pNmModulo).config(['$stateProvider', function($stateProvider) {
         criarEstadosPadrao($stateProvider, pNmModulo, pNmController);
     }]);
-    angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$modal', '$log', '$modalInstance', 'modalCadastro', 'utilSrv', 'mensagemSrv', 'PessoaSrv',
-        function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $modal, $log, $modalInstance, modalCadastro, utilSrv, mensagemSrv, PessoaSrv) {
+    angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$modal', '$log', '$modalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'PessoaSrv',
+        function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $modal, $log, $modalInstance, modalCadastro, UtilSrv, mensagemSrv, PessoaSrv) {
             // inicializacao
             $scope.crudInit($scope, $state, null, pNmFormulario, PessoaSrv);
 
@@ -58,7 +58,25 @@
             // fim: atividades do Modal
             // inicio das operaçoes atribuidas ao navagador
             $scope.incluir = function(scp) {
-                var conf = '<div class="form-group">' + '    <label class="col-md-4 control-label" for="cnfTipoPessoa">Incluir que tipo de Pessoa?</label>' + '    <div class="col-md-8">' + '        <label class="radio-inline" for="cnfTipoPessoa-0">' + '            <input type="radio" name="cnfTipoPessoa" id="cnfTipoPessoa-0" value="PJ" ng-model="conteudo.tipoPessoa" required>' + '            Pessoa Jurídica' + '        </label>' + '        <label class="radio-inline" for="cnfTipoPessoa-1">' + '            <input type="radio" name="cnfTipoPessoa" id="cnfTipoPessoa-1" value="PF" ng-model="conteudo.tipoPessoa" required>' + '            Pessoa Física' + '        </label>' + '        <div class="label label-danger" ng-show="confirmacaoFrm.cnfTipoPessoa.$error.required">' + '            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' + '             Campo Obrigatório' + '        </div>' + '    </div>' + '</div>';
+                var conf = 
+                    '<div class="form-group">' + 
+                    '    <label class="col-md-4 control-label" for="cnfTipoPessoa">Incluir que tipo de Pessoa?</label>' + 
+                    '    <div class="col-md-8">';
+                for (var item in $scope.cadastro.apoio.pessoaTipoList) {
+                    conf +=
+                    '        <label class="radio-inline" for="cnfTipoPessoa-' + item + '">' + 
+                    '            <input type="radio" name="cnfTipoPessoa" id="cnfTipoPessoa-' + item + '" value="' + $scope.cadastro.apoio.pessoaTipoList[item].codigo + '" ng-model="conteudo.tipoPessoa" required>' + 
+                    '            ' + $scope.cadastro.apoio.pessoaTipoList[item].descricao +
+                    '        </label>';
+                }
+                conf +=
+                    '        <div class="label label-danger" ng-show="confirmacaoFrm.cnfTipoPessoa.$error.required">' + 
+                    '            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' + 
+                    '             Campo Obrigatório' + 
+                    '        </div>' + 
+                    '    </div>' + 
+                    '</div>';
+                console.log(conf);
                 mensagemSrv.confirmacao(false, conf, null, {
                     tipoPessoa: null
                 }).then(function(conteudo) {

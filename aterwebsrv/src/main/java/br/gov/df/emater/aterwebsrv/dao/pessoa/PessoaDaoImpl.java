@@ -1,7 +1,6 @@
 package br.gov.df.emater.aterwebsrv.dao.pessoa;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -14,6 +13,7 @@ import org.springframework.util.StringUtils;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGeracao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaTipo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoCategoria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoSegmento;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Sexo;
@@ -55,8 +55,7 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 				sql.append("left join alvo.publicoAlvoSetorList paSetor").append("\n");
 			}
 		}
-		sql.append("where p.pessoaTipo in ('PF', 'PJ')").append("\n");
-		sql.append("and   (pa is null or pa.perfil = 'S')").append("\n");
+		sql.append("where (pa is null or pa.perfil = 'S')").append("\n");
 		if (filtrarPublicoAlvo(filtro)) {
 			sql.append("and   p.publicoAlvoConfirmacao = 'S'").append("\n");
 		}
@@ -75,7 +74,7 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 			sql.append(sqlTemp);
 			sql.append(" )").append("\n");
 		}
-		if (filtro.getTipoPessoa() != null && !(Arrays.asList(0, 2).contains(filtro.getTipoPessoa().size()))) {
+		if (filtro.getTipoPessoa() != null && (PessoaTipo.values().length != (filtro.getTipoPessoa().size()))) {
 			params.add(filtro.getTipoPessoa());
 			sql.append("and p.pessoaTipo in ?").append(params.size()).append("\n");
 		}
@@ -92,7 +91,6 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 			sql.append("and p.sexo in ?").append(params.size()).append("\n");
 		}
 		if (filtro.getPessoaGeracao() != null && (PessoaGeracao.values().length != (filtro.getPessoaGeracao().size()))) {
-			// TODO fazer o filtro por geracao
 			sql.append("and (").append("\n");
 			sqlTemp = new StringBuilder();
 			for (PessoaGeracao pg : filtro.getPessoaGeracao()) {
@@ -149,7 +147,6 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 	}
 
 	private boolean filtrarPublicoAlvo(PessoaCadFiltroDto filtro) {
-		// TODO Auto-generated method stub
 		return 	(filtro.getPublicoAlvoSegmento() != null && (PublicoAlvoSegmento.values().length != (filtro.getPublicoAlvoSegmento().size()))) 
 				||  (filtro.getPublicoAlvoCategoria() != null && (PublicoAlvoCategoria.values().length != (filtro.getPublicoAlvoCategoria().size())))
 				||  (filtro.getPublicoAlvoSetor() != null)

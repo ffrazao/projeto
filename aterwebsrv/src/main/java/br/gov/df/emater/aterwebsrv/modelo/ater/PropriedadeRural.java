@@ -30,18 +30,16 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.SituacaoFundiaria;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.MeioContatoEndereco;
-import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaGrupoBaciaHidrograficaVi;
-import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaGrupoComunidadeVi;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonFormatarBigDecimal;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * The persistent class for the propriedade_rural database table.
@@ -192,12 +190,12 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 	private String pastagemSilagem;
 
 	@ManyToOne
-	@JoinColumn(name = "bacia_hidrografica_pessoa_grupo_id")
-	private PessoaGrupoBaciaHidrograficaVi pessoaGrupoBaciaHidrograficaVi;
+	@JoinColumn(name = "bacia_hidrografica_id")
+	private BaciaHidrografica baciaHidrografica;
 
 	@ManyToOne
-	@JoinColumn(name = "comunidade_pessoa_grupo_id")
-	private PessoaGrupoComunidadeVi pessoaGrupoComunidadeVi;
+	@JoinColumn(name = "comunidade_id")
+	private Comunidade comunidade;
 
 	@Lob
 	@Column(name = "roteiro_acesso")
@@ -340,12 +338,28 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 		this();
 		setId(id);
 	}
-	
-	public PropriedadeRural(Integer id, Integer meioContatoEndereco, PessoaGrupoComunidadeVi pessoaGrupoComunidadeVi, PessoaGrupoBaciaHidrograficaVi pessoaGrupoBaciaHidrograficaVi) {
+
+	public BaciaHidrografica getBaciaHidrografica() {
+		return baciaHidrografica;
+	}
+
+	public void setBaciaHidrografica(BaciaHidrografica baciaHidrografica) {
+		this.baciaHidrografica = baciaHidrografica;
+	}
+
+	public Comunidade getComunidade() {
+		return comunidade;
+	}
+
+	public void setComunidade(Comunidade comunidade) {
+		this.comunidade = comunidade;
+	}
+
+	public PropriedadeRural(Integer id, Integer meioContatoEndereco, Comunidade comunidade, BaciaHidrografica baciaHidrografica) {
 		this(id);
 		getMeioContatoEndereco().setId(meioContatoEndereco);
-		setPessoaGrupoComunidadeVi(pessoaGrupoComunidadeVi);
-		setPessoaGrupoBaciaHidrograficaVi(pessoaGrupoBaciaHidrograficaVi);
+		setComunidade(comunidade);
+		setBaciaHidrografica(baciaHidrografica);
 	}
 
 	public PropriedadeRural(Integer id, String nome, MeioContatoEndereco meioContatoEndereco, String outorga, SituacaoFundiaria situacaoFundiaria, SistemaProducao sistemaProducao) {
@@ -528,14 +542,6 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 
 	public String getPastagemSilagem() {
 		return pastagemSilagem;
-	}
-
-	public PessoaGrupoBaciaHidrograficaVi getPessoaGrupoBaciaHidrograficaVi() {
-		return pessoaGrupoBaciaHidrograficaVi;
-	}
-
-	public PessoaGrupoComunidadeVi getPessoaGrupoComunidadeVi() {
-		return pessoaGrupoComunidadeVi;
 	}
 
 	public String getRoteiroAcesso() {
@@ -805,14 +811,6 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 
 	public void setPastagemSilagem(String pastagemSilagem) {
 		this.pastagemSilagem = pastagemSilagem;
-	}
-
-	public void setPessoaGrupoBaciaHidrograficaVi(PessoaGrupoBaciaHidrograficaVi pessoaGrupoBaciaHidrograficaVi) {
-		this.pessoaGrupoBaciaHidrograficaVi = pessoaGrupoBaciaHidrograficaVi;
-	}
-
-	public void setPessoaGrupoComunidadeVi(PessoaGrupoComunidadeVi pessoaGrupoComunidadeVi) {
-		this.pessoaGrupoComunidadeVi = pessoaGrupoComunidadeVi;
 	}
 
 	public void setRoteiroAcesso(String roteiroAcesso) {

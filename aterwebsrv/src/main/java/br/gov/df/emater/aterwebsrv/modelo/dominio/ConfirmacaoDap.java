@@ -1,20 +1,20 @@
 package br.gov.df.emater.aterwebsrv.modelo.dominio;
 
-public enum Confirmacao {
+public enum ConfirmacaoDap {
 
-	N("Não", 2), S("Sim", 1);
+	D("Não Dapeável", 3), N("Não", 2), S("Sim", 1);
 
 	private String descricao;
 
 	private Integer ordem;
 
-	private Confirmacao(String descricao, Integer ordem) {
+	private ConfirmacaoDap(String descricao, Integer ordem) {
 		this.descricao = descricao;
 		this.ordem = ordem;
 	}
 
 	public Integer getOrdem() {
-		return this.ordem;
+		return ordem;
 	}
 
 	@Override

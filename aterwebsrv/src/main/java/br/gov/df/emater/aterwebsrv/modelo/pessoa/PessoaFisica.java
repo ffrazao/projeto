@@ -135,8 +135,12 @@ public class PessoaFisica extends Pessoa {
 	private Calendar nascimento;
 
 	@ManyToOne
-	@JoinColumn(name = "nascimento_pessoa_grupo_id")
-	private PessoaGrupo nascimentoPessoaGrupo;
+	@JoinColumn(name = "nascimento_municipio_id")
+	private Municipio nascimentoMunicipio;
+
+	@ManyToOne
+	@JoinColumn(name = "nascimento_pais_id")
+	private Pais nascimentoPais;
 
 	@Column(name = "nis_numero")
 	@Field(index = Index.YES, store = Store.YES)
@@ -163,10 +167,6 @@ public class PessoaFisica extends Pessoa {
 
 	@Column(name = "rg_orgao_emissor")
 	private String rgOrgaoEmissor;
-
-	@ManyToOne
-	@JoinColumn(name = "rg_pessoa_grupo_id")
-	private PessoaGrupoMunicipioVi rgPessoaGrupoMunicipioVi;
 
 	@Enumerated(EnumType.STRING)
 	@NotNull
@@ -278,14 +278,18 @@ public class PessoaFisica extends Pessoa {
 		return nascimento;
 	}
 
-	public PessoaGrupo getNascimentoPessoaGrupo() {
-		return nascimentoPessoaGrupo;
+	public Municipio getNascimentoMunicipio() {
+		return nascimentoMunicipio;
+	}
+
+	public Pais getNascimentoPais() {
+		return nascimentoPais;
 	}
 
 	public String getNisNumero() {
 		return nisNumero;
 	}
-	
+
 	public PessoaGeracao getPessoaGeracao() {
 		if (this.nascimento == null) {
 			return null;
@@ -318,10 +322,6 @@ public class PessoaFisica extends Pessoa {
 
 	public String getRgOrgaoEmissor() {
 		return rgOrgaoEmissor;
-	}
-
-	public PessoaGrupoMunicipioVi getRgPessoaGrupoMunicipioVi() {
-		return rgPessoaGrupoMunicipioVi;
 	}
 
 	public Sexo getSexo() {
@@ -420,8 +420,12 @@ public class PessoaFisica extends Pessoa {
 		this.nascimento = nascimento;
 	}
 
-	public void setNascimentoPessoaGrupo(PessoaGrupo nascimentoPessoaGrupo) {
-		this.nascimentoPessoaGrupo = nascimentoPessoaGrupo;
+	public void setNascimentoMunicipio(Municipio nascimentoMunicipio) {
+		this.nascimentoMunicipio = nascimentoMunicipio;
+	}
+
+	public void setNascimentoPais(Pais nascimentoPais) {
+		this.nascimentoPais = nascimentoPais;
 	}
 
 	public void setNisNumero(String nisNumero) {
@@ -446,10 +450,6 @@ public class PessoaFisica extends Pessoa {
 
 	public void setRgOrgaoEmissor(String rgOrgaoEmissor) {
 		this.rgOrgaoEmissor = rgOrgaoEmissor;
-	}
-
-	public void setRgPessoaGrupoMunicipioVi(PessoaGrupoMunicipioVi rgPessoaGrupoMunicipioVi) {
-		this.rgPessoaGrupoMunicipioVi = rgPessoaGrupoMunicipioVi;
 	}
 
 	public void setSexo(Sexo sexo) {

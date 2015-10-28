@@ -144,8 +144,8 @@ angular.module(pNmModulo).config(['$stateProvider', '$urlRouterProvider', 'toast
 
   }]);
 
-angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'toastr', 'utilSrv',
-  function($rootScope, $modal, FrzNavegadorParams, toastr, utilSrv) {
+angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'toastr', 'UtilSrv',
+  function($rootScope, $modal, FrzNavegadorParams, toastr, UtilSrv) {
     $rootScope.servicoUrl = "https://localhost:8443";
     $rootScope.authenticated = false;
     $rootScope.token = null;
@@ -340,14 +340,14 @@ angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'to
     $rootScope.confirmarExcluir = function(scp) {
         if (scp.crudMeuEstado(scp, scp.stt, 'form')) {
             if (scp.navegador.selecao.tipo === 'U') {
-                scp.navegador.dados.splice(utilSrv.indiceDe(scp.navegador.dados, scp.navegador.selecao.item), 1);
+                scp.navegador.dados.splice(UtilSrv.indiceDe(scp.navegador.dados, scp.navegador.selecao.item), 1);
                 scp.navegador.selecao.item = null;
                 scp.navegador.mudarEstado('LISTANDO');
                 scp.crudVaiPara(scp, scp.stt, 'lista');
             } else {
                 var reg = scp.navegador.selecao.items[scp.navegador.folhaAtual];
-                scp.navegador.dados.splice(utilSrv.indiceDe(scp.navegador.dados, reg), 1);
-                scp.navegador.selecao.items.splice(utilSrv.indiceDe(scp.navegador.selecao.items, reg), 1);
+                scp.navegador.dados.splice(UtilSrv.indiceDe(scp.navegador.dados, reg), 1);
+                scp.navegador.selecao.items.splice(UtilSrv.indiceDe(scp.navegador.selecao.items, reg), 1);
                 if (!scp.navegador.selecao.items.length) {
                     scp.navegador.mudarEstado('LISTANDO');
                     scp.crudVaiPara(scp, scp.stt, 'lista');
@@ -361,11 +361,11 @@ angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'to
             }
         } else if (scp.crudMeuEstado(scp, scp.stt, 'lista')) {
             if (scp.navegador.selecao.tipo === 'U') {
-                scp.navegador.dados.splice(utilSrv.indiceDe(scp.navegador.dados, scp.navegador.selecao.item), 1);
+                scp.navegador.dados.splice(UtilSrv.indiceDe(scp.navegador.dados, scp.navegador.selecao.item), 1);
                 scp.navegador.selecao.item = null;
             } else {
                 for (var item = scp.navegador.selecao.items.length; item--;) {
-                    scp.navegador.dados.splice(utilSrv.indiceDe(scp.navegador.dados, scp.navegador.selecao.items[item]), 1);
+                    scp.navegador.dados.splice(UtilSrv.indiceDe(scp.navegador.dados, scp.navegador.selecao.items[item]), 1);
                 }
                 scp.navegador.selecao.items = [];
             }

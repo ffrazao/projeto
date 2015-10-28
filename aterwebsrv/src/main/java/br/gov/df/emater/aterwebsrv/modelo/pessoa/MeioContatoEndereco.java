@@ -78,12 +78,20 @@ public class MeioContatoEndereco extends MeioContato {
 	private String numero;
 
 	@ManyToOne
-	@JoinColumn(name = "cidade_pessoa_grupo_id")
-	private PessoaGrupoCidadeVi pessoaGrupoCidadeVi;
+	@JoinColumn(name = "cidade_id")
+	private Cidade cidade;
 
 	@ManyToOne
-	@JoinColumn(name = "pais_pessoa_grupo_id")
-	private PessoaGrupoPaisVi pessoaGrupoPaisVi;
+	@JoinColumn(name = "municipio_id")
+	private Municipio municipio;
+	
+	@ManyToOne
+	@JoinColumn(name = "estado_id")
+	private Estado estado;
+	
+	@ManyToOne
+	@JoinColumn(name = "pais_id")
+	private Pais pais;
 
 	@OneToOne(mappedBy = "meioContatoEndereco", fetch = FetchType.LAZY)
 	@Transient
@@ -99,16 +107,6 @@ public class MeioContatoEndereco extends MeioContato {
 
 	public MeioContatoEndereco() {
 		setMeioContatoTipo(MeioContatoTipo.END);
-	}
-
-	public MeioContatoEndereco(BigDecimal latitude, BigDecimal longitude) {
-		setLatitude(latitude);
-		setLongitude(longitude);
-	}
-
-	public MeioContatoEndereco(String descricao, PessoaGrupoCidadeVi pessoaGrupoCidadeVi) {
-		setLogradouro(descricao);
-		setPessoaGrupoCidadeVi(pessoaGrupoCidadeVi);
 	}
 
 	public String getBairro() {
@@ -145,51 +143,6 @@ public class MeioContatoEndereco extends MeioContato {
 
 	public String getNumero() {
 		return numero;
-	}
-
-	public String getEnderecoHtml() {
-		String result = getEndereco();
-		return result == null ? null : result.replaceAll("\n", "<br>");
-	}
-
-	public String getEndereco() {
-		String result = null;
-		if (getPessoaGrupoPaisVi() == null) {
-			String cidade = null;
-			String municipio = null;
-			String estado = null;
-			String pais = null;
-			if (getPessoaGrupoCidadeVi() != null) {
-				cidade = getPessoaGrupoCidadeVi().getNome();
-				if (getPessoaGrupoCidadeVi().getPessoaGrupoMunicipioVi() != null) {
-					municipio = getPessoaGrupoCidadeVi().getPessoaGrupoMunicipioVi().getNome();
-					if (getPessoaGrupoCidadeVi().getPessoaGrupoMunicipioVi().getPessoaGrupoEstadoVi() != null) {
-						estado = getPessoaGrupoCidadeVi().getPessoaGrupoMunicipioVi().getPessoaGrupoEstadoVi().getSigla();
-						if (getPessoaGrupoCidadeVi().getPessoaGrupoMunicipioVi().getPessoaGrupoEstadoVi().getPessoaGrupoPaisVi() != null) {
-							pais = getPessoaGrupoCidadeVi().getPessoaGrupoMunicipioVi().getPessoaGrupoEstadoVi().getPessoaGrupoPaisVi().getNome();
-						}
-					}
-				}
-			}
-			result = String.format("%s\n%s %s %s\n%s %s\n%s %s %s %s", getNomePropriedadeRuralOuEstabelecimento(), getLogradouro(), getComplemento(), getNumero(), getBairro(), cidade, getCep(), municipio, estado, pais);
-		} else {
-			result = String.format("%s\n%s\n%s", getNomePropriedadeRuralOuEstabelecimento(), getRoteiroAcessoOuEnderecoInternacional(), getPessoaGrupoPaisVi().getNome());
-		}
-		result = result.replaceAll("\\p{Blank}++", " ").trim();
-
-		return result.length() > 0 ? result : null;
-	}
-
-	public PessoaGrupoCidadeVi getPessoaGrupoCidadeVi() {
-		return pessoaGrupoCidadeVi;
-	}
-
-	public PessoaGrupoPaisVi getPessoaGrupoPaisVi() {
-		return pessoaGrupoPaisVi;
-	}
-
-	public void setPessoaGrupoPaisVi(PessoaGrupoPaisVi pessoaGrupoPaisVi) {
-		this.pessoaGrupoPaisVi = pessoaGrupoPaisVi;
 	}
 
 	public PropriedadeRural getPropriedadeRural() {
@@ -238,10 +191,6 @@ public class MeioContatoEndereco extends MeioContato {
 
 	public void setNumero(String numero) {
 		this.numero = numero;
-	}
-
-	public void setPessoaGrupoCidadeVi(PessoaGrupoCidadeVi pessoaGrupoCidadeVi) {
-		this.pessoaGrupoCidadeVi = pessoaGrupoCidadeVi;
 	}
 
 	public void setPropriedadeRural(PropriedadeRural propriedadeRural) {

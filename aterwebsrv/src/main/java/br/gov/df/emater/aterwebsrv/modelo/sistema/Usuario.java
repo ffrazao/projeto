@@ -13,8 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -31,6 +31,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.UsuarioStatusConta;
+import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 
 /**
@@ -66,10 +67,13 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 	@Column(name = "senha")
 	private String password;
 
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "pessoa_id")
-	@NotNull
 	private Pessoa pessoa;
+
+	@ManyToOne
+	@JoinColumn(name = "unidade_organizacional_id")
+	private UnidadeOrganizacional unidadeOrganizacional;
 
 	@Column(name = "nome_usuario")
 	@NotEmpty
@@ -138,6 +142,10 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 
 	public Pessoa getPessoa() {
 		return pessoa;
+	}
+
+	public UnidadeOrganizacional getUnidadeOrganizacional() {
+		return unidadeOrganizacional;
 	}
 
 	@Override
@@ -212,6 +220,10 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 
 	public void setPessoa(Pessoa pessoa) {
 		this.pessoa = pessoa;
+	}
+
+	public void setUnidadeOrganizacional(UnidadeOrganizacional unidadeOrganizacional) {
+		this.unidadeOrganizacional = unidadeOrganizacional;
 	}
 
 	public void setUsername(String username) {

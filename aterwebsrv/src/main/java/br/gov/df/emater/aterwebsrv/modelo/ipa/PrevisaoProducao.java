@@ -24,16 +24,16 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
-import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
-import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
-import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaGrupo;
-import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
-import br.gov.df.emater.aterwebsrv.rest.json.JsonFormatarBigDecimal;
-import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
-
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
+import br.gov.df.emater.aterwebsrv.modelo.ater.Comunidade;
+import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
+import br.gov.df.emater.aterwebsrv.rest.json.JsonFormatarBigDecimal;
+import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 
 @Entity
 @Table(name = "previsao_producao", schema = EntidadeBase.IPA_SCHEMA)
@@ -43,6 +43,10 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 public class PrevisaoProducao extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1l;
+
+	@JoinColumn(name = "comunidade_id")
+	@ManyToOne
+	private Comunidade comunidade;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -54,10 +58,6 @@ public class PrevisaoProducao extends EntidadeBase implements _ChavePrimaria<Int
 	@JsonSerialize(using = JsonSerializerData.class)
 	@JsonDeserialize(using = JsonDeserializerData.class)
 	private Calendar inicio;
-
-	@JoinColumn(name = "pessoa_grupo_id")
-	@ManyToOne
-	private PessoaGrupo pessoaGrupo;
 
 	@OneToMany(mappedBy = "previsaoProducao", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Producao> producaoList;
@@ -88,6 +88,10 @@ public class PrevisaoProducao extends EntidadeBase implements _ChavePrimaria<Int
 		setId(id);
 	}
 
+	public Comunidade getComunidade() {
+		return comunidade;
+	}
+
 	@Override
 	public Integer getId() {
 		return id;
@@ -95,10 +99,6 @@ public class PrevisaoProducao extends EntidadeBase implements _ChavePrimaria<Int
 
 	public Calendar getInicio() {
 		return inicio;
-	}
-
-	public PessoaGrupo getPessoaGrupo() {
-		return pessoaGrupo;
 	}
 
 	public List<Producao> getProducaoList() {
@@ -121,6 +121,10 @@ public class PrevisaoProducao extends EntidadeBase implements _ChavePrimaria<Int
 		return volume;
 	}
 
+	public void setComunidade(Comunidade comunidade) {
+		this.comunidade = comunidade;
+	}
+
 	@Override
 	public void setId(Integer id) {
 		this.id = id;
@@ -128,10 +132,6 @@ public class PrevisaoProducao extends EntidadeBase implements _ChavePrimaria<Int
 
 	public void setInicio(Calendar inicio) {
 		this.inicio = inicio;
-	}
-
-	public void setPessoaGrupo(PessoaGrupo pessoaGrupo) {
-		this.pessoaGrupo = pessoaGrupo;
 	}
 
 	public void setProducaoList(List<Producao> producaoList) {

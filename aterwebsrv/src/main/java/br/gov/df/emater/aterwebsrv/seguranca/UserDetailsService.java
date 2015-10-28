@@ -12,13 +12,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.gov.df.emater.aterwebsrv.dao.funcional.EmpregoViDao;
-import br.gov.df.emater.aterwebsrv.dao.funcional.LotacaoViDao;
+import br.gov.df.emater.aterwebsrv.dao.funcional.EmpregoDao;
+import br.gov.df.emater.aterwebsrv.dao.funcional.LotacaoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaDao;
 import br.gov.df.emater.aterwebsrv.dao.sistema.UsuarioDao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
-import br.gov.df.emater.aterwebsrv.modelo.funcional.EmpregoVi;
-import br.gov.df.emater.aterwebsrv.modelo.funcional.LotacaoVi;
+import br.gov.df.emater.aterwebsrv.modelo.funcional.Emprego;
+import br.gov.df.emater.aterwebsrv.modelo.funcional.Lotacao;
+import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Perfil;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.PerfilFuncionalidadeComando;
@@ -34,13 +35,10 @@ public class UserDetailsService implements org.springframework.security.core.use
 	private UsuarioDao usuarioDao;
 	
 	@Autowired
-	private PessoaDao pessoaDao;
+	private EmpregoDao empregoDao;
 	
 	@Autowired
-	private EmpregoViDao empregoViDao;
-	
-	@Autowired
-	private LotacaoViDao lotacaoViDao;
+	private LotacaoDao lotacaoDao;
 
 	private void avaliarPerfil(Set<UsuarioPerfil> authorities, Set<UsuarioPerfil> authoritiesRetorno, Map<String, Set<String>> perfilFuncionalidadeComandoListRetorno, Map<String, Set<String>> perfilFuncionalidadeComandoListNegadoRetorno) {
 		for (UsuarioPerfil usuarioPerfil : authorities) {
@@ -104,23 +102,19 @@ public class UserDetailsService implements org.springframework.security.core.use
 		avaliarPerfil(usuario.getAuthorities(), authoritiesRetorno, perfilFuncionalidadeComandoListRetorno, perfilFuncionalidadeComandoListNegadoRetorno);
 		
 		// inicio avaliar perfis da empresa do usuario
-		List<EmpregoVi> empregoViList = empregoViDao.findByEmpregadoId(usuario.getPessoa().getId());
-		for (EmpregoVi empregoVi: empregoViList) {
-			Pessoa empregador = pessoaDao.findOne(empregoVi.getEmpregadorId());
-			for (Usuario usuarioEmpregador: usuarioDao.findByPessoa(empregador)) {
+		for (Emprego emprego: empregoDao.findByPessoaFisicaId(usuario.getPessoa().getId())) {
+			for (Usuario usuarioEmpregador: usuarioDao.findByPessoa(emprego.getPessoaJuridica())) {
 				avaliarPerfil(usuarioEmpregador.getAuthorities(), authoritiesRetorno, perfilFuncionalidadeComandoListRetorno, perfilFuncionalidadeComandoListNegadoRetorno);
+			}
+			// inicio avaliar perfis da lotacoes do usuario
+			for (Lotacao lotacao: lotacaoDao.findByEmprego(emprego)) {
+				for (Usuario usuarioUnidadeOrganizacional: usuarioDao.findByUnidadeOrganizacional(lotacao.getUnidadeOrganizacional())) {
+					avaliarPerfil(usuarioUnidadeOrganizacional.getAuthorities(), authoritiesRetorno, perfilFuncionalidadeComandoListRetorno, perfilFuncionalidadeComandoListNegadoRetorno);
+				}
 			}
 		}
 		// fim avaliar perfis da empresa do usuario
 		
-		// inicio avaliar perfis da lotacoes do usuario
-		List<LotacaoVi> lotacaoViList = lotacaoViDao.findByEmpregadoId(usuario.getPessoa().getId());
-		for (LotacaoVi lotacaoVi: lotacaoViList) {
-			Pessoa unidadeOrganizacional = pessoaDao.findOne(lotacaoVi.getUnidadeOrganizacionalId());
-			for (Usuario usuarioUnidadeOrganizacional: usuarioDao.findByPessoa(unidadeOrganizacional)) {
-				avaliarPerfil(usuarioUnidadeOrganizacional.getAuthorities(), authoritiesRetorno, perfilFuncionalidadeComandoListRetorno, perfilFuncionalidadeComandoListNegadoRetorno);
-			}
-		}
 		// fim avaliar perfis da lotacoes do usuario
 
 		// inicio remover as funcionalidades/comandos que não foram concedidos

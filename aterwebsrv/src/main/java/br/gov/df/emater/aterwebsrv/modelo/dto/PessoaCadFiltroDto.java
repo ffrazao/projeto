@@ -3,7 +3,7 @@ package br.gov.df.emater.aterwebsrv.modelo.dto;
 import java.util.List;
 import java.util.Set;
 
-import br.gov.df.emater.aterwebsrv.modelo.ater.Setor;
+import br.gov.df.emater.aterwebsrv.modelo.ater.Comunidade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGeracao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
@@ -12,8 +12,7 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.PropriedadeUtilizacaoEspacoRur
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoCategoria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoSegmento;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Sexo;
-import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaGrupo;
-import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaGrupoComunidadeVi;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.GrupoSocial;
 
 public class PessoaCadFiltroDto extends FiltroDtoCustom {
 
@@ -21,9 +20,11 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 
 	private String cnpj;
 
+	private Comunidade comunidade;
+
 	private String cpf;
 
-	private List<PessoaGrupo> grupoSocialList;
+	private List<GrupoSocial> grupoSocialList;
 
 	private String nome;
 
@@ -59,8 +60,6 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 
 	private Set<Confirmacao> publicoAlvoOrganizacao;
 
-	private PessoaGrupoComunidadeVi publicoAlvoPessoaGrupoComunidadeVi;
-
 	private PropriedadeUtilizacaoEspacoRural publicoAlvoPropriedadeUtilizacaoEspacoRural;
 
 	private Set<PublicoAlvoSegmento> publicoAlvoSegmento;
@@ -75,11 +74,15 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 		return cnpj;
 	}
 
+	public Comunidade getComunidade() {
+		return comunidade;
+	}
+
 	public String getCpf() {
 		return cpf;
 	}
 
-	public List<PessoaGrupo> getGrupoSocialList() {
+	public List<GrupoSocial> getGrupoSocialList() {
 		return grupoSocialList;
 	}
 
@@ -151,10 +154,6 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 		return publicoAlvoOrganizacao;
 	}
 
-	public PessoaGrupoComunidadeVi getPublicoAlvoPessoaGrupoComunidadeVi() {
-		return publicoAlvoPessoaGrupoComunidadeVi;
-	}
-
 	public PropriedadeUtilizacaoEspacoRural getPublicoAlvoPropriedadeUtilizacaoEspacoRural() {
 		return publicoAlvoPropriedadeUtilizacaoEspacoRural;
 	}
@@ -179,11 +178,15 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 		this.cnpj = cnpj;
 	}
 
+	public void setComunidade(Comunidade comunidade) {
+		this.comunidade = comunidade;
+	}
+
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
 
-	public void setGrupoSocialList(List<PessoaGrupo> grupoSocialList) {
+	public void setGrupoSocialList(List<GrupoSocial> grupoSocialList) {
 		this.grupoSocialList = grupoSocialList;
 	}
 
@@ -253,10 +256,6 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 
 	public void setPublicoAlvoOrganizacao(Set<Confirmacao> publicoAlvoOrganizacao) {
 		this.publicoAlvoOrganizacao = publicoAlvoOrganizacao;
-	}
-
-	public void setPublicoAlvoPessoaGrupoComunidadeVi(PessoaGrupoComunidadeVi publicoAlvoPessoaGrupoComunidadeVi) {
-		this.publicoAlvoPessoaGrupoComunidadeVi = publicoAlvoPessoaGrupoComunidadeVi;
 	}
 
 	public void setPublicoAlvoPropriedadeUtilizacaoEspacoRural(PropriedadeUtilizacaoEspacoRural publicoAlvoPropriedadeUtilizacaoEspacoRural) {

@@ -2,9 +2,9 @@
 
 'use strict';
 
-angular.module(pNmModulo).factory(pNmFactory,
-    function() {
-        var utilSrv = {
+angular.module(pNmModulo).factory(pNmFactory, ['$rootScope', '$http',
+    function($rootScope, $http) {
+        var UtilSrv = {
             indiceDe : function(arr, item) {
                 for (var i = arr.length; i--;) {
                     if (angular.equals(arr[i], item)) {
@@ -13,9 +13,12 @@ angular.module(pNmModulo).factory(pNmFactory,
                 }
                 return null;
             },
+            dominio: function (dominio) {
+                return $http.get($rootScope.servicoUrl + '/dominio', {params: dominio});
+            }
         };
-        return utilSrv;
+        return UtilSrv;
     }
-);
+]);
 
-})('principal', 'utilSrv');
+})('principal', 'UtilSrv');

@@ -2,8 +2,8 @@
 
     'use strict';
 
-    angular.module(pNmModulo).controller(pNmController, ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr', 'utilSrv', 'mensagemSrv',
-        function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, utilSrv, mensagemSrv) {
+    angular.module(pNmModulo).controller(pNmController, ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr', 'UtilSrv', 'mensagemSrv',
+        function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, UtilSrv, mensagemSrv) {
             // inicializacao
             var init = function() {
                 if (!angular.isObject($scope.cadastro.filtro.grupoSocialList)) {
@@ -162,14 +162,14 @@
             $scope.confirmarExcluir = function() {
                 if (meuEstado('form')) {
                     if ($scope.subGrupoSocialNvg.selecao.tipo === 'U') {
-                        $scope.subGrupoSocialNvg.dados.splice(utilSrv.indiceDe($scope.subGrupoSocialNvg.dados, $scope.subGrupoSocialNvg.selecao.item), 1);
+                        $scope.subGrupoSocialNvg.dados.splice(UtilSrv.indiceDe($scope.subGrupoSocialNvg.dados, $scope.subGrupoSocialNvg.selecao.item), 1);
                         $scope.subGrupoSocialNvg.selecao.item = null;
                         $scope.subGrupoSocialNvg.mudarEstado('LISTANDO');
                         vaiPara('lista');
                     } else {
                         var reg = $scope.subGrupoSocialNvg.selecao.items[$scope.subGrupoSocialNvg.folhaAtual];
-                        $scope.subGrupoSocialNvg.dados.splice(utilSrv.indiceDe($scope.subGrupoSocialNvg.dados, reg), 1);
-                        $scope.subGrupoSocialNvg.selecao.items.splice(utilSrv.indiceDe($scope.subGrupoSocialNvg.selecao.items, reg), 1);
+                        $scope.subGrupoSocialNvg.dados.splice(UtilSrv.indiceDe($scope.subGrupoSocialNvg.dados, reg), 1);
+                        $scope.subGrupoSocialNvg.selecao.items.splice(UtilSrv.indiceDe($scope.subGrupoSocialNvg.selecao.items, reg), 1);
                         if (!$scope.subGrupoSocialNvg.selecao.items.length) {
                             $scope.subGrupoSocialNvg.mudarEstado('LISTANDO');
                             vaiPara('lista');
@@ -183,11 +183,11 @@
                     }
                 } else if (meuEstado('lista')) {
                     if ($scope.subGrupoSocialNvg.selecao.tipo === 'U') {
-                        $scope.subGrupoSocialNvg.dados.splice(utilSrv.indiceDe($scope.subGrupoSocialNvg.dados, $scope.subGrupoSocialNvg.selecao.item), 1);
+                        $scope.subGrupoSocialNvg.dados.splice(UtilSrv.indiceDe($scope.subGrupoSocialNvg.dados, $scope.subGrupoSocialNvg.selecao.item), 1);
                         $scope.subGrupoSocialNvg.selecao.item = null;
                     } else {
                         for (var item = $scope.subGrupoSocialNvg.selecao.items.length; item--;) {
-                            $scope.subGrupoSocialNvg.dados.splice(utilSrv.indiceDe($scope.subGrupoSocialNvg.dados, $scope.subGrupoSocialNvg.selecao.items[item]), 1);
+                            $scope.subGrupoSocialNvg.dados.splice(UtilSrv.indiceDe($scope.subGrupoSocialNvg.dados, $scope.subGrupoSocialNvg.selecao.items[item]), 1);
                         }
                         $scope.subGrupoSocialNvg.selecao.items = [];
                     }
