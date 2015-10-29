@@ -1,12 +1,12 @@
 package br.gov.df.emater.aterwebsrv.modelo.dominio;
 
-public enum Sexo {
+public enum PessoaGenero {
 
 	F("Feminino"), M("Masculino");
 
 	private String descricao;
 
-	private Sexo(String descricao) {
+	private PessoaGenero(String descricao) {
 		this.descricao = descricao;
 	}
 

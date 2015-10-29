@@ -11,7 +11,7 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaTipo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PropriedadeUtilizacaoEspacoRural;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoCategoria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoSegmento;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.Sexo;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.GrupoSocial;
 
 public class PessoaCadFiltroDto extends FiltroDtoCustom {
@@ -28,7 +28,7 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 
 	private String nome;
 
-	private Set<Sexo> pessoaGenero;
+	private Set<PessoaGenero> pessoaGenero;
 
 	private Set<PessoaGeracao> pessoaGeracao;
 
@@ -90,7 +90,7 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 		return nome;
 	}
 
-	public Set<Sexo> getPessoaGenero() {
+	public Set<PessoaGenero> getPessoaGenero() {
 		return pessoaGenero;
 	}
 
@@ -194,7 +194,7 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 		this.nome = nome;
 	}
 
-	public void setPessoaGenero(Set<Sexo> pessoaGenero) {
+	public void setPessoaGenero(Set<PessoaGenero> pessoaGenero) {
 		this.pessoaGenero = pessoaGenero;
 	}
 

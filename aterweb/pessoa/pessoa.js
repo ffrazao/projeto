@@ -147,6 +147,8 @@
                 }
             };
             // fim trabalho tab
+
+            // inicio dos watches
             $scope.$watch('cadastro.registro.nascimento', function(newValue, oldValue) {
                 $scope.cadastro.registro.idade = null;
                 $scope.cadastro.registro.geracao = null;
@@ -177,6 +179,33 @@
                     $scope.cadastro.registro.geracao = "Inválido";
                 }
             });
+            $scope.$watch('cadastro.registro.nascimentoPais.id', function(newValue, oldValue) {
+                if (newValue && newValue > 0) {
+                    UtilSrv.dominioLista($scope.cadastro.apoio.nascimentoEstadoList, {ent:['Estado'], npk: ['pais.id'], vpk: [newValue]});
+                } else {
+                    $scope.cadastro.apoio.nascimentoEstadoList = [];
+                }
+            });
+            $scope.$watch('cadastro.registro.nascimentoEstado.id', function(newValue, oldValue) {
+                if (newValue && newValue > 0) {
+                    UtilSrv.dominioLista($scope.cadastro.apoio.nascimentoMunicipioList, {ent:['Municipio'], npk: ['estado.id'], vpk: [newValue]});
+                } else {
+                    $scope.cadastro.apoio.nascimentoMunicipioList = [];
+                }
+            });
+            $scope.$watch('cadastro.registro.nascimentoPais.id + cadastro.registro.naturalizado', function(newValue, oldValue) {
+                $scope.cadastro.registro.nacionalidade = null;
+                if (!($scope.cadastro.registro.nascimentoPais && $scope.cadastro.registro.nascimentoPais.id)) {
+                    return;
+                }
+                if ($scope.cadastro.registro.nascimentoPais.id === 1) {
+                    $scope.cadastro.registro.nacionalidade = UtilSrv.indiceDePorCampo($scope.cadastro.apoio.nacionalidadeList, 'BN', 'codigo');
+                    $scope.cadastro.registro.naturalizado = false;
+                } else {
+                    $scope.cadastro.registro.nacionalidade = $scope.cadastro.registro.naturalizado ? UtilSrv.indiceDePorCampo($scope.cadastro.apoio.nacionalidadeList, 'NA', 'codigo') : UtilSrv.indiceDePorCampo($scope.cadastro.apoio.nacionalidadeList, 'ES', 'codigo');
+                }
+            });
+            // fim dos watches
         }
     ]);
 })('pessoa', 'PessoaCtrl', 'Cadastro de Pessoas');

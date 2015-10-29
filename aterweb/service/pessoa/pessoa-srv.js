@@ -12,7 +12,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
                 UtilSrv.dominio({ent: [
                    'PessoaTipo',
-                   'Sexo',
+                   'PessoaGenero',
                    'PessoaGeracao',
                    'PessoaSituacao',
                    'PublicoAlvoSegmento',
@@ -26,10 +26,14 @@ angular.module(pNmModulo).factory(pNmFactory,
                    'Profissao',
                    'EstadoCivil',
                    'RegimeCasamento',
+                   'PessoaNacionalidade',
+                   'CamOrgao',
+                   'ConfirmacaoDap',
+                   'CnhCategoria',
                 ]}).success(function(resposta) {
                     if (resposta && resposta.resultado) {
                         scp.cadastro.apoio.pessoaTipoList = resposta.resultado[0];
-                        scp.cadastro.apoio.sexoList = resposta.resultado[1];
+                        scp.cadastro.apoio.generoList = resposta.resultado[1];
                         scp.cadastro.apoio.pessoaGeracaoList = resposta.resultado[2];
                         scp.cadastro.apoio.pessoaSituacaoList = resposta.resultado[3];
                         scp.cadastro.apoio.publicoAlvoSegmentoList = resposta.resultado[4];
@@ -43,6 +47,10 @@ angular.module(pNmModulo).factory(pNmFactory,
                         scp.cadastro.apoio.profissaoList = resposta.resultado[12];
                         scp.cadastro.apoio.estadoCivilList = resposta.resultado[13];
                         scp.cadastro.apoio.regimeCasamentoList = resposta.resultado[14];
+                        scp.cadastro.apoio.nacionalidadeList = resposta.resultado[15];
+                        scp.cadastro.apoio.camOrgaoList = resposta.resultado[16];
+                        scp.cadastro.apoio.confirmacaoDapList = resposta.resultado[17];
+                        scp.cadastro.apoio.cnhCategoriaList = resposta.resultado[18];
                     }
                 });
             },

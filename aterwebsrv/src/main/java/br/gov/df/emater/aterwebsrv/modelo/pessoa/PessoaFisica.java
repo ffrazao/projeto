@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
@@ -21,22 +22,23 @@ import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Store;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.CamOrgao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.CnhCategoria;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.ConfirmacaoDap;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Escolaridade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.EstadoCivil;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.Nacionalidade;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGeracao;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaNacionalidade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaTipo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.RegimeCasamento;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.Sexo;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * The persistent class for the pessoa_fisica database table.
@@ -114,9 +116,24 @@ public class PessoaFisica extends Pessoa {
 	@Field(index = Index.YES, store = Store.YES)
 	private String ctpsSerie;
 
+	@Column(name = "dap_observacao")
+	@Lob
+	private String dapObservacao;
+
 	@Column(name = "dap_registro")
 	@Field(index = Index.YES, store = Store.YES)
 	private String dapRegistro;
+
+	@Column(name = "dap_situacao")
+	@Enumerated(EnumType.STRING)
+	private ConfirmacaoDap dapSituacao;
+
+	@Column(name = "dap_validade")
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@JsonSerialize(using = JsonSerializerData.class)
+	@JsonDeserialize(using = JsonDeserializerData.class)
+	private Calendar dapValidade;
 
 	@Enumerated(EnumType.STRING)
 	private Escolaridade escolaridade;
@@ -126,7 +143,15 @@ public class PessoaFisica extends Pessoa {
 	private EstadoCivil estadoCivil;
 
 	@Enumerated(EnumType.STRING)
-	private Nacionalidade nacionalidade;
+	@NotNull
+	private PessoaGenero genero;
+
+	@Transient
+	@Enumerated(EnumType.STRING)
+	private PessoaGeracao geracao;
+
+	@Enumerated(EnumType.STRING)
+	private PessoaNacionalidade nacionalidade;
 
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
@@ -146,10 +171,6 @@ public class PessoaFisica extends Pessoa {
 	@Field(index = Index.YES, store = Store.YES)
 	private String nisNumero;
 
-	@Transient
-	@Enumerated(EnumType.STRING)
-	private PessoaGeracao pessoaGeracao;
-
 	@ManyToOne
 	@JoinColumn(name = "profissao_id")
 	private Profissao profissao;
@@ -167,10 +188,6 @@ public class PessoaFisica extends Pessoa {
 
 	@Column(name = "rg_orgao_emissor")
 	private String rgOrgaoEmissor;
-
-	@Enumerated(EnumType.STRING)
-	@NotNull
-	private Sexo sexo;
 
 	@Column(name = "titulo_numero")
 	@Field(index = Index.YES, store = Store.YES)
@@ -258,8 +275,20 @@ public class PessoaFisica extends Pessoa {
 		return ctpsSerie;
 	}
 
+	public String getDapObservacao() {
+		return dapObservacao;
+	}
+
 	public String getDapRegistro() {
 		return dapRegistro;
+	}
+
+	public ConfirmacaoDap getDapSituacao() {
+		return dapSituacao;
+	}
+
+	public Calendar getDapValidade() {
+		return dapValidade;
 	}
 
 	public Escolaridade getEscolaridade() {
@@ -270,7 +299,29 @@ public class PessoaFisica extends Pessoa {
 		return estadoCivil;
 	}
 
-	public Nacionalidade getNacionalidade() {
+	public PessoaGenero getGenero() {
+		return genero;
+	}
+
+	public PessoaGeracao getGeracao() {
+		if (this.nascimento == null) {
+			return null;
+		}
+		int idade = UtilitarioData.getInstance().qtdAnosEntre(this.nascimento, Calendar.getInstance());
+		if (idade > 0 && idade <= 12) {
+			return PessoaGeracao.C;
+		} else if (idade > 13 && idade <= 17) {
+			return PessoaGeracao.J;
+		} else if (idade > 18 && idade <= 69) {
+			return PessoaGeracao.A;
+		} else if (idade > 70 && idade <= 130) {
+			return PessoaGeracao.I;
+		} else {
+			return null;
+		}
+	}
+
+	public PessoaNacionalidade getNacionalidade() {
 		return nacionalidade;
 	}
 
@@ -290,24 +341,6 @@ public class PessoaFisica extends Pessoa {
 		return nisNumero;
 	}
 
-	public PessoaGeracao getPessoaGeracao() {
-		if (this.nascimento == null) {
-			return null;
-		}
-		int idade = UtilitarioData.getInstance().qtdAnosEntre(this.nascimento, Calendar.getInstance());
-		if (idade > 0 && idade <= 12) {
-			return PessoaGeracao.C;
-		} else if (idade > 13 && idade <= 17) {
-			return PessoaGeracao.J;
-		} else if (idade > 18 && idade <= 69) {
-			return PessoaGeracao.A;
-		} else if (idade > 70 && idade <= 130) {
-			return PessoaGeracao.I;
-		} else {
-			return null;
-		}
-	}
-
 	public Profissao getProfissao() {
 		return profissao;
 	}
@@ -322,10 +355,6 @@ public class PessoaFisica extends Pessoa {
 
 	public String getRgOrgaoEmissor() {
 		return rgOrgaoEmissor;
-	}
-
-	public Sexo getSexo() {
-		return sexo;
 	}
 
 	public String getTituloNumero() {
@@ -400,8 +429,20 @@ public class PessoaFisica extends Pessoa {
 		this.ctpsSerie = ctpsSerie;
 	}
 
+	public void setDapObservacao(String dapObservacao) {
+		this.dapObservacao = dapObservacao;
+	}
+
 	public void setDapRegistro(String dapRegistro) {
 		this.dapRegistro = dapRegistro;
+	}
+
+	public void setDapSituacao(ConfirmacaoDap dapSituacao) {
+		this.dapSituacao = dapSituacao;
+	}
+
+	public void setDapValidade(Calendar dapValidade) {
+		this.dapValidade = dapValidade;
 	}
 
 	public void setEscolaridade(Escolaridade escolaridade) {
@@ -412,7 +453,15 @@ public class PessoaFisica extends Pessoa {
 		this.estadoCivil = estadoCivil;
 	}
 
-	public void setNacionalidade(Nacionalidade nacionalidade) {
+	public void setGenero(PessoaGenero genero) {
+		this.genero = genero;
+	}
+
+	public void setGeracao(PessoaGeracao geracao) {
+		this.geracao = geracao;
+	}
+
+	public void setNacionalidade(PessoaNacionalidade nacionalidade) {
 		this.nacionalidade = nacionalidade;
 	}
 
@@ -432,10 +481,6 @@ public class PessoaFisica extends Pessoa {
 		this.nisNumero = nisNumero;
 	}
 
-	public void setPessoaGeracao(PessoaGeracao pessoaGeracao) {
-		this.pessoaGeracao = pessoaGeracao;
-	}
-
 	public void setProfissao(Profissao profissao) {
 		this.profissao = profissao;
 	}
@@ -450,10 +495,6 @@ public class PessoaFisica extends Pessoa {
 
 	public void setRgOrgaoEmissor(String rgOrgaoEmissor) {
 		this.rgOrgaoEmissor = rgOrgaoEmissor;
-	}
-
-	public void setSexo(Sexo sexo) {
-		this.sexo = sexo;
 	}
 
 	public void setTituloNumero(String tituloNumero) {

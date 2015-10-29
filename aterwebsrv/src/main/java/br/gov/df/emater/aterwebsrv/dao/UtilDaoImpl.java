@@ -60,7 +60,11 @@ public class UtilDaoImpl implements UtilDao {
 		Query query = entityManager.createQuery(sql.toString());
 
 		if (nomeChavePrimaria != null && nomeChavePrimaria.trim().length() > 0 && valorChavePrimaria != null) {
-			query.setParameter("1", valorChavePrimaria);
+			try {
+				query.setParameter("1", Integer.parseInt(valorChavePrimaria));
+			} catch (NumberFormatException e) {
+				query.setParameter("1", valorChavePrimaria);
+			}
 		}
 
 		List<?> result = query.getResultList();

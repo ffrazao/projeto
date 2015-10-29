@@ -26,7 +26,7 @@ import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Escolaridade;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.Sexo;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.StatusValidoInvalido;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
@@ -113,7 +113,7 @@ public class CadPessoa extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	@Column(name = "sexo")
 	@Enumerated(EnumType.STRING)
-	private Sexo sexo;
+	private PessoaGenero pessoaGenero;
 
 	@Column(name = "status")
 	@Enumerated(EnumType.STRING)
@@ -208,8 +208,8 @@ public class CadPessoa extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return residePropriedade;
 	}
 
-	public Sexo getSexo() {
-		return sexo;
+	public PessoaGenero getPessoaGenero() {
+		return pessoaGenero;
 	}
 
 	public StatusValidoInvalido getStatus() {
@@ -305,8 +305,8 @@ public class CadPessoa extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.residePropriedade = residePropriedade;
 	}
 
-	public void setSexo(Sexo sexo) {
-		this.sexo = sexo;
+	public void setPessoaGenero(PessoaGenero pessoaGenero) {
+		this.pessoaGenero = pessoaGenero;
 	}
 
 	public void setStatus(StatusValidoInvalido status) {

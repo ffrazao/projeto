@@ -57,14 +57,14 @@
                 </div>
                 <!-- Multiple Checkboxes (inline) -->
                 <div class="form-group" title="Gênero da Pessoa" ng-hide="cadastro.filtro.tipoPessoa.length === 1 && cadastro.filtro.tipoPessoa.indexOf('PJ') >= 0">
-                    <label class="col-md-4 control-label" for="pessoaGenero">Gênero da Pessoa</label>
+                    <label class="col-md-4 control-label" for="genero">Gênero da Pessoa</label>
                     <div class="col-md-6">
-                        <label class="checkbox-inline" for="pessoaGenero-{{$index}}" ng-repeat="item in cadastro.apoio.sexoList">
-                            <input type="checkbox" name="pessoaGenero" id="pessoaGenero-{{$index}}" checklist-model="cadastro.filtro.pessoaGenero" checklist-value="item.codigo">
+                        <label class="checkbox-inline" for="genero-{{$index}}" ng-repeat="item in cadastro.apoio.generoList">
+                            <input type="checkbox" name="genero" id="genero-{{$index}}" checklist-model="cadastro.filtro.genero" checklist-value="item.codigo">
                             {{item.descricao}}
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.pessoaGenero.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.genero.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>

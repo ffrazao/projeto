@@ -8,6 +8,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
@@ -16,7 +17,7 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaTipo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoCategoria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoSegmento;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.Sexo;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;
 import br.gov.df.emater.aterwebsrv.modelo.dto.FiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.PessoaCadFiltroDto;
 
@@ -74,7 +75,7 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 			sql.append(sqlTemp);
 			sql.append(" )").append("\n");
 		}
-		if (filtro.getTipoPessoa() != null && (PessoaTipo.values().length != (filtro.getTipoPessoa().size()))) {
+		if (!CollectionUtils.isEmpty(filtro.getTipoPessoa()) && (PessoaTipo.values().length != (filtro.getTipoPessoa().size()))) {
 			params.add(filtro.getTipoPessoa());
 			sql.append("and p.pessoaTipo in ?").append(params.size()).append("\n");
 		}
@@ -86,11 +87,11 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 			params.add(UtilitarioString.formataCnpj(filtro.getCnpj()));
 			sql.append("and p.cnpj = ?").append(params.size()).append("\n");
 		}
-		if (filtro.getPessoaGenero() != null && (Sexo.values().length != (filtro.getPessoaGenero().size()))) {
+		if (!CollectionUtils.isEmpty(filtro.getPessoaGenero()) && (PessoaGenero.values().length != (filtro.getPessoaGenero().size()))) {
 			params.add(filtro.getPessoaGenero());
-			sql.append("and p.sexo in ?").append(params.size()).append("\n");
+			sql.append("and p.pessoaGenero in ?").append(params.size()).append("\n");
 		}
-		if (filtro.getPessoaGeracao() != null && (PessoaGeracao.values().length != (filtro.getPessoaGeracao().size()))) {
+		if (!CollectionUtils.isEmpty(filtro.getPessoaGeracao()) && (PessoaGeracao.values().length != (filtro.getPessoaGeracao().size()))) {
 			sql.append("and (").append("\n");
 			sqlTemp = new StringBuilder();
 			for (PessoaGeracao pg : filtro.getPessoaGeracao()) {
@@ -104,16 +105,16 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 			}
 			sql.append(sqlTemp).append("	)").append("\n");
 		}
-		if (filtro.getPessoaSituacao() != null && (PessoaSituacao.values().length != (filtro.getPessoaSituacao().size()))) {
+		if (!CollectionUtils.isEmpty(filtro.getPessoaSituacao()) && (PessoaSituacao.values().length != (filtro.getPessoaSituacao().size()))) {
 			params.add(filtro.getPessoaSituacao());
 			sql.append("and p.situacao in ?").append(params.size()).append("\n");
 		}
 		// filtro de publico alvo
-		if (filtro.getPublicoAlvoSegmento() != null && (PublicoAlvoSegmento.values().length != (filtro.getPublicoAlvoSegmento().size()))) {
+		if (!CollectionUtils.isEmpty(filtro.getPublicoAlvoSegmento()) && (PublicoAlvoSegmento.values().length != (filtro.getPublicoAlvoSegmento().size()))) {
 			params.add(filtro.getPublicoAlvoSegmento());
 			sql.append("and alvo.segmento in ?").append(params.size()).append("\n");
 		}
-		if (filtro.getPublicoAlvoCategoria() != null && (PublicoAlvoCategoria.values().length != (filtro.getPublicoAlvoCategoria().size()))) {
+		if (!CollectionUtils.isEmpty(filtro.getPublicoAlvoCategoria()) && (PublicoAlvoCategoria.values().length != (filtro.getPublicoAlvoCategoria().size()))) {
 			params.add(filtro.getPublicoAlvoCategoria());
 			sql.append("and alvo.categoria in ?").append(params.size()).append("\n");
 		}
