@@ -2,7 +2,7 @@ package br.gov.df.emater.aterwebsrv.modelo.dominio;
 
 public enum EstadoCivil {
 
-	C("Casado"), D("Desquitado"), P("Separado"), S("Solteiro"), U("Uni�o Est�vel"), V("Vi�vo");
+	C("Casado"), D("Desquitado"), P("Separado"), S("Solteiro"), U("União Estável"), V("Viúvo");
 
 	private String descricao;
 

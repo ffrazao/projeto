@@ -15,13 +15,9 @@
     <div class="form-group col-md-6">
         <label class="control-label">Gênero</label>
         <div class="form-control">
-            <label class="radio-inline" for="genero-0">
-                <input type="radio" name="genero" id="genero-0" value="M" checked="checked">
-                Masculino
-            </label>
-            <label class="radio-inline" for="genero-1">
-                <input type="radio" name="genero" id="genero-1" value="F">
-                Feminino
+            <label class="radio-inline" for="genero-{{$index}}" ng-repeat="item in cadastro.apoio.sexoList">
+                <input type="radio" name="genero" id="genero-{{$index}}" value="{{item.codigo}}">
+                {{item.descricao}}
             </label>
         </div>
     </div>
@@ -32,17 +28,15 @@
         <div class="row">
             <div class="form-group col-md-2">
                 <label class="control-label">Data</label>
-                <input class="form-control" type="text" />
+                <input class="form-control" type="text" ng-model="cadastro.registro.nascimento" ui-date-mask/>
             </div>
             <div class="form-group col-md-1">
                 <label class="control-label">Idade</label>
-                <input class="form-control" type="text" readonly="true" />
+                <input class="form-control" type="text" readonly="true" ng-model="cadastro.registro.idade" />
             </div>
             <div class="form-group col-md-3">
-                <label class="control-label">País</label>
-                <select class="form-control" ng-model="cadastro.registro.nascimentoPais.id">
-                    <option value="B">Brasil</option>
-                    <option value="A">Argentina</option>
+                <label class="control-label">País /{{cadastro.apoio.paisList.length}}/</label>
+                <select class="form-control" ng-model="cadastro.registro.nascimentoPais.id" ng-options="item.id as item.nome for item in cadastro.apoio.paisList">
                 </select>
             </div>
             <div class="form-group col-md-3" ng-show="cadastro.registro.nascimentoPais.id === 'B'">
@@ -85,18 +79,24 @@
 </div>
 </div>
 <div class="row">
-<div class="form-group col-md-4">
-<label class="control-label">Escolaridade</label>
-<select class="form-control"></select>
-</div>
-<div class="form-group col-md-4">
-<label class="control-label">Profissão</label>
-<select class="form-control"></select>
-</div>
-<div class="form-group col-md-4">
-<label class="control-label">Estado Civil</label>
-<select class="form-control"></select>
-</div>
+    <div class="form-group col-md-4">
+        <label class="control-label">Escolaridade</label>
+        <select class="form-control" ng-model="cadastro.registro.escolaridade.id" ng-options="item.codigo as item.descricao for item in cadastro.apoio.escolaridadeList">
+            <option value="">-- Não informado --</option>
+        </select>
+    </div>
+    <div class="form-group col-md-4">
+        <label class="control-label">Profissão</label>
+        <select class="form-control" ng-model="cadastro.registro.profissao.id" ng-options="item.id as item.nome for item in cadastro.apoio.profissaoList">
+            <option value="">-- Não informado --</option>
+        </select>
+    </div>
+    <div class="form-group col-md-4">
+        <label class="control-label">Estado Civil</label>
+        <select class="form-control" ng-model="cadastro.registro.estadoCivil.id" ng-options="item.codigo as item.descricao for item in cadastro.apoio.estadoCivilList">
+            <option value="">-- Não informado --</option>
+        </select>
+    </div>
 </div>
 <div class="row">
 <fieldset class="form-group col-md-5">
@@ -139,48 +139,50 @@
 </div>
 </div>
 <div class="row">
-<div class="form-group col-md-6">
-<label class="control-label">Certidão de Casamento</label>
-<div class="row">
-<div class="col-md-3">
-<label class="control-label">Cartório</label>
-<input class="form-control" type="text"/>
-</div>
-<div class="col-md-3">
-<label class="control-label">Folha</label>
-<input class="form-control" type="text"/>
-</div>
-<div class="col-md-3">
-<label class="control-label">Livro</label>
-<input class="form-control" type="text"/>
-</div>
-<div class="col-md-3">
-<label class="control-label">Regime</label>
-<select class="form-control" type="text"/>
-</div>
-</div>
-</div>
-<div class="form-group col-md-6" ng-show="cadastro.registro.colaborador">
-<label class="control-label">CNH - Carteira Nacional de Habilitação</label>
-<div class="row">
-<div class="col-md-3">
-<label class="control-label">Categoria</label>
-<input class="form-control" type="text"/>
-</div>
-<div class="col-md-3">
-<label class="control-label">Número</label>
-<input class="form-control" type="text"/>
-</div>
-<div class="col-md-3">
-<label class="control-label">1º Habil.</label>
-<input class="form-control" type="text"/>
-</div>
-<div class="col-md-3">
-<label class="control-label">Validade</label>
-<select class="form-control" type="text"/>
-</div>
-</div>
-</div>
+    <div class="form-group col-md-6">
+        <label class="control-label">Certidão de Casamento</label>
+        <div class="row">
+            <div class="col-md-3">
+                <label class="control-label">Cartório</label>
+                <input class="form-control" type="text"/>
+            </div>
+            <div class="col-md-3">
+                <label class="control-label">Folha</label>
+                <input class="form-control" type="text"/>
+            </div>
+            <div class="col-md-3">
+                <label class="control-label">Livro</label>
+                <input class="form-control" type="text"/>
+            </div>
+            <div class="col-md-3">
+                <label class="control-label">Regime</label>
+                <select class="form-control" ng-model="cadastro.registro.regimeCasamento.id" ng-options="item.codigo as item.descricao for item in cadastro.apoio.regimeCasamentoList">
+                    <option value="">-- Não informado --</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="form-group col-md-6" ng-show="cadastro.registro.colaborador">
+    <label class="control-label">CNH - Carteira Nacional de Habilitação</label>
+    <div class="row">
+    <div class="col-md-3">
+    <label class="control-label">Categoria</label>
+    <input class="form-control" type="text"/>
+    </div>
+    <div class="col-md-3">
+    <label class="control-label">Número</label>
+    <input class="form-control" type="text"/>
+    </div>
+    <div class="col-md-3">
+    <label class="control-label">1º Habil.</label>
+    <input class="form-control" type="text"/>
+    </div>
+    <div class="col-md-3">
+    <label class="control-label">Validade</label>
+    <select class="form-control" type="text"/>
+    </div>
+    </div>
+    </div>
 </div>
 <div class="row">
 <div class="form-group col-md-6" ng-show="cadastro.registro.colaborador">

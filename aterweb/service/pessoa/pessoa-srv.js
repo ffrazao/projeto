@@ -21,6 +21,11 @@ angular.module(pNmModulo).factory(pNmFactory,
                    'Comunidade',
                    'Confirmacao',
                    'ConfirmacaoDap',
+                   'Pais',
+                   'Escolaridade',
+                   'Profissao',
+                   'EstadoCivil',
+                   'RegimeCasamento',
                 ]}).success(function(resposta) {
                     if (resposta && resposta.resultado) {
                         scp.cadastro.apoio.pessoaTipoList = resposta.resultado[0];
@@ -33,6 +38,11 @@ angular.module(pNmModulo).factory(pNmFactory,
                         scp.cadastro.apoio.comunidadeList = resposta.resultado[7];
                         scp.cadastro.apoio.confirmacaoList = resposta.resultado[8];
                         scp.cadastro.apoio.confirmacaoDapList = resposta.resultado[9];
+                        scp.cadastro.apoio.paisList = resposta.resultado[10];
+                        scp.cadastro.apoio.escolaridadeList = resposta.resultado[11];
+                        scp.cadastro.apoio.profissaoList = resposta.resultado[12];
+                        scp.cadastro.apoio.estadoCivilList = resposta.resultado[13];
+                        scp.cadastro.apoio.regimeCasamentoList = resposta.resultado[14];
                     }
                 });
             },

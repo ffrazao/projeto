@@ -2,7 +2,7 @@ package br.gov.df.emater.aterwebsrv.modelo.dominio;
 
 public enum RegimeCasamento {
 
-	A("Participa��o Final nos Aquestos", 4), P("Comunh�o Parcial de Bens", 1), S("Separa��o Total de Bens", 3), U("Comunh�o Universal de Bens", 2);
+	A("Participação Final nos Aquestos", 4), P("Comunhão Parcial de Bens", 1), S("Separação Total de Bens", 3), U("Comunhão Universal de Bens", 2);
 
 	private String descricao;
 

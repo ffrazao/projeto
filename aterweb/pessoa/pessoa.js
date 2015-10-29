@@ -76,7 +76,6 @@
                     '        </div>' + 
                     '    </div>' + 
                     '</div>';
-                console.log(conf);
                 mensagemSrv.confirmacao(false, conf, null, {
                     tipoPessoa: null
                 }).then(function(conteudo) {
@@ -148,6 +147,36 @@
                 }
             };
             // fim trabalho tab
+            $scope.$watch('cadastro.registro.nascimento', function(newValue, oldValue) {
+                $scope.cadastro.registro.idade = null;
+                $scope.cadastro.registro.geracao = null;
+                var nascimento = null;
+                if(newValue instanceof Date) {
+                    nascimento = newValue;
+                } else {
+                    if (newValue === oldValue || newValue === undefined || newValue.length !== 10) {return;}
+                    var partes = newValue.split('/');
+                    nascimento = new Date(partes[2],partes[1]-1,partes[0]);
+                }
+                var hoje = new Date();
+                var idade = hoje.getFullYear() - nascimento.getFullYear();
+                if ( new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate()) < 
+                        new Date(hoje.getFullYear(), nascimento.getMonth(), nascimento.getDate()) ) {
+                    idade--;
+                }
+                $scope.cadastro.registro.idade = idade >= 0 ? idade : null;
+                if (idade >= 0 && idade < 12) {
+                    $scope.cadastro.registro.geracao = "Criança";
+                } else if (idade >= 12 && idade < 18) {
+                    $scope.cadastro.registro.geracao = "Jovem";
+                } else if (idade >= 18 && idade < 60) {
+                    $scope.cadastro.registro.geracao = "Adulto";
+                } else if (idade >= 60 && idade < 140) {
+                    $scope.cadastro.registro.geracao = "Idoso";
+                } else {
+                    $scope.cadastro.registro.geracao = "Inválido";
+                }
+            });
         }
     ]);
 })('pessoa', 'PessoaCtrl', 'Cadastro de Pessoas');

@@ -1,7 +1,7 @@
 <div class="panel panel-default">
     <div class="panel-heading"><h4>{{nomeFormulario}}</h4></div>
     <div class="panel-body">
-        /{{cadastro.registro}}/
+        /{{cadastro.registro}}//{{cadastro.apoio.pessoaTipoList}}/
         <form name="frm.formulario" novalidate>
             <!--<fieldset ng-disabled="['INCLUINDO', 'EDITANDO'].indexOf(navegador.estadoAtual()) < 0">-->
             <fieldset>
@@ -18,12 +18,10 @@
                     <div class="col-md-10">
                         <div class="row">
                             <div class="form-group col-md-3">
-                                <label class="control-label" for="tipoPessoa">Tipo de Pessoa</label>
-                                <select id="tipoPessoa" name="tipoPessoa" class="form-control" required ng-model="cadastro.registro.tipoPessoa" ng-disabled="true">
-                                    <option value="PF">Pessoa Física</option>
-                                    <option value="PJ">Pessoa Jurídica</option>
+                                <label class="control-label" for="pessoaTipo">Tipo de Pessoa</label>
+                                <select id="pessoaTipo" name="pessoaTipo" class="form-control" required ng-model="cadastro.registro.pessoaTipo" ng-disabled="true" ng-options="item.codigo as item.descricao for item in cadastro.apoio.pessoaTipoList">
                                 </select>
-                                <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.tipoPessoa.$error.required">
+                                <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.pessoaTipo.$error.required">
                                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                     Campo Obrigatório
                                 </div>
@@ -43,13 +41,11 @@
                         </div>
                         <div class="row">
                             <div class="form-group col-md-3">
-                                <label class="control-label">Situação/{{cadastro.registro.situacao}}/</label>
-                                <select class="form-control" required ng-model="cadastro.registro.situacao">
-                                    <option value"A">Ativo</option>
-                                    <option value"I">Inativo</option>
+                                <label class="control-label">Situação</label>
+                                <select class="form-control" required ng-model="cadastro.registro.situacao" ng-options="item.codigo as item.descricao for item in cadastro.apoio.pessoaSituacaoList">
                                 </select>
                             </div>
-                            <div class="form-group col-md-4" title="Cadastro de Pessoa Física" ng-show="cadastro.registro.tipoPessoa === 'PF'">
+                            <div class="form-group col-md-4" title="Cadastro de Pessoa Física" ng-show="cadastro.registro.pessoaTipo === 'PF'">
                                 <label class="control-label" for="cpf">CPF</label>
                                 <input id="cpf" name="cpf" type="text" placeholder="" class="form-control input-md" ng-model="cadastro.registro.cpf" ui-br-cpf-mask>
                                 <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.cpf.$error.required">
@@ -61,7 +57,7 @@
                                     Número inválido!
                                 </div>
                             </div>
-                            <div class="form-group col-md-4" title="Cadastro Nacional de Pessoa Jurídica" ng-show="cadastro.registro.tipoPessoa === 'PJ'">
+                            <div class="form-group col-md-4" title="Cadastro Nacional de Pessoa Jurídica" ng-show="cadastro.registro.pessoaTipo === 'PJ'">
                                 <label class="control-label" for="cnpj">CNPJ</label>
                                 <input id="cnpj" name="cnpj" type="text" placeholder="" class="form-control input-md" ng-model="cadastro.registro.cnpj" ui-br-cnpj-mask>
                                 <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.cnpj.$error.required">
@@ -77,35 +73,35 @@
                     </div>
                 </div>
                 <tabset>
-                <tab ng-repeat="tab in tabs | filter: {'visivel': true}">
-                <tab-heading>
-                {{$index + 1}} {{tab.nome}} <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                </tab-heading>
-                <ng-include src="tab.include"/>
-                </tab>
+                    <tab ng-repeat="tab in tabs | filter: {'visivel': true}">
+                        <tab-heading>
+                            {{$index + 1}} {{tab.nome}} <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                        </tab-heading>
+                        <ng-include src="tab.include"/>
+                    </tab>
                 </tabset>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="control-label" for="tipoPessoa">Observações</label>
+                            <label class="control-label" for="pessoaTipo">Observações</label>
                             <textarea class="form-control" rows="4"></textarea>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group col-md-8">
-                            <label class="control-label" for="tipoPessoa">Resp. Inclusão</label>
+                            <label class="control-label" for="pessoaTipo">Resp. Inclusão</label>
                             <input class="form-control" type="text" readonly="true" />
                         </div>
                         <div class="form-group col-md-4">
-                            <label class="control-label" for="tipoPessoa">Dt. Inclusão</label>
+                            <label class="control-label" for="pessoaTipo">Dt. Inclusão</label>
                             <input class="form-control" type="text" readonly="true" />
                         </div>
                         <div class="form-group col-md-8">
-                            <label class="control-label" for="tipoPessoa">Resp. Atualização</label>
+                            <label class="control-label" for="pessoaTipo">Resp. Atualização</label>
                             <input class="form-control" type="text" readonly="true" />
                         </div>
                         <div class="form-group col-md-4">
-                            <label class="control-label" for="tipoPessoa">Dt. Atualização</label>
+                            <label class="control-label" for="pessoaTipo">Dt. Atualização</label>
                             <input class="form-control" type="text" readonly="true" />
                         </div>
                     </div>
