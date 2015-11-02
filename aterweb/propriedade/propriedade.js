@@ -14,9 +14,9 @@ angular.module(pNmModulo).config(['$stateProvider', function($stateProvider) {
 
 angular.module(pNmModulo).controller(pNmController,
     ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$modal', '$log', '$modalInstance',
-    'modalCadastro', 'utilSrv', 'mensagemSrv', 'PropriedadeSrv',
+    'modalCadastro', 'UtilSrv', 'mensagemSrv', 'PropriedadeSrv',
     function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $modal, $log, $modalInstance,
-        modalCadastro, utilSrv, mensagemSrv, PropriedadeSrv) {
+        modalCadastro, UtilSrv, mensagemSrv, PropriedadeSrv) {
 
     // inicializacao
     $scope.funcionalidade = PropriedadeSrv.funcionalidade;

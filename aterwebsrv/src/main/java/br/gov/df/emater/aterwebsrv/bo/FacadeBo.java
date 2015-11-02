@@ -37,6 +37,18 @@ public class FacadeBo implements BeanFactoryAware {
 	}
 
 	@Transactional(readOnly = true)
+	public _Contexto dominio(Principal usuario, String[] ent, String npk, String vpk, String order, String[] fetchs) throws Exception {
+		Map<String, Object> requisicao = new HashMap<String, Object>();
+		requisicao.put("entidade", ent);
+		requisicao.put("nomeChavePrimaria", npk);
+		requisicao.put("valorChavePrimaria", vpk);
+		requisicao.put("order", order);
+		requisicao.put("fetchs", fetchs);
+
+		return this._executar(usuario, "DominioCh", requisicao);
+	}
+
+	@Transactional(readOnly = true)
 	public _Contexto pessoaFiltroExecutar(Principal usuario, PessoaCadFiltroDto filtro) throws Exception {
 		return this._executar(usuario, "PessoaFiltroExecutarCh", filtro);
 	}
@@ -56,20 +68,13 @@ public class FacadeBo implements BeanFactoryAware {
 		return this._executar(usuario, "PessoaSalvarCh", pessoa);
 	}
 
-	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
-		this.beanFactory = beanFactory;
+	@Transactional(readOnly = true)
+	public _Contexto pessoaVisualizar(Principal usuario, Integer id) throws Exception {
+		return this._executar(usuario, "PessoaVisualizarCh", id);
 	}
 
-	@Transactional(readOnly = true)
-	public _Contexto dominio(Principal usuario, String[] ent, String npk, String vpk, String order, String[] fetchs) throws Exception {
-		Map<String, Object> requisicao = new HashMap<String, Object>();
-		requisicao.put("entidade", ent);
-		requisicao.put("nomeChavePrimaria", npk);
-		requisicao.put("valorChavePrimaria", vpk);
-		requisicao.put("order", order);
-		requisicao.put("fetchs", fetchs);
-
-		return this._executar(usuario, "DominioCh", requisicao);
+	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+		this.beanFactory = beanFactory;
 	}
 
 }

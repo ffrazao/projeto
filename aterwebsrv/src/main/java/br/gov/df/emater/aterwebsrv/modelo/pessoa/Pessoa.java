@@ -13,7 +13,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -38,6 +40,7 @@ import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaTipo;
+import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 
@@ -62,14 +65,6 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	// @IndexedEmbedded
 	private List<PessoaArquivo> arquivoList;
 
-	public List<PessoaArquivo> getArquivoList() {
-		return arquivoList;
-	}
-
-	public void setArquivoList(List<PessoaArquivo> arquivoList) {
-		this.arquivoList = arquivoList;
-	}
-
 	@Transient
 	private String fotoPerfil;
 
@@ -84,14 +79,6 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	@Lob
 	@Field(index = Index.YES, store = Store.YES)
 	private String observacoes;
-
-	// @OneToMany(mappedBy = "pessoa")
-	// @IndexedEmbedded
-	// private List<PessoaMeioContato> pessoaMeioContatos;
-
-	// @OneToMany(mappedBy = "pessoa")
-	// @IndexedEmbedded
-	// private List<PessoaRelacionamento> pessoaRelacionamentos;
 
 	@Column(name = "pessoa_tipo")
 	@Enumerated(EnumType.STRING)
@@ -116,8 +103,13 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	@JsonDeserialize(using = JsonDeserializerData.class)
 	private Calendar situacaoData;
 
-	// @OneToOne(mappedBy = "pessoa", fetch = FetchType.LAZY)
-	// private Usuario usuario;
+	@ManyToOne
+	@JoinColumn(name = "alteracao_usuario_id")
+	private Usuario usuarioAlteracao;
+
+	@ManyToOne
+	@JoinColumn(name = "inclusao_usuario_id")
+	private Usuario usuarioInclusao;
 
 	public Pessoa() {
 	}
@@ -136,6 +128,18 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		return apelidoSigla;
 	}
 
+	public List<PessoaArquivo> getArquivoList() {
+		return arquivoList;
+	}
+
+	// @OneToMany(mappedBy = "pessoa")
+	// @IndexedEmbedded
+	// private List<PessoaMeioContato> pessoaMeioContatos;
+
+	// @OneToMany(mappedBy = "pessoa")
+	// @IndexedEmbedded
+	// private List<PessoaRelacionamento> pessoaRelacionamentos;
+
 	public String getFotoPerfil() {
 		return this.fotoPerfil;
 	}
@@ -153,13 +157,8 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		return observacoes;
 	}
 
-	// public List<PessoaMeioContato> getPessoaMeioContatos() {
-	// return pessoaMeioContatos;
-	// }
-	//
-	// public List<PessoaRelacionamento> getPessoaRelacionamentos() {
-	// return pessoaRelacionamentos;
-	// }
+	// @OneToOne(mappedBy = "pessoa", fetch = FetchType.LAZY)
+	// private Usuario usuario;
 
 	public PessoaTipo getPessoaTipo() {
 		return pessoaTipo;
@@ -181,12 +180,28 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		return situacaoData;
 	}
 
-	// public Usuario getUsuario() {
-	// return usuario;
+	public Usuario getUsuarioAlteracao() {
+		return usuarioAlteracao;
+	}
+
+	public Usuario getUsuarioInclusao() {
+		return usuarioInclusao;
+	}
+
+	// public List<PessoaMeioContato> getPessoaMeioContatos() {
+	// return pessoaMeioContatos;
+	// }
+	//
+	// public List<PessoaRelacionamento> getPessoaRelacionamentos() {
+	// return pessoaRelacionamentos;
 	// }
 
 	public void setApelidoSigla(String apelidoSigla) {
 		this.apelidoSigla = apelidoSigla;
+	}
+
+	public void setArquivoList(List<PessoaArquivo> arquivoList) {
+		this.arquivoList = arquivoList;
 	}
 
 	public void setFotoPerfil(String fotoPerfil) {
@@ -198,12 +213,24 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		this.id = id;
 	}
 
+	// public Usuario getUsuario() {
+	// return usuario;
+	// }
+
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
 
 	public void setObservacoes(String observacoes) {
 		this.observacoes = observacoes;
+	}
+
+	public void setPessoaTipo(PessoaTipo pessoaTipo) {
+		this.pessoaTipo = pessoaTipo;
+	}
+
+	public void setPublicoAlvo(PublicoAlvo publicoAlvo) {
+		this.publicoAlvo = publicoAlvo;
 	}
 
 	// public void setPessoaMeioContatos(List<PessoaMeioContato>
@@ -216,14 +243,6 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	// this.pessoaRelacionamentos = pessoaRelacionamentos;
 	// }
 
-	public void setPessoaTipo(PessoaTipo pessoaTipo) {
-		this.pessoaTipo = pessoaTipo;
-	}
-
-	public void setPublicoAlvo(PublicoAlvo publicoAlvo) {
-		this.publicoAlvo = publicoAlvo;
-	}
-
 	public void setPublicoAlvoConfirmacao(Confirmacao publicoAlvoConfirmacao) {
 		this.publicoAlvoConfirmacao = publicoAlvoConfirmacao;
 	}
@@ -234,6 +253,14 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 
 	public void setSituacaoData(Calendar situacaoData) {
 		this.situacaoData = situacaoData;
+	}
+
+	public void setUsuarioAlteracao(Usuario usuarioAlteracao) {
+		this.usuarioAlteracao = usuarioAlteracao;
+	}
+
+	public void setUsuarioInclusao(Usuario usuarioInclusao) {
+		this.usuarioInclusao = usuarioInclusao;
 	}
 
 	// public void setUsuario(Usuario usuario) {

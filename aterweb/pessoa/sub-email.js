@@ -75,7 +75,7 @@
             // fim das operaçoes atribuidas ao navagador
             $scope.abreModal = function(item) {
                 // abrir a modal
-                mensagemSrv.confirmacao(true, 'pessoa/' + item.arquivo, item.descricao, item, item.tamanho).then(function(conteudo) {
+                mensagemSrv.confirmacao(true, 'pessoa-email-frm.html', item.descricao, item, item.tamanho).then(function(conteudo) {
                     // processar o retorno positivo da modal
 
                 }, function() {

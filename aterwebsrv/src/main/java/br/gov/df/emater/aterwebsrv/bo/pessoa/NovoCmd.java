@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaTipo;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
@@ -36,6 +37,7 @@ public class NovoCmd extends _Comando {
 		}
 
 		result.setSituacao(PessoaSituacao.A);
+		result.setPublicoAlvoConfirmacao(Confirmacao.N);
 		contexto.setResposta(result);
 
 		return true;

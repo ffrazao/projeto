@@ -124,7 +124,7 @@
                 'visivel': true,
             }, ];
             $scope.tabs.activeTab = 'Arquivos';
-            $scope.tabVisivelBeneficiario = function(visivel) {
+            $scope.tabVisivelPublicoAlvo = function(visivel) {
                 $scope.tabVisivel('Beneficiário', visivel);
                 var outro = $scope.tabVisivel('Colaborador');
                 $scope.tabVisivel('Diagnósticos', visivel || outro);
@@ -199,12 +199,28 @@
                     return;
                 }
                 if ($scope.cadastro.registro.nascimentoPais.id === 1) {
-                    $scope.cadastro.registro.nacionalidade = UtilSrv.indiceDePorCampo($scope.cadastro.apoio.nacionalidadeList, 'BN', 'codigo');
+                    $scope.cadastro.registro.nacionalidade = 'BN'; 
                     $scope.cadastro.registro.naturalizado = false;
                 } else {
-                    $scope.cadastro.registro.nacionalidade = $scope.cadastro.registro.naturalizado ? UtilSrv.indiceDePorCampo($scope.cadastro.apoio.nacionalidadeList, 'NA', 'codigo') : UtilSrv.indiceDePorCampo($scope.cadastro.apoio.nacionalidadeList, 'ES', 'codigo');
+                    $scope.cadastro.registro.nacionalidade = $scope.cadastro.registro.naturalizado ? 'NA' : 'ES';
+                }
+                if ($scope.cadastro.registro.nacionalidade) {
+                    $scope.cadastro.apoio.nacionalidade = UtilSrv.indiceDePorCampo($scope.cadastro.apoio.nacionalidadeList, $scope.cadastro.registro.nacionalidade, 'codigo');
                 }
             });
+            $scope.$watch('cadastro.registro.pessoaTipo', function() {
+                if ($scope.cadastro.registro.pessoaTipo === 'PF') {
+                    $scope.cadastro.registro['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica';
+                } else if ($scope.cadastro.registro.pessoaTipo === 'PJ') {
+                    $scope.cadastro.registro['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica';
+                }
+            });
+            $scope.$watch('cadastro.registro.publicoAlvoConfirmacao', function() {
+                $scope.tabVisivelPublicoAlvo($scope.cadastro.registro.publicoAlvoConfirmacao === 'S');
+            });
+
+
+            
             // fim dos watches
         }
     ]);

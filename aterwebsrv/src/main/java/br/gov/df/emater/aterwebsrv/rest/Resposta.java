@@ -17,6 +17,7 @@ public class Resposta implements Serializable {
 
 	public Resposta(Exception resultado) {
 		this.resultado = resultado;
+		this.mensagem = resultado.getMessage();
 	}
 
 	public Resposta(Object resultado) {
@@ -25,6 +26,11 @@ public class Resposta implements Serializable {
 	}
 
 	public Resposta(String mensagem) {
+		this.mensagem = mensagem;
+	}
+
+	public Resposta(String mensagem, Exception resultado) {
+		this.resultado = resultado;
 		this.mensagem = mensagem;
 	}
 

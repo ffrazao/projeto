@@ -35,6 +35,7 @@ import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoCategoria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoSegmento;
+import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonFormatarBigDecimal;
@@ -169,15 +170,6 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 	@Column(name = "projeto_espec_sustentabilidade")
 	private String projetoEspecSustentabilidade;
 
-//	@IndexedEmbedded
-//	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//	@JoinTable(
-//			name = "publico_alvo_setor", 
-//			catalog = EntidadeBase.ATER_SCHEMA, 
-//			joinColumns = { @JoinColumn(name = "publico_alvo_id", nullable = false, updatable = false) }, 
-//				inverseJoinColumns = { @JoinColumn(name = "setor_id", nullable = false, updatable = false) })
-//	private List<PublicoAlvoSetor> publicoAlvoSetorList;
-
 	@IndexedEmbedded
 	@OneToMany(mappedBy = "publicoAlvo")
 	private List<PublicoAlvoSetor> publicoAlvoSetorList;
@@ -191,6 +183,17 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 	@NumberFormat(style = Style.CURRENCY)
 	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
 	private BigDecimal rendaBrutaAnualOutras;
+
+	// @IndexedEmbedded
+	// @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	// @JoinTable(
+	// name = "publico_alvo_setor",
+	// catalog = EntidadeBase.ATER_SCHEMA,
+	// joinColumns = { @JoinColumn(name = "publico_alvo_id", nullable = false,
+	// updatable = false) },
+	// inverseJoinColumns = { @JoinColumn(name = "setor_id", nullable = false,
+	// updatable = false) })
+	// private List<PublicoAlvoSetor> publicoAlvoSetorList;
 
 	@Column(name = "renda_bruta_anual_propriedade")
 	@NumberFormat(style = Style.CURRENCY)
@@ -206,6 +209,10 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 	private PublicoAlvoSegmento segmento;
 
 	private int tradicao;
+
+	@ManyToOne
+	@JoinColumn(name = "unidade_organizacional_id")
+	private UnidadeOrganizacional unidadeOrganizacional;
 
 	public PublicoAlvo() {
 	}
@@ -363,6 +370,10 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 		return tradicao;
 	}
 
+	public UnidadeOrganizacional getUnidadeOrganizacional() {
+		return unidadeOrganizacional;
+	}
+
 	public void setBenefSocAposentadoriaPensao(String benefSocAposentadoriaPensao) {
 		this.benefSocAposentadoriaPensao = benefSocAposentadoriaPensao;
 	}
@@ -514,6 +525,10 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 
 	public void setTradicao(int tradicao) {
 		this.tradicao = tradicao;
+	}
+
+	public void setUnidadeOrganizacional(UnidadeOrganizacional unidadeOrganizacional) {
+		this.unidadeOrganizacional = unidadeOrganizacional;
 	}
 
 }

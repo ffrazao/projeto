@@ -494,8 +494,8 @@
                         codigo: 'navegacao',
                         exibir: function() {
                             var e = scope.ngModel.estadoAtual();
-                            return scope.ngModel.dados.length && (e !== 'VISUALIZANDO' || (e === 'VISUALIZANDO' && scope.ngModel.selecao.tipo === 'M')) && 
-                                (!scope.funcionalidade) || (!$rootScope.token) || (scope.funcionalidade && $rootScope.token && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade] && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade].indexOf('CONSULTAR') >= 0);
+                            return (scope.ngModel.dados.length && (e !== 'VISUALIZANDO' || (e === 'VISUALIZANDO' && scope.ngModel.selecao.tipo === 'M'))) && 
+                                ((!scope.funcionalidade) || (!$rootScope.token) || (scope.funcionalidade && $rootScope.token && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade] && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade].indexOf('CONSULTAR') >= 0));
                         },
                         botoes: [
                             {
@@ -675,7 +675,7 @@
                                 },
                                 exibir: function() {
                                     return (scope.ngModel.dados && scope.ngModel.dados.length && scope.ngModel.selecao.selecionado) &&
-                                        (!scope.funcionalidade) || (!$rootScope.token) || (scope.funcionalidade && $rootScope.token && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade] && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade].indexOf('VISUALIZAR') >= 0);
+                                        ((!scope.funcionalidade) || (!$rootScope.token) || (scope.funcionalidade && $rootScope.token && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade] && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade].indexOf('VISUALIZAR') >= 0));
                                 },
                             },
                         ],
@@ -694,7 +694,7 @@
                                 },
                                 exibir: function() {
                                     return (scope.ngModel.dados && scope.ngModel.dados.length && scope.ngModel.selecao.selecionado) &&
-                                        (!scope.funcionalidade) || (!$rootScope.token) || (scope.funcionalidade && $rootScope.token && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade] && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade].indexOf('ALTERAR') >= 0);
+                                        ((!scope.funcionalidade) || (!$rootScope.token) || (scope.funcionalidade && $rootScope.token && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade] && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade].indexOf('EDITAR') >= 0));
                                 },
                             },
                         ],
@@ -713,7 +713,7 @@
                                 },
                                 exibir: function() {
                                     return (scope.ngModel.dados && scope.ngModel.dados.length && scope.ngModel.selecao.selecionado) &&
-                                        (!scope.funcionalidade) || (!$rootScope.token) || (scope.funcionalidade && $rootScope.token && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade] && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade].indexOf('EXCLUIR') >= 0);
+                                        ((!scope.funcionalidade) || (!$rootScope.token) || (scope.funcionalidade && $rootScope.token && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade] && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade].indexOf('EXCLUIR') >= 0));
                                 },
                             },
                         ],
@@ -735,8 +735,8 @@
                                     if (this['subFuncoes']) {
                                         for (var subFuncao in this['subFuncoes']) {
                                             if (this['subFuncoes'][subFuncao].exibir && this['subFuncoes'][subFuncao].exibir() && 
-                                                    (!scope.funcionalidade) || (!$rootScope.token) || (!this['subFuncoes'][subFuncao].comando) || 
-                                                        (scope.funcionalidade && $rootScope.token && this['subFuncoes'][subFuncao].comando && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade] && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade].indexOf(this['subFuncoes'][subFuncao].comando) >= 0)) {
+                                                    ((!scope.funcionalidade) || (!$rootScope.token) || (!this['subFuncoes'][subFuncao].comando) || 
+                                                        (scope.funcionalidade && $rootScope.token && this['subFuncoes'][subFuncao].comando && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade] && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade].indexOf(this['subFuncoes'][subFuncao].comando) >= 0))) {
                                                 return true;
                                             }
                                         }

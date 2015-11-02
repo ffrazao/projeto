@@ -3,8 +3,8 @@
 'use strict';
 
 angular.module(pNmModulo).factory(pNmFactory,
-  ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv',
-    function($rootScope, $http, toastr, SegurancaSrv, UtilSrv) {
+  ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams',
+    function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams) {
         var PessoaSrv = {
             funcionalidade: 'PESSOA',
             endereco: $rootScope.servicoUrl + '/pessoa',
@@ -30,6 +30,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                    'CamOrgao',
                    'ConfirmacaoDap',
                    'CnhCategoria',
+                   'UnidadeOrganizacional',
                 ]}).success(function(resposta) {
                     if (resposta && resposta.resultado) {
                         scp.cadastro.apoio.pessoaTipoList = resposta.resultado[0];
@@ -51,6 +52,12 @@ angular.module(pNmModulo).factory(pNmFactory,
                         scp.cadastro.apoio.camOrgaoList = resposta.resultado[16];
                         scp.cadastro.apoio.confirmacaoDapList = resposta.resultado[17];
                         scp.cadastro.apoio.cnhCategoriaList = resposta.resultado[18];
+                        scp.cadastro.apoio.unidadeOrganizacionalList = resposta.resultado[19];
+                        scp.cadastro.apoio.tradicaoList = [];
+                        var anoAtual = new Date().getFullYear();
+                        for (var ano = anoAtual; ano > anoAtual - 100; ano--) {
+                            scp.cadastro.apoio.tradicaoList.push(ano);
+                        }
                     }
                 });
             },
@@ -69,8 +76,9 @@ angular.module(pNmModulo).factory(pNmFactory,
                 SegurancaSrv.acesso(this.funcionalidade, 'INCLUIR');
                 return $http.post(this.endereco + '/incluir', pessoa);
             },
-            visualizar : function() {
+            visualizar : function(id) {
                 SegurancaSrv.acesso(this.funcionalidade, 'VISUALIZAR');
+                return $http.get(this.endereco + '/visualizar', {params: {'id': id}});
             },
             editar : function(pessoa) {
                 SegurancaSrv.acesso(this.funcionalidade, 'EDITAR');

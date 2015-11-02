@@ -19,20 +19,16 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 @RequestMapping("/pessoa")
 public class PessoaRest {
 
-	public PessoaRest() {
-	}
-
 	@Autowired
 	private FacadeBo facadeBo;
 
-	@RequestMapping("/filtro-novo")
-	@Transactional(readOnly = true)
-	public Resposta filtroNovo(Principal usuario) {
-		try {
-			return new Resposta(facadeBo.pessoaFiltroNovo(usuario).values());
-		} catch (Exception e) {
-			return new Resposta(e);
-		}
+	public PessoaRest() {
+	}
+
+	@RequestMapping(value = "/editar", method = RequestMethod.POST)
+	@Transactional
+	public Resposta editar(@RequestBody Pessoa pessoa, Principal usuario) {
+		return salvar(pessoa, usuario);
 	}
 
 	@RequestMapping(value = "/filtro-executar", method = RequestMethod.POST)
@@ -45,11 +41,11 @@ public class PessoaRest {
 		}
 	}
 
-	@RequestMapping(value = "/novo", method = RequestMethod.GET)
-	@Transactional(readOnly=true)
-	public Resposta novo(@RequestParam("modelo") PessoaTipo pessoaTipo, Principal usuario) {
+	@RequestMapping("/filtro-novo")
+	@Transactional(readOnly = true)
+	public Resposta filtroNovo(Principal usuario) {
 		try {
-			return new Resposta(facadeBo.pessoaNovo(usuario, pessoaTipo).getResposta());
+			return new Resposta(facadeBo.pessoaFiltroNovo(usuario).values());
 		} catch (Exception e) {
 			return new Resposta(e);
 		}
@@ -61,16 +57,30 @@ public class PessoaRest {
 		return salvar(pessoa, usuario);
 	}
 
-	@RequestMapping(value = "/editar", method = RequestMethod.POST)
-	@Transactional
-	public Resposta editar(@RequestBody Pessoa pessoa, Principal usuario) {
-		return salvar(pessoa, usuario);
+	@RequestMapping(value = "/novo", method = RequestMethod.GET)
+	@Transactional(readOnly = true)
+	public Resposta novo(@RequestParam("modelo") PessoaTipo pessoaTipo, Principal usuario) {
+		try {
+			return new Resposta(facadeBo.pessoaNovo(usuario, pessoaTipo).getResposta());
+		} catch (Exception e) {
+			return new Resposta(e);
+		}
 	}
 
 	@Transactional
 	public Resposta salvar(@RequestBody Pessoa pessoa, Principal usuario) {
 		try {
 			return new Resposta(facadeBo.pessoaSalvar(usuario, pessoa).getResposta());
+		} catch (Exception e) {
+			return new Resposta(e);
+		}
+	}
+
+	@RequestMapping(value = "/visualizar", method = RequestMethod.GET)
+	@Transactional(readOnly = true)
+	public Resposta visualizar(@RequestParam Integer id, Principal usuario) {
+		try {
+			return new Resposta(facadeBo.pessoaVisualizar(usuario, id).getResposta());
 		} catch (Exception e) {
 			return new Resposta(e);
 		}

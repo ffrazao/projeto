@@ -2,8 +2,8 @@
     <div class="form-group col-md-6">
         <label class="control-label">Cadastro Especial</label>
         <div class="form-control">
-            <label class="checkbox-inline" for="beneficiario">
-                <input type="checkbox" name="beneficiario" id="beneficiario" ng-model="cadastro.registro.beneficiario" ng-click="tabVisivelBeneficiario(cadastro.registro.beneficiario);">
+            <label class="checkbox-inline" for="publicoAlvoConfirmacao">
+                <input type="checkbox" name="publicoAlvoConfirmacao" id="publicoAlvoConfirmacao" ng-model="cadastro.registro.publicoAlvoConfirmacao" ng-true-value="'S'" ng-false-value="'N'">
                 Beneficiário
             </label>
             <label class="checkbox-inline" for="colaborador">
@@ -14,11 +14,15 @@
     </div>
     <div class="form-group col-md-6">
         <label class="control-label">Gênero</label>
-        <div class="form-control">
+        <div class="form-control" ng-class="{'ng-invalid': frm.formulario.genero.$invalid}">
             <label class="radio-inline" for="genero-{{$index}}" ng-repeat="item in cadastro.apoio.generoList">
-                <input type="radio" name="genero" id="genero-{{$index}}" value="{{item.codigo}}" ng-model="cadastro.registro.genero" ng-required="cadastro.registro.tipoPessoa = 'PF'">
+                <input type="radio" name="genero" id="genero-{{$index}}" value="{{item.codigo}}" ng-model="cadastro.registro.genero" ng-required="cadastro.registro.pessoaTipo === 'PF'">
                 {{item.descricao}}
             </label>
+        </div>
+        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.genero.$error.required">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Campo Obrigatório
         </div>
     </div>
 </div>
@@ -197,7 +201,7 @@
 </div>
 <div class="row">
     <div class="form-group col-md-12">
-        <label class="control-label">Nascimento <small ng-show="cadastro.registro.geracao">({{cadastro.registro.geracao}})</small> <small ng-show="cadastro.registro.nacionalidade.descricao">({{cadastro.registro.nacionalidade.descricao}})</small></label>
+        <label class="control-label">Nascimento <small ng-show="cadastro.registro.geracao">({{cadastro.registro.geracao}})</small> <small ng-show="cadastro.apoio.nacionalidade.descricao">({{cadastro.apoio.nacionalidade.descricao}})</small></label>
         <div class="row">
             <div class="form-group col-md-2">
                 <label class="control-label">Data</label>

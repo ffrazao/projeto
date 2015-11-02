@@ -73,7 +73,7 @@ angular.module(pNmModulo).controller(pNmController,
 
     $scope.abreModal = function (item) {
         // abrir a modal
-        mensagemSrv.confirmacao(true, 'pessoa/'+item.arquivo, item.descricao, item, item.tamanho ).then(function (conteudo) {
+        mensagemSrv.confirmacao(true, 'pessoa-telefone-frm.html', item.descricao, item, item.tamanho ).then(function (conteudo) {
             // processar o retorno positivo da modal
 
         }, function () {
