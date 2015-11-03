@@ -1,3 +1,5 @@
+/* jslint evil: true */ 
+
 (function(pNmModulo, pNmFactory) {
 
 'use strict';
