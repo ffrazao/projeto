@@ -2,7 +2,7 @@ package br.gov.df.emater.aterwebsrv.modelo.dominio;
 
 public enum MeioContatoTipo {
 
-	EMA("Email"), END("Endere�o"), TEL("Telef�nico");
+	EMA("Email"), END("Endereço"), TEL("Telefônico");
 
 	private String descricao;
 

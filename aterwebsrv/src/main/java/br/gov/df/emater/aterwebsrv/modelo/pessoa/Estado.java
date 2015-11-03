@@ -38,6 +38,12 @@ public class Estado extends EntidadeBase implements _ChavePrimaria<Integer> {
 	public Estado() {
 	}
 
+	public Estado(Integer id, String nome) {
+		this();
+		setId(id);
+		setNome(nome);
+	}
+
 	public String getCodigo() {
 		return codigo;
 	}

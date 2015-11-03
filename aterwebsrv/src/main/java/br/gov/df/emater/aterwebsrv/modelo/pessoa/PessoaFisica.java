@@ -150,6 +150,9 @@ public class PessoaFisica extends Pessoa {
 	@Enumerated(EnumType.STRING)
 	private PessoaGeracao geracao;
 
+	@Transient
+	private Integer idade;
+
 	@Enumerated(EnumType.STRING)
 	private PessoaNacionalidade nacionalidade;
 
@@ -158,6 +161,9 @@ public class PessoaFisica extends Pessoa {
 	@JsonSerialize(using = JsonSerializerData.class)
 	@JsonDeserialize(using = JsonDeserializerData.class)
 	private Calendar nascimento;
+
+	@Transient
+	private Estado nascimentoEstado;
 
 	@ManyToOne
 	@JoinColumn(name = "nascimento_municipio_id")
@@ -321,12 +327,23 @@ public class PessoaFisica extends Pessoa {
 		}
 	}
 
+	public Integer getIdade() {
+		if (getNascimento() == null) {
+			return null;
+		}
+		return UtilitarioData.getInstance().qtdAnosEntre(getNascimento(), Calendar.getInstance());
+	}
+
 	public PessoaNacionalidade getNacionalidade() {
 		return nacionalidade;
 	}
 
 	public Calendar getNascimento() {
 		return nascimento;
+	}
+
+	public Estado getNascimentoEstado() {
+		return nascimentoEstado;
 	}
 
 	public Municipio getNascimentoMunicipio() {
@@ -461,12 +478,20 @@ public class PessoaFisica extends Pessoa {
 		this.geracao = geracao;
 	}
 
+	public void setIdade(Integer idade) {
+		this.idade = idade;
+	}
+
 	public void setNacionalidade(PessoaNacionalidade nacionalidade) {
 		this.nacionalidade = nacionalidade;
 	}
 
 	public void setNascimento(Calendar nascimento) {
 		this.nascimento = nascimento;
+	}
+
+	public void setNascimentoEstado(Estado nascimentoEstado) {
+		this.nascimentoEstado = nascimentoEstado;
 	}
 
 	public void setNascimentoMunicipio(Municipio nascimentoMunicipio) {

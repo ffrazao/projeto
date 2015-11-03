@@ -11,6 +11,8 @@ import org.joda.time.Period;
 public class UtilitarioData {
 
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
+	
+	private static final SimpleDateFormat DATE_FORMAT_JAVASCRIPT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
 	private static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
@@ -95,6 +97,12 @@ public class UtilitarioData {
 		Interval interval = new Interval(inicio.getTimeInMillis(), fim.getTimeInMillis());
 		Period period = interval.toPeriod();
 		return period.getYears();
+	}
+
+	public Calendar formataDataJavascript(String date) throws ParseException {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(DATE_FORMAT_JAVASCRIPT.parse(date));
+		return calendar;
 	}
 
 }

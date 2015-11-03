@@ -32,6 +32,12 @@ public class Pais extends EntidadeBase implements _ChavePrimaria<Integer> {
 	public Pais() {
 	}
 
+	public Pais(Integer id, String nome) {
+		this();
+		this.id = id;
+		this.nome = nome;
+	}
+
 	public String getCodigo() {
 		return codigo;
 	}

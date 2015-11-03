@@ -1,7 +1,9 @@
 package br.gov.df.emater.aterwebsrv.modelo.pessoa;
 
 import javax.persistence.Entity;
-import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.search.annotations.Field;
@@ -10,28 +12,30 @@ import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Store;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.MeioContatoTipo;
+import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 
 /**
  * The persistent class for the meio_contato_email database table.
  * 
  */
 @Entity
-@Table(name = "meio_contato_email", schema = EntidadeBase.PESSOA_SCHEMA)
-@PrimaryKeyJoinColumn(name = "id")
+@Table(name = "email", schema = EntidadeBase.PESSOA_SCHEMA)
 @Indexed
-public class MeioContatoEmail extends MeioContato {
+public class Email extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
 
 	@Field(index = Index.YES, store = Store.YES)
 	private String email;
 
-	public MeioContatoEmail() {
-		setMeioContatoTipo(MeioContatoTipo.EMA);
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer id;
+
+	public Email() {
 	}
 
-	public MeioContatoEmail(String email) {
+	public Email(String email) {
 		setEmail(email);
 	}
 
@@ -39,7 +43,17 @@ public class MeioContatoEmail extends MeioContato {
 		return this.email;
 	}
 
+	@Override
+	public Integer getId() {
+		return id;
+	}
+
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	@Override
+	public void setId(Integer id) {
+		this.id = id;
 	}
 }

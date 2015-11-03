@@ -15,7 +15,7 @@ import org.springframework.format.annotation.NumberFormat.Style;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
-import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaMeioContato;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaEndereco;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonFormatarBigDecimal;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -44,14 +44,14 @@ public class Exploracao extends EntidadeBase implements _ChavePrimaria<Integer> 
 
 	@OneToOne
 	@JoinColumn(name = "pessoa_meio_contato_id")
-	private PessoaMeioContato pessoaMeioContato;
+	private PessoaEndereco pessoaMeioContato;
 
 	private String regime;
 
 	public Exploracao() {
 	}
 
-	public Exploracao(PessoaMeioContato pessoaMeioContato) {
+	public Exploracao(PessoaEndereco pessoaMeioContato) {
 		setPessoaMeioContato(pessoaMeioContato);
 	}
 
@@ -64,7 +64,7 @@ public class Exploracao extends EntidadeBase implements _ChavePrimaria<Integer> 
 		return id;
 	}
 
-	public PessoaMeioContato getPessoaMeioContato() {
+	public PessoaEndereco getPessoaMeioContato() {
 		return pessoaMeioContato;
 	}
 
@@ -81,7 +81,7 @@ public class Exploracao extends EntidadeBase implements _ChavePrimaria<Integer> 
 		this.id = id;
 	}
 
-	public void setPessoaMeioContato(PessoaMeioContato pessoaMeioContato) {
+	public void setPessoaMeioContato(PessoaEndereco pessoaMeioContato) {
 		this.pessoaMeioContato = pessoaMeioContato;
 	}
 

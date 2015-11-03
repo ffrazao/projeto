@@ -21,7 +21,7 @@ import br.gov.df.emater.aterwebsrv.modelo.ater.Exploracao;
  */
 @Entity
 @Table(name = "pessoa_meio_contato", schema = EntidadeBase.PESSOA_SCHEMA)
-public class PessoaMeioContato extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class PessoaEndereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -35,8 +35,8 @@ public class PessoaMeioContato extends EntidadeBase implements _ChavePrimaria<In
 	private Integer id;
 
 	@ManyToOne
-	@JoinColumn(name = "meio_contato_id")
-	private MeioContato meioContato;
+	@JoinColumn(name = "endereco_id")
+	private Endereco endereco;
 
 	private Integer ordem;
 
@@ -44,7 +44,7 @@ public class PessoaMeioContato extends EntidadeBase implements _ChavePrimaria<In
 	@JoinColumn(name = "pessoa_id")
 	private Pessoa pessoa;
 
-	public PessoaMeioContato() {
+	public PessoaEndereco() {
 	}
 
 	public Exploracao getExploracao() {
@@ -58,10 +58,6 @@ public class PessoaMeioContato extends EntidadeBase implements _ChavePrimaria<In
 	@Override
 	public Integer getId() {
 		return id;
-	}
-
-	public MeioContato getMeioContato() {
-		return meioContato;
 	}
 
 	public Integer getOrdem() {
@@ -85,8 +81,12 @@ public class PessoaMeioContato extends EntidadeBase implements _ChavePrimaria<In
 		this.id = id;
 	}
 
-	public void setMeioContato(MeioContato meioContato) {
-		this.meioContato = meioContato;
+	public Endereco getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
 	}
 
 	public void setOrdem(Integer ordem) {

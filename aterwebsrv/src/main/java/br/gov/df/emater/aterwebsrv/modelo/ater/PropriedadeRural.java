@@ -36,7 +36,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.SituacaoFundiaria;
-import br.gov.df.emater.aterwebsrv.modelo.pessoa.MeioContatoEndereco;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.Endereco;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonFormatarBigDecimal;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
@@ -85,6 +85,10 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 	@IndexedEmbedded
 	private List<PropriedadeRuralArquivo> arquivoList;
 
+	@ManyToOne
+	@JoinColumn(name = "bacia_hidrografica_id")
+	private BaciaHidrografica baciaHidrografica;
+
 	@NumberFormat(style = Style.CURRENCY)
 	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
 	private BigDecimal benfeitoria;
@@ -102,6 +106,15 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 
 	@Column(name = "cartorio_informacao")
 	private String cartorioInformacao;
+
+	@ManyToOne
+	@JoinColumn(name = "comunidade_id")
+	private Comunidade comunidade;
+
+	@OneToOne
+	@JoinColumn(name = "endereco_id")
+	@NotNull
+	private Endereco endereco;
 
 	@Column(name = "fonte_agua_domestica")
 	private String fonteAguaDomestica;
@@ -131,11 +144,6 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 
 	@Column(name = "mao_de_obra_temporaria")
 	private String maoDeObraTemporaria;
-
-	@OneToOne
-	@JoinColumn(name = "meio_contato_endereco_id")
-	@NotNull
-	private MeioContatoEndereco meioContatoEndereco;
 
 	@Column(name = "morad_propried_familias")
 	private String moradPropriedFamilias;
@@ -188,14 +196,6 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 
 	@Column(name = "pastagem_silagem")
 	private String pastagemSilagem;
-
-	@ManyToOne
-	@JoinColumn(name = "bacia_hidrografica_id")
-	private BaciaHidrografica baciaHidrografica;
-
-	@ManyToOne
-	@JoinColumn(name = "comunidade_id")
-	private Comunidade comunidade;
 
 	@Lob
 	@Column(name = "roteiro_acesso")
@@ -331,47 +331,12 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 	private BigDecimal usoSoloTotalVlUnit;
 
 	public PropriedadeRural() {
-		this.meioContatoEndereco = new MeioContatoEndereco();
+
 	}
 
 	public PropriedadeRural(Integer id) {
 		this();
 		setId(id);
-	}
-
-	public BaciaHidrografica getBaciaHidrografica() {
-		return baciaHidrografica;
-	}
-
-	public void setBaciaHidrografica(BaciaHidrografica baciaHidrografica) {
-		this.baciaHidrografica = baciaHidrografica;
-	}
-
-	public Comunidade getComunidade() {
-		return comunidade;
-	}
-
-	public void setComunidade(Comunidade comunidade) {
-		this.comunidade = comunidade;
-	}
-
-	public PropriedadeRural(Integer id, Integer meioContatoEndereco, Comunidade comunidade, BaciaHidrografica baciaHidrografica) {
-		this(id);
-		getMeioContatoEndereco().setId(meioContatoEndereco);
-		setComunidade(comunidade);
-		setBaciaHidrografica(baciaHidrografica);
-	}
-
-	public PropriedadeRural(Integer id, String nome, MeioContatoEndereco meioContatoEndereco, String outorga, SituacaoFundiaria situacaoFundiaria, SistemaProducao sistemaProducao) {
-		this(id);
-		setMeioContatoEndereco(meioContatoEndereco);
-		if (getMeioContatoEndereco() == null) {
-			setMeioContatoEndereco(new MeioContatoEndereco());
-		}
-		getMeioContatoEndereco().setNomePropriedadeRuralOuEstabelecimento(nome);
-		setOutorga(outorga);
-		setSituacaoFundiaria(situacaoFundiaria);
-		setSistemaProducao(sistemaProducao);
 	}
 
 	@Override
@@ -431,6 +396,10 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 		return arquivoList;
 	}
 
+	public BaciaHidrografica getBaciaHidrografica() {
+		return baciaHidrografica;
+	}
+
 	public BigDecimal getBenfeitoria() {
 		return benfeitoria;
 	}
@@ -445,6 +414,14 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 
 	public String getCartorioInformacao() {
 		return cartorioInformacao;
+	}
+
+	public Comunidade getComunidade() {
+		return comunidade;
+	}
+
+	public Endereco getEndereco() {
+		return endereco;
 	}
 
 	public String getFonteAguaDomestica() {
@@ -478,10 +455,6 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 
 	public String getMaoDeObraTemporaria() {
 		return maoDeObraTemporaria;
-	}
-
-	public MeioContatoEndereco getMeioContatoEndereco() {
-		return meioContatoEndereco;
 	}
 
 	public String getMoradPropriedFamilias() {
@@ -700,6 +673,10 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 		this.arquivoList = arquivoList;
 	}
 
+	public void setBaciaHidrografica(BaciaHidrografica baciaHidrografica) {
+		this.baciaHidrografica = baciaHidrografica;
+	}
+
 	public void setBenfeitoria(BigDecimal benfeitoria) {
 		this.benfeitoria = benfeitoria;
 	}
@@ -714,6 +691,14 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 
 	public void setCartorioInformacao(String cartorioInformacao) {
 		this.cartorioInformacao = cartorioInformacao;
+	}
+
+	public void setComunidade(Comunidade comunidade) {
+		this.comunidade = comunidade;
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
 	}
 
 	public void setFonteAguaDomestica(String fonteAguaDomestica) {
@@ -747,10 +732,6 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 
 	public void setMaoDeObraTemporaria(String maoDeObraTemporaria) {
 		this.maoDeObraTemporaria = maoDeObraTemporaria;
-	}
-
-	public void setMeioContatoEndereco(MeioContatoEndereco meioContatoEndereco) {
-		this.meioContatoEndereco = meioContatoEndereco;
 	}
 
 	public void setMoradPropriedFamilias(String moradPropriedFamilias) {

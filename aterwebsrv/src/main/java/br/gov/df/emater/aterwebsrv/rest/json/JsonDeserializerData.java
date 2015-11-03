@@ -22,7 +22,15 @@ public class JsonDeserializerData extends JsonDeserializer<Calendar> {
 		try {
 			result = UtilitarioData.getInstance().formataData(jp.getText());
 		} catch (ParseException e) {
-			new RuntimeException(e);
+			try {
+				String data = jp.getText();
+				if (data.length() > 23) {
+					data = data.substring(0, 23);
+				}
+				result = UtilitarioData.getInstance().formataDataJavascript(data);
+			} catch (ParseException e1) {
+				new RuntimeException(e1);
+			}
 		}
 		return result;
 	}

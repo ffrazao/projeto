@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.bo.pessoa;
 
+import java.util.Calendar;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +21,13 @@ public class SalvarCmd extends _Comando {
 		Pessoa pessoa = (Pessoa) contexto.getRequisicao();
 		if (pessoa.getId() == null) {
 			pessoa.setUsuarioInclusao(getUsuario(contexto.getUsuario().getName()));
+			pessoa.setInclusaoData(Calendar.getInstance());
+		} else {
+			pessoa.setUsuarioInclusao(getUsuario(pessoa.getUsuarioInclusao().getUsername()));
 		}
 		pessoa.setUsuarioAlteracao(getUsuario(contexto.getUsuario().getName()));
-		pessoa = dao.save(pessoa);
+		pessoa.setAlteracaoData(Calendar.getInstance());
+		pessoa = dao.saveAndFlush(pessoa);
 		contexto.setResposta(pessoa.getId());
 		return true;
 	}

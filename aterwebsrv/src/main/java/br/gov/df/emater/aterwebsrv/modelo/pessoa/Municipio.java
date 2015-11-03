@@ -27,6 +27,14 @@ public class Municipio extends EntidadeBase implements _ChavePrimaria<Integer> {
 	@JoinColumn(name = "estado_id")
 	private Estado estado;
 
+	public Estado getEstado() {
+		return estado;
+	}
+
+	public void setEstado(Estado estado) {
+		this.estado = estado;
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
@@ -36,6 +44,12 @@ public class Municipio extends EntidadeBase implements _ChavePrimaria<Integer> {
 	private String sigla;
 
 	public Municipio() {
+	}
+
+	public Municipio(Integer id, String nome) {
+		this();
+		setId(id);
+		setNome(nome);
 	}
 
 	public String getCodigo() {

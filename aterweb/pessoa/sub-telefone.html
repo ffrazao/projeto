@@ -2,7 +2,7 @@
     <div class="panel-heading container-fluid">
         <frz-navegador
         ng-model="pessoaTelefoneNvg" exibe-texto-botao="false"
-        dados="cadastro.registro.telefone"
+        dados="cadastro.registro.telefoneList"
         acoes-especiais="acoesEspeciais"
         on-abrir = "abrir()"
         on-agir = "agir()"
@@ -20,17 +20,17 @@
         on-ultima-pagina="ultimaPagina()"
         ></frz-navegador>
     </div>
-    <div class="painel-body"  ng-hide="cadastro.registro.telefone.length">
+    <div class="painel-body"  ng-hide="cadastro.registro.telefoneList.length">
         <div class="alert alert-warning" role="alert">
             <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
             Nenhum registro localizado!
         </div>
     </div>
-    <div class="table-responsible" ng-show="cadastro.registro.telefone.length > 0">
+    <div class="table-responsible" ng-show="cadastro.registro.telefoneList.length > 0">
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th><frz-seletor ng-model="pessoaTelefoneNvg" dados="cadastro.registro.telefone"></frz-seletor></th>
+                    <th><frz-seletor ng-model="pessoaTelefoneNvg" dados="cadastro.registro.telefoneList"></frz-seletor></th>
                     <th>#</th>
                     <th>Finalidade</th>
                     <th>Tipo</th>
@@ -38,7 +38,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="tel in cadastro.registro.telefone">
+                <tr ng-repeat="tel in cadastro.registro.telefoneList">
                     <td>
                         <input type="radio" ng-show="pessoaTelefoneNvg.selecao.tipo === 'U'" ng-model="pessoaTelefoneNvg.selecao.item" ng-value="tel"/>
                         <input type="checkbox" ng-show="pessoaTelefoneNvg.selecao.tipo === 'M'" checklist-model="pessoaTelefoneNvg.selecao.items" checklist-value="tel"/>
@@ -47,10 +47,10 @@
                         {{$index + 1 + ((pessoaTelefoneNvg.paginaAtual-1) * pessoaTelefoneNvg.tamanhoPagina)}}
                     </td>
                     <td>
-                        <select class="form-control">
+                        <select class="form-control" ng-model="tel.finalidade">
+                            <option value="C">Comercial</option>
+                            <option value="P,C">Particular & Comercial</option>
                             <option value="P">Particular</option>
-                            <option value="T">Trabalho</option>
-                            <option value="PT">Particular & Trabalho</option>
                         </select>
                     </td>
                     <td>
@@ -60,7 +60,7 @@
                             <option value="F">Fax</option>
                         </select>
                     </td>
-                    <td>{{tel.numero}}</td>
+                    <td>{{tel.meioContato.numero}}</td>
                 </tr>
             </tbody>
             <tfoot>
@@ -70,22 +70,15 @@
     <div class="panel-footer">
     </div>
     <script type="text/ng-template" id="pessoa-telefone-frm.html">
-            <div class="modal-header">
-                    <h3 class="modal-title">Telefone</h3>
-            </div>
-            <div class="modal-body">
-                <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-4">
-                                    <label class="form-label">Telefone</label>
-                                    <input type="text" class="form-control" ng-model="telefone.numero" ui-br-phone-number model-view-value="true">
-                            </div>
-                        </div>
+        <div class="modal-body">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label class="form-label">Telefone</label>
+                        <input type="text" class="form-control" ng-model="conteudo.numero" ui-br-phone-number model-view-value="false">
+                    </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                    <button class="btn btn-primary" ng-click="ok()">OK</button>
-                    <button class="btn btn-warning" ng-click="cancel()">Cancelar</button>
-            </div>
+        </div>
     </script>
 </div>

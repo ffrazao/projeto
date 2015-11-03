@@ -15,16 +15,6 @@ angular.module(pNmModulo).controller(pNmController,
     };
     if (!$modalInstance) { init(); }
 
-
-    if ($modalInstance === null) {
-        $scope.navegador.dados[0].telefoneList = [];
-        for (var i = 0; i < 11; i++) {
-            $scope.navegador.dados[0].telefoneList.push({id: i, nome: 'nome ' + i, cpf: (333*i), tpExploracao: 'P', ha :(2.7*i), situacao : 'S' });
-        }
-        $scope.pessoaTelefoneNvg.setDados($scope.navegador.dados[0].telefoneList);
-    } 
-
-
     // inicio rotinas de apoio
     // $scope.seleciona = function(pessoaTelefoneNvg, item) { };
     // $scope.mataClick = function(pessoaTelefoneNvg, event, item){ };
@@ -52,14 +42,11 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.folhearPrimeiro = function() {};
     $scope.folhearProximo = function() {};
     $scope.folhearUltimo = function() {};
-
     $scope.editar = function() {  $scope.incluir(); };
-
     $scope.incluir = function() {
         var item = {};
         $scope.abreModal(item);
     };
-
     $scope.informacao = function() {};
     $scope.limpar = function() {};
     $scope.paginarAnterior = function() {};
@@ -73,9 +60,10 @@ angular.module(pNmModulo).controller(pNmController,
 
     $scope.abreModal = function (item) {
         // abrir a modal
-        mensagemSrv.confirmacao(true, 'pessoa-telefone-frm.html', item.descricao, item, item.tamanho ).then(function (conteudo) {
+        mensagemSrv.confirmacao(true, 'pessoa-telefone-frm.html', item.numero, item, item.tamanho ).then(function (conteudo) {
             // processar o retorno positivo da modal
-
+            var item  = {meioContato: conteudo};
+            $scope.cadastro.registro.telefoneList.push(item);
         }, function () {
             // processar o retorno negativo da modal
             //$log.info('Modal dismissed at: ' + new Date());

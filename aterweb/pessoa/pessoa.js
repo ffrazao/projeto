@@ -86,6 +86,27 @@
                     //$log.info('Modal dismissed at: ' + new Date());
                 });
             };
+            $scope.confirmarIncluir = function(scp) {
+                preparaRegistro();
+                $rootScope.confirmarIncluir(scp);
+            };
+            $scope.confirmarEditar = function(scp) {
+                preparaRegistro();
+                $rootScope.confirmarEditar(scp);
+            };
+            $scope.confirmarExcluir = function(scp) {
+                preparaRegistro();
+                $rootScope.confirmarExcluir(scp);
+            };
+
+            var preparaRegistro = function () {
+                if ($scope.cadastro.registro.pessoaTipo === 'PF') {
+                    $scope.cadastro.registro['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica';
+                } else if ($scope.cadastro.registro.pessoaTipo === 'PJ') {
+                    $scope.cadastro.registro['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica';
+                }
+            };
+
             // fim das operaçoes atribuidas ao navagador
             // inicio ações especiais
             // fim ações especiais
@@ -168,15 +189,19 @@
                 }
                 $scope.cadastro.registro.idade = idade >= 0 ? idade : null;
                 if (idade >= 0 && idade < 12) {
-                    $scope.cadastro.registro.geracao = "Criança";
+                    $scope.cadastro.registro.geracao = 'C';
+                    $scope.cadastro.apoio.geracao = 'Criança';
                 } else if (idade >= 12 && idade < 18) {
-                    $scope.cadastro.registro.geracao = "Jovem";
+                    $scope.cadastro.registro.geracao = 'J';
+                    $scope.cadastro.apoio.geracao = 'Jovem';
                 } else if (idade >= 18 && idade < 60) {
-                    $scope.cadastro.registro.geracao = "Adulto";
+                    $scope.cadastro.registro.geracao = 'A';
+                    $scope.cadastro.apoio.geracao = 'Adulto';
                 } else if (idade >= 60 && idade < 140) {
-                    $scope.cadastro.registro.geracao = "Idoso";
+                    $scope.cadastro.registro.geracao = 'I';
+                    $scope.cadastro.apoio.geracao = 'Idoso';
                 } else {
-                    $scope.cadastro.registro.geracao = "Inválido";
+                    $scope.cadastro.apoio.geracao = 'Inválido';
                 }
             });
             $scope.$watch('cadastro.registro.nascimentoPais.id', function(newValue, oldValue) {
@@ -206,13 +231,6 @@
                 }
                 if ($scope.cadastro.registro.nacionalidade) {
                     $scope.cadastro.apoio.nacionalidade = UtilSrv.indiceDePorCampo($scope.cadastro.apoio.nacionalidadeList, $scope.cadastro.registro.nacionalidade, 'codigo');
-                }
-            });
-            $scope.$watch('cadastro.registro.pessoaTipo', function() {
-                if ($scope.cadastro.registro.pessoaTipo === 'PF') {
-                    $scope.cadastro.registro['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica';
-                } else if ($scope.cadastro.registro.pessoaTipo === 'PJ') {
-                    $scope.cadastro.registro['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica';
                 }
             });
             $scope.$watch('cadastro.registro.publicoAlvoConfirmacao', function() {

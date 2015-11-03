@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
+import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module.Feature;
 
 @Configuration
 @EnableWebMvc
@@ -56,7 +57,9 @@ public class _RestConfig extends WebMvcConfigurerAdapter /*
 		mapper.setSerializationInclusion(Include.NON_EMPTY);
 		mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		mapper.registerModule(new Hibernate4Module());
+		Hibernate4Module hibernate4Module = new Hibernate4Module();
+		hibernate4Module.configure(Feature.USE_TRANSIENT_ANNOTATION, false);
+		mapper.registerModule(hibernate4Module);
 		converter.setObjectMapper(mapper);
 		
 		converters.add(converter);

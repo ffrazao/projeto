@@ -57,6 +57,13 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 
 	private static final long serialVersionUID = 1L;
 
+	@Column(name = "alteracao_data")
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+	@JsonSerialize(using = JsonSerializerData.class)
+	@JsonDeserialize(using = JsonDeserializerData.class)
+	private Calendar alteracaoData;
+
 	@Column(name = "apelido_sigla")
 	@Field(index = Index.YES, store = Store.YES)
 	private String apelidoSigla;
@@ -71,6 +78,13 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
+
+	@Column(name = "inclusao_data")
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+	@JsonSerialize(using = JsonSerializerData.class)
+	@JsonDeserialize(using = JsonDeserializerData.class)
+	private Calendar inclusaoData;
 
 	@NotBlank
 	@Field(index = Index.YES, store = Store.YES)
@@ -124,6 +138,10 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		setApelidoSigla(apelidoSigla);
 	}
 
+	public Calendar getAlteracaoData() {
+		return alteracaoData;
+	}
+
 	public String getApelidoSigla() {
 		return apelidoSigla;
 	}
@@ -131,14 +149,6 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	public List<PessoaArquivo> getArquivoList() {
 		return arquivoList;
 	}
-
-	// @OneToMany(mappedBy = "pessoa")
-	// @IndexedEmbedded
-	// private List<PessoaMeioContato> pessoaMeioContatos;
-
-	// @OneToMany(mappedBy = "pessoa")
-	// @IndexedEmbedded
-	// private List<PessoaRelacionamento> pessoaRelacionamentos;
 
 	public String getFotoPerfil() {
 		return this.fotoPerfil;
@@ -149,6 +159,18 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		return id;
 	}
 
+	public Calendar getInclusaoData() {
+		return inclusaoData;
+	}
+
+	// @OneToMany(mappedBy = "pessoa")
+	// @IndexedEmbedded
+	// private List<PessoaMeioContato> pessoaMeioContatos;
+
+	// @OneToMany(mappedBy = "pessoa")
+	// @IndexedEmbedded
+	// private List<PessoaRelacionamento> pessoaRelacionamentos;
+
 	public String getNome() {
 		return nome;
 	}
@@ -157,9 +179,6 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		return observacoes;
 	}
 
-	// @OneToOne(mappedBy = "pessoa", fetch = FetchType.LAZY)
-	// private Usuario usuario;
-
 	public PessoaTipo getPessoaTipo() {
 		return pessoaTipo;
 	}
@@ -167,6 +186,9 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	public PublicoAlvo getPublicoAlvo() {
 		return publicoAlvo;
 	}
+
+	// @OneToOne(mappedBy = "pessoa", fetch = FetchType.LAZY)
+	// private Usuario usuario;
 
 	public Confirmacao getPublicoAlvoConfirmacao() {
 		return publicoAlvoConfirmacao;
@@ -188,6 +210,14 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		return usuarioInclusao;
 	}
 
+	public void setAlteracaoData(Calendar alteracaoData) {
+		this.alteracaoData = alteracaoData;
+	}
+
+	public void setApelidoSigla(String apelidoSigla) {
+		this.apelidoSigla = apelidoSigla;
+	}
+
 	// public List<PessoaMeioContato> getPessoaMeioContatos() {
 	// return pessoaMeioContatos;
 	// }
@@ -195,10 +225,6 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	// public List<PessoaRelacionamento> getPessoaRelacionamentos() {
 	// return pessoaRelacionamentos;
 	// }
-
-	public void setApelidoSigla(String apelidoSigla) {
-		this.apelidoSigla = apelidoSigla;
-	}
 
 	public void setArquivoList(List<PessoaArquivo> arquivoList) {
 		this.arquivoList = arquivoList;
@@ -211,6 +237,10 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	@Override
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public void setInclusaoData(Calendar inclusaoData) {
+		this.inclusaoData = inclusaoData;
 	}
 
 	// public Usuario getUsuario() {

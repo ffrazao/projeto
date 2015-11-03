@@ -6,12 +6,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.validation.constraints.Max;
 
 import org.hibernate.search.annotations.Field;
@@ -22,13 +22,12 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
-import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
-import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.MeioContatoTipo;
-import br.gov.df.emater.aterwebsrv.rest.json.JsonFormatarBigDecimal;
-
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
+import br.gov.df.emater.aterwebsrv.rest.json.JsonFormatarBigDecimal;
 
 /**
  * The persistent class for the meio_contato_endereco database table.
@@ -37,7 +36,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 @Entity
 @Table(name = "meio_contato_endereco", schema = EntidadeBase.PESSOA_SCHEMA)
 @Indexed
-public class MeioContatoEndereco extends MeioContato {
+public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -48,12 +47,24 @@ public class MeioContatoEndereco extends MeioContato {
 	@Max(value = 10, message = "Muito extenso")
 	private String cep;
 
+	@ManyToOne
+	@JoinColumn(name = "cidade_id")
+	private Cidade cidade;
+
 	@Column(name = "codigo_ibge")
 	@Max(value = 10, message = "Muito extenso")
 	private String codigoIbge;
 
 	@Max(value = 250, message = "Muito extenso")
 	private String complemento;
+
+	@ManyToOne
+	@JoinColumn(name = "estado_id")
+	private Estado estado;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer id;
 
 	@Column(name = "latitude")
 	@NumberFormat(style = Style.NUMBER)
@@ -70,6 +81,10 @@ public class MeioContatoEndereco extends MeioContato {
 	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
 	private BigDecimal longitude;
 
+	@ManyToOne
+	@JoinColumn(name = "municipio_id")
+	private Municipio municipio;
+
 	@Column(name = "nome_prop_ou_estab")
 	@Max(value = 250, message = "Muito extenso")
 	private String nomePropriedadeRuralOuEstabelecimento;
@@ -78,24 +93,8 @@ public class MeioContatoEndereco extends MeioContato {
 	private String numero;
 
 	@ManyToOne
-	@JoinColumn(name = "cidade_id")
-	private Cidade cidade;
-
-	@ManyToOne
-	@JoinColumn(name = "municipio_id")
-	private Municipio municipio;
-	
-	@ManyToOne
-	@JoinColumn(name = "estado_id")
-	private Estado estado;
-	
-	@ManyToOne
 	@JoinColumn(name = "pais_id")
 	private Pais pais;
-
-	@OneToOne(mappedBy = "meioContatoEndereco", fetch = FetchType.LAZY)
-	@Transient
-	private PropriedadeRural propriedadeRural;
 
 	@Column(name = "propriedade_rural_confirmacao")
 	@Enumerated(EnumType.STRING)
@@ -105,8 +104,7 @@ public class MeioContatoEndereco extends MeioContato {
 	@Max(value = 500, message = "Muito extenso")
 	private String roteiroAcessoOuEnderecoInternacional;
 
-	public MeioContatoEndereco() {
-		setMeioContatoTipo(MeioContatoTipo.END);
+	public Endereco() {
 	}
 
 	public String getBairro() {
@@ -117,12 +115,25 @@ public class MeioContatoEndereco extends MeioContato {
 		return cep;
 	}
 
+	public Cidade getCidade() {
+		return cidade;
+	}
+
 	public String getCodigoIbge() {
 		return codigoIbge;
 	}
 
 	public String getComplemento() {
 		return complemento;
+	}
+
+	public Estado getEstado() {
+		return estado;
+	}
+
+	@Override
+	public Integer getId() {
+		return id;
 	}
 
 	public BigDecimal getLatitude() {
@@ -137,6 +148,10 @@ public class MeioContatoEndereco extends MeioContato {
 		return longitude;
 	}
 
+	public Municipio getMunicipio() {
+		return municipio;
+	}
+
 	public String getNomePropriedadeRuralOuEstabelecimento() {
 		return nomePropriedadeRuralOuEstabelecimento;
 	}
@@ -145,8 +160,8 @@ public class MeioContatoEndereco extends MeioContato {
 		return numero;
 	}
 
-	public PropriedadeRural getPropriedadeRural() {
-		return propriedadeRural;
+	public Pais getPais() {
+		return pais;
 	}
 
 	public Confirmacao getPropriedadeRuralConfirmacao() {
@@ -165,12 +180,25 @@ public class MeioContatoEndereco extends MeioContato {
 		this.cep = cep;
 	}
 
+	public void setCidade(Cidade cidade) {
+		this.cidade = cidade;
+	}
+
 	public void setCodigoIbge(String codigoIbge) {
 		this.codigoIbge = codigoIbge;
 	}
 
 	public void setComplemento(String complemento) {
 		this.complemento = complemento;
+	}
+
+	public void setEstado(Estado estado) {
+		this.estado = estado;
+	}
+
+	@Override
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public void setLatitude(BigDecimal latitude) {
@@ -185,6 +213,10 @@ public class MeioContatoEndereco extends MeioContato {
 		this.longitude = longitude;
 	}
 
+	public void setMunicipio(Municipio municipio) {
+		this.municipio = municipio;
+	}
+
 	public void setNomePropriedadeRuralOuEstabelecimento(String nomePropriedadeRuralOuEstabelecimento) {
 		this.nomePropriedadeRuralOuEstabelecimento = nomePropriedadeRuralOuEstabelecimento;
 	}
@@ -193,8 +225,8 @@ public class MeioContatoEndereco extends MeioContato {
 		this.numero = numero;
 	}
 
-	public void setPropriedadeRural(PropriedadeRural propriedadeRural) {
-		this.propriedadeRural = propriedadeRural;
+	public void setPais(Pais pais) {
+		this.pais = pais;
 	}
 
 	public void setPropriedadeRuralConfirmacao(Confirmacao propriedadeRuralConfirmacao) {
