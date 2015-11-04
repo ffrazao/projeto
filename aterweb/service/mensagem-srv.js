@@ -3,15 +3,21 @@
 'use strict';
 
 angular.module(pNmModulo).controller(pNmController,
-    ['$scope', '$modalInstance', 'conteudo',
-    function($scope, $modalInstance, conteudo) {
+    ['$scope', '$modalInstance', 'conteudo', 'funcaoOk', 'funcaoCancelar',
+    function($scope, $modalInstance, conteudo, funcaoOk, funcaoCancelar) {
         $scope.conteudo = conteudo;
         $scope.modalOk = function () {
             // Retorno da modal
+            if (funcaoOk && !funcaoOk(conteudo)) {
+              return;
+            }
             $modalInstance.close(conteudo);
         };
         $scope.modalCancelar = function () {
             // Cancelar a modal
+            if (funcaoCancelar && !funcaoCancelar(conteudo)) {
+              return;
+            }
             $modalInstance.dismiss('cancel');
         };
     }
@@ -20,7 +26,7 @@ angular.module(pNmModulo).controller(pNmController,
 angular.module(pNmModulo).factory(pNmFactory,
   ['$modal',
     function($modal) {
-        var formModal =  function (tipo, url, mensagem, titulo, conteudo, tamanho ) {
+        var formModal =  function (tipo, url, mensagem, titulo, conteudo, tamanho, funcaoOk, funcaoCancelar) {
             var botaoCancelar = null;
             if ('alerta' === tipo) {
                 if (!titulo){titulo = 'Atenção!'; }
@@ -50,19 +56,25 @@ angular.module(pNmModulo).factory(pNmFactory,
                       '</div>',
                       resolve: {
                           conteudo: function() {
-                              return conteudo;
-                          }
+                            return conteudo;
+                          },
+                          funcaoOk: function() {
+                            return funcaoOk;
+                          },
+                          funcaoCancelar: function(){
+                            return funcaoCancelar;
+                          },
                       },
                 });
                 return modalInstance.result;
         };
 
         var mensagemSrv = {
-            alerta : function (url, mensagem, titulo, conteudo) {
-                return formModal('alerta', url, mensagem, titulo, conteudo);
+            alerta : function (url, mensagem, titulo, conteudo, tamanho, funcaoOk, funcaoCancelar) {
+                return formModal('alerta', url, mensagem, titulo, conteudo, tamanho, funcaoOk, funcaoCancelar);
             },
-            confirmacao: function (url, mensagem, titulo, conteudo) {
-                return formModal('confirmacao', url, mensagem, titulo, conteudo);
+            confirmacao: function (url, mensagem, titulo, conteudo, tamanho, funcaoOk, funcaoCancelar) {
+                return formModal('confirmacao', url, mensagem, titulo, conteudo, tamanho, funcaoOk, funcaoCancelar);
             },
         };
         return mensagemSrv;

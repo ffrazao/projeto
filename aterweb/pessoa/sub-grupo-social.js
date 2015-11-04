@@ -16,13 +16,13 @@ angular.module(pNmModulo).controller(pNmController,
     if (!$modalInstance) { init(); }
 
 
-    if ($modalInstance === null) {
+    /*if ($modalInstance === null) {
         $scope.navegador.dados[0].grupoSocialList = [];
         for (var i = 0; i < 11; i++) {
             $scope.navegador.dados[0].grupoSocialList.push({id: i, nome: 'nome ' + i, cpf: (333*i), tpExploracao: 'P', ha :(2.7*i), situacao : 'S' });
         }
         $scope.pessoaGrupoSocialNvg.setDados($scope.navegador.dados[0].grupoSocialList);
-    } 
+    } */
 
 
     // inicio rotinas de apoio

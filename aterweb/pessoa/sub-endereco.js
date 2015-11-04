@@ -15,7 +15,7 @@
             if (!$modalInstance) {
                 init();
             }
-            if ($modalInstance === null) {
+            /*if ($modalInstance === null) {
                 $scope.navegador.dados[0].enderecoList = [];
                 for (var i = 0; i < 11; i++) {
                     $scope.navegador.dados[0].enderecoList.push({
@@ -28,7 +28,8 @@
                     });
                 }
                 $scope.pessoaEnderecoNvg.setDados($scope.navegador.dados[0].enderecoList);
-            }
+            }*/
+            
             // inicio rotinas de apoio
             // $scope.seleciona = function(pessoaEnderecoNvg, item) { };
             // $scope.mataClick = function(pessoaEnderecoNvg, event, item){ };

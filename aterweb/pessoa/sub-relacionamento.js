@@ -16,13 +16,13 @@ angular.module(pNmModulo).controller(pNmController,
     if (!$modalInstance) { init(); }
 
 
-    if ($modalInstance === null) {
+    /*if ($modalInstance === null) {
         $scope.navegador.dados[0].relacionamentoList = [];
         for (var i = 0; i < 11; i++) {
             $scope.navegador.dados[0].relacionamentoList.push({id: i, nome: 'nome ' + i, cpf: (333*i), tpExploracao: 'P', ha :(2.7*i), situacao : 'S' });
         }
         $scope.pessoaRelacionamentoNvg.setDados($scope.navegador.dados[0].relacionamentoList);
-    } 
+    } */
 
 
     // inicio rotinas de apoio

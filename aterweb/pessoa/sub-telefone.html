@@ -33,37 +33,37 @@
                     <tr>
                         <th rowspan="2"><frz-seletor ng-model="pessoaTelefoneNvg" dados="cadastro.registro.telefoneList"></frz-seletor></th>
                         <th rowspan="2">#</th>
-                        <th colspan="2">Numero</th>
+                        <th colspan="2">Número</th>
                     </tr>
                     <tr>
-                        <th><small>Finalidade</small></th>
                         <th><small>Tipo</small></th>
+                        <th><small>Finalidade</small></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat-start="tel in cadastro.registro.telefoneList">
+                    <tr ng-repeat-start="reg in cadastro.registro.telefoneList | filter: {cadastroAcao: '!E'}">
                         <td rowspan="2">
-                            <input type="radio" ng-show="pessoaTelefoneNvg.selecao.tipo === 'U'" ng-model="pessoaTelefoneNvg.selecao.item" ng-value="tel"/>
-                            <input type="checkbox" ng-show="pessoaTelefoneNvg.selecao.tipo === 'M'" checklist-model="pessoaTelefoneNvg.selecao.items" checklist-value="tel"/>
+                            <input type="radio" ng-show="pessoaTelefoneNvg.selecao.tipo === 'U'" ng-model="pessoaTelefoneNvg.selecao.item" ng-value="reg"/>
+                            <input type="checkbox" ng-show="pessoaTelefoneNvg.selecao.tipo === 'M'" checklist-model="pessoaTelefoneNvg.selecao.items" checklist-value="reg"/>
                         </td>
                         <td rowspan="2">
                             {{$index + 1 + ((pessoaTelefoneNvg.paginaAtual-1) * pessoaTelefoneNvg.tamanhoPagina)}}
                         </td>
-                        <td colspan="2">{{tel.telefone.numero}}</td>
+                        <td colspan="2">{{reg.telefone.numero}}</td>
                     </tr>
                     <tr ng-repeat-end>
                         <td>
-                            <select class="form-control input-sm" id="finalidade" name="finalidade{{$index}}" ng-model="tel.finalidade" ng-options="item.codigo as item.descricao for item in scp.cadastro.apoio.meioContatoFinalidadeList" ng-required="true">
+                            <select class="form-control input-sm" id="tipo" name="tipo{{$index}}" ng-model="reg.tipo" ng-options="item.codigo as item.descricao for item in scp.cadastro.apoio.telefoneTipoList" ng-required="true">
                             </select>
-                            <div class="label label-danger" ng-show="navegador.submitido && telefoneListFrm.finalidade{{$index}}.$error.required">
+                            <div class="label label-danger" ng-show="navegador.submitido && telefoneListFrm.tipo{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
                         </td>
                         <td>
-                            <select class="form-control input-sm" id="tipo" name="tipo{{$index}}" ng-model="tel.tipo" ng-options="item.codigo as item.descricao for item in scp.cadastro.apoio.telefoneTipoList" ng-required="true">
+                            <select class="form-control input-sm" id="finalidade" name="finalidade{{$index}}" ng-model="reg.finalidade" ng-options="item.codigo as item.descricao for item in scp.cadastro.apoio.meioContatoFinalidadeList" ng-required="true">
                             </select>
-                            <div class="label label-danger" ng-show="navegador.submitido && telefoneListFrm.tipo{{$index}}.$error.required">
+                            <div class="label label-danger" ng-show="navegador.submitido && telefoneListFrm.finalidade{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
@@ -83,7 +83,15 @@
                 <div class="row">
                     <div class="col-md-4">
                         <label class="form-label">Telefone</label>
-                        <input type="text" class="form-control" ng-model="conteudo.numero" ui-br-phone-number model-view-value="true">
+                        <input type="text" class="form-control" name="numero" ng-model="conteudo.telefone.numero" ui-br-phone-number model-view-value="true" required="true">
+                        <div class="label label-danger" ng-show="confirmacaoFrm.numero.$error.required">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                             Campo Obrigatório
+                        </div>
+                        <div class="label label-danger" ng-show="confirmacaoFrm.numero.$error.brPhoneNumber">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                             Número inválido!
+                        </div>
                     </div>
                 </div>
             </div>

@@ -52,6 +52,7 @@ public class VisualizarCmd extends _Comando {
 			break;
 		}
 		result.getTelefoneList().size();
+		result.getEmailList().size();
 		if (result.getUsuarioInclusao() != null) {			
 			result.setUsuarioInclusao(new Usuario(result.getUsuarioInclusao().getUsername()));
 		}

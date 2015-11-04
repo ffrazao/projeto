@@ -15,7 +15,7 @@
             if (!$modalInstance) {
                 init();
             }
-            if ($modalInstance === null) {
+            /*if ($modalInstance === null) {
                 $scope.navegador.dados[0].pessoaArquivoList = [];
                 for (var i = 0; i < 11; i++) {
                     $scope.navegador.dados[0].pessoaArquivoList.push({
@@ -28,7 +28,8 @@
                     });
                 }
                 $scope.pessoaArquivoNvg.setDados($scope.navegador.dados[0].pessoaArquivoList);
-            }
+            }*/
+            
             // inicio rotinas de apoio
             // $scope.seleciona = function(pessoaArquivoNvg, item) { };
             // $scope.mataClick = function(pessoaArquivoNvg, event, item){ };

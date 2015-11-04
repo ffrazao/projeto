@@ -15,7 +15,7 @@
             if (!$modalInstance) {
                 init();
             }
-            if ($modalInstance === null) {
+            /*if ($modalInstance === null) {
                 $scope.navegador.dados[0].pessoaAtividadeList = [];
                 for (var i = 0; i < 11; i++) {
                     $scope.navegador.dados[0].pessoaAtividadeList.push({
@@ -28,7 +28,8 @@
                     });
                 }
                 $scope.pessoaAtividadeNvg.setDados($scope.navegador.dados[0].pessoaAtividadeList);
-            }
+            }*/
+            
             // inicio rotinas de apoio
             // $scope.seleciona = function(pessoaAtividadeNvg, item) { };
             // $scope.mataClick = function(pessoaAtividadeNvg, event, item){ };

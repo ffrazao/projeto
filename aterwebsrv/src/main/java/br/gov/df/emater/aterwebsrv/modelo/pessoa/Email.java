@@ -26,7 +26,7 @@ public class Email extends EntidadeBase implements _ChavePrimaria<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Field(index = Index.YES, store = Store.YES)
-	private String email;
+	private String endereco;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,12 +35,12 @@ public class Email extends EntidadeBase implements _ChavePrimaria<Integer> {
 	public Email() {
 	}
 
-	public Email(String email) {
-		setEmail(email);
+	public Email(String endereco) {
+		setEndereco(endereco);
 	}
 
-	public String getEmail() {
-		return this.email;
+	public String getEndereco() {
+		return endereco;
 	}
 
 	@Override
@@ -48,8 +48,8 @@ public class Email extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return id;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setEndereco(String endereco) {
+		this.endereco = endereco;
 	}
 
 	@Override
