@@ -69,8 +69,13 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	private String apelidoSigla;
 
 	@OneToMany(mappedBy = "pessoa")
-	// @IndexedEmbedded
 	private List<PessoaArquivo> arquivoList;
+
+	@OneToMany(mappedBy = "pessoa")
+	private List<PessoaEmail> emailList;
+
+	@OneToMany(mappedBy = "pessoa")
+	private List<PessoaEndereco> enderecoList;
 
 	@Transient
 	private String fotoPerfil;
@@ -117,6 +122,9 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	@JsonDeserialize(using = JsonDeserializerData.class)
 	private Calendar situacaoData;
 
+	@OneToMany(mappedBy = "pessoa")
+	private List<PessoaTelefone> telefoneList;
+
 	@ManyToOne
 	@JoinColumn(name = "alteracao_usuario_id")
 	private Usuario usuarioAlteracao;
@@ -150,9 +158,21 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		return arquivoList;
 	}
 
+	public List<PessoaEmail> getEmailList() {
+		return emailList;
+	}
+
+	public List<PessoaEndereco> getEnderecoList() {
+		return enderecoList;
+	}
+
 	public String getFotoPerfil() {
 		return this.fotoPerfil;
 	}
+
+	// @OneToMany(mappedBy = "pessoa")
+	// @IndexedEmbedded
+	// private List<PessoaRelacionamento> pessoaRelacionamentos;
 
 	@Override
 	public Integer getId() {
@@ -162,14 +182,6 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	public Calendar getInclusaoData() {
 		return inclusaoData;
 	}
-
-	// @OneToMany(mappedBy = "pessoa")
-	// @IndexedEmbedded
-	// private List<PessoaMeioContato> pessoaMeioContatos;
-
-	// @OneToMany(mappedBy = "pessoa")
-	// @IndexedEmbedded
-	// private List<PessoaRelacionamento> pessoaRelacionamentos;
 
 	public String getNome() {
 		return nome;
@@ -187,9 +199,6 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		return publicoAlvo;
 	}
 
-	// @OneToOne(mappedBy = "pessoa", fetch = FetchType.LAZY)
-	// private Usuario usuario;
-
 	public Confirmacao getPublicoAlvoConfirmacao() {
 		return publicoAlvoConfirmacao;
 	}
@@ -200,6 +209,10 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 
 	public Calendar getSituacaoData() {
 		return situacaoData;
+	}
+
+	public List<PessoaTelefone> getTelefoneList() {
+		return telefoneList;
 	}
 
 	public Usuario getUsuarioAlteracao() {
@@ -218,16 +231,16 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		this.apelidoSigla = apelidoSigla;
 	}
 
-	// public List<PessoaMeioContato> getPessoaMeioContatos() {
-	// return pessoaMeioContatos;
-	// }
-	//
-	// public List<PessoaRelacionamento> getPessoaRelacionamentos() {
-	// return pessoaRelacionamentos;
-	// }
-
 	public void setArquivoList(List<PessoaArquivo> arquivoList) {
 		this.arquivoList = arquivoList;
+	}
+
+	public void setEmailList(List<PessoaEmail> emailList) {
+		this.emailList = emailList;
+	}
+
+	public void setEnderecoList(List<PessoaEndereco> enderecoList) {
+		this.enderecoList = enderecoList;
 	}
 
 	public void setFotoPerfil(String fotoPerfil) {
@@ -242,10 +255,6 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	public void setInclusaoData(Calendar inclusaoData) {
 		this.inclusaoData = inclusaoData;
 	}
-
-	// public Usuario getUsuario() {
-	// return usuario;
-	// }
 
 	public void setNome(String nome) {
 		this.nome = nome;
@@ -263,16 +272,6 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		this.publicoAlvo = publicoAlvo;
 	}
 
-	// public void setPessoaMeioContatos(List<PessoaMeioContato>
-	// pessoaMeioContatos) {
-	// this.pessoaMeioContatos = pessoaMeioContatos;
-	// }
-	//
-	// public void setPessoaRelacionamentos(List<PessoaRelacionamento>
-	// pessoaRelacionamentos) {
-	// this.pessoaRelacionamentos = pessoaRelacionamentos;
-	// }
-
 	public void setPublicoAlvoConfirmacao(Confirmacao publicoAlvoConfirmacao) {
 		this.publicoAlvoConfirmacao = publicoAlvoConfirmacao;
 	}
@@ -285,6 +284,10 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		this.situacaoData = situacaoData;
 	}
 
+	public void setTelefoneList(List<PessoaTelefone> telefoneList) {
+		this.telefoneList = telefoneList;
+	}
+
 	public void setUsuarioAlteracao(Usuario usuarioAlteracao) {
 		this.usuarioAlteracao = usuarioAlteracao;
 	}
@@ -292,9 +295,5 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	public void setUsuarioInclusao(Usuario usuarioInclusao) {
 		this.usuarioInclusao = usuarioInclusao;
 	}
-
-	// public void setUsuario(Usuario usuario) {
-	// this.usuario = usuario;
-	// }
 
 }

@@ -2,7 +2,6 @@ package br.gov.df.emater.aterwebsrv.seguranca;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -14,12 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.df.emater.aterwebsrv.dao.funcional.EmpregoDao;
 import br.gov.df.emater.aterwebsrv.dao.funcional.LotacaoDao;
-import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaDao;
 import br.gov.df.emater.aterwebsrv.dao.sistema.UsuarioDao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.Emprego;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.Lotacao;
-import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Perfil;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.PerfilFuncionalidadeComando;
@@ -108,7 +105,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 			}
 			// inicio avaliar perfis da lotacoes do usuario
 			for (Lotacao lotacao: lotacaoDao.findByEmprego(emprego)) {
-				for (Usuario usuarioUnidadeOrganizacional: usuarioDao.findByUnidadeOrganizacional(lotacao.getUnidadeOrganizacional())) {
+				for (Usuario usuarioUnidadeOrganizacional : usuarioDao.findByUnidadeOrganizacional(lotacao.getUnidadeOrganizacional())) {
 					avaliarPerfil(usuarioUnidadeOrganizacional.getAuthorities(), authoritiesRetorno, perfilFuncionalidadeComandoListRetorno, perfilFuncionalidadeComandoListNegadoRetorno);
 				}
 			}

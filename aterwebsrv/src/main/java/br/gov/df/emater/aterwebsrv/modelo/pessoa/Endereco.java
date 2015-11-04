@@ -30,11 +30,11 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonFormatarBigDecimal;
 
 /**
- * The persistent class for the meio_contato_endereco database table.
+ * The persistent class for the endereco database table.
  * 
  */
 @Entity
-@Table(name = "meio_contato_endereco", schema = EntidadeBase.PESSOA_SCHEMA)
+@Table(name = "endereco", schema = EntidadeBase.PESSOA_SCHEMA)
 @Indexed
 public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 
@@ -57,6 +57,10 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	@Max(value = 250, message = "Muito extenso")
 	private String complemento;
+
+	@Column(name = "endereco_sisater")
+	@Max(value = 500, message = "Muito extenso")
+	private String enderecoSisater;
 
 	@ManyToOne
 	@JoinColumn(name = "estado_id")
@@ -100,7 +104,7 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 	@Enumerated(EnumType.STRING)
 	private Confirmacao propriedadeRuralConfirmacao;
 
-	@Column(name = "roteiro_aces_ou_end_inter")
+	@Column(name = "roteiro_acesso")
 	@Max(value = 500, message = "Muito extenso")
 	private String roteiroAcessoOuEnderecoInternacional;
 
@@ -125,6 +129,10 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	public String getComplemento() {
 		return complemento;
+	}
+
+	public String getEnderecoSisater() {
+		return enderecoSisater;
 	}
 
 	public Estado getEstado() {
@@ -190,6 +198,10 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	public void setComplemento(String complemento) {
 		this.complemento = complemento;
+	}
+
+	public void setEnderecoSisater(String enderecoSisater) {
+		this.enderecoSisater = enderecoSisater;
 	}
 
 	public void setEstado(Estado estado) {

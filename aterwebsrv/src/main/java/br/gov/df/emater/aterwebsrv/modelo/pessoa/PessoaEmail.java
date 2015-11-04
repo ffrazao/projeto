@@ -1,26 +1,22 @@
 package br.gov.df.emater.aterwebsrv.modelo.pessoa;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
-import br.gov.df.emater.aterwebsrv.modelo.ater.Exploracao;
 
 /**
- * The persistent class for the pessoa_meio_contato database table.
+ * The persistent class for the pessoa_email database table.
  * 
  */
 @Entity
-@Table(name = "pessoa_meio_contato", schema = EntidadeBase.PESSOA_SCHEMA)
+@Table(name = "pessoa_email", schema = EntidadeBase.PESSOA_SCHEMA)
 public class PessoaEmail extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
@@ -28,9 +24,6 @@ public class PessoaEmail extends EntidadeBase implements _ChavePrimaria<Integer>
 	@ManyToOne
 	@JoinColumn(name = "email_id")
 	private Email email;
-
-	@OneToOne(mappedBy = "pessoaMeioContato", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	private Exploracao exploracao;
 
 	private String finalidade;
 
@@ -49,10 +42,6 @@ public class PessoaEmail extends EntidadeBase implements _ChavePrimaria<Integer>
 
 	public Email getEmail() {
 		return email;
-	}
-
-	public Exploracao getExploracao() {
-		return exploracao;
 	}
 
 	public String getFinalidade() {
@@ -74,10 +63,6 @@ public class PessoaEmail extends EntidadeBase implements _ChavePrimaria<Integer>
 
 	public void setEmail(Email email) {
 		this.email = email;
-	}
-
-	public void setExploracao(Exploracao exploracao) {
-		this.exploracao = exploracao;
 	}
 
 	public void setFinalidade(String finalidade) {

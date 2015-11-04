@@ -15,7 +15,7 @@ import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 
 /**
- * The persistent class for the meio_contato_telefonico database table.
+ * The persistent class for the telefone database table.
  * 
  */
 @Entity

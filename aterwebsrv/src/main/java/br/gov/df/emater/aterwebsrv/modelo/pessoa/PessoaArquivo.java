@@ -24,6 +24,8 @@ public class PessoaArquivo extends EntidadeBase implements _ChavePrimaria<Intege
 	@JoinColumn(name = "arquivo_id")
 	private Arquivo arquivo;
 
+	private String descricao;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
@@ -42,6 +44,10 @@ public class PessoaArquivo extends EntidadeBase implements _ChavePrimaria<Intege
 		return arquivo;
 	}
 
+	public String getDescricao() {
+		return descricao;
+	}
+
 	@Override
 	public Integer getId() {
 		return id;
@@ -57,6 +63,10 @@ public class PessoaArquivo extends EntidadeBase implements _ChavePrimaria<Intege
 
 	public void setArquivo(Arquivo arquivo) {
 		this.arquivo = arquivo;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
 	@Override

@@ -12,11 +12,6 @@ public class JsonHibernateAwareObjectMapper extends ObjectMapper {
 
 	public JsonHibernateAwareObjectMapper() {
 
-		// simpleModule.registerSubtypes(new NamedType(MeioContatoEmail.class,
-		// "MeioContatoEmail"), new NamedType(MeioContatoEndereco.class,
-		// "MeioContatoEndereco"), new NamedType(
-		// MeioContatoTelefonico.class, "MeioContatoTelefonico"));
-
 		// habilitar o modulo de manipula��o das entidades Hibernate
 		// module.configure(Feature.SERIALIZE_IDENTIFIER_FOR_LAZY_NOT_LOADED_OBJECTS,
 		// true);
@@ -45,28 +40,5 @@ public class JsonHibernateAwareObjectMapper extends ObjectMapper {
 		// enableDefaultTyping(DefaultTyping.NON_FINAL,
 		// JsonTypeInfo.As.WRAPPER_OBJECT);
 
-		// JavaType jt = SimpleType.construct(MeioContato.class);
-		// StdTypeResolverBuilder builder = new StdTypeResolverBuilder();
-		// builder.inclusion(As.PROPERTY);
-		// builder.typeProperty("@type");
-		// builder.init(Id.NAME,
-		// new ClassNameIdResolver(jt, TypeFactory.defaultInstance()));
-		//
-		// List<NamedType> subtypes = new ArrayList<NamedType>();
-		// subtypes.add(new NamedType(MeioContatoEmail.class,
-		// "MeioContatoEmail"));
-		// subtypes.add(new NamedType(MeioContatoEndereco.class,
-		// "MeioContatoEndereco"));
-		// subtypes.add(new NamedType(MeioContatoTelefonico.class,
-		// "MeioContatoTelefonico"));
-		//
-		// subtypes.add(new NamedType(PessoaFisica.class, "PessoaFisica"));
-		// subtypes.add(new NamedType(PessoaJuridica.class, "PessoaJuridica"));
-		// subtypes.add(new NamedType(PessoaGrupo.class, "PessoaGrupo"));
-		//
-		// builder.buildTypeDeserializer(getDeserializationConfig(), jt,
-		// subtypes);
-		//
-		// setDefaultTyping(builder);
 	}
 }

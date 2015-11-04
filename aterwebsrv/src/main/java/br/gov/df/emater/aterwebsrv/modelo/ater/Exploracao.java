@@ -13,12 +13,12 @@ import javax.persistence.Table;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaEndereco;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonFormatarBigDecimal;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * The persistent class for the exploracao database table.
@@ -34,25 +34,21 @@ public class Exploracao extends EntidadeBase implements _ChavePrimaria<Integer> 
 	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
 	private BigDecimal area;
 
-	public Exploracao(Integer id) {
-		super(id);
-	}
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
 	@OneToOne
-	@JoinColumn(name = "pessoa_meio_contato_id")
-	private PessoaEndereco pessoaMeioContato;
+	@JoinColumn(name = "pessoa_endereco_id")
+	private PessoaEndereco pessoaEndereco;
 
 	private String regime;
 
 	public Exploracao() {
 	}
 
-	public Exploracao(PessoaEndereco pessoaMeioContato) {
-		setPessoaMeioContato(pessoaMeioContato);
+	public Exploracao(Integer id) {
+		super(id);
 	}
 
 	public BigDecimal getArea() {
@@ -64,8 +60,8 @@ public class Exploracao extends EntidadeBase implements _ChavePrimaria<Integer> 
 		return id;
 	}
 
-	public PessoaEndereco getPessoaMeioContato() {
-		return pessoaMeioContato;
+	public PessoaEndereco getPessoaEndereco() {
+		return pessoaEndereco;
 	}
 
 	public String getRegime() {
@@ -81,8 +77,8 @@ public class Exploracao extends EntidadeBase implements _ChavePrimaria<Integer> 
 		this.id = id;
 	}
 
-	public void setPessoaMeioContato(PessoaEndereco pessoaMeioContato) {
-		this.pessoaMeioContato = pessoaMeioContato;
+	public void setPessoaEndereco(PessoaEndereco pessoaEndereco) {
+		this.pessoaEndereco = pessoaEndereco;
 	}
 
 	public void setRegime(String regime) {

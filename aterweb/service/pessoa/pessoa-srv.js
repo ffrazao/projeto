@@ -31,6 +31,8 @@ angular.module(pNmModulo).factory(pNmFactory,
                    'ConfirmacaoDap',
                    'CnhCategoria',
                    'UnidadeOrganizacional',
+                   'MeioContatoFinalidade',
+                   'TelefoneTipo',
                 ]}).success(function(resposta) {
                     if (resposta && resposta.resultado) {
                         scp.cadastro.apoio.pessoaTipoList = resposta.resultado[0];
@@ -53,6 +55,20 @@ angular.module(pNmModulo).factory(pNmFactory,
                         scp.cadastro.apoio.confirmacaoDapList = resposta.resultado[17];
                         scp.cadastro.apoio.cnhCategoriaList = resposta.resultado[18];
                         scp.cadastro.apoio.unidadeOrganizacionalList = resposta.resultado[19];
+                        scp.cadastro.apoio.meioContatoFinalidadeList = [];
+                        var codigo = '';
+                        var descricao = '';
+                        for (var i in resposta.resultado[20]) {
+                          scp.cadastro.apoio.meioContatoFinalidadeList.push(resposta.resultado[20][i]);
+                          if (codigo !== '') {
+                            codigo += ',';
+                            descricao += ' & ';
+                          }
+                          codigo +=  resposta.resultado[20][i].codigo;
+                          descricao +=  resposta.resultado[20][i].descricao;
+                        }
+                        scp.cadastro.apoio.meioContatoFinalidadeList.push({'codigo': codigo, 'descricao': descricao});
+                        scp.cadastro.apoio.telefoneTipoList = resposta.resultado[21];
                         scp.cadastro.apoio.tradicaoList = [];
                         var anoAtual = new Date().getFullYear();
                         for (var ano = anoAtual; ano > anoAtual - 100; ano--) {

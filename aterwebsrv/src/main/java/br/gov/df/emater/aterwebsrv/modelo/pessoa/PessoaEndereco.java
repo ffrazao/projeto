@@ -1,8 +1,6 @@
 package br.gov.df.emater.aterwebsrv.modelo.pessoa;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,16 +14,16 @@ import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.ater.Exploracao;
 
 /**
- * The persistent class for the pessoa_meio_contato database table.
+ * The persistent class for the pessoa_endereco database table.
  * 
  */
 @Entity
-@Table(name = "pessoa_meio_contato", schema = EntidadeBase.PESSOA_SCHEMA)
+@Table(name = "pessoa_endereco", schema = EntidadeBase.PESSOA_SCHEMA)
 public class PessoaEndereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
 
-	@OneToOne(mappedBy = "pessoaMeioContato", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToOne(mappedBy = "pessoaEndereco")
 	private Exploracao exploracao;
 
 	private String finalidade;

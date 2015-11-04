@@ -7,11 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
@@ -19,14 +17,13 @@ import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Store;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerMilisegundos;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerMilisegundos;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
 
 @Entity
 @Table(name = "arquivo", schema = EntidadeBase.PESSOA_SCHEMA)
@@ -35,20 +32,12 @@ public class Arquivo extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "conteudo", length = 16777216)
-	@Lob
-	@Transient
-	private byte[] conteudo;
-
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	@JsonSerialize(using = JsonSerializerMilisegundos.class)
 	@JsonDeserialize(using = JsonDeserializerMilisegundos.class)
 	@Column(name = "data_upload")
 	private Calendar dataUpload;
-
-	@Field(index = Index.YES, store = Store.YES)
-	private String descricao;
 
 	private String extensao;
 
@@ -60,7 +49,8 @@ public class Arquivo extends EntidadeBase implements _ChavePrimaria<Integer> {
 	private String md5;
 
 	@Field(index = Index.YES, store = Store.YES)
-	private String nome;
+	@Column(name = "nome_original")
+	private String nomeOriginal;
 
 	private Integer tamanho;
 
@@ -77,16 +67,8 @@ public class Arquivo extends EntidadeBase implements _ChavePrimaria<Integer> {
 		setMd5(md5);
 	}
 
-	public byte[] getConteudo() {
-		return conteudo;
-	}
-
 	public Calendar getDataUpload() {
 		return dataUpload;
-	}
-
-	public String getDescricao() {
-		return descricao;
 	}
 
 	public String getExtensao() {
@@ -102,8 +84,8 @@ public class Arquivo extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return md5;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getNomeOriginal() {
+		return nomeOriginal;
 	}
 
 	public Integer getTamanho() {
@@ -114,16 +96,8 @@ public class Arquivo extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return tipo;
 	}
 
-	public void setConteudo(byte[] conteudo) {
-		this.conteudo = conteudo;
-	}
-
 	public void setDataUpload(Calendar dataUpload) {
 		this.dataUpload = dataUpload;
-	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
 	}
 
 	public void setExtensao(String extensao) {
@@ -142,8 +116,8 @@ public class Arquivo extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.md5 = md5;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setNomeOriginal(String nomeOriginal) {
+		this.nomeOriginal = nomeOriginal;
 	}
 
 	public void setTamanho(Integer tamanho) {

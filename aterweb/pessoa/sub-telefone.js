@@ -22,7 +22,6 @@ angular.module(pNmModulo).controller(pNmController,
 
     // inicio das operaçoes atribuidas ao navagador
     $scope.abrir = function() { $scope.pessoaTelefoneNvg.mudarEstado('ESPECIAL'); };
-
     $scope.agir = function() {};
     $scope.ajudar = function() {};
     $scope.alterarTamanhoPagina = function() {};
@@ -42,10 +41,28 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.folhearPrimeiro = function() {};
     $scope.folhearProximo = function() {};
     $scope.folhearUltimo = function() {};
-    $scope.editar = function() {  $scope.incluir(); };
+    $scope.editar = function() {
+        if ($scope.pessoaTelefoneNvg.selecao.tipo === 'U' && $scope.pessoaTelefoneNvg.selecao.item) {
+            var item = angular.copy($scope.pessoaTelefoneNvg.selecao.item.telefone);
+            mensagemSrv.confirmacao(true, 'pessoa-telefone-frm.html', null, item, item.tamanho ).then(function (conteudo) {
+                // processar o retorno positivo da modal
+                conteudo.numero = formataTelefone(conteudo.numero);
+                $scope.pessoaTelefoneNvg.selecao.item.telefone = angular.copy(conteudo);
+            }, function () {
+                // processar o retorno negativo da modal
+                //$log.info('Modal dismissed at: ' + new Date());
+            });
+        }
+    };
     $scope.incluir = function() {
         var item = {};
-        $scope.abreModal(item);
+        mensagemSrv.confirmacao(true, 'pessoa-telefone-frm.html', null, item, item.tamanho ).then(function (conteudo) {
+            // processar o retorno positivo da modal
+            $scope.cadastro.registro.telefoneList.push({telefone: {'numero': formataTelefone(conteudo.numero)}});
+        }, function () {
+            // processar o retorno negativo da modal
+            //$log.info('Modal dismissed at: ' + new Date());
+        });
     };
     $scope.informacao = function() {};
     $scope.limpar = function() {};
@@ -58,18 +75,20 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.voltar = function() {};
     // fim das operaçoes atribuidas ao navagador
 
-    $scope.abreModal = function (item) {
-        // abrir a modal
-        mensagemSrv.confirmacao(true, 'pessoa-telefone-frm.html', item.numero, item, item.tamanho ).then(function (conteudo) {
-            // processar o retorno positivo da modal
-            var item  = {meioContato: conteudo};
-            $scope.cadastro.registro.telefoneList.push(item);
-        }, function () {
-            // processar o retorno negativo da modal
-            //$log.info('Modal dismissed at: ' + new Date());
-        });
-
-    };    
+    var formataTelefone = function(numero) {
+        if (!numero) {
+            return null;
+        }
+        var phoneMask8D = new StringMask('(00) 0000-0000'),
+            phoneMask9D = new StringMask('(00) 00000-0000');
+        var result = numero.toString().replace(/[^0-9]/g, '').slice(0, 11);
+        if (result.length < 11){
+            result = phoneMask8D.apply(result) || '';
+        } else{
+            result = phoneMask9D.apply(result);
+        }
+        return result;
+    }
 
 } // fim função
 ]);

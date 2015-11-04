@@ -13,7 +13,6 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Municipio;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pais;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica;
-import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 
 @Service("PessoaVisualizarCmd")
@@ -21,9 +20,9 @@ public class VisualizarCmd extends _Comando {
 
 	@Autowired
 	private PessoaDao dao;
-	
+
 	@Autowired
-	private EntityManager em; 
+	private EntityManager em;
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
@@ -36,7 +35,7 @@ public class VisualizarCmd extends _Comando {
 			Estado estado = null;
 			Pais pais = null;
 			if (pessoaFisica.getNascimentoMunicipio() != null) {
-				municipio = new Municipio(pessoaFisica.getNascimentoMunicipio().getId(),pessoaFisica.getNascimentoMunicipio().getNome());  
+				municipio = new Municipio(pessoaFisica.getNascimentoMunicipio().getId(), pessoaFisica.getNascimentoMunicipio().getNome());
 				if (pessoaFisica.getNascimentoMunicipio().getEstado() != null) {
 					estado = new Estado(pessoaFisica.getNascimentoMunicipio().getEstado().getId(), pessoaFisica.getNascimentoMunicipio().getEstado().getNome());
 					if (pessoaFisica.getNascimentoMunicipio().getEstado().getPais() != null) {
@@ -49,15 +48,20 @@ public class VisualizarCmd extends _Comando {
 			pessoaFisica.setNascimentoPais(pais);
 			break;
 		case PJ:
-			PessoaJuridica pessoaJuridica = (PessoaJuridica) result;
+			// PessoaJuridica pessoaJuridica = (PessoaJuridica) result;
 			break;
 		}
-		result.setUsuarioInclusao(new Usuario(result.getUsuarioInclusao().getUsername()));
-		result.setUsuarioAlteracao(new Usuario(result.getUsuarioAlteracao().getUsername()));
+		result.getTelefoneList().size();
+		if (result.getUsuarioInclusao() != null) {			
+			result.setUsuarioInclusao(new Usuario(result.getUsuarioInclusao().getUsername()));
+		}
+		if (result.getUsuarioAlteracao() != null) {			
+			result.setUsuarioAlteracao(new Usuario(result.getUsuarioAlteracao().getUsername()));
+		}
+		
 		em.detach(result);
 		contexto.setResposta(result);
-		dao.flush();
-		
+
 		return true;
 	}
 }

@@ -1,32 +1,28 @@
 package br.gov.df.emater.aterwebsrv.modelo.pessoa;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
-import br.gov.df.emater.aterwebsrv.modelo.ater.Exploracao;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.TelefoneTipo;
 
 /**
- * The persistent class for the pessoa_meio_contato database table.
+ * The persistent class for the pessoa_telefone database table.
  * 
  */
 @Entity
-@Table(name = "pessoa_meio_contato", schema = EntidadeBase.PESSOA_SCHEMA)
+@Table(name = "pessoa_telefone", schema = EntidadeBase.PESSOA_SCHEMA)
 public class PessoaTelefone extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
-
-	@OneToOne(mappedBy = "pessoaMeioContato", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	private Exploracao exploracao;
 
 	private String finalidade;
 
@@ -44,11 +40,10 @@ public class PessoaTelefone extends EntidadeBase implements _ChavePrimaria<Integ
 	@JoinColumn(name = "telefone_id")
 	private Telefone telefone;
 
-	public PessoaTelefone() {
-	}
+	@Enumerated(EnumType.STRING)
+	private TelefoneTipo tipo;
 
-	public Exploracao getExploracao() {
-		return exploracao;
+	public PessoaTelefone() {
 	}
 
 	public String getFinalidade() {
@@ -72,8 +67,8 @@ public class PessoaTelefone extends EntidadeBase implements _ChavePrimaria<Integ
 		return telefone;
 	}
 
-	public void setExploracao(Exploracao exploracao) {
-		this.exploracao = exploracao;
+	public TelefoneTipo getTipo() {
+		return tipo;
 	}
 
 	public void setFinalidade(String finalidade) {
@@ -95,6 +90,10 @@ public class PessoaTelefone extends EntidadeBase implements _ChavePrimaria<Integ
 
 	public void setTelefone(Telefone telefone) {
 		this.telefone = telefone;
+	}
+
+	public void setTipo(TelefoneTipo tipo) {
+		this.tipo = tipo;
 	}
 
 }
