@@ -13,6 +13,20 @@ import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 @Table(name = "comando", schema = EntidadeBase.SISTEMA_SCHEMA)
 public class Comando extends EntidadeBase implements _ChavePrimaria<Integer> {
 
+	public static enum Codigo {
+		CONSULTAR("Consultar"), EDITAR("Editar"), EXCLUIR("Excluir"), INCLUIR("Incluir"), VISUALIZAR("Visualizar");
+
+		private String descricao;
+
+		private Codigo(String descricao) {
+			this.descricao = descricao;
+		}
+
+		public String toString() {
+			return this.descricao;
+		}
+	}
+
 	private static final long serialVersionUID = 1L;
 
 	private String codigo;

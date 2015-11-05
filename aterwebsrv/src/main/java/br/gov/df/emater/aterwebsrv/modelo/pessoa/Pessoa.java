@@ -80,6 +80,9 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	@Transient
 	private String fotoPerfil;
 
+	@OneToMany(mappedBy = "pessoa")
+	private List<PessoaGrupoSocial> grupoSocialList;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
@@ -110,6 +113,9 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	@Enumerated(EnumType.STRING)
 	@NotNull
 	private Confirmacao publicoAlvoConfirmacao;
+
+	@OneToMany(mappedBy = "pessoa")
+	private List<PessoaRelacionamento> relacionamentoList;
 
 	@Enumerated(EnumType.STRING)
 	@NotNull
@@ -170,9 +176,9 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		return this.fotoPerfil;
 	}
 
-	// @OneToMany(mappedBy = "pessoa")
-	// @IndexedEmbedded
-	// private List<PessoaRelacionamento> pessoaRelacionamentos;
+	public List<PessoaGrupoSocial> getGrupoSocialList() {
+		return grupoSocialList;
+	}
 
 	@Override
 	public Integer getId() {
@@ -201,6 +207,10 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 
 	public Confirmacao getPublicoAlvoConfirmacao() {
 		return publicoAlvoConfirmacao;
+	}
+
+	public List<PessoaRelacionamento> getRelacionamentoList() {
+		return relacionamentoList;
 	}
 
 	public PessoaSituacao getSituacao() {
@@ -247,6 +257,10 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		this.fotoPerfil = fotoPerfil;
 	}
 
+	public void setGrupoSocialList(List<PessoaGrupoSocial> grupoSocialList) {
+		this.grupoSocialList = grupoSocialList;
+	}
+
 	@Override
 	public void setId(Integer id) {
 		this.id = id;
@@ -274,6 +288,10 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 
 	public void setPublicoAlvoConfirmacao(Confirmacao publicoAlvoConfirmacao) {
 		this.publicoAlvoConfirmacao = publicoAlvoConfirmacao;
+	}
+
+	public void setRelacionamentoList(List<PessoaRelacionamento> relacionamentoList) {
+		this.relacionamentoList = relacionamentoList;
 	}
 
 	public void setSituacao(PessoaSituacao situacao) {

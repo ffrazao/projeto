@@ -58,12 +58,13 @@ angular.module(pNmModulo).controller(pNmController,
     };
     $scope.editar = function() {
         var item = null;
+        var i, j;
         if ($scope.pessoaEmailNvg.selecao.tipo === 'U' && $scope.pessoaEmailNvg.selecao.item) {
             item = angular.copy($scope.pessoaEmailNvg.selecao.item);
             editarItem($scope.pessoaEmailNvg.selecao.item, item);
         } else if ($scope.pessoaEmailNvg.selecao.items && $scope.pessoaEmailNvg.selecao.items.length) {
-            for (var i in $scope.pessoaEmailNvg.selecao.items) {
-                for (var j in $scope.cadastro.registro.emailList) {
+            for (i in $scope.pessoaEmailNvg.selecao.items) {
+                for (j in $scope.cadastro.registro.emailList) {
                     if (angular.equals($scope.pessoaEmailNvg.selecao.items[i], $scope.cadastro.registro.emailList[j])) {
                         item = angular.copy($scope.cadastro.registro.emailList[j]);
                         editarItem($scope.cadastro.registro.emailList[j], item);
@@ -74,29 +75,30 @@ angular.module(pNmModulo).controller(pNmController,
     };
     $scope.excluir = function() {
         mensagemSrv.confirmacao(false, 'confirme a exclusão').then(function (conteudo) {
-        if ($scope.pessoaEmailNvg.selecao.tipo === 'U' && $scope.pessoaEmailNvg.selecao.item) {
-            for (var j = $scope.cadastro.registro.emailList.length -1; j >= 0; j--) {
-                if (angular.equals($scope.cadastro.registro.emailList[j].email.endereco, $scope.pessoaEmailNvg.selecao.item.email.endereco)) {
-                    //$scope.cadastro.registro.emailList.splice(j, 1);
-                    $scope.cadastro.registro.emailList[j].cadastroAcao = 'E';
-                }
-            }
-            $scope.pessoaEmailNvg.selecao.item = null;
-            $scope.pessoaEmailNvg.selecao.selecionado = false;
-        } else if ($scope.pessoaEmailNvg.selecao.items && $scope.pessoaEmailNvg.selecao.items.length) {
-            for (var j = $scope.cadastro.registro.emailList.length-1; j >= 0; j--) {
-                for (var i in $scope.pessoaEmailNvg.selecao.items) {
-                    if (angular.equals($scope.cadastro.registro.emailList[j].email.endereco, $scope.pessoaEmailNvg.selecao.items[i].email.endereco)) {
+            var i, j;
+            if ($scope.pessoaEmailNvg.selecao.tipo === 'U' && $scope.pessoaEmailNvg.selecao.item) {
+                for (j = $scope.cadastro.registro.emailList.length -1; j >= 0; j--) {
+                    if (angular.equals($scope.cadastro.registro.emailList[j].email.endereco, $scope.pessoaEmailNvg.selecao.item.email.endereco)) {
                         //$scope.cadastro.registro.emailList.splice(j, 1);
                         $scope.cadastro.registro.emailList[j].cadastroAcao = 'E';
-                        break;
                     }
                 }
+                $scope.pessoaEmailNvg.selecao.item = null;
+                $scope.pessoaEmailNvg.selecao.selecionado = false;
+            } else if ($scope.pessoaEmailNvg.selecao.items && $scope.pessoaEmailNvg.selecao.items.length) {
+                for (j = $scope.cadastro.registro.emailList.length-1; j >= 0; j--) {
+                    for (i in $scope.pessoaEmailNvg.selecao.items) {
+                        if (angular.equals($scope.cadastro.registro.emailList[j].email.endereco, $scope.pessoaEmailNvg.selecao.items[i].email.endereco)) {
+                            //$scope.cadastro.registro.emailList.splice(j, 1);
+                            $scope.cadastro.registro.emailList[j].cadastroAcao = 'E';
+                            break;
+                        }
+                    }
+                }
+                for (i = $scope.pessoaEmailNvg.selecao.items.length -1; i >= 0; i--) {
+                    $scope.pessoaEmailNvg.selecao.items.splice(i, 1);
+                }
             }
-            for (var i = $scope.pessoaEmailNvg.selecao.items.length -1; i >= 0; i--) {
-                $scope.pessoaEmailNvg.selecao.items.splice(i, 1);
-            }
-        }
         }, function () {
         });
     };

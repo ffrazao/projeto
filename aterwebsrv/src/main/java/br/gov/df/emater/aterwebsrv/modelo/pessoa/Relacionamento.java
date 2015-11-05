@@ -35,7 +35,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @Entity
 @Table(name = "relacionamento", schema = EntidadeBase.PESSOA_SCHEMA)
 @Inheritance(strategy = InheritanceType.JOINED)
-// para identificar classes dentro de contextos polim�rficos
+// para identificar classes dentro de contextos polimorficos
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
 public class Relacionamento extends EntidadeBase implements _ChavePrimaria<Integer> {
 
@@ -65,32 +65,6 @@ public class Relacionamento extends EntidadeBase implements _ChavePrimaria<Integ
 	private Calendar termino;
 
 	public Relacionamento() {
-	}
-
-	public Relacionamento(Integer id) {
-		setId(id);
-	}
-
-	public Relacionamento(RelacionamentoTipo relacionamentoTipo) {
-		setRelacionamentoTipo(relacionamentoTipo);
-	}
-
-	public Relacionamento(Integer id, RelacionamentoTipo relacionamentoTipo, Calendar inicio, Calendar termino) {
-		setId(id);
-		setRelacionamentoTipo(relacionamentoTipo);
-		setInicio(inicio);
-		setTermino(termino);
-	}
-
-	public Relacionamento(RelacionamentoTipo relacionamentoTipo, Calendar inicio, Calendar termino) {
-		setRelacionamentoTipo(relacionamentoTipo);
-		setInicio(inicio);
-		setTermino(termino);
-	}
-
-	public Relacionamento(Integer id, RelacionamentoTipo relacionamentoTipo) {
-		super(id);
-		setRelacionamentoTipo(relacionamentoTipo);
 	}
 
 	@Override

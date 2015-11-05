@@ -51,8 +51,13 @@ public class VisualizarCmd extends _Comando {
 			// PessoaJuridica pessoaJuridica = (PessoaJuridica) result;
 			break;
 		}
-		result.getTelefoneList().size();
+		result.getArquivoList().size();
 		result.getEmailList().size();
+		result.getEnderecoList().size();
+		result.getGrupoSocialList().size();
+		result.getRelacionamentoList().size();
+		result.getTelefoneList().size();
+		
 		if (result.getUsuarioInclusao() != null) {			
 			result.setUsuarioInclusao(new Usuario(result.getUsuarioInclusao().getUsername()));
 		}

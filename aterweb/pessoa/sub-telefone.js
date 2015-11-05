@@ -20,7 +20,8 @@ angular.module(pNmModulo).controller(pNmController,
     // inicio rotinas de apoio
     var jaCadastrado = function(conteudo) {
         conteudo.telefone.numero = formataTelefone(conteudo.telefone.numero);
-        for (var j in $scope.cadastro.registro.telefoneList) {
+        var j;
+        for (j in $scope.cadastro.registro.telefoneList) {
             if (angular.equals($scope.cadastro.registro.telefoneList[j].telefone.numero, conteudo.telefone.numero)) {
                 if ($scope.cadastro.registro.telefoneList[j].cadastroAcao === 'E') {
                     return true;
@@ -74,12 +75,13 @@ angular.module(pNmModulo).controller(pNmController,
     };
     $scope.editar = function() {
         var item = null;
+        var j, i;
         if ($scope.pessoaTelefoneNvg.selecao.tipo === 'U' && $scope.pessoaTelefoneNvg.selecao.item) {
             item = angular.copy($scope.pessoaTelefoneNvg.selecao.item);
             editarItem($scope.pessoaTelefoneNvg.selecao.item, item);
         } else if ($scope.pessoaTelefoneNvg.selecao.items && $scope.pessoaTelefoneNvg.selecao.items.length) {
-            for (var i in $scope.pessoaTelefoneNvg.selecao.items) {
-                for (var j in $scope.cadastro.registro.telefoneList) {
+            for (i in $scope.pessoaTelefoneNvg.selecao.items) {
+                for (j in $scope.cadastro.registro.telefoneList) {
                     if (angular.equals($scope.pessoaTelefoneNvg.selecao.items[i], $scope.cadastro.registro.telefoneList[j])) {
                         item = angular.copy($scope.cadastro.registro.telefoneList[j]);
                         editarItem($scope.cadastro.registro.telefoneList[j], item);
@@ -90,29 +92,30 @@ angular.module(pNmModulo).controller(pNmController,
     };
     $scope.excluir = function() {
         mensagemSrv.confirmacao(false, 'confirme a exclusão').then(function (conteudo) {
-        if ($scope.pessoaTelefoneNvg.selecao.tipo === 'U' && $scope.pessoaTelefoneNvg.selecao.item) {
-            for (var j = $scope.cadastro.registro.telefoneList.length -1; j >= 0; j--) {
-                if (angular.equals($scope.cadastro.registro.telefoneList[j].telefone.numero, $scope.pessoaTelefoneNvg.selecao.item.telefone.numero)) {
-                    //$scope.cadastro.registro.telefoneList.splice(j, 1);
-                    $scope.cadastro.registro.telefoneList[j].cadastroAcao = 'E';
-                }
-            }
-            $scope.pessoaTelefoneNvg.selecao.item = null;
-            $scope.pessoaTelefoneNvg.selecao.selecionado = false;
-        } else if ($scope.pessoaTelefoneNvg.selecao.items && $scope.pessoaTelefoneNvg.selecao.items.length) {
-            for (var j = $scope.cadastro.registro.telefoneList.length-1; j >= 0; j--) {
-                for (var i in $scope.pessoaTelefoneNvg.selecao.items) {
-                    if (angular.equals($scope.cadastro.registro.telefoneList[j].telefone.numero, $scope.pessoaTelefoneNvg.selecao.items[i].telefone.numero)) {
+            var i, j;
+            if ($scope.pessoaTelefoneNvg.selecao.tipo === 'U' && $scope.pessoaTelefoneNvg.selecao.item) {
+                for (j = $scope.cadastro.registro.telefoneList.length -1; j >= 0; j--) {
+                    if (angular.equals($scope.cadastro.registro.telefoneList[j].telefone.numero, $scope.pessoaTelefoneNvg.selecao.item.telefone.numero)) {
                         //$scope.cadastro.registro.telefoneList.splice(j, 1);
                         $scope.cadastro.registro.telefoneList[j].cadastroAcao = 'E';
-                        break;
                     }
                 }
+                $scope.pessoaTelefoneNvg.selecao.item = null;
+                $scope.pessoaTelefoneNvg.selecao.selecionado = false;
+            } else if ($scope.pessoaTelefoneNvg.selecao.items && $scope.pessoaTelefoneNvg.selecao.items.length) {
+                for (j = $scope.cadastro.registro.telefoneList.length-1; j >= 0; j--) {
+                    for (i in $scope.pessoaTelefoneNvg.selecao.items) {
+                        if (angular.equals($scope.cadastro.registro.telefoneList[j].telefone.numero, $scope.pessoaTelefoneNvg.selecao.items[i].telefone.numero)) {
+                            //$scope.cadastro.registro.telefoneList.splice(j, 1);
+                            $scope.cadastro.registro.telefoneList[j].cadastroAcao = 'E';
+                            break;
+                        }
+                    }
+                }
+                for (i = $scope.pessoaTelefoneNvg.selecao.items.length -1; i >= 0; i--) {
+                    $scope.pessoaTelefoneNvg.selecao.items.splice(i, 1);
+                }
             }
-            for (var i = $scope.pessoaTelefoneNvg.selecao.items.length -1; i >= 0; i--) {
-                $scope.pessoaTelefoneNvg.selecao.items.splice(i, 1);
-            }
-        }
         }, function () {
         });
     };

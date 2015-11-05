@@ -1,6 +1,9 @@
 package br.gov.df.emater.aterwebsrv.modelo.pessoa;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -10,6 +13,7 @@ import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.RelacionamentoParticipacao;
 
 /**
  * The persistent class for the relacionamento_configuracao database table.
@@ -29,24 +33,23 @@ public class RelacionamentoConfiguracao extends EntidadeBase implements _ChavePr
 	@JoinColumn(name = "relacionado_funcao_id")
 	private RelacionamentoFuncao relacionadoFuncao;
 
+	@Enumerated(EnumType.STRING)
+	@Column(name = "relacionado_participacao")
+	private RelacionamentoParticipacao relacionadoParticipacao;
+
 	@ManyToOne
 	@JoinColumn(name = "relacionador_funcao_id")
 	private RelacionamentoFuncao relacionadorFuncao;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "relacionador_participacao")
+	private RelacionamentoParticipacao relacionadorParticipacao;
 
 	@ManyToOne
 	@JoinColumn(name = "relacionamento_tipo_id")
 	private RelacionamentoTipo relacionamentoTipo;
 
 	public RelacionamentoConfiguracao() {
-	}
-
-	public RelacionamentoConfiguracao(RelacionamentoTipo relacionamentoTipo) {
-		setRelacionamentoTipo(relacionamentoTipo);
-	}
-
-	public RelacionamentoConfiguracao(RelacionamentoTipo relacionamentoTipo, RelacionamentoFuncao relacionadoFuncao) {
-		this(relacionamentoTipo);
-		setRelacionadoFuncao(relacionadoFuncao);
 	}
 
 	@Override
@@ -58,8 +61,16 @@ public class RelacionamentoConfiguracao extends EntidadeBase implements _ChavePr
 		return relacionadoFuncao;
 	}
 
+	public RelacionamentoParticipacao getRelacionadoParticipacao() {
+		return relacionadoParticipacao;
+	}
+
 	public RelacionamentoFuncao getRelacionadorFuncao() {
 		return relacionadorFuncao;
+	}
+
+	public RelacionamentoParticipacao getRelacionadorParticipacao() {
+		return relacionadorParticipacao;
 	}
 
 	public RelacionamentoTipo getRelacionamentoTipo() {
@@ -75,8 +86,16 @@ public class RelacionamentoConfiguracao extends EntidadeBase implements _ChavePr
 		this.relacionadoFuncao = relacionadoFuncao;
 	}
 
+	public void setRelacionadoParticipacao(RelacionamentoParticipacao relacionadoParticipacao) {
+		this.relacionadoParticipacao = relacionadoParticipacao;
+	}
+
 	public void setRelacionadorFuncao(RelacionamentoFuncao relacionadorFuncao) {
 		this.relacionadorFuncao = relacionadorFuncao;
+	}
+
+	public void setRelacionadorParticipacao(RelacionamentoParticipacao relacionadorParticipacao) {
+		this.relacionadorParticipacao = relacionadorParticipacao;
 	}
 
 	public void setRelacionamentoTipo(RelacionamentoTipo relacionamentoTipo) {

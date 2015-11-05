@@ -10,7 +10,7 @@ import javax.persistence.Table;
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.RelacionamentoFuncaoParticipacao;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.RelacionamentoParticipacao;
 
 /**
  * The persistent class for the relacionamento_funcao database view.
@@ -40,7 +40,7 @@ public class RelacionamentoConfiguracaoVi extends EntidadeBase implements _Chave
 
 	@Column(name = "relacionado_participacao")
 	@Enumerated(EnumType.STRING)
-	private RelacionamentoFuncaoParticipacao relacionadoParticipacao;
+	private RelacionamentoParticipacao relacionadoParticipacao;
 
 	@Column(name = "relacionador_id")
 	private Integer relacionadorId;
@@ -56,7 +56,7 @@ public class RelacionamentoConfiguracaoVi extends EntidadeBase implements _Chave
 
 	@Column(name = "relacionador_participacao")
 	@Enumerated(EnumType.STRING)
-	private RelacionamentoFuncaoParticipacao relacionadorParticipacao;
+	private RelacionamentoParticipacao relacionadorParticipacao;
 
 	@Column(name = "tipo_codigo")
 	private String tipoCodigo;
@@ -118,7 +118,7 @@ public class RelacionamentoConfiguracaoVi extends EntidadeBase implements _Chave
 		return relacionadorNomeSeMasculino;
 	}
 
-	public RelacionamentoFuncaoParticipacao getRelacionadorParticipacao() {
+	public RelacionamentoParticipacao getRelacionadorParticipacao() {
 		return relacionadorParticipacao;
 	}
 
@@ -175,7 +175,7 @@ public class RelacionamentoConfiguracaoVi extends EntidadeBase implements _Chave
 		this.relacionadorNomeSeMasculino = relacionadorNomeSeMasculino;
 	}
 
-	public void setRelacionadorParticipacao(RelacionamentoFuncaoParticipacao relacionadorParticipacao) {
+	public void setRelacionadorParticipacao(RelacionamentoParticipacao relacionadorParticipacao) {
 		this.relacionadorParticipacao = relacionadorParticipacao;
 	}
 
