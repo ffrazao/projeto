@@ -170,6 +170,9 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 	@Column(name = "projeto_espec_sustentabilidade")
 	private String projetoEspecSustentabilidade;
 
+	@OneToMany(mappedBy = "publicoAlvo")
+	private List<PublicoAlvoPropriedadeRural> publicoAlvoPropriedadeRuralList;
+
 	@IndexedEmbedded
 	@OneToMany(mappedBy = "publicoAlvo")
 	private List<PublicoAlvoSetor> publicoAlvoSetorList;
@@ -184,6 +187,16 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
 	private BigDecimal rendaBrutaAnualOutras;
 
+	@Column(name = "renda_bruta_anual_propriedade")
+	@NumberFormat(style = Style.CURRENCY)
+	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
+	private BigDecimal rendaBrutaAnualPropriedade;
+
+	@Column(name = "salario_mensal")
+	@NumberFormat(style = Style.CURRENCY)
+	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
+	private BigDecimal salarioMensal;
+
 	// @IndexedEmbedded
 	// @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	// @JoinTable(
@@ -194,16 +207,6 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 	// inverseJoinColumns = { @JoinColumn(name = "setor_id", nullable = false,
 	// updatable = false) })
 	// private List<PublicoAlvoSetor> publicoAlvoSetorList;
-
-	@Column(name = "renda_bruta_anual_propriedade")
-	@NumberFormat(style = Style.CURRENCY)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal rendaBrutaAnualPropriedade;
-
-	@Column(name = "salario_mensal")
-	@NumberFormat(style = Style.CURRENCY)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal salarioMensal;
 
 	@Enumerated(EnumType.STRING)
 	private PublicoAlvoSegmento segmento;
@@ -340,6 +343,10 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 
 	public String getProjetoEspecSustentabilidade() {
 		return projetoEspecSustentabilidade;
+	}
+
+	public List<PublicoAlvoPropriedadeRural> getPublicoAlvoPropriedadeRuralList() {
+		return publicoAlvoPropriedadeRuralList;
 	}
 
 	public List<PublicoAlvoSetor> getPublicoAlvoSetorList() {
@@ -497,6 +504,10 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 
 	public void setProjetoEspecSustentabilidade(String projetoEspecSustentabilidade) {
 		this.projetoEspecSustentabilidade = projetoEspecSustentabilidade;
+	}
+
+	public void setPublicoAlvoPropriedadeRuralList(List<PublicoAlvoPropriedadeRural> publicoAlvoPropriedadeRuralList) {
+		this.publicoAlvoPropriedadeRuralList = publicoAlvoPropriedadeRuralList;
 	}
 
 	public void setPublicoAlvoSetorList(List<PublicoAlvoSetor> publicoAlvoSetorList) {

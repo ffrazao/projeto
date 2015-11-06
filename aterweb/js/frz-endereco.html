@@ -1,81 +1,69 @@
-<ul class="nav nav-tabs">
-  <li role="presentation" class="active"><a href="#">Endereco</a>
-            
-        <div class="container">
-            <div class="row">
-                <label class="radio-inline" for="radios-0">
-                    <input type="radio" name="radios" id="radios-0" value="U" checked="checked">
-                    Rural
-                </label> 
-                <label class="radio-inline" for="radios-1">
-                    <input type="radio" name="radios" id="radios-1" value="R">
-                    Urbana
-                </label>
-            </div>
-            <div class="row">
-                <label class="col-md-4 control-label" for="cep">CEP</label>
-                <div class="col-md-4">
-                    <div class="input-group">
-                        <input id="cep" name="cep" class="form-control" placeholder="" type="text">
-                        <span class="input-group-addon glyphicon glyphicon-search"></span>
-                    </div>
-                </div>
-                <label class="col-md-4 control-label" for="ibge">Código IBGE</label>
-                <div class="col-md-4">
-                    <div class="input-group">
-                        <input id="ibge" name="ibge" class="form-control" placeholder="" type="text">
-                        <span class="input-group-addon glyphicon glyphicon-search"></span>
-                    </div>
+<div>
+    <ul class="nav nav-tabs" ng-init="aba = 'E'">
+        <li role="presentation" class="active"><a ng-click="aba ='E'">Endereco</a></li>
+        <li role="presentation"><a ng-click="aba = 'M'">Mapa</a></li>
+    </ul>
+    <div class="container-fluid" ng-show="aba === 'E'">
+        <div class="row">
+            <div class="col-md-3">
+                <label class="control-label" for="cep">CEP</label>
+                <div class="input-group">
+                    <input id="cep" name="cep" class="form-control" placeholder="99999-999" type="text" ui-br-cep-mask ng-model="conteudo.cep">
+                    <span class="input-group-addon glyphicon glyphicon-search"></span>
                 </div>
             </div>
-            <div class="row">
-                <label class="col-md-4 control-label" for="estado">Estado</label>
-                <div class="col-md-4">
-                    <select id="estado" name="estado" class="form-control" ng-disabled="conteudo.tipoEndereco === 'R'">
-                        <option value="1">Option one</option>
-                        <option value="2">Option two</option>
-                    </select>
-                </div>
-                <label class="col-md-4 control-label" for="municipio">Municipio</label>
-                <div class="col-md-4">
-                    <select id="municipio" name="municipio" class="form-control" ng-disabled="conteudo.tipoEndereco === 'R'">
-                        <option value="1">Option one</option>
-                        <option value="2">Option two</option>
-                    </select>
-                </div>
-                <label class="col-md-4 control-label" for="cidade">Cidade</label>
-                <div class="col-md-4">
-                    <select id="cidade" name="cidade" class="form-control" ng-disabled="conteudo.tipoEndereco === 'R'">
-                        <option value="1">Option one</option>
-                        <option value="2">Option two</option>
-                    </select>
-                </div>
-                <label class="col-md-4 control-label" for="bairro">Bairro</label>
-                <div class="col-md-4">
-                    <select id="bairro" name="bairro" class="form-control">
-                        <option value="1">Option one</option>
-                        <option value="2">Option two</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row">
-                <label class="col-md-4 control-label" for="logradouro">Logradouro</label>
-                <div class="col-md-4">
-                    <input id="logradouro" name="logradouro" type="text" placeholder="" class="form-control input-md">
-                </div>
-                <label class="col-md-4 control-label" for="complemento">Complemento</label>
-                <div class="col-md-4">
-                    <input id="complemento" name="complemento" type="text" placeholder="" class="form-control input-md">
-                </div>
-                <label class="col-md-4 control-label" for="numero">Número</label>
-                <div class="col-md-4">
-                    <input id="numero" name="numero" type="text" placeholder="" class="form-control input-md">
+            <div class="col-md-3">
+                <label class="control-label" for="ibge">Código IBGE</label>
+                <div class="input-group">
+                    <input id="ibge" name="ibge" class="form-control" placeholder="" type="text" ng-model="conteudo.codigoIbge">
+                    <span class="input-group-addon glyphicon glyphicon-search"></span>
                 </div>
             </div>
         </div>
-  </li>
-  <li role="presentation"><a href="#">Mapa</a></li>
-
+        <div class="row">
+            <div class="col-md-6">
+                <label class="control-label" for="estado">Estado</label>
+                <select id="estado" name="estado" class="form-control" ng-model="conteudo.estado" ng-options="item as item.nome for item in apoio.estadoList">
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="control-label" for="municipio">Municipio</label>
+                <select id="municipio" name="municipio" class="form-control" ng-model="conteudo.municipio" ng-options="item as item.nome for item in apoio.municipioList">
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="control-label" for="cidade">Cidade</label>
+                <select id="cidade" name="cidade" class="form-control" ng-model="conteudo.cidade" ng-options="item as item.nome for item in apoio.cidadeList">
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="control-label" for="bairro">Bairro</label>
+                <input id="bairro" name="bairro" type="text" placeholder="" class="form-control" ng-model="conteudo.bairro"
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="control-label" for="logradouro">Logradouro</label>
+                <input id="logradouro" name="logradouro" type="text" placeholder="" class="form-control" ng-model="conteudo.logradouro">
+            </div>
+            <div class="col-md-3">
+                <label class="control-label" for="complemento">Complemento</label>
+                <input id="complemento" name="complemento" type="text" placeholder="" class="form-control" ng-model="conteudo.complemento">
+            </div>
+            <div class="col-md-3">
+                <label class="control-label" for="numero">Número</label>
+                <input id="numero" name="numero" type="text" placeholder="" class="form-control" ng-model="conteudo.numero">
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" ng-show="aba === 'M'">
+        <divstyle="height: 100%;
+                    width: 100%;">
+            <ui-gmap-google-map center='map.center' zoom='map.zoom'></ui-gmap-google-map>
+        </div>
+    </div>
 <!--
 <div class="row sr-only">
     <div class="col-sm-6">
@@ -281,4 +269,4 @@
         </div>
     </div>
 </div> -->
-</ul>
+</div>

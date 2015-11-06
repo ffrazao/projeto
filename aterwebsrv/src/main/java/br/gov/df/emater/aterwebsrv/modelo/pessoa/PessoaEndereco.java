@@ -6,12 +6,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
-import br.gov.df.emater.aterwebsrv.modelo.ater.Exploracao;
 
 /**
  * The persistent class for the pessoa_endereco database table.
@@ -22,9 +20,6 @@ import br.gov.df.emater.aterwebsrv.modelo.ater.Exploracao;
 public class PessoaEndereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
-
-	@OneToOne(mappedBy = "pessoaEndereco")
-	private Exploracao exploracao;
 
 	private String finalidade;
 
@@ -45,10 +40,6 @@ public class PessoaEndereco extends EntidadeBase implements _ChavePrimaria<Integ
 	public PessoaEndereco() {
 	}
 
-	public Exploracao getExploracao() {
-		return exploracao;
-	}
-
 	public String getFinalidade() {
 		return finalidade;
 	}
@@ -64,10 +55,6 @@ public class PessoaEndereco extends EntidadeBase implements _ChavePrimaria<Integ
 
 	public Pessoa getPessoa() {
 		return pessoa;
-	}
-
-	public void setExploracao(Exploracao exploracao) {
-		this.exploracao = exploracao;
 	}
 
 	public void setFinalidade(String finalidade) {

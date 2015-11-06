@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.TipoCargo;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.CargoTipo;
 
 /**
  * The persistent class for the cargo database table.
@@ -34,7 +34,7 @@ public class Cargo extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	@Column(name = "tipo")
 	@Enumerated(EnumType.STRING)
-	private TipoCargo tipo;
+	private CargoTipo tipo;
 
 	public Cargo() {
 	}
@@ -52,7 +52,7 @@ public class Cargo extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return nome;
 	}
 
-	public TipoCargo getTipo() {
+	public CargoTipo getTipo() {
 		return tipo;
 	}
 
@@ -69,7 +69,7 @@ public class Cargo extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.nome = nome;
 	}
 
-	public void setTipo(TipoCargo tipo) {
+	public void setTipo(CargoTipo tipo) {
 		this.tipo = tipo;
 	}
 

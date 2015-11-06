@@ -197,6 +197,9 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 	@Column(name = "pastagem_silagem")
 	private String pastagemSilagem;
 
+	@OneToMany(mappedBy = "propriedadeRural")
+	private List<PublicoAlvoPropriedadeRural> publicoAlvoPropriedadeRuralList;
+
 	@Lob
 	@Column(name = "roteiro_acesso")
 	@Field(index = Index.YES, store = Store.YES)
@@ -517,6 +520,10 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 		return pastagemSilagem;
 	}
 
+	public List<PublicoAlvoPropriedadeRural> getPublicoAlvoPropriedadeRuralList() {
+		return publicoAlvoPropriedadeRuralList;
+	}
+
 	public String getRoteiroAcesso() {
 		return roteiroAcesso;
 	}
@@ -792,6 +799,10 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 
 	public void setPastagemSilagem(String pastagemSilagem) {
 		this.pastagemSilagem = pastagemSilagem;
+	}
+
+	public void setPublicoAlvoPropriedadeRuralList(List<PublicoAlvoPropriedadeRural> publicoAlvoPropriedadeRuralList) {
+		this.publicoAlvoPropriedadeRuralList = publicoAlvoPropriedadeRuralList;
 	}
 
 	public void setRoteiroAcesso(String roteiroAcesso) {

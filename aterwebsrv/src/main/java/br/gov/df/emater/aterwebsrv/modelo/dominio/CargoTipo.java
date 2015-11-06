@@ -1,12 +1,12 @@
 package br.gov.df.emater.aterwebsrv.modelo.dominio;
 
-public enum TipoCargo {
+public enum CargoTipo {
 
-	F("Fam�lia"), O("Ocupa��o"), S("Sin�nimo");
+	F("Familia"), O("Ocupação"), S("Sinônimo");
 
 	private String descricao;
 
-	private TipoCargo(String descricao) {
+	private CargoTipo(String descricao) {
 		this.descricao = descricao;
 	}
 

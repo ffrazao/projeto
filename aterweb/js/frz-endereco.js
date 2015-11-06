@@ -10,7 +10,7 @@
      * @modify 14/02/2015
      */
 
-     angular.module("frz.endereco", ['ngSanitize']).directive('frzEndereco', ['$http', 'toastr', '$rootScope', '$q', function($http, toastr, $rootScope, $q/*, uiGmapGoogleMapApi*/) {
+     angular.module("frz.endereco", ['ngSanitize']).directive('frzEndereco', ['$http', 'toastr', '$rootScope', '$q', 'UtilSrv', function($http, toastr, $rootScope, $q, UtilSrv/*, uiGmapGoogleMapApi*/) {
 
       return {
         restrict : 'E',
@@ -23,6 +23,32 @@
         link : function(scope, element, attrs) {
 
           var dominio = "/aterweb/dominio";
+
+          scope.apoio = [];
+
+          UtilSrv.dominio({ent: [
+             'Estado'
+          ], npk: 'pais.id', vpk: 1}).success(function(resposta) {
+              if (resposta && resposta.resultado) {
+                  scope.apoio.estadoList = resposta.resultado[0];
+              }
+          });
+
+          scope.$watch('conteudo.estado.id', function(newValue, oldValue) {
+              if (newValue && newValue > 0) {
+                  UtilSrv.dominioLista(scope.apoio.municipioList, {ent:['Municipio'], npk: ['estado.id'], vpk: [newValue]});
+              } else {
+                  scope.apoio.municipioList = [];
+              }
+          });
+
+          scope.$watch('conteudo.municipio.id', function(newValue, oldValue) {
+              if (newValue && newValue > 0) {
+                  UtilSrv.dominioLista(scope.apoio.cidadeList, {ent:['Cidade'], npk: ['municipio.id'], vpk: [newValue]});
+              } else {
+                  scope.apoio.cidadeList = [];
+              }
+          });
 
           scope.iniciar = function () {
                     // iniciar estrutura
@@ -129,7 +155,6 @@
                     }
                   });*/
                 };
-                scope.map = { center: { latitude: -15.732687616157767, longitude: -47.90378594955473 }, zoom: 15 };
                 scope.atualizaMunicipio = function(lista, paiId) {
                   /*$q.all([scope.getDominio("PessoaGrupoMunicipioVi", "pessoaGrupoEstadoVi.id", paiId, lista)]).then(function(response) {
                     if (!isUndefOrNull(response[0].data.resultado) && !isUndefOrNull(response[0].data.resultado[0])) {
@@ -151,6 +176,8 @@
                 scope.atualizaComunidade = function(lista, paiId) {
                   //return scope.getDominio("PessoaRelacionamentoCidadeComunidadeVi", "cidId", paiId, lista);
                 };
+
+                scope.map = { center: { latitude: -15.732687616157767, longitude: -47.90378594955473 }, zoom: 15 };
 
                 if (isUndefOrNull(scope.lista)) {
                   scope.lista = {

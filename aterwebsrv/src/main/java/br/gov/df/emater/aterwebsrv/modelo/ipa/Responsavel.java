@@ -14,12 +14,11 @@ import javax.persistence.Table;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
-import br.gov.df.emater.aterwebsrv.modelo.ater.Exploracao;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonFormatarBigDecimal;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @Entity
 @Table(name = "responsavel", schema = EntidadeBase.IPA_SCHEMA)
@@ -27,9 +26,9 @@ public class Responsavel extends EntidadeBase implements _ChavePrimaria<Integer>
 
 	private static final long serialVersionUID = 1l;
 
-	@JoinColumn(name = "exploracao_id")
-	@ManyToOne
-	private Exploracao exploracao;
+//	@JoinColumn(name = "exploracao_id")
+//	@ManyToOne
+//	private Exploracao exploracao;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -47,9 +46,9 @@ public class Responsavel extends EntidadeBase implements _ChavePrimaria<Integer>
 	public Responsavel() {
 	}
 
-	public Exploracao getExploracao() {
-		return exploracao;
-	}
+//	public Exploracao getExploracao() {
+//		return exploracao;
+//	}
 
 	@Override
 	public Integer getId() {
@@ -64,9 +63,9 @@ public class Responsavel extends EntidadeBase implements _ChavePrimaria<Integer>
 		return volume;
 	}
 
-	public void setExploracao(Exploracao exploracao) {
-		this.exploracao = exploracao;
-	}
+//	public void setExploracao(Exploracao exploracao) {
+//		this.exploracao = exploracao;
+//	}
 
 	@Override
 	public void setId(Integer id) {
