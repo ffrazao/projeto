@@ -3,8 +3,8 @@
 'use strict';
 
 angular.module(pNmModulo).controller(pNmController,
-    ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr', 'utilSrv',
-    function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, utilSrv) {
+    ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr', 'UtilSrv',
+    function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, UtilSrv) {
 
     // inicializacao
     var init = function() {
@@ -162,14 +162,14 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.confirmarExcluir = function() {
         if (meuEstado('form')) {
             if ($scope.contratoArquivoNvg.selecao.tipo === 'U') {
-                $scope.contratoArquivoNvg.dados.splice(utilSrv.indiceDe($scope.contratoArquivoNvg.dados, $scope.contratoArquivoNvg.selecao.item), 1);
+                $scope.contratoArquivoNvg.dados.splice(UtilSrv.indiceDe($scope.contratoArquivoNvg.dados, $scope.contratoArquivoNvg.selecao.item), 1);
                 $scope.contratoArquivoNvg.selecao.item = null;
                 $scope.contratoArquivoNvg.mudarEstado('LISTANDO');
                 vaiPara('lista');
             } else {
                 var reg = $scope.contratoArquivoNvg.selecao.items[$scope.contratoArquivoNvg.folhaAtual];
-                $scope.contratoArquivoNvg.dados.splice(utilSrv.indiceDe($scope.contratoArquivoNvg.dados, reg), 1);
-                $scope.contratoArquivoNvg.selecao.items.splice(utilSrv.indiceDe($scope.contratoArquivoNvg.selecao.items, reg), 1);
+                $scope.contratoArquivoNvg.dados.splice(UtilSrv.indiceDe($scope.contratoArquivoNvg.dados, reg), 1);
+                $scope.contratoArquivoNvg.selecao.items.splice(UtilSrv.indiceDe($scope.contratoArquivoNvg.selecao.items, reg), 1);
                 if (!$scope.contratoArquivoNvg.selecao.items.length) {
                     $scope.contratoArquivoNvg.mudarEstado('LISTANDO');
                     vaiPara('lista');
@@ -183,11 +183,11 @@ angular.module(pNmModulo).controller(pNmController,
             }
         } else if (meuEstado('lista')) {
             if ($scope.contratoArquivoNvg.selecao.tipo === 'U') {
-                $scope.contratoArquivoNvg.dados.splice(utilSrv.indiceDe($scope.contratoArquivoNvg.dados, $scope.contratoArquivoNvg.selecao.item), 1);
+                $scope.contratoArquivoNvg.dados.splice(UtilSrv.indiceDe($scope.contratoArquivoNvg.dados, $scope.contratoArquivoNvg.selecao.item), 1);
                 $scope.contratoArquivoNvg.selecao.item = null;
             } else {
                 for (var item = $scope.contratoArquivoNvg.selecao.items.length; item--;) {
-                    $scope.contratoArquivoNvg.dados.splice(utilSrv.indiceDe($scope.contratoArquivoNvg.dados, $scope.contratoArquivoNvg.selecao.items[item]), 1);
+                    $scope.contratoArquivoNvg.dados.splice(UtilSrv.indiceDe($scope.contratoArquivoNvg.dados, $scope.contratoArquivoNvg.selecao.items[item]), 1);
                 }
                 $scope.contratoArquivoNvg.selecao.items = [];
             }

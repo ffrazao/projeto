@@ -1000,5 +1000,5 @@ String.prototype.latinise = function() {
 String.prototype.latinize = String.prototype.latinise;
 
 String.prototype.isLatin = function() {
-	return this == this.latinise();
+	return this === this.latinise();
 };

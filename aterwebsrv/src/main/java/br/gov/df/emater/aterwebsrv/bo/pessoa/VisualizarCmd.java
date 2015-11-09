@@ -12,6 +12,9 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaEndereco;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaRelacionamento;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.Relacionamento;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoFuncao;
 
 @Service("PessoaVisualizarCmd")
 public class VisualizarCmd extends _Comando {
@@ -29,11 +32,10 @@ public class VisualizarCmd extends _Comando {
 
 		if (result instanceof PessoaFisica) {
 			PessoaFisica pessoaFisica = (PessoaFisica) result;
+
 			if (pessoaFisica.getNascimentoMunicipio() != null) {
+				pessoaFisica.setNascimentoEstado(pessoaFisica.getNascimentoMunicipio().getEstado().infoBasica());
 				pessoaFisica.setNascimentoMunicipio(pessoaFisica.getNascimentoMunicipio().infoBasica());
-			}
-			if (pessoaFisica.getNascimentoEstado() != null) {
-				pessoaFisica.setNascimentoEstado(pessoaFisica.getNascimentoEstado().infoBasica());
 			}
 			if (pessoaFisica.getNascimentoPais() != null) {
 				pessoaFisica.setNascimentoPais(pessoaFisica.getNascimentoPais().infoBasica());
@@ -51,7 +53,31 @@ public class VisualizarCmd extends _Comando {
 			}
 		}
 		result.getGrupoSocialList().size();
-		result.getRelacionamentoList().size();
+
+		if (result.getRelacionamentoList() != null) {
+			for (PessoaRelacionamento relacionador : result.getRelacionamentoList()) {
+				Relacionamento relacionamento = relacionador.getRelacionamento();
+				Pessoa relacionado = null;
+				Integer idRelacionamento = null;
+				RelacionamentoFuncao relacionadoFuncao = null;
+				for (PessoaRelacionamento relacionados : relacionamento.getPessoaRelacionamentoList()) {
+					if (relacionados.getPessoa().getId() != result.getId()) {
+						if (relacionados.getPessoa() instanceof PessoaFisica) {
+							relacionado = new PessoaFisica(relacionados.getPessoa().getId(), relacionados.getPessoa().getNome(), relacionados.getPessoa().getApelidoSigla(), ((PessoaFisica) relacionados.getPessoa()).getCpf(), ((PessoaFisica) relacionados.getPessoa()).getGenero());
+						} else if (relacionados.getPessoa() instanceof PessoaJuridica) {
+							relacionado = new PessoaJuridica(relacionados.getPessoa().getId(), relacionados.getPessoa().getNome(), relacionados.getPessoa().getApelidoSigla(), ((PessoaJuridica) relacionados.getPessoa()).getCnpj());
+						}
+						idRelacionamento = relacionados.getId();
+						relacionadoFuncao = relacionados.getRelacionamentoFuncao().infoBasica();
+						break;
+					}
+				}
+				relacionador.setId(idRelacionamento);
+				relacionador.setRelacionamento(relacionador.getRelacionamento().infoBasica());
+				relacionador.setRelacionamentoFuncao(relacionadoFuncao);
+				relacionador.setPessoa(relacionado);
+			}
+		}
 		result.getTelefoneList().size();
 
 		if (result.getUsuarioInclusao() != null) {

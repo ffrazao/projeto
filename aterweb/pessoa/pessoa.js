@@ -15,17 +15,7 @@
             // inicio: atividades do Modal
             $scope.modalOk = function() {
                 // Retorno da modal
-                $scope.cadastro.lista = [];
-                $scope.cadastro.lista.push({
-                    id: 21,
-                    nome: 'Fernando'
-                });
-                $scope.cadastro.lista.push({
-                    id: 12,
-                    nome: 'Frazao'
-                });
-                $modalInstance.close($scope.cadastro);
-                toastr.info('Operação realizada!', 'Informação');
+                $modalInstance.close($scope.navegador.selecao);
             };
             $scope.modalCancelar = function() {
                 // Cancelar a modal
@@ -42,7 +32,7 @@
                     size: size,
                     resolve: {
                         modalCadastro: function() {
-                            return angular.copy($scope.cadastro);
+                            return {filtro: {}, lista: [], registro: {}, original: {}, apoio: [],};
                         }
                     }
                 });
@@ -55,6 +45,7 @@
                     $log.info('Modal dismissed at: ' + new Date());
                 });
             };
+
             // fim: atividades do Modal
             // inicio das operaçoes atribuidas ao navagador
             $scope.incluir = function(scp) {
@@ -86,6 +77,13 @@
                     //$log.info('Modal dismissed at: ' + new Date());
                 });
             };
+            $scope.paisPadrao = function(id) {
+                if (!id) {
+                    return;
+                }
+                var pais = UtilSrv.indiceDePorCampo($scope.cadastro.apoio.paisList, id, 'id');
+                return pais.padrao;
+            }
             $scope.confirmarIncluir = function(scp) {
                 preparaRegistro();
                 $rootScope.confirmarIncluir(scp);

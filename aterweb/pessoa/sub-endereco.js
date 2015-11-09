@@ -19,15 +19,18 @@ angular.module(pNmModulo).controller(pNmController,
 
     // inicio rotinas de apoio
     var limpa = function(str) {
+        if (!str) {
+            return null;
+        }
         return str.latinise().replace(/[^a-zA-Z0-9]/g,'').trim().toUpperCase();
-    }
+    };
     var jaCadastrado = function(conteudo) {
         var j, end;
         for (j in $scope.cadastro.registro.enderecoList) {
             end = $scope.cadastro.registro.enderecoList[j].endereco;
             if (end.estado !== null && conteudo.estado !== null && end.estado.id === conteudo.estado.id &&
                 end.municipio !== null && conteudo.municipio !== null && end.municipio.id === conteudo.municipio.id && 
-                end.cidade !== null && conteudo.cidade.id && end.cidade.id == conteudo.cidade.id &&
+                end.cidade !== null && conteudo.cidade.id && end.cidade.id === conteudo.cidade.id &&
                 end.logradouro !== null && conteudo.logradouro !== null && limpa(end.logradouro) === limpa(conteudo.logradouro) &&
                 end.complemento !== null && conteudo.complemento !== null && limpa(end.complemento) === limpa(conteudo.complemento) &&
                 end.numero !== null && conteudo.numero != null && limpa(end.numero) === limpa(conteudo.numero)) {

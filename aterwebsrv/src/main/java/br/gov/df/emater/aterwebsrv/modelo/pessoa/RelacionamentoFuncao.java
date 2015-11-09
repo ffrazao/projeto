@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 
 /**
@@ -16,7 +17,7 @@ import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
  */
 @Entity
 @Table(name = "relacionamento_funcao", schema = EntidadeBase.PESSOA_SCHEMA)
-public class RelacionamentoFuncao extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class RelacionamentoFuncao extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<RelacionamentoFuncao> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -33,6 +34,12 @@ public class RelacionamentoFuncao extends EntidadeBase implements _ChavePrimaria
 	public RelacionamentoFuncao() {
 	}
 
+	public RelacionamentoFuncao(Integer id, String nomeSeMasculino, String nomeSeFeminino) {
+		setId(id);
+		setNomeSeMasculino(nomeSeMasculino);
+		setNomeSeFeminino(nomeSeFeminino);
+	}
+
 	@Override
 	public Integer getId() {
 		return id;
@@ -44,6 +51,10 @@ public class RelacionamentoFuncao extends EntidadeBase implements _ChavePrimaria
 
 	public String getNomeSeMasculino() {
 		return nomeSeMasculino;
+	}
+
+	public RelacionamentoFuncao infoBasica() {
+		return new RelacionamentoFuncao(id, nomeSeMasculino, nomeSeFeminino);
 	}
 
 	@Override

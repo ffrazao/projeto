@@ -45,9 +45,10 @@ public class Pais extends EntidadeBase implements _ChavePrimaria<Integer>, InfoB
 		this.setNome(nome);
 	}
 
-	public Pais(Integer id, String nome, String sigla) {
+	public Pais(Integer id, String nome, String sigla, Confirmacao padrao) {
 		this(id, nome);
 		this.setSigla(sigla);
+		this.setPadrao(padrao);
 	}
 
 	public String getCodigo() {
@@ -73,7 +74,7 @@ public class Pais extends EntidadeBase implements _ChavePrimaria<Integer>, InfoB
 
 	@Override
 	public Pais infoBasica() {
-		return new Pais(this.id, this.nome, this.sigla);
+		return new Pais(this.id, this.nome, this.sigla, this.padrao);
 	}
 
 	public void setCodigo(String codigo) {

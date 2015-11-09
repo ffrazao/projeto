@@ -245,7 +245,7 @@ angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'to
             // recuperar o item
             scp.modalEstado = estadoPadrao;
             // atualizar o cadastro
-            scp.crudInit(scp, scp.stt, estadoInicial, nomeFormulario);
+            //scp.crudInit(scp, scp.stt, estadoInicial, nomeFormulario);
         }
 
         $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
@@ -470,6 +470,14 @@ angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'to
         scp.crudVerRegistro(scp);
     };
     $rootScope.incluir = function(scp, modelo) {
+        if (!(scp.servico) || (!(scp.servico.novo))) {
+            scp.navegador.mudarEstado('INCLUINDO');
+            scp.crudVaiPara(scp, scp.stt, 'form');
+            scp.cadastro.original = {};
+            scp.cadastro.registro = angular.copy(scp.cadastro.original);
+            scp.navegador.submitido = false;
+            return;
+        }
         scp.servico.novo(modelo).success(function(resposta) {
             scp.navegador.mudarEstado('INCLUINDO');
             scp.crudVaiPara(scp, scp.stt, 'form');

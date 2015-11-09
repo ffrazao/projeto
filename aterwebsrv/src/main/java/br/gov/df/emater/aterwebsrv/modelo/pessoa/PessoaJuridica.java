@@ -41,9 +41,10 @@ public class PessoaJuridica extends Pessoa {
 		setPessoaTipo(PessoaTipo.PJ);
 	}
 
-	public PessoaJuridica(Integer id, String nome, String apelidoSigla) {
+	public PessoaJuridica(Integer id, String nome, String apelidoSigla, String cnpj) {
 		super(id, nome, apelidoSigla);
 		setPessoaTipo(PessoaTipo.PJ);
+		setCnpj(cnpj);
 	}
 
 	public String getCnpj() {

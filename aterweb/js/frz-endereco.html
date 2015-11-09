@@ -14,7 +14,7 @@
                     </div>
                     <div class="label label-danger" ng-show="enderecoFrm.cep.$error.cep">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                         Número inválido!
+                         Número inválido
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -28,30 +28,50 @@
             <div class="row">
                 <div class="col-md-6">
                     <label class="control-label" for="estado">Estado</label>
-                    <select id="estado" name="estado" class="form-control" ng-model="conteudo.estado.id" ng-options="item.id as item.nome for item in apoio.estadoList">
+                    <select id="estado" name="estado" class="form-control" ng-model="conteudo.estado.id" ng-options="item.id as item.nome for item in apoio.estadoList" required="true">
                     </select>
+                    <div class="label label-danger" ng-show="enderecoFrm.estado.$error.required">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        Campo Obrigatório
+                    </div>
                 </div>
                 <div class="col-md-6">
                     <label class="control-label" for="municipio">Municipio</label>
-                    <select id="municipio" name="municipio" class="form-control" ng-model="conteudo.municipio.id" ng-options="item.id as item.nome for item in apoio.municipioList">
+                    <select id="municipio" name="municipio" class="form-control" ng-model="conteudo.municipio.id" ng-options="item.id as item.nome for item in apoio.municipioList" required="true">
                     </select>
+                    <div class="label label-danger" ng-show="enderecoFrm.municipio.$error.required">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        Campo Obrigatório
+                    </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
                     <label class="control-label" for="cidade">Cidade</label>
-                    <select id="cidade" name="cidade" class="form-control" ng-model="conteudo.cidade.id" ng-options="item.id as item.nome for item in apoio.cidadeList">
+                    <select id="cidade" name="cidade" class="form-control" ng-model="conteudo.cidade.id" ng-options="item.id as item.nome for item in apoio.cidadeList" required="true">
                     </select>
+                    <div class="label label-danger" ng-show="enderecoFrm.cidade.$error.required">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        Campo Obrigatório
+                    </div>
                 </div>
                 <div class="col-md-6">
                     <label class="control-label" for="bairro">Bairro</label>
-                    <input id="bairro" name="bairro" type="text" placeholder="" class="form-control" ng-model="conteudo.bairro"
+                    <input id="bairro" name="bairro" type="text" placeholder="" class="form-control" ng-model="conteudo.bairro" required="true"/>
+                    <div class="label label-danger" ng-show="enderecoFrm.bairro.$error.required">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        Campo Obrigatório
+                    </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
                     <label class="control-label" for="logradouro">Logradouro</label>
-                    <input id="logradouro" name="logradouro" type="text" placeholder="" class="form-control" ng-model="conteudo.logradouro">
+                    <input id="logradouro" name="logradouro" type="text" placeholder="" class="form-control" ng-model="conteudo.logradouro" required="true">
+                    <div class="label label-danger" ng-show="enderecoFrm.logradouro.$error.required">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        Campo Obrigatório
+                    </div>
                 </div>
                 <div class="col-md-3">
                     <label class="control-label" for="complemento">Complemento</label>

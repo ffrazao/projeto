@@ -14,9 +14,9 @@ angular.module(pNmModulo).config(['$stateProvider', function($stateProvider) {
 
 angular.module(pNmModulo).controller(pNmController,
     ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$modal', '$log', '$modalInstance',
-    'modalCadastro', 'utilSrv', 'mensagemSrv',
+    'modalCadastro', 'UtilSrv', 'mensagemSrv',
     function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $modal, $log, $modalInstance,
-        modalCadastro, utilSrv, mensagemSrv) {
+        modalCadastro, UtilSrv, mensagemSrv) {
 
     // inicializacao
     $scope.crudInit($scope, $state, null, pNmFormulario);
@@ -110,14 +110,19 @@ angular.module(pNmModulo).controller(pNmController,
             size: size,
             resolve: {
                 modalCadastro: function () {
-                    return {filtro: {}, lista: [], registro: {}, original: {}};
+                    return {filtro: {}, lista: [], registro: {}, original: {}, apoio: [],};
                 }
             }
         });
         // processar retorno da modal
-        modalInstance.result.then(function (cadastroModificado) {
+        modalInstance.result.then(function (resultado) {
             // processar o retorno positivo da modal
-            $scope.cadastro.registro.executor = cadastroModificado.registro;
+            if (resultado.tipo === 'U') {
+                $scope.cadastro.registro.executor = {id: resultado.item[0], nome: resultado.item[1]};
+
+            } else {
+                $scope.cadastro.registro.executor = resultado.items[0];
+            }
         }, function () {
             // processar o retorno negativo da modal
             $log.info('Modal dismissed at: ' + new Date());
@@ -133,7 +138,7 @@ angular.module(pNmModulo).controller(pNmController,
             size: size,
             resolve: {
                 modalCadastro: function () {
-                    var cadastro = {registro: angular.copy($scope.cadastro.registro.executor), filtro: {}, lista: [], original: {}};
+                    var cadastro = {registro: angular.copy($scope.cadastro.registro.executor), filtro: {}, lista: [], original: {}, apoio: [],};
                     return cadastro;
                 }
             }
@@ -157,14 +162,18 @@ angular.module(pNmModulo).controller(pNmController,
             size: size,
             resolve: {
                 modalCadastro: function () {
-                    return {filtro: {}, lista: [], registro: {}, original: {}};
+                    return {filtro: {}, lista: [], registro: {}, original: {}, apoio: [],};
                 }
             }
         });
         // processar retorno da modal
-        modalInstance.result.then(function (cadastroModificado) {
+        modalInstance.result.then(function (resultado) {
             // processar o retorno positivo da modal
-            $scope.cadastro.registro.contraparte = cadastroModificado.registro;
+            if (resultado.tipo === 'U') {
+                $scope.cadastro.registro.contraparte = {id: resultado.item[0], nome: resultado.item[1]};
+            } else {
+                $scope.cadastro.registro.contraparte = resultado.items[0];
+            }
         }, function () {
             // processar o retorno negativo da modal
             $log.info('Modal dismissed at: ' + new Date());
@@ -180,7 +189,7 @@ angular.module(pNmModulo).controller(pNmController,
             size: size,
             resolve: {
                 modalCadastro: function () {
-                    var cadastro = {registro: angular.copy($scope.cadastro.registro.contraparte), filtro: {}, lista: [], original: {}};
+                    var cadastro = {registro: angular.copy($scope.cadastro.registro.contraparte), filtro: {}, lista: [], original: {}, apoio: [],};
                     return cadastro;
                 }
             }

@@ -18,14 +18,15 @@ import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
-import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
-import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
-import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
-
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
+import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
+import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
+import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 
 /**
  * The persistent class for the relacionamento database table.
@@ -37,7 +38,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @Inheritance(strategy = InheritanceType.JOINED)
 // para identificar classes dentro de contextos polimorficos
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
-public class Relacionamento extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class Relacionamento extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<Relacionamento> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -67,6 +68,13 @@ public class Relacionamento extends EntidadeBase implements _ChavePrimaria<Integ
 	public Relacionamento() {
 	}
 
+	public Relacionamento(Integer id, Calendar inicio, Calendar termino, RelacionamentoTipo relacionamentoTipo) {
+		setId(id);
+		setInicio(inicio);
+		setTermino(termino);
+		setRelacionamentoTipo(relacionamentoTipo);
+	}
+
 	@Override
 	public Integer getId() {
 		return id;
@@ -86,6 +94,11 @@ public class Relacionamento extends EntidadeBase implements _ChavePrimaria<Integ
 
 	public Calendar getTermino() {
 		return termino;
+	}
+
+	@Override
+	public Relacionamento infoBasica() {
+		return new Relacionamento(getId(), getInicio(), getTermino(), getRelacionamentoTipo().infoBasica());
 	}
 
 	@Override
