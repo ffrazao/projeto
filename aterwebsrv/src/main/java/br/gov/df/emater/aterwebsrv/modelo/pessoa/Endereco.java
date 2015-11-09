@@ -40,11 +40,11 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
 
-	@Max(value = 250, message = "Muito extenso")
+//	@Max(value = 250, message = "Muito extenso")
 	private String bairro;
 
 	@Field(index = Index.YES, store = Store.YES)
-	@Max(value = 10, message = "Muito extenso")
+//	@Max(value = 10, message = "Muito extenso")
 	private String cep;
 
 	@ManyToOne
@@ -52,14 +52,14 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 	private Cidade cidade;
 
 	@Column(name = "codigo_ibge")
-	@Max(value = 10, message = "Muito extenso")
+//	@Max(value = 10, message = "Muito extenso")
 	private String codigoIbge;
 
-	@Max(value = 250, message = "Muito extenso")
+//	@Max(value = 250, message = "Muito extenso")
 	private String complemento;
 
 	@Column(name = "endereco_sisater")
-	@Max(value = 500, message = "Muito extenso")
+//	@Max(value = 500, message = "Muito extenso")
 	private String enderecoSisater;
 
 	@ManyToOne
@@ -77,7 +77,7 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	@NotBlank
 	@Field(index = Index.YES, store = Store.YES)
-	@Max(value = 250, message = "Muito extenso")
+//	@Max(value = 250, message = "Muito extenso")
 	private String logradouro;
 
 	@Column(name = "longitude")
@@ -90,10 +90,10 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 	private Municipio municipio;
 
 	@Column(name = "nome_prop_ou_estab")
-	@Max(value = 250, message = "Muito extenso")
+//	@Max(value = 250, message = "Muito extenso")
 	private String nomePropriedadeRuralOuEstabelecimento;
 
-	@Max(value = 50, message = "Muito extenso")
+//	@Max(value = 50, message = "Muito extenso")
 	private String numero;
 
 	@ManyToOne
@@ -105,10 +105,32 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 	private Confirmacao propriedadeRuralConfirmacao;
 
 	@Column(name = "roteiro_acesso")
-	@Max(value = 500, message = "Muito extenso")
+//	@Max(value = 500, message = "Muito extenso")
 	private String roteiroAcessoOuEnderecoInternacional;
 
 	public Endereco() {
+	}
+
+	public Endereco(String bairro, String cep, Cidade cidade, String codigoIbge, String complemento, String enderecoSisater, Estado estado, Integer id, BigDecimal latitude, String logradouro, BigDecimal longitude, Municipio municipio, String nomePropriedadeRuralOuEstabelecimento,
+			String numero, Pais pais, Confirmacao propriedadeRuralConfirmacao, String roteiroAcessoOuEnderecoInternacional) {
+		super();
+		this.bairro = bairro;
+		this.cep = cep;
+		this.cidade = cidade;
+		this.codigoIbge = codigoIbge;
+		this.complemento = complemento;
+		this.enderecoSisater = enderecoSisater;
+		this.estado = estado;
+		this.id = id;
+		this.latitude = latitude;
+		this.logradouro = logradouro;
+		this.longitude = longitude;
+		this.municipio = municipio;
+		this.nomePropriedadeRuralOuEstabelecimento = nomePropriedadeRuralOuEstabelecimento;
+		this.numero = numero;
+		this.pais = pais;
+		this.propriedadeRuralConfirmacao = propriedadeRuralConfirmacao;
+		this.roteiroAcessoOuEnderecoInternacional = roteiroAcessoOuEnderecoInternacional;
 	}
 
 	public String getBairro() {
@@ -178,6 +200,11 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	public String getRoteiroAcessoOuEnderecoInternacional() {
 		return roteiroAcessoOuEnderecoInternacional;
+	}
+
+	public Endereco infoBasica() {
+		return new Endereco(this.bairro, this.cep, this.cidade == null ? null : this.cidade.infoBasica(), this.codigoIbge, this.complemento, this.enderecoSisater, this.estado == null ? null : this.estado.infoBasica(), this.id, this.latitude, this.logradouro, this.longitude,
+				this.municipio == null ? null : this.municipio.infoBasica(), this.nomePropriedadeRuralOuEstabelecimento, this.numero, this.pais == null ? null : this.pais.infoBasica(), this.propriedadeRuralConfirmacao, this.roteiroAcessoOuEnderecoInternacional);
 	}
 
 	public void setBairro(String bairro) {

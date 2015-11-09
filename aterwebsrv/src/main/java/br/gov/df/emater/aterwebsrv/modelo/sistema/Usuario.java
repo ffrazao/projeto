@@ -29,6 +29,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.UsuarioStatusConta;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
@@ -41,7 +42,7 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 @Entity
 @Table(name = "usuario", schema = EntidadeBase.SISTEMA_SCHEMA)
 @Indexed
-public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, UserDetails {
+public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, UserDetails, InfoBasica<Usuario> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -237,5 +238,9 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 	@Override
 	public String toString() {
 		return (pessoa == null ? getUsername() : (pessoa.getApelidoSigla() == null ? pessoa.getNome() : pessoa.getApelidoSigla()));
+	}
+
+	public Usuario infoBasica() {
+		return new Usuario(this.username);
 	}
 }

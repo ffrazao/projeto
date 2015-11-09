@@ -8,12 +8,10 @@ import org.springframework.stereotype.Service;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaDao;
-import br.gov.df.emater.aterwebsrv.modelo.pessoa.Estado;
-import br.gov.df.emater.aterwebsrv.modelo.pessoa.Municipio;
-import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pais;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaEndereco;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica;
-import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 
 @Service("PessoaVisualizarCmd")
 public class VisualizarCmd extends _Comando {
@@ -28,43 +26,41 @@ public class VisualizarCmd extends _Comando {
 	public boolean executar(_Contexto contexto) throws Exception {
 		Integer id = (Integer) contexto.getRequisicao();
 		Pessoa result = dao.findOne(id);
-		switch (result.getPessoaTipo()) {
-		case PF:
+
+		if (result instanceof PessoaFisica) {
 			PessoaFisica pessoaFisica = (PessoaFisica) result;
-			Municipio municipio = null;
-			Estado estado = null;
-			Pais pais = null;
 			if (pessoaFisica.getNascimentoMunicipio() != null) {
-				municipio = new Municipio(pessoaFisica.getNascimentoMunicipio().getId(), pessoaFisica.getNascimentoMunicipio().getNome());
-				if (pessoaFisica.getNascimentoMunicipio().getEstado() != null) {
-					estado = new Estado(pessoaFisica.getNascimentoMunicipio().getEstado().getId(), pessoaFisica.getNascimentoMunicipio().getEstado().getNome());
-					if (pessoaFisica.getNascimentoMunicipio().getEstado().getPais() != null) {
-						pais = new Pais(pessoaFisica.getNascimentoMunicipio().getEstado().getPais().getId(), pessoaFisica.getNascimentoMunicipio().getEstado().getPais().getNome());
-					}
-				}
+				pessoaFisica.setNascimentoMunicipio(pessoaFisica.getNascimentoMunicipio().infoBasica());
 			}
-			pessoaFisica.setNascimentoMunicipio(municipio);
-			pessoaFisica.setNascimentoEstado(estado);
-			pessoaFisica.setNascimentoPais(pais);
-			break;
-		case PJ:
-			// PessoaJuridica pessoaJuridica = (PessoaJuridica) result;
-			break;
+			if (pessoaFisica.getNascimentoEstado() != null) {
+				pessoaFisica.setNascimentoEstado(pessoaFisica.getNascimentoEstado().infoBasica());
+			}
+			if (pessoaFisica.getNascimentoPais() != null) {
+				pessoaFisica.setNascimentoPais(pessoaFisica.getNascimentoPais().infoBasica());
+			}
+		} else if (result instanceof PessoaJuridica) {
+
 		}
+
+		// fetch nas tabelas de apoio
 		result.getArquivoList().size();
 		result.getEmailList().size();
-		result.getEnderecoList().size();
+		if (result.getEnderecoList() != null) {
+			for (PessoaEndereco pessoaEndereco : result.getEnderecoList()) {
+				pessoaEndereco.setEndereco(pessoaEndereco.getEndereco().infoBasica());
+			}
+		}
 		result.getGrupoSocialList().size();
 		result.getRelacionamentoList().size();
 		result.getTelefoneList().size();
-		
-		if (result.getUsuarioInclusao() != null) {			
-			result.setUsuarioInclusao(new Usuario(result.getUsuarioInclusao().getUsername()));
+
+		if (result.getUsuarioInclusao() != null) {
+			result.setUsuarioInclusao(result.getUsuarioInclusao().infoBasica());
 		}
-		if (result.getUsuarioAlteracao() != null) {			
-			result.setUsuarioAlteracao(new Usuario(result.getUsuarioAlteracao().getUsername()));
+		if (result.getUsuarioAlteracao() != null) {
+			result.setUsuarioAlteracao(result.getUsuarioAlteracao().infoBasica());
 		}
-		
+
 		em.detach(result);
 		contexto.setResposta(result);
 

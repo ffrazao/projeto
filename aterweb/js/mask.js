@@ -32,13 +32,13 @@ var StringMask = (function() {
 		return numbersInV - numbersInP;
 	};
 	var concatChar = function(text, character, options) {
-		if (options.reverse) return character + text;
+		if (options.reverse) {return character + text;}
 		return text + character;
 	};
 	var hasMoreTokens = function(pattern, pos, inc) {
 		var pc = pattern.charAt(pos);
 		var token = tokens[pc];
-		if (pc === '') return false;
+		if (pc === '') {return false;}
 		return token && !token.escape ? true : hasMoreTokens(pattern, pos + inc, inc);
 	};
 	var insertChar = function(text, char, position) {
@@ -55,7 +55,7 @@ var StringMask = (function() {
 		this.pattern = pattern;
 
 		StringMask.prototype.process = function proccess(value) {
-			if (!value) return '';
+			if (!value) {return '';}
 			value = value + '';
 			var pattern2 = this.pattern;
 			var valid = true;
@@ -116,7 +116,7 @@ var StringMask = (function() {
 				if (!inRecursiveMode && token && token.recursive) {
 					recursive.push(pc);
 				} else if (inRecursiveMode && !vc) {
-					if (!token || !token.recursive) formatted = concatChar(formatted, pc, this.options);
+					if (!token || !token.recursive) {formatted = concatChar(formatted, pc, this.options);}
 					continue;
 				} else if (recursive.length > 0 && token && !token.recursive) {
 					// Recursive tokens most be the last tokens of the pattern

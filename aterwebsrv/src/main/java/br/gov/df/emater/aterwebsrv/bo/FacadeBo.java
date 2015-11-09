@@ -49,6 +49,11 @@ public class FacadeBo implements BeanFactoryAware {
 	}
 
 	@Transactional(readOnly = true)
+	public _Contexto enderecoNovo(Principal usuario) throws Exception {
+		return this._executar(usuario, "EnderecoNovoCmd");
+	}
+
+	@Transactional(readOnly = true)
 	public _Contexto pessoaFiltroExecutar(Principal usuario, PessoaCadFiltroDto filtro) throws Exception {
 		return this._executar(usuario, "PessoaFiltroExecutarCh", filtro);
 	}

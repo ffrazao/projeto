@@ -52,6 +52,22 @@ public class PessoaFisica extends Pessoa {
 
 	private static final long serialVersionUID = 1L;
 
+	public PessoaFisica infoBasica() {
+		if (this.getNascimentoMunicipio() != null) {
+			this.setNascimentoMunicipio(this.getNascimentoMunicipio().infoBasica());
+		}
+		if (this.getNascimentoEstado() != null) {
+			this.setNascimentoEstado(this.getNascimentoEstado().infoBasica());
+		}
+		if (this.getNascimentoPais() != null) {
+			this.setNascimentoPais(this.getNascimentoPais().infoBasica());
+		}
+		if (this.getProfissao() != null) {
+			this.setProfissao(this.getProfissao().infoBasica());
+		}
+		return this;
+	}
+
 	@Column(name = "cam_numero")
 	@Field(index = Index.YES, store = Store.YES)
 	private String camNumero;

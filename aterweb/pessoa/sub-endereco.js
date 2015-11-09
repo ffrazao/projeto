@@ -5,8 +5,8 @@
 'use strict';
 
 angular.module(pNmModulo).controller(pNmController,
-    ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr', 'UtilSrv', 'mensagemSrv',
-    function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, UtilSrv, mensagemSrv) {
+    ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr', 'UtilSrv', 'mensagemSrv', 'EnderecoSrv',
+    function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, UtilSrv, mensagemSrv, EnderecoSrv) {
 
     // inicializacao
     var init = function() {
@@ -18,10 +18,20 @@ angular.module(pNmModulo).controller(pNmController,
     if (!$modalInstance) { init(); }
 
     // inicio rotinas de apoio
+    var limpa = function(str) {
+        return str.latinise().replace(/[^a-zA-Z0-9]/g,'').trim().toUpperCase();
+    }
     var jaCadastrado = function(conteudo) {
-        var j;
+        var j, end;
         for (j in $scope.cadastro.registro.enderecoList) {
-            if (angular.equals($scope.cadastro.registro.enderecoList[j].endereco, conteudo)) {
+            end = $scope.cadastro.registro.enderecoList[j].endereco;
+            if (end.estado !== null && conteudo.estado !== null && end.estado.id === conteudo.estado.id &&
+                end.municipio !== null && conteudo.municipio !== null && end.municipio.id === conteudo.municipio.id && 
+                end.cidade !== null && conteudo.cidade.id && end.cidade.id == conteudo.cidade.id &&
+                end.logradouro !== null && conteudo.logradouro !== null && limpa(end.logradouro) === limpa(conteudo.logradouro) &&
+                end.complemento !== null && conteudo.complemento !== null && limpa(end.complemento) === limpa(conteudo.complemento) &&
+                end.numero !== null && conteudo.numero != null && limpa(end.numero) === limpa(conteudo.numero)) {
+
                 if ($scope.cadastro.registro.enderecoList[j].cadastroAcao === 'E') {
                     return true;
                 } else {
@@ -51,8 +61,7 @@ angular.module(pNmModulo).controller(pNmController,
         });
     };
     var formataEndereco = function(numero) {
-        return;
-        if (!numero) {
+        /*if (!numero) {
             return null;
         }
         var phoneMask8D = new StringMask('(00) 0000-0000'),
@@ -63,15 +72,17 @@ angular.module(pNmModulo).controller(pNmController,
         } else{
             result = phoneMask9D.apply(result);
         }
-        return result;
+        return result;*/
     };
     // fim rotinas de apoio
 
     // inicio das operaçoes atribuidas ao navagador
     $scope.abrir = function() { $scope.pessoaEnderecoNvg.mudarEstado('ESPECIAL'); };
     $scope.incluir = function() {
-        var item = {endereco: {numero: '61'}};
-        editarItem(null, item);
+        EnderecoSrv.novo().success(function (resposta) {
+            var item = {endereco: resposta.resultado};
+            editarItem(null, item);
+        });
     };
     $scope.editar = function() {
         var item = null;

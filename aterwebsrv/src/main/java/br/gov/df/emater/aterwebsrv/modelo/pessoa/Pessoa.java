@@ -313,5 +313,4 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	public void setUsuarioInclusao(Usuario usuarioInclusao) {
 		this.usuarioInclusao = usuarioInclusao;
 	}
-
 }

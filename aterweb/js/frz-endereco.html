@@ -1,272 +1,278 @@
-<div>
-    <ul class="nav nav-tabs" ng-init="aba = 'E'">
-        <li role="presentation" class="active"><a ng-click="aba ='E'">Endereco</a></li>
-        <li role="presentation"><a ng-click="aba = 'M'">Mapa</a></li>
-    </ul>
-    <div class="container-fluid" ng-show="aba === 'E'">
-        <div class="row">
-            <div class="col-md-3">
-                <label class="control-label" for="cep">CEP</label>
-                <div class="input-group">
-                    <input id="cep" name="cep" class="form-control" placeholder="99999-999" type="text" ui-br-cep-mask ng-model="conteudo.cep">
-                    <span class="input-group-addon glyphicon glyphicon-search"></span>
+<ng-form name="enderecoFrm">
+    <div>
+        <ul class="nav nav-tabs" ng-init="aba = 'E'">
+            <li role="presentation" class="active"><a ng-click="aba ='E'">Endereco</a></li>
+            <li role="presentation"><a ng-click="aba = 'M'">Mapa</a></li>
+        </ul>
+        <div class="container-fluid" ng-show="aba === 'E'">
+            <div class="row">
+                <div class="col-md-3">
+                    <label class="control-label" for="cep">CEP</label>
+                    <div class="input-group">
+                        <input id="cep" name="cep" class="form-control" placeholder="99999-999" type="text" ui-br-cep-mask ng-model="conteudo.cep">
+                        <span class="input-group-addon glyphicon glyphicon-search"></span>
+                    </div>
+                    <div class="label label-danger" ng-show="enderecoFrm.cep.$error.cep">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                         Número inválido!
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label class="control-label" for="ibge">Código IBGE</label>
+                    <div class="input-group">
+                        <input id="ibge" name="ibge" class="form-control" placeholder="" type="text" ng-model="conteudo.codigoIbge">
+                        <span class="input-group-addon glyphicon glyphicon-search"></span>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <label class="control-label" for="ibge">Código IBGE</label>
-                <div class="input-group">
-                    <input id="ibge" name="ibge" class="form-control" placeholder="" type="text" ng-model="conteudo.codigoIbge">
-                    <span class="input-group-addon glyphicon glyphicon-search"></span>
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="control-label" for="estado">Estado</label>
+                    <select id="estado" name="estado" class="form-control" ng-model="conteudo.estado.id" ng-options="item.id as item.nome for item in apoio.estadoList">
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="control-label" for="municipio">Municipio</label>
+                    <select id="municipio" name="municipio" class="form-control" ng-model="conteudo.municipio.id" ng-options="item.id as item.nome for item in apoio.municipioList">
+                    </select>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <label class="control-label" for="estado">Estado</label>
-                <select id="estado" name="estado" class="form-control" ng-model="conteudo.estado" ng-options="item as item.nome for item in apoio.estadoList">
-                </select>
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="control-label" for="cidade">Cidade</label>
+                    <select id="cidade" name="cidade" class="form-control" ng-model="conteudo.cidade.id" ng-options="item.id as item.nome for item in apoio.cidadeList">
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="control-label" for="bairro">Bairro</label>
+                    <input id="bairro" name="bairro" type="text" placeholder="" class="form-control" ng-model="conteudo.bairro"
+                </div>
             </div>
-            <div class="col-md-6">
-                <label class="control-label" for="municipio">Municipio</label>
-                <select id="municipio" name="municipio" class="form-control" ng-model="conteudo.municipio" ng-options="item as item.nome for item in apoio.municipioList">
-                </select>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <label class="control-label" for="cidade">Cidade</label>
-                <select id="cidade" name="cidade" class="form-control" ng-model="conteudo.cidade" ng-options="item as item.nome for item in apoio.cidadeList">
-                </select>
-            </div>
-            <div class="col-md-6">
-                <label class="control-label" for="bairro">Bairro</label>
-                <input id="bairro" name="bairro" type="text" placeholder="" class="form-control" ng-model="conteudo.bairro"
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <label class="control-label" for="logradouro">Logradouro</label>
-                <input id="logradouro" name="logradouro" type="text" placeholder="" class="form-control" ng-model="conteudo.logradouro">
-            </div>
-            <div class="col-md-3">
-                <label class="control-label" for="complemento">Complemento</label>
-                <input id="complemento" name="complemento" type="text" placeholder="" class="form-control" ng-model="conteudo.complemento">
-            </div>
-            <div class="col-md-3">
-                <label class="control-label" for="numero">Número</label>
-                <input id="numero" name="numero" type="text" placeholder="" class="form-control" ng-model="conteudo.numero">
-            </div>
-        </div>
-    </div>
-    <div class="container-fluid" ng-show="aba === 'M'">
-        <divstyle="height: 100%;
-                    width: 100%;">
-            <ui-gmap-google-map center='map.center' zoom='map.zoom'></ui-gmap-google-map>
-        </div>
-    </div>
-<!--
-<div class="row sr-only">
-    <div class="col-sm-6">
-        <div class="row">
-            <div class="form-group">
-                <label class="control-label" for="pesquisaGoogle">Pesquisa Google</label>
-                <div class="input-group">
-                    <input id="pesquisaGoogle" name="pesquisaGoogle" class="form-control" placeholder="Pesquisa" type="text" data-ng-model="pesquisaGoogle">
-                    <span class="input-group-addon glyphicon glyphicon-search"></span>
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="control-label" for="logradouro">Logradouro</label>
+                    <input id="logradouro" name="logradouro" type="text" placeholder="" class="form-control" ng-model="conteudo.logradouro">
+                </div>
+                <div class="col-md-3">
+                    <label class="control-label" for="complemento">Complemento</label>
+                    <input id="complemento" name="complemento" type="text" placeholder="" class="form-control" ng-model="conteudo.complemento">
+                </div>
+                <div class="col-md-3">
+                    <label class="control-label" for="numero">Número</label>
+                    <input id="numero" name="numero" type="text" placeholder="" class="form-control" ng-model="conteudo.numero">
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="form-group"><!--
-                <div style="
-    height: 100%;
-    width: 100%;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    margin-right: 0px;
-    margin-left: 0px;
-    top: 0px; left: 0px;
-    position: fixed;
-    z-index: 10;
-                ">
+        <div class="container-fluid" ng-show="aba === 'M'">
+            <divstyle="height: 100%;
+                        width: 100%;">
                 <ui-gmap-google-map center='map.center' zoom='map.zoom'></ui-gmap-google-map>
-                    
-                </div> - - >
             </div>
         </div>
-        <fieldset>
-            <legend>Coordenadas</legend>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label" for="latitute">Latitute</label>
-                        <input id="latitute" name="latitute" class="form-control" placeholder="" type="text" data-ng-model="conteudo.latitude">
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label" for="longitude">Longitude</label>
-                        <input id="longitude" name="longitude" class="form-control" placeholder="" type="text" data-ng-model="conteudo.longitude">
-                    </div>
-                </div>
-            </div>
-        </fieldset>
-    </div>
-    <div class="col-sm-5 col-sm-offset-1">
-        <div class="row">
-            <div class="form-group">
-                <label class="control-label" for="tipoEndereco">Tipo de Endereço</label>
-                <div class="form-control">
-                    <label class="radio-inline" for="tipoEndereco-0">
-                        <input type="radio" name="tipoEndereco" id="tipoEndereco-0" value="R" ng-model="conteudo.tipoEndereco">
-                        Rural
-                    </label>
-                    <label class="radio-inline" for="tipoEndereco-1">
-                        <input type="radio" name="tipoEndereco" id="tipoEndereco-1" value="U" ng-model="conteudo.tipoEndereco">
-                        Urbano
-                    </label>
-                    <label class="radio-inline sr-only" for="tipoEndereco-2">
-                        <input type="radio" name="tipoEndereco" id="tipoEndereco-2" value="I" ng-model="conteudo.tipoEndereco">
-                        Internacional
-                    </label>
-                </div>
-            </div>
-        </div>
-        <div class="row" ng-show="conteudo.tipoEndereco === 'R'">
+    <!--
+    <div class="row sr-only">
+        <div class="col-sm-6">
             <div class="row">
                 <div class="form-group">
-                    <label class="control-label" for="nomePropriedadeRural">Nome da Propriedade Rural</label>
-                    <input id="nomePropriedadeRural" name="nomePropriedadeRural" type="text" placeholder="" class="form-control input-md">
+                    <label class="control-label" for="pesquisaGoogle">Pesquisa Google</label>
+                    <div class="input-group">
+                        <input id="pesquisaGoogle" name="pesquisaGoogle" class="form-control" placeholder="Pesquisa" type="text" data-ng-model="pesquisaGoogle">
+                        <span class="input-group-addon glyphicon glyphicon-search"></span>
+                    </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6">
+                <div class="form-group"><!--
+                    <div style="
+        height: 100%;
+        width: 100%;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        margin-right: 0px;
+        margin-left: 0px;
+        top: 0px; left: 0px;
+        position: fixed;
+        z-index: 10;
+                    ">
+                    <ui-gmap-google-map center='map.center' zoom='map.zoom'></ui-gmap-google-map>
+                        
+                    </div> - - >
+                </div>
+            </div>
+            <fieldset>
+                <legend>Coordenadas</legend>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label" for="latitute">Latitute</label>
+                            <input id="latitute" name="latitute" class="form-control" placeholder="" type="text" data-ng-model="conteudo.latitude">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label" for="longitude">Longitude</label>
+                            <input id="longitude" name="longitude" class="form-control" placeholder="" type="text" data-ng-model="conteudo.longitude">
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="col-sm-5 col-sm-offset-1">
+            <div class="row">
+                <div class="form-group">
+                    <label class="control-label" for="tipoEndereco">Tipo de Endereço</label>
+                    <div class="form-control">
+                        <label class="radio-inline" for="tipoEndereco-0">
+                            <input type="radio" name="tipoEndereco" id="tipoEndereco-0" value="R" ng-model="conteudo.tipoEndereco">
+                            Rural
+                        </label>
+                        <label class="radio-inline" for="tipoEndereco-1">
+                            <input type="radio" name="tipoEndereco" id="tipoEndereco-1" value="U" ng-model="conteudo.tipoEndereco">
+                            Urbano
+                        </label>
+                        <label class="radio-inline sr-only" for="tipoEndereco-2">
+                            <input type="radio" name="tipoEndereco" id="tipoEndereco-2" value="I" ng-model="conteudo.tipoEndereco">
+                            Internacional
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-show="conteudo.tipoEndereco === 'R'">
+                <div class="row">
                     <div class="form-group">
-                        <label class="control-label" for="comunidade">Comunidade</label>
-                        <select id="comunidade" name="comunidade" class="form-control">
+                        <label class="control-label" for="nomePropriedadeRural">Nome da Propriedade Rural</label>
+                        <input id="nomePropriedadeRural" name="nomePropriedadeRural" type="text" placeholder="" class="form-control input-md">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label" for="comunidade">Comunidade</label>
+                            <select id="comunidade" name="comunidade" class="form-control">
+                                <option value="1">Option one</option>
+                                <option value="2">Option two</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label" for="baciaHidrografica">Bacia Hidrográfica</label>
+                            <select id="baciaHidrografica" name="baciaHidrografica" class="form-control">
+                                <option value="1">Option one</option>
+                                <option value="2">Option two</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-show="conteudo.tipoEndereco === 'U'">
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label" for="nomeEstabelecimento">Nome do Estabelecimento</label>
+                        <input id="nomeEstabelecimento" name="nomeEstabelecimento" type="text" placeholder="" class="form-control input-md">
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-show="conteudo.tipoEndereco === 'I'">
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label" for="nomeEstabelecimento">Nome do Estabelecimento</label>
+                        <input id="nomeEstabelecimento" name="nomeEstabelecimento" type="text" placeholder="" class="form-control input-md">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label" for="pais">País</label>
+                        <select id="pais" name="pais" class="form-control">
                             <option value="1">Option one</option>
                             <option value="2">Option two</option>
                         </select>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="row">
                     <div class="form-group">
-                        <label class="control-label" for="baciaHidrografica">Bacia Hidrográfica</label>
-                        <select id="baciaHidrografica" name="baciaHidrografica" class="form-control">
+                        <label class="control-label" for="endereco">Endereço</label>
+                        <textarea class="form-control" id="endereco" name="endereco"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-show="conteudo.tipoEndereco && conteudo.tipoEndereco !== 'I'">
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="cep">CEP</label>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <input id="cep" name="cep" class="form-control" placeholder="" type="text">
+                            <span class="input-group-addon glyphicon glyphicon-search"></span>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="ibge">Código IBGE</label>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <input id="ibge" name="ibge" class="form-control" placeholder="" type="text">
+                            <span class="input-group-addon glyphicon glyphicon-search"></span>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="estado">Estado</label>
+                    <div class="col-md-4">
+                        <select id="estado" name="estado" class="form-control" ng-disabled="conteudo.tipoEndereco === 'R'">
                             <option value="1">Option one</option>
                             <option value="2">Option two</option>
                         </select>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="row" ng-show="conteudo.tipoEndereco === 'U'">
-            <div class="row">
                 <div class="form-group">
-                    <label class="control-label" for="nomeEstabelecimento">Nome do Estabelecimento</label>
-                    <input id="nomeEstabelecimento" name="nomeEstabelecimento" type="text" placeholder="" class="form-control input-md">
-                </div>
-            </div>
-        </div>
-        <div class="row" ng-show="conteudo.tipoEndereco === 'I'">
-            <div class="row">
-                <div class="form-group">
-                    <label class="control-label" for="nomeEstabelecimento">Nome do Estabelecimento</label>
-                    <input id="nomeEstabelecimento" name="nomeEstabelecimento" type="text" placeholder="" class="form-control input-md">
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group">
-                    <label class="control-label" for="pais">País</label>
-                    <select id="pais" name="pais" class="form-control">
-                        <option value="1">Option one</option>
-                        <option value="2">Option two</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group">
-                    <label class="control-label" for="endereco">Endereço</label>
-                    <textarea class="form-control" id="endereco" name="endereco"></textarea>
-                </div>
-            </div>
-        </div>
-        <div class="row" ng-show="conteudo.tipoEndereco && conteudo.tipoEndereco !== 'I'">
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="cep">CEP</label>
-                <div class="col-md-4">
-                    <div class="input-group">
-                        <input id="cep" name="cep" class="form-control" placeholder="" type="text">
-                        <span class="input-group-addon glyphicon glyphicon-search"></span>
+                    <label class="col-md-4 control-label" for="municipio">Municipio</label>
+                    <div class="col-md-4">
+                        <select id="municipio" name="municipio" class="form-control" ng-disabled="conteudo.tipoEndereco === 'R'">
+                            <option value="1">Option one</option>
+                            <option value="2">Option two</option>
+                        </select>
                     </div>
-
                 </div>
-            </div>
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="ibge">Código IBGE</label>
-                <div class="col-md-4">
-                    <div class="input-group">
-                        <input id="ibge" name="ibge" class="form-control" placeholder="" type="text">
-                        <span class="input-group-addon glyphicon glyphicon-search"></span>
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="cidade">Cidade</label>
+                    <div class="col-md-4">
+                        <select id="cidade" name="cidade" class="form-control" ng-disabled="conteudo.tipoEndereco === 'R'">
+                            <option value="1">Option one</option>
+                            <option value="2">Option two</option>
+                        </select>
                     </div>
-
                 </div>
-            </div>
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="estado">Estado</label>
-                <div class="col-md-4">
-                    <select id="estado" name="estado" class="form-control" ng-disabled="conteudo.tipoEndereco === 'R'">
-                        <option value="1">Option one</option>
-                        <option value="2">Option two</option>
-                    </select>
+                <div class="form-group" ng-show="conteudo.tipoEndereco === 'U'">
+                    <label class="col-md-4 control-label" for="bairro">Bairro</label>
+                    <div class="col-md-4">
+                        <select id="bairro" name="bairro" class="form-control">
+                            <option value="1">Option one</option>
+                            <option value="2">Option two</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="municipio">Municipio</label>
-                <div class="col-md-4">
-                    <select id="municipio" name="municipio" class="form-control" ng-disabled="conteudo.tipoEndereco === 'R'">
-                        <option value="1">Option one</option>
-                        <option value="2">Option two</option>
-                    </select>
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="logradouro">Logradouro</label>
+                    <div class="col-md-4">
+                        <input id="logradouro" name="logradouro" type="text" placeholder="" class="form-control input-md">
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="cidade">Cidade</label>
-                <div class="col-md-4">
-                    <select id="cidade" name="cidade" class="form-control" ng-disabled="conteudo.tipoEndereco === 'R'">
-                        <option value="1">Option one</option>
-                        <option value="2">Option two</option>
-                    </select>
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="complemento">Complemento</label>
+                    <div class="col-md-4">
+                        <input id="complemento" name="complemento" type="text" placeholder="" class="form-control input-md">
+                    </div>
                 </div>
-            </div>
-            <div class="form-group" ng-show="conteudo.tipoEndereco === 'U'">
-                <label class="col-md-4 control-label" for="bairro">Bairro</label>
-                <div class="col-md-4">
-                    <select id="bairro" name="bairro" class="form-control">
-                        <option value="1">Option one</option>
-                        <option value="2">Option two</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="logradouro">Logradouro</label>
-                <div class="col-md-4">
-                    <input id="logradouro" name="logradouro" type="text" placeholder="" class="form-control input-md">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="complemento">Complemento</label>
-                <div class="col-md-4">
-                    <input id="complemento" name="complemento" type="text" placeholder="" class="form-control input-md">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="numero">Número</label>
-                <div class="col-md-4">
-                    <input id="numero" name="numero" type="text" placeholder="" class="form-control input-md">
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="numero">Número</label>
+                    <div class="col-md-4">
+                        <input id="numero" name="numero" type="text" placeholder="" class="form-control input-md">
+                    </div>
                 </div>
             </div>
         </div>
+    </div> -->
     </div>
-</div> -->
-</div>
+</ng-form>

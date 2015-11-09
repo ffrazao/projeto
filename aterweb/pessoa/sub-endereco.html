@@ -33,18 +33,19 @@
                     <tr>
                         <th rowspan="2"><frz-seletor ng-model="pessoaEnderecoNvg" dados="cadastro.registro.enderecoList"></frz-seletor></th>
                         <th rowspan="2">#</th>
-                        <th colspan="2">Logradouro</th>
-                        <th colspan="2">Complemento</th>
-                        <th colspan="2">Número</th>
-                        <th colspan="2">Bairro</th>
-                        <th colspan="2">CEP</th>
-                        <th colspan="2">Código IBGE</th>
-                        <th colspan="2">Cidade</th>
-                        <th colspan="2">Municipio</th>
-                        <th colspan="2">Estado</th>
+                        <th>Logradouro</th>
+                        <th>Complemento</th>
+                        <th>Número</th>
+                        <th>Bairro</th>
+                        <th>CEP</th>
+                        <th>Código IBGE</th>
+                        <th>Cidade</th>
+                        <th>Municipio</th>
+                        <th>Estado</th>
                     </tr>
                     <tr>
                         <th><small>Finalidade</small></th>
+                        <th colspan="8"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -56,15 +57,15 @@
                         <td rowspan="2">
                             {{$index + 1 + ((pessoaEnderecoNvg.paginaAtual-1) * pessoaEnderecoNvg.tamanhoPagina)}}
                         </td>
-                        <td colspan="2">{{reg.endereco.logradouro}}</td>
-                        <td colspan="2">{{reg.endereco.complemento}}</td>
-                        <td colspan="2">{{reg.endereco.numero}}</td>
-                        <td colspan="2">{{reg.endereco.bairro}}</td>
-                        <td colspan="2">{{reg.endereco.cep}}</td>
-                        <td colspan="2">{{reg.endereco.codigoIbge}}</td>
-                        <td colspan="2">{{reg.endereco.cidade.nome}}</td>
-                        <td colspan="2">{{reg.endereco.municipio.nome}}</td>
-                        <td colspan="2">{{reg.endereco.estado.nome}}</td>
+                        <td>{{reg.endereco.logradouro}}</td>
+                        <td>{{reg.endereco.complemento}}</td>
+                        <td>{{reg.endereco.numero}}</td>
+                        <td>{{reg.endereco.bairro}}</td>
+                        <td>{{reg.endereco.cep}}</td>
+                        <td>{{reg.endereco.codigoIbge}}</td>
+                        <td>{{reg.endereco.cidade.nome}}</td>
+                        <td>{{reg.endereco.municipio.nome}}</td>
+                        <td>{{reg.endereco.estado.nome}}</td>
                     </tr>
                     <tr ng-repeat-end>
                         <td>
@@ -75,6 +76,7 @@
                                 Campo Obrigatório
                             </div>
                         </td>
+                        <td colspan="8">&nbsp;</td>
                     </tr>
                 </tbody>
                 <tfoot>
