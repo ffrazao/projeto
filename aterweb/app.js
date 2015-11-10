@@ -182,11 +182,16 @@ angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'to
     };
 
     // mudança de tela
-    $rootScope.crudVaiPara = function (scope, state, estado) {
+    $rootScope.crudVaiPara = function (scope, state, estado, parametro) {
         if (scope.modalEstado) {
             scope.modalEstado = estado;
         } else {
-            state.go('^.' + estado);
+            if (parametro) {
+                state.transitionTo('^.' + estado, parametro, { location: true, inherit: true, relative: state.$current, notify: true });
+                //state.transitionTo('^.' + estado, parametro);
+            } else {
+                state.go('^.' + estado);
+            }
         }
     };
 
@@ -270,12 +275,14 @@ angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'to
             scp.navegador.mudarEstado('LISTANDO');
         } else if (scp.crudMeuEstado(scp, scp.stt, 'form')) {
             scp.navegador.mudarEstado('VISUALIZANDO');
+            scp.visualizar(scp);
         }
     };
     $rootScope.agir = function(scp) {};
     $rootScope.ajudar = function(scp) {};
     $rootScope.alterarTamanhoPagina = function(scp) {};
     $rootScope.cancelar = function(scp) {
+        scp.restaurar(scp);
         scp.voltar(scp);
         toastr.warning('Operação cancelada!', 'Atenção!');
     };
@@ -508,24 +515,31 @@ angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'to
         var id = null;
         if ($stateParams.id) {
             id = $stateParams.id;
-        } else if (scp.navegador.selecao.tipo === 'U') {
+        } else if (scp.navegador.selecao.tipo === 'U' && scp.navegador.selecao.item) {
             id = scp.navegador.selecao.item[0];
-        } else {
+        } else if (scp.navegador.selecao.tipo === 'M' && scp.navegador.selecao.items) {
             id = scp.navegador.selecao.items[scp.navegador.folhaAtual][0];
         }
-        scp.servico.visualizar(id).success(function(resposta) {
-            if (resposta.mensagem && resposta.mensagem === 'OK') {
-                scp.navegador.mudarEstado('VISUALIZANDO');
-                scp.crudVaiPara(scp, scp.stt, 'form');
-                scp.cadastro.original = angular.copy(resposta.resultado);
-                scp.cadastro.registro = angular.copy(scp.cadastro.original);
-                scp.crudVerRegistro(scp);
-            } else {
-                toastr.error(resposta.mensagem, 'Erro ao visualizar');
-            }
-        }).error(function(erro){
-            toastr.error(erro, 'Erro ao visualizar');
-        });
+        if (id === null) {
+            scp.incluir(scp);
+        } else {
+            scp.servico.visualizar(id).success(function(resposta) {
+                if (resposta.mensagem && resposta.mensagem === 'OK') {
+                    if (scp.navegador.selecao.tipo === 'U' && !scp.navegador.selecao.item && !scp.navegador.selecao.selecionado) {
+                        scp.navegador.selecao.selecionado = true;
+                    }
+                    scp.navegador.mudarEstado('VISUALIZANDO');
+                    scp.crudVaiPara(scp, scp.stt, 'form',  id);
+                    scp.cadastro.original = angular.copy(resposta.resultado);
+                    scp.cadastro.registro = angular.copy(scp.cadastro.original);
+                    scp.crudVerRegistro(scp);
+                } else {
+                    toastr.error(resposta.mensagem, 'Erro ao visualizar');
+                }
+            }).error(function(erro){
+                toastr.error(erro, 'Erro ao visualizar');
+            });
+        }
     };
     $rootScope.voltar = function(scp) {
         scp.navegador.voltar();

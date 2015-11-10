@@ -48,7 +48,7 @@
 
             // fim: atividades do Modal
             // inicio das operaçoes atribuidas ao navagador
-            $scope.incluir = function(scp) {
+            var executaIncluir = function() {
                 var conf = 
                     '<div class="form-group">' + 
                     '    <label class="col-md-4 control-label" for="cnfTipoPessoa">Incluir que tipo de Pessoa?</label>' + 
@@ -76,6 +76,22 @@
                     // processar o retorno negativo da modal
                     //$log.info('Modal dismissed at: ' + new Date());
                 });
+            };
+            $scope.incluir = function(scp) {
+                if (!$scope.cadastro.apoio.pessoaTipoList) {
+                    UtilSrv.dominioLista($scope.cadastro.apoio.pessoaTipoList, {ent:['PessoaTipo']}, function(resultado) {
+                        if (!$scope.cadastro.apoio.pessoaTipoList) {
+                            $scope.cadastro.apoio.pessoaTipoList = [];
+                        }
+                        $scope.cadastro.apoio.pessoaTipoList.splice(0, $scope.cadastro.apoio.pessoaTipoList.length);
+                        for (var i in resultado) {
+                            $scope.cadastro.apoio.pessoaTipoList.push(resultado[i]);
+                        }
+                        executaIncluir();
+                    });
+                } else {
+                    executaIncluir();
+                }
             };
             $scope.paisPadrao = function(id) {
                 if (!id) {

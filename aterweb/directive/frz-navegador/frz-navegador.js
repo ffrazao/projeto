@@ -693,7 +693,9 @@
                                     scope.onEditar();
                                 },
                                 exibir: function() {
-                                    return (scope.ngModel.dados && scope.ngModel.dados.length && scope.ngModel.selecao.selecionado) &&
+//                                    return (scope.ngModel.dados && scope.ngModel.dados.length && scope.ngModel.selecao.selecionado) &&
+//                                        ((!scope.funcionalidade) || (!$rootScope.token) || (scope.funcionalidade && $rootScope.token && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade] && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade].indexOf('EDITAR') >= 0));
+                                    return (scope.ngModel.dados && scope.ngModel.selecao.selecionado) &&
                                         ((!scope.funcionalidade) || (!$rootScope.token) || (scope.funcionalidade && $rootScope.token && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade] && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade].indexOf('EDITAR') >= 0));
                                 },
                             },
@@ -712,7 +714,9 @@
                                     scope.onExcluir();
                                 },
                                 exibir: function() {
-                                    return (scope.ngModel.dados && scope.ngModel.dados.length && scope.ngModel.selecao.selecionado) &&
+//                                    return (scope.ngModel.dados && scope.ngModel.dados.length && scope.ngModel.selecao.selecionado) &&
+//                                        ((!scope.funcionalidade) || (!$rootScope.token) || (scope.funcionalidade && $rootScope.token && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade] && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade].indexOf('EXCLUIR') >= 0));
+                                    return (scope.ngModel.dados && scope.ngModel.selecao.selecionado) &&
                                         ((!scope.funcionalidade) || (!$rootScope.token) || (scope.funcionalidade && $rootScope.token && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade] && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade].indexOf('EXCLUIR') >= 0));
                                 },
                             },
