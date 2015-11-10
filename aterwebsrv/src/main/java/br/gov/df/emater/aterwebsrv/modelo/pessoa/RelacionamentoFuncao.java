@@ -34,8 +34,12 @@ public class RelacionamentoFuncao extends EntidadeBase implements _ChavePrimaria
 	public RelacionamentoFuncao() {
 	}
 
-	public RelacionamentoFuncao(Integer id, String nomeSeMasculino, String nomeSeFeminino) {
+	public RelacionamentoFuncao(Integer id) {
 		setId(id);
+	}
+
+	public RelacionamentoFuncao(Integer id, String nomeSeMasculino, String nomeSeFeminino) {
+		this(id);
 		setNomeSeMasculino(nomeSeMasculino);
 		setNomeSeFeminino(nomeSeFeminino);
 	}

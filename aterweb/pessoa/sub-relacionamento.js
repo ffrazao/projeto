@@ -150,8 +150,13 @@ angular.module(pNmModulo).controller(pNmController,
         modalInstance.result.then(function (resultado) {
             // processar o retorno positivo da modal
             if (resultado.tipo === 'U') {
-                $scope.cadastro.registro.relacionamentoList.push({pessoa: {id: resultado.item[0], nome: resultado.item[1]}});
-
+                var reg = {pessoa: {id: resultado.item[0], nome: resultado.item[1], pessoaTipo: resultado.item[3], genero: resultado.item[11]}};
+                if (reg.pessoa.pessoaTipo === 'PF') {
+                    reg.pessoa['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica';
+                } else if (reg.pessoa.pessoaTipo === 'PJ') {
+                    reg.pessoa['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica';
+                }
+                $scope.cadastro.registro.relacionamentoList.push(reg);
             } else {
                 $scope.cadastro.registro.executor = resultado.items[0];
             }

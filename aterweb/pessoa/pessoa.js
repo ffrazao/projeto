@@ -83,7 +83,7 @@
                 }
                 var pais = UtilSrv.indiceDePorCampo($scope.cadastro.apoio.paisList, id, 'id');
                 return pais.padrao;
-            }
+            };
             $scope.confirmarIncluir = function(scp) {
                 preparaRegistro();
                 $rootScope.confirmarIncluir(scp);

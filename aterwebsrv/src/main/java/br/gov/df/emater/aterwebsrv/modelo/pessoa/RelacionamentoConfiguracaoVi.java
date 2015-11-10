@@ -61,10 +61,6 @@ public class RelacionamentoConfiguracaoVi extends EntidadeBase implements _Chave
 	@Column(name = "tipo_codigo")
 	private String tipoCodigo;
 
-	@Column(name = "tipo_gerado_pelo_sistema")
-	@Enumerated(EnumType.STRING)
-	private Confirmacao tipoGeradoPeloSistema;
-
 	@Column(name = "tipo_id")
 	private Integer tipoId;
 

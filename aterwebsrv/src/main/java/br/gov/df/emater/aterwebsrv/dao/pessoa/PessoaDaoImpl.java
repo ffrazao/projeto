@@ -47,6 +47,7 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 		sql.append("     , a.extensao").append("\n");
 		sql.append("     , a.tipo").append("\n");
 		sql.append("     , p.nascimento").append("\n");
+		sql.append("     , p.genero").append("\n");
 		sql.append("from Pessoa p").append("\n");
 		sql.append("left join p.arquivoList pa").append("\n");
 		sql.append("left join pa.arquivo a").append("\n");

@@ -14,7 +14,11 @@ import br.gov.df.emater.aterwebsrv.dao.pessoa.EnderecoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaEmailDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaEnderecoDao;
+import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaRelacionamentoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaTelefoneDao;
+import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoConfiguracaoViDao;
+import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoDao;
+import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoTipoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.TelefoneDao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.CadastroAcao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
@@ -23,14 +27,35 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Endereco;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaEmail;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaEndereco;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaRelacionamento;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaTelefone;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.Relacionamento;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoConfiguracaoVi;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoFuncao;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoTipo;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Telefone;
 
 @Service("PessoaSalvarCmd")
 public class SalvarCmd extends _Comando {
 
+	public SalvarCmd() {
+	}
+	
+	private RelacionamentoTipo getRelacionamentoTipo() {
+		if (this.relacionamentoTipo == null) {
+			this.relacionamentoTipo = relacionamentoTipoDao.findByCodigo(RelacionamentoTipo.Codigo.FAMILIAR.toString());
+		}
+		return relacionamentoTipo;
+	}
+
+	@Autowired
+	private RelacionamentoConfiguracaoViDao relacionamentoConfiguracaoViDao;
+
 	@Autowired
 	private PessoaDao dao;
+
+	@Autowired
+	private RelacionamentoTipoDao relacionamentoTipoDao;
 
 	@Autowired
 	private EnderecoDao enderecoDao;
@@ -49,6 +74,14 @@ public class SalvarCmd extends _Comando {
 
 	@Autowired
 	private PessoaEmailDao pessoaEmailDao;
+
+	@Autowired
+	private PessoaRelacionamentoDao pessoaRelacionamentoDao;
+
+	@Autowired
+	private RelacionamentoDao relacionamentoDao;
+
+	private RelacionamentoTipo relacionamentoTipo;
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
@@ -140,6 +173,56 @@ public class SalvarCmd extends _Comando {
 					pessoaEmail.setPessoa(pessoa);
 					pessoaEmail.setOrdem(++ordem);
 					pessoaEmailDao.save(pessoaEmail);
+				}
+			}
+		}
+
+		// salvar relacionamentos
+		if (pessoa.getRelacionamentoList() != null) {
+			for (PessoaRelacionamento pessoaRelacionamento : pessoa.getRelacionamentoList()) {
+				if (CadastroAcao.E.equals(pessoaRelacionamento.getCadastroAcao())) {
+					relacionamentoDao.delete(pessoaRelacionamento.getRelacionamento());
+				}
+			}
+			pessoaRelacionamentoDao.flush();
+			for (PessoaRelacionamento pessoaRelacionamento : pessoa.getRelacionamentoList()) {
+				if (!CadastroAcao.E.equals(pessoaRelacionamento.getCadastroAcao())) {
+					Relacionamento relacionamento = pessoaRelacionamento.getRelacionamento();
+										
+					if (relacionamento == null || relacionamento.getId() == null) {
+						relacionamento = new Relacionamento();
+						relacionamento.setRelacionamentoTipo(getRelacionamentoTipo());
+					} else {
+						Relacionamento salvo = relacionamentoDao.findById(relacionamento.getId());
+						salvo.getPessoaRelacionamentoList().size();
+						relacionamento.setPessoaRelacionamentoList(salvo.getPessoaRelacionamentoList());
+					}
+					relacionamento = relacionamentoDao.saveAndFlush(relacionamento);
+					
+					pessoaRelacionamento.setRelacionamento(relacionamento);
+					pessoaRelacionamentoDao.save(pessoaRelacionamento);
+
+					RelacionamentoConfiguracaoVi relacionamentoConfiguracaoVi = relacionamentoConfiguracaoViDao.findByTipoIdAndRelacionadorId(getRelacionamentoTipo().getId(), pessoaRelacionamento.getRelacionamentoFuncao().getId());
+
+					// salvar o relacionador
+					PessoaRelacionamento relacionador = null;
+					boolean encontrou = false;
+					if (relacionamento.getPessoaRelacionamentoList() != null) {
+						for (PessoaRelacionamento rel : relacionamento.getPessoaRelacionamentoList()) {
+							if (rel.getPessoa().getId().equals(pessoa.getId())) {
+								relacionador = rel;
+								encontrou = true;
+								break;
+							}
+						}
+					}
+					if (!encontrou) {
+						relacionador = new PessoaRelacionamento();
+						relacionador.setPessoa(pessoa);
+						relacionador.setRelacionamento(relacionamento);
+					}
+					relacionador.setRelacionamentoFuncao(new RelacionamentoFuncao(relacionamentoConfiguracaoVi.getRelacionadoId()));
+					pessoaRelacionamentoDao.save(relacionador);
 				}
 			}
 		}
