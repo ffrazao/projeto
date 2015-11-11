@@ -54,27 +54,35 @@
     </div>
 </div>
 <div class="row">
-    <div class="form-group col-md-12">
-        <label class="control-label">Propriedades Vinculadas</label>
-        <ng-include src="'pessoa/sub-publico-alvo-propriedade-rural.html'" ng-controller="PublicoAlvoPropriedadeRuralCtrl" />
-    </div>
-</div>
-<div class="row">
     <div class="form-group col-md-6">
         <label class="control-label">Carteira do Produtor</label>
         <div class="row">
             <div class="col-md-4">
                 <label class="control-label">Número</label>
-                <input class="form-control" type="text" id="carteiraProdutorNumero" name="carteiraProdutorNumero" ng-model="cadastro.registro.pulicoAlvo.carteiraProdutorNumero"/>
+                <input class="form-control" type="text" id="carteiraProdutorNumero" name="carteiraProdutorNumero" ng-model="cadastro.registro.publicoAlvo.carteiraProdutorNumero"/>
             </div>
             <div class="col-md-4">
                 <label class="control-label">1ª Habilitação</label>
-                <input class="form-control" type="text" id="carteiraProdutorEmissao" name="carteiraProdutorEmissao" ng-model="cadastro.registro.pulicoAlvo.carteiraProdutorEmissao" ui-date-mask/>
+                <input class="form-control" type="text" id="carteiraProdutorEmissao" name="carteiraProdutorEmissao" ng-model="cadastro.registro.publicoAlvo.carteiraProdutorEmissao" ui-date-mask/>
+                <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.carteiraProdutorEmissao.$error.date">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    Valor Inválido!
+                </div>
             </div>
             <div class="col-md-4">
                 <label class="control-label">Validade</label>
-                <input class="form-control" type="text" id="carteiraProdutorExpiracao" name="carteiraProdutorExpiracao" ng-model="cadastro.registro.pulicoAlvo.carteiraProdutorExpiracao" ui-date-mask/>
+                <input class="form-control" type="text" id="carteiraProdutorExpiracao" name="carteiraProdutorExpiracao" ng-model="cadastro.registro.publicoAlvo.carteiraProdutorExpiracao" ui-date-mask/>
+                <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.carteiraProdutorExpiracao.$error.date">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    Valor Inválido!
+                </div>                
             </div>
         </div>
+    </div>
+</div>
+<div class="row">
+    <div class="form-group col-md-12">
+        <label class="control-label">Propriedades Vinculadas</label>
+        <ng-include src="'pessoa/sub-publico-alvo-propriedade-rural.html'" ng-controller="PublicoAlvoPropriedadeRuralCtrl" />
     </div>
 </div>

@@ -410,45 +410,47 @@ angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'to
         scp.cadastro.filtro['numeroPagina'] = numeroPagina;
         scp.cadastro.filtro['temMaisRegistros'] = temMaisRegistros;
 
-        scp.servico.filtrar(scp.cadastro.filtro).success(function(resposta) {
-            if (resposta.mensagem === 'OK') {
-                if (!resposta.resultado || !resposta.resultado.length) {
-                    if (scp.cadastro.filtro.temMaisRegistros) {
-                        toastr.warning('Última pagina!', 'Atenção!');
-                        scp.cadastro.filtro.ultimaPagina = true;
-                        return;
-                    } else {
-                        toastr.warning('Registro não localizado!', 'Atenção!');
-                    }
-                }
-                if (scp.cadastro.filtro.temMaisRegistros && resposta.resultado && resposta.resultado.length) {
-                    for (var i = 0; i < resposta.resultado.length; i++) {
-                        scp.cadastro.lista.push(resposta.resultado[i]);
-                    }
-                    var btn = scp.navegador.botao('informacao');
-                    if (btn) {
-                        var selec = '0';
-                        if (scp.navegador.selecao.tipo === 'U') {
-                            selec = scp.navegador.selecao.item != null ? '1' : '0';
+        if (scp.servico) {
+            scp.servico.filtrar(scp.cadastro.filtro).success(function(resposta) {
+                if (resposta.mensagem === 'OK') {
+                    if (!resposta.resultado || !resposta.resultado.length) {
+                        if (scp.cadastro.filtro.temMaisRegistros) {
+                            toastr.warning('Última pagina!', 'Atenção!');
+                            scp.cadastro.filtro.ultimaPagina = true;
+                            return;
                         } else {
-                            selec = scp.navegador.selecao.items.length;
+                            toastr.warning('Registro não localizado!', 'Atenção!');
                         }
-                        btn.nome = selec + '/' + scp.cadastro.lista.length;
                     }
-                } else {
-                    scp.cadastro.lista = resposta.resultado;
-                    scp.navegador.setDados(scp.cadastro.lista);
-                    scp.navegador.paginaAtual = 1;
-                    scp.navegador.mudarEstado('LISTANDO');
-                    scp.crudVaiPara(scp, scp.stt, 'lista');
-                    scp.navegador.submitido = false;
-                    scp.cadastro.filtro.ultimaPagina = false;
+                    if (scp.cadastro.filtro.temMaisRegistros && resposta.resultado && resposta.resultado.length) {
+                        for (var i = 0; i < resposta.resultado.length; i++) {
+                            scp.cadastro.lista.push(resposta.resultado[i]);
+                        }
+                        var btn = scp.navegador.botao('informacao');
+                        if (btn) {
+                            var selec = '0';
+                            if (scp.navegador.selecao.tipo === 'U') {
+                                selec = scp.navegador.selecao.item != null ? '1' : '0';
+                            } else {
+                                selec = scp.navegador.selecao.items.length;
+                            }
+                            btn.nome = selec + '/' + scp.cadastro.lista.length;
+                        }
+                    } else {
+                        scp.cadastro.lista = resposta.resultado;
+                        scp.navegador.setDados(scp.cadastro.lista);
+                        scp.navegador.paginaAtual = 1;
+                        scp.navegador.mudarEstado('LISTANDO');
+                        scp.crudVaiPara(scp, scp.stt, 'lista');
+                        scp.navegador.submitido = false;
+                        scp.cadastro.filtro.ultimaPagina = false;
+                    }
+                    scp.cadastro.filtro.temMaisRegistros = null;
                 }
-                scp.cadastro.filtro.temMaisRegistros = null;
-            }
-        }).error(function(erro){
-            toastr.error(erro, 'Erro ao filtrar');
-        });
+            }).error(function(erro){
+                toastr.error(erro, 'Erro ao filtrar');
+            });
+        }
 
     };
     $rootScope.editar = function(scp) {

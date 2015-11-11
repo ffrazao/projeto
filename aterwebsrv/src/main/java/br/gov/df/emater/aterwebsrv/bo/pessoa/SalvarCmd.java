@@ -22,6 +22,7 @@ import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoConfiguracaoViDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoTipoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.TelefoneDao;
+import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.CadastroAcao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Email;
@@ -103,12 +104,17 @@ public class SalvarCmd extends _Comando {
 		}
 		pessoa.setUsuarioAlteracao(getUsuario(contexto.getUsuario().getName()));
 		pessoa.setAlteracaoData(Calendar.getInstance());
-		dao.saveAndFlush(pessoa);
 		
+		// publico alvo
 		if (Confirmacao.S.equals(pessoa.getPublicoAlvoConfirmacao())) {
-			pessoa.getPublicoAlvo().setPessoa(pessoa);
-			publicoAlvoDao.saveAndFlush(pessoa.getPublicoAlvo());
+			PublicoAlvo publicoAlvo = pessoa.getPublicoAlvo();
+			if (publicoAlvo == null) {
+				publicoAlvo = new PublicoAlvo();
+			}
+			publicoAlvo.setPessoa(pessoa);
+			publicoAlvoDao.save(publicoAlvo);
 		}
+		dao.save(pessoa);
 
 		// salvar enderecos
 		if (pessoa.getEnderecoList() != null) {

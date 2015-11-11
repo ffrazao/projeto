@@ -49,6 +49,9 @@ public class VisualizarCmd extends _Comando {
 
 		}
 
+		// fetch no publico alvo
+		result.getPublicoAlvo().getId();
+		
 		// fetch nas tabelas de apoio
 		result.getArquivoList().size();
 		result.getEmailList().size();
