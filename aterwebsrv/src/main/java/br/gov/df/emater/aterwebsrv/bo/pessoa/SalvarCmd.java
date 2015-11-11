@@ -9,11 +9,13 @@ import org.springframework.util.CollectionUtils;
 
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
+import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.EmailDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.EnderecoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaEmailDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaEnderecoDao;
+import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaGrupoSocialDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaRelacionamentoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaTelefoneDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoConfiguracaoViDao;
@@ -27,6 +29,7 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Endereco;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaEmail;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaEndereco;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaGrupoSocial;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaRelacionamento;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaTelefone;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Relacionamento;
@@ -40,7 +43,7 @@ public class SalvarCmd extends _Comando {
 
 	public SalvarCmd() {
 	}
-	
+
 	private RelacionamentoTipo getRelacionamentoTipo() {
 		if (this.relacionamentoTipo == null) {
 			this.relacionamentoTipo = relacionamentoTipoDao.findByCodigo(RelacionamentoTipo.Codigo.FAMILIAR.toString());
@@ -53,6 +56,9 @@ public class SalvarCmd extends _Comando {
 
 	@Autowired
 	private PessoaDao dao;
+	
+	@Autowired
+	private PublicoAlvoDao publicoAlvoDao;
 
 	@Autowired
 	private RelacionamentoTipoDao relacionamentoTipoDao;
@@ -83,6 +89,9 @@ public class SalvarCmd extends _Comando {
 
 	private RelacionamentoTipo relacionamentoTipo;
 
+	@Autowired
+	private PessoaGrupoSocialDao pessoaGrupoSocialDao;
+
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		Pessoa pessoa = (Pessoa) contexto.getRequisicao();
@@ -95,6 +104,11 @@ public class SalvarCmd extends _Comando {
 		pessoa.setUsuarioAlteracao(getUsuario(contexto.getUsuario().getName()));
 		pessoa.setAlteracaoData(Calendar.getInstance());
 		dao.saveAndFlush(pessoa);
+		
+		if (Confirmacao.S.equals(pessoa.getPublicoAlvoConfirmacao())) {
+			pessoa.getPublicoAlvo().setPessoa(pessoa);
+			publicoAlvoDao.saveAndFlush(pessoa.getPublicoAlvo());
+		}
 
 		// salvar enderecos
 		if (pessoa.getEnderecoList() != null) {
@@ -104,7 +118,6 @@ public class SalvarCmd extends _Comando {
 					pessoaEnderecoDao.delete(pessoaEndereco);
 				}
 			}
-			pessoaEnderecoDao.flush();
 			// tratar a insersao de registros
 			Integer ordem = 0;
 			for (PessoaEndereco pessoaEndereco : pessoa.getEnderecoList()) {
@@ -133,7 +146,6 @@ public class SalvarCmd extends _Comando {
 					pessoaTelefoneDao.delete(pessoaTelefone);
 				}
 			}
-			pessoaTelefoneDao.flush();
 			// tratar a insersao de registros
 			Integer ordem = 0;
 			for (PessoaTelefone pessoaTelefone : pessoa.getTelefoneList()) {
@@ -159,7 +171,6 @@ public class SalvarCmd extends _Comando {
 					pessoaEmailDao.delete(pessoaEmail);
 				}
 			}
-			pessoaEmailDao.flush();
 			// tratar a insersao de registros
 			Integer ordem = 0;
 			for (PessoaEmail pessoaEmail : pessoa.getEmailList()) {
@@ -184,11 +195,10 @@ public class SalvarCmd extends _Comando {
 					relacionamentoDao.delete(pessoaRelacionamento.getRelacionamento());
 				}
 			}
-			pessoaRelacionamentoDao.flush();
 			for (PessoaRelacionamento pessoaRelacionamento : pessoa.getRelacionamentoList()) {
 				if (!CadastroAcao.E.equals(pessoaRelacionamento.getCadastroAcao())) {
 					Relacionamento relacionamento = pessoaRelacionamento.getRelacionamento();
-										
+
 					if (relacionamento == null || relacionamento.getId() == null) {
 						relacionamento = new Relacionamento();
 						relacionamento.setRelacionamentoTipo(getRelacionamentoTipo());
@@ -198,7 +208,7 @@ public class SalvarCmd extends _Comando {
 						relacionamento.setPessoaRelacionamentoList(salvo.getPessoaRelacionamentoList());
 					}
 					relacionamento = relacionamentoDao.saveAndFlush(relacionamento);
-					
+
 					pessoaRelacionamento.setRelacionamento(relacionamento);
 					pessoaRelacionamentoDao.save(pessoaRelacionamento);
 
@@ -226,6 +236,26 @@ public class SalvarCmd extends _Comando {
 				}
 			}
 		}
+
+		// salvar grupos sociais
+		if (pessoa.getGrupoSocialList() != null) {
+			// tratar a exclusao de registros
+			for (PessoaGrupoSocial pessoaGrupoSocial : pessoa.getGrupoSocialList()) {
+				if (CadastroAcao.E.equals(pessoaGrupoSocial.getCadastroAcao())) {
+					pessoaGrupoSocialDao.delete(pessoaGrupoSocial);
+				}
+			}
+			// tratar a insersao de registros
+			for (PessoaGrupoSocial pessoaGrupoSocial : pessoa.getGrupoSocialList()) {
+				if (!CadastroAcao.E.equals(pessoaGrupoSocial.getCadastroAcao())) {
+					pessoaGrupoSocial.setPessoa(pessoa);
+					pessoaGrupoSocialDao.save(pessoaGrupoSocial);
+				}
+			}
+		}
+		
+		dao.flush();
+
 		contexto.setResposta(pessoa.getId());
 		return true;
 	}
