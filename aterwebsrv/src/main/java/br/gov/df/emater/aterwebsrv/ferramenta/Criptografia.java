@@ -26,7 +26,7 @@ public final class Criptografia {
 	}
 
 	public static final synchronized String MD5_FILE(byte[] bytes) throws IOException {
-		return DigestUtils.md5DigestAsHex(bytes);
+		return DigestUtils.md5DigestAsHex(bytes).toLowerCase();
 	}
 	
 	public static void main(String[] args) {

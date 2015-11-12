@@ -71,9 +71,11 @@
     <script type="text/ng-template" id="pessoa-email-frm.html">
         <div class="modal-body">
             <div class="container-fluid">
+                /{{nomeArquivo}}/
+                <img ng-src="{{servicoUrl}}{{nomeArquivo}}" ng-show="nomeArquivo"/>
                 <div class="row">
                     <div class="col-md-8">
-                        <frz-arquivo ng-model="abc">
+                        <frz-arquivo ng-model="nomeArquivo" tipo="ARQUIVOS">
                         </frz-arquivo>
                     </div>
                 </div>

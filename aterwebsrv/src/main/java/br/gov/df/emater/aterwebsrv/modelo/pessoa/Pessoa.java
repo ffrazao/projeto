@@ -21,7 +21,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.search.annotations.Field;
@@ -77,7 +76,7 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	@OneToMany(mappedBy = "pessoa")
 	private List<PessoaEndereco> enderecoList;
 
-	@Transient
+	@Column(name = "foto_perfil")
 	private String fotoPerfil;
 
 	@OneToMany(mappedBy = "pessoa")

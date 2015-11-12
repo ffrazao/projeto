@@ -32,7 +32,11 @@
                     <td>
                         {{$index + 1 + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)}}
                     </td>
-                    <td width="96px"><img ng-src="/upload/{{item['7'] + item['8']}}"/></td>
+                    <td width="96px">
+                        <img src="img/foto.gif" class="img-thumbnail"  ng-click="selecionaFotoPerfil()" ng-hide="item['7'].length" width="180px" height="180px" />
+                        <img ng-src="{{servicoUrl}}{{item['7']}}"  class="img-thumbnail" ng-click="selecionaFotoPerfil()" ng-show="item['7'].length" width="180px" height="180px" />
+
+                    </td>
                     <td>{{item[1]}}<small ng-if="item[2]" alt="apelido/ sigla"><br><i>{{item[2]}}</i></small></td>
                     <td><span ng-show="item[3]==='PF'">Pessoa Física</span><span ng-show="item[3]==='PJ'">Pessoa Jurídica</span></td>
                     <td>{{item[4]}}{{item[5]}}</td>

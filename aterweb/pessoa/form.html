@@ -10,7 +10,8 @@
                         <div class="form-group">
                             <label class="control-label">Foto</label>
                             <div>
-                                <img src="img/foto.gif" class="img-thumbnail">
+                                <img src="img/foto.gif" class="img-thumbnail"  ng-click="selecionaFotoPerfil()" ng-hide="cadastro.registro.fotoPerfil.length" width="180px" height="180px" />
+                                <img ng-src="{{servicoUrl}}{{cadastro.registro.fotoPerfil}}"  class="img-thumbnail" ng-click="selecionaFotoPerfil()" ng-show="cadastro.registro.fotoPerfil.length" width="180px" height="180px" />
                             </div>
                         </div>
                     </div>

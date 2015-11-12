@@ -50,6 +50,7 @@ public class _SegurancaConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/pessoa/**").permitAll()
 				.antMatchers("/propriedade/**").permitAll()
 				.antMatchers("/service/**").permitAll()
+				.antMatchers("/resources/**").permitAll()
 				
 				// allow anonymous POSTs to login
 				.antMatchers(HttpMethod.POST, "/api/login").permitAll()

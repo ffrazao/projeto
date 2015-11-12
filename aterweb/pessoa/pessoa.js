@@ -250,10 +250,37 @@
             $scope.$watch('cadastro.registro.publicoAlvoConfirmacao', function() {
                 $scope.tabVisivelPublicoAlvo($scope.cadastro.registro.publicoAlvoConfirmacao === 'S');
             });
-
-
-            
+           
             // fim dos watches
+
+            $scope.selecionaFotoPerfil = function() {
+                if (['INCLUINDO', 'EDITANDO'].indexOf($scope.navegador.estadoAtual()) < 0) {
+                    return;
+                }
+                var conf = 
+                    '<div class="form-group">' + 
+                    '    <label class="col-md-4 control-label" for="nomeArquivo">Foto do Perfil</label>' + 
+                    '    <div class="row">' +
+                    '       <div class="col-md-8">' +
+                    '           <frz-arquivo ng-model="conteudo.nomeArquivo" tipo="PERFIL"></frz-arquivo>' +
+                    '           <input type="hidden" id="nomeArquivo" name="nomeArquivo" ng-model="conteudo.nomeArquivo"/>' +
+                    '           <div class="label label-danger" ng-show="confirmacaoFrm.nomeArquivo.$error.required">' + 
+                    '               <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' + 
+                    '               Campo Obrigatório' + 
+                    '           </div>' + 
+                    '       </div>' + 
+                    '    </div>' + 
+                    '</div>';
+                mensagemSrv.confirmacao(false, conf, null, {
+                    nomeArquivo: $scope.cadastro.registro.fotoPerfil
+                }).then(function(conteudo) {
+                    // processar o retorno positivo da modal
+                    $scope.cadastro.registro.fotoPerfil = conteudo.nomeArquivo;
+                }, function() {
+                    // processar o retorno negativo da modal
+                    //$log.info('Modal dismissed at: ' + new Date());
+                });
+            };
         }
     ]);
 })('pessoa', 'PessoaCtrl', 'Cadastro de Pessoas');

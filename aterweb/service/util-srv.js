@@ -1,11 +1,11 @@
-/* jslint evil: true */ 
+/* jslint evil: true, browser: true, plusplus: true, loopfunc: true */
 
 (function(pNmModulo, pNmFactory) {
 
 'use strict';
 
-angular.module(pNmModulo).factory(pNmFactory, ['$rootScope', '$http', 'toastr',
-    function($rootScope, $http, toastr) {
+angular.module(pNmModulo).factory(pNmFactory, ['$rootScope', '$http', 'toastr', 'Upload', '$timeout',
+    function($rootScope, $http, toastr, Upload, $timeout) {
         var sucessoInterno = function (ls, cb) {
             return function(data) {
                 if (data && data.mensagem && data.mensagem === "OK") {
@@ -54,6 +54,25 @@ angular.module(pNmModulo).factory(pNmFactory, ['$rootScope', '$http', 'toastr',
             },
             dominioLista: function (lista, parametroPesquisa, callback) {
                 this.dominio(parametroPesquisa).success(sucessoInterno(lista, callback)).error(erroInterno);
+            },
+            uploadImagem: function(dataUrl) {
+                if (!dataUrl) {
+                    toastr.error("Erro", "Informação vazia!");
+                    return;
+                }
+                return Upload.upload({url: $rootScope.servicoUrl + '/perfil', data: {file: Upload.dataUrltoBlob(dataUrl)},});
+            },
+            uploadArquivos: function(files) {
+                if (files && files.length) {
+                    var retorno = [];
+                    for (var i = 0; i < files.length; i++) {
+                        var file = files[i];
+                        if (!file.$error) {
+                            retorno.push(Upload.upload({url: $rootScope.servicoUrl + '/arquivos', data: {file: file}}));
+                        }
+                    }
+                    return retorno;
+                }
             },
         };
         return UtilSrv;

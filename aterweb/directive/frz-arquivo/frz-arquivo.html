@@ -1,4 +1,4 @@
-<div ng-init="tipo = 'IMAGEM'">
+<div>
     <style type="text/css">
         .cropArea {
             background: #E4E4E4;
@@ -70,7 +70,7 @@
         </div>
     </div>
 
-    <div class="container" ng-if="tipo === 'IMAGEM'">
+    <div class="container" ng-if="tipo === 'PERFIL'">
         <div class="row">
             <div class="col-md-6">
                 <button class="btn btn-info" ngf-select ng-model="picFile" accept="image/*">

@@ -1,6 +1,7 @@
 package br.gov.df.emater.aterwebsrv.rest;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
@@ -18,6 +19,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -144,6 +146,13 @@ public class _RestConfig extends WebMvcConfigurerAdapter /*
 		CommonsMultipartResolver result = new CommonsMultipartResolver();
 		return result;
 	}
+	
+	
+	@Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/resources/**")
+                .addResourceLocations("/resources/");
+    }
 
 	// TODO Habilitar o log4j
 

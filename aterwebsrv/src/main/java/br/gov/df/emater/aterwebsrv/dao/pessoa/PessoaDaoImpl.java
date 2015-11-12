@@ -43,21 +43,17 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 		sql.append("     , p.cpf").append("\n");
 		sql.append("     , p.cnpj").append("\n");
 		sql.append("     , p.publicoAlvoConfirmacao").append("\n");
-		sql.append("     , a.md5").append("\n");
-		sql.append("     , a.extensao").append("\n");
-		sql.append("     , a.tipo").append("\n");
+		sql.append("     , p.fotoPerfil").append("\n");
 		sql.append("     , p.nascimento").append("\n");
 		sql.append("     , p.genero").append("\n");
 		sql.append("from Pessoa p").append("\n");
-		sql.append("left join p.arquivoList pa").append("\n");
-		sql.append("left join pa.arquivo a").append("\n");
 		if (filtrarPublicoAlvo(filtro)) {
 			sql.append("left join p.publicoAlvo alvo").append("\n");
 			if (filtro.getPublicoAlvoSetor() != null) {
 				sql.append("left join alvo.publicoAlvoSetorList paSetor").append("\n");
 			}
 		}
-		sql.append("where (pa is null or pa.perfil = 'S')").append("\n");
+		sql.append("where (1 = 1)").append("\n");
 		if (filtrarPublicoAlvo(filtro)) {
 			sql.append("and   p.publicoAlvoConfirmacao = 'S'").append("\n");
 		}
