@@ -4,12 +4,15 @@ import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.chain.Command;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaTipo;
 import br.gov.df.emater.aterwebsrv.modelo.dto.PessoaCadFiltroDto;
@@ -80,6 +83,15 @@ public class FacadeBo implements BeanFactoryAware {
 
 	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
 		this.beanFactory = beanFactory;
+	}
+
+	public _Contexto utilArquivo(Principal usuario, MultipartFile arquivo, HttpServletRequest request, String tipo) throws Exception {
+		Map<String, Object> requisicao = new HashMap<String, Object>();
+		requisicao.put("arquivo", arquivo);
+		requisicao.put("request", request);
+		requisicao.put("tipo", tipo);
+
+		return this._executar(usuario, "UtilArquivoCh", requisicao);
 	}
 
 }

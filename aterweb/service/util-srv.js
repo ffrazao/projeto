@@ -1,4 +1,4 @@
-/* jslint evil: true, browser: true, plusplus: true, loopfunc: true */
+/*jslint evil: true */ 
 
 (function(pNmModulo, pNmFactory) {
 
