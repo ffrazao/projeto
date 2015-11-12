@@ -48,9 +48,6 @@ public class VisualizarCmd extends _Comando {
 		} else if (result instanceof PessoaJuridica) {
 
 		}
-
-		// fetch no publico alvo
-		result.getPublicoAlvo().getId();
 		
 		// fetch nas tabelas de apoio
 		result.getArquivoList().size();

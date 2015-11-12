@@ -4,7 +4,7 @@
 
 angular.module(pNmModulo, ['ui.bootstrap', 'ui.utils', 'ui.router', 'ngSanitize', 'ngAnimate', 'toastr', 'sticky',
   'ui.mask', 'ui.utils.masks', 'ui.navbar', 'ngCookies', 'frz.arquivo', 'frz.endereco', 'frz.painel.vidro', 'frz.navegador',
-  'casa', 'contrato', 'pessoa', 'propriedade','uiGmapgoogle-maps']);
+  'casa', 'contrato', 'pessoa', 'propriedade','uiGmapgoogle-maps', 'ngFileUpload']);
 
 // inicio: codigo para habilitar o modal recursivo
 angular.module(pNmModulo).factory('$modalInstance', function () {
