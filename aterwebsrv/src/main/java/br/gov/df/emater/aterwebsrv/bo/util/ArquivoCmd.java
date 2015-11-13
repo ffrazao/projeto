@@ -14,6 +14,7 @@ import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.ferramenta.Criptografia;
+import br.gov.df.emater.aterwebsrv.modelo.dto.ArquivoDto;
 
 @Service("UtilArquivoCmd")
 public class ArquivoCmd extends _Comando {
@@ -32,9 +33,10 @@ public class ArquivoCmd extends _Comando {
 		HttpServletRequest request = (HttpServletRequest) requisicao.get("request");
 		String tipo = (String) requisicao.get("tipo");
 
-		String result = null;
+		String md5 = null;
 		String extensao = null;
 		String diretorio = null;
+		String nome = null;
 
 		if ("perfil".equals(tipo)) {
 			diretorio = DIRETORIO_PERFIL;
@@ -55,18 +57,19 @@ public class ArquivoCmd extends _Comando {
 
 		if (file.getOriginalFilename() != null && (!"undefined".equals(file.getOriginalFilename()))) {
 			extensao = FilenameUtils.getExtension(file.getOriginalFilename());
-			if (StringUtils.isEmpty(extensao)) {
+			if (!StringUtils.isEmpty(extensao)) {
 				extensao = ".".concat(extensao);
 			}
 		}
 		if ((extensao == null || extensao.trim().length() == 0) && file.getContentType().equals("image/png")) {
 			extensao = ".png";
 		}
-		result = Criptografia.MD5_FILE(file.getBytes()) + extensao;
-		File arquivo = new File(uploadDiretorio.getPath() + File.separator + result);
+		md5 = Criptografia.MD5_FILE(file.getBytes());
+		nome = md5 + extensao;
+		File arquivo = new File(uploadDiretorio.getPath() + File.separator + nome);
 		file.transferTo(arquivo);
-
-		context.setResposta(diretorio + File.separator + result);
+		
+		context.setResposta(new ArquivoDto(diretorio + File.separator + nome, md5, extensao));
 
 		return false;
 	}

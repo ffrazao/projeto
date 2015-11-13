@@ -38,9 +38,10 @@
                 scope.tipo = attributes.tipo;
                 if (scope.tipo === 'PERFIL') {
                     scope.upload = function (dataUrl) {
+                        scope.ngModel = "";
                         UtilSrv.uploadImagem(dataUrl).then(
                             function (response) {
-                                $timeout(function () {scope.ngModel = response.data.mensagem;});
+                                $timeout(function () {scope.ngModel = response.data.resultado.arquivo;});
                             }, 
                             function (response) {
                                 if (response.status > 0) {
@@ -54,6 +55,8 @@
                     };
                 } else {
                     scope.upload = function (files) {
+                        scope.ngModel = [];
+                        scope.log = '';
                         var arquivos = UtilSrv.uploadArquivos(files);
                         for (var i in arquivos) {
                             arquivos[i].progress(function (evt) {
@@ -63,6 +66,33 @@
                             success(function (data, status, headers, config) {
                                 $timeout(function() {
                                     scope.log = 'file: ' + config.data.file.name + ', Response: ' + JSON.stringify(data) + '\n' + scope.log;
+                                    for (var j in scope.ngModel) {
+                                        if (angular.equals(scope.ngModel[j], data.resultado)) {
+                                            return;
+                                        }
+                                    }
+
+                                    var f, dataUpload, extensao, md5, nomeOriginal, tamanho, tipo;
+
+                                    f = config.data.file;
+
+                                    dataUpload = moment().format('DD/MM/YYYY HH:mm:ss');
+                                    extensao =  data.resultado.extensao;
+                                    md5 = data.resultado.md5;
+                                    nomeOriginal = f.name;
+                                    tamanho = f.size;
+                                    tipo = f.type;
+
+                                    var arquivo = {
+                                        dataUpload : dataUpload,
+                                        extensao : extensao,
+                                        md5 : md5,
+                                        nomeOriginal : nomeOriginal,
+                                        tamanho : tamanho,
+                                        tipo : tipo,
+                                    };
+                                    //data.resultado
+                                    scope.ngModel.push(arquivo);
                                 });
                             });
                         }

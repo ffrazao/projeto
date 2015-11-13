@@ -1,8 +1,8 @@
 <div class="panel panel-default">
     <div class="panel-heading container-fluid">
         <frz-navegador
-        ng-model="pessoaEmailNvg" exibe-texto-botao="false"
-        dados="cadastro.registro.emailList"
+        ng-model="pessoaArquivoNvg" exibe-texto-botao="false"
+        dados="cadastro.registro.arquivoList"
         acoes-especiais="acoesEspeciais"
         on-abrir = "abrir()"
         on-agir = "agir()"
@@ -20,45 +20,38 @@
         on-ultima-pagina="ultimaPagina()"
         ></frz-navegador>
     </div>
-    <div class="painel-body"  ng-hide="cadastro.registro.emailList.length">
+    <div class="painel-body"  ng-hide="cadastro.registro.arquivoList.length">
         <div class="alert alert-warning" role="alert">
             <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
             Nenhum registro localizado!
         </div>
     </div>
-    <div class="table-responsible" ng-show="cadastro.registro.emailList.length > 0">
-        <ng-form name="emailListFrm">
+    <div class="table-responsible" ng-show="cadastro.registro.arquivoList.length > 0">
+        <ng-form name="arquivoListFrm">
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th rowspan="2"><frz-seletor ng-model="pessoaEmailNvg" dados="cadastro.registro.emailList"></frz-seletor></th>
-                        <th rowspan="2">#</th>
-                        <th colspan="2">Endereço</th>
-                    </tr>
-                    <tr>
-                        <th><small>Finalidade</small></th>
+                        <th><frz-seletor ng-model="pessoaArquivoNvg" dados="cadastro.registro.arquivoList"></frz-seletor></th>
+                        <th>#</th>
+                        <th>Arquivo</th>
+                        <th>Tipo</th>
+                        <th>Upload</th>
+                        <th>Tamanho</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat-start="reg in cadastro.registro.emailList | filter: {cadastroAcao: '!E'}">
-                        <td rowspan="2">
-                            <input type="radio" ng-show="pessoaEmailNvg.selecao.tipo === 'U'" ng-model="pessoaEmailNvg.selecao.item" ng-value="reg"/>
-                            <input type="checkbox" ng-show="pessoaEmailNvg.selecao.tipo === 'M'" checklist-model="pessoaEmailNvg.selecao.items" checklist-value="reg"/>
-                        </td>
-                        <td rowspan="2">
-                            {{$index + 1 + ((pessoaEmailNvg.paginaAtual-1) * pessoaEmailNvg.tamanhoPagina)}}
-                        </td>
-                        <td colspan="2">{{reg.email.endereco}}</td>
-                    </tr>
-                    <tr ng-repeat-end>
+                    <tr ng-repeat="reg in cadastro.registro.arquivoList | filter: {cadastroAcao: '!E'}">
                         <td>
-                            <select class="form-control input-sm" id="finalidade" name="finalidade{{$index}}" ng-model="reg.finalidade" ng-options="item.codigo as item.descricao for item in scp.cadastro.apoio.meioContatoFinalidadeList" ng-required="true">
-                            </select>
-                            <div class="label label-danger" ng-show="navegador.submitido && emailListFrm.finalidade{{$index}}.$error.required">
-                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                                Campo Obrigatório
-                            </div>
+                            <input type="radio" ng-show="pessoaArquivoNvg.selecao.tipo === 'U'" ng-model="pessoaArquivoNvg.selecao.item" ng-value="reg"/>
+                            <input type="checkbox" ng-show="pessoaArquivoNvg.selecao.tipo === 'M'" checklist-model="pessoaArquivoNvg.selecao.items" checklist-value="reg"/>
                         </td>
+                        <td>
+                            {{$index + 1 + ((pessoaArquivoNvg.paginaAtual-1) * pessoaArquivoNvg.tamanhoPagina)}}
+                        </td>
+                        <td><a ng-href="{{servicoUrl}}/resources/upload/{{reg.arquivo.md5}}{{reg.arquivo.extensao}}" target="_blank">{{reg.arquivo.nomeOriginal}}</a></td>
+                        <td>{{reg.arquivo.tipo}}</td>
+                        <td>{{reg.arquivo.dataUpload}}</td>
+                        <td>{{tamanhoArquivo(reg.arquivo.tamanho)}}</td>
                     </tr>
                 </tbody>
                 <tfoot>
@@ -68,18 +61,4 @@
     </div>
     <div class="panel-footer">
     </div>
-    <script type="text/ng-template" id="pessoa-email-frm.html">
-        <div class="modal-body">
-            <div class="container-fluid">
-                /{{nomeArquivo}}/
-                <img ng-src="{{servicoUrl}}{{nomeArquivo}}" ng-show="nomeArquivo"/>
-                <div class="row">
-                    <div class="col-md-8">
-                        <frz-arquivo ng-model="nomeArquivo" tipo="ARQUIVOS">
-                        </frz-arquivo>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </script>
 </div>

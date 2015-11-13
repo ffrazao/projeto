@@ -45,13 +45,13 @@
     <div class="container" ng-if="tipo === 'ARQUIVOS'">
         <div class="row">
             <div class="col-md-6">
-                <div class="btn btn-info" ngf-select="upload($files)" ngf-multiple="true">
+                <div class="btn btn-info" ngf-select="upload($files)" ngf-multiple="true" ng-model="files">
                     Selecione Arquivos
                 </div>
             </div>
         </div>
         <div class="row">
-            <div ngf-drop ngf-select ng-model="files" class="drop-box" ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true">
+            <div class="drop-box" ngf-select="upload($files)" ngf-drop ng-model="files" ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true">
                 Arraste Arquivos Aqui
             </div>
             <div ngf-no-file-drop>
@@ -59,7 +59,7 @@
             </div>
         </div>
         <div class="row">
-            Arquivos:
+            Arquivos selecionados, total({{ngModel.length}}):
             <ul>
                 <li ng-repeat="f in files" style="font:smaller">{{f.name}} {{f.$error}} {{f.$errorParam}}</li>
             </ul>

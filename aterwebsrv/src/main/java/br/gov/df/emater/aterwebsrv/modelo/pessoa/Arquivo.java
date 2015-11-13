@@ -59,6 +59,16 @@ public class Arquivo extends EntidadeBase implements _ChavePrimaria<Integer> {
 	public Arquivo() {
 	}
 
+	public Arquivo(String md5, String nomeOriginal, Calendar dataUpload, String extensao, Integer tamanho, String tipo) {
+		super();
+		this.md5 = md5;
+		this.nomeOriginal = nomeOriginal;
+		this.dataUpload = dataUpload;
+		this.extensao = extensao;
+		this.tamanho = tamanho;
+		this.tipo = tipo;
+	}
+
 	public Arquivo(Integer id) {
 		super(id);
 	}

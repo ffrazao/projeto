@@ -10,8 +10,10 @@ import org.springframework.util.CollectionUtils;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoDao;
+import br.gov.df.emater.aterwebsrv.dao.pessoa.ArquivoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.EmailDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.EnderecoDao;
+import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaArquivoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaEmailDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaEnderecoDao;
@@ -25,9 +27,11 @@ import br.gov.df.emater.aterwebsrv.dao.pessoa.TelefoneDao;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.CadastroAcao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.Arquivo;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Email;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Endereco;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaArquivo;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaEmail;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaEndereco;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaGrupoSocial;
@@ -57,7 +61,7 @@ public class SalvarCmd extends _Comando {
 
 	@Autowired
 	private PessoaDao dao;
-	
+
 	@Autowired
 	private PublicoAlvoDao publicoAlvoDao;
 
@@ -78,6 +82,12 @@ public class SalvarCmd extends _Comando {
 
 	@Autowired
 	private EmailDao emailDao;
+
+	@Autowired
+	private ArquivoDao arquivoDao;
+
+	@Autowired
+	private PessoaArquivoDao pessoaArquivoDao;
 
 	@Autowired
 	private PessoaEmailDao pessoaEmailDao;
@@ -104,7 +114,7 @@ public class SalvarCmd extends _Comando {
 		}
 		pessoa.setUsuarioAlteracao(getUsuario(contexto.getUsuario().getName()));
 		pessoa.setAlteracaoData(Calendar.getInstance());
-		
+
 		// publico alvo
 		if (Confirmacao.S.equals(pessoa.getPublicoAlvoConfirmacao())) {
 			PublicoAlvo publicoAlvo = pessoa.getPublicoAlvo();
@@ -259,7 +269,36 @@ public class SalvarCmd extends _Comando {
 				}
 			}
 		}
-		
+
+		// salvar arquivos vinculados
+		if (pessoa.getArquivoList() != null) {
+			// tratar a exclusao de registros
+			for (PessoaArquivo pessoaArquivo : pessoa.getArquivoList()) {
+				if (CadastroAcao.E.equals(pessoaArquivo.getCadastroAcao())) {
+					pessoaArquivoDao.delete(pessoaArquivo);
+				}
+			}
+			// tratar a insersao de registros
+			for (PessoaArquivo pessoaArquivo : pessoa.getArquivoList()) {
+				if (!CadastroAcao.E.equals(pessoaArquivo.getCadastroAcao())) {
+					Arquivo arquivo = pessoaArquivo.getArquivo();
+					arquivo = arquivoDao.findByMd5(arquivo.getMd5());
+					if (arquivo != null) {
+						arquivo.setMd5(pessoaArquivo.getArquivo().getMd5());
+						arquivo.setNomeOriginal(pessoaArquivo.getArquivo().getNomeOriginal());
+						arquivo.setDataUpload(pessoaArquivo.getArquivo().getDataUpload());
+						arquivo.setExtensao(pessoaArquivo.getArquivo().getExtensao());
+						arquivo.setTamanho(pessoaArquivo.getArquivo().getTamanho());
+						arquivo.setTipo(pessoaArquivo.getArquivo().getTipo());
+					}
+					arquivo = arquivoDao.save(pessoaArquivo.getArquivo());
+					pessoaArquivo.setArquivo(arquivo);
+					pessoaArquivo.setPessoa(pessoa);
+					pessoaArquivoDao.save(pessoaArquivo);
+				}
+			}
+		}
+
 		dao.flush();
 
 		contexto.setResposta(pessoa.getId());

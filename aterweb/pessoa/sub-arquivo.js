@@ -1,4 +1,4 @@
-/* global StringMask:false */
+/* global StringMask:false, humanFileSize */
 
 (function(pNmModulo, pNmController, pNmFormulario) {
 
@@ -10,18 +10,18 @@ angular.module(pNmModulo).controller(pNmController,
 
     // inicializacao
     var init = function() {
-        if (!angular.isObject($scope.cadastro.registro.emailList)) {
-            $scope.cadastro.registro.emailList = [];
+        if (!angular.isObject($scope.cadastro.registro.arquivoList)) {
+            $scope.cadastro.registro.arquivoList = [];
         }
-        $scope.pessoaEmailNvg = new FrzNavegadorParams($scope.cadastro.registro.emailList, 4);
+        $scope.pessoaArquivoNvg = new FrzNavegadorParams($scope.cadastro.registro.arquivoList, 4);
     };
     if (!$modalInstance) { init(); }
 
     // inicio rotinas de apoio
     var jaCadastrado = function(conteudo) {
-        for (var j in $scope.cadastro.registro.emailList) {
-            if (angular.equals($scope.cadastro.registro.emailList[j].email.endereco, conteudo.email.endereco)) {
-                if ($scope.cadastro.registro.emailList[j].cadastroAcao === 'E') {
+        for (var j in $scope.cadastro.registro.arquivoList) {
+            if (angular.equals($scope.cadastro.registro.arquivoList[j].arquivo.endereco, conteudo.arquivo.endereco)) {
+                if ($scope.cadastro.registro.arquivoList[j].cadastroAcao === 'E') {
                     return true;
                 } else {
                     toastr.error('Registro já cadastrado');
@@ -32,18 +32,37 @@ angular.module(pNmModulo).controller(pNmController,
         return true;
     };
     var editarItem = function (destino, item) {
-        mensagemSrv.confirmacao(true, 'pessoa-email-frm.html', null, item, null, jaCadastrado).then(function (conteudo) {
+
+        var conf = 
+            '<div class="form-group">' + 
+            '    <label class="col-md-4 control-label" for="nomeArquivo">Arquivos</label>' + 
+            '    <div class="row">' +
+            '       <div class="col-md-8">' +
+            '           <frz-arquivo ng-model="conteudo.nomeArquivo" tipo="ARQUIVOS"></frz-arquivo>' +
+            '           <input type="hidden" id="nomeArquivo" name="nomeArquivo" ng-model="conteudo.nomeArquivo"/>' +
+            '           <div class="label label-danger" ng-show="confirmacaoFrm.nomeArquivo.$error.required">' + 
+            '               <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' + 
+            '               Campo Obrigatório' + 
+            '           </div>' + 
+            '       </div>' + 
+            '    </div>' + 
+            '</div>';
+        mensagemSrv.confirmacao(false, conf, null, {
+            nomeArquivo: []
+        }).then(function(conteudo) {
             // processar o retorno positivo da modal
-            if (destino) {
-                if (destino['cadastroAcao'] && destino['cadastroAcao'] !== 'I') {
-                    destino['cadastroAcao'] = 'A';
+            init();
+            novo: for (var i in conteudo.nomeArquivo) {
+                cadastrado: for (var j in $scope.cadastro.registro.arquivoList) {
+                    if (conteudo.nomeArquivo[i].md5 === $scope.cadastro.registro.arquivoList[j].arquivo.md5) {
+                        continue novo;
+                    }
                 }
-                destino.email.endereco = angular.copy(conteudo.email.endereco);
-            } else {
-                conteudo['cadastroAcao'] = 'I';
-                $scope.cadastro.registro.emailList.push(conteudo);
+                $scope.cadastro.registro.arquivoList.push(
+                    {arquivo: conteudo.nomeArquivo[i]}
+                );
             }
-        }, function () {
+        }, function() {
             // processar o retorno negativo da modal
             //$log.info('Modal dismissed at: ' + new Date());
         });
@@ -51,23 +70,27 @@ angular.module(pNmModulo).controller(pNmController,
     // fim rotinas de apoio
 
     // inicio das operaçoes atribuidas ao navagador
-    $scope.abrir = function() { $scope.pessoaEmailNvg.mudarEstado('ESPECIAL'); };
+    $scope.abrir = function() {
+        $scope.pessoaArquivoNvg.mudarEstado('ESPECIAL'); 
+        // desabilitar a edição de arquivos
+        $scope.pessoaArquivoNvg.botao('edicao').visivel = false;
+    };
     $scope.incluir = function() {
-        var item = {email: {endereco: null}};
+        var item = {arquivo: {endereco: null}};
         editarItem(null, item);
     };
     $scope.editar = function() {
         var item = null;
         var i, j;
-        if ($scope.pessoaEmailNvg.selecao.tipo === 'U' && $scope.pessoaEmailNvg.selecao.item) {
-            item = angular.copy($scope.pessoaEmailNvg.selecao.item);
-            editarItem($scope.pessoaEmailNvg.selecao.item, item);
-        } else if ($scope.pessoaEmailNvg.selecao.items && $scope.pessoaEmailNvg.selecao.items.length) {
-            for (i in $scope.pessoaEmailNvg.selecao.items) {
-                for (j in $scope.cadastro.registro.emailList) {
-                    if (angular.equals($scope.pessoaEmailNvg.selecao.items[i], $scope.cadastro.registro.emailList[j])) {
-                        item = angular.copy($scope.cadastro.registro.emailList[j]);
-                        editarItem($scope.cadastro.registro.emailList[j], item);
+        if ($scope.pessoaArquivoNvg.selecao.tipo === 'U' && $scope.pessoaArquivoNvg.selecao.item) {
+            item = angular.copy($scope.pessoaArquivoNvg.selecao.item);
+            editarItem($scope.pessoaArquivoNvg.selecao.item, item);
+        } else if ($scope.pessoaArquivoNvg.selecao.items && $scope.pessoaArquivoNvg.selecao.items.length) {
+            for (i in $scope.pessoaArquivoNvg.selecao.items) {
+                for (j in $scope.cadastro.registro.arquivoList) {
+                    if (angular.equals($scope.pessoaArquivoNvg.selecao.items[i], $scope.cadastro.registro.arquivoList[j])) {
+                        item = angular.copy($scope.cadastro.registro.arquivoList[j]);
+                        editarItem($scope.cadastro.registro.arquivoList[j], item);
                     }
                 }
             }
@@ -76,27 +99,27 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.excluir = function() {
         mensagemSrv.confirmacao(false, 'confirme a exclusão').then(function (conteudo) {
             var i, j;
-            if ($scope.pessoaEmailNvg.selecao.tipo === 'U' && $scope.pessoaEmailNvg.selecao.item) {
-                for (j = $scope.cadastro.registro.emailList.length -1; j >= 0; j--) {
-                    if (angular.equals($scope.cadastro.registro.emailList[j].email.endereco, $scope.pessoaEmailNvg.selecao.item.email.endereco)) {
-                        //$scope.cadastro.registro.emailList.splice(j, 1);
-                        $scope.cadastro.registro.emailList[j].cadastroAcao = 'E';
+            if ($scope.pessoaArquivoNvg.selecao.tipo === 'U' && $scope.pessoaArquivoNvg.selecao.item) {
+                for (j = $scope.cadastro.registro.arquivoList.length -1; j >= 0; j--) {
+                    if (angular.equals($scope.cadastro.registro.arquivoList[j].arquivo.endereco, $scope.pessoaArquivoNvg.selecao.item.arquivo.endereco)) {
+                        //$scope.cadastro.registro.arquivoList.splice(j, 1);
+                        $scope.cadastro.registro.arquivoList[j].cadastroAcao = 'E';
                     }
                 }
-                $scope.pessoaEmailNvg.selecao.item = null;
-                $scope.pessoaEmailNvg.selecao.selecionado = false;
-            } else if ($scope.pessoaEmailNvg.selecao.items && $scope.pessoaEmailNvg.selecao.items.length) {
-                for (j = $scope.cadastro.registro.emailList.length-1; j >= 0; j--) {
-                    for (i in $scope.pessoaEmailNvg.selecao.items) {
-                        if (angular.equals($scope.cadastro.registro.emailList[j].email.endereco, $scope.pessoaEmailNvg.selecao.items[i].email.endereco)) {
-                            //$scope.cadastro.registro.emailList.splice(j, 1);
-                            $scope.cadastro.registro.emailList[j].cadastroAcao = 'E';
+                $scope.pessoaArquivoNvg.selecao.item = null;
+                $scope.pessoaArquivoNvg.selecao.selecionado = false;
+            } else if ($scope.pessoaArquivoNvg.selecao.items && $scope.pessoaArquivoNvg.selecao.items.length) {
+                for (j = $scope.cadastro.registro.arquivoList.length-1; j >= 0; j--) {
+                    for (i in $scope.pessoaArquivoNvg.selecao.items) {
+                        if (angular.equals($scope.cadastro.registro.arquivoList[j].arquivo.endereco, $scope.pessoaArquivoNvg.selecao.items[i].arquivo.endereco)) {
+                            //$scope.cadastro.registro.arquivoList.splice(j, 1);
+                            $scope.cadastro.registro.arquivoList[j].cadastroAcao = 'E';
                             break;
                         }
                     }
                 }
-                for (i = $scope.pessoaEmailNvg.selecao.items.length -1; i >= 0; i--) {
-                    $scope.pessoaEmailNvg.selecao.items.splice(i, 1);
+                for (i = $scope.pessoaArquivoNvg.selecao.items.length -1; i >= 0; i--) {
+                    $scope.pessoaArquivoNvg.selecao.items.splice(i, 1);
                 }
             }
         }, function () {
@@ -131,6 +154,10 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.visualizar = function() {};
     $scope.voltar = function() {};
     // fim das operaçoes atribuidas ao navagador
+
+    $scope.tamanhoArquivo = function(tamanho) {
+        return humanFileSize(tamanho);
+    };
 
 } // fim função
 ]);
