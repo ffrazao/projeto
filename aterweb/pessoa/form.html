@@ -4,7 +4,6 @@
         <form name="frm.formulario" novalidate>
             <!--<fieldset ng-disabled="['INCLUINDO', 'EDITANDO'].indexOf(navegador.estadoAtual()) < 0">-->
             <fieldset>
-                <input type="hidden" ng-model="cadastro.registro.id" />
                 <div class="row">
                     <div class="col-md-2">
                         <div class="form-group">
@@ -83,25 +82,25 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="control-label" for="pessoaTipo">Observações</label>
+                            <label class="control-label">Observações</label>
                             <textarea class="form-control" rows="4" ng-model="cadastro.registro.observacoes"></textarea>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group col-md-8">
-                            <label class="control-label" for="pessoaTipo">Resp. Inclusão</label>
+                            <label class="control-label">Resp. Inclusão</label>
                             <input class="form-control" type="text" readonly="true" ng-model="cadastro.registro.usuarioInclusao.username"/>
                         </div>
                         <div class="form-group col-md-4">
-                            <label class="control-label" for="pessoaTipo">Dt. Inclusão</label>
+                            <label class="control-label">Dt. Inclusão</label>
                             <input class="form-control" type="text" readonly="true" ng-model="cadastro.registro.inclusaoData"/>
                         </div>
                         <div class="form-group col-md-8">
-                            <label class="control-label" for="pessoaTipo">Resp. Atualização</label>
+                            <label class="control-label">Resp. Atualização</label>
                             <input class="form-control" type="text" readonly="true"  ng-model="cadastro.registro.usuarioAlteracao.username"/>
                         </div>
                         <div class="form-group col-md-4">
-                            <label class="control-label" for="pessoaTipo">Dt. Atualização</label>
+                            <label class="control-label">Dt. Atualização</label>
                             <input class="form-control" type="text" readonly="true" ng-model="cadastro.registro.alteracaoData"/>
                         </div>
                     </div>

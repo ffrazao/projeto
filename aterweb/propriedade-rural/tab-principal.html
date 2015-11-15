@@ -35,7 +35,7 @@
 
 <div class="form-group" title="Pessoas Vinculadas" style="padding: 10px;">
     <input type="hidden" name="vinculado" id="Vinculado" ng-model="cadastro.registro.vinculado.length">
-    <ng-include src="'propriedade/registro-sub-vinculado.html'" ng-controller="RegistroVinculadoCtrl"></ng-include>
+    <ng-include src="'propriedade-rural/registro-sub-vinculado.html'" ng-controller="RegistroVinculadoCtrl"></ng-include>
     <div class="label label-danger" ng-show="navegador.submitido && frm.registro.vinculado.$error.required">
         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
         Campo Obrigatório
@@ -97,14 +97,6 @@
             <div class="col-md-4" >
                 <label class="control-label" for="outorgaValidade">Validade</label><BR>
                 <input id="outorgaValidade" name="outorgaValidade" type="text" class="form-control input-md" ng-model="cadastro.registro.outorgaValidade">
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12" >
-                <label class="control-label" for="observacao">Observações</label><br>
-                <textarea class="form-control" id="observacao" name="observacao" ng-model="cadastro.registro.observacao">
-                </textarea>
             </div>
         </div>
             

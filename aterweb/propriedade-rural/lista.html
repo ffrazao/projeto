@@ -16,11 +16,12 @@
                     <th width="30">
                         #
                     </th>
-                    <th>Foto</th>
-                    <th>Nome</th>
-                    <th>Tipo</th>
-                    <th>CPF/CNPJ</th>
-                    <th>Beneficiário</th>
+                    <th>Nome da Propriedade</th>
+                    <th>Endereço</th>
+                    <th>Comunidade</th>
+                    <th>Bacia Hidrográfica</th>
+                    <th>Tamanho da Propriedade (ha)</th>
+                    <th>Beneficiários</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,11 +33,12 @@
                     <td>
                         {{$index + 1 + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)}}
                     </td>
-                    <td width="96px"><img ng-src="{{item.foto}}"/></td>
-                    <td>{{item.nome}}</td>
-                    <td>{{item.tipoPessoa}}</td>
-                    <td>{{item.cpf}}{{item.cnpj}}</td>
-                    <td>{{item.beneficiario}}</td>
+                    <td>{{item[1]}}</td>
+                    <td><p style="white-space: pre;">{{item[2]}}</p></td>
+                    <td>{{item[3]}}</td>
+                    <td>{{item[4]}}</td>
+                    <td>{{item[5] | number: globalFracaoHectares}}</td>
+                    <td><ul><li ng-repeat="publicoAlvo in item[6]">{{publicoAlvo}}</li></ul></td>
                 </tr>
             </tbody>
         </table>

@@ -35,8 +35,10 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.SituacaoFundiaria;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Endereco;
+import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonFormatarBigDecimal;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
@@ -51,6 +53,13 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
+
+	@Column(name = "alteracao_data")
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+	@JsonSerialize(using = JsonSerializerData.class)
+	@JsonDeserialize(using = JsonDeserializerData.class)
+	private Calendar alteracaoData;
 
 	@Column(name = "area_irrigada_aspersao")
 	private String areaIrrigadaAspersao;
@@ -136,6 +145,13 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
+	@Column(name = "inclusao_data")
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+	@JsonSerialize(using = JsonSerializerData.class)
+	@JsonDeserialize(using = JsonDeserializerData.class)
+	private Calendar inclusaoData;
+
 	@Column(name = "mao_de_obra_contratada")
 	private String maoDeObraContratada;
 
@@ -151,6 +167,8 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 	@Column(name = "morad_propried_pessoas")
 	private String moradPropriedPessoas;
 
+	private String nome;
+
 	@Column(name = "numero_registro")
 	@Field(index = Index.YES, store = Store.YES)
 	private String numeroRegistro;
@@ -160,7 +178,8 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 	private String observacoes;
 
 	@Field(index = Index.YES, store = Store.YES)
-	private String outorga;
+	@Enumerated(EnumType.STRING)
+	private Confirmacao outorga;
 
 	@Column(name = "outorga_numero")
 	@Field(index = Index.YES, store = Store.YES)
@@ -333,6 +352,14 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
 	private BigDecimal usoSoloTotalVlUnit;
 
+	@ManyToOne
+	@JoinColumn(name = "alteracao_usuario_id")
+	private Usuario usuarioAlteracao;
+
+	@ManyToOne
+	@JoinColumn(name = "inclusao_usuario_id")
+	private Usuario usuarioInclusao;
+
 	public PropriedadeRural() {
 
 	}
@@ -357,6 +384,10 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	public Calendar getAlteracaoData() {
+		return alteracaoData;
 	}
 
 	public String getAreaIrrigadaAspersao() {
@@ -448,6 +479,10 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 		return id;
 	}
 
+	public Calendar getInclusaoData() {
+		return inclusaoData;
+	}
+
 	public String getMaoDeObraContratada() {
 		return maoDeObraContratada;
 	}
@@ -468,6 +503,10 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 		return moradPropriedPessoas;
 	}
 
+	public String getNome() {
+		return nome;
+	}
+
 	public String getNumeroRegistro() {
 		return numeroRegistro;
 	}
@@ -476,7 +515,7 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 		return observacoes;
 	}
 
-	public String getOutorga() {
+	public Confirmacao getOutorga() {
 		return outorga;
 	}
 
@@ -632,12 +671,24 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 		return usoSoloTotalVlUnit;
 	}
 
+	public Usuario getUsuarioAlteracao() {
+		return usuarioAlteracao;
+	}
+
+	public Usuario getUsuarioInclusao() {
+		return usuarioInclusao;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
+	}
+
+	public void setAlteracaoData(Calendar alteracaoData) {
+		this.alteracaoData = alteracaoData;
 	}
 
 	public void setAreaIrrigadaAspersao(String areaIrrigadaAspersao) {
@@ -729,6 +780,10 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 		this.id = id;
 	}
 
+	public void setInclusaoData(Calendar inclusaoData) {
+		this.inclusaoData = inclusaoData;
+	}
+
 	public void setMaoDeObraContratada(String maoDeObraContratada) {
 		this.maoDeObraContratada = maoDeObraContratada;
 	}
@@ -749,6 +804,10 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 		this.moradPropriedPessoas = moradPropriedPessoas;
 	}
 
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
 	public void setNumeroRegistro(String numeroRegistro) {
 		this.numeroRegistro = numeroRegistro;
 	}
@@ -757,7 +816,7 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 		this.observacoes = observacoes;
 	}
 
-	public void setOutorga(String outorga) {
+	public void setOutorga(Confirmacao outorga) {
 		this.outorga = outorga;
 	}
 
@@ -911,6 +970,14 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 
 	public void setUsoSoloTotalVlUnit(BigDecimal usoSoloTotalVlUnit) {
 		this.usoSoloTotalVlUnit = usoSoloTotalVlUnit;
+	}
+
+	public void setUsuarioAlteracao(Usuario usuarioAlteracao) {
+		this.usuarioAlteracao = usuarioAlteracao;
+	}
+
+	public void setUsuarioInclusao(Usuario usuarioInclusao) {
+		this.usuarioInclusao = usuarioInclusao;
 	}
 
 }

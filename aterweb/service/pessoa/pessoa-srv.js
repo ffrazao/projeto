@@ -28,7 +28,6 @@ angular.module(pNmModulo).factory(pNmFactory,
                    'RegimeCasamento',
                    'PessoaNacionalidade',
                    'CamOrgao',
-                   'ConfirmacaoDap',
                    'CnhCategoria',
                    'UnidadeOrganizacional',
                    'MeioContatoFinalidade',
@@ -53,24 +52,23 @@ angular.module(pNmModulo).factory(pNmFactory,
                         scp.cadastro.apoio.regimeCasamentoList = resposta.resultado[14];
                         scp.cadastro.apoio.nacionalidadeList = resposta.resultado[15];
                         scp.cadastro.apoio.camOrgaoList = resposta.resultado[16];
-                        scp.cadastro.apoio.confirmacaoDapList = resposta.resultado[17];
-                        scp.cadastro.apoio.cnhCategoriaList = resposta.resultado[18];
-                        scp.cadastro.apoio.unidadeOrganizacionalList = resposta.resultado[19];
+                        scp.cadastro.apoio.cnhCategoriaList = resposta.resultado[17];
+                        scp.cadastro.apoio.unidadeOrganizacionalList = resposta.resultado[18];
                         scp.cadastro.apoio.meioContatoFinalidadeList = [];
                         var codigo = '';
                         var descricao = '';
-                        for (var i in resposta.resultado[20]) {
-                          scp.cadastro.apoio.meioContatoFinalidadeList.push(resposta.resultado[20][i]);
+                        for (var i in resposta.resultado[19]) {
+                          scp.cadastro.apoio.meioContatoFinalidadeList.push(resposta.resultado[19][i]);
                           if (codigo !== '') {
                             codigo += ',';
                             descricao += ' & ';
                           }
-                          codigo +=  resposta.resultado[20][i].codigo;
-                          descricao +=  resposta.resultado[20][i].descricao;
+                          codigo +=  resposta.resultado[19][i].codigo;
+                          descricao +=  resposta.resultado[19][i].descricao;
                         }
                         scp.cadastro.apoio.meioContatoFinalidadeList.push({'codigo': codigo, 'descricao': descricao});
-                        scp.cadastro.apoio.telefoneTipoList = resposta.resultado[21];
-                        scp.cadastro.apoio.relacionamentoFuncaoList = resposta.resultado[22];
+                        scp.cadastro.apoio.telefoneTipoList = resposta.resultado[20];
+                        scp.cadastro.apoio.relacionamentoFuncaoList = resposta.resultado[21];
 
                         scp.cadastro.apoio.tradicaoList = [];
                         var anoAtual = new Date().getFullYear();

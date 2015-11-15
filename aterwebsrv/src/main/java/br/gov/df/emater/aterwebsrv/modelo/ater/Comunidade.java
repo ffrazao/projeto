@@ -1,15 +1,19 @@
 package br.gov.df.emater.aterwebsrv.modelo.ater;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
+import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacionalComunidade;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Cidade;
 
 /**
@@ -36,6 +40,9 @@ public class Comunidade extends EntidadeBase implements _ChavePrimaria<Integer> 
 
 	private String sigla;
 
+	@OneToMany(mappedBy = "comunidade")
+	private List<UnidadeOrganizacionalComunidade> unidadeOrganizacionalComunidadeList;
+
 	public Comunidade() {
 	}
 
@@ -59,6 +66,10 @@ public class Comunidade extends EntidadeBase implements _ChavePrimaria<Integer> 
 		return sigla;
 	}
 
+	public List<UnidadeOrganizacionalComunidade> getUnidadeOrganizacionalComunidadeList() {
+		return unidadeOrganizacionalComunidadeList;
+	}
+
 	public void setCidade(Cidade cidade) {
 		this.cidade = cidade;
 	}
@@ -77,6 +88,10 @@ public class Comunidade extends EntidadeBase implements _ChavePrimaria<Integer> 
 
 	public void setSigla(String sigla) {
 		this.sigla = sigla;
+	}
+
+	public void setUnidadeOrganizacionalComunidadeList(List<UnidadeOrganizacionalComunidade> unidadeOrganizacionalComunidadeList) {
+		this.unidadeOrganizacionalComunidadeList = unidadeOrganizacionalComunidadeList;
 	}
 
 }

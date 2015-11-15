@@ -2,38 +2,34 @@
 
 'use strict';
 
-
 angular.module(pNmModulo).controller(pNmController,
-    ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr', 'utilSrv', 'mensagemSrv',
-    function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, utilSrv, mensagemSrv) {
+    ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr', 'UtilSrv',
+    function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, UtilSrv) {
 
     // inicializacao
     var init = function() {
-        if (!angular.isObject($scope.cadastro.registro.diagnostico)) {
-            $scope.cadastro.registro.diagnostico = [];
+        if (!angular.isObject($scope.cadastro.registro.vinculado)) {
+            $scope.cadastro.registro.vinculado = [];
         }
-        $scope.DiagnosticoNvg = new FrzNavegadorParams($scope.cadastro.registro.diagnostico, 8);
+        $scope.subVinculadoNvg = new FrzNavegadorParams($scope.cadastro.registro.vinculado, 4);
     };
-
     if (!$modalInstance) { init(); }
 
-    if ($modalInstance === null) { $scope.modalEstado = null; } 
-    else { $scope.modalEstado = 'filtro'; }
+
+    if ($modalInstance === null) {
+        $scope.navegador.dados.vinculado = [];
+        
+        $scope.subVinculadoNvg.setDados($scope.navegador.dados.vinculado);
+    } 
+
 
     // inicio rotinas de apoio
-    // $scope.seleciona = function(DiagnosticoNvg, item) { };
-    // $scope.mataClick = function(DiagnosticoNv, event, item){ };
+    // $scope.seleciona = function(subVinculadoNvg, item) { };
+    // $scope.mataClick = function(subVinculadoNvg, event, item){ };
     // fim rotinas de apoio
 
     // inicio das operaçoes atribuidas ao navagador
-    $scope.abrir = function() { $scope.DiagnosticoNvg.mudarEstado('ESPECIAL'); };
-
-    $scope.editar = function() {  $scope.incluir(); };
-
-    $scope.incluir = function() {
-        $scope.abreModal(  { arquivo: 'tab-diagnostico-sub-modal.html', descricao: 'Diagnóstico', tamanho :800,  dados: $scope.DiagnosticoNvg.selecao.item } );
-    };
-
+    $scope.abrir = function() { $scope.subVinculadoNvg.mudarEstado('ESPECIAL'); };
 
     $scope.agir = function() {};
     $scope.ajudar = function() {};
@@ -55,6 +51,14 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.folhearProximo = function() {};
     $scope.folhearUltimo = function() {};
 
+    $scope.editar = function() {  $scope.incluir(); };
+
+    $scope.incluir = function() {
+        var tmp = $scope.subVinculadoNvg.selecao.item;
+        var item = { arquivo: '..\\pessoa\\pessoa-modal.html', descricao: 'Pessoa', tamanho :800, dados: tmp };
+        $scope.abreModal(item);
+    };
+
     $scope.informacao = function() {};
     $scope.limpar = function() {};
     $scope.paginarAnterior = function() {};
@@ -69,4 +73,4 @@ angular.module(pNmModulo).controller(pNmController,
 } // fim função
 ]);
 
-})('propriedade', 'DiagnosticoSubCtrl', 'Pessoas Vinculadas à Propriedade');
+})('propriedadeRural', 'RegistroVinculadoCtrl', 'Pessoas Vinculadas à Propriedade');

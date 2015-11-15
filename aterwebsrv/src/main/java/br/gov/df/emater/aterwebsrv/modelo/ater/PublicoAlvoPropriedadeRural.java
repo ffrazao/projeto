@@ -4,6 +4,8 @@ import java.util.Calendar;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -57,6 +59,7 @@ public class PublicoAlvoPropriedadeRural extends EntidadeBase implements _ChaveP
 	private Calendar termino;
 
 	@Column(name = "tipo_vinculo")
+	@Enumerated(EnumType.STRING)
 	private PropriedadeRuralVinculoTipo vinculo;
 
 	@Override

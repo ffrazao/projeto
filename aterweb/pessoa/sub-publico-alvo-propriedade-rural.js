@@ -13,7 +13,7 @@ angular.module(pNmModulo).controller(pNmController,
         if (!angular.isObject($scope.cadastro.registro.publicoAlvoPropriedadeRuralList)) {
             $scope.cadastro.registro.publicoAlvoPropriedadeRuralList = [];
         }
-        $scope.pessoaPublicoAlvoPropriedadeRuralNvg = new FrzNavegadorParams($scope.cadastro.registro.publicoAlvoPropriedadeRuralList, 4);
+        $scope.publicoAlvoPropriedadeRuralNvg = new FrzNavegadorParams($scope.cadastro.registro.publicoAlvoPropriedadeRuralList, 4);
     };
     if (!$modalInstance) { init(); }
 
@@ -32,26 +32,78 @@ angular.module(pNmModulo).controller(pNmController,
         return true;
     };
     var editarItem = function (destino, item) {
-        mensagemSrv.confirmacao(true, 'pessoa-publicoAlvoPropriedadeRural-frm.html', null, item, null, jaCadastrado).then(function (conteudo) {
-            // processar o retorno positivo da modal
-            if (destino) {
-                if (destino['cadastroAcao'] && destino['cadastroAcao'] !== 'I') {
-                    destino['cadastroAcao'] = 'A';
+        $scope.modalSelecinarPropriedadeRural();
+    };
+    $scope.modalSelecinarPropriedadeRural = function (size) {
+        // abrir a modal
+        var modalInstance = $modal.open({
+            animation: true,
+            templateUrl: 'propriedade-rural/propriedade-rural-modal.html',
+            controller: 'PropriedadeRuralCtrl',
+            size: 'lg',
+            resolve: {
+                modalCadastro: function() {
+                    return {filtro: {}, lista: [], registro: {}, original: {}, apoio: [],};
                 }
-                destino.publicoAlvoPropriedadeRural.endereco = angular.copy(conteudo.publicoAlvoPropriedadeRural.endereco);
-            } else {
-                conteudo['cadastroAcao'] = 'I';
-                $scope.cadastro.registro.publicoAlvoPropriedadeRuralList.push(conteudo);
             }
+        });
+        // processar retorno da modal
+        modalInstance.result.then(function (resultado) {
+            // processar o retorno positivo da modal
+                $scope.cadastro.registro.publicoAlvoPropriedadeRuralList.push(resultado.registro); return;
+            if (resultado.tipo === 'U') {
+                var reg = {pessoa: {id: resultado.item[0], nome: resultado.item[1], pessoaTipo: resultado.item[3], genero: resultado.item[11]}};
+                if (reg.pessoa.pessoaTipo === 'PF') {
+                    reg.pessoa['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica';
+                } else if (reg.pessoa.pessoaTipo === 'PJ') {
+                    reg.pessoa['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica';
+                }
+                $scope.cadastro.registro.publicoAlvoPropriedadeRuralList.push(reg);
+            } else {
+                for (var i in resultado.items) {
+                    var reg = {pessoa: {id: resultado.items[i][0], nome: resultado.items[i][1], pessoaTipo: resultado.items[i][3], genero: resultado.items[i][11]}};
+                    if (reg.pessoa.pessoaTipo === 'PF') {
+                        reg.pessoa['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica';
+                    } else if (reg.pessoa.pessoaTipo === 'PJ') {
+                        reg.pessoa['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica';
+                    }
+                    $scope.cadastro.registro.publicoAlvoPropriedadeRuralList.push(reg);
+                }
+            }
+            toastr.info('Operação realizada!', 'Informação');
         }, function () {
             // processar o retorno negativo da modal
-            //$log.info('Modal dismissed at: ' + new Date());
+            
+        });
+    };
+
+    $scope.modalVerPropriedadeRural = function (id) {
+        // abrir a modal
+        var modalInstance = $modal.open({
+            animation: true,
+            template: '<ng-include src=\"\'propriedade-rural/propriedade-rural-form-modal.html\'\"></ng-include>',
+            controller: 'PropriedadeRuralCtrl',
+            size: 'lg',
+            resolve: {
+                modalCadastro: function () {
+                    var cadastro = {registro: {id: id}, filtro: {}, lista: [], original: {}, apoio: [],};
+                    return cadastro;
+                }
+            }
+        });
+        // processar retorno da modal
+        modalInstance.result.then(function (cadastroModificado) {
+            // processar o retorno positivo da modal
+
+        }, function () {
+            // processar o retorno negativo da modal
+            $log.info('Modal dismissed at: ' + new Date());
         });
     };
     // fim rotinas de apoio
 
     // inicio das operaçoes atribuidas ao navagador
-    $scope.abrir = function() { $scope.pessoaPublicoAlvoPropriedadeRuralNvg.mudarEstado('ESPECIAL'); };
+    $scope.abrir = function() { $scope.publicoAlvoPropriedadeRuralNvg.mudarEstado('ESPECIAL'); };
     $scope.incluir = function() {
         var item = {publicoAlvoPropriedadeRural: {endereco: null}};
         editarItem(null, item);
@@ -59,13 +111,13 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.editar = function() {
         var item = null;
         var i, j;
-        if ($scope.pessoaPublicoAlvoPropriedadeRuralNvg.selecao.tipo === 'U' && $scope.pessoaPublicoAlvoPropriedadeRuralNvg.selecao.item) {
-            item = angular.copy($scope.pessoaPublicoAlvoPropriedadeRuralNvg.selecao.item);
-            editarItem($scope.pessoaPublicoAlvoPropriedadeRuralNvg.selecao.item, item);
-        } else if ($scope.pessoaPublicoAlvoPropriedadeRuralNvg.selecao.items && $scope.pessoaPublicoAlvoPropriedadeRuralNvg.selecao.items.length) {
-            for (i in $scope.pessoaPublicoAlvoPropriedadeRuralNvg.selecao.items) {
+        if ($scope.publicoAlvoPropriedadeRuralNvg.selecao.tipo === 'U' && $scope.publicoAlvoPropriedadeRuralNvg.selecao.item) {
+            item = angular.copy($scope.publicoAlvoPropriedadeRuralNvg.selecao.item);
+            editarItem($scope.publicoAlvoPropriedadeRuralNvg.selecao.item, item);
+        } else if ($scope.publicoAlvoPropriedadeRuralNvg.selecao.items && $scope.publicoAlvoPropriedadeRuralNvg.selecao.items.length) {
+            for (i in $scope.publicoAlvoPropriedadeRuralNvg.selecao.items) {
                 for (j in $scope.cadastro.registro.publicoAlvoPropriedadeRuralList) {
-                    if (angular.equals($scope.pessoaPublicoAlvoPropriedadeRuralNvg.selecao.items[i], $scope.cadastro.registro.publicoAlvoPropriedadeRuralList[j])) {
+                    if (angular.equals($scope.publicoAlvoPropriedadeRuralNvg.selecao.items[i], $scope.cadastro.registro.publicoAlvoPropriedadeRuralList[j])) {
                         item = angular.copy($scope.cadastro.registro.publicoAlvoPropriedadeRuralList[j]);
                         editarItem($scope.cadastro.registro.publicoAlvoPropriedadeRuralList[j], item);
                     }
@@ -76,27 +128,27 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.excluir = function() {
         mensagemSrv.confirmacao(false, 'confirme a exclusão').then(function (conteudo) {
             var i, j;
-            if ($scope.pessoaPublicoAlvoPropriedadeRuralNvg.selecao.tipo === 'U' && $scope.pessoaPublicoAlvoPropriedadeRuralNvg.selecao.item) {
+            if ($scope.publicoAlvoPropriedadeRuralNvg.selecao.tipo === 'U' && $scope.publicoAlvoPropriedadeRuralNvg.selecao.item) {
                 for (j = $scope.cadastro.registro.publicoAlvoPropriedadeRuralList.length -1; j >= 0; j--) {
-                    if (angular.equals($scope.cadastro.registro.publicoAlvoPropriedadeRuralList[j].publicoAlvoPropriedadeRural.endereco, $scope.pessoaPublicoAlvoPropriedadeRuralNvg.selecao.item.publicoAlvoPropriedadeRural.endereco)) {
+                    if (angular.equals($scope.cadastro.registro.publicoAlvoPropriedadeRuralList[j].publicoAlvoPropriedadeRural.endereco, $scope.publicoAlvoPropriedadeRuralNvg.selecao.item.publicoAlvoPropriedadeRural.endereco)) {
                         //$scope.cadastro.registro.publicoAlvoPropriedadeRuralList.splice(j, 1);
                         $scope.cadastro.registro.publicoAlvoPropriedadeRuralList[j].cadastroAcao = 'E';
                     }
                 }
-                $scope.pessoaPublicoAlvoPropriedadeRuralNvg.selecao.item = null;
-                $scope.pessoaPublicoAlvoPropriedadeRuralNvg.selecao.selecionado = false;
-            } else if ($scope.pessoaPublicoAlvoPropriedadeRuralNvg.selecao.items && $scope.pessoaPublicoAlvoPropriedadeRuralNvg.selecao.items.length) {
+                $scope.publicoAlvoPropriedadeRuralNvg.selecao.item = null;
+                $scope.publicoAlvoPropriedadeRuralNvg.selecao.selecionado = false;
+            } else if ($scope.publicoAlvoPropriedadeRuralNvg.selecao.items && $scope.publicoAlvoPropriedadeRuralNvg.selecao.items.length) {
                 for (j = $scope.cadastro.registro.publicoAlvoPropriedadeRuralList.length-1; j >= 0; j--) {
-                    for (i in $scope.pessoaPublicoAlvoPropriedadeRuralNvg.selecao.items) {
-                        if (angular.equals($scope.cadastro.registro.publicoAlvoPropriedadeRuralList[j].publicoAlvoPropriedadeRural.endereco, $scope.pessoaPublicoAlvoPropriedadeRuralNvg.selecao.items[i].publicoAlvoPropriedadeRural.endereco)) {
+                    for (i in $scope.publicoAlvoPropriedadeRuralNvg.selecao.items) {
+                        if (angular.equals($scope.cadastro.registro.publicoAlvoPropriedadeRuralList[j].publicoAlvoPropriedadeRural.endereco, $scope.publicoAlvoPropriedadeRuralNvg.selecao.items[i].publicoAlvoPropriedadeRural.endereco)) {
                             //$scope.cadastro.registro.publicoAlvoPropriedadeRuralList.splice(j, 1);
                             $scope.cadastro.registro.publicoAlvoPropriedadeRuralList[j].cadastroAcao = 'E';
                             break;
                         }
                     }
                 }
-                for (i = $scope.pessoaPublicoAlvoPropriedadeRuralNvg.selecao.items.length -1; i >= 0; i--) {
-                    $scope.pessoaPublicoAlvoPropriedadeRuralNvg.selecao.items.splice(i, 1);
+                for (i = $scope.publicoAlvoPropriedadeRuralNvg.selecao.items.length -1; i >= 0; i--) {
+                    $scope.publicoAlvoPropriedadeRuralNvg.selecao.items.splice(i, 1);
                 }
             }
         }, function () {

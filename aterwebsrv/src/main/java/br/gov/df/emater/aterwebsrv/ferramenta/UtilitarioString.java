@@ -7,17 +7,28 @@ import java.util.regex.Pattern;
 public class UtilitarioString {
 
 	public static String collectionToString(Collection<?> objetos) {
-		return collectionToString(objetos, false);
+		return collectionToString(objetos, null);
 	}
 
-	public static String collectionToString(Collection<?> objetos, boolean stringValue) {
+	public static String collectionToString(Collection<?> objetos, String delimitador) {
+		return collectionToString(objetos, delimitador, false, true);
+	}
+
+	public static String collectionToString(Collection<?> objetos, String delimitador, boolean stringValue, boolean ignoreNull) {
 		StringBuilder result = new StringBuilder();
 		if (objetos == null) {
-			result.append("null");
+			if (ignoreNull) {
+				return null;
+			} else {
+				result.append("null");
+			}
 		} else {
 			for (Object o : objetos) {
+				if (ignoreNull && o == null) {
+					continue;
+				}
 				if (result.length() > 0) {
-					result.append(",");
+					result.append(delimitador == null ? ", " : delimitador);
 				}
 				if (stringValue) {
 					result.append("\'").append(o).append("\'");

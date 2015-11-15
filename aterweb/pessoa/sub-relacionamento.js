@@ -5,8 +5,8 @@
 'use strict';
 
 angular.module(pNmModulo).controller(pNmController,
-    ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr', 'UtilSrv', 'mensagemSrv',
-    function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, UtilSrv, mensagemSrv) {
+    ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr', 'UtilSrv', 'mensagemSrv', '$log',
+    function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, UtilSrv, mensagemSrv, $log) {
 
     // inicializacao
     var init = function() {
@@ -33,21 +33,71 @@ angular.module(pNmModulo).controller(pNmController,
     };
     var editarItem = function (destino, item) {
         $scope.modalSelecinarRelacionado();
-/*        mensagemSrv.confirmacao(true, 'pessoa-relacionamento-frm.html', null, item, null, jaCadastrado).then(function (conteudo) {
-            // processar o retorno positivo da modal
-            if (destino) {
-                if (destino['cadastroAcao'] && destino['cadastroAcao'] !== 'I') {
-                    destino['cadastroAcao'] = 'A';
+    };
+    $scope.modalSelecinarRelacionado = function (size) {
+        // abrir a modal
+        var modalInstance = $modal.open({
+            animation: true,
+            templateUrl: 'pessoa/pessoa-modal.html',
+            controller: 'PessoaCtrl',
+            size: 'lg',
+            resolve: {
+                modalCadastro: function() {
+                    return {filtro: {}, lista: [], registro: {}, original: {}, apoio: [],};
                 }
-                destino.relacionamento.endereco = angular.copy(conteudo.relacionamento.endereco);
-            } else {
-                conteudo['cadastroAcao'] = 'I';
-                $scope.cadastro.registro.relacionamentoList.push(conteudo);
             }
+        });
+        // processar retorno da modal
+        modalInstance.result.then(function (resultado) {
+            // processar o retorno positivo da modal
+            if (resultado.tipo === 'U') {
+                var reg = {pessoa: {id: resultado.item[0], nome: resultado.item[1], pessoaTipo: resultado.item[3], genero: resultado.item[11]}};
+                if (reg.pessoa.pessoaTipo === 'PF') {
+                    reg.pessoa['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica';
+                } else if (reg.pessoa.pessoaTipo === 'PJ') {
+                    reg.pessoa['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica';
+                }
+                $scope.cadastro.registro.relacionamentoList.push(reg);
+            } else {
+                for (var i in resultado.items) {
+                    var reg = {pessoa: {id: resultado.items[i][0], nome: resultado.items[i][1], pessoaTipo: resultado.items[i][3], genero: resultado.items[i][11]}};
+                    if (reg.pessoa.pessoaTipo === 'PF') {
+                        reg.pessoa['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica';
+                    } else if (reg.pessoa.pessoaTipo === 'PJ') {
+                        reg.pessoa['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica';
+                    }
+                    $scope.cadastro.registro.relacionamentoList.push(reg);
+                }
+            }
+            toastr.info('Operação realizada!', 'Informação');
         }, function () {
             // processar o retorno negativo da modal
-            //$log.info('Modal dismissed at: ' + new Date());
-        });*/
+            
+        });
+    };
+
+    $scope.modalVerRelacionado = function (id) {
+        // abrir a modal
+        var modalInstance = $modal.open({
+            animation: true,
+            template: '<ng-include src=\"\'pessoa/pessoa-form-modal.html\'\"></ng-include>',
+            controller: 'PessoaCtrl',
+            size: 'lg',
+            resolve: {
+                modalCadastro: function () {
+                    var cadastro = {registro: {id: id}, filtro: {}, lista: [], original: {}, apoio: [],};
+                    return cadastro;
+                }
+            }
+        });
+        // processar retorno da modal
+        modalInstance.result.then(function (cadastroModificado) {
+            // processar o retorno positivo da modal
+
+        }, function () {
+            // processar o retorno negativo da modal
+            $log.info('Modal dismissed at: ' + new Date());
+        });
     };
     // fim rotinas de apoio
 
@@ -132,64 +182,6 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.visualizar = function() {};
     $scope.voltar = function() {};
     // fim das operaçoes atribuidas ao navagador
-
-    $scope.modalSelecinarRelacionado = function (size) {
-        // abrir a modal
-        var modalInstance = $modal.open({
-            animation: true,
-            templateUrl: 'pessoa/pessoa-modal.html',
-            controller: 'PessoaCtrl',
-            size: 'lg',
-            resolve: {
-                modalCadastro: function() {
-                    return {filtro: {}, lista: [], registro: {}, original: {}, apoio: [],};
-                }
-            }
-        });
-        // processar retorno da modal
-        modalInstance.result.then(function (resultado) {
-            // processar o retorno positivo da modal
-            if (resultado.tipo === 'U') {
-                var reg = {pessoa: {id: resultado.item[0], nome: resultado.item[1], pessoaTipo: resultado.item[3], genero: resultado.item[11]}};
-                if (reg.pessoa.pessoaTipo === 'PF') {
-                    reg.pessoa['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica';
-                } else if (reg.pessoa.pessoaTipo === 'PJ') {
-                    reg.pessoa['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica';
-                }
-                $scope.cadastro.registro.relacionamentoList.push(reg);
-            } else {
-                $scope.cadastro.registro.executor = resultado.items[0];
-            }
-            toastr.info('Operação realizada!', 'Informação');
-        }, function () {
-            // processar o retorno negativo da modal
-            
-        });
-    };
-
-    $scope.modalVerRelacionado = function (size) {
-        // abrir a modal
-        var modalInstance = $modal.open({
-            animation: true,
-            templateUrl: 'pessoa/pessoa-modal.html',
-            controller: 'PessoaCtrl',
-            size: 'lg',
-            resolve: {
-                modalCadastro: function () {
-                    var cadastro = {registro: angular.copy($scope.cadastro.registro.executor), filtro: {}, lista: [], original: {}, apoio: [],};
-                    return cadastro;
-                }
-            }
-        });
-        // processar retorno da modal
-        modalInstance.result.then(function (resultado) {
-        // processar o retorno positivo da modal
-
-        }, function () {
-            // processar o retorno negativo da modal
-            
-        });
-    };
 
 } // fim função
 ]);

@@ -1,6 +1,6 @@
 /* global criarEstadosPadrao */
 
-(function(pNmModulo, pNmController, pNmFormulario) {
+(function(pNmModulo, pNmController, pNmFormulario, pUrlModulo) {
 
 'use strict';
 
@@ -8,7 +8,7 @@ angular.module(pNmModulo, ['ui.bootstrap','ui.utils','ui.router','ngAnimate', 'f
 
 angular.module(pNmModulo).config(['$stateProvider', function($stateProvider) {
 
-    criarEstadosPadrao($stateProvider, pNmModulo, pNmController);
+    criarEstadosPadrao($stateProvider, pNmModulo, pNmController, pUrlModulo);
 
 }]);
 
@@ -175,7 +175,7 @@ angular.module(pNmModulo).controller(pNmController,
     // inicio: abre modal
     $scope.abreModal = function (item) {
         // abrir a modal
-        mensagemSrv.confirmacao(true, 'propriedade/'+item.arquivo, item.descricao, item, item.tamanho ).then(function (conteudo) {
+        mensagemSrv.confirmacao(true, 'propriedade-rural/'+item.arquivo, item.descricao, item, item.tamanho ).then(function (conteudo) {
             // processar o retorno positivo da modal
             $rootScope.incluir($scope);
         }, function () {
@@ -185,16 +185,47 @@ angular.module(pNmModulo).controller(pNmController,
 
     };
 
-
     // Inicio Trabalho com tabs
-       $scope.tab=[{nome:'Principal',url:'propriedade/tab-principal.html' , def:'true'},
-                   {nome:'Diagonóstico',url:'propriedade/tab-diagnostico.html'}, 
-                   {nome:'Registro IPA',url:'propriedade/tab-ipa.html'}, 
-                   {nome:'Resultados',url:'propriedade/tab-resultado.html'}, 
-                   {nome:'Pendências',url:'propriedade/tab-pendencia.html'}, 
-                   {nome:'Arquivos',url:'propriedade/tab-arquivo.html'}, 
-//                   {nome:'Complementos',url:'propriedade/tab-complemento.html'}, 
-                  ];
+    $scope.tabs =
+      [
+          {
+              'nome': 'Principal',
+              'include': 'propriedade-rural/tab-principal.html',
+              'visivel': true,
+          },
+          {
+              'nome': 'Diagonóstico',
+              'include': 'propriedade-rural/tab-diagnostico.html',
+              'visivel': true,
+          },
+          {
+              'nome': 'Resultados',
+              'include': 'propriedade-rural/tab-resultado.html',
+              'visivel': true,
+          },
+          {
+              'nome': 'RegistroIPA',
+              'include': 'propriedade-rural/tab-ipa.html',
+              'visivel': true,
+          },
+          {
+                'nome': 'Arquivos',
+                'include': 'propriedade-rural/tab-arquivo.html',
+                'visivel': true,
+          },
+          {
+              'nome': 'Pendências',
+              'include': 'propriedade-rural/tab-pendencia.html',
+              'visivel': true,
+          },
+          {
+              'nome': 'Complementos',
+              'include': 'propriedade-rural/tab-complemento.html',
+              'visivel': false,
+          },
+          
+      ];
+//                   {nome:'Complementos',url:'propriedade-rural/tab-complemento.html'}, 
     // Fim Trabalho com tabs
 
  // Inicio Trabalho com uso do solo
@@ -283,6 +314,4 @@ angular.module(pNmModulo).controller(pNmController,
 
 }]);
 
-})('propriedade', 'PropriedadeCtrl', 'Cadastro de Propriedades Rurais');
-
-    
+})('propriedadeRural', 'PropriedadeRuralCtrl', 'Cadastro de Propriedades Rurais', 'propriedade-rural');

@@ -1,6 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.pessoa;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Max;
 
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
@@ -24,6 +24,7 @@ import org.springframework.format.annotation.NumberFormat.Style;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
@@ -40,11 +41,11 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
 
-//	@Max(value = 250, message = "Muito extenso")
+	// @Max(value = 250, message = "Muito extenso")
 	private String bairro;
 
 	@Field(index = Index.YES, store = Store.YES)
-//	@Max(value = 10, message = "Muito extenso")
+	// @Max(value = 10, message = "Muito extenso")
 	private String cep;
 
 	@ManyToOne
@@ -52,14 +53,14 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 	private Cidade cidade;
 
 	@Column(name = "codigo_ibge")
-//	@Max(value = 10, message = "Muito extenso")
+	// @Max(value = 10, message = "Muito extenso")
 	private String codigoIbge;
 
-//	@Max(value = 250, message = "Muito extenso")
+	// @Max(value = 250, message = "Muito extenso")
 	private String complemento;
 
 	@Column(name = "endereco_sisater")
-//	@Max(value = 500, message = "Muito extenso")
+	// @Max(value = 500, message = "Muito extenso")
 	private String enderecoSisater;
 
 	@ManyToOne
@@ -77,7 +78,7 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	@NotBlank
 	@Field(index = Index.YES, store = Store.YES)
-//	@Max(value = 250, message = "Muito extenso")
+	// @Max(value = 250, message = "Muito extenso")
 	private String logradouro;
 
 	@Column(name = "longitude")
@@ -90,10 +91,10 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 	private Municipio municipio;
 
 	@Column(name = "nome_prop_ou_estab")
-//	@Max(value = 250, message = "Muito extenso")
+	// @Max(value = 250, message = "Muito extenso")
 	private String nomePropriedadeRuralOuEstabelecimento;
 
-//	@Max(value = 50, message = "Muito extenso")
+	// @Max(value = 50, message = "Muito extenso")
 	private String numero;
 
 	@ManyToOne
@@ -105,7 +106,7 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 	private Confirmacao propriedadeRuralConfirmacao;
 
 	@Column(name = "roteiro_acesso")
-//	@Max(value = 500, message = "Muito extenso")
+	// @Max(value = 500, message = "Muito extenso")
 	private String roteiroAcessoOuEnderecoInternacional;
 
 	public Endereco() {
@@ -274,6 +275,30 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	public void setRoteiroAcessoOuEnderecoInternacional(String roteiroAcessoOuEnderecoInternacional) {
 		this.roteiroAcessoOuEnderecoInternacional = roteiroAcessoOuEnderecoInternacional;
+	}
+
+	public static String FORMATA(Endereco endereco) {
+		if (endereco == null) {
+			return null;
+		}
+		String[] linha = null;
+		linha = new String[3];
+		linha[0] = (UtilitarioString.collectionToString(Arrays.asList(endereco.getLogradouro(), endereco.getComplemento(), endereco.getNumero())));
+		linha[1] = (endereco.getBairro());
+		String cidade = null;
+		String municipio = null;
+		String estado = null;
+		if (endereco.getCidade() != null) {
+			cidade = endereco.getCidade().getNome();
+			if (endereco.getCidade().getMunicipio() != null) {
+				municipio = endereco.getCidade().getMunicipio().getNome();
+				if (endereco.getCidade().getMunicipio().getEstado() != null) {
+					estado = endereco.getCidade().getMunicipio().getEstado().getSigla();
+				}
+			}
+		}
+		linha[2] = (UtilitarioString.collectionToString(Arrays.asList(UtilitarioString.formataCep(endereco.getCep()), cidade, municipio, estado)));
+		return (UtilitarioString.collectionToString(Arrays.asList(linha), "\n"));
 	}
 
 }

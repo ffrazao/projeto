@@ -4,8 +4,8 @@
 
 
 angular.module(pNmModulo).controller(pNmController,
-    ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr', 'utilSrv',
-    function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, utilSrv) {
+    ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr', 'UtilSrv',
+    function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, UtilSrv) {
 
     // inicializacao
     var init = function() {
@@ -77,4 +77,4 @@ angular.module(pNmModulo).controller(pNmController,
 } // fim função
 ]);
 
-})('propriedade', 'DiagnosticoBenfeitoriaSubCtrl', 'Pessoas Vinculadas à Propriedade');
+})('propriedadeRural', 'DiagnosticoBenfeitoriaSubCtrl', 'Benfeitorias Vinculadas à Propriedade');

@@ -46,7 +46,7 @@
                         <td>
                             {{$index + 1 + ((pessoaRelacionamentoNvg.paginaAtual-1) * pessoaRelacionamentoNvg.tamanhoPagina)}}
                         </td>
-                        <td>{{reg.pessoa.nome}}</td>
+                        <td><a ng-click="modalVerRelacionado(reg.pessoa.id)">{{reg.pessoa.nome}}</a></td>
                         <td>
                             <select class="form-control input-sm" id="relacionamentoFuncao" name="relacionamentoFuncao{{$index}}" ng-model="reg.relacionamentoFuncao.id" 
                                 ng-options="item.id as item.nomeSeFeminino for item in scp.cadastro.apoio.relacionamentoFuncaoList" ng-required="true"

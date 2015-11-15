@@ -2,36 +2,38 @@
 
 'use strict';
 
+
 angular.module(pNmModulo).controller(pNmController,
-    ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr', 'utilSrv',
-    function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, utilSrv) {
+    ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr', 'UtilSrv', 'mensagemSrv',
+    function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, UtilSrv, mensagemSrv) {
 
     // inicializacao
     var init = function() {
-        if (!angular.isObject($scope.cadastro.registro.vinculado)) {
-            $scope.cadastro.registro.vinculado = [];
+        if (!angular.isObject($scope.cadastro.registro.diagnostico)) {
+            $scope.cadastro.registro.diagnostico = [];
         }
-        $scope.subVinculadoNvg = new FrzNavegadorParams($scope.cadastro.registro.vinculado, 4);
+        $scope.DiagnosticoNvg = new FrzNavegadorParams($scope.cadastro.registro.diagnostico, 8);
     };
+
     if (!$modalInstance) { init(); }
 
-
-    if ($modalInstance === null) {
-        $scope.navegador.dados[0].vinculado = [];
-        for (var i = 0; i < 11; i++) {
-            $scope.navegador.dados[0].vinculado.push({id: i, nome: 'nome ' + i, cpf: (333*i), tpExploracao: 'P', ha :(2.7*i), situacao : 'S' });
-        }
-        $scope.subVinculadoNvg.setDados($scope.navegador.dados[0].vinculado);
-    } 
-
+    if ($modalInstance === null) { $scope.modalEstado = null; } 
+    else { $scope.modalEstado = 'filtro'; }
 
     // inicio rotinas de apoio
-    // $scope.seleciona = function(subVinculadoNvg, item) { };
-    // $scope.mataClick = function(subVinculadoNvg, event, item){ };
+    // $scope.seleciona = function(DiagnosticoNvg, item) { };
+    // $scope.mataClick = function(DiagnosticoNv, event, item){ };
     // fim rotinas de apoio
 
     // inicio das operaçoes atribuidas ao navagador
-    $scope.abrir = function() { $scope.subVinculadoNvg.mudarEstado('ESPECIAL'); };
+    $scope.abrir = function() { $scope.DiagnosticoNvg.mudarEstado('ESPECIAL'); };
+
+    $scope.editar = function() {  $scope.incluir(); };
+
+    $scope.incluir = function() {
+        $scope.abreModal(  { arquivo: 'tab-diagnostico-sub-modal.html', descricao: 'Diagnóstico', tamanho :800,  dados: $scope.DiagnosticoNvg.selecao.item } );
+    };
+
 
     $scope.agir = function() {};
     $scope.ajudar = function() {};
@@ -53,14 +55,6 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.folhearProximo = function() {};
     $scope.folhearUltimo = function() {};
 
-    $scope.editar = function() {  $scope.incluir(); };
-
-    $scope.incluir = function() {
-        var tmp = $scope.subVinculadoNvg.selecao.item;
-        var item = { arquivo: '..\\pessoa\\pessoa-modal.html', descricao: 'Pessoa', tamanho :800, dados: tmp };
-        $scope.abreModal(item);
-    };
-
     $scope.informacao = function() {};
     $scope.limpar = function() {};
     $scope.paginarAnterior = function() {};
@@ -75,4 +69,4 @@ angular.module(pNmModulo).controller(pNmController,
 } // fim função
 ]);
 
-})('propriedade', 'RegistroVinculadoCtrl', 'Pessoas Vinculadas à Propriedade');
+})('propriedadeRural', 'DiagnosticoSubCtrl', 'Pessoas Vinculadas à Propriedade');

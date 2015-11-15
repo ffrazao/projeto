@@ -1,9 +1,10 @@
 /* global criarEstadosPadrao */
-(function(pNmModulo, pNmController, pNmFormulario) {
+
+(function(pNmModulo, pNmController, pNmFormulario, pUrlModulo) {
     'use strict';
     angular.module(pNmModulo, ['ui.bootstrap', 'ui.utils', 'ui.router', 'ngAnimate', 'frz.navegador']);
     angular.module(pNmModulo).config(['$stateProvider', function($stateProvider) {
-        criarEstadosPadrao($stateProvider, pNmModulo, pNmController);
+        criarEstadosPadrao($stateProvider, pNmModulo, pNmController, pUrlModulo);
     }]);
     angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$modal', '$log', '$modalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'PessoaSrv',
         function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $modal, $log, $modalInstance, modalCadastro, UtilSrv, mensagemSrv, PessoaSrv) {
@@ -283,4 +284,4 @@
             };
         }
     ]);
-})('pessoa', 'PessoaCtrl', 'Cadastro de Pessoas');
+})('pessoa', 'PessoaCtrl', 'Cadastro de Pessoas', 'pessoa');

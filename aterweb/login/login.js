@@ -71,7 +71,7 @@
                     $rootScope.token = null;
                     $rootScope.authenticated = false;
                     if (status === 200) {
-                        console.log(headers('X-AUTH-TOKEN'));
+                        //console.log(headers('X-AUTH-TOKEN'));
                         if (result === null) {
                             toastr.error('Erro ao processar o login', 'Erro');
                         } else {

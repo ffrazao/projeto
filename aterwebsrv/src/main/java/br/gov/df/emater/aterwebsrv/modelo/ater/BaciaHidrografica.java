@@ -17,7 +17,7 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Cidade;
  * 
  */
 @Entity
-@Table(name = "comunidade", schema = EntidadeBase.ATER_SCHEMA)
+@Table(name = "bacia_hidrografica", schema = EntidadeBase.ATER_SCHEMA)
 public class BaciaHidrografica extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;

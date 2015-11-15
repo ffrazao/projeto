@@ -14,8 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaTipo;
 import br.gov.df.emater.aterwebsrv.modelo.dto.PessoaCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.modelo.dto.PropriedadeRuralCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 
 @Service
@@ -79,6 +81,31 @@ public class FacadeBo implements BeanFactoryAware {
 	@Transactional(readOnly = true)
 	public _Contexto pessoaVisualizar(Principal usuario, Integer id) throws Exception {
 		return this._executar(usuario, "PessoaVisualizarCh", id);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto propriedadeRuralFiltroExecutar(Principal usuario, PropriedadeRuralCadFiltroDto filtro) throws Exception {
+		return this._executar(usuario, "PropriedadeRuralFiltroExecutarCh", filtro);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto propriedadeRuralFiltroNovo(Principal usuario) throws Exception {
+		return this._executar(usuario, "PropriedadeRuralFiltroNovoCmd");
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto propriedadeRuralNovo(Principal usuario) throws Exception {
+		return this._executar(usuario, "PropriedadeRuralNovoCh");
+	}
+
+	@Transactional
+	public _Contexto propriedadeRuralSalvar(Principal usuario, PropriedadeRural propriedadeRural) throws Exception {
+		return this._executar(usuario, "PropriedadeRuralSalvarCh", propriedadeRural);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto propriedadeRuralVisualizar(Principal usuario, Integer id) throws Exception {
+		return this._executar(usuario, "PropriedadeRuralVisualizarCh", id);
 	}
 
 	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {

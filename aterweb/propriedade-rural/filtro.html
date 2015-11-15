@@ -1,0 +1,77 @@
+<div class="panel panel-default">
+    <div class="panel-heading"><h4>{{nomeFormulario}}</h4></div>
+    <div class="panel-body">
+        <form class="form-horizontal" name="frm.filtro" novalidate>
+            <fieldset>
+                <!-- Select Basic -->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="unidadeOrganizacional">Unidade Organizacional</label>
+                    <div class="col-md-5">
+                        <select class="form-control" id="unidadeOrganizacional" name="unidadeOrganizacional" ng-model="cadastro.filtro.unidadeOrganizacional.id" ng-options="item.id as item.nome for item in cadastro.apoio.unidadeOrganizacionalList">
+                            <option value="">-- Ignorar --</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- Text input-->
+                <div class="form-group" title="Nome da Propriedade" >
+                    <label class="col-md-4 control-label" for="nomePropriedade">Nome da Propriedade</label> 
+                    <div class="col-md-5">
+                        <input id="nomePropriedade" name="nomePropriedade" type="text" placeholder="" class="form-control input-md" ng-model="cadastro.filtro.nomePropriedade">
+                    </div>
+                </div>
+                <!-- Text input-->
+                <div class="form-group" title="Pessoa Vinculada" >
+                    <label class="col-md-4 control-label" for="pessoaVinculada">Pessoa Vinculada</label> 
+                    <div class="col-md-5">
+                        <input id="pessoaVinculada" name="pessoaVinculada" type="text" placeholder="" class="form-control input-md" ng-model="cadastro.filtro.pessoaVinculada">
+                    </div>
+                </div>
+                <!-- Select Basic -->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="comunidade">Comunidade</label>
+                    <div class="col-md-5">
+                        <select id="comunidade" name="comunidade" class="form-control" ng-model="cadastro.filtro.comunidade.id" ng-options="item.id as item.nome for item in cadastro.apoio.comunidadeList">
+                            <option value="">-- Ignorar --</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="situacaoFundiaria">Situação Fundiária</label>
+                    <div class="col-md-2">
+                        <select id="situacaoFundiaria" name="situacaoFundiaria" class="form-control" ng-model="cadastro.filtro.situacaoFundiaria" ng-options="item.codigo as item.descricao for item in cadastro.apoio.situacaoFundiariaList">
+                            <option value="">-- Ignorar --</option>
+                        </select>
+                    </div>
+                    <label class="col-md-1 control-label" for="areaUtil">Área Útil</label>
+                    <div class="col-md-2">
+                        <select id="areaUtil" name="areaUtil" class="form-control" ng-model="cadastro.filtro.areaUtil" ng-options="item.codigo as item.descricao for item in cadastro.apoio.areaUtilList">
+                            <option value="">-- Ignorar --</option>
+                        </select>
+                    </div>
+                </div>    
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="sistemaProducao">Sistema de Produção</label>
+                    <div class="col-md-2">
+                        <select id="sistemaProducao" name="sistemaProducao" class="form-control" ng-model="cadastro.filtro.sistemaProducao.id" ng-options="item.id as item.nome for item in cadastro.apoio.sistemaProducaoList">
+                            <option value="">-- Ignorar --</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- Multiple Checkboxes (inline) -->
+                <div class="form-group" title="ATER">
+                    <label class="col-md-4 control-label" for="outorga">Outorga</label>
+                    <div class="col-md-6">
+                        <label class="checkbox-inline" for="outorga-{{$index}}" ng-repeat="item in cadastro.apoio.confirmacaoList">
+                            <input type="checkbox" name="outorga" id="outorga-{{$index}}" checklist-model="cadastro.filtro.outorga" checklist-value="item.codigo">
+                            {{item.descricao}}
+                        </label>
+                    </div>
+                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.outorga.$error.required">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        Campo Obrigatório
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>

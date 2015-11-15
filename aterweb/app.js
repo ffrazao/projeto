@@ -4,7 +4,7 @@
 
 angular.module(pNmModulo, ['ui.bootstrap', 'ui.utils', 'ui.router', 'ngSanitize', 'ngAnimate', 'toastr', 'sticky',
   'ui.mask', 'ui.utils.masks', 'ui.navbar', 'ngCookies', 'frz.arquivo', 'frz.endereco', 'frz.painel.vidro', 'frz.navegador',
-  'casa', 'contrato', 'pessoa', 'propriedade','uiGmapgoogle-maps', 'ngFileUpload']);
+  'casa', 'contrato', 'pessoa', 'propriedadeRural','uiGmapgoogle-maps', 'ngFileUpload']);
 
 // inicio: codigo para habilitar o modal recursivo
 angular.module(pNmModulo).factory('$modalInstance', function () {
@@ -249,8 +249,11 @@ angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'to
         } else {
             // recuperar o item
             scp.modalEstado = estadoPadrao;
-            // atualizar o cadastro
-            //scp.crudInit(scp, scp.stt, estadoInicial, nomeFormulario);
+            // abrir para verificacao
+            if (estadoInicial.registro.id) {
+                scp.navegador.selecao.item = [estadoInicial.registro.id];
+                scp.visualizar(scp);
+            }
         }
 
         $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
@@ -410,7 +413,7 @@ angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'to
         scp.cadastro.filtro['numeroPagina'] = numeroPagina;
         scp.cadastro.filtro['temMaisRegistros'] = temMaisRegistros;
 
-        if (scp.servico) {
+        if (scp.servico && scp.servico.filtrar) {
             scp.servico.filtrar(scp.cadastro.filtro).success(function(resposta) {
                 if (resposta.mensagem === 'OK') {
                     if (!resposta.resultado || !resposta.resultado.length) {
@@ -603,7 +606,7 @@ angular.module(pNmModulo).controller('AuthCtrl', ['$scope', '$rootScope', '$http
             });
         modalInstance.result.then(function(conteudo) {
             // processar o retorno positivo da modal
-            console.log(conteudo);
+            // console.log(conteudo);
         }, function() {
             // processar o retorno negativo da modal
             //$log.info('Modal dismissed at: ' + new Date());
@@ -613,23 +616,23 @@ angular.module(pNmModulo).controller('AuthCtrl', ['$scope', '$rootScope', '$http
 
 })('principal', null, 'Módulo Principal do Sistema');
 
-var criarEstadosPadrao = function(stateProvider, nomeModulo, nomeController) {
+var criarEstadosPadrao = function(stateProvider, nomeModulo, nomeController, urlModulo) {
     stateProvider.state('p.' + nomeModulo, {
         abstract: true,
         controller: nomeController,
-        templateUrl: nomeModulo + '/' + nomeModulo + '.html',
-        url: '/' + nomeModulo,
+        templateUrl: urlModulo + '/' + urlModulo + '.html',
+        url: '/' + urlModulo,
     });
     stateProvider.state('p.' + nomeModulo + '.filtro', {
-        templateUrl: nomeModulo + '/filtro.html',
+        templateUrl: urlModulo + '/filtro.html',
         url: '',
     });
     stateProvider.state('p.' + nomeModulo + '.lista', {
-        templateUrl: nomeModulo + '/lista.html',
+        templateUrl: urlModulo + '/lista.html',
         url: '/lista',
     });
     stateProvider.state('p.' + nomeModulo + '.form', {
-        templateUrl: nomeModulo + '/form.html',
+        templateUrl: urlModulo + '/form.html',
         url: '/form/:id',
     });
 };

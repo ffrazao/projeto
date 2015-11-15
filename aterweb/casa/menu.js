@@ -48,8 +48,8 @@
                         },
                         {
                             name: 'Propriedade Rural',
-                            link: 'p.propriedade.filtro',
-                            funcionalidade: 'PROPRIEDADE',
+                            link: 'p.propriedadeRural.filtro',
+                            funcionalidade: 'PROPRIEDADE_RURAL',
                             visivel: false,
                         },
                         {
