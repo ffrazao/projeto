@@ -50,8 +50,9 @@ angular.module(pNmModulo).controller(pNmController,
         // processar retorno da modal
         modalInstance.result.then(function (resultado) {
             // processar o retorno positivo da modal
+            var reg = null;
             if (resultado.tipo === 'U') {
-                var reg = {pessoa: {id: resultado.item[0], nome: resultado.item[1], pessoaTipo: resultado.item[3], genero: resultado.item[11]}};
+                reg = {pessoa: {id: resultado.item[0], nome: resultado.item[1], pessoaTipo: resultado.item[3], genero: resultado.item[11]}};
                 if (reg.pessoa.pessoaTipo === 'PF') {
                     reg.pessoa['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica';
                 } else if (reg.pessoa.pessoaTipo === 'PJ') {
@@ -60,7 +61,7 @@ angular.module(pNmModulo).controller(pNmController,
                 $scope.cadastro.registro.relacionamentoList.push(reg);
             } else {
                 for (var i in resultado.items) {
-                    var reg = {pessoa: {id: resultado.items[i][0], nome: resultado.items[i][1], pessoaTipo: resultado.items[i][3], genero: resultado.items[i][11]}};
+                    reg = {pessoa: {id: resultado.items[i][0], nome: resultado.items[i][1], pessoaTipo: resultado.items[i][3], genero: resultado.items[i][11]}};
                     if (reg.pessoa.pessoaTipo === 'PF') {
                         reg.pessoa['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica';
                     } else if (reg.pessoa.pessoaTipo === 'PJ') {

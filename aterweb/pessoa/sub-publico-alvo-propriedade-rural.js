@@ -5,8 +5,8 @@
 'use strict';
 
 angular.module(pNmModulo).controller(pNmController,
-    ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr', 'UtilSrv', 'mensagemSrv',
-    function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, UtilSrv, mensagemSrv) {
+    ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr', 'UtilSrv', 'mensagemSrv', '$log',
+    function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, UtilSrv, mensagemSrv, $log) {
 
     // inicializacao
     var init = function() {
@@ -50,8 +50,8 @@ angular.module(pNmModulo).controller(pNmController,
         // processar retorno da modal
         modalInstance.result.then(function (resultado) {
             // processar o retorno positivo da modal
-                $scope.cadastro.registro.publicoAlvoPropriedadeRuralList.push(resultado.registro); return;
-            if (resultado.tipo === 'U') {
+                $scope.cadastro.registro.publicoAlvoPropriedadeRuralList.push(resultado.registro); 
+            /*if (resultado.tipo === 'U') {
                 var reg = {pessoa: {id: resultado.item[0], nome: resultado.item[1], pessoaTipo: resultado.item[3], genero: resultado.item[11]}};
                 if (reg.pessoa.pessoaTipo === 'PF') {
                     reg.pessoa['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica';
@@ -70,7 +70,7 @@ angular.module(pNmModulo).controller(pNmController,
                     $scope.cadastro.registro.publicoAlvoPropriedadeRuralList.push(reg);
                 }
             }
-            toastr.info('Operação realizada!', 'Informação');
+            toastr.info('Operação realizada!', 'Informação');*/
         }, function () {
             // processar o retorno negativo da modal
             
