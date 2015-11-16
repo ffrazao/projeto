@@ -39,6 +39,10 @@ public class BaciaHidrografica extends EntidadeBase implements _ChavePrimaria<In
 	public BaciaHidrografica() {
 	}
 
+	public BaciaHidrografica(Integer id) {
+		this.id = id;
+	}
+
 	public Cidade getCidade() {
 		return cidade;
 	}

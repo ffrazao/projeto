@@ -1,19 +1,63 @@
 <div class="row">
     <div class="form-group col-md-2">
-        <label class="control-label">Endereço</label>
-        <button id="endereco" name="endereco" class="btn btn-primary">Endereço</button>
+        <label class="control-label">Identificação</label>
+        <button id="identificacao" name="identificacao" class="btn btn-primary" ng-click="identificacaoModalAbrir()">Identificação</button>
     </div>
     <div class="form-group col-md-2">
-        <label class="control-label">Código da Propriedade</label>
-        <input class="form-control input-md" id="codigoPropriedade" name="codigoPropriedade" ng-model="cadastro.registro.codigoPropriedade" required="true">
+        <label class="control-label">Código</label>
+        <input class="form-control input-md" id="codigoPropriedade" name="codigoPropriedade" ng-readonly="true" ng-model="cadastro.registro.codigoPropriedade">
         <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.codigoPropriedade.$error.required">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             Campo Obrigatório
         </div>
     </div>
+    <div class="form-group col-md-4">
+        <label class="control-label">Comunidade</label>
+        <select class="form-control" id="comunidade" name="comunidade" ng-model="cadastro.registro.comunidade.id" ng-options="item.id as item.nome for item in cadastro.apoio.comunidadeList" required="true">
+            <option value="">-- Não informado --</option>
+        </select>
+        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.comunidade.$error.required">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Campo Obrigatório
+        </div>
+    </div>
+    <div class="form-group col-md-4">
+        <label class="control-label">Bacia Hidrográfica</label>
+        <input class="form-control input-md" id="baciaHidrografica" name="baciaHidrografica" ng-readonly="true" ng-model="cadastro.registro.baciaHidrografica.nome">
+        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.comunidade.$error.required">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Campo Obrigatório
+        </div>
+    </div>
+</div>
+
+<div class="row">
     <div class="form-group col-md-3">
+        <label class="control-label">Endereço</label>
+        <textarea class="form-control input-md" id="enderecoResumo" name="enderecoResumo" ng-model="cadastro.registro.enderecoResumo" ng-readonly="true"></textarea>
+        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.enderecoResumo.$error.required">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Campo Obrigatório
+        </div>
+    </div>
+    <div class="form-group col-md-6">
+        <label class="control-label">Mapa</label>
+        <ui-gmap-google-map center='map.center' zoom='map.zoom'></ui-gmap-google-map>
+    </div>
+    <div class="form-group col-md-3">
+        <label class="control-label">Roteiro de Acesso</label>
+        <textarea class="form-control input-md" id="roteiroAcesso" name="roteiroAcesso" ng-model="cadastro.registro.roteiroAcesso"></textarea>
+        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.roteiroAcesso.$error.required">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Campo Obrigatório
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="form-group col-md-5">
         <label class="control-label">Situação Fundiária</label>
-        <select class="form-control" id="situacaoFundiaria" name="situacaoFundiaria" ng-model="cadastro.registro.situacaoFundiaria" ng-options="item.id as item.nome for item in cadastro.apoio.List">
+        <select class="form-control" id="situacaoFundiaria" name="situacaoFundiaria" ng-model="cadastro.registro.situacaoFundiaria" ng-options="item.codigo as item.descricao for item in cadastro.apoio.situacaoFundiariaList">
             <option value="">-- Não informado --</option>
         </select>
         <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.situacaoFundiaria.$error.required">
@@ -21,148 +65,67 @@
             Campo Obrigatório
         </div>
     </div>
-    <div class="form-group col-md-3">
-        <label class="control-label">Área Útil</label>
-        <select class="form-control" id="areaUtil" name="areaUtil" ng-model="cadastro.registro.areaUtil" ng-options="item.id as item.nome for item in cadastro.apoio.areaUtilList">
+    <div class="form-group col-md-2">
+        <label class="control-label">Área Total</label>
+        <input class="form-control input-md" id="areaTotal" name="areaTotal" ng-model="cadastro.registro.areaTotal" ui-number-mask="globalFracaoHectares">
+        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.areaTotal.$error.required">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Campo Obrigatório
+        </div>
+    </div>
+    <div class="form-group col-md-5">
+        <label class="control-label">Sistema de Produção</label>
+        <select class="form-control" id="sistemaProducao" name="sistemaProducao" ng-model="cadastro.registro.sistemaProducao.id" ng-options="item.id as item.nome for item in cadastro.apoio.sistemaProducaoList">
             <option value="">-- Não informado --</option>
         </select>
-        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.areaUtil.$error.required">
+        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.sistemaProducao.$error.required">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             Campo Obrigatório
         </div>
-    </div>
-    <div class="form-group col-md-2">
-        <label class="control-label">Situação</label>
-        <label class="checkbox-inline" for="situacao">
-            <input type="checkbox" name="situacao" id="situacao" ng-model="cadastro.registro.situacao" ng-true-value="'S'" ng-false-value="'N'">
-            Ativo
-        </label>
-        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.situacao.$error.required">
-            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-            Campo Obrigatório
-        </div>
-    </div>
-</div>
-
-
-<div class="row"> 
-
-    <div class="col-md-2" >
-        <label class="control-label" for="identficacao">&nbsp;</label><BR>
-        <button id="identficacao" name="identficacao" class="btn btn-primary" ng-click="identificacaoModalAbrir('lg')">Indetificação da Propriedade</button>                            
-    </div>
-
-    <div class="col-md-3" >
-        <label class="control-label" for="codPropriedade">Código da Propriedade</label><BR>
-        <input id="codPropriedade" name="codPropriedade" type="text" class="form-control input-md" ng-disabled="['INCLUINDO'].indexOf(navegador.estadoAtual()) < 0" ng-model="cadastro.registro.codPropriedaede">
-    </div>
-    <div class="col-md-3" >
-        <label class="control-label" for="sitFundiaria">Situação Fundiaria</label><BR>
-        <select id="sitFundiaria" name="sitFundiaria" class="form-control">
-            <option value="C">Concessão de Uso</option>
-            <option value="E">Escritura Definitiva</option>
-            <option value="P">Posse</option>
-        </select>
-    </div>
-    <div class="col-md-3">
-        <label class="control-label" for="areaUtil">Área Útil</label><BR>
-        <select id="areaUtil" name="areaUtil" class="form-control">
-            <option value="1">< 2ha </option>
-            <option value="2">de 2ha a 4ha</option>
-            <option value="3">de 4ha a 6ha</option>
-        </select>
-    </div>
-    <div class="col-md-1"> 
-        <label class="checkbox-inline" for="ativo"><BR>
-            <input type="checkbox" name="ativo" id="ativo" checklist-model="cadastro.registro.ativo" checklist-value="'S'">
-            <B>Ativo</B>
-        </label>
-    </div>
-</div>
-
-<div class="form-group" title="Pessoas Vinculadas" style="padding: 10px;">
-    <input type="hidden" name="vinculado" id="Vinculado" ng-model="cadastro.registro.vinculado.length">
-    <ng-include src="'propriedade-rural/registro-sub-vinculado.html'" ng-controller="RegistroVinculadoCtrl"></ng-include>
-    <div class="label label-danger" ng-show="navegador.submitido && frm.registro.vinculado.$error.required">
-        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-        Campo Obrigatório
     </div>
 </div>
 
 <div class="row">
-
-    <div class="col-md-9" >
-
-        <div class="row">
-            <div class="col-md-4" >
-                <label class="control-label" for="area">Área da Propriedade</label><BR>
-                <input id="area" name="area" type="number" class="form-control input-md" ng-model="cadastro.registro.area">
-            </div>
-            <div class="col-md-4" >
-                <label class="control-label" for="identificacao">Identificação</label><br>
-                    <textarea class="form-control" id="identificacao" name="identificacao" ng-model="cadastro.registro.identificacao">
-                    </textarea>
-            </div>
-            <div class="col-md-4" >
-                <label class="control-label" for="comunidade">Comunidade</label><br>
-                    <textarea class="form-control" id="comunidade" name="comunidade" ng-model="cadastro.registro.comunidade">
-                    </textarea>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-4" >
-                <label class="control-label" for="matricula">Matrícula</label><BR>
-                <input id="matricula" name="matricula" type="text" class="form-control input-md" ng-model="cadastro.registro.matricula">
-            </div>
-            <div class="col-md-4" >
-                <label class="control-label" for="registro">Registro</label><BR>
-                <input id="registro" name="registro" type="text" class="form-control input-md" ng-model="cadastro.registro.registro">
-            </div>
-            <div class="col-md-4" >
-                <label class="control-label" for="sisProducao">Sistema de Produção</label><br>
-                <select id="areaUtil" name="areaUtil" class="form-control">
-                    <option value="B">Base Agroecológica</option>
-                    <option value="C">Convenciona</option>
-                    <option value="P">Convencional (Prat.Preserv.)</option>
-                    <option value="T">Transição Agroecológica</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-4" >
-                <label class="checkbox-inline" for="outorga"><BR>
-                    <input type="checkbox" name="outorga" id="outorga" checklist-model="cadastro.registro.outorga" checklist-value="'S'">
-                    <B>Outorga</B>
-                </label>
-            </div>
-            <div class="col-md-4" >
-                <label class="control-label" for="outorgaNumero">Número da Outorga</label><BR>
-                <input id="outorgaNumero" name="outorgaNumero" type="text" class="form-control input-md" ng-model="cadastro.registro.outorgaNumero">
-            </div>
-            <div class="col-md-4" >
-                <label class="control-label" for="outorgaValidade">Validade</label><BR>
-                <input id="outorgaValidade" name="outorgaValidade" type="text" class="form-control input-md" ng-model="cadastro.registro.outorgaValidade">
-            </div>
-        </div>
-            
-    </div>
-
-    <div class="col-md-3" >
-        <div class="row">
-            <div class="col-md-12" >
-                <label class="control-label" for="roteiro">Roteiro de Acesso ou Referência</label><br>
-                <textarea class="form-control" id="roteiro" name="roteiro" ng-model="cadastro.registro.roteiro">
-                </textarea>
-            </div>                            
-        </div>
-        <div class="row">
-            <div class="col-md-12"  >
-                <ui-gmap-google-map center='map.center' zoom='map.zoom'></ui-gmap-google-map>
-            </div>
+    <div class="form-group col-md-3">
+        <label class="control-label">Reg. Núm., Lv, Fl, Matrícula</label>
+        <input class="form-control input-md" id="numeroRegistro" name="numeroRegistro" ng-model="cadastro.registro.numeroRegistro">
+        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.numeroRegistro.$error.required">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Campo Obrigatório
         </div>
     </div>
-
+    <div class="form-group col-md-3">
+        <label class="control-label">Outorga</label>
+        <label class="checkbox-inline" for="outorga">
+            <input type="checkbox" name="outorga" id="outorga" ng-model="cadastro.registro.outorga" ng-true-value="'S'" ng-false-value="'N'">
+            Ativo
+        </label>
+        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.outorga.$error.required">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Campo Obrigatório
+        </div>
+    </div>
+    <div class="form-group col-md-3">
+        <label class="control-label">Data de Validade</label>
+        <input class="form-control input-md" id="outorgaValidade" name="outorgaValidade" ng-model="cadastro.registro.outorgaValidade" ui-date-mask>
+        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.outorgaValidade.$error.required">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Campo Obrigatório
+        </div>
+    </div>
+    <div class="form-group col-md-3">
+        <label class="control-label">Nº da Outorga</label>
+        <input class="form-control input-md" id="outorgaNumero" name="outorgaNumero" ng-model="cadastro.registro.outorgaNumero">
+        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.outorgaNumero.$error.required">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Campo Obrigatório
+        </div>
+    </div>
 </div>
 
+<div class="row">
+    <div class="form-group col-md-12">
+        <label class="control-label">Beneficiários</label>
+        <ng-include src="'propriedade-rural/registro-sub-vinculado.html'" ng-controller="RegistroVinculadoCtrl" />
+    </div>
+</div>

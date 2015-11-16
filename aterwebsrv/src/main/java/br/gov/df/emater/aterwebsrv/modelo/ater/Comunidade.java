@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacionalComunidade;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Cidade;
@@ -22,7 +23,7 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Cidade;
  */
 @Entity
 @Table(name = "comunidade", schema = EntidadeBase.ATER_SCHEMA)
-public class Comunidade extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class Comunidade extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<Comunidade> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -44,6 +45,11 @@ public class Comunidade extends EntidadeBase implements _ChavePrimaria<Integer> 
 	private List<UnidadeOrganizacionalComunidade> unidadeOrganizacionalComunidadeList;
 
 	public Comunidade() {
+	}
+
+	public Comunidade(Integer id, String nome) {
+		setId(id);
+		setNome(nome);
 	}
 
 	public Cidade getCidade() {
@@ -92,6 +98,11 @@ public class Comunidade extends EntidadeBase implements _ChavePrimaria<Integer> 
 
 	public void setUnidadeOrganizacionalComunidadeList(List<UnidadeOrganizacionalComunidade> unidadeOrganizacionalComunidadeList) {
 		this.unidadeOrganizacionalComunidadeList = unidadeOrganizacionalComunidadeList;
+	}
+
+	@Override
+	public Comunidade infoBasica() {
+		return new Comunidade(this.getId(), this.getNome());
 	}
 
 }

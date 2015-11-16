@@ -223,6 +223,13 @@ public class PessoaFisica extends Pessoa {
 		setGenero(genero);
 	}
 
+	public PessoaFisica(Integer id, String nome, PessoaGenero genero, String cpf) {
+		setId(id);
+		setNome(nome);
+		setGenero(genero);
+		setCpf(cpf);
+	}
+
 	public String getCamNumero() {
 		return camNumero;
 	}
@@ -389,19 +396,20 @@ public class PessoaFisica extends Pessoa {
 	}
 
 	public PessoaFisica infoBasica() {
-		if (this.getNascimentoMunicipio() != null) {
-			this.setNascimentoMunicipio(this.getNascimentoMunicipio().infoBasica());
-		}
-		if (this.getNascimentoEstado() != null) {
-			this.setNascimentoEstado(this.getNascimentoEstado().infoBasica());
-		}
-		if (this.getNascimentoPais() != null) {
-			this.setNascimentoPais(this.getNascimentoPais().infoBasica());
-		}
-		if (this.getProfissao() != null) {
-			this.setProfissao(this.getProfissao().infoBasica());
-		}
-		return this;
+//		if (this.getNascimentoMunicipio() != null) {
+//			this.setNascimentoMunicipio(this.getNascimentoMunicipio().infoBasica());
+//		}
+//		if (this.getNascimentoEstado() != null) {
+//			this.setNascimentoEstado(this.getNascimentoEstado().infoBasica());
+//		}
+//		if (this.getNascimentoPais() != null) {
+//			this.setNascimentoPais(this.getNascimentoPais().infoBasica());
+//		}
+//		if (this.getProfissao() != null) {
+//			this.setProfissao(this.getProfissao().infoBasica());
+//		}
+		
+		return new PessoaFisica(this.getId(), this.getNome(), this.getGenero(), this.getCpf());
 	}
 
 	public void setCamNumero(String camNumero) {
@@ -551,5 +559,6 @@ public class PessoaFisica extends Pessoa {
 	public void setTituloZona(String tituloZona) {
 		this.tituloZona = tituloZona;
 	}
+	
 
 }

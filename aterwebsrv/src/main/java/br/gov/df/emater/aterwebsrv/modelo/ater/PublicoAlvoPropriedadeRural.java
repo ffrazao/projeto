@@ -1,5 +1,6 @@
 package br.gov.df.emater.aterwebsrv.modelo.ater;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 
 import javax.persistence.Column;
@@ -16,6 +17,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.NumberFormat;
+import org.springframework.format.annotation.NumberFormat.Style;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -24,6 +27,7 @@ import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PropriedadeRuralVinculoTipo;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
+import br.gov.df.emater.aterwebsrv.rest.json.JsonFormatarBigDecimal;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 
 @Entity
@@ -31,6 +35,11 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 public class PublicoAlvoPropriedadeRural extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
+
+	@Column(name = "area")
+	@NumberFormat(style = Style.NUMBER)
+	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
+	private BigDecimal area;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -62,6 +71,10 @@ public class PublicoAlvoPropriedadeRural extends EntidadeBase implements _ChaveP
 	@Enumerated(EnumType.STRING)
 	private PropriedadeRuralVinculoTipo vinculo;
 
+	public BigDecimal getArea() {
+		return area;
+	}
+
 	@Override
 	public Integer getId() {
 		return id;
@@ -85,6 +98,10 @@ public class PublicoAlvoPropriedadeRural extends EntidadeBase implements _ChaveP
 
 	public PropriedadeRuralVinculoTipo getVinculo() {
 		return vinculo;
+	}
+
+	public void setArea(BigDecimal area) {
+		this.area = area;
 	}
 
 	@Override

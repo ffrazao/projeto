@@ -32,6 +32,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoCategoria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoSegmento;
@@ -47,7 +48,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 @Entity
 @Table(name = "publico_alvo", schema = EntidadeBase.ATER_SCHEMA)
 @Indexed
-public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<PublicoAlvo> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -213,6 +214,11 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 	private int tradicao;
 
 	public PublicoAlvo() {
+	}
+
+	public PublicoAlvo(Integer id, Pessoa pessoa) {
+		setId(id);
+		setPessoa(pessoa.infoBasica());
 	}
 
 	public String getBenefSocAposentadoriaPensao() {
@@ -527,6 +533,11 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 
 	public void setTradicao(int tradicao) {
 		this.tradicao = tradicao;
+	}
+
+	@Override
+	public PublicoAlvo infoBasica() {
+		return new PublicoAlvo(getId(), getPessoa().infoBasica());
 	}
 
 }

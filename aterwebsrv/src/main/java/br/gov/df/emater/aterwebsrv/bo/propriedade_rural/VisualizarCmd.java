@@ -28,6 +28,10 @@ public class VisualizarCmd extends _Comando {
 		if (result == null) {
 			throw new BoException("Registro não localizado");
 		}
+		
+		result.setUsuarioInclusao(result.getUsuarioInclusao().infoBasica());
+		result.setUsuarioAlteracao(result.getUsuarioAlteracao().infoBasica());
+		result.setEndereco(result.getEndereco().infoBasica());
 
 		em.detach(result);
 		contexto.setResposta(result);

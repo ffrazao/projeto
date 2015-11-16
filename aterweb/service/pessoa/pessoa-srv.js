@@ -33,6 +33,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                    'MeioContatoFinalidade',
                    'TelefoneTipo',
                    'RelacionamentoFuncao',
+                   'PropriedadeRuralVinculoTipo',
                 ]}).success(function(resposta) {
                     if (resposta && resposta.resultado) {
                         scp.cadastro.apoio.pessoaTipoList = resposta.resultado[0];
@@ -69,6 +70,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                         scp.cadastro.apoio.meioContatoFinalidadeList.push({'codigo': codigo, 'descricao': descricao});
                         scp.cadastro.apoio.telefoneTipoList = resposta.resultado[20];
                         scp.cadastro.apoio.relacionamentoFuncaoList = resposta.resultado[21];
+                        scp.cadastro.apoio.propriedadeRuralVinculoTipoList = resposta.resultado[22];
 
                         scp.cadastro.apoio.tradicaoList = [];
                         var anoAtual = new Date().getFullYear();

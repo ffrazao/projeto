@@ -34,6 +34,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
@@ -52,7 +53,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 @Inheritance(strategy = InheritanceType.JOINED)
 // para identificar classes dentro de contextos polimórficos
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
-public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Integer> {
+public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<Pessoa> {
 
 	private static final long serialVersionUID = 1L;
 

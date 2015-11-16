@@ -47,6 +47,12 @@ public class PessoaJuridica extends Pessoa {
 		setCnpj(cnpj);
 	}
 
+	public PessoaJuridica(Integer id, String nome, String cnpj) {
+		setId(id);
+		setNome(nome);
+		setCnpj(cnpj);
+	}
+
 	public String getCnpj() {
 		return cnpj;
 	}
@@ -61,6 +67,11 @@ public class PessoaJuridica extends Pessoa {
 
 	public void setInscricaoEstadual(String inscricaoEstadual) {
 		this.inscricaoEstadual = inscricaoEstadual;
+	}
+
+	@Override
+	public Pessoa infoBasica() {
+		return new PessoaJuridica(this.getId(), this.getNome(), this.getCnpj());
 	}
 
 }

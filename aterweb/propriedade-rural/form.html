@@ -12,6 +12,17 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-group col-md-3">
+                        <label class="control-label">Situação</label>
+                        <label class="checkbox-inline" for="situacao">
+                            <input type="checkbox" name="situacao" id="situacao" ng-model="cadastro.registro.situacao" ng-true-value="'A'" ng-false-value="'I'">
+                            Ativo
+                        </label>
+                        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.situacao.$error.required">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Campo Obrigatório
+                        </div>
+                    </div>
                 </div>
                 <tabset>
                     <tab ng-repeat="tab in tabs | filter: {'visivel': true}">

@@ -10,6 +10,7 @@ import org.springframework.util.CollectionUtils;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoDao;
+import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoPropriedadeRuralDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.ArquivoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.EmailDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.EnderecoDao;
@@ -25,6 +26,7 @@ import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoTipoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.TelefoneDao;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
+import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.CadastroAcao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Arquivo;
@@ -103,6 +105,9 @@ public class SalvarCmd extends _Comando {
 	@Autowired
 	private PessoaGrupoSocialDao pessoaGrupoSocialDao;
 
+	@Autowired
+	private PublicoAlvoPropriedadeRuralDao publicoAlvoPropriedadeRuralDao;
+
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		Pessoa pessoa = (Pessoa) contexto.getRequisicao();
@@ -123,7 +128,31 @@ public class SalvarCmd extends _Comando {
 			}
 			publicoAlvo.setPessoa(pessoa);
 			publicoAlvoDao.save(publicoAlvo);
+
+			// salvar as propriedades vinculadas ao publico alvo
+			if (publicoAlvo.getPublicoAlvoPropriedadeRuralList() != null) {
+				// tratar a exclusao de registros
+				for (PublicoAlvoPropriedadeRural publicoAlvoPropriedadeRural : publicoAlvo.getPublicoAlvoPropriedadeRuralList()) {
+					if (publicoAlvoPropriedadeRural == null) {
+						continue;
+					}
+					if (CadastroAcao.E.equals(publicoAlvoPropriedadeRural.getCadastroAcao())) {
+						publicoAlvoPropriedadeRuralDao.delete(publicoAlvoPropriedadeRural);
+					}
+				}
+				// tratar a insersao de registros
+				for (PublicoAlvoPropriedadeRural publicoAlvoPropriedadeRural : publicoAlvo.getPublicoAlvoPropriedadeRuralList()) {
+					if (publicoAlvoPropriedadeRural == null) {
+						continue;
+					}
+					if (!CadastroAcao.E.equals(publicoAlvoPropriedadeRural.getCadastroAcao())) {
+						publicoAlvoPropriedadeRural.setPublicoAlvo(publicoAlvo);
+						publicoAlvoPropriedadeRuralDao.save(publicoAlvoPropriedadeRural);
+					}
+				}
+			}
 		}
+
 		dao.save(pessoa);
 
 		// salvar enderecos

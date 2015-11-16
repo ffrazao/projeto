@@ -9,6 +9,9 @@ import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaDao;
+import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
+import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaEndereco;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica;
@@ -47,6 +50,18 @@ public class VisualizarCmd extends _Comando {
 			}
 		} else if (result instanceof PessoaJuridica) {
 
+		}
+		result.setUsuarioInclusao(result.getUsuarioInclusao().infoBasica());
+		result.setUsuarioAlteracao(result.getUsuarioAlteracao().infoBasica());
+		
+		if (Confirmacao.S.equals(result.getPublicoAlvoConfirmacao())) {
+			PublicoAlvo publicoAlvo = result.getPublicoAlvo();
+			if (publicoAlvo.getPublicoAlvoPropriedadeRuralList() != null) {
+				for (PublicoAlvoPropriedadeRural publicoAlvoPropriedadeRural : publicoAlvo.getPublicoAlvoPropriedadeRuralList()) {
+					publicoAlvoPropriedadeRural.setPublicoAlvo(publicoAlvoPropriedadeRural.getPublicoAlvo().infoBasica());
+					publicoAlvoPropriedadeRural.setPropriedadeRural(publicoAlvoPropriedadeRural.getPropriedadeRural().infoBasica());
+				}
+			}
 		}
 		
 		// fetch nas tabelas de apoio

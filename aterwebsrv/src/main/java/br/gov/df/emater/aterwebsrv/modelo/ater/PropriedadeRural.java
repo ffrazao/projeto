@@ -34,8 +34,10 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.PropriedadeRuralSituacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.SituacaoFundiaria;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Endereco;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
@@ -50,7 +52,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 @Entity
 @Table(name = "propriedade_rural", schema = EntidadeBase.ATER_SCHEMA)
 @Indexed
-public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<PropriedadeRural> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -96,6 +98,7 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 
 	@ManyToOne
 	@JoinColumn(name = "bacia_hidrografica_id")
+	@NotNull
 	private BaciaHidrografica baciaHidrografica;
 
 	@NumberFormat(style = Style.CURRENCY)
@@ -118,6 +121,7 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 
 	@ManyToOne
 	@JoinColumn(name = "comunidade_id")
+	@NotNull
 	private Comunidade comunidade;
 
 	@OneToOne
@@ -227,6 +231,9 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 	@ManyToOne
 	@JoinColumn(name = "sistema_producao_id")
 	private SistemaProducao sistemaProducao;
+
+	@Enumerated(EnumType.STRING)
+	private PropriedadeRuralSituacao situacao;
 
 	@Column(name = "situacao_fundiaria")
 	@Enumerated(EnumType.STRING)
@@ -367,6 +374,12 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 	public PropriedadeRural(Integer id) {
 		this();
 		setId(id);
+	}
+
+	public PropriedadeRural(Integer id, String nome, Comunidade comunidade) {
+		setId(id);
+		setNome(nome);
+		setComunidade(comunidade);
 	}
 
 	@Override
@@ -569,6 +582,10 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 
 	public SistemaProducao getSistemaProducao() {
 		return sistemaProducao;
+	}
+
+	public PropriedadeRuralSituacao getSituacao() {
+		return situacao;
 	}
 
 	public SituacaoFundiaria getSituacaoFundiaria() {
@@ -872,6 +889,10 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 		this.sistemaProducao = sistemaProducao;
 	}
 
+	public void setSituacao(PropriedadeRuralSituacao situacao) {
+		this.situacao = situacao;
+	}
+
 	public void setSituacaoFundiaria(SituacaoFundiaria situacaoFundiaria) {
 		this.situacaoFundiaria = situacaoFundiaria;
 	}
@@ -978,6 +999,11 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 
 	public void setUsuarioInclusao(Usuario usuarioInclusao) {
 		this.usuarioInclusao = usuarioInclusao;
+	}
+
+	@Override
+	public PropriedadeRural infoBasica() {
+		return new PropriedadeRural(getId(), getNome(), getComunidade() != null ? getComunidade().infoBasica() : null);
 	}
 
 }

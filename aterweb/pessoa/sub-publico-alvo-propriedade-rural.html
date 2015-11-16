@@ -2,7 +2,7 @@
     <div class="panel-heading container-fluid">
         <frz-navegador
         ng-model="publicoAlvoPropriedadeRuralNvg" exibe-texto-botao="false"
-        dados="cadastro.registro.publicoAlvoPropriedadeRuralList"
+        dados="cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList"
         acoes-especiais="acoesEspeciais"
         on-abrir = "abrir()"
         on-agir = "agir()"
@@ -20,44 +20,72 @@
         on-ultima-pagina="ultimaPagina()"
         ></frz-navegador>
     </div>
-    <div class="painel-body"  ng-hide="cadastro.registro.publicoAlvoPropriedadeRuralList.length">
+    <div class="painel-body"  ng-hide="cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList.length">
         <div class="alert alert-warning" role="alert">
             <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
             Nenhum registro localizado!
         </div>
     </div>
-    <div class="table-responsible" ng-show="cadastro.registro.publicoAlvoPropriedadeRuralList.length > 0">
+    <div class="table-responsible" ng-show="cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList.length > 0">
         <ng-form name="publicoAlvoPropriedadeRuralListFrm">
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th rowspan="2"><frz-seletor ng-model="publicoAlvoPropriedadeRuralNvg" dados="cadastro.registro.publicoAlvoPropriedadeRuralList"></frz-seletor></th>
-                        <th rowspan="2">#</th>
-                        <th colspan="2">Endereço</th>
-                    </tr>
-                    <tr>
-                        <th><small>Finalidade</small></th>
+                        <th><frz-seletor ng-model="publicoAlvoPropriedadeRuralNvg" dados="cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList"></frz-seletor></th>
+                        <th>#</th>
+                        <th>Comunidade</th>
+                        <th>Nome da Propriedade</th>
+                        <th>Exploração</th>
+                        <th>Área (ha)</th>
+                        <th>Início</th>
+                        <th>Término</th>
+                        <th>Mapa</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat-start="reg in cadastro.registro.publicoAlvoPropriedadeRuralList | filter: {cadastroAcao: '!E'}">
-                        <td rowspan="2">
+                    <tr ng-repeat="reg in cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList | filter: {cadastroAcao: '!E'}">
+                        <td>
                             <input type="radio" ng-show="publicoAlvoPropriedadeRuralNvg.selecao.tipo === 'U'" ng-model="publicoAlvoPropriedadeRuralNvg.selecao.item" ng-value="reg"/>
                             <input type="checkbox" ng-show="publicoAlvoPropriedadeRuralNvg.selecao.tipo === 'M'" checklist-model="publicoAlvoPropriedadeRuralNvg.selecao.items" checklist-value="reg"/>
                         </td>
-                        <td rowspan="2">
+                        <td>
                             {{$index + 1 + ((publicoAlvoPropriedadeRuralNvg.paginaAtual-1) * publicoAlvoPropriedadeRuralNvg.tamanhoPagina)}}
                         </td>
-                        <td colspan="2">{{reg.publicoAlvoPropriedadeRural.endereco}}</td>
-                    </tr>
-                    <tr ng-repeat-end>
+                        <td>{{reg.propriedadeRural.comunidade.nome}}</td>
+                        <td>{{reg.propriedadeRural.nome}}</td>
                         <td>
-                            <select class="form-control input-sm" id="finalidade" name="finalidade{{$index}}" ng-model="reg.finalidade" ng-options="item.codigo as item.descricao for item in scp.cadastro.apoio.meioContatoFinalidadeList" ng-required="true">
+                            <select class="form-control input-sm" id="vinculo" name="vinculo{{$index}}" ng-model="reg.vinculo" ng-options="item.codigo as item.descricao for item in scp.cadastro.apoio.propriedadeRuralVinculoTipoList" ng-required="true">
                             </select>
-                            <div class="label label-danger" ng-show="navegador.submitido && publicoAlvoPropriedadeRuralListFrm.finalidade{{$index}}.$error.required">
+                            <div class="label label-danger" ng-show="navegador.submitido && publicoAlvoPropriedadeRuralListFrm.vinculo{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control input-sm" id="area" name="area{{$index}}" ng-model="reg.area" ng-required="['PR', 'PA'].indexOf(reg.vinculo) >= 0"  ui-number-mask="globalFracaoHectares">
+                            <div class="label label-danger" ng-show="navegador.submitido && publicoAlvoPropriedadeRuralListFrm.area{{$index}}.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control input-sm" id="inicio" name="inicio{{$index}}" ng-model="reg.inicio" ui-date-mask>
+                            <div class="label label-danger" ng-show="navegador.submitido && publicoAlvoPropriedadeRuralListFrm.inicio{{$index}}.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control input-sm" id="termino" name="termino{{$index}}" ng-model="reg.termino" ui-date-mask>
+                            <div class="label label-danger" ng-show="navegador.submitido && publicoAlvoPropriedadeRuralListFrm.termino{{$index}}.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                        <td>
+                            <button id="exibeMapa" name="exibeMapa" class="btn btn-primary" ng-click="exibeMapa()">
+                                <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+                            </button>
                         </td>
                     </tr>
                 </tbody>
@@ -68,24 +96,4 @@
     </div>
     <div class="panel-footer">
     </div>
-    <script type="text/ng-template" id="pessoa-publicoAlvoPropriedadeRural-frm.html">
-        <div class="modal-body">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-8">
-                        <label class="form-label">PublicoAlvoPropriedadeRural</label>
-                        <input type="publicoAlvoPropriedadeRural" class="form-control" name="endereco" ng-model="conteudo.publicoAlvoPropriedadeRural.endereco" required="true">
-                        <div class="label label-danger" ng-show="confirmacaoFrm.endereco.$error.required">
-                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                             Campo Obrigatório
-                        </div>
-                        <div class="label label-danger" ng-show="confirmacaoFrm.endereco.$error.publicoAlvoPropriedadeRural">
-                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                             Endereço inválido!
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </script>
 </div>
