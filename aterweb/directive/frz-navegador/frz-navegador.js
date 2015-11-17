@@ -410,7 +410,7 @@
                         botoes: [
                             {
                                 codigo: 'informacao',
-                                nome: '0/' + scope.ngModel.dados.length,
+                                nome: '0/' + ((scope.ngModel && scope.ngModel.dados) ? scope.ngModel.dados.length : '0'),
                                 descricao: 'Registro(s) Selecionado(s) / Total de registros',
                                 nomeSempreVisivel: true,
                                 acao: function() {scope.onInformacao();},
@@ -493,6 +493,9 @@
                     {
                         codigo: 'navegacao',
                         exibir: function() {
+                            if (!scope.ngModel) {
+                                return false;
+                            }
                             var e = scope.ngModel.estadoAtual();
                             return (scope.ngModel.dados.length && (e !== 'VISUALIZANDO' || (e === 'VISUALIZANDO' && scope.ngModel.selecao.tipo === 'M'))) && 
                                 ((!scope.funcionalidade) || (!$rootScope.token) || (scope.funcionalidade && $rootScope.token && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade] && $rootScope.token.funcionalidadeComandoList[scope.funcionalidade].indexOf('CONSULTAR') >= 0));
@@ -804,7 +807,10 @@
             }],
             link: function (scope, element) {
                 scope.$watch('ngModel.selecao.tipo', function() {
-                    var info = '0/' + scope.ngModel.dados.length;
+                    var info = '0/' + ((scope.ngModel && scope.ngModel.dados) ? scope.ngModel.dados.length : '0');
+                    if (!scope.ngModel || !scope.ngModel.selecao || !scope.ngModel.selecao.tipo) {
+                        return;
+                    }
                     if (scope.ngModel.selecao.tipo === 'U') {
                         scope.ngModel.selecao.selecionado = angular.isObject(scope.ngModel.selecao.item);
                         if (scope.ngModel.selecao.selecionado) {
@@ -818,7 +824,10 @@
                 }, true);
 
                 scope.$watch('ngModel.selecao.item', function(newItem) {
-                    var info = '0/' + scope.ngModel.dados.length;
+                    var info = '0/' + ((scope.ngModel && scope.ngModel.dados) ? scope.ngModel.dados.length : '0');
+                    if (!scope.ngModel || !scope.ngModel.selecao || !scope.ngModel.selecao.tipo) {
+                        return;
+                    }
                     if (scope.ngModel.selecao.tipo === 'U') {
                         scope.ngModel.selecao.selecionado = angular.isObject(scope.ngModel.selecao.item);
                         if (scope.ngModel.selecao.selecionado) {
@@ -829,9 +838,9 @@
                 }, true);
 
                 scope.$watch('ngModel.selecao.items', function() {
-                    var info = '0/' + scope.ngModel.dados.length;
-                    if (!scope.ngModel.selecao.items) {
-                        if (scope.ngModel.botao('informacao')) {scope.ngModel.botao('informacao').nome = info;}
+                    var info = '0/' + ((scope.ngModel && scope.ngModel.dados) ? scope.ngModel.dados.length : '0');
+                    if (!scope.ngModel || !scope.ngModel.selecao || !scope.ngModel.selecao.items) {
+                        if (scope.ngModel && scope.ngModel.botao('informacao')) {scope.ngModel.botao('informacao').nome = info;}
                         return;
                     }
                     var marcado = 0, desmarcado = 0, total = scope.ngModel.dados ? scope.ngModel.dados.length : 0;

@@ -1,0 +1,163 @@
+<ng-form name="form{{ngModel.codigo}}" class="form-horizontal">
+
+<fieldset ng-repeat="item in ngModel.perguntaList">
+
+<legend ng-if="item.opcaoRespostaTipo === 'nome'">{{item.pergunta}}</legend>
+
+<div class="form-group" ng-if="item.opcaoRespostaTipo === 'string'">
+    <label class="col-md-4 control-label" for="perg_{{$index}}">{{item.pergunta}}</label>  
+    <div class="col-md-{{item.tamanho?item.tamanho:'7'}}">
+        <input class="form-control input-md" id="perg_{{$index}}" name="perg_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="item.valor">
+        <span class="help-block">{{item.ajuda}}</span>  
+    </div>
+</div>
+<div class="form-group" ng-if="item.opcaoRespostaTipo === 'numero'">
+    <label class="col-md-4 control-label" for="perg_{{$index}}">{{item.pergunta}}</label>  
+    <div class="col-md-{{item.tamanho?item.tamanho:'7'}}">
+        <input class="form-control input-md" id="perg_{{$index}}" name="perg_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="item.valor" ui-number-mask="item.fracao">
+        <span class="help-block">{{item.ajuda}}</span>  
+    </div>
+</div>
+<div class="form-group" ng-if="item.opcaoRespostaTipo === 'data'">
+    <label class="col-md-4 control-label" for="perg_{{$index}}">{{item.pergunta}}</label>  
+    <div class="col-md-{{item.tamanho?item.tamanho:'7'}}">
+        <input class="form-control input-md" id="perg_{{$index}}" name="perg_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="item.valor" ui-date-mask>
+        <span class="help-block">{{item.ajuda}}</span>  
+    </div>
+</div>
+<div class="form-group" ng-if="item.opcaoRespostaTipo === 'memo'">
+    <label class="col-md-4 control-label" for="perg_{{$index}}">{{item.pergunta}}</label>  
+    <div class="col-md-{{item.tamanho?item.tamanho:'7'}}">
+        <textarea class="form-control" id="perg_{{$index}}" name="perg_{{$index}}" ng-model="item.valor"></textarea>
+        <span class="help-block">{{item.ajuda}}</span>  
+    </div>
+</div>
+<div class="form-group" ng-if="item.opcaoRespostaTipo === 'escolha_unica'">
+    <label class="col-md-4 control-label" for="perg_{{$index}}">{{item.pergunta}}</label>  
+    <div class="col-md-{{item.tamanho?item.tamanho:'7'}}">
+        <div class="col-md-12">
+            <div class="radio" ng-repeat="opcao in item.opcaoValor" ng-init="pergIndex = $index">
+                <label for="perg_{{pergIndex}}_opcao{{$index}}">
+                    <input type="radio" name="perg_{{pergIndex}}" id="perg_{{pergIndex}}_opcao{{$index}}" value="{{opcao.codigo}}" ng-model="item.valor">
+                    {{opcao.descricao}}
+                </label>
+            </div>
+        </div>
+        <span class="help-block">{{item.ajuda}}</span>  
+    </div>
+</div>
+<div class="form-group" ng-if="item.opcaoRespostaTipo === 'escolha_multipla'">
+    <label class="col-md-4 control-label" for="perg_{{$index}}">{{item.pergunta}}</label>  
+    <div class="col-md-{{item.tamanho?item.tamanho:'7'}}">
+        <div class="col-md-12">
+            <div class="checkbox" ng-repeat="opcao in item.opcaoValor" ng-init="pergIndex = $index">
+                <label for="perg_{{pergIndex}}_opcao{{$index}}">
+                    <input type="checkbox" name="perg_{{pergIndex}}" id="perg_{{pergIndex}}_opcao{{$index}}" checklist-model="item.valor" checklist-value="opcao.codigo">
+                    {{opcao.descricao}}
+                </label>
+            </div>
+        </div>
+        <span class="help-block">{{item.ajuda}}</span>  
+    </div>
+</div>
+<div class="form-group" ng-if="item.opcaoRespostaTipo === 'array'">
+    <label class="col-md-4 control-label" for="perg_{{$index}}">{{item.pergunta}}</label>  
+    <div class="col-md-{{item.tamanho?item.tamanho:'7'}}">
+
+
+<div class="panel panel-default">
+    <div class="panel-heading container-fluid">
+        <frz-navegador
+        ng-model="item.navegador" exibe-texto-botao="false"
+        dados="item.valor"
+        acoes-especiais="acoesEspeciais"
+        on-abrir = "abrir()"
+        on-agir = "agir()"
+        on-editar = "editar()"
+        on-especial = "especial()"
+        on-excluir = "excluir()"
+        on-filtrar = "filtrar()"
+        on-incluir = "incluir()"
+        on-listar = "listar()"
+        on-navegar-primeiro = "navegarPrimeiro()"
+        on-navegar-anterior = "navegarAnterior()"
+        on-navegar-proximo = "navegarPosterior()"
+        on-navegar-ultimo = "navegarUltimo()"
+        on-proxima-pagina="proximaPagina()"
+        on-ultima-pagina="ultimaPagina()"
+        ></frz-navegador>
+    </div>
+    <div class="painel-body"  ng-hide="item.valor.length">
+        <div class="alert alert-warning" role="alert">
+            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+            Nenhum registro localizado!
+        </div>
+    </div>
+    <div class="table-responsible" ng-show="item.valor.length > 0">
+        <ng-form name="grupoSocialListFrm">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th width="30px"><frz-seletor ng-model="item.navegador" dados="item.valor"></frz-seletor></th>
+                        <th width="30px">#</th>
+                        <th>Nome</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="reg in item.valor | filter: {cadastroAcao: '!E'}">
+                        <td>
+                            <input type="radio" ng-show="item.navegador.selecao.tipo === 'U'" ng-model="item.navegador.selecao.item" ng-value="reg"/>
+                            <input type="checkbox" ng-show="item.navegador.selecao.tipo === 'M'" checklist-model="item.navegador.selecao.items" checklist-value="reg"/>
+                        </td>
+                        <td>
+                            {{$index + 1 + ((item.navegador.paginaAtual-1) * item.navegador.tamanhoPagina)}}
+                        </td>
+                        <td>{{reg.grupoSocial.nome}}</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+        </ng-form>
+    </div>
+    <div class="panel-footer">
+    </div>
+    <script type="text/ng-template" id="pessoa-grupoSocial-frm.html">
+        <div class="modal-body">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-8">
+                        <label class="form-label">GrupoSocial</label>
+                        <select class="form-control" id="grupoSocial"  name="grupoSocial" ng-model="conteudo.grupoSocial.id" required="true" ng-options="item.id as item.nome for item in conteudo.grupoSocialList">
+                        </select>
+                        <div class="label label-danger" ng-show="confirmacaoFrm.grupoSocial.$error.required">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                             Campo Obrigatório
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <span class="help-block">{{item.ajuda}}</span>  
+    </div>
+</div>
+
+</fieldset>
+
+</ng-form>

@@ -2,12 +2,116 @@
 
 (function(pNmModulo, pNmController, pNmFormulario, pUrlModulo) {
     'use strict';
-    angular.module(pNmModulo, ['ui.bootstrap', 'ui.utils', 'ui.router', 'ngAnimate', 'frz.navegador']);
+    angular.module(pNmModulo, ['ui.bootstrap', 'ui.utils', 'ui.router', 'ngAnimate', 'frz.navegador', 'frz.form']);
     angular.module(pNmModulo).config(['$stateProvider', function($stateProvider) {
         criarEstadosPadrao($stateProvider, pNmModulo, pNmController, pUrlModulo);
     }]);
     angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$modal', '$log', '$modalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'PessoaSrv',
         function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $modal, $log, $modalInstance, modalCadastro, UtilSrv, mensagemSrv, PessoaSrv) {
+
+
+
+
+
+
+            $scope.formulario = {
+                codigo: "frz",
+                perguntaList: [
+                    {
+                        pergunta: 'No nome Teste de Formulario',
+                        opcaoRespostaTipo: 'nome',
+                    },
+                    {
+                        pergunta: 'Grupo Social?',
+                        opcaoRespostaTipo: 'array',
+                        ajuda: 'teste',
+                        tamanho: 7,
+                        opcaoValor: [
+                            {
+                                pergunta: 'Percurso',
+                                opcaoRespostaTipo: 'string',
+                                placeholder: 'cavalo',
+                                ajuda: 'Acho que é rosa',
+                                tamanho: 5,
+                                valor: 'Preto?',
+                            },
+                            {
+                                pergunta: 'Sigla',
+                                opcaoRespostaTipo: 'string',
+                                placeholder: 'cavalo',
+                                ajuda: 'Acho que é rosa',
+                                tamanho: 5,
+                                valor: 'Preto?',
+                            },
+                        ],
+                    },
+                    {
+                        pergunta: 'Gênero?',
+                        opcaoRespostaTipo: 'escolha_unica',
+                        ajuda: 'Seu sexo',
+                        tamanho: 5,
+                        valor: 'M',
+                        opcaoValor: [
+                            {codigo: 'M', descricao: 'Masculino'},
+                            {codigo: 'F', descricao: 'Feminino'},
+                        ],
+                    },
+                    {
+                        pergunta: 'Vai pra onde?',
+                        opcaoRespostaTipo: 'escolha_multipla',
+                        ajuda: 'Vai viajar',
+                        tamanho: 5,
+                        valor: '["E"]',
+                        opcaoValor: [
+                            {codigo: 'B', descricao: 'Brasil'},
+                            {codigo: 'E', descricao: 'Espanha'},
+                        ],
+                    },
+
+                    {
+                        pergunta: 'Qual é a cor do cavalo branco de napoleão?',
+                        opcaoRespostaTipo: 'string',
+                        placeholder: 'cavalo',
+                        ajuda: 'Acho que é rosa',
+                        tamanho: 5,
+                        valor: 'Preto?',
+                    },
+                    {
+                        pergunta: 'Quantos anos vc tem?',
+                        opcaoRespostaTipo: 'numero',
+                        placeholder: '999',
+                        ajuda: 'Sabe contar?',
+                        tamanho: 1,
+                        valor: null,
+                    },
+                    {
+                        pergunta: 'Ops!!',
+                        opcaoRespostaTipo: 'nome',
+                    },
+                    {
+                        pergunta: 'Que dia vc nasceu?',
+                        opcaoRespostaTipo: 'data',
+                        placeholder: '99/99/9999',
+                        ajuda: 'Veja no seu RG',
+                        tamanho: 2,
+                        valor: '21/12/1975',
+                    },
+                    {
+                        pergunta: 'Fale sobre você',
+                        opcaoRespostaTipo: 'memo',
+                        ajuda: 'Descreva-se',
+                        valor: 'Eu sou ...',
+                    },
+                ],
+            };
+
+
+
+
+
+
+
+
             // inicializacao
             $scope.crudInit($scope, $state, null, pNmFormulario, PessoaSrv);
 
