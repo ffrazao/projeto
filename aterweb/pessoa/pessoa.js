@@ -16,93 +16,38 @@
 
             $scope.formulario = {
                 codigo: "frz",
-                perguntaList: [
+                tipo: "array",
+                nome: "Nome do Form",
+                opcao: [
                     {
-                        pergunta: 'No nome Teste de Formulario',
-                        opcaoRespostaTipo: 'nome',
+                        nome: 'teste',
+                        tipo: 'nome',
                     },
                     {
-                        pergunta: 'Grupo Social?',
-                        opcaoRespostaTipo: 'array',
-                        ajuda: 'teste',
-                        tamanho: 7,
-                        opcaoValor: [
+                        nome: 'Grupo Social?',
+                        tipo: 'array',
+                        opcao: [
                             {
-                                pergunta: 'Percurso',
-                                opcaoRespostaTipo: 'string',
-                                placeholder: 'cavalo',
-                                ajuda: 'Acho que é rosa',
-                                tamanho: 5,
+                                nome: 'Percurso',
+                                tipo: 'string',
                                 valor: 'Preto?',
                             },
                             {
-                                pergunta: 'Sigla',
-                                opcaoRespostaTipo: 'string',
-                                placeholder: 'cavalo',
-                                ajuda: 'Acho que é rosa',
-                                tamanho: 5,
-                                valor: 'Preto?',
+                                nome: 'Sigla',
+                                tipo: 'string',
+                                valor: 'Branco?',
                             },
                         ],
+                        valor: [{}, {}],
                     },
                     {
-                        pergunta: 'Gênero?',
-                        opcaoRespostaTipo: 'escolha_unica',
-                        ajuda: 'Seu sexo',
-                        tamanho: 5,
-                        valor: 'M',
-                        opcaoValor: [
-                            {codigo: 'M', descricao: 'Masculino'},
-                            {codigo: 'F', descricao: 'Feminino'},
-                        ],
-                    },
-                    {
-                        pergunta: 'Vai pra onde?',
-                        opcaoRespostaTipo: 'escolha_multipla',
-                        ajuda: 'Vai viajar',
-                        tamanho: 5,
-                        valor: '["E"]',
-                        opcaoValor: [
-                            {codigo: 'B', descricao: 'Brasil'},
-                            {codigo: 'E', descricao: 'Espanha'},
-                        ],
-                    },
-
-                    {
-                        pergunta: 'Qual é a cor do cavalo branco de napoleão?',
-                        opcaoRespostaTipo: 'string',
-                        placeholder: 'cavalo',
-                        ajuda: 'Acho que é rosa',
-                        tamanho: 5,
+                        nome: 'Percurso',
+                        tipo: 'string',
                         valor: 'Preto?',
                     },
-                    {
-                        pergunta: 'Quantos anos vc tem?',
-                        opcaoRespostaTipo: 'numero',
-                        placeholder: '999',
-                        ajuda: 'Sabe contar?',
-                        tamanho: 1,
-                        valor: null,
-                    },
-                    {
-                        pergunta: 'Ops!!',
-                        opcaoRespostaTipo: 'nome',
-                    },
-                    {
-                        pergunta: 'Que dia vc nasceu?',
-                        opcaoRespostaTipo: 'data',
-                        placeholder: '99/99/9999',
-                        ajuda: 'Veja no seu RG',
-                        tamanho: 2,
-                        valor: '21/12/1975',
-                    },
-                    {
-                        pergunta: 'Fale sobre você',
-                        opcaoRespostaTipo: 'memo',
-                        ajuda: 'Descreva-se',
-                        valor: 'Eu sou ...',
-                    },
+
                 ],
+                valor: null,
             };
 
 

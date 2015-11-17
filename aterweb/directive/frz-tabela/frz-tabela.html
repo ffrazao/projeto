@@ -1,0 +1,59 @@
+<div class="panel panel-default">
+    <div class="panel-heading container-fluid" title="{{ngModel.pop}}">
+        <frz-navegador
+        ng-model="ngModel.navegador" exibe-texto-botao="false"
+        dados="ngModel.valor"
+        acoes-especiais="acoesEspeciais"
+        on-abrir = "abrir()"
+        on-agir = "agir()"
+        on-editar = "editar()"
+        on-especial = "especial()"
+        on-excluir = "excluir()"
+        on-filtrar = "filtrar()"
+        on-incluir = "incluir()"
+        on-listar = "listar()"
+        on-navegar-primeiro = "navegarPrimeiro()"
+        on-navegar-anterior = "navegarAnterior()"
+        on-navegar-proximo = "navegarPosterior()"
+        on-navegar-ultimo = "navegarUltimo()"
+        on-proxima-pagina="proximaPagina()"
+        on-ultima-pagina="ultimaPagina()"
+        ></frz-navegador>
+    </div>
+    <div class="painel-body" ng-hide="ngModel.valor.length">
+        <div class="alert alert-warning" style="margin: 0px;" style="margin: 0px" role="alert">
+            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+            Nenhum registro localizado!
+        </div>
+    </div>
+    <div class="table-responsible" ng-show="ngModel.valor.length > 0">
+        <ng-form name="f_{{ngModel.codigo}}">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th width="30px"><frz-seletor ng-model="ngModel.navegador" dados="ngModel.valor"></frz-seletor></th>
+                        <th width="30px">#</th>
+                        <th ng-repeat="opcao in ngModel.opcao">{{opcao.nome}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="reg in ngModel.valor | filter: {cadastroAcao: '!E'}">
+                        <td>
+                            <input type="radio" ng-show="ngModel.navegador.selecao.tipo === 'U'" ng-model="ngModel.navegador.selecao.ngModel" ng-value="reg"/>
+                            <input type="checkbox" ng-show="ngModel.navegador.selecao.tipo === 'M'" checklist-model="ngModel.navegador.selecao.items" checklist-value="reg"/>
+                        </td>
+                        <td>
+                            {{$index + 1 + ((ngModel.navegador.paginaAtual-1) * ngModel.navegador.tamanhoPagina)}}
+                        </td>
+                        <th ng-repeat="opcao in ngModel.opcao">{{opcao.valor}}</th>
+                    </tr>
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+        </ng-form>
+    </div>
+    <div class="panel-footer">
+
+    </div>
+</div>

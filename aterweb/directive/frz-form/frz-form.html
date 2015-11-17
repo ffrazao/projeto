@@ -1,163 +1,89 @@
-<ng-form name="form{{ngModel.codigo}}" class="form-horizontal">
+<ng-form name="f_{{ngModel.codigo}}" class="form-horizontal">
 
-<fieldset ng-repeat="item in ngModel.perguntaList">
+    <script type="text/ng-template" id="frz-form-label.html">
+        <label class="col-md-3 control-label" for="f_{{ngModel.codigo}}_p_{{$index}}">{{item.nome}}</label>
+    </script>
 
-<legend ng-if="item.opcaoRespostaTipo === 'nome'">{{item.pergunta}}</legend>
+    <script type="text/ng-template" id="frz-form-ajuda.html">
+        <div class="label label-default" ng-show="item.ajuda">
+            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+            {{item.ajuda}}
+        </div>
+        <div class="label label-danger" ng-show="ngModel.submetido && f_{{ngModel.codigo}}.f_{{ngModel.codigo}}_p_{{$index}}.$error.required">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Campo Obrigatório
+        </div>
+        <div class="label label-danger" ng-show="ngModel.submetido && (f_{{ngModel.codigo}}.f_{{ngModel.codigo}}_p_{{$index}}.$error.date || f_{{ngModel.codigo}}.f_{{ngModel.codigo}}_p_{{$index}}.$error.number || f_{{ngModel.codigo}}.f_{{ngModel.codigo}}_p_{{$index}}.$error.cep)">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Valor inválido!
+        </div>
+    </script>
 
-<div class="form-group" ng-if="item.opcaoRespostaTipo === 'string'">
-    <label class="col-md-4 control-label" for="perg_{{$index}}">{{item.pergunta}}</label>  
-    <div class="col-md-{{item.tamanho?item.tamanho:'7'}}">
-        <input class="form-control input-md" id="perg_{{$index}}" name="perg_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="item.valor">
-        <span class="help-block">{{item.ajuda}}</span>  
-    </div>
-</div>
-<div class="form-group" ng-if="item.opcaoRespostaTipo === 'numero'">
-    <label class="col-md-4 control-label" for="perg_{{$index}}">{{item.pergunta}}</label>  
-    <div class="col-md-{{item.tamanho?item.tamanho:'7'}}">
-        <input class="form-control input-md" id="perg_{{$index}}" name="perg_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="item.valor" ui-number-mask="item.fracao">
-        <span class="help-block">{{item.ajuda}}</span>  
-    </div>
-</div>
-<div class="form-group" ng-if="item.opcaoRespostaTipo === 'data'">
-    <label class="col-md-4 control-label" for="perg_{{$index}}">{{item.pergunta}}</label>  
-    <div class="col-md-{{item.tamanho?item.tamanho:'7'}}">
-        <input class="form-control input-md" id="perg_{{$index}}" name="perg_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="item.valor" ui-date-mask>
-        <span class="help-block">{{item.ajuda}}</span>  
-    </div>
-</div>
-<div class="form-group" ng-if="item.opcaoRespostaTipo === 'memo'">
-    <label class="col-md-4 control-label" for="perg_{{$index}}">{{item.pergunta}}</label>  
-    <div class="col-md-{{item.tamanho?item.tamanho:'7'}}">
-        <textarea class="form-control" id="perg_{{$index}}" name="perg_{{$index}}" ng-model="item.valor"></textarea>
-        <span class="help-block">{{item.ajuda}}</span>  
-    </div>
-</div>
-<div class="form-group" ng-if="item.opcaoRespostaTipo === 'escolha_unica'">
-    <label class="col-md-4 control-label" for="perg_{{$index}}">{{item.pergunta}}</label>  
-    <div class="col-md-{{item.tamanho?item.tamanho:'7'}}">
-        <div class="col-md-12">
-            <div class="radio" ng-repeat="opcao in item.opcaoValor" ng-init="pergIndex = $index">
-                <label for="perg_{{pergIndex}}_opcao{{$index}}">
-                    <input type="radio" name="perg_{{pergIndex}}" id="perg_{{pergIndex}}_opcao{{$index}}" value="{{opcao.codigo}}" ng-model="item.valor">
+    <script type="text/ng-template" id="campo_string">
+        <input class="form-control input-md" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="item.valor" ng-required="{{item.requirido()}}" title="{{item.pop}}">
+    </script>
+
+    <script type="text/ng-template" id="campo_numero">
+        <input class="form-control input-md" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="item.valor" ng-required="{{item.requirido()}}" title="{{item.pop}}" ui-number-mask="item.fracao">
+    </script>
+
+    <script type="text/ng-template" id="campo_data">
+        <input class="form-control input-md" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="item.valor" ng-required="{{item.requirido()}}" title="{{item.pop}}" ui-date-mask>
+    </script>
+
+    <script type="text/ng-template" id="campo_cep">
+        <input class="form-control input-md" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="item.valor" ng-required="{{item.requirido()}}" title="{{item.pop}}" ui-br-cep-mask>
+    </script>
+
+    <script type="text/ng-template" id="campo_memo">
+        <textarea class="form-control" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" ng-model="item.valor" ng-required="{{item.requirido()}}" title="{{item.pop}}"></textarea>
+    </script>
+
+    <script type="text/ng-template" id="campo_combo">
+        <select class="form-control" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" ng-model="item.valor" ng-required="{{item.requirido()}}" ng-options="opcao.id as opcao.nome for opcao in item.opcao" title="{{item.pop}}">
+            <option value="">-- Selecione --</option>
+        </select>
+    </script>
+
+    <script type="text/ng-template" id="campo_escolha_unica">
+        <div class="col-md-12" ng-init="idx = $index">
+            <div class="radio" ng-repeat="opcao in item.opcao">
+                <label for="f_{{ngModel.codigo}}_p_{{idx}}_o_{{$index}}">
+                    <input type="radio" name="perg_{{idx}}" id="f_{{ngModel.codigo}}_p_{{idx}}_o_{{$index}}" value="{{opcao.codigo}}" ng-model="item.valor" ng-required="{{item.requirido()}}" title="{{item.pop}}">
                     {{opcao.descricao}}
                 </label>
-            </div>
-        </div>
-        <span class="help-block">{{item.ajuda}}</span>  
-    </div>
-</div>
-<div class="form-group" ng-if="item.opcaoRespostaTipo === 'escolha_multipla'">
-    <label class="col-md-4 control-label" for="perg_{{$index}}">{{item.pergunta}}</label>  
-    <div class="col-md-{{item.tamanho?item.tamanho:'7'}}">
-        <div class="col-md-12">
-            <div class="checkbox" ng-repeat="opcao in item.opcaoValor" ng-init="pergIndex = $index">
-                <label for="perg_{{pergIndex}}_opcao{{$index}}">
-                    <input type="checkbox" name="perg_{{pergIndex}}" id="perg_{{pergIndex}}_opcao{{$index}}" checklist-model="item.valor" checklist-value="opcao.codigo">
-                    {{opcao.descricao}}
-                </label>
-            </div>
-        </div>
-        <span class="help-block">{{item.ajuda}}</span>  
-    </div>
-</div>
-<div class="form-group" ng-if="item.opcaoRespostaTipo === 'array'">
-    <label class="col-md-4 control-label" for="perg_{{$index}}">{{item.pergunta}}</label>  
-    <div class="col-md-{{item.tamanho?item.tamanho:'7'}}">
-
-
-<div class="panel panel-default">
-    <div class="panel-heading container-fluid">
-        <frz-navegador
-        ng-model="item.navegador" exibe-texto-botao="false"
-        dados="item.valor"
-        acoes-especiais="acoesEspeciais"
-        on-abrir = "abrir()"
-        on-agir = "agir()"
-        on-editar = "editar()"
-        on-especial = "especial()"
-        on-excluir = "excluir()"
-        on-filtrar = "filtrar()"
-        on-incluir = "incluir()"
-        on-listar = "listar()"
-        on-navegar-primeiro = "navegarPrimeiro()"
-        on-navegar-anterior = "navegarAnterior()"
-        on-navegar-proximo = "navegarPosterior()"
-        on-navegar-ultimo = "navegarUltimo()"
-        on-proxima-pagina="proximaPagina()"
-        on-ultima-pagina="ultimaPagina()"
-        ></frz-navegador>
-    </div>
-    <div class="painel-body"  ng-hide="item.valor.length">
-        <div class="alert alert-warning" role="alert">
-            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-            Nenhum registro localizado!
-        </div>
-    </div>
-    <div class="table-responsible" ng-show="item.valor.length > 0">
-        <ng-form name="grupoSocialListFrm">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th width="30px"><frz-seletor ng-model="item.navegador" dados="item.valor"></frz-seletor></th>
-                        <th width="30px">#</th>
-                        <th>Nome</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="reg in item.valor | filter: {cadastroAcao: '!E'}">
-                        <td>
-                            <input type="radio" ng-show="item.navegador.selecao.tipo === 'U'" ng-model="item.navegador.selecao.item" ng-value="reg"/>
-                            <input type="checkbox" ng-show="item.navegador.selecao.tipo === 'M'" checklist-model="item.navegador.selecao.items" checklist-value="reg"/>
-                        </td>
-                        <td>
-                            {{$index + 1 + ((item.navegador.paginaAtual-1) * item.navegador.tamanhoPagina)}}
-                        </td>
-                        <td>{{reg.grupoSocial.nome}}</td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                </tfoot>
-            </table>
-        </ng-form>
-    </div>
-    <div class="panel-footer">
-    </div>
-    <script type="text/ng-template" id="pessoa-grupoSocial-frm.html">
-        <div class="modal-body">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-8">
-                        <label class="form-label">GrupoSocial</label>
-                        <select class="form-control" id="grupoSocial"  name="grupoSocial" ng-model="conteudo.grupoSocial.id" required="true" ng-options="item.id as item.nome for item in conteudo.grupoSocialList">
-                        </select>
-                        <div class="label label-danger" ng-show="confirmacaoFrm.grupoSocial.$error.required">
-                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                             Campo Obrigatório
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </script>
-</div>
+
+    <script type="text/ng-template" id="campo_escolha_multipla">
+        <div class="col-md-12" ng-init="idx = $index">
+            <div class="checkbox" ng-repeat="opcao in item.opcao">
+                <label for="f_{{ngModel.codigo}}_p_{{idx}}_o_{{$index}}">
+                    <input type="checkbox" name="perg_{{idx}}" id="f_{{ngModel.codigo}}_p_{{idx}}_o_{{$index}}" checklist-model="item.valor" checklist-value="opcao.codigo" ng-required="{{item.requirido()}}" title="{{item.pop}}">
+                    {{opcao.descricao}}
+                </label>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="campo_array">
+        <frz-tabela ng-model="item"></frz-tabela>
+    </script>
 
 
+    <fieldset ng-repeat="item in ngModel.opcao" ng-switch on="item.tipo">
 
+        <legend ng-switch-when="nome">{{item.nome}}</legend>
 
+        <div class="form-group" ng-switch-default>
+            <ng-include src="'frz-form-label.html'"/>
+            <div class="col-md-{{item.tamanho?item.tamanho:'7'}}">
+                <ng-include src="'campo_' + item.tipo"/>
+                <ng-include src="'frz-form-ajuda.html'"/>
+            </div>
+        </div>
 
-
-
-
-
-
-
-
-
-
-        <span class="help-block">{{item.ajuda}}</span>  
-    </div>
-</div>
-
-</fieldset>
+    </fieldset>
 
 </ng-form>
