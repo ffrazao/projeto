@@ -9,52 +9,33 @@
     angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$modal', '$log', '$modalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'PessoaSrv',
         function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $modal, $log, $modalInstance, modalCadastro, UtilSrv, mensagemSrv, PessoaSrv) {
 
-
-
-
-
+            $scope.vlr = [
+                    {
+                        sigla: "BSM",
+                        nome: "Brasil Sem Miséria",
+                    },
+                    {
+                        nome: "INCRA",
+                    },
+                ];
 
             $scope.formulario = {
-                codigo: "frz",
+                codigo: "documento",
                 tipo: "array",
-                nome: "Nome do Form",
+                nome: "Documento",
                 opcao: [
                     {
-                        nome: 'teste',
-                        tipo: 'nome',
-                    },
-                    {
-                        nome: 'Grupo Social?',
-                        tipo: 'array',
-                        opcao: [
-                            {
-                                nome: 'Percurso',
-                                tipo: 'string',
-                                valor: 'Preto?',
-                            },
-                            {
-                                nome: 'Sigla',
-                                tipo: 'string',
-                                valor: 'Branco?',
-                            },
-                        ],
-                        valor: [{}, {}],
-                    },
-                    {
-                        nome: 'Percurso',
+                        nome: 'Nome do Grupo',
+                        codigo: 'nome',
                         tipo: 'string',
-                        valor: 'Preto?',
                     },
-
+                    {
+                        nome: 'Sigla do Grupo',
+                        codigo: 'sigla',
+                        tipo: 'string',
+                    },
                 ],
-                valor: null,
             };
-
-
-
-
-
-
 
 
             // inicializacao
