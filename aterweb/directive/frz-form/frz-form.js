@@ -7,8 +7,6 @@
 
     // controller para a barra de navegacao
     frzFormModule.controller('FrzFormCtrl', ['$scope', function($scope) {
-        
-        
     }]);
 
     // diretiva da barra de navegação de dados
@@ -20,12 +18,14 @@
             templateUrl: 'directive/frz-form/frz-form.html',
             scope: {
                 ngModel: '=',
-                tipo: '=',
+                dados: '=',
                 onAbrir: '&',
             },
             controller: 'FrzFormCtrl',
             link: function(scope, element, attributes) {
-                scope.tipo = attributes.tipo;
+                if (!angular.isObject(scope.dados) || angular.isArray(scope.dados)) {
+                    scope.dados = {};
+                }
 
                 // executar o estado inicial do form
                 if (scope.onAbrir) {

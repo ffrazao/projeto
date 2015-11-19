@@ -1,16 +1,16 @@
 <div class="panel panel-default">
     <div class="panel-heading container-fluid" title="{{ngModel.pop}}">
         <frz-navegador
-        ng-model="navegador" exibe-texto-botao="false"
+        ng-model="navegadorFrm" exibe-texto-botao="false"
         dados="dados"
         acoes-especiais="acoesEspeciais"
         on-abrir = "ngModel.abrir()"
         on-agir = "ngModel.agir()"
-        on-editar = "ngModel.editar()"
+        on-editar = "editar(ngModel)"
         on-especial = "ngModel.especial()"
-        on-excluir = "ngModel.excluir()"
+        on-excluir = "excluir(ngModel)"
         on-filtrar = "ngModel.filtrar()"
-        on-incluir = "ngModel.incluir()"
+        on-incluir = "incluir(ngModel)"
         on-listar = "ngModel.listar()"
         on-navegar-primeiro = "ngModel.navegarPrimeiro()"
         on-navegar-anterior = "ngModel.navegarAnterior()"
@@ -20,7 +20,6 @@
         on-ultima-pagina="ngModel.ultimaPagina()"
         ></frz-navegador>
     </div>
-    /{{dados}}/
     <div class="painel-body" ng-hide="dados.length">
         <div class="alert alert-warning" style="margin: 0px;" role="alert">
             <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
@@ -29,24 +28,27 @@
     </div>
     <div class="table-responsible" ng-show="dados.length > 0">
         <ng-form name="f_{{ngModel.codigo}}">
-            <table class="table table-striped">
+            <table class="table table-striped" style="margin: 0px;">
                 <thead>
                     <tr>
-                        <th width="30px"><frz-seletor ng-model="navegador" dados="dados"></frz-seletor></th>
+                        <th width="30px"><frz-seletor ng-model="navegadorFrm" dados="dados"></frz-seletor></th>
                         <th width="30px">#</th>
                         <th ng-repeat="opcao in ngModel.opcao">{{opcao.nome}}</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="reg in dados | filter: {cadastroAcao: '!E'}">
+                    <tr ng-repeat="reg in dados | filter: {cadastroAcao: '!E'} | pagina: navegadorFrm.paginaAtual : navegadorFrm.tamanhoPagina | limitTo: navegadorFrm.tamanhoPagina">
                         <td>
-                            <input type="radio" ng-show="navegador.selecao.tipo === 'U'" ng-model="navegador.selecao.ngModel" ng-value="reg"/>
-                            <input type="checkbox" ng-show="navegador.selecao.tipo === 'M'" checklist-model="navegador.selecao.items" checklist-value="reg"/>
+                            <input type="radio" ng-show="navegadorFrm.selecao.tipo === 'U'" ng-model="navegadorFrm.selecao.item" ng-value="reg"/>
+                            <input type="checkbox" ng-show="navegadorFrm.selecao.tipo === 'M'" checklist-model="navegadorFrm.selecao.items" checklist-value="reg"/>
                         </td>
                         <td>
-                            {{$index + 1 + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)}}
+                            {{$index + 1 + ((navegadorFrm.paginaAtual-1) * navegadorFrm.tamanhoPagina)}}
                         </td>
-                        <td ng-repeat="opcao in ngModel.opcao">{{reg[opcao.codigo]}}</td>
+                        <td ng-repeat="opcao in ngModel.opcao" ng-switch on="opcao.tipo">
+                            <span ng-switch-when="array"><button class="btn btn-info" ng-click="ver(opcao, reg[opcao.codigo])">...</button></span>
+                            <span ng-switch-default>{{reg[opcao.codigo]}}</span>
+                        </td>
                     </tr>
                 </tbody>
                 <tfoot>

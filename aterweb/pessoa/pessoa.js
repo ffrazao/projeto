@@ -164,7 +164,7 @@
                 'nome': 'Beneficiário',
                 'include': 'pessoa/tab-beneficiario.html',
                 'visivel': false,
-            }, {
+            }, /*{
                 'nome': 'Colaborador',
                 'include': 'pessoa/tab-colaborador.html',
                 'visivel': false,
@@ -172,23 +172,23 @@
                 'nome': 'Diagnósticos',
                 'include': 'pessoa/tab-diagnostico.html',
                 'visivel': false,
-            }, {
-                'nome': 'Grupos Sociais',
+            },*/ {
+                'nome': 'Programas Sociais',
                 'include': 'pessoa/tab-grupo-social.html',
                 'visivel': true,
-            }, {
+            }, /*{
                 'nome': 'Atividades',
                 'include': 'pessoa/tab-atividade.html',
                 'visivel': true,
-            }, {
+            },*/ {
                 'nome': 'Arquivos',
                 'include': 'pessoa/tab-arquivo.html',
                 'visivel': true,
-            }, {
+            },/* {
                 'nome': 'Pendências',
                 'include': 'pessoa/tab-pendencia.html',
                 'visivel': true,
-            }, ];
+            }, */];
             $scope.tabs.activeTab = 'Arquivos';
             $scope.tabVisivelPublicoAlvo = function(visivel) {
                 $scope.tabVisivel('Beneficiário', visivel);

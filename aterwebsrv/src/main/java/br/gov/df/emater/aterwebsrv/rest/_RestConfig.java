@@ -1,7 +1,6 @@
 package br.gov.df.emater.aterwebsrv.rest;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;

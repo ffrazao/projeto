@@ -3,14 +3,136 @@
 (function() {
     'use strict';
 
-    var FrzTabelaModule = angular.module('frz.tabela', ['frz.navegador']);
+    var FrzTabelaModule = angular.module('frz.tabela', ['frz.navegador', 'principal']);
+
+    var verificaDados = function(scope) {
+        if (!angular.isArray(scope.dados)) {
+            scope.dados = [];
+        }
+        scope.navegadorFrm.setDados(scope.dados);
+        scope.selecao = scope.navegadorFrm.selecao;
+    };
 
     // controller para a barra de navegacao
-    FrzTabelaModule.controller('FrzTabelaCtrl', ['$scope', function($scope) {
-        $scope.onAbrir = function() {
-            $scope.navegador.mudarEstado('ESPECIAL');
-        }
-        
+    FrzTabelaModule.controller('FrzTabelaCtrl', ['$scope', 'FrzNavegadorParams', 'mensagemSrv', 'UtilSrv', function($scope, FrzNavegadorParams, mensagemSrv, UtilSrv) {
+        $scope.navegadorFrm = new FrzNavegadorParams([]);
+        var abrirForm = function (form, dd, acao) {
+            if (!dd) {
+                dd = {};
+            }
+            var dados = angular.copy(dd);
+            var conteudo = {formulario: form, dados: dados};
+            var conf = '<frz-form ng-model="conteudo.formulario" dados="conteudo.dados">';
+            mensagemSrv.confirmacao(false, conf, form.nome, conteudo).then(function(conteudo) {
+                // processar o retorno positivo da modal
+                verificaDados($scope);
+                if (acao === 'incluir') {
+                    $scope.dados.push(conteudo.dados);
+                } else {
+                    for (var i in $scope.dados) {
+                        if (angular.equals($scope.dados[i], dd)) {
+                            angular.copy(conteudo.dados, $scope.dados[i]);
+                            angular.copy(conteudo.dados, dd);
+                            break;
+                        }
+                    }
+                }
+                if ($scope.ngModel.onSalvarDepois) {
+                    $scope.ngModel.onSalvarDepois(form, dd, acao);
+                }
+            }, function() {
+                // processar o retorno negativo da modal
+                //$log.info('Modal dismissed at: ' + new Date());
+            });
+        };
+        $scope.incluir = function (form) {
+            try {
+                var dd = {};
+                if ($scope.ngModel.onIncluirAntes) {
+                    $scope.ngModel.onIncluirAntes(form, dd);
+                }
+                abrirForm(form, dd, 'incluir');
+                $scope.selecao = $scope.navegadorFrm.selecao;
+            } catch (exception) {
+            }
+        };
+        $scope.editar = function (form) {
+            try {
+                if ($scope.navegadorFrm.selecao.tipo === 'U') {
+                    if ($scope.ngModel.onEditarAntes) {
+                        $scope.ngModel.onEditarAntes(form, $scope.navegadorFrm.selecao.item);
+                    }
+                    abrirForm(form, $scope.navegadorFrm.selecao.item, 'editar');
+                    if ($scope.ngModel.onEditarDepois) {
+                        $scope.ngModel.onEditarDepois(form, $scope.navegadorFrm.selecao.item);
+                    }
+                } else {
+                    for (var i in $scope.navegadorFrm.selecao.items) {
+                        if ($scope.ngModel.onEditarAntes) {
+                            $scope.ngModel.onEditarAntes(form, $scope.navegadorFrm.selecao.items[i]);
+                        }
+                        abrirForm(form, $scope.navegadorFrm.selecao.items[i], 'editar');
+                        if ($scope.ngModel.onEditarDepois) {
+                            $scope.ngModel.onEditarDepois(form, $scope.navegadorFrm.selecao.items[i]);
+                        }
+                    }
+                }
+                $scope.selecao = $scope.navegadorFrm.selecao;
+            } catch (exception) {
+            }
+        };
+        var remove = function (reg) {
+            $scope.navegadorFrm.dados.splice(UtilSrv.indiceDe($scope.navegadorFrm.dados, reg), 1);
+        };
+        $scope.excluir = function (form) {
+            try {
+                if ($scope.navegadorFrm.selecao.tipo === 'U') {
+                    if ($scope.ngModel.onExcluirAntes) {
+                        $scope.ngModel.onExcluirAntes(form, $scope.navegadorFrm.selecao.item);
+                    }
+                    remove($scope.navegadorFrm.selecao.item);
+                    if ($scope.ngModel.onExcluirDepois) {
+                        $scope.ngModel.onExcluirDepois(form, $scope.navegadorFrm.selecao.item);
+                    }
+                    $scope.navegadorFrm.selecao.item = null;
+                } else {
+                    for (var i in $scope.navegadorFrm.selecao.items) {
+                        if ($scope.ngModel.onExcluirAntes) {
+                            $scope.ngModel.onExcluirAntes(form, $scope.navegadorFrm.selecao.items[i]);
+                        }
+                        remove($scope.navegadorFrm.selecao.items[i]);
+                        if ($scope.ngModel.onExcluirDepois) {
+                            $scope.ngModel.onExcluirDepois(form, $scope.navegadorFrm.selecao.items[i]);
+                        }
+                    }
+                    $scope.navegadorFrm.selecao.items.length = 0;
+                }
+                $scope.selecao = $scope.navegadorFrm.selecao;
+            } catch (exception) {
+            }
+        };
+
+        $scope.ver = function(form, dd) {
+            var acao = null;
+            var dados = null;
+            if (!dd) {
+                dados = {};
+                acao = 'incluir';
+            } else {
+                dados = angular.copy(dd);
+                acao = 'editar';
+            }
+            var conteudo = {formulario: form, dados: dados};
+            var conf = '<frz-tabela ng-model="conteudo.formulario" dados="conteudo.dados">';
+            mensagemSrv.confirmacao(false, conf, form.nome, conteudo).then(function(conteudo) {
+                // processar o retorno positivo da modal
+                verificaDados($scope);
+                angular.copy(conteudo.dados, dd);
+            }, function() {
+                // processar o retorno negativo da modal
+                //$log.info('Modal dismissed at: ' + new Date());
+            });
+        };
     }]);
 
     // diretiva da barra de navegação de dados
@@ -23,15 +145,18 @@
             scope: {
                 ngModel: '=',
                 dados: '=',
+                selecao: '=',
                 onAbrir: '&',
             },
             controller: 'FrzTabelaCtrl',
             link: function(scope, element, attributes) {
-                scope.navegador = new FrzNavegadorParams(scope.dados); 
+                verificaDados(scope);
+
+                scope.navegadorFrm.mudarEstado('ESPECIAL');
 
                 // executar o estado inicial da tabela
-                if (scope.onAbrir) {
-                    scope.onAbrir();
+                if (scope.ngModel.onAbrir) {
+                    scope.ngModel.onAbrir();
                 }
             },
         };

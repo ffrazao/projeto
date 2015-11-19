@@ -771,6 +771,7 @@
                 ];
                 // executar o estado inicial do navegador
                 scope.onAbrir();
+                scope.refresh();
             },
         };
     }]);
