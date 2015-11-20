@@ -1,9 +1,7 @@
 <ng-form name="f_{{ngModel.codigo}}" class="form-horizontal">
-
     <script type="text/ng-template" id="frz-form-label.html">
         <label class="col-md-3 control-label" for="f_{{ngModel.codigo}}_p_{{$index}}">{{item.nome}}</label>
     </script>
-
     <script type="text/ng-template" id="frz-form-ajuda.html">
         <div class="label label-default" ng-show="item.ajuda">
             <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
@@ -20,23 +18,23 @@
     </script>
 
     <script type="text/ng-template" id="campo_string">
-        <input class="form-control input-md" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="dados[item.codigo]" ng-required="item.requirido()" title="{{item.pop}}">
+        <input class="form-control input-md" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="dados[item.codigo]" ng-required="item.requirido()" title="{{item.pop}}" ng-readonly="item.somenteLeitura">
     </script>
 
     <script type="text/ng-template" id="campo_numero">
-        <input class="form-control input-md" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="dados[item.codigo]" ng-required="item.requirido()" title="{{item.pop}}" ui-number-mask="item.fracao">
+        <input class="form-control input-md" style="text-align: right" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="dados[item.codigo]" ng-required="item.requirido()" title="{{item.pop}}" ui-number-mask="item.fracao ? item.fracao : 2" ng-readonly="item.somenteLeitura">
     </script>
 
     <script type="text/ng-template" id="campo_data">
-        <input class="form-control input-md" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="dados[item.codigo]" ng-required="item.requirido()" title="{{item.pop}}" ui-date-mask>
+        <input class="form-control input-md" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="dados[item.codigo]" ng-required="item.requirido()" title="{{item.pop}}" ui-date-mask ng-readonly="item.somenteLeitura">
     </script>
 
     <script type="text/ng-template" id="campo_cep">
-        <input class="form-control input-md" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="dados[item.codigo]" ng-required="item.requirido()" title="{{item.pop}}" ui-br-cep-mask>
+        <input class="form-control input-md" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="dados[item.codigo]" ng-required="item.requirido()" title="{{item.pop}}" ui-br-cep-mask ng-readonly="item.somenteLeitura">
     </script>
 
     <script type="text/ng-template" id="campo_memo">
-        <textarea class="form-control" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" ng-model="dados[item.codigo]" ng-required="item.requirido()" title="{{item.pop}}"></textarea>
+        <textarea class="form-control" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" ng-model="dados[item.codigo]" ng-required="item.requirido()" title="{{item.pop}}" ng-readonly="item.somenteLeitura"></textarea>
     </script>
 
     <script type="text/ng-template" id="campo_combo_unico">
@@ -45,7 +43,8 @@
             name="f_{{ngModel.codigo}}_p_{{$index}}" 
             ng-model="dados[item.codigo]" 
             ng-required="item.requirido()" 
-            ng-options="opcao as opcao[item.opcao.descricao] for opcao in item.opcao.lista track by opcao[item.opcao.codigo]" title="{{item.pop}}">
+            ng-options="opcao as opcao[item.opcao.descricao] for opcao in item.opcao.lista track by opcao[item.opcao.codigo]" title="{{item.pop}}" 
+            ng-readonly="item.somenteLeitura">
             <option value="">-- Selecione --</option>
         </select>
     </script>
@@ -57,7 +56,7 @@
             ng-model="dados[item.codigo]" 
             ng-required="item.requirido()" 
             ng-options="opcao as opcao[item.opcao.descricao] for opcao in item.opcao.lista track by opcao[item.opcao.codigo]" title="{{item.pop}}"
-            multiple="true">
+            multiple="true" ng-readonly="item.somenteLeitura">
         </select>
     </script>
 
@@ -71,7 +70,7 @@
                         ng-value="opcao[item.opcao.codigo]" 
                         ng-model="dados[item.codigo]" 
                         ng-required="item.requirido()" 
-                        title="{{item.pop}}">
+                        title="{{item.pop}}" ng-readonly="item.somenteLeitura">
                     {{opcao[item.opcao.descricao]}}
                 </label>
             </div>
@@ -88,7 +87,7 @@
                         checklist-value="opcao[item.opcao.codigo]" 
                         checklist-model="dados[item.codigo]" 
                         ng-required="item.requirido()" 
-                        title="{{item.pop}}">
+                        title="{{item.pop}}" ng-readonly="item.somenteLeitura">
                     {{opcao[item.opcao.descricao]}}
                 </label>
             </div>
@@ -105,18 +104,27 @@
                         checklist-value="opcao" 
                         checklist-model="dados[item.codigo]" 
                         ng-required="item.requirido()" 
-                        title="{{item.pop}}">
+                        title="{{item.pop}}" ng-readonly="item.somenteLeitura">
                     {{opcao[item.opcao.descricao]}}
                 </label>
             </div>
         </div>
     </script>
 
-    <script type="text/ng-template" id="campo_array">
-        <frz-tabela ng-model="item" dados="dados[item.codigo]">
-        </frz-tabela>
+    <script type="text/ng-template" id="campo_resumo_numero">
+        <div class="input-group">
+            <div class="form-control input-md" style="text-align: right" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" title="{{item.pop}}">
+                {{dados[item.codigo] | number: (item.fracao ? item.fracao : 2)}}
+            </div>
+            <span class="input-group-btn">
+                <button class="btn btn-primary" id="f_{{ngModel.codigo}}_p_{{$index}}_btn" name="f_{{ngModel.codigo}}_p_{{$index}}_btn" type="button" ng-click="abrirDetalhe(item, dados)">...</button>
+            </span>
+        </div>
     </script>
 
+    <script type="text/ng-template" id="campo_array">
+        <frz-tabela ng-model="item" dados="dados[item.codigo]"></frz-tabela>
+    </script>
 
     <fieldset ng-repeat="item in ngModel.opcao" ng-switch on="item.tipo">
 

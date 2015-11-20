@@ -117,7 +117,11 @@
                 if (i > 0) {
                     result += ', ';
                 }
-                result += $scope.verUnico(valor[i], opcao, objeto);
+                if (objeto) {
+                    result += $scope.verUnicoObjeto(valor[i], opcao, objeto);
+                } else {
+                    result += $scope.verUnico(valor[i], opcao, objeto);
+                }
             }
             if (result) {
                 result = '[' + result + ']';
@@ -140,7 +144,10 @@
             return $scope.verMultiplo(valor, opcao, true);
         };
         $scope.verUnicoObjeto = function(valor, opcao, objeto) {
-            return $scope.verUnico(valor, opcao, true);
+            if (valor && valor[opcao.opcao.descricao]) {
+                return valor[opcao.opcao.descricao];
+            }
+            return null;
         };
         $scope.verArray = function(form, dd) {
             var acao = null;
@@ -181,6 +188,13 @@
             controller: 'FrzTabelaCtrl',
             link: function(scope, element, attributes) {
                 verificaDados(scope);
+
+                // registrar os observadores
+                if (scope.ngModel.observar) {
+                    for (var i in scope.ngModel.observar) {
+                        scope.$watch(scope.ngModel.observar[i].expressao, scope.ngModel.observar[i].funcao, scope.ngModel.observar[i].colecao);
+                    }
+                }
 
                 scope.navegadorFrm.mudarEstado('ESPECIAL');
 

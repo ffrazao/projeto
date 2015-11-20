@@ -4,38 +4,64 @@
     'use strict';
     angular.module(pNmModulo, ['ui.bootstrap', 'ui.utils', 'ui.router', 'ngAnimate', 'frz.navegador', 'frz.form', 'frz.tabela']);
 
-    angular.module(pNmModulo).controller(pNmController, ['$scope', 'FrzNavegadorParams',
-        function($scope, FrzNavegadorParams) {
+    angular.module(pNmModulo).controller(pNmController, ['$scope', 'FrzNavegadorParams', 'UtilSrv',
+        function($scope, FrzNavegadorParams, UtilSrv) {
 
-            $scope.vlr = [
+            $scope.apoio = {
+                paisList: [],
+                estadoList: [],
+                municipioList: [],
+                utilizacao: 0.0,
+            };
+
+            UtilSrv.dominioLista($scope.apoio.paisList, {ent: 'Pais'});
+
+            $scope.documento = [
                     {
-                        sigla: "BSM",
-                        nome: "Brasil Sem Miséria",
+                        sigla: 'BSM',
+                        nome: 'Brasil Sem Miséria',
                         telefone: [{ddd: '61', numero: '8443-3030'}, {ddd: '61', numero: '8441-3030'}],
                     },
                     {
-                        nome: "INCRA",
+                        nome: 'INCRA',
                     },
                     {
-                        nome: "ATEPA",
-                        pais: "ur",
-                        estado: [{
-                                    reserva: 20,
-                                    nome: 'Distrito Federal',
-                                    id: 'df',
-                                },
-                                {
-                                    reserva: 30,
-                                    nome: 'Mato Grosso do Sul',
-                                    id: 'ms',
-                                },],
+                        nome: 'ATEPA',
                     },
                 ];
 
             $scope.formulario = {
-                codigo: "documento",
-                tipo: "array",
-                nome: "Documento",
+                codigo: 'documento',
+                tipo: 'array',
+                nome: 'Documento',
+                observar: [
+                    {
+                        expressao: 'dados.pais', 
+                        funcao: function(novo) {
+                            console.log('pais mudou', novo);
+                            if (novo && novo.id) {
+                                UtilSrv.dominioLista($scope.apoio.estadoList, {ent: 'Estado', npk: 'pais.id', vpk: novo.id});
+                            } else {
+                                $scope.apoio.estadoList.length = 0;
+                            }
+                            //$scope.dados.estado.id = null;
+                            //$scope.dados.municipio.id = null;
+                        },
+                        colecao: true,
+                    },
+                    {
+                        expressao: 'dados.estado', 
+                        funcao: function(novo) {
+                            console.log('estado mudou', novo);
+                            if (novo && novo.id) {
+                                UtilSrv.dominioLista($scope.apoio.municipioList, {ent: 'Municipio', npk: 'estado.id', vpk: novo.id});
+                            } else {
+                                $scope.apoio.municipioList.length = 0;
+                            }
+                            //$scope.dados.municipio.id = null;
+                        },
+                    },
+                ],
                 onIncluirAntes: function(form, dados) {
                     dados['nome'] = 'xpto';
                 },
@@ -53,19 +79,49 @@
                 },
                 opcao: [
                     {
+                        nome: 'Espaço Utilização da Área (ha)',
+                        codigo: 'utilizacao',
+                        tipo: 'resumo_numero',
+                        fracao: 3,
+                        opcao: [
+                            {
+                                nome: 'Pastagem',
+                                codigo: 'pastagem',
+                                tipo: 'numero',
+                                fracao: 3,
+                            },
+                            {
+                                nome: 'Reserva',
+                                codigo: 'reserva',
+                                tipo: 'numero',
+                                fracao: 3,
+                            },
+                            {
+                                nome: 'Total',
+                                codigo: 'utilizacao',
+                                tipo: 'numero',
+                                somenteLeitura: true,
+                                fracao: 3,
+                            },
+                        ]
+                    },
+                    {
                         nome: 'Nome do Grupo',
                         codigo: 'nome',
                         tipo: 'string',
                     },
                     {
+                        escondeLista: 'S',
                         nome: 'Sigla do Grupo',
                         codigo: 'sigla',
                         tipo: 'string',
                     },
                     {
+                        escondeLista: 'S',
                         nome: 'Idade',
                         codigo: 'idade',
                         tipo: 'numero',
+                        fracao: -1,
                     },
                     {
                         nome: 'Validade',
@@ -83,9 +139,18 @@
                         tipo: 'memo',
                     },
                     {
-                        codigo: "telefone",
-                        tipo: "array",
-                        nome: "Telefone",
+                        codigo: 'telefone',
+                        tipo: 'array',
+                        nome: 'Telefone',
+                        observar: [
+                            {   
+                                expressao: 'dados["ramal"]', 
+                                funcao: function(novo) {
+                                    console.log('ramal mudou', novo);
+                                },
+                                colecao: true,
+                            },
+                        ],
                         opcao: [
                             {
                                 nome: 'DDD',
@@ -98,14 +163,22 @@
                                 tipo: 'string',
                             },
                             {
-                                codigo: "ramal",
-                                tipo: "array",
-                                nome: "ramal",
+                                codigo: 'ramal',
+                                tipo: 'array',
+                                nome: 'ramal',
                                 opcao: [
                                     {
                                         nome: 'Ramal',
                                         codigo: 'ramal',
                                         tipo: 'string',
+                                    },
+                                ],
+                                observar: [
+                                    {
+                                        expressao: 'dados["ramal"]', 
+                                        funcao: function(novo) {
+                                            console.log('num mudou', novo);
+                                        },
                                     },
                                 ],
                             },
@@ -114,63 +187,21 @@
                     {
                         nome: 'Pais',
                         codigo: 'pais',
-                        tipo: 'escolha_unica',
+                        tipo: 'combo_unico',
                         opcao: {
                             codigo: 'id',
                             descricao: 'nome',
-                            lista: [
-                                {
-                                    populacao: 20,
-                                    nome: 'Brasil',
-                                    id: 'br',
-                                },
-                                {
-                                    populacao: 100,
-                                    nome: 'Argentina',
-                                    id: 'ar',
-                                },
-                                {
-                                    populacao: 10,
-                                    nome: 'Paraguai',
-                                    id: 'pa',
-                                },
-                                {
-                                    populacao: 30,
-                                    nome: 'Uruguai',
-                                    id: 'ur',
-                                },
-                            ],
+                            lista: $scope.apoio.paisList,
                         },
                     },
                     {
                         nome: 'Estado',
                         codigo: 'estado',
-                        tipo: 'combo_multiplo',
+                        tipo: 'combo_unico',
                         opcao: {
                             codigo: 'id',
                             descricao: 'nome',
-                            lista: [
-                                {
-                                    reserva: 20,
-                                    nome: 'Distrito Federal',
-                                    id: 'df',
-                                },
-                                {
-                                    reserva: 100,
-                                    nome: 'Goiás',
-                                    id: 'go',
-                                },
-                                {
-                                    reserva: 10,
-                                    nome: 'Mato Grosso',
-                                    id: 'mt',
-                                },
-                                {
-                                    reserva: 30,
-                                    nome: 'Mato Grosso do Sul',
-                                    id: 'ms',
-                                },
-                            ],
+                            lista: $scope.apoio.estadoList,
                         },
                     },
                     {
@@ -180,24 +211,7 @@
                         opcao: {
                             codigo: 'id',
                             descricao: 'nome',
-                            lista: [
-                                {
-                                    nome: 'Goiania',
-                                    id: 'go',
-                                },
-                                {
-                                    nome: 'Anapolís',
-                                    id: 'an',
-                                },
-                                {
-                                    nome: 'Cristalina',
-                                    id: 'cr',
-                                },
-                                {
-                                    nome: 'Catalão',
-                                    id: 'ct',
-                                },
-                            ],
+                            lista: $scope.apoio.municipioList,
                         },
                     },
 
