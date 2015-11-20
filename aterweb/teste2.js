@@ -18,6 +18,17 @@
                     },
                     {
                         nome: "ATEPA",
+                        pais: "ur",
+                        estado: [{
+                                    reserva: 20,
+                                    nome: 'Distrito Federal',
+                                    id: 'df',
+                                },
+                                {
+                                    reserva: 30,
+                                    nome: 'Mato Grosso do Sul',
+                                    id: 'ms',
+                                },],
                     },
                 ];
 
@@ -52,6 +63,26 @@
                         tipo: 'string',
                     },
                     {
+                        nome: 'Idade',
+                        codigo: 'idade',
+                        tipo: 'numero',
+                    },
+                    {
+                        nome: 'Validade',
+                        codigo: 'validade',
+                        tipo: 'data',
+                    },
+                    {
+                        nome: 'CEP',
+                        codigo: 'cep',
+                        tipo: 'cep',
+                    },
+                    {
+                        nome: 'Observações',
+                        codigo: 'observacao',
+                        tipo: 'memo',
+                    },
+                    {
                         codigo: "telefone",
                         tipo: "array",
                         nome: "Telefone",
@@ -84,70 +115,90 @@
                         nome: 'Pais',
                         codigo: 'pais',
                         tipo: 'escolha_unica',
-                        opcao: [
-                            {
-                                descricao: 'Brasil',
-                                codigo: 'br',
-                            },
-                            {
-                                descricao: 'Argentina',
-                                codigo: 'ar',
-                            },
-                            {
-                                descricao: 'Paraguai',
-                                codigo: 'pa',
-                            },
-                            {
-                                descricao: 'Uruguai',
-                                codigo: 'ur',
-                            },
-                        ],
+                        opcao: {
+                            codigo: 'id',
+                            descricao: 'nome',
+                            lista: [
+                                {
+                                    populacao: 20,
+                                    nome: 'Brasil',
+                                    id: 'br',
+                                },
+                                {
+                                    populacao: 100,
+                                    nome: 'Argentina',
+                                    id: 'ar',
+                                },
+                                {
+                                    populacao: 10,
+                                    nome: 'Paraguai',
+                                    id: 'pa',
+                                },
+                                {
+                                    populacao: 30,
+                                    nome: 'Uruguai',
+                                    id: 'ur',
+                                },
+                            ],
+                        },
                     },
                     {
                         nome: 'Estado',
                         codigo: 'estado',
-                        tipo: 'escolha_unica',
-                        opcao: [
-                            {
-                                descricao: 'Distrito Federal',
-                                codigo: 'df',
-                            },
-                            {
-                                descricao: 'Goias',
-                                codigo: 'go',
-                            },
-                            {
-                                descricao: 'Mato Grosso',
-                                codigo: 'mt',
-                            },
-                            {
-                                descricao: 'Mato Grosso do Sul',
-                                codigo: 'ms',
-                            },
-                        ],
+                        tipo: 'combo_multiplo',
+                        opcao: {
+                            codigo: 'id',
+                            descricao: 'nome',
+                            lista: [
+                                {
+                                    reserva: 20,
+                                    nome: 'Distrito Federal',
+                                    id: 'df',
+                                },
+                                {
+                                    reserva: 100,
+                                    nome: 'Goiás',
+                                    id: 'go',
+                                },
+                                {
+                                    reserva: 10,
+                                    nome: 'Mato Grosso',
+                                    id: 'mt',
+                                },
+                                {
+                                    reserva: 30,
+                                    nome: 'Mato Grosso do Sul',
+                                    id: 'ms',
+                                },
+                            ],
+                        },
                     },
                     {
                         nome: 'Municipio',
                         codigo: 'municipio',
-                        tipo: 'escolha_unica',
-                        opcao: [
-                            {
-                                descricao: 'Goiania',
-                                codigo: 'go',
-                            },
-                            {
-                                descricao: 'Anapolís',
-                                codigo: 'an',
-                            },
-                            {
-                                descricao: 'Cristalina',
-                                codigo: 'cr',
-                            },
-                            {
-                                descricao: 'Catalão',
-                                codigo: 'ct',
-                            },
-                        ],
+                        tipo: 'combo_multiplo',
+                        opcao: {
+                            codigo: 'id',
+                            descricao: 'nome',
+                            lista: [
+                                {
+                                    nome: 'Goiania',
+                                    id: 'go',
+                                },
+                                {
+                                    nome: 'Anapolís',
+                                    id: 'an',
+                                },
+                                {
+                                    nome: 'Cristalina',
+                                    id: 'cr',
+                                },
+                                {
+                                    nome: 'Catalão',
+                                    id: 'ct',
+                                },
+                            ],
+                        },
                     },
 
                 ],

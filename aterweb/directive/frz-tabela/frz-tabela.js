@@ -111,8 +111,38 @@
             } catch (exception) {
             }
         };
-
-        $scope.ver = function(form, dd) {
+        $scope.verMultiplo = function(valor, opcao, objeto) {
+            var result = '';
+            for (var i in valor) {
+                if (i > 0) {
+                    result += ', ';
+                }
+                result += $scope.verUnico(valor[i], opcao, objeto);
+            }
+            if (result) {
+                result = '[' + result + ']';
+            }
+            return result;
+        };
+        $scope.verUnico = function(valor, opcao, objeto) {
+            if (!valor || (objeto && !valor[opcao.opcao.codigo])) {
+                return;
+            }
+            for (var i in opcao.opcao.lista) {
+                if (objeto && opcao.opcao.lista[i][opcao.opcao.codigo] === valor[opcao.opcao.codigo]) {
+                    return opcao.opcao.lista[i][opcao.opcao.descricao];
+                } else if (opcao.opcao.lista[i][opcao.opcao.codigo] === valor) {
+                    return opcao.opcao.lista[i][opcao.opcao.descricao];
+                }
+            }
+        };
+        $scope.verMultiploObjeto = function(valor, opcao) {
+            return $scope.verMultiplo(valor, opcao, true);
+        };
+        $scope.verUnicoObjeto = function(valor, opcao, objeto) {
+            return $scope.verUnico(valor, opcao, true);
+        };
+        $scope.verArray = function(form, dd) {
             var acao = null;
             var dados = null;
             if (!dd) {

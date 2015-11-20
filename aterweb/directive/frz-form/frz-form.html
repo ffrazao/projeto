@@ -20,37 +20,59 @@
     </script>
 
     <script type="text/ng-template" id="campo_string">
-        <input class="form-control input-md" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="dados[item.codigo]" ng-required="{{item.requirido()}}" title="{{item.pop}}">
+        <input class="form-control input-md" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="dados[item.codigo]" ng-required="item.requirido()" title="{{item.pop}}">
     </script>
 
     <script type="text/ng-template" id="campo_numero">
-        <input class="form-control input-md" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="dados[item.codigo]" ng-required="{{item.requirido()}}" title="{{item.pop}}" ui-number-mask="item.fracao">
+        <input class="form-control input-md" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="dados[item.codigo]" ng-required="item.requirido()" title="{{item.pop}}" ui-number-mask="item.fracao">
     </script>
 
     <script type="text/ng-template" id="campo_data">
-        <input class="form-control input-md" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="dados[item.codigo]" ng-required="{{item.requirido()}}" title="{{item.pop}}" ui-date-mask>
+        <input class="form-control input-md" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="dados[item.codigo]" ng-required="item.requirido()" title="{{item.pop}}" ui-date-mask>
     </script>
 
     <script type="text/ng-template" id="campo_cep">
-        <input class="form-control input-md" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="dados[item.codigo]" ng-required="{{item.requirido()}}" title="{{item.pop}}" ui-br-cep-mask>
+        <input class="form-control input-md" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="dados[item.codigo]" ng-required="item.requirido()" title="{{item.pop}}" ui-br-cep-mask>
     </script>
 
     <script type="text/ng-template" id="campo_memo">
-        <textarea class="form-control" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" ng-model="dados[item.codigo]" ng-required="{{item.requirido()}}" title="{{item.pop}}"></textarea>
+        <textarea class="form-control" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" ng-model="dados[item.codigo]" ng-required="item.requirido()" title="{{item.pop}}"></textarea>
     </script>
 
-    <script type="text/ng-template" id="campo_combo">
-        <select class="form-control" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" ng-model="dados[item.codigo]" ng-required="{{item.requirido()}}" ng-options="opcao.id as opcao.nome for opcao in item.opcao" title="{{item.pop}}">
+    <script type="text/ng-template" id="campo_combo_unico">
+        <select class="form-control" 
+            id="f_{{ngModel.codigo}}_p_{{$index}}" 
+            name="f_{{ngModel.codigo}}_p_{{$index}}" 
+            ng-model="dados[item.codigo]" 
+            ng-required="item.requirido()" 
+            ng-options="opcao as opcao[item.opcao.descricao] for opcao in item.opcao.lista track by opcao[item.opcao.codigo]" title="{{item.pop}}">
             <option value="">-- Selecione --</option>
+        </select>
+    </script>
+
+    <script type="text/ng-template" id="campo_combo_multiplo">
+        <select class="form-control" 
+            id="f_{{ngModel.codigo}}_p_{{$index}}" 
+            name="f_{{ngModel.codigo}}_p_{{$index}}" 
+            ng-model="dados[item.codigo]" 
+            ng-required="item.requirido()" 
+            ng-options="opcao as opcao[item.opcao.descricao] for opcao in item.opcao.lista track by opcao[item.opcao.codigo]" title="{{item.pop}}"
+            multiple="true">
         </select>
     </script>
 
     <script type="text/ng-template" id="campo_escolha_unica">
         <div class="col-md-12" ng-init="idx = $index">
-            <div class="radio" ng-repeat="opcao in item.opcao">
+            <div class="radio" ng-repeat="opcao in item.opcao.lista">
                 <label for="f_{{ngModel.codigo}}_p_{{idx}}_o_{{$index}}">
-                    <input type="radio" name="perg_{{idx}}" id="f_{{ngModel.codigo}}_p_{{idx}}_o_{{$index}}" value="{{opcao.codigo}}" ng-model="dados[item.codigo]" ng-required="{{item.requirido()}}" title="{{item.pop}}">
-                    {{opcao.descricao}}
+                    <input type="radio" 
+                        name="f_{{ngModel.codigo}}_p_{{idx}}" 
+                        id="f_{{ngModel.codigo}}_p_{{idx}}_o_{{$index}}" 
+                        ng-value="opcao[item.opcao.codigo]" 
+                        ng-model="dados[item.codigo]" 
+                        ng-required="item.requirido()" 
+                        title="{{item.pop}}">
+                    {{opcao[item.opcao.descricao]}}
                 </label>
             </div>
         </div>
@@ -58,10 +80,33 @@
 
     <script type="text/ng-template" id="campo_escolha_multipla">
         <div class="col-md-12" ng-init="idx = $index">
-            <div class="checkbox" ng-repeat="opcao in item.opcao">
+            <div class="checkbox" ng-repeat="opcao in item.opcao.lista">
                 <label for="f_{{ngModel.codigo}}_p_{{idx}}_o_{{$index}}">
-                    <input type="checkbox" name="perg_{{idx}}" id="f_{{ngModel.codigo}}_p_{{idx}}_o_{{$index}}" checklist-model="dados[item.codigo]" checklist-value="opcao.codigo" ng-required="{{item.requirido()}}" title="{{item.pop}}">
-                    {{opcao.descricao}}
+                    <input type="checkbox" 
+                        name="f_{{ngModel.codigo}}_p_{{idx}}" 
+                        id="f_{{ngModel.codigo}}_p_{{idx}}_o_{{$index}}" 
+                        checklist-value="opcao[item.opcao.codigo]" 
+                        checklist-model="dados[item.codigo]" 
+                        ng-required="item.requirido()" 
+                        title="{{item.pop}}">
+                    {{opcao[item.opcao.descricao]}}
+                </label>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="campo_escolha_multipla_objeto">
+        <div class="col-md-12" ng-init="idx = $index">
+            <div class="checkbox" ng-repeat="opcao in item.opcao.lista">
+                <label for="f_{{ngModel.codigo}}_p_{{idx}}_o_{{$index}}">
+                    <input type="checkbox" 
+                        name="f_{{ngModel.codigo}}_p_{{idx}}" 
+                        id="f_{{ngModel.codigo}}_p_{{idx}}_o_{{$index}}" 
+                        checklist-value="opcao" 
+                        checklist-model="dados[item.codigo]" 
+                        ng-required="item.requirido()" 
+                        title="{{item.pop}}">
+                    {{opcao[item.opcao.descricao]}}
                 </label>
             </div>
         </div>

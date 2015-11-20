@@ -46,7 +46,12 @@
                             {{$index + 1 + ((navegadorFrm.paginaAtual-1) * navegadorFrm.tamanhoPagina)}}
                         </td>
                         <td ng-repeat="opcao in ngModel.opcao" ng-switch on="opcao.tipo">
-                            <span ng-switch-when="array"><button class="btn btn-info" ng-click="ver(opcao, reg[opcao.codigo])">...</button></span>
+                            <span ng-switch-when="escolha_unica">{{verUnico(reg[opcao.codigo], opcao)}}</span>
+                            <span ng-switch-when="escolha_multipla">{{verMultiplo(reg[opcao.codigo], opcao)}}</span>
+                            <span ng-switch-when="escolha_multipla_objeto">{{verMultiploObjeto(reg[opcao.codigo], opcao)}}</span>
+                            <span ng-switch-when="combo_unico">{{verUnicoObjeto(reg[opcao.codigo], opcao)}}</span>
+                            <span ng-switch-when="combo_multiplo">{{verMultiploObjeto(reg[opcao.codigo], opcao)}}</span>
+                            <span ng-switch-when="array"><button class="btn btn-info" ng-click="verArray(opcao, reg[opcao.codigo])">...</button></span>
                             <span ng-switch-default>{{reg[opcao.codigo]}}</span>
                         </td>
                     </tr>
