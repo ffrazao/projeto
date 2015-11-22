@@ -8,6 +8,33 @@ angular.module(pNmModulo).controller(pNmController,
     ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr', 'UtilSrv', 'mensagemSrv',
     function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, UtilSrv, mensagemSrv) {
 
+    $scope.cadastro.apoio.diagnosticoFrm = 
+        {
+            nome: 'Captar Diagnósticos',
+            codigo: 'diagnosticoList',
+            tipo: 'array',
+            opcao:
+                [
+                    {
+                        nome: 'Data',
+                        codigo: 'data',
+                        tipo: 'data'
+                    },
+                    {
+                        nome: 'Nome',
+                        codigo: 'nome',
+                        tipo: 'string'
+                    },
+                    {
+                        nome: 'Versao',
+                        codigo: 'versao',
+                        tipo: 'string'
+                    },
+                ],
+        };
+
+    $scope.cadastro.registro.diagnosticoList = [{"data":"01/03/2010 14:32","nome":"asdf","versao":"23"}];
+
     // inicializacao
     var init = function() {
         if (!angular.isObject($scope.cadastro.registro.emailList)) {
@@ -135,4 +162,4 @@ angular.module(pNmModulo).controller(pNmController,
 } // fim função
 ]);
 
-})('pessoa', 'PessoaEmailCtrl', 'Email vinculado à pessoa');
+})('pessoa', 'PessoaDiagnosticoCaptacaoCtrl', 'Captação de diagnósticos da pessoa');

@@ -10,6 +10,9 @@ angular.module(pNmModulo).controller(pNmController,
 
     // inicializacao
     var init = function() {
+        if (!angular.isObject($scope.cadastro.registro.publicoAlvo)) {
+            $scope.cadastro.registro.publicoAlvo = {};
+        }
         if (!angular.isObject($scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList)) {
             $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList = [];
         }

@@ -135,4 +135,4 @@ angular.module(pNmModulo).controller(pNmController,
 } // fim função
 ]);
 
-})('pessoa', 'PessoaEmailCtrl', 'Email vinculado à pessoa');
+})('pessoa', 'PessoaDiagnosticoResultadoCtrl', 'Resutado de diagnósticos da pessoa');

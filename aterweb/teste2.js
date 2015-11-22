@@ -44,8 +44,6 @@
                             } else {
                                 $scope.apoio.estadoList.length = 0;
                             }
-                            //$scope.dados.estado.id = null;
-                            //$scope.dados.municipio.id = null;
                         },
                         colecao: true,
                     },
@@ -58,7 +56,6 @@
                             } else {
                                 $scope.apoio.municipioList.length = 0;
                             }
-                            //$scope.dados.municipio.id = null;
                         },
                     },
                 ],
@@ -83,6 +80,14 @@
                         codigo: 'utilizacao',
                         tipo: 'resumo_numero',
                         fracao: 3,
+                        observar: [
+                            {
+                                expressao: 'dados.pastagem + dados.reserva',
+                                funcao: function(novo) {
+
+                                },
+                            },
+                        ],
                         opcao: [
                             {
                                 nome: 'Pastagem',

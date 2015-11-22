@@ -129,7 +129,12 @@
                     return;
                 }
                 var pais = UtilSrv.indiceDePorCampo($scope.cadastro.apoio.paisList, id, 'id');
-                return pais.padrao;
+                if (pais) {
+                    return pais.padrao;
+                } else {
+                    toastr.warning('Não poi possível identificar o valor padrão!', 'Atenção!');
+                    return null;
+                }
             };
             $scope.confirmarIncluir = function(scp) {
                 preparaRegistro();
@@ -168,11 +173,11 @@
                 'nome': 'Colaborador',
                 'include': 'pessoa/tab-colaborador.html',
                 'visivel': false,
-            }, {
+            },*/ {
                 'nome': 'Diagnósticos',
                 'include': 'pessoa/tab-diagnostico.html',
                 'visivel': false,
-            },*/ {
+            }, {
                 'nome': 'Programas Sociais',
                 'include': 'pessoa/tab-grupo-social.html',
                 'visivel': true,

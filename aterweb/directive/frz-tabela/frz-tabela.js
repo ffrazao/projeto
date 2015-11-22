@@ -1,5 +1,12 @@
 /* jslint evil: true, browser: true, plusplus: true, loopfunc: true */
 
+/*
+    codigo para executar funcoes
+        var f = null;
+        eval ("f = function(nome) {console.log(nome);}");
+        f('kiko');
+*/
+
 (function() {
     'use strict';
 
@@ -17,6 +24,7 @@
     FrzTabelaModule.controller('FrzTabelaCtrl', ['$scope', 'FrzNavegadorParams', 'mensagemSrv', 'UtilSrv', function($scope, FrzNavegadorParams, mensagemSrv, UtilSrv) {
         $scope.navegadorFrm = new FrzNavegadorParams([]);
         var abrirForm = function (form, dd, acao) {
+            verificaDados($scope);
             if (!dd) {
                 dd = {};
             }
@@ -25,7 +33,6 @@
             var conf = '<frz-form ng-model="conteudo.formulario" dados="conteudo.dados">';
             mensagemSrv.confirmacao(false, conf, form.nome, conteudo).then(function(conteudo) {
                 // processar o retorno positivo da modal
-                verificaDados($scope);
                 if (acao === 'incluir') {
                     $scope.dados.push(conteudo.dados);
                 } else {
@@ -150,6 +157,7 @@
             return null;
         };
         $scope.verArray = function(form, dd) {
+            verificaDados($scope);
             var acao = null;
             var dados = null;
             if (!dd) {
@@ -163,7 +171,6 @@
             var conf = '<frz-tabela ng-model="conteudo.formulario" dados="conteudo.dados">';
             mensagemSrv.confirmacao(false, conf, form.nome, conteudo).then(function(conteudo) {
                 // processar o retorno positivo da modal
-                verificaDados($scope);
                 angular.copy(conteudo.dados, dd);
             }, function() {
                 // processar o retorno negativo da modal
@@ -186,7 +193,7 @@
                 onAbrir: '&',
             },
             controller: 'FrzTabelaCtrl',
-            link: function(scope, element, attributes) {
+            link: function(scope, element, attributes, $parse) {
                 verificaDados(scope);
 
                 // registrar os observadores
@@ -202,6 +209,7 @@
                 if (scope.ngModel.onAbrir) {
                     scope.ngModel.onAbrir();
                 }
+
             },
         };
     }]);

@@ -43,16 +43,18 @@
                 }
 
                 // registrar os observadores
+                var i;
                 if (scope.ngModel.observar) {
-                    for (var i in scope.ngModel.observar) {
+                    for (i in scope.ngModel.observar) {
                         scope.$watch(scope.ngModel.observar[i].expressao, scope.ngModel.observar[i].funcao, scope.ngModel.observar[i].colecao);
                     }
                 }
 
+                /*
                 if (scope.ngModel.tipo === 'resumo_numero') {
                     var expr = '';
                     
-                    for (var i in scope.ngModel.opcao) {
+                    for (i in scope.ngModel.opcao) {
                         if (expr.length > 0) {
                             expr += ' + ';
                         }
@@ -66,9 +68,9 @@
                                 scope.dados[scope.ngModel.codigo] += parseFloat(scope.dados[scope.ngModel.opcao[i].codigo]); //.toPrecision(scope.ngModel.fracao ? scope.ngModel.fracao : 2);
                             }
                         }
-                        console.log(scope.dados[scope.ngModel.codigo]);
                     }, true);
                 }
+                */
 
                 // executar o estado inicial do form
                 if (scope.onAbrir) {
