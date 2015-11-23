@@ -2,14 +2,14 @@ package br.gov.df.emater.aterwebsrv.modelo.dominio;
 
 public enum SituacaoLotacao {
 	/*
-	 * Situa��o da lota��o:
+	 * Situação da lotação:
 	 * 
 	 * T - Transit�ria. Saindo de um indo para outra E - Efetiva. Tornando uma
-	 * Transit�ria em efetiva. P - Provis�ria. Atividades provis�rias em outras
-	 * unidades da institui��o.
+	 * Transit�ria em efetiva. P - Provisória. Atividades provisórias em outras
+	 * unidades da instituição.
 	 */
 
-	E("Efetiva"), P("Provis�ria"), T("Transit�ria");
+	E("Efetiva"), P("Provisória"), T("Transitória");
 
 	private String descricao;
 

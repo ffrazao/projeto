@@ -10,8 +10,8 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import br.gov.df.emater.aterwebsrv.modelo.dominio.CadastroAcao;
 
-// para marcar esta classe como o topo de hierarquia de entidades, por�m n�o
-// persiste informa��o
+// para marcar esta classe como o topo de hierarquia de entidades, porém não
+// persiste informação
 @MappedSuperclass
 // para evitar o acesso recursivo as classes do conjunto de objetos serializados
 // @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class,
@@ -36,6 +36,8 @@ public abstract class EntidadeBase implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public static final String SISTEMA_SCHEMA = "sistema";
+
+	public static final String FORMULARIO_SCHEMA = "formulario";
 
 	@Transient
 	private CadastroAcao cadastroAcao;

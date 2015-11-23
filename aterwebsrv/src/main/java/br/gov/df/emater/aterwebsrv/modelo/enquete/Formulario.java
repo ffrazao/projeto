@@ -28,7 +28,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-@Entity
+@Entity(name = "br.gov.df.emater.aterwebsrv.modelo.enquete.formulario")
 @Table(name = "formulario", schema = EntidadeBase.ENQUETE_SCHEMA)
 public class Formulario extends EntidadeBase implements _ChavePrimaria<Integer> {
 

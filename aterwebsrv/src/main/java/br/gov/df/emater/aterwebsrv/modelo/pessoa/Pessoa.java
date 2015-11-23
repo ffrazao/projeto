@@ -21,6 +21,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.search.annotations.Field;
@@ -70,6 +71,9 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 
 	@OneToMany(mappedBy = "pessoa")
 	private List<PessoaArquivo> arquivoList;
+
+	@Transient
+	private Object diagnosticoList;
 
 	@OneToMany(mappedBy = "pessoa")
 	private List<PessoaEmail> emailList;
@@ -164,6 +168,10 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		return arquivoList;
 	}
 
+	public Object getDiagnosticoList() {
+		return diagnosticoList;
+	}
+
 	public List<PessoaEmail> getEmailList() {
 		return emailList;
 	}
@@ -243,6 +251,10 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 
 	public void setArquivoList(List<PessoaArquivo> arquivoList) {
 		this.arquivoList = arquivoList;
+	}
+
+	public void setDiagnosticoList(Object diagnosticoList) {
+		this.diagnosticoList = diagnosticoList;
 	}
 
 	public void setEmailList(List<PessoaEmail> emailList) {

@@ -8,6 +8,18 @@ angular.module(pNmModulo).controller(pNmController,
     ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr', 'UtilSrv', 'mensagemSrv',
     function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, UtilSrv, mensagemSrv) {
 
+    $scope.cadastro.apoio.tecnicoUnidadeList = [];
+
+    UtilSrv.dominioLista($scope.cadastro.apoio.tecnicoUnidadeList, {ent:['Usuario']}, function(resultado) {
+            if (!$scope.cadastro.apoio.tecnicoUnidadeList) {
+                $scope.cadastro.apoio.tecnicoUnidadeList = [];
+            }
+            $scope.cadastro.apoio.tecnicoUnidadeList.length = 0;
+            for (var i in resultado) {
+                $scope.cadastro.apoio.tecnicoUnidadeList.push({username: resultado[i]['username'], nome: resultado[i]['pessoa']['nome'],});
+            }
+        });
+
     $scope.cadastro.apoio.diagnosticoFrm = 
         {
             nome: 'Captar Diagnósticos',
@@ -16,20 +28,425 @@ angular.module(pNmModulo).controller(pNmController,
             opcao:
                 [
                     {
-                        nome: 'Data',
+                        nome: 'Data da Coleta',
                         codigo: 'data',
-                        tipo: 'data'
+                        tipo: 'data',
                     },
                     {
-                        nome: 'Nome',
+                        nome: 'Nome da Coleta',
                         codigo: 'nome',
-                        tipo: 'string'
+                        tipo: 'string',
                     },
                     {
-                        nome: 'Versao',
+                        nome: 'Versão da Coleta',
                         codigo: 'versao',
-                        tipo: 'string'
+                        tipo: 'string',
                     },
+                    {
+                        nome: 'Técnico Responsável pela coleta',
+                        codigo: 'tecnico',
+                        tipo: 'combo_unico',
+                        opcao: {
+                            lista: $scope.cadastro.apoio.tecnicoUnidadeList,
+                            codigo: 'username',
+                            descricao: 'nome',
+                        },
+                    },
+                    {
+                        nome: 'Vinculação (Entidade/Organização)',
+                        codigo: 'vinculacao',
+                        tipo: 'combo_unico',
+                        escondeLista: 'S',
+                        opcao: {
+                            lista: [
+                                {
+                                    id: 1, 
+                                    nome: 'Associação',
+                                },
+                                {
+                                    id: 2, 
+                                    nome: 'Sindicato',
+                                },
+                            ],
+                            codigo: 'id',
+                            descricao: 'nome',
+                        },
+                    },
+                    {
+                        nome: 'Nome Entidade',
+                        codigo: 'nomeEntidade',
+                        tipo: 'string',
+                        escondeLista: 'S',
+                    },
+                    {
+                        nome: 'Benefício Social',
+                        codigo: 'beneficioSocial',
+                        tipo: 'combo_multiplo',
+                        escondeLista: 'S',
+                        opcao: {
+                            lista: [
+                                {
+                                    id: 1, 
+                                    nome: 'Aposentadoria Pensão',
+                                },
+                                {
+                                    id: 2, 
+                                    nome: 'CTPS Assinada',
+                                },
+                                {
+                                    id: 3, 
+                                    nome: 'Necessidades Especiais',
+                                },
+                                {
+                                    id: 4, 
+                                    nome: 'Programas Sociais',
+                                },
+                            ],
+                            codigo: 'id',
+                            descricao: 'nome',
+                        },
+                    },
+                    {
+                        nome: 'Forma de Utilização do Espaço Rural',
+                        codigo: 'formaUtilizacaoEspacoRural',
+                        tipo: 'combo_multiplo',
+                        escondeLista: 'S',
+                        opcao: {
+                            lista: [
+                                {
+                                    id: 1, 
+                                    nome: 'Laser',
+                                },
+                                {
+                                    id: 2, 
+                                    nome: 'Moradia',
+                                },
+                                {
+                                    id: 3, 
+                                    nome: 'Outras',
+                                },
+                                {
+                                    id: 4, 
+                                    nome: 'Preservação Ambiental',
+                                },
+                                {
+                                    id: 5, 
+                                    nome: 'Prestação de Serviço',
+                                },
+                                {
+                                    id: 6, 
+                                    nome: 'Produção',
+                                },
+                                {
+                                    id: 7, 
+                                    nome: 'Turismo Rural',
+                                },
+                            ],
+                            codigo: 'id',
+                            descricao: 'nome',
+                        },
+                    },
+                    {
+                        nome: 'Força de Trabalho Contratada Eventual R$',
+                        codigo: 'forcaTrabalhoContratada',
+                        tipo: 'numero',
+                        escondeLista: 'S',
+                    },
+                    {
+                        nome: 'Força de Trabalho',
+                        codigo: 'forcaTrabalho',
+                        tipo: 'combo_unico',
+                        escondeLista: 'S',
+                        opcao: {
+                            lista: [
+                                {
+                                    id: 1, 
+                                    nome: '1',
+                                },
+                                {
+                                    id: 2, 
+                                    nome: '2',
+                                },
+                                {
+                                    id: 3, 
+                                    nome: '3',
+                                },
+                                {
+                                    id: 4, 
+                                    nome: '4',
+                                },
+                                {
+                                    id: 5, 
+                                    nome: '5',
+                                },
+                                {
+                                    id: 6, 
+                                    nome: '6',
+                                },
+                                {
+                                    id: 7, 
+                                    nome: '7',
+                                },
+                                {
+                                    id: 8, 
+                                    nome: '8',
+                                },
+                                {
+                                    id: 9, 
+                                    nome: '9',
+                                },
+                                {
+                                    id: 10, 
+                                    nome: '10',
+                                },
+                            ],
+                            codigo: 'id',
+                            descricao: 'nome',
+                        },
+                    },
+                    {
+                        nome: 'Salário Mensal R$',
+                        codigo: 'salarioMensal',
+                        tipo: 'numero',
+                        escondeLista: 'S',
+                    },
+                    {
+                        nome: 'Fonte de Renda/ Patrimônio R$',
+                        codigo: 'fonteRendaPatrimonio',
+                        tipo: 'nome',
+                        escondeLista: 'S',
+                    },
+                    {
+                        nome: 'Renda Anual Bruta R$',
+                        codigo: 'rendaAnualBruta',
+                        tipo: 'numero',
+                        escondeLista: 'S',
+                    },
+                    {
+                        nome: 'Assalariado R$',
+                        codigo: 'assalariado',
+                        tipo: 'numero',
+                        escondeLista: 'S',
+                    },
+                    {
+                        nome: 'Outras Rendas R$',
+                        codigo: 'outrasRendas',
+                        tipo: 'numero',
+                        escondeLista: 'S',
+                    },
+                    {
+                        nome: 'Programa de Governo - Inclusão Social',
+                        codigo: 'programaGovernoInclusaoSocial',
+                        tipo: 'escolha_multipla',
+                        escondeLista: 'S',
+                        opcao: {
+                            lista: [
+                                {
+                                    id: 1, 
+                                    nome: 'Brasil sem Miséria',
+                                },
+                                {
+                                    id: 2, 
+                                    nome: 'INCRA',
+                                },
+                                {
+                                    id: 3, 
+                                    nome: 'ATEPA',
+                                },
+                                {
+                                    id: 4, 
+                                    nome: 'Sustentabilidade',
+                                },
+                            ],
+                            codigo: 'id',
+                            descricao: 'nome',
+                        },
+                    },
+                    {
+                        nome: 'Programa de Governo - Renda',
+                        codigo: 'programaGovernoRenda',
+                        tipo: 'escolha_multipla',
+                        escondeLista: 'S',
+                        opcao: {
+                            lista: [
+                                {
+                                    id: 1, 
+                                    nome: 'PAA',
+                                },
+                                {
+                                    id: 2, 
+                                    nome: 'PNAE',
+                                },
+                                {
+                                    id: 3, 
+                                    nome: 'PAPA',
+                                },
+                                {
+                                    id: 4, 
+                                    nome: 'CAR',
+                                },
+                            ],
+                            codigo: 'id',
+                            descricao: 'nome',
+                        },
+                    },
+                    {
+                        nome: 'Quantas pessoas no seu domicílio/casa, INCLUINDO VOCÊ, recebem algum tipo de renda (de trabalho, aposentadoria, pensão, benefício, bolsa, etc.) fora da renda proveniente das atividades agrícolas na propriedade?',
+                        codigo: 'totalRendaAtivos',
+                        tipo: 'escolha_unica',
+                        escondeLista: 'S',
+                        opcao: {
+                            lista: [
+                                {
+                                    id: 1, 
+                                    nome: '1',
+                                },
+                                {
+                                    id: 2, 
+                                    nome: '2',
+                                },
+                                {
+                                    id: 3, 
+                                    nome: '3',
+                                },
+                                {
+                                    id: 4, 
+                                    nome: '4',
+                                },
+                                {
+                                    id: 5, 
+                                    nome: '5',
+                                },
+                                {
+                                    id: 6, 
+                                    nome: '6',
+                                },
+                                {
+                                    id: 7, 
+                                    nome: '7',
+                                },
+                                {
+                                    id: 8, 
+                                    nome: '8',
+                                },
+                                {
+                                    id: 9, 
+                                    nome: '9',
+                                },
+                                {
+                                    id: 10, 
+                                    nome: '10',
+                                },
+                            ],
+                            codigo: 'id',
+                            descricao: 'nome',
+                        },
+                    },
+                    {
+                        nome: 'Somando a renda bruta (de trabalho, aposentadoria, pensão, benefício, bolsa etc.) de todas as pessoas do seu domicílio, INCLUINDO VOCÊ, qual é o total aproximado por mês?',
+                        codigo: 'somaRendaBruta',
+                        tipo: 'combo_unico',
+                        escondeLista: 'S',
+                        opcao: {
+                            lista: [
+                                {
+                                    id: 1, 
+                                    nome: 'Menos de R$ 415',
+                                },
+                                {
+                                    id: 2, 
+                                    nome: 'De R$ 415 a R$ 830',
+                                },
+                                {
+                                    id: 3, 
+                                    nome: 'De R$ 831 a R$ 1.660',
+                                },
+                                {
+                                    id: 4, 
+                                    nome: 'De R$ 1.661 a R$ 2.490',
+                                },
+                                {
+                                    id: 5, 
+                                    nome: 'De R$ 2.491 a R$ 4.150',
+                                },
+                                {
+                                    id: 6, 
+                                    nome: 'De R$ 4.151 a R$ 6.225',
+                                },
+                                {
+                                    id: 7, 
+                                    nome: 'De R$ 6.226 a R$ 9.130',
+                                },
+                                {
+                                    id: 8, 
+                                    nome: 'Acima de R$ 9.130',
+                                },
+                            ],
+                            codigo: 'id',
+                            descricao: 'nome',
+                        },
+                    },
+                    {
+                        nome: 'Da renda bruta da família (de trabalho, aposentadoria, pensão, benefício, bolsa etc.) qual a porcentagem que vem de cada uma das atividades abaixo',
+                        codigo: 'distribuicaoRenda',
+                        tipo: 'nome',
+                        escondeLista: 'S',
+                    },
+                    {
+                        nome: 'Produção Animal %',
+                        codigo: 'percentualProducaoAnimal',
+                        tipo: 'numero',
+                        escondeLista: 'S',
+                    },
+                    {
+                        nome: 'Produção Vegetal %',
+                        codigo: 'percentualProducaoVegetal',
+                        tipo: 'numero',
+                        escondeLista: 'S',
+                    },
+                    {
+                        nome: 'Extrativismo %',
+                        codigo: 'percentualExtrativismo',
+                        tipo: 'numero',
+                        escondeLista: 'S',
+                    },
+                    {
+                        nome: 'Turismo e Artesanato %',
+                        codigo: 'percentualTurismoArtesanato',
+                        tipo: 'numero',
+                        escondeLista: 'S',
+                    },
+                    {
+                        nome: 'Benefícios Sociais %',
+                        codigo: 'percentualBeneficioSocial',
+                        tipo: 'numero',
+                        escondeLista: 'S',
+                    },
+                    {
+                        nome: 'Salários %',
+                        codigo: 'percentualSalario',
+                        tipo: 'numero',
+                        escondeLista: 'S',
+                    },
+                    {
+                        nome: 'Outros %',
+                        codigo: 'percentualOutros',
+                        tipo: 'numero',
+                        escondeLista: 'S',
+                    },
+                    {
+                        nome: 'Total Patrimônio R$',
+                        codigo: 'totalPatrimonio',
+                        tipo: 'numero',
+                        escondeLista: 'S',
+                    },
+                    {
+                        nome: 'Total Dívida R$',
+                        codigo: 'totalDivida',
+                        tipo: 'numero',
+                        escondeLista: 'S',
+                    },
+
                 ],
         };
 
