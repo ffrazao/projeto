@@ -190,6 +190,7 @@
                 ngModel: '=',
                 dados: '=',
                 selecao: '=',
+                requerido: '=',
                 onAbrir: '&',
             },
             controller: 'FrzTabelaCtrl',

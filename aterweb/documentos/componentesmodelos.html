@@ -14,7 +14,7 @@
                     </label>
                     <div class="col-md-6">
                         <input id="nome" name="nome" type="text" placeholder="" class="form-control input-md" ng-model="cadastro.filtro.nome">
-                        <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.nome.$error.required">
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.nome.$error.required">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             Campo Obrigatório
                         </div>
@@ -33,7 +33,7 @@
                             Propriedade Física
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.tipoPropriedade.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.tipoPropriedade.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
@@ -43,7 +43,7 @@
                     <label class="col-md-4 control-label" for="cnpj">CNPJ</label> 
                     <div class="col-md-3">
                         <input id="cnpj" name="cnpj" type="text" placeholder="" class="form-control input-md" ng-model="cadastro.filtro.cnpj" ui-br-cnpj-mask>
-                        <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.cnpj.$error.cnpj">
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.cnpj.$error.cnpj">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             Número inválido!
                         </div>
@@ -54,7 +54,7 @@
                     <label class="col-md-4 control-label" for="cpf">CPF</label> 
                     <div class="col-md-3">
                         <input id="cpf" name="cpf" type="text" placeholder="" class="form-control input-md" ng-model="cadastro.filtro.cpf" ui-br-cpf-mask>
-                        <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.cpf.$error.cpf">
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.cpf.$error.cpf">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             Número inválido!
                         </div>
@@ -73,7 +73,7 @@
                             Feminino
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.genero.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.genero.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
@@ -99,7 +99,7 @@
                             Crianca
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.geracao.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.geracao.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
@@ -125,7 +125,7 @@
                             Inativo outro motivo
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.situacao.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.situacao.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
@@ -136,7 +136,7 @@
                     <div class="col-md-7">
                         <input type="hidden" name="grupoSocial" id="grupoSocial" ng-model="cadastro.filtro.grupoSocial.length" required ng-min="1">
                         <ng-include src="'propriedade/filtro-sub-grupo-social.html'" ng-controller="FiltroSubGrupoSocialCtrl"></ng-include>
-                        <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.grupoSocial.$error.required">
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.grupoSocial.$error.required">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             Campo Obrigatório
                         </div>
@@ -168,7 +168,7 @@
                             Trabalhador
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.categoria.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.categoria.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
@@ -216,7 +216,7 @@
                             Nao
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.ater.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.ater.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
@@ -238,7 +238,7 @@
                             Nao Dapeavel
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.dap.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.dap.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
@@ -256,7 +256,7 @@
                             Nao
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.comprasInstitucionais.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.comprasInstitucionais.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
@@ -274,7 +274,7 @@
                             Nao
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.beneficioSocial.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.beneficioSocial.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
@@ -292,7 +292,7 @@
                             Nao
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.incra.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.incra.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
@@ -310,7 +310,7 @@
                             Nao
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.atepa.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.atepa.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
@@ -328,7 +328,7 @@
                             Nao
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.bsm.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.bsm.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
@@ -346,7 +346,7 @@
                             Nao
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.sustentabilidade.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.sustentabilidade.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
@@ -364,7 +364,7 @@
                             Nao
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.ipaAgricola.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.ipaAgricola.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
@@ -382,7 +382,7 @@
                             Nao
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.ipaAnimal.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.ipaAnimal.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
@@ -400,7 +400,7 @@
                             Nao
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.ipaNaoAgricola.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.ipaNaoAgricola.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
@@ -418,7 +418,7 @@
                             Nao
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.ipaFlores.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.ipaFlores.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
@@ -436,7 +436,7 @@
                             Nao
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.organizacao.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.organizacao.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>

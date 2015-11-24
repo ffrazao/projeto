@@ -20,7 +20,7 @@
                                 <label class="control-label" for="pessoaTipo">Tipo de Pessoa</label>
                                 <select id="pessoaTipo" name="pessoaTipo" class="form-control" required ng-model="cadastro.registro.pessoaTipo" ng-disabled="true" ng-options="item.codigo as item.descricao for item in cadastro.apoio.pessoaTipoList">
                                 </select>
-                                <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.pessoaTipo.$error.required">
+                                <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.pessoaTipo.$error.required">
                                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                     Campo Obrigatório
                                 </div>
@@ -28,7 +28,7 @@
                             <div class="form-group col-md-6">
                                 <label class="control-label" for="nome">Nome Completo</label>
                                 <input id="nome" name="nome" type="text" placeholder="" class="form-control input-md" required ng-model="cadastro.registro.nome">
-                                <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.nome.$error.required">
+                                <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.nome.$error.required">
                                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                     Campo Obrigatório
                                 </div>
@@ -47,11 +47,11 @@
                             <div class="form-group col-md-4" title="Cadastro de Pessoa Física" ng-show="cadastro.registro.pessoaTipo === 'PF'">
                                 <label class="control-label" for="cpf">CPF</label>
                                 <input id="cpf" name="cpf" type="text" placeholder="" class="form-control input-md" ng-model="cadastro.registro.cpf" ui-br-cpf-mask>
-                                <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.cpf.$error.required">
+                                <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.cpf.$error.required">
                                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                     Campo Obrigatório
                                 </div>
-                                <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.cpf.$error.cpf">
+                                <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.cpf.$error.cpf">
                                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                     Número inválido!
                                 </div>
@@ -59,11 +59,11 @@
                             <div class="form-group col-md-4" title="Cadastro Nacional de Pessoa Jurídica" ng-show="cadastro.registro.pessoaTipo === 'PJ'">
                                 <label class="control-label" for="cnpj">CNPJ</label>
                                 <input id="cnpj" name="cnpj" type="text" placeholder="" class="form-control input-md" ng-model="cadastro.registro.cnpj" ui-br-cnpj-mask>
-                                <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.cnpj.$error.required">
+                                <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.cnpj.$error.required">
                                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                     Campo Obrigatório
                                 </div>
-                                <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.cnpj.$error.cnpj">
+                                <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.cnpj.$error.cnpj">
                                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                     Número inválido!
                                 </div>

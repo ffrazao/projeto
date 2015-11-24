@@ -14,7 +14,7 @@
                     <option value="3">COOPERAÇÃO INTERNACIONAL</option>
                     <option value="4">COOPERAÇÃO</option>
                 </select>
-                <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.tipoContratoConvenio.$error.required">
+                <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.tipoContratoConvenio.$error.required">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     Campo Obrigatório
                 </div>
@@ -25,7 +25,7 @@
             <label class="col-md-4 control-label" for="numeroProcesso">Processo</label>  
             <div class="col-md-3">
                 <input id="numeroProcesso" name="numeroProcesso" type="text" class="form-control input-md" ng-model="cadastro.filtro.numeroProcesso" ui-mask="9999.999.999/9999">
-                <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.numeroProcesso.$error.required">
+                <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.numeroProcesso.$error.required">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     Campo Obrigatório
                 </div>
@@ -46,7 +46,7 @@
                     <option value="8">TERMO DE COOPERAÇÃO</option>
                     <option value="9">TERMO DE COOPERAÇÃO INTERNACIONAL</option>
                 </select>
-                <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.instrumento.$error.required">
+                <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.instrumento.$error.required">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     Campo Obrigatório
                 </div>

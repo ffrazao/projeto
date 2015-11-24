@@ -12,6 +12,7 @@
                 dd = {};
             }
             var dados = angular.copy(dd);
+            form.submetido = true;
             var conteudo = {formulario: form, dados: dados};
             var conf = '<frz-form ng-model="conteudo.formulario" dados="conteudo.dados"/>';
             mensagemSrv.confirmacao(false, conf, form.nome, conteudo).then(function(conteudo) {
@@ -22,6 +23,9 @@
                 //$log.info('Modal dismissed at: ' + new Date());
             });
         };
+        $scope.getCampo = function(indice) {
+            return $scope['f_' + $scope.ngModel.codigo]['f_' + $scope.ngModel.codigo + '_p_' + indice];
+        }
     }]);
 
     // diretiva da barra de navegação de dados
@@ -34,6 +38,7 @@
             scope: {
                 ngModel: '=',
                 dados: '=',
+                navegador: '=navegador',
                 onAbrir: '&',
             },
             controller: 'FrzFormCtrl',

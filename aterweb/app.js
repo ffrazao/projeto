@@ -144,6 +144,63 @@ angular.module(pNmModulo).config(['$stateProvider', '$urlRouterProvider', 'toast
 
   }]);
 
+angular.module(pNmModulo).directive('ngValorMin', function () {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function (scope, elem, attr, ctrl) {
+            function isEmpty(value) {
+                return angular.isUndefined(value) || value === '' || value === null || value !== value;
+            }
+            
+            scope.$watch(attr.ngValorMin, function () {
+                ctrl.$setViewValue(ctrl.$viewValue);
+            });
+            var minValidator = function (value) {
+                var min = scope.$eval(attr.ngValorMin) || 0;
+                if (!isEmpty(value) && value < min) {
+                    ctrl.$setValidity('ngValorMin', false);
+                    return undefined;
+                } else {
+                    ctrl.$setValidity('ngValorMin', true);
+                    return value;
+                }
+            };
+
+            ctrl.$parsers.push(minValidator);
+            ctrl.$formatters.push(minValidator);
+        },
+    };
+});
+
+angular.module(pNmModulo).directive('ngValorMax', function () {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function (scope, elem, attr, ctrl) {
+            function isEmpty(value) {
+                return angular.isUndefined(value) || value === '' || value === null || value !== value;
+            }
+            scope.$watch(attr.ngValorMax, function () {
+                ctrl.$setViewValue(ctrl.$viewValue);
+            });
+            var maxValidator = function (value) {
+                var max = scope.$eval(attr.ngValorMax) || Infinity;
+                if (!isEmpty(value) && value > max) {
+                    ctrl.$setValidity('ngValorMax', false);
+                    return undefined;
+                } else {
+                    ctrl.$setValidity('ngValorMax', true);
+                    return value;
+                }
+            };
+
+            ctrl.$parsers.push(maxValidator);
+            ctrl.$formatters.push(maxValidator);
+        }
+    };
+});
+
 angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'toastr', 'UtilSrv', '$stateParams',
   function($rootScope, $modal, FrzNavegadorParams, toastr, UtilSrv, $stateParams) {
     $rootScope.servicoUrl = "https://localhost:8443";
@@ -302,7 +359,7 @@ angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'to
         scp.cancelar(scp);
     };
     $rootScope.confirmar = function(scp) {
-        scp.navegador.submitido = true;
+        scp.navegador.submetido = true;
         if (scp.frm.formulario.$invalid) {
             toastr.error('Verifique os campos marcados', 'Erro');
             return false;
@@ -318,7 +375,7 @@ angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'to
                 scp.navegador.voltar(scp);
                 scp.navegador.mudarEstado('VISUALIZANDO');
                 scp.crudVaiPara(scp, scp.stt, 'form');
-                scp.navegador.submitido = false;
+                scp.navegador.submetido = false;
                 scp.navegador.dados.push(scp.cadastro.registro);
                 if (scp.navegador.selecao.tipo === 'U') {
                     scp.navegador.selecao.item = scp.cadastro.registro;
@@ -346,7 +403,7 @@ angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'to
                 scp.navegador.voltar(scp);
                 scp.navegador.mudarEstado('VISUALIZANDO');
                 scp.crudVaiPara(scp, scp.stt, 'form');
-                scp.navegador.submitido = false;
+                scp.navegador.submetido = false;
                 angular.copy(scp.cadastro.registro, scp.cadastro.original);
                 toastr.info('Operação realizada!', 'Informação');
             } else {
@@ -400,7 +457,7 @@ angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'to
         }
     };
     $rootScope.confirmarFiltrar = function(scp, numeroPagina, temMaisRegistros) {
-        scp.navegador.submitido = true;
+        scp.navegador.submetido = true;
 
         if (scp.frm.filtro && scp.frm.filtro.$invalid) {
             toastr.error('Verifique os campos marcados', 'Erro');
@@ -445,7 +502,7 @@ angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'to
                         scp.navegador.paginaAtual = 1;
                         scp.navegador.mudarEstado('LISTANDO');
                         scp.crudVaiPara(scp, scp.stt, 'lista');
-                        scp.navegador.submitido = false;
+                        scp.navegador.submetido = false;
                         scp.cadastro.filtro.ultimaPagina = false;
                     }
                     scp.cadastro.filtro.temMaisRegistros = null;
@@ -460,7 +517,7 @@ angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'to
         scp.navegador.mudarEstado('EDITANDO');
         scp.crudVaiPara(scp, scp.stt, 'form');
         scp.crudVerRegistro(scp);
-        scp.navegador.submitido = false;
+        scp.navegador.submetido = false;
     };
     $rootScope.excluir = function(scp) {
         scp.navegador.mudarEstado('EXCLUINDO');
@@ -487,7 +544,7 @@ angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'to
             scp.crudVaiPara(scp, scp.stt, 'form');
             scp.cadastro.original = {};
             scp.cadastro.registro = angular.copy(scp.cadastro.original);
-            scp.navegador.submitido = false;
+            scp.navegador.submetido = false;
             return;
         }
         scp.servico.novo(modelo).success(function(resposta) {
@@ -495,7 +552,7 @@ angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'to
             scp.crudVaiPara(scp, scp.stt, 'form');
             scp.cadastro.original = resposta.resultado;
             scp.cadastro.registro = angular.copy(scp.cadastro.original);
-            scp.navegador.submitido = false;
+            scp.navegador.submetido = false;
         }).error(function(erro){
             toastr.error(erro, 'Erro ao inserir');
         });

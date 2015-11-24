@@ -56,28 +56,28 @@
                         <td>
                             <select class="form-control input-sm" id="vinculo" name="vinculo{{$index}}" ng-model="reg.vinculo" ng-options="item.codigo as item.descricao for item in scp.cadastro.apoio.propriedadeRuralVinculoTipoList" ng-required="true">
                             </select>
-                            <div class="label label-danger" ng-show="navegador.submitido && publicoAlvoPropriedadeRuralListFrm.vinculo{{$index}}.$error.required">
+                            <div class="label label-danger" ng-show="navegador.submetido && publicoAlvoPropriedadeRuralListFrm.vinculo{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
                         </td>
                         <td>
                             <input type="text" class="form-control input-sm" id="area" name="area{{$index}}" ng-model="reg.area" ng-required="['PR', 'PA'].indexOf(reg.vinculo) >= 0"  ui-number-mask="globalFracaoHectares">
-                            <div class="label label-danger" ng-show="navegador.submitido && publicoAlvoPropriedadeRuralListFrm.area{{$index}}.$error.required">
+                            <div class="label label-danger" ng-show="navegador.submetido && publicoAlvoPropriedadeRuralListFrm.area{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
                         </td>
                         <td>
                             <input type="text" class="form-control input-sm" id="inicio" name="inicio{{$index}}" ng-model="reg.inicio" ui-date-mask>
-                            <div class="label label-danger" ng-show="navegador.submitido && publicoAlvoPropriedadeRuralListFrm.inicio{{$index}}.$error.required">
+                            <div class="label label-danger" ng-show="navegador.submetido && publicoAlvoPropriedadeRuralListFrm.inicio{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
                         </td>
                         <td>
                             <input type="text" class="form-control input-sm" id="termino" name="termino{{$index}}" ng-model="reg.termino" ui-date-mask>
-                            <div class="label label-danger" ng-show="navegador.submitido && publicoAlvoPropriedadeRuralListFrm.termino{{$index}}.$error.required">
+                            <div class="label label-danger" ng-show="navegador.submetido && publicoAlvoPropriedadeRuralListFrm.termino{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>

@@ -3,7 +3,7 @@
         <label class="control-label">Segmento</label>
         <select class="form-control" id="segmento" name="segmento" ng-model="cadastro.registro.publicoAlvo.segmento" ng-options="item.codigo as item.descricao for item in cadastro.apoio.publicoAlvoSegmentoList" ng-required="cadastro.registro.publicoAlvoConfirmacao === 'S'">
         </select>
-        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.segmento.$error.required">
+        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.segmento.$error.required">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             Campo Obrigatório
         </div>
@@ -12,7 +12,7 @@
         <label class="control-label">Categoria</label>
         <select class="form-control" id="categoria" name="categoria" ng-model="cadastro.registro.publicoAlvo.categoria" ng-options="item.codigo as item.descricao for item in cadastro.apoio.publicoAlvoCategoriaList" ng-required="cadastro.registro.publicoAlvoConfirmacao === 'S'">
         </select>
-        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.categoria.$error.required">
+        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.categoria.$error.required">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             Campo Obrigatório
         </div>
@@ -64,7 +64,7 @@
             <div class="col-md-4">
                 <label class="control-label">1ª Habilitação</label>
                 <input class="form-control" type="text" id="carteiraProdutorEmissao" name="carteiraProdutorEmissao" ng-model="cadastro.registro.publicoAlvo.carteiraProdutorEmissao" ui-date-mask/>
-                <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.carteiraProdutorEmissao.$error.date">
+                <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.carteiraProdutorEmissao.$error.date">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     Valor Inválido!
                 </div>
@@ -72,7 +72,7 @@
             <div class="col-md-4">
                 <label class="control-label">Validade</label>
                 <input class="form-control" type="text" id="carteiraProdutorExpiracao" name="carteiraProdutorExpiracao" ng-model="cadastro.registro.publicoAlvo.carteiraProdutorExpiracao" ui-date-mask/>
-                <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.carteiraProdutorExpiracao.$error.date">
+                <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.carteiraProdutorExpiracao.$error.date">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     Valor Inválido!
                 </div>                

@@ -4,8 +4,7 @@
         <form name="frm.formulario" novalidate>
             <fieldset ng-disabled="['INCLUINDO', 'EDITANDO'].indexOf(navegador.estadoAtual()) < 0">
             <!--<fieldset>-->
-                /{{cadastro.registro}}/
-                <frz-form ng-model="cadastro.apoio.formulario" dados="cadastro.registro"></frz-form>
+                <frz-form ng-model="cadastro.apoio.formulario" dados="cadastro.registro" navegador="navegador"></frz-form>
             </fieldset>
         </form>
     </div>

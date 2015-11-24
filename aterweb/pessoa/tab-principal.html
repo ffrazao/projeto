@@ -20,7 +20,7 @@
                 {{item.descricao}}
             </label>
         </div>
-        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.genero.$error.required">
+        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.genero.$error.required">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             Campo Obrigatório
         </div>
@@ -65,7 +65,7 @@
             <div class="col-md-3">
                 <label class="control-label">Dt. Validade</label>
                 <input class="form-control" type="text" id="dapValidade" name="dapValidade" ng-model="cadastro.registro.dapValidade" ui-date-mask/>
-                <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.dapValidade.$error.date">
+                <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.dapValidade.$error.date">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     Valor Inválido!
                 </div>
@@ -96,7 +96,7 @@
             <div class="col-md-4">
                 <label class="control-label">Data</label>
                 <input class="form-control" type="text" id="rgDataEmissao" name="rgDataEmissao" ng-model="cadastro.registro.rgDataEmissao" ui-date-mask/>
-                <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.rgDataEmissao.$error.date">
+                <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.rgDataEmissao.$error.date">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     Valor Inválido!
                 </div>
@@ -161,7 +161,7 @@
             <div class="col-md-3">
                 <label class="control-label">1º Habil.</label>
                 <input class="form-control" type="text" id="" name="" ng-model="cadastro.registro.cnhPrimeiraHabilitacao" ui-date-mask/>
-                <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.cnhPrimeiraHabilitacao.$error.date">
+                <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.cnhPrimeiraHabilitacao.$error.date">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     Valor Inválido!
                 </div>
@@ -169,7 +169,7 @@
             <div class="col-md-3">
                 <label class="control-label">Validade</label>
                 <input class="form-control" type="text" id="" name="" ng-model="cadastro.registro.cnhValidade" ui-date-mask/>
-                <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.cnhValidade.$error.date">
+                <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.cnhValidade.$error.date">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     Valor Inválido!
                 </div>
@@ -222,7 +222,7 @@
             <div class="form-group col-md-2">
                 <label class="control-label">Data</label>
                 <input class="form-control" type="text" id="nascimento" name="nascimento" ng-model="cadastro.registro.nascimento" ui-date-mask/>
-                <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.nascimento.$error.date">
+                <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.nascimento.$error.date">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     Valor Inválido!
                 </div>

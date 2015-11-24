@@ -17,7 +17,7 @@
                 }
                 this.dados = dados;
                 this.selecao = {tipo: 'U', checked: false, item: null, items: [], selecionado: false};
-                this.submitido = false;
+                this.submetido = false;
                 var btn = this.botao('informacao');
                 if (btn) {
                     btn.nome = '0/' + dados.length;

@@ -141,7 +141,7 @@
                 $scope.cancelar();
             };
             $scope.confirmar = function() {
-                $scope.subGrupoSocialNvg.submitido = true;
+                $scope.subGrupoSocialNvg.submetido = true;
                 if ($scope.frm.formulario.$invalid) {
                     toastr.error('Verifique os campos marcados', 'Erro');
                     return false;
@@ -149,7 +149,7 @@
                 $scope.subGrupoSocialNvg.voltar();
                 $scope.subGrupoSocialNvg.mudarEstado('VISUALIZANDO');
                 vaiPara('form');
-                $scope.subGrupoSocialNvg.submitido = false;
+                $scope.subGrupoSocialNvg.submetido = false;
                 return true;
             };
             $scope.confirmarEditar = function() {

@@ -56,7 +56,7 @@
                                 ng-options="item.id as item.nomeSeMasculino for item in scp.cadastro.apoio.relacionamentoFuncaoList" ng-required="true"
                                 ng-if="reg.pessoa.genero !== 'F'">
                             </select>
-                            <div class="label label-danger" ng-show="navegador.submitido && relacionamentoListFrm.relacionamentoFuncao{{$index}}.$error.required">
+                            <div class="label label-danger" ng-show="navegador.submetido && relacionamentoListFrm.relacionamentoFuncao{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>

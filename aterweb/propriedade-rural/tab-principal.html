@@ -6,7 +6,7 @@
     <div class="form-group col-md-2">
         <label class="control-label">Código</label>
         <input class="form-control input-md" id="codigoPropriedade" name="codigoPropriedade" ng-readonly="true" ng-model="cadastro.registro.codigoPropriedade">
-        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.codigoPropriedade.$error.required">
+        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.codigoPropriedade.$error.required">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             Campo Obrigatório
         </div>
@@ -16,7 +16,7 @@
         <select class="form-control" id="comunidade" name="comunidade" ng-model="cadastro.registro.comunidade.id" ng-options="item.id as item.nome for item in cadastro.apoio.comunidadeList" required="true">
             <option value="">-- Não informado --</option>
         </select>
-        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.comunidade.$error.required">
+        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.comunidade.$error.required">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             Campo Obrigatório
         </div>
@@ -24,7 +24,7 @@
     <div class="form-group col-md-4">
         <label class="control-label">Bacia Hidrográfica</label>
         <input class="form-control input-md" id="baciaHidrografica" name="baciaHidrografica" ng-readonly="true" ng-model="cadastro.registro.baciaHidrografica.nome">
-        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.comunidade.$error.required">
+        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.comunidade.$error.required">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             Campo Obrigatório
         </div>
@@ -35,7 +35,7 @@
     <div class="form-group col-md-3">
         <label class="control-label">Endereço</label>
         <textarea class="form-control input-md" id="enderecoResumo" name="enderecoResumo" ng-model="cadastro.registro.enderecoResumo" ng-readonly="true"></textarea>
-        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.enderecoResumo.$error.required">
+        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.enderecoResumo.$error.required">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             Campo Obrigatório
         </div>
@@ -47,7 +47,7 @@
     <div class="form-group col-md-3">
         <label class="control-label">Roteiro de Acesso</label>
         <textarea class="form-control input-md" id="roteiroAcesso" name="roteiroAcesso" ng-model="cadastro.registro.roteiroAcesso"></textarea>
-        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.roteiroAcesso.$error.required">
+        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.roteiroAcesso.$error.required">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             Campo Obrigatório
         </div>
@@ -60,7 +60,7 @@
         <select class="form-control" id="situacaoFundiaria" name="situacaoFundiaria" ng-model="cadastro.registro.situacaoFundiaria" ng-options="item.codigo as item.descricao for item in cadastro.apoio.situacaoFundiariaList">
             <option value="">-- Não informado --</option>
         </select>
-        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.situacaoFundiaria.$error.required">
+        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.situacaoFundiaria.$error.required">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             Campo Obrigatório
         </div>
@@ -68,7 +68,7 @@
     <div class="form-group col-md-2">
         <label class="control-label">Área Total</label>
         <input class="form-control input-md" id="areaTotal" name="areaTotal" ng-model="cadastro.registro.areaTotal" ui-number-mask="globalFracaoHectares">
-        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.areaTotal.$error.required">
+        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.areaTotal.$error.required">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             Campo Obrigatório
         </div>
@@ -78,7 +78,7 @@
         <select class="form-control" id="sistemaProducao" name="sistemaProducao" ng-model="cadastro.registro.sistemaProducao.id" ng-options="item.id as item.nome for item in cadastro.apoio.sistemaProducaoList">
             <option value="">-- Não informado --</option>
         </select>
-        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.sistemaProducao.$error.required">
+        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.sistemaProducao.$error.required">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             Campo Obrigatório
         </div>
@@ -89,7 +89,7 @@
     <div class="form-group col-md-3">
         <label class="control-label">Reg. Núm., Lv, Fl, Matrícula</label>
         <input class="form-control input-md" id="numeroRegistro" name="numeroRegistro" ng-model="cadastro.registro.numeroRegistro">
-        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.numeroRegistro.$error.required">
+        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.numeroRegistro.$error.required">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             Campo Obrigatório
         </div>
@@ -100,7 +100,7 @@
             <input type="checkbox" name="outorga" id="outorga" ng-model="cadastro.registro.outorga" ng-true-value="'S'" ng-false-value="'N'">
             Ativo
         </label>
-        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.outorga.$error.required">
+        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.outorga.$error.required">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             Campo Obrigatório
         </div>
@@ -108,7 +108,7 @@
     <div class="form-group col-md-3">
         <label class="control-label">Data de Validade</label>
         <input class="form-control input-md" id="outorgaValidade" name="outorgaValidade" ng-model="cadastro.registro.outorgaValidade" ui-date-mask>
-        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.outorgaValidade.$error.required">
+        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.outorgaValidade.$error.required">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             Campo Obrigatório
         </div>
@@ -116,7 +116,7 @@
     <div class="form-group col-md-3">
         <label class="control-label">Nº da Outorga</label>
         <input class="form-control input-md" id="outorgaNumero" name="outorgaNumero" ng-model="cadastro.registro.outorgaNumero">
-        <div class="label label-danger" ng-show="navegador.submitido && frm.formulario.outorgaNumero.$error.required">
+        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.outorgaNumero.$error.required">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             Campo Obrigatório
         </div>

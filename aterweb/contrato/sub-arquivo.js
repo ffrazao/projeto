@@ -141,7 +141,7 @@ angular.module(pNmModulo).controller(pNmController,
         $scope.cancelar();
     };
     $scope.confirmar = function() {
-        $scope.contratoArquivoNvg.submitido = true;
+        $scope.contratoArquivoNvg.submetido = true;
         if ($scope.frm.formulario.$invalid) {
             toastr.error('Verifique os campos marcados', 'Erro');
             return false;
@@ -149,7 +149,7 @@ angular.module(pNmModulo).controller(pNmController,
         $scope.contratoArquivoNvg.voltar();
         $scope.contratoArquivoNvg.mudarEstado('VISUALIZANDO');
         vaiPara('form');
-        $scope.contratoArquivoNvg.submitido = false;
+        $scope.contratoArquivoNvg.submetido = false;
         return true;
     };
     $scope.confirmarEditar = function() {

@@ -7,34 +7,34 @@
             <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
             {{item.ajuda}}
         </div>
-        <div class="label label-danger" ng-show="ngModel.submetido && f_{{ngModel.codigo}}.f_{{ngModel.codigo}}_p_{{$index}}.$error.required">
+        <div class="label label-danger" ng-show="(ngModel.submetido || navegador.submetido) && (getCampo($index).$error.required || getCampo($index).$error.ngValorMin)">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             Campo Obrigatório
         </div>
-        <div class="label label-danger" ng-show="ngModel.submetido && (f_{{ngModel.codigo}}.f_{{ngModel.codigo}}_p_{{$index}}.$error.date || f_{{ngModel.codigo}}.f_{{ngModel.codigo}}_p_{{$index}}.$error.number || f_{{ngModel.codigo}}.f_{{ngModel.codigo}}_p_{{$index}}.$error.cep)">
+        <div class="label label-danger" ng-show="(ngModel.submetido || navegador.submetido) && (getCampo($index).$error.date || getCampo($index).$error.number || getCampo($index).$error.cep)">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             Valor inválido!
         </div>
     </script>
 
     <script type="text/ng-template" id="campo_string">
-        <input class="form-control input-md" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="dados[item.codigo]" ng-required="item.requirido()" title="{{item.pop}}" ng-readonly="item.somenteLeitura">
+        <input class="form-control input-md" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="dados[item.codigo]" ng-required="item.requerido()" title="{{item.pop}}" ng-readonly="item.somenteLeitura" ng-trim="true">
     </script>
 
     <script type="text/ng-template" id="campo_numero">
-        <input class="form-control input-md" style="text-align: right" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="dados[item.codigo]" ng-required="item.requirido()" title="{{item.pop}}" ui-number-mask="item.fracao ? item.fracao : 2" ng-readonly="item.somenteLeitura">
+        <input class="form-control input-md" style="text-align: right" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="dados[item.codigo]" ng-required="item.requerido()" title="{{item.pop}}" ui-number-mask="item.fracao ? item.fracao : 2" ng-readonly="item.somenteLeitura" ng-trim="true">
     </script>
 
     <script type="text/ng-template" id="campo_data">
-        <input class="form-control input-md" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="dados[item.codigo]" ng-required="item.requirido()" title="{{item.pop}}" ui-date-mask ng-readonly="item.somenteLeitura">
+        <input class="form-control input-md" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="dados[item.codigo]" ng-required="item.requerido()" title="{{item.pop}}" ui-date-mask ng-readonly="item.somenteLeitura" ng-trim="true">
     </script>
 
     <script type="text/ng-template" id="campo_cep">
-        <input class="form-control input-md" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="dados[item.codigo]" ng-required="item.requirido()" title="{{item.pop}}" ui-br-cep-mask ng-readonly="item.somenteLeitura">
+        <input class="form-control input-md" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="dados[item.codigo]" ng-required="item.requerido()" title="{{item.pop}}" ui-br-cep-mask ng-readonly="item.somenteLeitura" ng-trim="true">
     </script>
 
     <script type="text/ng-template" id="campo_memo">
-        <textarea class="form-control" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" ng-model="dados[item.codigo]" ng-required="item.requirido()" title="{{item.pop}}" ng-readonly="item.somenteLeitura"></textarea>
+        <textarea class="form-control" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" ng-model="dados[item.codigo]" ng-required="item.requerido()" title="{{item.pop}}" ng-readonly="item.somenteLeitura"></textarea>
     </script>
 
     <script type="text/ng-template" id="campo_combo_unico">
@@ -42,7 +42,7 @@
             id="f_{{ngModel.codigo}}_p_{{$index}}" 
             name="f_{{ngModel.codigo}}_p_{{$index}}" 
             ng-model="dados[item.codigo]" 
-            ng-required="item.requirido()" 
+            ng-required="item.requerido()" 
             ng-options="opcao as opcao[item.opcao.descricao] for opcao in item.opcao.lista track by opcao[item.opcao.codigo]" title="{{item.pop}}" 
             ng-readonly="item.somenteLeitura">
             <option value="">-- Selecione --</option>
@@ -54,7 +54,7 @@
             id="f_{{ngModel.codigo}}_p_{{$index}}" 
             name="f_{{ngModel.codigo}}_p_{{$index}}" 
             ng-model="dados[item.codigo]" 
-            ng-required="item.requirido()" 
+            ng-required="item.requerido()" 
             ng-options="opcao as opcao[item.opcao.descricao] for opcao in item.opcao.lista track by opcao[item.opcao.codigo]" title="{{item.pop}}"
             multiple="true" ng-readonly="item.somenteLeitura">
         </select>
@@ -69,7 +69,7 @@
                         id="f_{{ngModel.codigo}}_p_{{idx}}_o_{{$index}}" 
                         ng-value="opcao[item.opcao.codigo]" 
                         ng-model="dados[item.codigo]" 
-                        ng-required="item.requirido()" 
+                        ng-required="item.requerido()" 
                         title="{{item.pop}}" ng-readonly="item.somenteLeitura">
                     {{opcao[item.opcao.descricao]}}
                 </label>
@@ -86,7 +86,7 @@
                         id="f_{{ngModel.codigo}}_p_{{idx}}_o_{{$index}}" 
                         checklist-value="opcao[item.opcao.codigo]" 
                         checklist-model="dados[item.codigo]" 
-                        ng-required="item.requirido()" 
+                        ng-required="item.requerido()" 
                         title="{{item.pop}}" ng-readonly="item.somenteLeitura">
                     {{opcao[item.opcao.descricao]}}
                 </label>
@@ -103,7 +103,7 @@
                         id="f_{{ngModel.codigo}}_p_{{idx}}_o_{{$index}}" 
                         checklist-value="opcao" 
                         checklist-model="dados[item.codigo]" 
-                        ng-required="item.requirido()" 
+                        ng-required="item.requerido()" 
                         title="{{item.pop}}" ng-readonly="item.somenteLeitura">
                     {{opcao[item.opcao.descricao]}}
                 </label>
@@ -123,11 +123,15 @@
     </script>
 
     <script type="text/ng-template" id="campo_array">
-        <frz-tabela ng-model="item" dados="dados[item.codigo]"></frz-tabela>
+        <frz-tabela ng-model="item" dados="dados[item.codigo]" ng-class="{'ng-invalid': getCampo($index).$error.ngValorMin}">
+        </frz-tabela>
+        <input type="hidden" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" ng-model="dados[item.codigo].length" ng-valor-min="item.requerido() ? 1 : null">
     </script>
 
     <script type="text/ng-template" id="campo_objeto">
+        /{{item}}/{{dados[item.codigo]}}/
         <frz-form ng-model="item" dados="dados[item.codigo]"></frz-form>
+        <input type="hidden" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" ng-model="dados[item.codigo]">
     </script>
 
     <fieldset ng-repeat="item in ngModel.opcao" ng-switch on="item.tipo">

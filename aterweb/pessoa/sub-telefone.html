@@ -55,7 +55,7 @@
                         <td>
                             <select class="form-control input-sm" id="tipo" name="tipo{{$index}}" ng-model="reg.tipo" ng-options="item.codigo as item.descricao for item in scp.cadastro.apoio.telefoneTipoList" ng-required="true">
                             </select>
-                            <div class="label label-danger" ng-show="navegador.submitido && telefoneListFrm.tipo{{$index}}.$error.required">
+                            <div class="label label-danger" ng-show="navegador.submetido && telefoneListFrm.tipo{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
@@ -63,7 +63,7 @@
                         <td>
                             <select class="form-control input-sm" id="finalidade" name="finalidade{{$index}}" ng-model="reg.finalidade" ng-options="item.codigo as item.descricao for item in scp.cadastro.apoio.meioContatoFinalidadeList" ng-required="true">
                             </select>
-                            <div class="label label-danger" ng-show="navegador.submitido && telefoneListFrm.finalidade{{$index}}.$error.required">
+                            <div class="label label-danger" ng-show="navegador.submetido && telefoneListFrm.finalidade{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
