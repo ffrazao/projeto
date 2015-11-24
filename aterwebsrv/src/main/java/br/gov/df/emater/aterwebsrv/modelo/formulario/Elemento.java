@@ -69,7 +69,7 @@ public class Elemento extends EntidadeBase implements _ChavePrimaria<Integer> {
 	private List<Opcao> opcaoList;
 
 	@Enumerated(EnumType.STRING)
-	private Confirmacao requrido;
+	private Confirmacao requerido;
 
 	private String tipo;
 
@@ -126,8 +126,8 @@ public class Elemento extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return opcaoList;
 	}
 
-	public Confirmacao getRequrido() {
-		return requrido;
+	public Confirmacao getRequerido() {
+		return requerido;
 	}
 
 	public String getTipo() {
@@ -187,8 +187,8 @@ public class Elemento extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.opcaoList = opcaoList;
 	}
 
-	public void setRequrido(Confirmacao requrido) {
-		this.requrido = requrido;
+	public void setRequerido(Confirmacao requerido) {
+		this.requerido = requerido;
 	}
 
 	public void setTipo(String tipo) {

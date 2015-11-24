@@ -126,6 +126,10 @@
         <frz-tabela ng-model="item" dados="dados[item.codigo]"></frz-tabela>
     </script>
 
+    <script type="text/ng-template" id="campo_objeto">
+        <frz-form ng-model="item" dados="dados[item.codigo]"></frz-form>
+    </script>
+
     <fieldset ng-repeat="item in ngModel.opcao" ng-switch on="item.tipo">
 
         <legend ng-switch-when="nome">{{item.nome}}</legend>

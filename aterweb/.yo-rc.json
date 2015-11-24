@@ -35,7 +35,11 @@
       {
         "name": "propriedadeRural",
         "file": "propriedade-rural\\propriedade-rural.js"
-      }
+      },
+      {
+        "name": "formulario",
+        "file": "formulario\\formulario.js"
+      },
     ]
   }
 }

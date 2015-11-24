@@ -1,0 +1,23 @@
+<div class="panel panel-default">
+    <div class="panel-heading"><h4>{{nomeFormulario}}</h4></div>
+    <div class="panel-body">
+        <form class="form-horizontal" name="frm.filtro" novalidate>
+            <fieldset>
+                <legend>Dados do Formulário</legend>
+                <!-- Text input-->
+                <div class="form-group" title="Nome do Formulário">
+                    <label class="col-md-4 control-label" for="nome">
+                        Nome do Formulário
+                    </label>
+                    <div class="col-md-6">
+                        <input id="nome" name="nome" type="text" placeholder="" class="form-control input-md" ng-model="cadastro.filtro.nome">
+                        <div class="label label-danger" ng-show="navegador.submitido && frm.filtro.nome.$error.required">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Campo Obrigatório
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>

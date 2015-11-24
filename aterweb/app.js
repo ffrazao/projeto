@@ -4,7 +4,7 @@
 
 angular.module(pNmModulo, ['ui.bootstrap', 'ui.utils', 'ui.router', 'ngSanitize', 'ngAnimate', 'toastr', 'sticky',
   'ui.mask', 'ui.utils.masks', 'ui.navbar', 'ngCookies', 'frz.arquivo', 'frz.endereco', 'frz.painel.vidro', 'frz.navegador', 
-  'frz.form', 'frz.tabela', 'casa', 'contrato', 'pessoa', 'propriedadeRural','uiGmapgoogle-maps', 'ngFileUpload']);
+  'frz.form', 'frz.tabela', 'casa', 'contrato', 'pessoa', 'formulario', 'propriedadeRural','uiGmapgoogle-maps', 'ngFileUpload']);
 
 // inicio: codigo para habilitar o modal recursivo
 angular.module(pNmModulo).factory('$modalInstance', function () {
@@ -521,9 +521,17 @@ angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'to
         if ($stateParams.id) {
             id = $stateParams.id;
         } else if (scp.navegador.selecao.tipo === 'U' && scp.navegador.selecao.item) {
-            id = scp.navegador.selecao.item[0];
+            if (scp.navegador.selecao.item[0]) {
+                id = scp.navegador.selecao.item[0];
+            } else if (scp.navegador.selecao.item.id) {
+                id = scp.navegador.selecao.item.id;
+            }
         } else if (scp.navegador.selecao.tipo === 'M' && scp.navegador.selecao.items) {
-            id = scp.navegador.selecao.items[scp.navegador.folhaAtual][0];
+            if (scp.navegador.selecao.items[scp.navegador.folhaAtual][0]) {
+                id = scp.navegador.selecao.items[scp.navegador.folhaAtual][0];
+            } else if (scp.navegador.selecao.items[scp.navegador.folhaAtual].id) {
+                id = scp.navegador.selecao.items[scp.navegador.folhaAtual].id;
+            }
         }
         if (id === null) {
             scp.incluir(scp);

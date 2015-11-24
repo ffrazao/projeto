@@ -16,8 +16,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaTipo;
+import br.gov.df.emater.aterwebsrv.modelo.dto.FormularioCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.PessoaCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.PropriedadeRuralCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.modelo.formulario.Formulario;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 
 @Service
@@ -56,6 +58,31 @@ public class FacadeBo implements BeanFactoryAware {
 	@Transactional(readOnly = true)
 	public _Contexto enderecoNovo(Principal usuario) throws Exception {
 		return this._executar(usuario, "EnderecoNovoCmd");
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto formularioFiltroExecutar(Principal usuario, FormularioCadFiltroDto filtro) throws Exception {
+		return this._executar(usuario, "FormularioFiltroExecutarCh", filtro);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto formularioFiltroNovo(Principal usuario) throws Exception {
+		return this._executar(usuario, "FormularioFiltroNovoCmd");
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto formularioNovo(Principal usuario) throws Exception {
+		return this._executar(usuario, "FormularioNovoCh");
+	}
+
+	@Transactional
+	public _Contexto formularioSalvar(Principal usuario, Formulario formulario) throws Exception {
+		return this._executar(usuario, "FormularioSalvarCh", formulario);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto formularioVisualizar(Principal usuario, Integer id) throws Exception {
+		return this._executar(usuario, "FormularioVisualizarCh", id);
 	}
 
 	@Transactional(readOnly = true)
@@ -108,6 +135,7 @@ public class FacadeBo implements BeanFactoryAware {
 		return this._executar(usuario, "PropriedadeRuralVisualizarCh", id);
 	}
 
+	@Override
 	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
 		this.beanFactory = beanFactory;
 	}

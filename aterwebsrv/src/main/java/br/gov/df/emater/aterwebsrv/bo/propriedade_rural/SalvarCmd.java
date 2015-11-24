@@ -29,30 +29,30 @@ public class SalvarCmd extends _Comando {
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
-		PropriedadeRural propriedadeRural = (PropriedadeRural) contexto.getRequisicao();
-		if (propriedadeRural.getId() == null) {
-			propriedadeRural.setUsuarioInclusao(getUsuario(contexto.getUsuario().getName()));
-			propriedadeRural.setInclusaoData(Calendar.getInstance());
+		PropriedadeRural result = (PropriedadeRural) contexto.getRequisicao();
+		if (result.getId() == null) {
+			result.setUsuarioInclusao(getUsuario(contexto.getUsuario().getName()));
+			result.setInclusaoData(Calendar.getInstance());
 		} else {
-			propriedadeRural.setUsuarioInclusao(getUsuario(propriedadeRural.getUsuarioInclusao().getUsername()));
+			result.setUsuarioInclusao(getUsuario(result.getUsuarioInclusao().getUsername()));
 		}
-		propriedadeRural.setUsuarioAlteracao(getUsuario(contexto.getUsuario().getName()));
-		propriedadeRural.setAlteracaoData(Calendar.getInstance());
+		result.setUsuarioAlteracao(getUsuario(contexto.getUsuario().getName()));
+		result.setAlteracaoData(Calendar.getInstance());
 		
-		if (propriedadeRural.getEndereco() == null) {
+		if (result.getEndereco() == null) {
 			throw new BoException("O campo Endereço é obrigatório");
 		}
-		Endereco endereco = propriedadeRural.getEndereco();
+		Endereco endereco = result.getEndereco();
 		endereco.setPropriedadeRuralConfirmacao(Confirmacao.S);
 		enderecoDao.save(endereco);
 		
-		propriedadeRural.setBaciaHidrografica(new BaciaHidrografica(1));
+		result.setBaciaHidrografica(new BaciaHidrografica(1));
 
-		dao.save(propriedadeRural);
+		dao.save(result);
 
 		dao.flush();
 
-		contexto.setResposta(propriedadeRural.getId());
+		contexto.setResposta(result.getId());
 		return true;
 	}
 

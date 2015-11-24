@@ -1,6 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.formulario;
 
 import java.util.Calendar;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -8,6 +9,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -30,6 +32,9 @@ public class Formulario extends EntidadeBase implements _ChavePrimaria<Integer> 
 	private static final long serialVersionUID = 1L;
 
 	private String codigo;
+
+	@OneToMany(mappedBy = "formulario")
+	private List<FormularioVersao> formularioVersaoList;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -56,6 +61,10 @@ public class Formulario extends EntidadeBase implements _ChavePrimaria<Integer> 
 		return codigo;
 	}
 
+	public List<FormularioVersao> getFormularioVersaoList() {
+		return formularioVersaoList;
+	}
+
 	@Override
 	public Integer getId() {
 		return id;
@@ -79,6 +88,10 @@ public class Formulario extends EntidadeBase implements _ChavePrimaria<Integer> 
 
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
+	}
+
+	public void setFormularioVersaoList(List<FormularioVersao> formularioVersaoList) {
+		this.formularioVersaoList = formularioVersaoList;
 	}
 
 	@Override

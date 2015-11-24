@@ -110,23 +110,23 @@ public class SalvarCmd extends _Comando {
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
-		Pessoa pessoa = (Pessoa) contexto.getRequisicao();
-		if (pessoa.getId() == null) {
-			pessoa.setUsuarioInclusao(getUsuario(contexto.getUsuario().getName()));
-			pessoa.setInclusaoData(Calendar.getInstance());
+		Pessoa result = (Pessoa) contexto.getRequisicao();
+		if (result.getId() == null) {
+			result.setUsuarioInclusao(getUsuario(contexto.getUsuario().getName()));
+			result.setInclusaoData(Calendar.getInstance());
 		} else {
-			pessoa.setUsuarioInclusao(getUsuario(pessoa.getUsuarioInclusao().getUsername()));
+			result.setUsuarioInclusao(getUsuario(result.getUsuarioInclusao().getUsername()));
 		}
-		pessoa.setUsuarioAlteracao(getUsuario(contexto.getUsuario().getName()));
-		pessoa.setAlteracaoData(Calendar.getInstance());
+		result.setUsuarioAlteracao(getUsuario(contexto.getUsuario().getName()));
+		result.setAlteracaoData(Calendar.getInstance());
 
 		// publico alvo
-		if (Confirmacao.S.equals(pessoa.getPublicoAlvoConfirmacao())) {
-			PublicoAlvo publicoAlvo = pessoa.getPublicoAlvo();
+		if (Confirmacao.S.equals(result.getPublicoAlvoConfirmacao())) {
+			PublicoAlvo publicoAlvo = result.getPublicoAlvo();
 			if (publicoAlvo == null) {
 				publicoAlvo = new PublicoAlvo();
 			}
-			publicoAlvo.setPessoa(pessoa);
+			publicoAlvo.setPessoa(result);
 			publicoAlvoDao.save(publicoAlvo);
 
 			// salvar as propriedades vinculadas ao publico alvo
@@ -153,19 +153,19 @@ public class SalvarCmd extends _Comando {
 			}
 		}
 
-		dao.save(pessoa);
+		dao.save(result);
 
 		// salvar enderecos
-		if (pessoa.getEnderecoList() != null) {
+		if (result.getEnderecoList() != null) {
 			// tratar a exclusao de registros
-			for (PessoaEndereco pessoaEndereco : pessoa.getEnderecoList()) {
+			for (PessoaEndereco pessoaEndereco : result.getEnderecoList()) {
 				if (CadastroAcao.E.equals(pessoaEndereco.getCadastroAcao())) {
 					pessoaEnderecoDao.delete(pessoaEndereco);
 				}
 			}
 			// tratar a insersao de registros
 			Integer ordem = 0;
-			for (PessoaEndereco pessoaEndereco : pessoa.getEnderecoList()) {
+			for (PessoaEndereco pessoaEndereco : result.getEnderecoList()) {
 				if (!CadastroAcao.E.equals(pessoaEndereco.getCadastroAcao())) {
 					Endereco endereco = pessoaEndereco.getEndereco();
 					List<Endereco> pesquisa = enderecoDao.procurar(endereco);
@@ -176,7 +176,7 @@ public class SalvarCmd extends _Comando {
 						endereco = enderecoDao.save(pessoaEndereco.getEndereco());
 					}
 					pessoaEndereco.setEndereco(endereco);
-					pessoaEndereco.setPessoa(pessoa);
+					pessoaEndereco.setPessoa(result);
 					pessoaEndereco.setOrdem(++ordem);
 					pessoaEnderecoDao.save(pessoaEndereco);
 				}
@@ -184,16 +184,16 @@ public class SalvarCmd extends _Comando {
 		}
 
 		// salvar telefones
-		if (pessoa.getTelefoneList() != null) {
+		if (result.getTelefoneList() != null) {
 			// tratar a exclusao de registros
-			for (PessoaTelefone pessoaTelefone : pessoa.getTelefoneList()) {
+			for (PessoaTelefone pessoaTelefone : result.getTelefoneList()) {
 				if (CadastroAcao.E.equals(pessoaTelefone.getCadastroAcao())) {
 					pessoaTelefoneDao.delete(pessoaTelefone);
 				}
 			}
 			// tratar a insersao de registros
 			Integer ordem = 0;
-			for (PessoaTelefone pessoaTelefone : pessoa.getTelefoneList()) {
+			for (PessoaTelefone pessoaTelefone : result.getTelefoneList()) {
 				if (!CadastroAcao.E.equals(pessoaTelefone.getCadastroAcao())) {
 					Telefone telefone = pessoaTelefone.getTelefone();
 					telefone = telefoneDao.findByNumero(telefone.getNumero());
@@ -201,7 +201,7 @@ public class SalvarCmd extends _Comando {
 						telefone = telefoneDao.save(pessoaTelefone.getTelefone());
 					}
 					pessoaTelefone.setTelefone(telefone);
-					pessoaTelefone.setPessoa(pessoa);
+					pessoaTelefone.setPessoa(result);
 					pessoaTelefone.setOrdem(++ordem);
 					pessoaTelefoneDao.save(pessoaTelefone);
 				}
@@ -209,16 +209,16 @@ public class SalvarCmd extends _Comando {
 		}
 
 		// salvar emails
-		if (pessoa.getEmailList() != null) {
+		if (result.getEmailList() != null) {
 			// tratar a exclusao de registros
-			for (PessoaEmail pessoaEmail : pessoa.getEmailList()) {
+			for (PessoaEmail pessoaEmail : result.getEmailList()) {
 				if (CadastroAcao.E.equals(pessoaEmail.getCadastroAcao())) {
 					pessoaEmailDao.delete(pessoaEmail);
 				}
 			}
 			// tratar a insersao de registros
 			Integer ordem = 0;
-			for (PessoaEmail pessoaEmail : pessoa.getEmailList()) {
+			for (PessoaEmail pessoaEmail : result.getEmailList()) {
 				if (!CadastroAcao.E.equals(pessoaEmail.getCadastroAcao())) {
 					Email email = pessoaEmail.getEmail();
 					email = emailDao.findByEndereco(email.getEndereco());
@@ -226,7 +226,7 @@ public class SalvarCmd extends _Comando {
 						email = emailDao.save(pessoaEmail.getEmail());
 					}
 					pessoaEmail.setEmail(email);
-					pessoaEmail.setPessoa(pessoa);
+					pessoaEmail.setPessoa(result);
 					pessoaEmail.setOrdem(++ordem);
 					pessoaEmailDao.save(pessoaEmail);
 				}
@@ -234,13 +234,13 @@ public class SalvarCmd extends _Comando {
 		}
 
 		// salvar relacionamentos
-		if (pessoa.getRelacionamentoList() != null) {
-			for (PessoaRelacionamento pessoaRelacionamento : pessoa.getRelacionamentoList()) {
+		if (result.getRelacionamentoList() != null) {
+			for (PessoaRelacionamento pessoaRelacionamento : result.getRelacionamentoList()) {
 				if (CadastroAcao.E.equals(pessoaRelacionamento.getCadastroAcao())) {
 					relacionamentoDao.delete(pessoaRelacionamento.getRelacionamento());
 				}
 			}
-			for (PessoaRelacionamento pessoaRelacionamento : pessoa.getRelacionamentoList()) {
+			for (PessoaRelacionamento pessoaRelacionamento : result.getRelacionamentoList()) {
 				if (!CadastroAcao.E.equals(pessoaRelacionamento.getCadastroAcao())) {
 					Relacionamento relacionamento = pessoaRelacionamento.getRelacionamento();
 
@@ -264,7 +264,7 @@ public class SalvarCmd extends _Comando {
 					boolean encontrou = false;
 					if (relacionamento.getPessoaRelacionamentoList() != null) {
 						for (PessoaRelacionamento rel : relacionamento.getPessoaRelacionamentoList()) {
-							if (rel.getPessoa().getId().equals(pessoa.getId())) {
+							if (rel.getPessoa().getId().equals(result.getId())) {
 								relacionador = rel;
 								encontrou = true;
 								break;
@@ -273,7 +273,7 @@ public class SalvarCmd extends _Comando {
 					}
 					if (!encontrou) {
 						relacionador = new PessoaRelacionamento();
-						relacionador.setPessoa(pessoa);
+						relacionador.setPessoa(result);
 						relacionador.setRelacionamento(relacionamento);
 					}
 					relacionador.setRelacionamentoFuncao(new RelacionamentoFuncao(relacionamentoConfiguracaoVi.getRelacionadoId()));
@@ -283,32 +283,32 @@ public class SalvarCmd extends _Comando {
 		}
 
 		// salvar grupos sociais
-		if (pessoa.getGrupoSocialList() != null) {
+		if (result.getGrupoSocialList() != null) {
 			// tratar a exclusao de registros
-			for (PessoaGrupoSocial pessoaGrupoSocial : pessoa.getGrupoSocialList()) {
+			for (PessoaGrupoSocial pessoaGrupoSocial : result.getGrupoSocialList()) {
 				if (CadastroAcao.E.equals(pessoaGrupoSocial.getCadastroAcao())) {
 					pessoaGrupoSocialDao.delete(pessoaGrupoSocial);
 				}
 			}
 			// tratar a insersao de registros
-			for (PessoaGrupoSocial pessoaGrupoSocial : pessoa.getGrupoSocialList()) {
+			for (PessoaGrupoSocial pessoaGrupoSocial : result.getGrupoSocialList()) {
 				if (!CadastroAcao.E.equals(pessoaGrupoSocial.getCadastroAcao())) {
-					pessoaGrupoSocial.setPessoa(pessoa);
+					pessoaGrupoSocial.setPessoa(result);
 					pessoaGrupoSocialDao.save(pessoaGrupoSocial);
 				}
 			}
 		}
 
 		// salvar arquivos vinculados
-		if (pessoa.getArquivoList() != null) {
+		if (result.getArquivoList() != null) {
 			// tratar a exclusao de registros
-			for (PessoaArquivo pessoaArquivo : pessoa.getArquivoList()) {
+			for (PessoaArquivo pessoaArquivo : result.getArquivoList()) {
 				if (CadastroAcao.E.equals(pessoaArquivo.getCadastroAcao())) {
 					pessoaArquivoDao.delete(pessoaArquivo);
 				}
 			}
 			// tratar a insersao de registros
-			for (PessoaArquivo pessoaArquivo : pessoa.getArquivoList()) {
+			for (PessoaArquivo pessoaArquivo : result.getArquivoList()) {
 				if (!CadastroAcao.E.equals(pessoaArquivo.getCadastroAcao())) {
 					Arquivo arquivo = pessoaArquivo.getArquivo();
 					arquivo = arquivoDao.findByMd5(arquivo.getMd5());
@@ -322,7 +322,7 @@ public class SalvarCmd extends _Comando {
 					}
 					arquivo = arquivoDao.save(pessoaArquivo.getArquivo());
 					pessoaArquivo.setArquivo(arquivo);
-					pessoaArquivo.setPessoa(pessoa);
+					pessoaArquivo.setPessoa(result);
 					pessoaArquivoDao.save(pessoaArquivo);
 				}
 			}
@@ -330,7 +330,7 @@ public class SalvarCmd extends _Comando {
 
 		dao.flush();
 
-		contexto.setResposta(pessoa.getId());
+		contexto.setResposta(result.getId());
 		return true;
 	}
 

@@ -55,7 +55,13 @@
                         {
                             name: 'Contratos & Convênios',
                             link: 'p.contrato.filtro',
-                            funcionalidade: 'CONTRATOS',
+                            funcionalidade: 'CONTRATO',
+                            visivel: false,
+                        },
+                        {
+                            name: 'Formulários',
+                            link: 'p.formulario.filtro',
+                            funcionalidade: 'FORMULARIO',
                             visivel: false,
                         },
                     ]

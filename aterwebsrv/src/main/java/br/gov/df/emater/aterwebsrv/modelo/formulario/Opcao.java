@@ -27,7 +27,7 @@ public class Opcao extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	@OneToMany
 	@JoinColumn(name = "formulario_id")
-	private List<Formulario> formulario;
+	private List<Formulario> formularioList;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,8 +40,8 @@ public class Opcao extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return elemento;
 	}
 
-	public List<Formulario> getFormulario() {
-		return formulario;
+	public List<Formulario> getFormularioList() {
+		return formularioList;
 	}
 
 	@Override
@@ -57,8 +57,8 @@ public class Opcao extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.elemento = elemento;
 	}
 
-	public void setFormulario(List<Formulario> formulario) {
-		this.formulario = formulario;
+	public void setFormularioList(List<Formulario> formularioList) {
+		this.formularioList = formularioList;
 	}
 
 	@Override
