@@ -56,7 +56,6 @@
 
             // inicio ações especiais
             $scope.cadastro.apoio.formulario = {
-                submetido: $scope.navegador.submetido,
                 codigo: 'formulario',
                 tipo: 'array',
                 nome: 'Formulário',
@@ -149,7 +148,7 @@
                                                             '       <tr>' +
                                                             '           <td>' + dados.nome + '</td>' +
                                                             '           <td>' + dados.codigo + '</td>' +
-                                                            '           <td>' + dados.tipo + '</td>' +
+                                                            '           <td>' + dados.tipo.nome + '</td>' +
                                                             '       </tr>' +
                                                             '    <tbody>' +
                                                             '</table>';
@@ -204,7 +203,12 @@
                                                                 lista: 
                                                                     [
                                                                         {id: 'array', nome: 'Conjunto de registros', 
-                                                                         opcao: [
+
+                                                                        //opcao: {
+                                                                        //codigo: 'complemento',
+                                                                        //tipo: 'array',
+                                                                        //nome: 'Complemento do Elemento',
+                                                                        opcao: [
                                                                                 {
                                                                                     nome: 'Nome',
                                                                                     codigo: 'nome',
@@ -223,6 +227,7 @@
                                                                                     tipo: 'memo',
                                                                                 },
                                                                             ],
+                                                                        //},
                                                                             }, 
                                                                         {id: 'cep', nome: 'CEP - Código de Endereçamento Postal'}, 
                                                                         {id: 'combo_multiplo', nome: 'Combo Multiplo'}, 
@@ -269,7 +274,7 @@
                                                             nome: 'Opções',
                                                             codigo: 'opcao',
                                                             tipo: 'objeto',
-                                                            opcao: $scope.dados['tipo']['opcao'],
+                                                            opcao: {},
                                                         },
                                                     ],
                                                 },
@@ -277,7 +282,7 @@
                                                     nome: 'Ordem',
                                                     codigo: 'ordem',
                                                     tipo: 'numero',
-                                                    fracao: '-1',
+                                                    fracao: '0',
                                                     requerido: function() {return true;},
                                                     tamanho: 2,
                                                 },
@@ -293,7 +298,28 @@
             // fim trabalho tab
 
             // inicio dos watches
-           
+            var pegaOpcao = function () {
+                if (!$scope.cadastro.apoio.formulario || 
+                    !$scope.cadastro.apoio.formulario.opcao[5] || 
+                    !$scope.cadastro.apoio.formulario.opcao[5].opcao[2] || 
+                    !$scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0] || 
+                    !$scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].formAtual || 
+                    !$scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].formAtual.tipo || 
+                    !$scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].formAtual.tipo.opcao) {
+                    return null;
+                }
+                return $scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].formAtual.tipo.opcao;
+            };
+
+            $scope.$watch('cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].formAtual.tipo', function() {
+                if (!$scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].formAtual) {
+                    return;
+                }
+                //$scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].formAtual.opcao = $scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].formAtual.tipo.opcao;
+                $scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].opcao[11].opcao = $scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].formAtual.tipo.opcao;
+
+            }, true);
+
             // fim dos watches
         }
     ]);

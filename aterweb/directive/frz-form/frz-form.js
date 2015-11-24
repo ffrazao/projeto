@@ -25,7 +25,7 @@
         };
         $scope.getCampo = function(indice) {
             return $scope['f_' + $scope.ngModel.codigo]['f_' + $scope.ngModel.codigo + '_p_' + indice];
-        }
+        };
     }]);
 
     // diretiva da barra de navegação de dados
@@ -76,6 +76,11 @@
                     }, true);
                 }
                 */
+
+                scope.ngModel['formAtual'] = scope.dados;
+                scope.$watch('dados', function() {
+                    scope.ngModel['formAtual'] = scope.dados;
+                });
 
                 // executar o estado inicial do form
                 if (scope.onAbrir) {

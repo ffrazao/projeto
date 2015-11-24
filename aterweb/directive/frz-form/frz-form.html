@@ -129,7 +129,6 @@
     </script>
 
     <script type="text/ng-template" id="campo_objeto">
-        /{{item}}/{{dados[item.codigo]}}/
         <frz-form ng-model="item" dados="dados[item.codigo]"></frz-form>
         <input type="hidden" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" ng-model="dados[item.codigo]">
     </script>
