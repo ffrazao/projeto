@@ -12,9 +12,11 @@ angular.module(pNmModulo).factory(pNmFactory,
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
                 UtilSrv.dominio({ent: [
                    'Confirmacao',
+                   'ElementoTipo'
                 ]}).success(function(resposta) {
                     if (resposta && resposta.resultado) {
-                        scp.cadastro.apoio.confirmacaoList = resposta.resultado[0];
+                        angular.copy(resposta.resultado[0], scp.cadastro.apoio.confirmacaoList);
+                        angular.copy(resposta.resultado[1], scp.cadastro.apoio.elementoTipoList);
                     }
                 });
             },

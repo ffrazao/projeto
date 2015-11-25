@@ -20,7 +20,7 @@
         on-ultima-pagina="ngModel.ultimaPagina()"
         ></frz-navegador>
     </div>
-    <div class="painel-body" ng-if="!dados.length" ng-class="{invalid: requerido ? 1 : null}">
+    <div class="painel-body" ng-if="!dados.length">
         <div class="alert alert-warning" style="margin: 0px;" role="alert">
             <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
             Nenhum registro localizado!
@@ -45,7 +45,7 @@
                         {{$index + 1 + ((navegadorFrm.paginaAtual-1) * navegadorFrm.tamanhoPagina)}}
                     </td>
                     <td ng-repeat="opcao in ngModel.opcao | filter: {escondeLista: '!S'}" ng-switch on="opcao.tipo">
-                        <span ng-switch-when="objeto" ng-bind-html="opcao.exibir(reg[opcao.codigo])"></span>
+                        <span ng-switch-when="objeto" ng-bind-html="opcao.funcaoExibir(reg[opcao.codigo])"></span>
                         <span ng-switch-when="resumo">{{opcao.valor}}</span>
                         <span ng-switch-when="escolha_unica">{{verUnico(reg[opcao.codigo], opcao)}}</span>
                         <span ng-switch-when="escolha_multipla">{{verMultiplo(reg[opcao.codigo], opcao)}}</span>

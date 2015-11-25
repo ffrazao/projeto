@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.ElementoTipo;
 
 @Entity
 @Table(schema = EntidadeBase.FORMULARIO_SCHEMA)
@@ -46,8 +47,16 @@ public class Elemento extends EntidadeBase implements _ChavePrimaria<Integer> {
 	private String funcaoExcluirDepois;
 
 	@Lob
+	@Column(name = "funcao_exibir")
+	private String funcaoExibir;
+
+	@Lob
 	@Column(name = "funcao_incluir_antes")
 	private String funcaoIncluirAntes;
+
+	@Lob
+	@Column(name = "funcao_requerido")
+	private String funcaoRequerido;
 
 	@Lob
 	@Column(name = "funcao_salvar_depois")
@@ -63,15 +72,19 @@ public class Elemento extends EntidadeBase implements _ChavePrimaria<Integer> {
 	private List<Observar> observarList;
 
 	@Lob
-	private String opcao;
+	private Object opcao;
 
 	@OneToMany(mappedBy = "elemento")
 	private List<Opcao> opcaoList;
 
 	@Enumerated(EnumType.STRING)
-	private Confirmacao requerido;
+	@Column(name = "somente_leitura")
+	private Confirmacao somenteLeitura;
 
-	private String tipo;
+	private Integer tamanho;
+
+	@Enumerated(EnumType.STRING)
+	private ElementoTipo tipo;
 
 	public String getCodigo() {
 		return codigo;
@@ -97,8 +110,16 @@ public class Elemento extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return funcaoExcluirDepois;
 	}
 
+	public String getFuncaoExibir() {
+		return funcaoExibir;
+	}
+
 	public String getFuncaoIncluirAntes() {
 		return funcaoIncluirAntes;
+	}
+
+	public String getFuncaoRequerido() {
+		return funcaoRequerido;
 	}
 
 	public String getFuncaoSalvarDepois() {
@@ -118,7 +139,7 @@ public class Elemento extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return observarList;
 	}
 
-	public String getOpcao() {
+	public Object getOpcao() {
 		return opcao;
 	}
 
@@ -126,11 +147,15 @@ public class Elemento extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return opcaoList;
 	}
 
-	public Confirmacao getRequerido() {
-		return requerido;
+	public Confirmacao getSomenteLeitura() {
+		return somenteLeitura;
 	}
 
-	public String getTipo() {
+	public Integer getTamanho() {
+		return tamanho;
+	}
+
+	public ElementoTipo getTipo() {
 		return tipo;
 	}
 
@@ -158,8 +183,16 @@ public class Elemento extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.funcaoExcluirDepois = funcaoExcluirDepois;
 	}
 
+	public void setFuncaoExibir(String funcaoExibir) {
+		this.funcaoExibir = funcaoExibir;
+	}
+
 	public void setFuncaoIncluirAntes(String funcaoIncluirAntes) {
 		this.funcaoIncluirAntes = funcaoIncluirAntes;
+	}
+
+	public void setFuncaoRequerido(String funcaoRequerido) {
+		this.funcaoRequerido = funcaoRequerido;
 	}
 
 	public void setFuncaoSalvarDepois(String funcaoSalvarDepois) {
@@ -179,7 +212,7 @@ public class Elemento extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.observarList = observarList;
 	}
 
-	public void setOpcao(String opcao) {
+	public void setOpcao(Object opcao) {
 		this.opcao = opcao;
 	}
 
@@ -187,11 +220,15 @@ public class Elemento extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.opcaoList = opcaoList;
 	}
 
-	public void setRequerido(Confirmacao requerido) {
-		this.requerido = requerido;
+	public void setSomenteLeitura(Confirmacao somenteLeitura) {
+		this.somenteLeitura = somenteLeitura;
 	}
 
-	public void setTipo(String tipo) {
+	public void setTamanho(Integer tamanho) {
+		this.tamanho = tamanho;
+	}
+
+	public void setTipo(ElementoTipo tipo) {
 		this.tipo = tipo;
 	}
 

@@ -55,6 +55,8 @@
             // fim das operaçoes atribuidas ao navagador
 
             // inicio ações especiais
+            $scope.cadastro.apoio.elementoTipoList = [];
+            
             $scope.cadastro.apoio.formulario = {
                 codigo: 'formulario',
                 tipo: 'array',
@@ -65,20 +67,20 @@
                             nome: 'Nome do Formulário',
                             codigo: 'nome',
                             tipo: 'string',
-                            requerido: function() {return true;},
+                            funcaoRequirido: function() {return true;},
                         },
                         {
                             nome: 'Código do Formulário',
                             codigo: 'codigo',
                             tipo: 'string',
-                            requerido: function() {return true;},
+                            funcaoRequirido: function() {return true;},
                             tamanho: 3,
                         },
                         {
                             nome: 'Situação',
                             codigo: 'situacao',
                             tipo: 'escolha_unica',
-                            requerido: function() {return true;},
+                            funcaoRequirido: function() {return true;},
                             opcao: {
                                 codigo: 'codigo',
                                 descricao: 'descricao',
@@ -89,7 +91,7 @@
                             nome: 'Início da Coleta',
                             codigo: 'inicio',
                             tipo: 'data',
-                            requerido: function() {return true;},
+                            funcaoRequirido: function() {return true;},
                             tamanho: 2,
                         },
                         {
@@ -102,22 +104,24 @@
                             codigo: 'formularioVersaoList',
                             tipo: 'array',
                             nome: 'Versões do Formulário',
-                            requerido: function() {return true;},
+                            funcaoRequirido: function() {return true;},
                             opcao:
                                 [
                                     {
                                         nome: 'Versão',
                                         codigo: 'versao',
                                         tipo: 'numero',
-                                        fracao: '-1',
                                         tamanho: 2,
                                         somenteLeitura: true,
+                                        opcao: {
+                                            fracao: '0',
+                                        }
                                     },
                                     {
                                         nome: 'Data de Início de Validade',
                                         codigo: 'data',
                                         tipo: 'data',
-                                        requerido: function() {return false;},
+                                        funcaoRequirido: function() {return false;},
                                         tamanho: 2,
                                     },
                                     {
@@ -130,8 +134,8 @@
                                                     nome: 'Elemento',
                                                     codigo: 'elemento',
                                                     tipo: 'objeto',
-                                                    requerido: function() {return true;},
-                                                    exibir: function(dados) {
+                                                    funcaoRequirido: function() {return true;},
+                                                    funcaoExibir: function(dados) {
                                                         if (!dados) {
                                                             return null;
                                                         }
@@ -159,18 +163,25 @@
                                                             nome: 'Nome',
                                                             codigo: 'nome',
                                                             tipo: 'string',
-                                                            requerido: function() {return true;},
+                                                            funcaoRequirido: function() {return true;},
                                                         },
                                                         {
                                                             nome: 'Código',
                                                             codigo: 'codigo',
                                                             tipo: 'string',
-                                                            requerido: function() {return true;},
+                                                            funcaoRequirido: function() {return true;},
                                                         },
                                                         {
-                                                            nome: 'Função Requerido',
-                                                            codigo: 'requerido',
-                                                            tipo: 'memo',
+                                                            nome: 'Tipo',
+                                                            codigo: 'tipo',
+                                                            tipo: 'escolha_unica',
+                                                            funcaoRequirido: function() {return true;},
+                                                            opcao: {
+                                                                codigo: 'codigo',
+                                                                descricao: 'descricao',
+                                                                lista: $scope.cadastro.apoio.elementoTipoList,
+                                                            },
+
                                                         },
                                                         {
                                                             nome: 'Esconder no Formulário',
@@ -193,57 +204,9 @@
                                                             },
                                                         },
                                                         {
-                                                            nome: 'Tipo',
-                                                            codigo: 'tipo',
-                                                            tipo: 'combo_unico',
-                                                            requerido: function() {return true;},
-                                                            opcao: {
-                                                                codigo: 'id',
-                                                                descricao: 'nome',
-                                                                lista: 
-                                                                    [
-                                                                        {id: 'array', nome: 'Conjunto de registros', 
-
-                                                                        //opcao: {
-                                                                        //codigo: 'complemento',
-                                                                        //tipo: 'array',
-                                                                        //nome: 'Complemento do Elemento',
-                                                                        opcao: [
-                                                                                {
-                                                                                    nome: 'Nome',
-                                                                                    codigo: 'nome',
-                                                                                    tipo: 'string',
-                                                                                    requerido: function() {return true;},
-                                                                                },
-                                                                                {
-                                                                                    nome: 'Código',
-                                                                                    codigo: 'codigo',
-                                                                                    tipo: 'string',
-                                                                                    requerido: function() {return true;},
-                                                                                },
-                                                                                {
-                                                                                    nome: 'Função Requerido',
-                                                                                    codigo: 'requerido',
-                                                                                    tipo: 'memo',
-                                                                                },
-                                                                            ],
-                                                                        //},
-                                                                            }, 
-                                                                        {id: 'cep', nome: 'CEP - Código de Endereçamento Postal'}, 
-                                                                        {id: 'combo_multiplo', nome: 'Combo Multiplo'}, 
-                                                                        {id: 'combo_unico', nome: 'Combo Único'}, 
-                                                                        {id: 'data', nome: 'Data'}, 
-                                                                        {id: 'escolha_multipla', nome: 'Escolha multipla'}, 
-                                                                        {id: 'escolha_multipla_objeto', nome: 'Escolha Multipla (com Objetos)'}, 
-                                                                        {id: 'escolha_unica', nome: 'Escolha Única'}, 
-                                                                        {id: 'memo', nome: 'Memo'}, 
-                                                                        {id: 'numero', nome: 'Número'}, 
-                                                                        {id: 'objeto', nome: 'Objeto'}, 
-                                                                        {id: 'resumo_numero', nome: 'Resumo Numérico'}, 
-                                                                        {id: 'string', nome: 'Letras e Números'}, 
-                                                                    ],
-                                                            },
-
+                                                            nome: 'Função Requerido',
+                                                            codigo: 'requerido',
+                                                            tipo: 'memo',
                                                         },
                                                         {
                                                             nome: 'Função Incluir Antes',
@@ -282,9 +245,11 @@
                                                     nome: 'Ordem',
                                                     codigo: 'ordem',
                                                     tipo: 'numero',
-                                                    fracao: '0',
-                                                    requerido: function() {return true;},
+                                                    funcaoRequirido: function() {return true;},
                                                     tamanho: 2,
+                                                    opcao: {
+                                                        fracao: '0',
+                                                    }
                                                 },
                                             ],
                                     },

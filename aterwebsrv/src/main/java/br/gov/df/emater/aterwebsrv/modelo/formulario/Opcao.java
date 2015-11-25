@@ -21,6 +21,8 @@ public class Opcao extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
 
+	private String codigo;
+
 	@ManyToOne
 	@JoinColumn(name = "elemento_id")
 	private Elemento elemento;
@@ -35,6 +37,10 @@ public class Opcao extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	@Lob
 	private String valor;
+
+	public String getCodigo() {
+		return codigo;
+	}
 
 	public Elemento getElemento() {
 		return elemento;
@@ -51,6 +57,10 @@ public class Opcao extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	public String getValor() {
 		return valor;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
 	}
 
 	public void setElemento(Elemento elemento) {

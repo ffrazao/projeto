@@ -34,7 +34,7 @@
                 codigo: 'documento',
                 tipo: 'array',
                 nome: 'Documento',
-                observar: [
+                observarList: [
                     {
                         expressao: 'dados.pais', 
                         funcao: function(novo) {
@@ -59,19 +59,19 @@
                         },
                     },
                 ],
-                onIncluirAntes: function(form, dados) {
+                funcaoIncluirAntes: function(form, dados) {
                     dados['nome'] = 'xpto';
                 },
-                onEditarAntes: function(form, dados) {
+                funcaoEditarAntes: function(form, dados) {
                     console.log ('vai editar', form, dados);
                 },
-                onSalvarDepois: function(form, dados, acao) {
+                funcaoSalvarDepois: function(form, dados, acao) {
                     console.log ('salvou', form, dados, acao);
                 },
-                onExcluirAntes: function(form, dados) {
+                funcaoExcluirAntes: function(form, dados) {
                     console.log ('vai excluir', form, dados);
                 },
-                onExcluirDepois: function(form, dados) {
+                funcaoExcluirDepois: function(form, dados) {
                     console.log ('excluiu', form, dados);
                 },
                 opcao: [
@@ -79,8 +79,7 @@
                         nome: 'Espaço Utilização da Área (ha)',
                         codigo: 'utilizacao',
                         tipo: 'resumo_numero',
-                        fracao: 3,
-                        observar: [
+                        observarList: [
                             {
                                 expressao: 'dados.pastagem + dados.reserva',
                                 funcao: function(novo) {
@@ -93,20 +92,26 @@
                                 nome: 'Pastagem',
                                 codigo: 'pastagem',
                                 tipo: 'numero',
-                                fracao: 3,
+                                opcao: {
+                                    fracao: 3,
+                                }
                             },
                             {
                                 nome: 'Reserva',
                                 codigo: 'reserva',
                                 tipo: 'numero',
-                                fracao: 3,
+                                opcao: {
+                                    fracao: 3,
+                                }
                             },
                             {
                                 nome: 'Total',
                                 codigo: 'utilizacao',
                                 tipo: 'numero',
                                 somenteLeitura: true,
-                                fracao: 3,
+                                opcao: {
+                                    fracao: 3,
+                                }
                             },
                         ]
                     },
@@ -147,7 +152,7 @@
                         codigo: 'telefone',
                         tipo: 'array',
                         nome: 'Telefone',
-                        observar: [
+                        observarList: [
                             {   
                                 expressao: 'dados["ramal"]', 
                                 funcao: function(novo) {
@@ -178,7 +183,7 @@
                                         tipo: 'string',
                                     },
                                 ],
-                                observar: [
+                                observarList: [
                                     {
                                         expressao: 'dados["ramal"]', 
                                         funcao: function(novo) {

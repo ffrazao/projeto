@@ -44,8 +44,8 @@
                         }
                     }
                 }
-                if ($scope.ngModel.onSalvarDepois) {
-                    $scope.ngModel.onSalvarDepois(form, dd, acao);
+                if ($scope.ngModel.funcaoSalvarDepois) {
+                    $scope.ngModel.funcaoSalvarDepois(form, dd, acao);
                 }
             }, function() {
                 // processar o retorno negativo da modal
@@ -55,8 +55,8 @@
         $scope.incluir = function (form) {
             try {
                 var dd = {};
-                if ($scope.ngModel.onIncluirAntes) {
-                    $scope.ngModel.onIncluirAntes(form, dd);
+                if ($scope.ngModel.funcaoIncluirAntes) {
+                    $scope.ngModel.funcaoIncluirAntes(form, dd);
                 }
                 abrirForm(form, dd, 'incluir');
                 $scope.selecao = $scope.navegadorFrm.selecao;
@@ -66,21 +66,21 @@
         $scope.editar = function (form) {
             try {
                 if ($scope.navegadorFrm.selecao.tipo === 'U') {
-                    if ($scope.ngModel.onEditarAntes) {
-                        $scope.ngModel.onEditarAntes(form, $scope.navegadorFrm.selecao.item);
+                    if ($scope.ngModel.funcaoEditarAntes) {
+                        $scope.ngModel.funcaoEditarAntes(form, $scope.navegadorFrm.selecao.item);
                     }
                     abrirForm(form, $scope.navegadorFrm.selecao.item, 'editar');
-                    if ($scope.ngModel.onEditarDepois) {
-                        $scope.ngModel.onEditarDepois(form, $scope.navegadorFrm.selecao.item);
+                    if ($scope.ngModel.funcaoEditarDepois) {
+                        $scope.ngModel.funcaoEditarDepois(form, $scope.navegadorFrm.selecao.item);
                     }
                 } else {
                     for (var i in $scope.navegadorFrm.selecao.items) {
-                        if ($scope.ngModel.onEditarAntes) {
-                            $scope.ngModel.onEditarAntes(form, $scope.navegadorFrm.selecao.items[i]);
+                        if ($scope.ngModel.funcaoEditarAntes) {
+                            $scope.ngModel.funcaoEditarAntes(form, $scope.navegadorFrm.selecao.items[i]);
                         }
                         abrirForm(form, $scope.navegadorFrm.selecao.items[i], 'editar');
-                        if ($scope.ngModel.onEditarDepois) {
-                            $scope.ngModel.onEditarDepois(form, $scope.navegadorFrm.selecao.items[i]);
+                        if ($scope.ngModel.funcaoEditarDepois) {
+                            $scope.ngModel.funcaoEditarDepois(form, $scope.navegadorFrm.selecao.items[i]);
                         }
                     }
                 }
@@ -94,22 +94,22 @@
         $scope.excluir = function (form) {
             try {
                 if ($scope.navegadorFrm.selecao.tipo === 'U') {
-                    if ($scope.ngModel.onExcluirAntes) {
-                        $scope.ngModel.onExcluirAntes(form, $scope.navegadorFrm.selecao.item);
+                    if ($scope.ngModel.funcaoExcluirAntes) {
+                        $scope.ngModel.funcaoExcluirAntes(form, $scope.navegadorFrm.selecao.item);
                     }
                     remove($scope.navegadorFrm.selecao.item);
-                    if ($scope.ngModel.onExcluirDepois) {
-                        $scope.ngModel.onExcluirDepois(form, $scope.navegadorFrm.selecao.item);
+                    if ($scope.ngModel.funcaoExcluirDepois) {
+                        $scope.ngModel.funcaoExcluirDepois(form, $scope.navegadorFrm.selecao.item);
                     }
                     $scope.navegadorFrm.selecao.item = null;
                 } else {
                     for (var i in $scope.navegadorFrm.selecao.items) {
-                        if ($scope.ngModel.onExcluirAntes) {
-                            $scope.ngModel.onExcluirAntes(form, $scope.navegadorFrm.selecao.items[i]);
+                        if ($scope.ngModel.funcaoExcluirAntes) {
+                            $scope.ngModel.funcaoExcluirAntes(form, $scope.navegadorFrm.selecao.items[i]);
                         }
                         remove($scope.navegadorFrm.selecao.items[i]);
-                        if ($scope.ngModel.onExcluirDepois) {
-                            $scope.ngModel.onExcluirDepois(form, $scope.navegadorFrm.selecao.items[i]);
+                        if ($scope.ngModel.funcaoExcluirDepois) {
+                            $scope.ngModel.funcaoExcluirDepois(form, $scope.navegadorFrm.selecao.items[i]);
                         }
                     }
                     $scope.navegadorFrm.selecao.items.length = 0;
@@ -190,7 +190,7 @@
                 ngModel: '=',
                 dados: '=',
                 selecao: '=',
-                requerido: '=',
+                funcaoRequerido: '=',
                 onAbrir: '&',
             },
             controller: 'FrzTabelaCtrl',

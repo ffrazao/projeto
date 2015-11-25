@@ -49,9 +49,9 @@
 
                 // registrar os observadores
                 var i;
-                if (scope.ngModel.observar) {
-                    for (i in scope.ngModel.observar) {
-                        scope.$watch(scope.ngModel.observar[i].expressao, scope.ngModel.observar[i].funcao, scope.ngModel.observar[i].colecao);
+                if (scope.ngModel.observarList) {
+                    for (i in scope.ngModel.observarList) {
+                        scope.$watch(scope.ngModel.observarList[i].expressao, scope.ngModel.observarList[i].funcao, scope.ngModel.observarList[i].colecao);
                     }
                 }
 
