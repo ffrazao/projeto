@@ -1,3 +1,16 @@
+
+tipo:
+
+valor
+objeto -> conjunto de valores
+array -> conjunto de objetos
+
+
+formulario é um array de elementos
+
+
+
+
 campo_data
     nada
 campo_memo
