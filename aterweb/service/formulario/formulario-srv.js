@@ -1,3 +1,5 @@
+/*jshint evil:true */
+
 (function(pNmModulo, pNmFactory, pNmController) {
 
 'use strict';
@@ -17,6 +19,11 @@ angular.module(pNmModulo).factory(pNmFactory,
                     if (resposta && resposta.resultado) {
                         angular.copy(resposta.resultado[0], scp.cadastro.apoio.confirmacaoList);
                         angular.copy(resposta.resultado[1], scp.cadastro.apoio.elementoTipoList);
+
+                        // fazer o tratamento do array de tipos de elementos
+                        for (var i in scp.cadastro.apoio.elementoTipoList) {
+                            scp.cadastro.apoio.elementoTipoList[i].opcao = eval(scp.cadastro.apoio.elementoTipoList[i].opcao);
+                        }
                     }
                 });
             },

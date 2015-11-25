@@ -263,28 +263,18 @@
             // fim trabalho tab
 
             // inicio dos watches
-            var pegaOpcao = function () {
-                if (!$scope.cadastro.apoio.formulario || 
-                    !$scope.cadastro.apoio.formulario.opcao[5] || 
-                    !$scope.cadastro.apoio.formulario.opcao[5].opcao[2] || 
-                    !$scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0] || 
-                    !$scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].formAtual || 
-                    !$scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].formAtual.tipo || 
-                    !$scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].formAtual.tipo.opcao) {
-                    return null;
-                }
-                return $scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].formAtual.tipo.opcao;
-            };
-
             $scope.$watch('cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].formAtual.tipo', function() {
                 if (!$scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].formAtual) {
                     return;
                 }
-                //$scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].formAtual.opcao = $scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].formAtual.tipo.opcao;
-                $scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].opcao[11].opcao = $scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].formAtual.tipo.opcao;
-
+                var tipo = $scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].formAtual.tipo;
+                for (var i in $scope.cadastro.apoio.elementoTipoList) {
+                    if ($scope.cadastro.apoio.elementoTipoList[i].codigo === tipo) {
+                        $scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].opcao[11].opcao = $scope.cadastro.apoio.elementoTipoList[i].opcao;
+                        $scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].formAtual.opcao = null;
+                    }
+                }
             }, true);
-
             // fim dos watches
         }
     ]);
