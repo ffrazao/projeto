@@ -235,8 +235,8 @@
                                                         },
                                                         {
                                                             nome: 'Opções',
-                                                            codigo: 'opcao',
-                                                            tipo: 'objeto',
+                                                            codigo: 'opcaoList',
+                                                            tipo: 'array',
                                                             opcao: {},
                                                         },
                                                     ],
@@ -271,7 +271,10 @@
                 for (var i in $scope.cadastro.apoio.elementoTipoList) {
                     if ($scope.cadastro.apoio.elementoTipoList[i].codigo === tipo) {
                         $scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].opcao[11].opcao = $scope.cadastro.apoio.elementoTipoList[i].opcao;
-                        $scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].formAtual.opcao = null;
+                        $scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].formAtual.opcaoList = null;
+
+                        $scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].opcao[11].escondeForm = $scope.cadastro.apoio.elementoTipoList[i].opcao ? 'N': 'S';
+                        break;
                     }
                 }
             }, true);

@@ -31,7 +31,8 @@
     "ng-flow": "~2",
     "ng-img-crop": "ngImgCrop#~0.3.2",
     "ngSticky": "~1.7.9",
-    "underscore": "~1.8"
+    "underscore": "~1.8",
+    "ng-tags-input": "3.0.0"
   },
   "devDependencies": {
     "angular-google-maps": "~2.1.5"

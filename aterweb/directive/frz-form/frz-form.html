@@ -135,9 +135,11 @@
 
     <fieldset ng-repeat="item in ngModel.opcao" ng-switch on="item.tipo">
 
+        /{{item.escondeForm}}/
+
         <legend ng-switch-when="nome">{{item.nome}}</legend>
 
-        <div class="form-group" ng-switch-default>
+        <div class="form-group" ng-switch-default ng-if="item.escondeForm !== 'N'">
             <ng-include src="'frz-form-label.html'"/>
             <div class="col-md-{{item.tamanho?item.tamanho:'7'}}">
                 <ng-include src="'campo_' + item.tipo"/>
