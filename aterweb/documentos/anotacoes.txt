@@ -7,3 +7,6 @@ objet do googlemaps: http://angular-ui.github.io/angular-google-maps/#!/demo
 - não manter o login do usuário caso a sessão caia
 - não fazer cache dos dados do login
 - se for o perfil ADMIN então carregar todos os
+
+26/10/2015 - ngTagsInput
+http://mbenford.github.io/ngTagsInput/

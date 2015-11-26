@@ -79,7 +79,7 @@
                         },
                         {
                             name: 'Registrar',
-                            link: 'p.modeloCadastro.filtro',
+                            link: 'p.atividade.filtro',
                             funcionalidade: 'REGISTRAR',
                             visivel: false,
                         },
