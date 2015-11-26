@@ -1,6 +1,8 @@
 package br.gov.df.emater.aterwebsrv.modelo.funcional;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -10,6 +12,7 @@ import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.UnidadeOrganizacionalClassificacao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 
 @Entity
@@ -17,6 +20,9 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 public class UnidadeOrganizacional extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
+
+	@Enumerated(EnumType.STRING)
+	private UnidadeOrganizacionalClassificacao classificacao;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,6 +35,10 @@ public class UnidadeOrganizacional extends EntidadeBase implements _ChavePrimari
 	private PessoaJuridica pessoaJuridica;
 
 	private String sigla;
+
+	public UnidadeOrganizacionalClassificacao getClassificacao() {
+		return classificacao;
+	}
 
 	@Override
 	public Integer getId() {
@@ -45,6 +55,10 @@ public class UnidadeOrganizacional extends EntidadeBase implements _ChavePrimari
 
 	public String getSigla() {
 		return sigla;
+	}
+
+	public void setClassificacao(UnidadeOrganizacionalClassificacao classificacao) {
+		this.classificacao = classificacao;
 	}
 
 	@Override
