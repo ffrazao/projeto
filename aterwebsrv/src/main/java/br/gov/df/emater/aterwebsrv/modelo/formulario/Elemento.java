@@ -71,9 +71,6 @@ public class Elemento extends EntidadeBase implements _ChavePrimaria<Integer> {
 	@OneToMany(mappedBy = "elemento")
 	private List<Observar> observarList;
 
-	@Lob
-	private Object opcao;
-
 	@OneToMany(mappedBy = "elemento")
 	private List<Opcao> opcaoList;
 
@@ -137,10 +134,6 @@ public class Elemento extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	public List<Observar> getObservarList() {
 		return observarList;
-	}
-
-	public Object getOpcao() {
-		return opcao;
 	}
 
 	public List<Opcao> getOpcaoList() {
@@ -212,9 +205,6 @@ public class Elemento extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.observarList = observarList;
 	}
 
-	public void setOpcao(Object opcao) {
-		this.opcao = opcao;
-	}
 
 	public void setOpcaoList(List<Opcao> opcaoList) {
 		this.opcaoList = opcaoList;

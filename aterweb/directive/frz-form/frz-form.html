@@ -133,20 +133,17 @@
         <input type="hidden" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" ng-model="dados[item.codigo]">
     </script>
 
-    <fieldset ng-repeat="item in ngModel.opcao" ng-switch on="item.tipo">
-
-        /{{item.escondeForm}}/
-
-        <legend ng-switch-when="nome">{{item.nome}}</legend>
-
-        <div class="form-group" ng-switch-default ng-if="item.escondeForm !== 'N'">
-            <ng-include src="'frz-form-label.html'"/>
-            <div class="col-md-{{item.tamanho?item.tamanho:'7'}}">
-                <ng-include src="'campo_' + item.tipo"/>
-                <ng-include src="'frz-form-ajuda.html'"/>
+    <fieldset>
+        <div ng-repeat="item in ngModel.opcao" ng-switch on="item.tipo">
+            <legend ng-switch-when="nome">{{item.nome}}</legend>
+            <div class="form-group" ng-switch-default ng-if="item.escondeForm !== 'S'">
+                <ng-include src="'frz-form-label.html'"/>
+                <div class="col-md-{{item.tamanho?item.tamanho:'7'}}">
+                    <ng-include src="'campo_' + item.tipo"/>
+                    <ng-include src="'frz-form-ajuda.html'"/>
+                </div>
             </div>
         </div>
-
     </fieldset>
 
 </ng-form>

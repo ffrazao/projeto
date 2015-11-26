@@ -67,20 +67,20 @@
                             nome: 'Nome do Formulário',
                             codigo: 'nome',
                             tipo: 'string',
-                            funcaoRequirido: function() {return true;},
+                            funcaoRequerido: function() {return true;},
                         },
                         {
                             nome: 'Código do Formulário',
                             codigo: 'codigo',
                             tipo: 'string',
-                            funcaoRequirido: function() {return true;},
+                            funcaoRequerido: function() {return true;},
                             tamanho: 3,
                         },
                         {
                             nome: 'Situação',
                             codigo: 'situacao',
                             tipo: 'escolha_unica',
-                            funcaoRequirido: function() {return true;},
+                            funcaoRequerido: function() {return true;},
                             opcao: {
                                 codigo: 'codigo',
                                 descricao: 'descricao',
@@ -91,7 +91,7 @@
                             nome: 'Início da Coleta',
                             codigo: 'inicio',
                             tipo: 'data',
-                            funcaoRequirido: function() {return true;},
+                            funcaoRequerido: function() {return true;},
                             tamanho: 2,
                         },
                         {
@@ -104,7 +104,7 @@
                             codigo: 'formularioVersaoList',
                             tipo: 'array',
                             nome: 'Versões do Formulário',
-                            funcaoRequirido: function() {return true;},
+                            funcaoRequerido: function() {return true;},
                             opcao:
                                 [
                                     {
@@ -121,7 +121,7 @@
                                         nome: 'Data de Início de Validade',
                                         codigo: 'data',
                                         tipo: 'data',
-                                        funcaoRequirido: function() {return false;},
+                                        funcaoRequerido: function() {return false;},
                                         tamanho: 2,
                                     },
                                     {
@@ -134,7 +134,7 @@
                                                     nome: 'Elemento',
                                                     codigo: 'elemento',
                                                     tipo: 'objeto',
-                                                    funcaoRequirido: function() {return true;},
+                                                    funcaoRequerido: function() {return true;},
                                                     funcaoExibir: function(dados) {
                                                         if (!dados) {
                                                             return null;
@@ -163,19 +163,19 @@
                                                             nome: 'Nome',
                                                             codigo: 'nome',
                                                             tipo: 'string',
-                                                            funcaoRequirido: function() {return true;},
+                                                            funcaoRequerido: function() {return true;},
                                                         },
                                                         {
                                                             nome: 'Código',
                                                             codigo: 'codigo',
                                                             tipo: 'string',
-                                                            funcaoRequirido: function() {return true;},
+                                                            funcaoRequerido: function() {return true;},
                                                         },
                                                         {
                                                             nome: 'Tipo',
                                                             codigo: 'tipo',
                                                             tipo: 'escolha_unica',
-                                                            funcaoRequirido: function() {return true;},
+                                                            funcaoRequerido: function() {return true;},
                                                             opcao: {
                                                                 codigo: 'codigo',
                                                                 descricao: 'descricao',
@@ -237,7 +237,7 @@
                                                             nome: 'Opções',
                                                             codigo: 'opcaoList',
                                                             tipo: 'array',
-                                                            opcao: {},
+                                                            escondeForm: 'S',
                                                         },
                                                     ],
                                                 },
@@ -245,7 +245,7 @@
                                                     nome: 'Ordem',
                                                     codigo: 'ordem',
                                                     tipo: 'numero',
-                                                    funcaoRequirido: function() {return true;},
+                                                    funcaoRequerido: function() {return true;},
                                                     tamanho: 2,
                                                     opcao: {
                                                         fracao: '0',
@@ -268,15 +268,17 @@
                     return;
                 }
                 var tipo = $scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].formAtual.tipo;
+                var reg = {};
                 for (var i in $scope.cadastro.apoio.elementoTipoList) {
                     if ($scope.cadastro.apoio.elementoTipoList[i].codigo === tipo) {
-                        $scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].opcao[11].opcao = $scope.cadastro.apoio.elementoTipoList[i].opcao;
-                        $scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].formAtual.opcaoList = null;
-
-                        $scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].opcao[11].escondeForm = $scope.cadastro.apoio.elementoTipoList[i].opcao ? 'N': 'S';
+                        reg = $scope.cadastro.apoio.elementoTipoList[i];
                         break;
                     }
                 }
+                $scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].opcao[11].opcao = reg.opcao;
+                $scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].formAtual.opcaoList = null;
+                $scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].opcao[11].escondeForm = reg.opcao ? 'N': 'S';
+
             }, true);
             // fim dos watches
         }

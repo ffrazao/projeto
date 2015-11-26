@@ -21,8 +21,10 @@ angular.module(pNmModulo).factory(pNmFactory,
                         angular.copy(resposta.resultado[1], scp.cadastro.apoio.elementoTipoList);
 
                         // fazer o tratamento do array de tipos de elementos
+                        var obj = null;
                         for (var i in scp.cadastro.apoio.elementoTipoList) {
-                            scp.cadastro.apoio.elementoTipoList[i].opcao = eval(scp.cadastro.apoio.elementoTipoList[i].opcao);
+                            eval('obj = ' + scp.cadastro.apoio.elementoTipoList[i].opcao);
+                            scp.cadastro.apoio.elementoTipoList[i].opcao = obj;
                         }
                     }
                 });
