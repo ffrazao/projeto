@@ -18,23 +18,23 @@
     </script>
 
     <script type="text/ng-template" id="campo_string">
-        <input class="form-control input-md" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="dados[item.codigo]" ng-required="item.funcaoRequerido()" title="{{item.pop}}" ng-readonly="item.somenteLeitura" ng-trim="true">
+        <input class="form-control input-md" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="dados[item.codigo]" ng-required="item.funcaoRequerido()" title="{{item.pop}}" ng-readonly="item.somenteLeitura === 'S'" ng-trim="true">
     </script>
 
     <script type="text/ng-template" id="campo_numero">
-        <input class="form-control input-md" style="text-align: right" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="dados[item.codigo]" ng-required="item.funcaoRequerido()" title="{{item.pop}}" ui-number-mask="item.opcao.fracao ? item.opcao.fracao : 2" ng-readonly="item.somenteLeitura" ng-trim="true">
+        <input class="form-control input-md" style="text-align: right" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="dados[item.codigo]" ng-required="item.funcaoRequerido()" title="{{item.pop}}" ui-number-mask="item.opcao.fracao ? item.opcao.fracao : 2" ng-readonly="item.somenteLeitura === 'S'" ng-trim="true">
     </script>
 
     <script type="text/ng-template" id="campo_data">
-        <input class="form-control input-md" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="dados[item.codigo]" ng-required="item.funcaoRequerido()" title="{{item.pop}}" ui-date-mask ng-readonly="item.somenteLeitura" ng-trim="true">
+        <input class="form-control input-md" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="dados[item.codigo]" ng-required="item.funcaoRequerido()" title="{{item.pop}}" ui-date-mask ng-readonly="item.somenteLeitura === 'S'" ng-trim="true">
     </script>
 
     <script type="text/ng-template" id="campo_cep">
-        <input class="form-control input-md" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="dados[item.codigo]" ng-required="item.funcaoRequerido()" title="{{item.pop}}" ui-br-cep-mask ng-readonly="item.somenteLeitura" ng-trim="true">
+        <input class="form-control input-md" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="dados[item.codigo]" ng-required="item.funcaoRequerido()" title="{{item.pop}}" ui-br-cep-mask ng-readonly="item.somenteLeitura === 'S'" ng-trim="true">
     </script>
 
     <script type="text/ng-template" id="campo_memo">
-        <textarea class="form-control" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" ng-model="dados[item.codigo]" ng-required="item.funcaoRequerido()" title="{{item.pop}}" ng-readonly="item.somenteLeitura"></textarea>
+        <textarea class="form-control" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" ng-model="dados[item.codigo]" ng-required="item.funcaoRequerido()" title="{{item.pop}}" ng-readonly="item.somenteLeitura === 'S'"></textarea>
     </script>
 
     <script type="text/ng-template" id="campo_combo_unico">
@@ -44,7 +44,7 @@
             ng-model="dados[item.codigo]" 
             ng-required="item.funcaoRequerido()" 
             ng-options="opcao as opcao[item.opcao.descricao] for opcao in item.opcao.lista track by opcao[item.opcao.codigo]" title="{{item.pop}}" 
-            ng-readonly="item.somenteLeitura">
+            ng-readonly="item.somenteLeitura === 'S'">
             <option value="">-- Selecione --</option>
         </select>
     </script>
@@ -56,7 +56,7 @@
             ng-model="dados[item.codigo]" 
             ng-required="item.funcaoRequerido()" 
             ng-options="opcao as opcao[item.opcao.descricao] for opcao in item.opcao.lista track by opcao[item.opcao.codigo]" title="{{item.pop}}"
-            multiple="true" ng-readonly="item.somenteLeitura">
+            multiple="true" ng-readonly="item.somenteLeitura === 'S'">
         </select>
     </script>
 
@@ -70,7 +70,7 @@
                         ng-value="opcao[item.opcao.codigo]" 
                         ng-model="dados[item.codigo]" 
                         ng-required="item.funcaoRequerido()" 
-                        title="{{item.pop}}" ng-readonly="item.somenteLeitura">
+                        title="{{item.pop}}" ng-readonly="item.somenteLeitura === 'S'">
                     {{opcao[item.opcao.descricao]}}
                 </label>
             </div>
@@ -87,7 +87,7 @@
                         checklist-value="opcao[item.opcao.codigo]" 
                         checklist-model="dados[item.codigo]" 
                         ng-required="item.funcaoRequerido()" 
-                        title="{{item.pop}}" ng-readonly="item.somenteLeitura">
+                        title="{{item.pop}}" ng-readonly="item.somenteLeitura === 'S'">
                     {{opcao[item.opcao.descricao]}}
                 </label>
             </div>
@@ -104,7 +104,7 @@
                         checklist-value="opcao" 
                         checklist-model="dados[item.codigo]" 
                         ng-required="item.funcaoRequerido()" 
-                        title="{{item.pop}}" ng-readonly="item.somenteLeitura">
+                        title="{{item.pop}}" ng-readonly="item.somenteLeitura === 'S'">
                     {{opcao[item.opcao.descricao]}}
                 </label>
             </div>

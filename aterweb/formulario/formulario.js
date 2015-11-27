@@ -51,10 +51,40 @@
             // fim: atividades do Modal
 
             // inicio das operaçoes atribuidas ao navagador
+            $scope.abrir = function(scp) {
+                // ajustar o menu das acoes especiais
+                $scope.navegador.botao('acao', 'acao')['subFuncoes'] = [
+                    {
+                        nome: 'Testar',
+                        descricao: 'Testar a execução do formulário',
+                        acao: function() {
+                            var estado = $scope.navegador.estadoAtual();
+                            if (estado === 'LISTANDO') {
+                                if ($scope.navegador.selecao.tipo === 'U') {
+                                    FormularioSrv.testar($scope.navegador.selecao.item.id);
+                                } else {
+                                    for (var i in $scope.navegador.selecao.items) {
+                                        FormularioSrv.testar($scope.navegador.selecao.items[i].id);
+                                    }
+                                }
+                            } else if (estado === 'VISUALIZANDO') {
+                                FormularioSrv.testar($scope.cadastro.registro.id);
+                            }
+                        },
+                        exibir: function() {
+                            var estado = $scope.navegador.estadoAtual();
+                            return (estado === 'VISUALIZANDO') || (estado === 'LISTANDO' && ($scope.navegador.selecao.tipo === 'U' && $scope.navegador.selecao.selecionado) ||
+                                ($scope.navegador.selecao.tipo === 'M' && $scope.navegador.selecao.marcado > 0));
+                        },
+                    },
+                ];
+                $rootScope.abrir(scp);
+            };
 
             // fim das operaçoes atribuidas ao navagador
 
             // inicio ações especiais
+
             $scope.cadastro.apoio.elementoTipoList = [];
             
             $scope.cadastro.apoio.formulario = {
