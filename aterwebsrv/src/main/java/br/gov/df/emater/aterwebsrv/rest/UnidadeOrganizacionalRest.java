@@ -32,5 +32,15 @@ public class UnidadeOrganizacionalRest {
 		}
 	}
 
+	@RequestMapping(value = "/lista", method = RequestMethod.POST)
+	@Transactional(readOnly = true)
+	public Resposta lista(@RequestBody UnidadeOrganizacionalCadFiltroDto filtro, Principal usuario) {
+		try {
+			return new Resposta(facadeBo.unidadeOrganizacionalFiltroExecutar(usuario, filtro).getResposta());
+		} catch (Exception e) {
+			return new Resposta(e);
+		}
+	}
+
 
 }
