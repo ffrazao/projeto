@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
 import br.gov.df.emater.aterwebsrv.modelo.dto.FormularioCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.Formulario;
+import br.gov.df.emater.aterwebsrv.modelo.formulario.FormularioVersao;
 
 @RestController
 @RequestMapping("/formulario")
@@ -22,6 +23,16 @@ public class FormularioRest {
 	private FacadeBo facadeBo;
 
 	public FormularioRest() {
+	}
+
+	@RequestMapping(value = "/coletar", method = RequestMethod.POST)
+	@Transactional
+	public Resposta coletar(@RequestBody FormularioVersao formularioVersao, Principal usuario) {
+		try {
+			return new Resposta(facadeBo.formularioColetar(usuario, formularioVersao));
+		} catch (Exception e) {
+			return new Resposta(e);
+		}
 	}
 
 	@RequestMapping(value = "/editar", method = RequestMethod.POST)

@@ -32,6 +32,19 @@ public class Formulario extends EntidadeBase implements _ChavePrimaria<Integer> 
 	private static final long serialVersionUID = 1L;
 
 	private String codigo;
+	
+	public Formulario() {
+		super();
+	}
+	
+	public Formulario(Integer id, String  nome, String codigo, Situacao situacao, Calendar inicio, Calendar termino) {
+		this.setId(id);
+		this.setNome(nome);
+		this.setCodigo(codigo);
+		this.setSituacao(situacao);
+		this.setInicio(inicio);
+		this.setTermino(termino);
+	}
 
 	@OneToMany(mappedBy = "formulario")
 	private List<FormularioVersao> formularioVersaoList;

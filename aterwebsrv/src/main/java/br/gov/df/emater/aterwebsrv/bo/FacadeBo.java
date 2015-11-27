@@ -21,6 +21,7 @@ import br.gov.df.emater.aterwebsrv.modelo.dto.PessoaCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.PropriedadeRuralCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.UnidadeOrganizacionalCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.Formulario;
+import br.gov.df.emater.aterwebsrv.modelo.formulario.FormularioVersao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 
 @Service
@@ -79,6 +80,11 @@ public class FacadeBo implements BeanFactoryAware {
 	@Transactional
 	public _Contexto formularioSalvar(Principal usuario, Formulario formulario) throws Exception {
 		return this._executar(usuario, "FormularioSalvarCh", formulario);
+	}
+
+	@Transactional
+	public _Contexto formularioColetar(Principal usuario, FormularioVersao formularioVersao) throws Exception {
+		return this._executar(usuario, "FormularioColetarCh", formularioVersao);
 	}
 
 	@Transactional(readOnly = true)

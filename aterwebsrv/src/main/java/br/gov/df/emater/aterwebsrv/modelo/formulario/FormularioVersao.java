@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -47,6 +48,9 @@ public class FormularioVersao extends EntidadeBase implements _ChavePrimaria<Int
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
+	@Transient
+	private Object valor;
+
 	private Integer versao;
 
 	public Calendar getData() {
@@ -64,6 +68,10 @@ public class FormularioVersao extends EntidadeBase implements _ChavePrimaria<Int
 	@Override
 	public Integer getId() {
 		return id;
+	}
+
+	public Object getValor() {
+		return valor;
 	}
 
 	public Integer getVersao() {
@@ -85,6 +93,10 @@ public class FormularioVersao extends EntidadeBase implements _ChavePrimaria<Int
 	@Override
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public void setValor(Object valor) {
+		this.valor = valor;
 	}
 
 	public void setVersao(Integer versao) {

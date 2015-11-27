@@ -1,5 +1,11 @@
 package br.gov.df.emater.aterwebsrv.bo.pessoa;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.List;
+
 import javax.persistence.EntityManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,10 +14,14 @@ import org.springframework.stereotype.Service;
 import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
+import br.gov.df.emater.aterwebsrv.dao.formulario.FormularioDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaDao;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.Situacao;
+import br.gov.df.emater.aterwebsrv.modelo.dto.FormularioCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.modelo.formulario.Formulario;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaEndereco;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica;
@@ -27,13 +37,16 @@ public class VisualizarCmd extends _Comando {
 	private PessoaDao dao;
 
 	@Autowired
+	private FormularioDao formularioDao;
+
+	@Autowired
 	private EntityManager em;
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		Integer id = (Integer) contexto.getRequisicao();
 		Pessoa result = dao.findOne(id);
-		
+
 		if (result == null) {
 			throw new BoException("Registro não localizado");
 		}
@@ -53,7 +66,7 @@ public class VisualizarCmd extends _Comando {
 		}
 		result.setUsuarioInclusao(result.getUsuarioInclusao().infoBasica());
 		result.setUsuarioAlteracao(result.getUsuarioAlteracao().infoBasica());
-		
+
 		if (Confirmacao.S.equals(result.getPublicoAlvoConfirmacao())) {
 			PublicoAlvo publicoAlvo = result.getPublicoAlvo();
 			if (publicoAlvo.getPublicoAlvoPropriedadeRuralList() != null) {
@@ -63,7 +76,7 @@ public class VisualizarCmd extends _Comando {
 				}
 			}
 		}
-		
+
 		// fetch nas tabelas de apoio
 		result.getArquivoList().size();
 		result.getEmailList().size();
@@ -105,6 +118,14 @@ public class VisualizarCmd extends _Comando {
 		}
 		if (result.getUsuarioAlteracao() != null) {
 			result.setUsuarioAlteracao(result.getUsuarioAlteracao().infoBasica());
+		}
+
+		FormularioCadFiltroDto formularioCadFiltroDto = new FormularioCadFiltroDto();
+		formularioCadFiltroDto.setVigente(new HashSet<Confirmacao>(Arrays.asList(Confirmacao.S)));
+		List<Object[]> diagnosticoList = formularioDao.filtrar(formularioCadFiltroDto);
+		result.setDiagnosticoList(new ArrayList<Formulario>());
+		for (Object[] diagnostico : diagnosticoList) {
+			result.getDiagnosticoList().add(new Formulario((Integer) diagnostico[0], (String) diagnostico[1], (String) diagnostico[2], (Situacao) diagnostico[3], (Calendar) diagnostico[4], (Calendar) diagnostico[5]));
 		}
 
 		em.detach(result);
