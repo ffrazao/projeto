@@ -1,0 +1,66 @@
+<div class="panel panel-default">
+    <div class="panel-heading container-fluid">
+        <frz-navegador
+        ng-model="pessoaArquivoNvg" exibe-texto-botao="false"
+        dados="cadastro.registro.arquivoList"
+        acoes-especiais="acoesEspeciais"
+        on-abrir = "abrir()"
+        on-agir = "agir()"
+        on-editar = "editar()"
+        on-especial = "especial()"
+        on-excluir = "excluir()"
+        on-filtrar = "filtrar()"
+        on-incluir = "incluir()"
+        on-listar = "listar()"
+        on-navegar-primeiro = "navegarPrimeiro()"
+        on-navegar-anterior = "navegarAnterior()"
+        on-navegar-proximo = "navegarPosterior()"
+        on-navegar-ultimo = "navegarUltimo()"
+        on-proxima-pagina="proximaPagina()"
+        on-ultima-pagina="ultimaPagina()"
+        ></frz-navegador>
+    </div>
+    <div class="painel-body"  ng-hide="cadastro.registro.arquivoList.length">
+        <div class="alert alert-warning" style="margin: 0px;" role="alert">
+            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+            Nenhum registro localizado!
+        </div>
+    </div>
+    <div class="table-responsible" ng-show="cadastro.registro.arquivoList.length > 0">
+        <ng-form name="arquivoListFrm">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th><frz-seletor ng-model="pessoaArquivoNvg" dados="cadastro.registro.arquivoList"></frz-seletor></th>
+                        <th>#</th>
+                        <th>Arquivo</th>
+                        <th>Tipo</th>
+                        <th>Upload</th>
+                        <th>Tamanho</th>
+                        <th>Descrição</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="reg in cadastro.registro.arquivoList | filter: {cadastroAcao: '!E'}">
+                        <td>
+                            <input type="radio" ng-show="pessoaArquivoNvg.selecao.tipo === 'U'" ng-model="pessoaArquivoNvg.selecao.item" ng-value="reg"/>
+                            <input type="checkbox" ng-show="pessoaArquivoNvg.selecao.tipo === 'M'" checklist-model="pessoaArquivoNvg.selecao.items" checklist-value="reg"/>
+                        </td>
+                        <td>
+                            {{$index + 1 + ((pessoaArquivoNvg.paginaAtual-1) * pessoaArquivoNvg.tamanhoPagina)}}
+                        </td>
+                        <td><a ng-href="{{servicoUrl}}/resources/upload/{{reg.arquivo.md5}}{{reg.arquivo.extensao}}" target="_blank">{{reg.arquivo.nomeOriginal}}</a></td>
+                        <td>{{reg.arquivo.tipo}}</td>
+                        <td>{{reg.arquivo.dataUpload}}</td>
+                        <td>{{tamanhoArquivo(reg.arquivo.tamanho)}}</td>
+                        <td><textarea class="form-control" ng-model="reg.descricao"></textarea></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+        </ng-form>
+    </div>
+    <div class="panel-footer">
+    </div>
+</div>

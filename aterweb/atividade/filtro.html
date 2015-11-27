@@ -1,0 +1,87 @@
+<div class="panel panel-default">
+    <div class="panel-heading"><h4>{{nomeFormulario}}</h4></div>
+    <div class="panel-body">
+        <form class="form-horizontal" name="frm.filtro" novalidate>
+            <fieldset>
+                <legend>Dados do Beneficiário</legend>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="unidadeBeneficiario">Unidade</label>
+                    <tags-input id="unidadeBeneficiario" name="unidadeBeneficiario" class="col-md-4" ng-model="unidadeBeneficiario" add-on-paste="true" display-property="nome" placeholder="Digite a Unidade" min-length="2" >
+                        <auto-complete source="getTagUnidade($query)"></auto-complete>
+                    </tags-input>
+                    {{unidadeBeneficiario}}
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="comunidadeBeneficiario">Comunidade</label>
+                    <div class="col-md-4">
+                        <select id="comunidadeBeneficiario" name="comunidadeBeneficiario" class="form-control" ng-model="cadastro.filtro.comunidadeBeneficiario" ng-options="item.id as item.nome for item in cadastro.apoio.comunidadeBeneficiario" multiple="true">
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="beneficiario">Beneficiario</label>
+                    <div class="col-md-4">
+                        <select id="beneficiario" name="beneficiario" class="form-control" ng-model="cadastro.filtro.beneficiario" ng-options="item.id as item.nome for item in cadastro.apoio.beneficiario" multiple="true">
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="categoria">Comunidade</label>
+                    <div class="col-md-4">
+                        <select id="categoria" name="categoria" class="form-control" ng-model="cadastro.filtro.categoria" ng-options="item.id as item.nome for item in cadastro.apoio.categoria" multiple="true">
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="organizacao">Organização</label>
+                    <div class="col-md-4">
+                        <select id="organizacao" name="organizacao" class="form-control" ng-model="cadastro.filtro.organizacao" ng-options="item.id as item.nome for item in cadastro.apoio.organizacao">
+                        </select>
+                    </div>
+                </div>
+
+                <legend>Dados da Atividade</legend>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="codigo">Código da Atividade</label>
+                    <div class="col-md-3">
+                        <input id="codigo" name="codigo" type="text" placeholder="" class="form-control input-md" ng-model="cadastro.filtro.codigo">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="unidade">Início</label>
+                    <input class="form-control" type="text" id="dataInicio" name="dataInicio" ng-model="cadastro.filtro.dataInicio" ui-date-mask/>
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.dataInicio.$error.date">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        Valor Inválido!
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="unidade">Fim</label>
+                    <input class="form-control" type="text" id="dataFinal" name="dataFinal" ng-model="cadastro.filtro.dataFinal" ui-date-mask/>
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.dataFinal.$error.date">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        Valor Inválido!
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="unidadeTecnico">Unidade</label>
+                    <div class="col-md-4">
+                        <select id="unidadeTecnico" name="unidadeTecnico" class="form-control" ng-model="cadastro.filtro.unidadeTecnico" ng-options="item.id as item.nome for item in cadastro.apoio.unidadeTecnico">
+                            <option value="">-- Ignorar --</option>
+                        </select>
+                    </div>
+                </div>
+    
+
+
+            </fieldset>
+        </form>
+    </div>
+</div>
