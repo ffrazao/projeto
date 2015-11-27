@@ -263,13 +263,10 @@
             // fim dos watches
 
             $scope.getTagUnidade = function($query) {
-                console.log($query);
                 return AtividadeSrv.tagUnidade($query).then( function( response ){ 
-                  console.log(response.data.resultado); 
-                  return response.data.resultado; 
-                  });
-
-
+                            var retorno = {data:response.data.resultado};
+                            return retorno;
+                        });
             };
 
             $scope.selecionaFotoPerfil = function() {

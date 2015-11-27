@@ -52,7 +52,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                 SegurancaSrv.acesso(this.funcionalidade, 'EXCLUIR');
             },
             tagUnidade : function(nome) {
-                return $http.post($rootScope.servicoUrl + '/unidade-organizacional/filtro-executar', {"nome":nome, "classificacao":["OP"]} );
+                return $http.post($rootScope.servicoUrl + '/unidade-organizacional/lista', {"nome":nome, "classificacao":["OP"]}, { cache: false} );
             },
 
         };
