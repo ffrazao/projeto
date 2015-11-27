@@ -64,50 +64,28 @@ public enum ElementoTipo {
         texto.append("        \"tipo\": \"memo\"," ).append("\n");
         texto.append("    }," ).append("\n");
         texto.append("]" ).append("\n");
-
 		return texto.toString();		
 	}
 
 	private static String opcaoFormulario() {
 		StringBuilder texto = new StringBuilder();
-/*        texto.append("[" ).append("\n");
-        texto.append("    {" ).append("\n");
-        texto.append("        nome: 'Código do Formulário'," ).append("\n");
-        texto.append("        codigo: 'codigo'," ).append("\n");
-        texto.append("        tipo: 'string'," ).append("\n");
-        texto.append("    }," ).append("\n");
-        texto.append("    {" ).append("\n");
-        texto.append("        nome: 'Versão do Formulário'," ).append("\n");
-        texto.append("        codigo: 'versao'," ).append("\n");
-        texto.append("        tipo: 'numero'," ).append("\n");
-        texto.append("        opcao: {" ).append("\n");
-        texto.append("            fracao: '0'," ).append("\n");
-        texto.append("        }," ).append("\n");
-        texto.append("    }," ).append("\n");
-        texto.append("]" ).append("\n");*/
-
-		
-        texto.append("{" ).append("\n");
-        texto.append("    \"nome\": \"Formulario\"," ).append("\n");
-        texto.append("    \"codigo\": \"formulario\"," ).append("\n");
-        texto.append("    \"tipo\": \"objeto\"," ).append("\n");
-        texto.append("    \"opcao\": [" ).append("\n");
-        texto.append("        {" ).append("\n");
-        texto.append("            \"nome\": \"Código do Formulário\"," ).append("\n");
-        texto.append("            \"codigo\": \"codigo\"," ).append("\n");
-        texto.append("            \"tipo\": \"string\"" ).append("\n");
-        texto.append("        }," ).append("\n");
-        texto.append("        {" ).append("\n");
-        texto.append("            \"nome\": \"Versão do Formulário\"," ).append("\n");
-        texto.append("            \"codigo\": \"versao\"," ).append("\n");
-        texto.append("            \"tipo\": \"numero\"," ).append("\n");
-        texto.append("            \"opcao\": {" ).append("\n");
-        texto.append("                \"fracao\": \"0\"" ).append("\n");
-        texto.append("            }" ).append("\n");
-        texto.append("        }" ).append("\n");
-        texto.append("    ]" ).append("\n");
-        texto.append("}" ).append("\n");
-
+		texto.append("[{").append("\n");
+	    texto.append("        \"nome\": \"Formularios\",").append("\n");
+	    texto.append("        \"codigo\": \"formulario\",").append("\n");
+	    texto.append("        \"tipo\": \"array\",").append("\n");
+	    texto.append("        \"opcao\": [{").append("\n");
+	    texto.append("            \"nome\": \"Código do Formulario\",").append("\n");
+	    texto.append("            \"codigo\": \"formularioCodigo\",").append("\n");
+	    texto.append("            \"tipo\": \"string\"").append("\n");
+	    texto.append("        }, {").append("\n");
+	    texto.append("            \"nome\": \"Versão do Formulario\",").append("\n");
+	    texto.append("            \"codigo\": \"formularioVersao\",").append("\n");
+	    texto.append("            \"tipo\": \"numero\",").append("\n");
+	    texto.append("            \"opcao\": {").append("\n");
+	    texto.append("                \"fracao\": \"0\"").append("\n");
+	    texto.append("            }").append("\n");
+	    texto.append("        }]").append("\n");
+	    texto.append("}]").append("\n");
 		return texto.toString();		
 	}
 

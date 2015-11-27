@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
@@ -71,8 +72,11 @@ public class Elemento extends EntidadeBase implements _ChavePrimaria<Integer> {
 	@OneToMany(mappedBy = "elemento")
 	private List<Observar> observarList;
 
-	@OneToMany(mappedBy = "elemento")
-	private List<Opcao> opcaoList;
+	@Lob
+	private String opcao;
+
+	@Transient
+	private Object opcaoTemp;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "somente_leitura")
@@ -136,8 +140,12 @@ public class Elemento extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return observarList;
 	}
 
-	public List<Opcao> getOpcaoList() {
-		return opcaoList;
+	public String getOpcao() {
+		return opcao;
+	}
+
+	public Object getOpcaoTemp() {
+		return opcaoTemp;
 	}
 
 	public Confirmacao getSomenteLeitura() {
@@ -205,9 +213,12 @@ public class Elemento extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.observarList = observarList;
 	}
 
+	public void setOpcao(String opcao) {
+		this.opcao = opcao;
+	}
 
-	public void setOpcaoList(List<Opcao> opcaoList) {
-		this.opcaoList = opcaoList;
+	public void setOpcaoTemp(Object opcaoTemp) {
+		this.opcaoTemp = opcaoTemp;
 	}
 
 	public void setSomenteLeitura(Confirmacao somenteLeitura) {

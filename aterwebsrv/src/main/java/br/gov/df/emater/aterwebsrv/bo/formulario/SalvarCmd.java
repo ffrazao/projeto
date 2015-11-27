@@ -3,6 +3,8 @@ package br.gov.df.emater.aterwebsrv.bo.formulario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.formulario.ElementoDao;
@@ -10,13 +12,11 @@ import br.gov.df.emater.aterwebsrv.dao.formulario.FormularioDao;
 import br.gov.df.emater.aterwebsrv.dao.formulario.FormularioVersaoDao;
 import br.gov.df.emater.aterwebsrv.dao.formulario.FormularioVersaoElementoDao;
 import br.gov.df.emater.aterwebsrv.dao.formulario.ObservarDao;
-import br.gov.df.emater.aterwebsrv.dao.formulario.OpcaoDao;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.Elemento;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.Formulario;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.FormularioVersao;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.FormularioVersaoElemento;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.Observar;
-import br.gov.df.emater.aterwebsrv.modelo.formulario.Opcao;
 
 @Service("FormularioSalvarCmd")
 public class SalvarCmd extends _Comando {
@@ -35,13 +35,9 @@ public class SalvarCmd extends _Comando {
 
 	@Autowired
 	private ElementoDao elementoDao;
-	
+
 	@Autowired
 	private ObservarDao observarDao;
-
-	@Autowired
-	private OpcaoDao opcaoDao;
-
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
@@ -62,23 +58,18 @@ public class SalvarCmd extends _Comando {
 						formularioVersaoElemento.setFormularioVersao(formularioVersao);
 						if (formularioVersaoElemento.getElemento() != null) {
 							Elemento elemento = formularioVersaoElemento.getElemento();
+
+							if (elemento.getOpcaoTemp() != null) {
+								ObjectMapper om = new ObjectMapper();
+								String json = om.writeValueAsString(elemento.getOpcaoTemp());
+								elemento.setOpcao(json);
+							}
+
 							elementoDao.save(elemento);
 							if (elemento.getObservarList() != null) {
-								for (Observar observar: elemento.getObservarList()) {
+								for (Observar observar : elemento.getObservarList()) {
 									observar.setElemento(elemento);
 									observarDao.save(observar);
-								}
-							}
-							if (elemento.getOpcaoList() != null) {
-								for (Opcao opcao: elemento.getOpcaoList()) {
-									opcao.setElemento(elemento);
-									opcaoDao.save(opcao);
-									
-									if (opcao.getFormularioList() != null) {
-										for (Formulario subFormulario: opcao.getFormularioList()) {
-											dao.save(subFormulario);
-										}
-									}
 								}
 							}
 						}

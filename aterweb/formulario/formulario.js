@@ -158,12 +158,14 @@
                                         codigo: 'formularioVersaoElementoList',
                                         tipo: 'array',
                                         nome: 'Elementos do Formulário',
+                                        tamanho: 8,
                                         opcao:
                                             [
                                                 {
                                                     nome: 'Elemento',
                                                     codigo: 'elemento',
                                                     tipo: 'objeto',
+                                                    tamanho: 8,
                                                     funcaoRequerido: function() {return true;},
                                                     funcaoExibir: function(dados) {
                                                         if (!dados) {
@@ -265,8 +267,9 @@
                                                         },
                                                         {
                                                             nome: 'Opções',
-                                                            codigo: 'opcaoList',
-                                                            tipo: 'array',
+                                                            codigo: 'opcaoTemp',
+                                                            tipo: 'objeto',
+                                                            tamanho: 8,
                                                             escondeForm: 'S',
                                                         },
                                                     ],
@@ -287,6 +290,8 @@
                         },
                     ],
             };
+
+            $scope.UtilSrv = UtilSrv;
             // fim ações especiais
 
             // inicio trabalho tab
@@ -306,7 +311,7 @@
                     }
                 }
                 $scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].opcao[11].opcao = reg.opcao;
-                $scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].formAtual.opcaoList = null;
+                $scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].formAtual.opcaoTemp = null;
                 $scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].opcao[11].escondeForm = reg.opcao ? 'N': 'S';
 
             }, true);

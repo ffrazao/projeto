@@ -17,6 +17,10 @@
                         #
                     </th>
                     <th>Nome</th>
+                    <th>Código</th>
+                    <th>Situação</th>
+                    <th>Início</th>
+                    <th>Término</th>
                 </tr>
             </thead>
             <tbody>
@@ -28,7 +32,11 @@
                     <td>
                         {{$index + 1 + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)}}
                     </td>
-                    <td>{{item.nome}}</td>
+                    <td>{{item[1]}}</td>
+                    <td>{{item[2]}}</td>
+                    <td>{{UtilSrv.indiceDePorCampo(cadastro.apoio.situacaoList, item[3], 'codigo').descricao}}</td>
+                    <td>{{item[4] | date: 'dd/MM/yyyy'}}</td>
+                    <td>{{item[5] | date: 'dd/MM/yyyy'}}</td>
                 </tr>
             </tbody>
         </table>

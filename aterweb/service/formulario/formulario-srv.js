@@ -55,7 +55,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                 ]}).success(function(resposta) {
                     if (resposta && resposta.resultado) {
                         scp.cadastro.apoio.confirmacaoList = resposta.resultado[0];
-                        angular.copy(scp.cadastro.apoio.elementoTipoList, resposta.resultado[1]);
+                        angular.copy(resposta.resultado[1], scp.cadastro.apoio.elementoTipoList);
                         scp.cadastro.apoio.situacaoList = resposta.resultado[2];
 
                         // fazer o tratamento do array de tipos de elementos

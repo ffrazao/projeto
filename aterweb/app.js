@@ -4,8 +4,8 @@
 
 angular.module(pNmModulo, ['ui.bootstrap', 'ui.utils', 'ui.router', 'ngSanitize', 'ngAnimate', 'toastr', 'sticky',
   'ui.mask', 'ui.utils.masks', 'ui.navbar', 'ngCookies', 'uiGmapgoogle-maps', 'ngFileUpload', 'ngTagsInput',
-  'frz.form', 'frz.tabela','frz.arquivo', 'frz.endereco', 'frz.painel.vidro', 'frz.navegador', 
-  'casa', 'contrato', 'pessoa', 'formulario', 'propriedadeRural' ,'atividade'
+  'frz.form', 'frz.tabela','frz.arquivo', 'frz.endereco', 'frz.painel.vidro', 'frz.navegador', 'casa', 'contrato', 
+  'pessoa', 'formulario', 'propriedadeRural' ,'atividade'
   ]);
 
 // inicio: codigo para habilitar o modal recursivo

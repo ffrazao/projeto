@@ -1,15 +1,12 @@
 package br.gov.df.emater.aterwebsrv.modelo.formulario;
 
-import java.util.List;
-
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
@@ -21,33 +18,30 @@ public class Opcao extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
 
-	private String codigo;
-
 	@ManyToOne
 	@JoinColumn(name = "elemento_id")
 	private Elemento elemento;
 
-	@OneToMany
-	@JoinColumn(name = "formulario_id")
-	private List<Formulario> formularioList;
+	@Column(name="formulario_codigo")
+	private String formularioCodigo;
 
+	@Column(name="formulario_versao")
+	private Integer formularioVersao;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
-
-	@Lob
-	private String valor;
-
-	public String getCodigo() {
-		return codigo;
-	}
-
+	
 	public Elemento getElemento() {
 		return elemento;
 	}
 
-	public List<Formulario> getFormularioList() {
-		return formularioList;
+	public String getFormularioCodigo() {
+		return formularioCodigo;
+	}
+
+	public Integer getFormularioVersao() {
+		return formularioVersao;
 	}
 
 	@Override
@@ -55,29 +49,21 @@ public class Opcao extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return id;
 	}
 
-	public String getValor() {
-		return valor;
-	}
-
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
-	}
-
 	public void setElemento(Elemento elemento) {
 		this.elemento = elemento;
 	}
 
-	public void setFormularioList(List<Formulario> formularioList) {
-		this.formularioList = formularioList;
+	public void setFormularioCodigo(String formularioCodigo) {
+		this.formularioCodigo = formularioCodigo;
+	}
+
+	public void setFormularioVersao(Integer formularioVersao) {
+		this.formularioVersao = formularioVersao;
 	}
 
 	@Override
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public void setValor(String valor) {
-		this.valor = valor;
 	}
 
 }
