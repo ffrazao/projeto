@@ -5,8 +5,6 @@ import javax.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
@@ -27,7 +25,6 @@ public class VisualizarCmd extends _Comando {
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
-		ObjectMapper om = new ObjectMapper();
 		Integer id = (Integer) contexto.getRequisicao();
 		Formulario result = dao.findOne(id);
 
@@ -40,10 +37,6 @@ public class VisualizarCmd extends _Comando {
 				if (formularioVersao.getFormularioVersaoElementoList() != null) {
 					for (FormularioVersaoElemento formularioVersaoElemento : formularioVersao.getFormularioVersaoElementoList()) {
 						Elemento elemento = formularioVersaoElemento.getElemento();
-						
-						elemento.setOpcaoTemp(elemento.getOpcao());
-						elemento.setOpcao(null);
-
 						if (elemento.getObservarList() != null) {
 							elemento.getObservarList().size();
 						}
@@ -55,6 +48,6 @@ public class VisualizarCmd extends _Comando {
 		em.detach(result);
 		contexto.setResposta(result);
 
-		return true;
+		return false;
 	}
 }

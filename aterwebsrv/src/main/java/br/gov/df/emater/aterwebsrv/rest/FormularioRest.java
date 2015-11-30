@@ -96,4 +96,14 @@ public class FormularioRest {
 		}
 	}
 
+	@RequestMapping(value = "/visualizar-codigo", method = RequestMethod.GET)
+	@Transactional(readOnly = true)
+	public Resposta visualizarPorCodigo(@RequestParam String codigo, Principal usuario) {
+		try {
+			return new Resposta(facadeBo.formularioVisualizarPorCodigo(usuario, codigo).getResposta());
+		} catch (Exception e) {
+			return new Resposta(e);
+		}
+	}
+
 }

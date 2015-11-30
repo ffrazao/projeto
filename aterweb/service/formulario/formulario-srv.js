@@ -1,4 +1,4 @@
-/*jshint evil:true */
+/* jshint evil:true */
 
 (function(pNmModulo, pNmFactory, pNmController) {
 
@@ -7,7 +7,7 @@
 angular.module(pNmModulo).factory(pNmFactory,
   ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams', 'mensagemSrv',
     function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams, mensagemSrv) {
-        var montar = function(f, versao) {
+        var montar = function(scp, f, versao) {
             var formulario = {
                 codigo: f.codigo,
                 tipo: 'array',
@@ -35,8 +35,36 @@ angular.module(pNmModulo).factory(pNmFactory,
                 return;
             }
             var opcao = [];
+            var elemento = null;
+            var objOpcao = null;
             for (i in f.formularioVersaoList[pos].formularioVersaoElementoList) {
-                opcao.push(f.formularioVersaoList[pos].formularioVersaoElementoList[i].elemento);
+                elemento = f.formularioVersaoList[pos].formularioVersaoElementoList[i].elemento;
+                if (elemento.opcaoString && !elemento.opcao) {
+                    eval("objOpcao = " + elemento.opcaoString);
+                    elemento.opcao = objOpcao;
+                }
+                if (elemento.funcaoAoIniciar) {
+                    eval("objOpcao = " + elemento.funcaoAoIniciar);
+                    objOpcao();
+                }
+                // TODO fazer aqui a troca do codigo do formulario pelo formulario em si
+                if (elemento.tipo === 'array') {
+                    if (elemento.opcao.formulario.length !== 1) {
+                        toastr.error('A opção para multiplos formulários ainda não foi implementada!', 'Multiplos Formulários');
+                        return;
+                    }
+                    var subFormCodigo = elemento.opcao.formulario[0].formularioCodigo;
+                    var subFormVersao = elemento.opcao.formulario[0].formularioVersao;
+                    FormularioSrv.visualizarPorCodigo(scp, subFormCodigo).success(function(resposta) {
+                        if (resposta.mensagem === 'OK') {
+                            var subFormulario = montar(scp, resposta.resultado, subFormVersao);
+                            elemento.opcao = subFormulario.opcao;
+                        }
+                    });
+                }
+                // TODO fazer aqui a troca do codigo do formulario pelo formulario em si
+
+                opcao.push(elemento);
             }
             formulario.opcao = opcao;
 
@@ -86,6 +114,9 @@ angular.module(pNmModulo).factory(pNmFactory,
                 SegurancaSrv.acesso(this.funcionalidade, 'VISUALIZAR');
                 return $http.get(this.endereco + '/visualizar', {params: {'id': id}});
             },
+            visualizarPorCodigo : function(scp, codigo) {
+                return $http.get(this.endereco + '/visualizar-codigo', {params: {'codigo': codigo}});
+            },
             editar : function(formulario) {
                 SegurancaSrv.acesso(this.funcionalidade, 'EDITAR');
                 return $http.post(this.endereco + '/editar', formulario);
@@ -93,7 +124,7 @@ angular.module(pNmModulo).factory(pNmFactory,
             excluir : function() {
                 SegurancaSrv.acesso(this.funcionalidade, 'EXCLUIR');
             },
-            testar : function(id, versao) {
+            testar : function(scp, id, versao) {
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
                 if (!id) {
                     toastr.error('Não foi possível identificar o formulário', 'Identificar formulário');
@@ -101,8 +132,8 @@ angular.module(pNmModulo).factory(pNmFactory,
                 }
                 this.visualizar(id).success(function (resposta) {
                     if (resposta.mensagem === 'OK') {
-                        var formulario = montar(resposta.resultado, versao);
-                        if (formulario === null) {
+                        var formulario = montar(scp, resposta.resultado, versao);
+                        if (!formulario) {
                             return;
                         }
                         formulario.submetido = true;
@@ -115,7 +146,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                     }
                 });
             },
-            coletar : function(id, versao) {
+            coletar : function(scp, id, versao) {
                 SegurancaSrv.acesso(this.funcionalidade, 'COLETAR');
                 if (!id) {
                     toastr.error('Não foi possível identificar o formulário', 'Identificar formulário');
@@ -123,8 +154,8 @@ angular.module(pNmModulo).factory(pNmFactory,
                 }
                 this.visualizar(id).success(function (resposta) {
                     if (resposta.mensagem === 'OK') {
-                        var formulario = montar(resposta.resultado, versao);
-                        if (formulario === null) {
+                        var formulario = montar(scp, resposta.resultado, versao);
+                        if (!formulario) {
                             return;
                         }
                         formulario.submetido = true;

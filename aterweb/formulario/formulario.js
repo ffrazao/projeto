@@ -1,4 +1,4 @@
-/* global criarEstadosPadrao */
+/* global criarEstadosPadrao */ /* jslint evil: true */
 
 (function(pNmModulo, pNmController, pNmFormulario, pUrlModulo) {
     'use strict';
@@ -61,14 +61,14 @@
                             var estado = $scope.navegador.estadoAtual();
                             if (estado === 'LISTANDO') {
                                 if ($scope.navegador.selecao.tipo === 'U') {
-                                    FormularioSrv.testar($scope.navegador.selecao.item.id);
+                                    FormularioSrv.testar($scope, $scope.navegador.selecao.item[0]);
                                 } else {
                                     for (var i in $scope.navegador.selecao.items) {
-                                        FormularioSrv.testar($scope.navegador.selecao.items[i].id);
+                                        FormularioSrv.testar($scope, $scope.navegador.selecao.items[i][0]);
                                     }
                                 }
                             } else if (estado === 'VISUALIZANDO') {
-                                FormularioSrv.testar($scope.cadastro.registro.id);
+                                FormularioSrv.testar($scope, $scope.cadastro.registro.id);
                             }
                         },
                         exibir: function() {
@@ -266,8 +266,13 @@
                                                             tipo: 'memo',
                                                         },
                                                         {
+                                                            nome: 'Função Ao Iniciar',
+                                                            codigo: 'funcaoAoIniciar',
+                                                            tipo: 'memo',
+                                                        },
+                                                        {
                                                             nome: 'Opções',
-                                                            codigo: 'opcaoTemp',
+                                                            codigo: 'opcao',
                                                             tipo: 'objeto',
                                                             tamanho: 8,
                                                             escondeForm: 'S',
@@ -310,11 +315,12 @@
                         break;
                     }
                 }
-                $scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].opcao[11].opcao = reg.opcao;
-                $scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].formAtual.opcaoTemp = null;
-                $scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].opcao[11].escondeForm = reg.opcao ? 'N': 'S';
+                $scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].opcao[12].opcao = reg.opcao;
+                $scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].formAtual.opcao = null;
+                $scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].opcao[12].escondeForm = reg.opcao ? 'N': 'S';
 
             }, true);
+
             // fim dos watches
         }
     ]);

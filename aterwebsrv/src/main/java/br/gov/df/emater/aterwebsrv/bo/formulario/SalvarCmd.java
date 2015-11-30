@@ -59,10 +59,10 @@ public class SalvarCmd extends _Comando {
 						if (formularioVersaoElemento.getElemento() != null) {
 							Elemento elemento = formularioVersaoElemento.getElemento();
 
-							if (elemento.getOpcaoTemp() != null) {
+							if (elemento.getOpcao() != null) {
 								ObjectMapper om = new ObjectMapper();
-								String json = om.writeValueAsString(elemento.getOpcaoTemp());
-								elemento.setOpcao(json);
+								String json = om.writeValueAsString(elemento.getOpcao());
+								elemento.setOpcaoString(json);
 							}
 
 							elementoDao.save(elemento);

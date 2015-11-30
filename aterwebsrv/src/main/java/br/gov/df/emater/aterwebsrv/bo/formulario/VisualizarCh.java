@@ -14,7 +14,7 @@ public class VisualizarCh extends _Cadeia {
 	public VisualizarCh(AutenticarUsuarioCmd c1, VisualizarCmd c2, LogCmd c3) {
 		super.addCommand(c1);
 		super.addCommand(c2);
-		super.addCommand(c2);
+		super.addCommand(c3);
 	}
 
 }

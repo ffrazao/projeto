@@ -78,8 +78,19 @@
                 */
 
                 scope.ngModel['formAtual'] = scope.dados;
+
                 scope.$watch('dados', function() {
                     scope.ngModel['formAtual'] = scope.dados;
+                });
+
+                scope.$watch('ngModel.formAtual', function() {
+                    if (scope.ngModel.formAtual) {
+                        if (scope.ngModel.formAtual.opcaoString && !scope.ngModel.formAtual.opcao) {
+                            var objOpcao = null;
+                            eval("objOpcao = " + scope.ngModel.formAtual.opcaoString);
+                            scope.ngModel.formAtual.opcao = objOpcao;
+                        }
+                    }
                 });
 
                 // executar o estado inicial do form

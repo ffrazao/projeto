@@ -36,6 +36,10 @@ public class Elemento extends EntidadeBase implements _ChavePrimaria<Integer> {
 	private Confirmacao escondeLista;
 
 	@Lob
+	@Column(name = "funcao_ao_iniciar")
+	private String funcaoAoIniciar;
+
+	@Lob
 	@Column(name = "funcao_editar_antes")
 	private String funcaoEditarAntes;
 
@@ -72,11 +76,12 @@ public class Elemento extends EntidadeBase implements _ChavePrimaria<Integer> {
 	@OneToMany(mappedBy = "elemento")
 	private List<Observar> observarList;
 
-	@Lob
-	private String opcao;
-
 	@Transient
-	private Object opcaoTemp;
+	private Object opcao;
+
+	@Lob
+	@Column(name="opcao")
+	private String opcaoString;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "somente_leitura")
@@ -97,6 +102,10 @@ public class Elemento extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	public Confirmacao getEscondeLista() {
 		return escondeLista;
+	}
+
+	public String getFuncaoAoIniciar() {
+		return funcaoAoIniciar;
 	}
 
 	public String getFuncaoEditarAntes() {
@@ -140,12 +149,12 @@ public class Elemento extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return observarList;
 	}
 
-	public String getOpcao() {
+	public Object getOpcao() {
 		return opcao;
 	}
 
-	public Object getOpcaoTemp() {
-		return opcaoTemp;
+	public String getOpcaoString() {
+		return opcaoString;
 	}
 
 	public Confirmacao getSomenteLeitura() {
@@ -170,6 +179,10 @@ public class Elemento extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	public void setEscondeLista(Confirmacao escondeLista) {
 		this.escondeLista = escondeLista;
+	}
+
+	public void setFuncaoAoIniciar(String funcaoAoIniciar) {
+		this.funcaoAoIniciar = funcaoAoIniciar;
 	}
 
 	public void setFuncaoEditarAntes(String funcaoEditarAntes) {
@@ -213,12 +226,12 @@ public class Elemento extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.observarList = observarList;
 	}
 
-	public void setOpcao(String opcao) {
+	public void setOpcao(Object opcao) {
 		this.opcao = opcao;
 	}
 
-	public void setOpcaoTemp(Object opcaoTemp) {
-		this.opcaoTemp = opcaoTemp;
+	public void setOpcaoString(String opcaoString) {
+		this.opcaoString = opcaoString;
 	}
 
 	public void setSomenteLeitura(Confirmacao somenteLeitura) {

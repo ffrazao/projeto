@@ -103,7 +103,7 @@
                 if (pais) {
                     return pais.padrao;
                 } else {
-                    toastr.warning('Não poi possível identificar o valor padrão!', 'Atenção!');
+                    //toastr.warning('Não poi possível identificar o valor padrão!', 'Atenção!');
                     return null;
                 }
             };

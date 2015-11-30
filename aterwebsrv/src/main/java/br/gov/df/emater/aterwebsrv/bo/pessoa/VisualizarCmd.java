@@ -131,6 +131,6 @@ public class VisualizarCmd extends _Comando {
 		em.detach(result);
 		contexto.setResposta(result);
 
-		return true;
+		return false;
 	}
 }

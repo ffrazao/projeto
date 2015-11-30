@@ -6,6 +6,6 @@ import br.gov.df.emater.aterwebsrv.modelo.formulario.Formulario;
 
 public interface FormularioDao extends JpaRepository<Formulario, Integer>, FormularioDaoCustom {
 
-	Formulario findByNome(String nome);
-
+	Formulario findByCodigo(String codigo);
+	
 }

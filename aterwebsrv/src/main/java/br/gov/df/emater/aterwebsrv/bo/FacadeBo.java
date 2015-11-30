@@ -62,6 +62,11 @@ public class FacadeBo implements BeanFactoryAware {
 		return this._executar(usuario, "EnderecoNovoCmd");
 	}
 
+	@Transactional
+	public _Contexto formularioColetar(Principal usuario, FormularioVersao formularioVersao) throws Exception {
+		return this._executar(usuario, "FormularioColetarCh", formularioVersao);
+	}
+
 	@Transactional(readOnly = true)
 	public _Contexto formularioFiltroExecutar(Principal usuario, FormularioCadFiltroDto filtro) throws Exception {
 		return this._executar(usuario, "FormularioFiltroExecutarCh", filtro);
@@ -82,14 +87,14 @@ public class FacadeBo implements BeanFactoryAware {
 		return this._executar(usuario, "FormularioSalvarCh", formulario);
 	}
 
-	@Transactional
-	public _Contexto formularioColetar(Principal usuario, FormularioVersao formularioVersao) throws Exception {
-		return this._executar(usuario, "FormularioColetarCh", formularioVersao);
-	}
-
 	@Transactional(readOnly = true)
 	public _Contexto formularioVisualizar(Principal usuario, Integer id) throws Exception {
 		return this._executar(usuario, "FormularioVisualizarCh", id);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto formularioVisualizarPorCodigo(Principal usuario, String codigo) throws Exception {
+		return this._executar(usuario, "FormularioVisualizarPorCodigoCh", codigo);
 	}
 
 	@Transactional(readOnly = true)
@@ -147,6 +152,13 @@ public class FacadeBo implements BeanFactoryAware {
 		this.beanFactory = beanFactory;
 	}
 
+	// Unidade Organizacional
+	// Fitlro Executar
+	@Transactional(readOnly = true)
+	public _Contexto unidadeOrganizacionalFiltroExecutar(Principal usuario, UnidadeOrganizacionalCadFiltroDto filtro) throws Exception {
+		return this._executar(usuario, "UnidadeOrganizacionalFiltroExecutarCh", filtro);
+	}
+
 	public _Contexto utilArquivo(Principal usuario, MultipartFile arquivo, HttpServletRequest request, String tipo) throws Exception {
 		Map<String, Object> requisicao = new HashMap<String, Object>();
 		requisicao.put("arquivo", arquivo);
@@ -156,12 +168,4 @@ public class FacadeBo implements BeanFactoryAware {
 		return this._executar(usuario, "UtilArquivoCh", requisicao);
 	}
 
-	// Unidade Organizacional
-	// Fitlro Executar
-	@Transactional(readOnly = true)
-	public _Contexto unidadeOrganizacionalFiltroExecutar(Principal usuario, UnidadeOrganizacionalCadFiltroDto filtro) throws Exception {
-		return this._executar(usuario, "UnidadeOrganizacionalFiltroExecutarCh", filtro);
-	}
-	
-	
 }

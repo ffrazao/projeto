@@ -59,7 +59,7 @@ public enum ElementoTipo {
         texto.append("        \"tipo\": \"string\"," ).append("\n");
         texto.append("    }," ).append("\n");
         texto.append("    {" ).append("\n");
-        texto.append("        \"nome\": \"Lista\"," ).append("\n");
+        texto.append("        \"nome\": \"Função Lista\"," ).append("\n");
         texto.append("        \"codigo\": \"lista\"," ).append("\n");
         texto.append("        \"tipo\": \"memo\"," ).append("\n");
         texto.append("    }," ).append("\n");
