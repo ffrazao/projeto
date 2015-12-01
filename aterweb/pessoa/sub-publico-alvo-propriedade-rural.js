@@ -56,6 +56,10 @@ angular.module(pNmModulo).controller(pNmController,
             var reg = null;
             if (resultado.tipo === 'U') {
                 reg = {propriedadeRural: {id: resultado.item[0], nome: resultado.item[1], comunidade: {nome: resultado.item[3]}}};
+                if (!$scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList) {
+                    $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList = [];
+                    $scope.publicoAlvoPropriedadeRuralNvg.setDados($scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList);
+                }
                 $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList.push(reg);
             } else {
                 for (var i in resultado.items) {

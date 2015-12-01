@@ -41,6 +41,10 @@ angular.module(pNmModulo).controller(pNmController,
                 destino.email.endereco = angular.copy(conteudo.email.endereco);
             } else {
                 conteudo['cadastroAcao'] = 'I';
+                if (!$scope.cadastro.registro.emailList) {
+                    $scope.cadastro.registro.emailList = [];
+                    $scope.pessoaEmailNvg.setDados($scope.cadastro.registro.emailList);
+                }
                 $scope.cadastro.registro.emailList.push(conteudo);
             }
         }, function () {

@@ -56,6 +56,10 @@ angular.module(pNmModulo).controller(pNmController,
                 destino.endereco = angular.copy(conteudo);
             } else {
                 conteudo['cadastroAcao'] = 'I';
+                if (!$scope.cadastro.registro.enderecoList) {
+                    $scope.cadastro.registro.enderecoList = [];
+                    $scope.pessoaEnderecoNvg.setDados($scope.cadastro.registro.enderecoList);
+                }
                 $scope.cadastro.registro.enderecoList.push({endereco: conteudo});
             }
         }, function () {

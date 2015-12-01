@@ -62,6 +62,9 @@
                 if (!this.scopeNavegador) {return;}
                 return this.scopeNavegador.botao(codigoBotao, codigoGrupo);
             };
+            this.estados = function() {
+                return this.scopeNavegador.estados;
+            };
             this.setDados(dados);
         };
         return FrzNavegadorParams;

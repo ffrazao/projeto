@@ -1,4 +1,4 @@
-/* jshint evil:true */
+/* jshint evil:true, loopfunc: true */
 
 (function(pNmModulo, pNmFactory, pNmController) {
 
@@ -79,12 +79,14 @@ angular.module(pNmModulo).factory(pNmFactory,
                 UtilSrv.dominio({ent: [
                    'Confirmacao',
                    'ElementoTipo',
-                   'Situacao'
+                   'Situacao',
+                   'FormularioDestino',
                 ]}).success(function(resposta) {
                     if (resposta && resposta.resultado) {
-                        scp.cadastro.apoio.confirmacaoList = resposta.resultado[0];
+                        angular.copy(resposta.resultado[0], scp.cadastro.apoio.confirmacaoList);
                         angular.copy(resposta.resultado[1], scp.cadastro.apoio.elementoTipoList);
-                        scp.cadastro.apoio.situacaoList = resposta.resultado[2];
+                        angular.copy(resposta.resultado[2], scp.cadastro.apoio.situacaoList);
+                        angular.copy(resposta.resultado[3], scp.cadastro.apoio.formularioDestinoList);
 
                         // fazer o tratamento do array de tipos de elementos
                         var obj = null;

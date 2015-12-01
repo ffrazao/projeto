@@ -58,6 +58,9 @@ angular.module(pNmModulo).controller(pNmController,
                 } else if (reg.pessoa.pessoaTipo === 'PJ') {
                     reg.pessoa['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica';
                 }
+                if (!$scope.cadastro.registro.relacionamentoList) {
+                    $scope.cadastro.registro.relacionamentoList = [];
+                }
                 $scope.cadastro.registro.relacionamentoList.push(reg);
             } else {
                 for (var i in resultado.items) {
@@ -66,6 +69,10 @@ angular.module(pNmModulo).controller(pNmController,
                         reg.pessoa['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica';
                     } else if (reg.pessoa.pessoaTipo === 'PJ') {
                         reg.pessoa['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica';
+                    }
+                    if (!$scope.cadastro.registro.relacionamentoList) {
+                        $scope.cadastro.registro.relacionamentoList = [];
+                        $scope.pessoaRelacionamentoNvg.setDados($scope.cadastro.registro.relacionamentoList);
                     }
                     $scope.cadastro.registro.relacionamentoList.push(reg);
                 }

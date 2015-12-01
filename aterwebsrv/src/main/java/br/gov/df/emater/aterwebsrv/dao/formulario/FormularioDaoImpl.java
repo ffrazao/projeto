@@ -76,6 +76,14 @@ public class FormularioDaoImpl implements FormularioDaoCustom {
 			sql.append(sqlTemp);
 			sql.append(" )").append("\n");
 		}
+		if (filtro.getDestino() != null) {
+			params.add(filtro.getDestino());
+			sql.append("and f.destino = ?").append(params.size()).append("\n");
+		}
+		if (filtro.getSubformulario() != null) {
+			params.add(filtro.getSubformulario());
+			sql.append("and f.subformulario = ?").append(params.size()).append("\n");
+		}
 
 		sql.append("order by f.nome, f.codigo").append("\n");
 

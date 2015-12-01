@@ -1,6 +1,8 @@
 package br.gov.df.emater.aterwebsrv.modelo.dto;
 
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -9,6 +11,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.FormularioDestino;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Situacao;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
@@ -19,9 +22,13 @@ public class FormularioCadFiltroDto extends FiltroDtoCustom {
 
 	private String codigo;
 
+	private FormularioDestino destino;
+
 	private String nome;
 
 	private Set<Situacao> situacao;
+
+	private Confirmacao subformulario;
 
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	@JsonSerialize(using = JsonSerializerData.class)
@@ -30,8 +37,20 @@ public class FormularioCadFiltroDto extends FiltroDtoCustom {
 
 	private Set<Confirmacao> vigente;
 
+	public FormularioCadFiltroDto() {
+
+	}
+
+	public FormularioCadFiltroDto(Confirmacao vigente) {
+		this.setVigente(new HashSet<Confirmacao>(Arrays.asList(vigente)));
+	}
+
 	public String getCodigo() {
 		return codigo;
+	}
+
+	public FormularioDestino getDestino() {
+		return destino;
 	}
 
 	public String getNome() {
@@ -40,6 +59,10 @@ public class FormularioCadFiltroDto extends FiltroDtoCustom {
 
 	public Set<Situacao> getSituacao() {
 		return situacao;
+	}
+
+	public Confirmacao getSubformulario() {
+		return subformulario;
 	}
 
 	public Calendar getVigencia() {
@@ -54,12 +77,20 @@ public class FormularioCadFiltroDto extends FiltroDtoCustom {
 		this.codigo = codigo;
 	}
 
+	public void setDestino(FormularioDestino destino) {
+		this.destino = destino;
+	}
+
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
 
 	public void setSituacao(Set<Situacao> situacao) {
 		this.situacao = situacao;
+	}
+
+	public void setSubformulario(Confirmacao subformulario) {
+		this.subformulario = subformulario;
 	}
 
 	public void setVigencia(Calendar vigencia) {

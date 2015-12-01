@@ -85,7 +85,10 @@
 
             // inicio ações especiais
 
+            $scope.cadastro.apoio.confirmacaoList = [];
             $scope.cadastro.apoio.elementoTipoList = [];
+            $scope.cadastro.apoio.situacaoList = [];
+            $scope.cadastro.apoio.formularioDestinoList = [];
             
             $scope.cadastro.apoio.formulario = {
                 codigo: 'formulario',
@@ -129,6 +132,30 @@
                             codigo: 'termino',
                             tipo: 'data',
                             tamanho: 2,
+                        },
+                        {
+                            nome: 'Destino do Formulário',
+                            codigo: 'destino',
+                            tipo: 'escolha_unica',
+                            funcaoRequerido: function() {return true;},
+                            tamanho: 4,
+                            opcao: {
+                                codigo: 'codigo',
+                                descricao: 'descricao',
+                                lista: $scope.cadastro.apoio.formularioDestinoList,
+                            },
+                        },
+                        {
+                            nome: 'Subformulário',
+                            codigo: 'subformulario',
+                            tipo: 'escolha_unica',
+                            funcaoRequerido: function() {return true;},
+                            tamanho: 4,
+                            opcao: {
+                                codigo: 'codigo',
+                                descricao: 'descricao',
+                                lista: $scope.cadastro.apoio.confirmacaoList,
+                            },
                         },
                         {
                             codigo: 'formularioVersaoList',
@@ -303,11 +330,11 @@
             // fim trabalho tab
 
             // inicio dos watches
-            $scope.$watch('cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].formAtual.tipo', function() {
-                if (!$scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].formAtual) {
+            $scope.$watch('cadastro.apoio.formulario.opcao[7].opcao[2].opcao[0].formAtual.tipo', function() {
+                if (!$scope.cadastro.apoio.formulario.opcao[7].opcao[2].opcao[0].formAtual) {
                     return;
                 }
-                var tipo = $scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].formAtual.tipo;
+                var tipo = $scope.cadastro.apoio.formulario.opcao[7].opcao[2].opcao[0].formAtual.tipo;
                 var reg = {};
                 for (var i in $scope.cadastro.apoio.elementoTipoList) {
                     if ($scope.cadastro.apoio.elementoTipoList[i].codigo === tipo) {
@@ -315,9 +342,9 @@
                         break;
                     }
                 }
-                $scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].opcao[12].opcao = reg.opcao;
-                $scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].formAtual.opcao = null;
-                $scope.cadastro.apoio.formulario.opcao[5].opcao[2].opcao[0].opcao[12].escondeForm = reg.opcao ? 'N': 'S';
+                $scope.cadastro.apoio.formulario.opcao[7].opcao[2].opcao[0].opcao[12].opcao = reg.opcao;
+                $scope.cadastro.apoio.formulario.opcao[7].opcao[2].opcao[0].formAtual.opcao = null;
+                $scope.cadastro.apoio.formulario.opcao[7].opcao[2].opcao[0].opcao[12].escondeForm = reg.opcao ? 'N': 'S';
 
             }, true);
 

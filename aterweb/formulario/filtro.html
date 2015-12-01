@@ -67,6 +67,34 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-group" title="Destino do Formulário">
+                    <label class="col-md-4 control-label" for="destino">
+                        Destino do Formulário
+                    </label>
+                    <div class="col-md-6">
+                        <select id="destino" name="destino" class="form-control input-md" ng-model="cadastro.filtro.destino" ng-options="item.codigo as item.descricao for item in cadastro.apoio.formularioDestinoList">
+                            <option value="">-- Ignorar --</option>
+                        </select>
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.destino.$error.required">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Campo Obrigatório
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" title="Subformulário">
+                    <label class="col-md-4 control-label" for="subformulario">
+                        Subformulário
+                    </label>
+                    <div class="col-md-6">
+                        <select id="subformulario" name="subformulario" class="form-control input-md" ng-model="cadastro.filtro.subformulario" ng-options="item.codigo as item.descricao for item in cadastro.apoio.confirmacaoList">
+                            <option value="">-- Ignorar --</option>
+                        </select>
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.subformulario.$error.required">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Campo Obrigatório
+                        </div>
+                    </div>
+                </div>
             </fieldset>
         </form>
     </div>

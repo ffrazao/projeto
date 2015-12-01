@@ -1,9 +1,7 @@
 package br.gov.df.emater.aterwebsrv.bo.pessoa;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.HashSet;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -12,9 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.gov.df.emater.aterwebsrv.bo.BoException;
+import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
-import br.gov.df.emater.aterwebsrv.dao.formulario.FormularioDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaDao;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
@@ -37,11 +35,12 @@ public class VisualizarCmd extends _Comando {
 	private PessoaDao dao;
 
 	@Autowired
-	private FormularioDao formularioDao;
-
-	@Autowired
 	private EntityManager em;
 
+	@Autowired
+	private FacadeBo facadeBo;
+
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		Integer id = (Integer) contexto.getRequisicao();
@@ -120,12 +119,13 @@ public class VisualizarCmd extends _Comando {
 			result.setUsuarioAlteracao(result.getUsuarioAlteracao().infoBasica());
 		}
 
-		FormularioCadFiltroDto formularioCadFiltroDto = new FormularioCadFiltroDto();
-		formularioCadFiltroDto.setVigente(new HashSet<Confirmacao>(Arrays.asList(Confirmacao.S)));
-		List<Object[]> diagnosticoList = formularioDao.filtrar(formularioCadFiltroDto);
-		result.setDiagnosticoList(new ArrayList<Formulario>());
-		for (Object[] diagnostico : diagnosticoList) {
-			result.getDiagnosticoList().add(new Formulario((Integer) diagnostico[0], (String) diagnostico[1], (String) diagnostico[2], (Situacao) diagnostico[3], (Calendar) diagnostico[4], (Calendar) diagnostico[5]));
+		// captar os formularios ativos
+		_Contexto formularioResposta = facadeBo.formularioFiltroExecutar(contexto.getUsuario(), new FormularioCadFiltroDto(Confirmacao.S));
+		if (formularioResposta.getResposta() != null) {
+			result.setDiagnosticoList(new ArrayList<Formulario>());
+			for (Object[] diagnostico : (List<Object[]>) formularioResposta.getResposta()) {
+				result.getDiagnosticoList().add(new Formulario((Integer) diagnostico[0], (String) diagnostico[1], (String) diagnostico[2], (Situacao) diagnostico[3], (Calendar) diagnostico[4], (Calendar) diagnostico[5]));
+			}
 		}
 
 		em.detach(result);

@@ -44,6 +44,10 @@ angular.module(pNmModulo).controller(pNmController,
                 destino.telefone.numero = angular.copy(conteudo.telefone.numero);
             } else {
                 conteudo['cadastroAcao'] = 'I';
+                if (!$scope.cadastro.registro.telefoneList) {
+                    $scope.cadastro.registro.telefoneList = [];
+                    $scope.pessoaTelefoneNvg.setDados($scope.cadastro.registro.telefoneList);
+                }
                 $scope.cadastro.registro.telefoneList.push(conteudo);
             }
         }, function () {

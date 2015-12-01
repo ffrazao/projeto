@@ -22,7 +22,7 @@
     </script>
 
     <script type="text/ng-template" id="campo_numero">
-        <input class="form-control input-md" style="text-align: right" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="dados[item.codigo]" ng-required="item.funcaoRequerido()" title="{{item.pop}}" ui-number-mask="item.opcao.fracao ? item.opcao.fracao : 2" ng-readonly="item.somenteLeitura === 'S'" ng-trim="true">
+        <input class="form-control input-md" style="text-align: right" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" ng-model="dados[item.codigo]" ng-required="item.funcaoRequerido()" title="{{item.pop}}" ui-number-mask="item.opcao.fracao >= 0 ? item.opcao.fracao : 2" ng-readonly="item.somenteLeitura === 'S'" ng-trim="true">
     </script>
 
     <script type="text/ng-template" id="campo_data">
@@ -114,7 +114,7 @@
     <script type="text/ng-template" id="campo_resumo_numero">
         <div class="input-group">
             <div class="form-control input-md" style="text-align: right" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" title="{{item.pop}}">
-                {{dados[item.codigo] | number: (item.opcao.fracao ? item.opcao.fracao : 2)}}
+                {{dados[item.codigo] | number: (item.opcao.fracao >= 0 ? item.opcao.fracao : 2)}}
             </div>
             <span class="input-group-btn">
                 <button class="btn btn-primary" id="f_{{ngModel.codigo}}_p_{{$index}}_btn" name="f_{{ngModel.codigo}}_p_{{$index}}_btn" type="button" ng-click="abrirDetalhe(item, dados)">...</button>

@@ -10,12 +10,8 @@ public class LogCmd extends _Comando {
 
 	@Override
 	public boolean executar(_Contexto context) throws Exception {
-		System.out.println(context.getAcao());
-		System.out.println(context.getErro());
-		System.out.println(context.getRequisicao());
-		System.out.println(context.getResposta());
+		System.out.format("Log acao[%s], erro[%s], requisicao[%s], resposta[%s]\n", context.getAcao(), context.getErro(), context.getRequisicao(), context.getResposta());
 		return false;
 	}
-	
 
 }
