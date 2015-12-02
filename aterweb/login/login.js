@@ -2,9 +2,9 @@
 
     'use strict';
 
-    angular.module(pNmModulo).controller(pNmController, ['$scope', '$rootScope', '$location', '$modal', 'toastr', '$state', '$http', 'TokenStorage', '$cookies', '$modalInstance',
+    angular.module(pNmModulo).controller(pNmController, ['$scope', '$rootScope', '$location', '$uibModal', 'toastr', '$state', '$http', 'TokenStorage', '$cookies', '$uibModalInstance',
 
-        function($scope, $rootScope, $location, $modal, toastr, $state, $http, TokenStorage, $cookies, $modalInstance) {
+        function($scope, $rootScope, $location, $uibModal, toastr, $state, $http, TokenStorage, $cookies, $uibModalInstance) {
             $scope.cadastro = {
                 registro: {},
                 apoio: {},
@@ -48,7 +48,7 @@
                 $('#usuario').focus();
             };
             $scope.fechar = function() {
-                $modalInstance.close();
+                $uibModalInstance.close();
             };
 
             $scope.iniciar();
@@ -80,7 +80,7 @@
                             try {
                                 $rootScope.token = JSON.parse(atob(TokenStorage.retrieve().split('.')[0]));
                                 $rootScope.authenticated = true;
-                                $modalInstance.close();
+                                $uibModalInstance.close();
                             } catch (err) {
                                 toastr.error('Erro ao processar o login', 'Erro');
                             }
@@ -93,7 +93,7 @@
 
 
             $scope.esqueciMinhaSenha = function(size) {
-                var modalInstance = $modal.open({
+                var modalInstance = $uibModal.open({
                     templateUrl: 'login/esqueci-minha-senha.html',
                     controller: 'EsqueciMinhaSenhaCtrl',
                     size: size
@@ -107,7 +107,7 @@
             };
 
             $scope.renoveSuaSenha = function(size) {
-                var modalInstance = $modal.open({
+                var modalInstance = $uibModal.open({
                     templateUrl: 'login/renove-sua-senha.html',
                     controller: 'RenoveSuaSenhaCtrl',
                     size: size,

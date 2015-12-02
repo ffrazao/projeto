@@ -5,8 +5,8 @@
 'use strict';
 
 angular.module(pNmModulo).controller(pNmController,
-    ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr', 'UtilSrv', 'mensagemSrv', 'EnderecoSrv',
-    function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, UtilSrv, mensagemSrv, EnderecoSrv) {
+    ['$scope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv', 'mensagemSrv', 'EnderecoSrv',
+    function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv, EnderecoSrv) {
 
     // inicializacao
     var init = function() {
@@ -15,7 +15,7 @@ angular.module(pNmModulo).controller(pNmController,
         }
         $scope.pessoaEnderecoNvg = new FrzNavegadorParams($scope.cadastro.registro.enderecoList, 4);
     };
-    if (!$modalInstance) { init(); }
+    if (!$uibModalInstance) { init(); }
 
     // inicio rotinas de apoio
     var limpa = function(str) {

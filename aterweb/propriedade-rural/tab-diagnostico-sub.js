@@ -4,8 +4,8 @@
 
 
 angular.module(pNmModulo).controller(pNmController,
-    ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr', 'UtilSrv', 'mensagemSrv',
-    function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, UtilSrv, mensagemSrv) {
+    ['$scope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv', 'mensagemSrv',
+    function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv) {
 
     // inicializacao
     var init = function() {
@@ -15,9 +15,9 @@ angular.module(pNmModulo).controller(pNmController,
         $scope.DiagnosticoNvg = new FrzNavegadorParams($scope.cadastro.registro.diagnostico, 8);
     };
 
-    if (!$modalInstance) { init(); }
+    if (!$uibModalInstance) { init(); }
 
-    if ($modalInstance === null) { $scope.modalEstado = null; } 
+    if ($uibModalInstance === null) { $scope.modalEstado = null; } 
     else { $scope.modalEstado = 'filtro'; }
 
     // inicio rotinas de apoio

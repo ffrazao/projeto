@@ -5,8 +5,8 @@
 'use strict';
 
 angular.module(pNmModulo).controller(pNmController,
-    ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr', 'UtilSrv', 'mensagemSrv', '$log',
-    function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, UtilSrv, mensagemSrv, $log) {
+    ['$scope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv', 'mensagemSrv', '$log',
+    function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv, $log) {
 
     // inicializacao
     var init = function() {
@@ -18,7 +18,7 @@ angular.module(pNmModulo).controller(pNmController,
         }
         $scope.publicoAlvoPropriedadeRuralNvg = new FrzNavegadorParams($scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList, 4);
     };
-    if (!$modalInstance) { init(); }
+    if (!$uibModalInstance) { init(); }
 
     // inicio rotinas de apoio
     var jaCadastrado = function(conteudo) {
@@ -39,7 +39,7 @@ angular.module(pNmModulo).controller(pNmController,
     };
     $scope.modalSelecinarPropriedadeRural = function (size) {
         // abrir a modal
-        var modalInstance = $modal.open({
+        var modalInstance = $uibModal.open({
             animation: true,
             templateUrl: 'propriedade-rural/propriedade-rural-modal.html',
             controller: 'PropriedadeRuralCtrl',
@@ -76,7 +76,7 @@ angular.module(pNmModulo).controller(pNmController,
 
     $scope.modalVerPropriedadeRural = function (id) {
         // abrir a modal
-        var modalInstance = $modal.open({
+        var modalInstance = $uibModal.open({
             animation: true,
             template: '<ng-include src=\"\'propriedade-rural/propriedade-rural-form-modal.html\'\"></ng-include>',
             controller: 'PropriedadeRuralCtrl',

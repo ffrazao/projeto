@@ -3,8 +3,8 @@
 'use strict';
 
 angular.module(pNmModulo).controller(pNmController,
-    ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr', 'UtilSrv',
-    function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, UtilSrv) {
+    ['$scope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv',
+    function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv) {
 
     // inicializacao
     var init = function() {
@@ -13,7 +13,7 @@ angular.module(pNmModulo).controller(pNmController,
         }
         $scope.contratoArquivoNvg = new FrzNavegadorParams($scope.cadastro.registro.arquivo);
     };
-    if (!$modalInstance) {
+    if (!$uibModalInstance) {
         init();
     }
 
@@ -24,17 +24,17 @@ angular.module(pNmModulo).controller(pNmController,
         for (var file in $scope.$flow.files) {
             resultado.push({nome: $scope.$flow.files[file].name});
         }
-        $modalInstance.close(resultado);
+        $uibModalInstance.close(resultado);
         toastr.info('Operação realizada!', 'Informação');
     };
     $scope.modalCancelar = function () {
         // Cancelar a modal
-        $modalInstance.dismiss('cancel');
+        $uibModalInstance.dismiss('cancel');
         toastr.warning('Operação cancelada!', 'Atenção!');
     };
     $scope.modalAbrir = function (size) {
         // abrir a modal
-        var modalInstance = $modal.open({
+        var modalInstance = $uibModal.open({
             animation: true,
             template: '<ng-include src=\"\'contrato/contrato-modal.html\'\"></ng-include>',
             controller: 'ContratoCtrl',
@@ -53,7 +53,7 @@ angular.module(pNmModulo).controller(pNmController,
             // processar o retorno negativo da modal
         });
     };
-    if ($modalInstance === null) {
+    if ($uibModalInstance === null) {
         // se objeto modal esta vazio abrir de forma normal
         $scope.modalEstado = null;
         for (var i = 0; i < 0; i++) {
@@ -244,7 +244,7 @@ angular.module(pNmModulo).controller(pNmController,
         verRegistro();
     };
     $scope.incluir = function() {
-        var modalInstance = $modal.open({
+        var modalInstance = $uibModal.open({
             animation: true,
             templateUrl: 'contratoArquivoFrm.html',
             controller: pNmController,

@@ -2,9 +2,9 @@
 
     'use strict';
 
-    angular.module(pNmModulo).controller(pNmController, ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr', 'UtilSrv', 'mensagemSrv',
+    angular.module(pNmModulo).controller(pNmController, ['$scope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv', 'mensagemSrv',
 
-        function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, UtilSrv, mensagemSrv) {
+        function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv) {
             // inicializacao
             var init = function() {
                 if (!angular.isObject($scope.cadastro.registro.colaboradorLotacaoList)) {
@@ -12,10 +12,10 @@
                 }
                 $scope.pessoaColaboradorLotacaoNvg = new FrzNavegadorParams($scope.cadastro.registro.colaboradorLotacaoList, 5);
             };
-            if (!$modalInstance) {
+            if (!$uibModalInstance) {
                 init();
             }
-            if ($modalInstance === null) {
+            if ($uibModalInstance === null) {
                 $scope.navegador.dados[0].colaboradorLotacaoList = [];
                 for (var i = 0; i < 11; i++) {
                     $scope.navegador.dados[0].colaboradorLotacaoList.push({

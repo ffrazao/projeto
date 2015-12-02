@@ -22,13 +22,15 @@ public class FormularioCadFiltroDto extends FiltroDtoCustom {
 
 	private String codigo;
 
-	private FormularioDestino destino;
+	private Set<FormularioDestino> destino;
 
 	private String nome;
 
 	private Set<Situacao> situacao;
 
-	private Confirmacao subformulario;
+	private Set<Confirmacao> subformulario;
+
+	private Integer versao;
 
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	@JsonSerialize(using = JsonSerializerData.class)
@@ -49,7 +51,7 @@ public class FormularioCadFiltroDto extends FiltroDtoCustom {
 		return codigo;
 	}
 
-	public FormularioDestino getDestino() {
+	public Set<FormularioDestino> getDestino() {
 		return destino;
 	}
 
@@ -61,8 +63,12 @@ public class FormularioCadFiltroDto extends FiltroDtoCustom {
 		return situacao;
 	}
 
-	public Confirmacao getSubformulario() {
+	public Set<Confirmacao> getSubformulario() {
 		return subformulario;
+	}
+
+	public Integer getVersao() {
+		return versao;
 	}
 
 	public Calendar getVigencia() {
@@ -77,7 +83,7 @@ public class FormularioCadFiltroDto extends FiltroDtoCustom {
 		this.codigo = codigo;
 	}
 
-	public void setDestino(FormularioDestino destino) {
+	public void setDestino(Set<FormularioDestino> destino) {
 		this.destino = destino;
 	}
 
@@ -89,8 +95,12 @@ public class FormularioCadFiltroDto extends FiltroDtoCustom {
 		this.situacao = situacao;
 	}
 
-	public void setSubformulario(Confirmacao subformulario) {
+	public void setSubformulario(Set<Confirmacao> subformulario) {
 		this.subformulario = subformulario;
+	}
+
+	public void setVersao(Integer versao) {
+		this.versao = versao;
 	}
 
 	public void setVigencia(Calendar vigencia) {

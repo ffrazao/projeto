@@ -2,8 +2,8 @@
 
     'use strict';
 
-    angular.module(pNmModulo).controller(pNmController, ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr', 'UtilSrv', 'mensagemSrv',
-        function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, UtilSrv, mensagemSrv) {
+    angular.module(pNmModulo).controller(pNmController, ['$scope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv', 'mensagemSrv',
+        function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv) {
             // inicializacao
             var init = function() {
                 if (!angular.isObject($scope.cadastro.filtro.grupoSocialList)) {
@@ -11,7 +11,7 @@
                 }
                 $scope.subGrupoSocialNvg = new FrzNavegadorParams($scope.cadastro.filtro.grupoSocialList);
             };
-            if (!$modalInstance) {
+            if (!$uibModalInstance) {
                 init();
             }
             // inicio: atividades do Modal
@@ -23,17 +23,17 @@
                         nome: $scope.$flow.files[file].name
                     });
                 }
-                $modalInstance.close(resultado);
+                $uibModalInstance.close(resultado);
                 toastr.info('Operação realizada!', 'Informação');
             };
             $scope.modalCancelar = function() {
                 // Cancelar a modal
-                $modalInstance.dismiss('cancel');
+                $uibModalInstance.dismiss('cancel');
                 toastr.warning('Operação cancelada!', 'Atenção!');
             };
             $scope.modalAbrir = function(size) {
                 // abrir a modal
-                var modalInstance = $modal.open({
+                var modalInstance = $uibModal.open({
                     animation: true,
                     template: '<ng-include src=\"\'pessoa/pessoa-modal.html\'\"></ng-include>',
                     controller: 'PessoaCtrl',
@@ -52,7 +52,7 @@
                     // processar o retorno negativo da modal
                 });
             };
-            if ($modalInstance === null) {
+            if ($uibModalInstance === null) {
                 // se objeto modal esta vazio abrir de forma normal
                 $scope.modalEstado = null;
                 for (var i = 0; i < 0; i++) {
@@ -243,7 +243,7 @@
                 verRegistro();
             };
             $scope.incluir = function() {
-                var modalInstance = $modal.open({
+                var modalInstance = $uibModal.open({
                     animation: true,
                     templateUrl: 'grupoSocialFrm.html',
                     controller: pNmController,

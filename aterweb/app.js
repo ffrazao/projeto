@@ -9,7 +9,7 @@ angular.module(pNmModulo, ['ui.bootstrap', 'ui.utils', 'ui.router', 'ngSanitize'
   ]);
 
 // inicio: codigo para habilitar o modal recursivo
-angular.module(pNmModulo).factory('$modalInstance', function () {
+angular.module(pNmModulo).factory('$uibModalInstance', function () {
   return null;
 });
 angular.module(pNmModulo).factory('modalCadastro', function () {
@@ -68,7 +68,7 @@ angular.module(pNmModulo).factory('TokenAuthInterceptor', function($q, TokenStor
 
 angular.module(pNmModulo).config(['$stateProvider', '$urlRouterProvider', 'toastrConfig', '$locationProvider',
     'uiGmapGoogleMapApiProvider', '$httpProvider',
-  function($stateProvider, $urlRouterProvider, toastrConfig, $locationProvider, GoogleMapApiProviders, $httpProvider) {
+  function($stateProvider, $urlRouterProvider, toastrConfig, $locationProvider, uiGmapGoogleMapApiProvider, $httpProvider) {
 
     // inicio: modulo de autenticação
     // captar os dados do usuario logado
@@ -140,8 +140,10 @@ angular.module(pNmModulo).config(['$stateProvider', '$urlRouterProvider', 'toast
       toastClass: 'toast'
     });
 
-    GoogleMapApiProviders.configure({
-        china: true
+    uiGmapGoogleMapApiProvider.configure({
+        //    key: 'your api key',
+        v: '3.20', //defaults to latest 3.X anyhow
+        libraries: 'weather,geometry,visualization'
     });
 
   }]);
@@ -203,8 +205,8 @@ angular.module(pNmModulo).directive('ngValorMax', function () {
     };
 });
 
-angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'toastr', 'UtilSrv', '$stateParams',
-  function($rootScope, $modal, FrzNavegadorParams, toastr, UtilSrv, $stateParams) {
+angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 'toastr', 'UtilSrv', '$stateParams',
+  function($rootScope, $uibModal, FrzNavegadorParams, toastr, UtilSrv, $stateParams) {
     $rootScope.servicoUrl = "https://localhost:8443";
     $rootScope.authenticated = false;
     $rootScope.token = null;
@@ -652,8 +654,8 @@ angular.module(pNmModulo).run(['$rootScope', '$modal', 'FrzNavegadorParams', 'to
     // fim funcoes crud
 }]);
 
-angular.module(pNmModulo).controller('AuthCtrl', ['$scope', '$rootScope', '$http', 'TokenStorage', 'mensagemSrv', '$modal', '$modalInstance', '$state', 
-    function ($scope, $rootScope, $http, TokenStorage, mensagemSrv, $modal, $modalInstance, $state) {
+angular.module(pNmModulo).controller('AuthCtrl', ['$scope', '$rootScope', '$http', 'TokenStorage', 'mensagemSrv', '$uibModal', '$uibModalInstance', '$state', 
+    function ($scope, $rootScope, $http, TokenStorage, mensagemSrv, $uibModal, $uibModalInstance, $state) {
     $rootScope.authenticated = false;
     $rootScope.token = null; // For display purposes only
     
@@ -665,7 +667,7 @@ angular.module(pNmModulo).controller('AuthCtrl', ['$scope', '$rootScope', '$http
         $state.go('p.bem-vindo');
     };
     $scope.exibeLogin = function ()  {
-        var modalInstance = $modal.open({
+        var modalInstance = $uibModal.open({
                   animation: true,
                   controller: 'LoginCtrl',
                   size : 'lg',

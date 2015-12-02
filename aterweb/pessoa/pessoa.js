@@ -6,8 +6,8 @@
     angular.module(pNmModulo).config(['$stateProvider', function($stateProvider) {
         criarEstadosPadrao($stateProvider, pNmModulo, pNmController, pUrlModulo);
     }]);
-    angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$modal', '$log', '$modalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'PessoaSrv',
-        function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $modal, $log, $modalInstance, modalCadastro, UtilSrv, mensagemSrv, PessoaSrv) {
+    angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'PessoaSrv',
+        function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, PessoaSrv) {
 
             $scope.vlr = [
                     {
@@ -42,21 +42,21 @@
             $scope.crudInit($scope, $state, null, pNmFormulario, PessoaSrv);
 
             // código para verificar se o modal está ou não ativo
-            $scope.verificaEstado($modalInstance, $scope, 'filtro', modalCadastro, pNmFormulario);
+            $scope.verificaEstado($uibModalInstance, $scope, 'filtro', modalCadastro, pNmFormulario);
             // inicio: atividades do Modal
             $scope.modalOk = function() {
                 // Retorno da modal
-                $modalInstance.close($scope.navegador.selecao);
+                $uibModalInstance.close($scope.navegador.selecao);
             };
             $scope.modalCancelar = function() {
                 // Cancelar a modal
-                $modalInstance.dismiss('cancel');
+                $uibModalInstance.dismiss('cancel');
                 toastr.warning('Operação cancelada!', 'Atenção!');
             };
             $scope.modalAbrir = function(size) {
                 // abrir a modal
                 var template = '<ng-include src=\"\'' + pNmModulo + '/' + pNmModulo + '-modal.html\'\"></ng-include>';
-                var modalInstance = $modal.open({
+                var modalInstance = $uibModal.open({
                     animation: true,
                     template: template,
                     controller: pNmController,

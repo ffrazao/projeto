@@ -21,6 +21,8 @@
                     <th>Situação</th>
                     <th>Início</th>
                     <th>Término</th>
+                    <th>Destino</th>
+                    <th>Subformulário</th>
                 </tr>
             </thead>
             <tbody>
@@ -37,6 +39,8 @@
                     <td>{{UtilSrv.indiceDePorCampo(cadastro.apoio.situacaoList, item[3], 'codigo').descricao}}</td>
                     <td>{{item[4] | date: 'dd/MM/yyyy'}}</td>
                     <td>{{item[5] | date: 'dd/MM/yyyy'}}</td>
+                    <td>{{UtilSrv.indiceDePorCampo(cadastro.apoio.formularioDestinoList, item[6], 'codigo').descricao}}</td>
+                    <td>{{UtilSrv.indiceDePorCampo(cadastro.apoio.confirmacaoList, item[7], 'codigo').descricao}}</td>
                 </tr>
             </tbody>
         </table>

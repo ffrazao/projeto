@@ -5,8 +5,8 @@
 'use strict';
 
 angular.module(pNmModulo).controller(pNmController,
-    ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr', 'UtilSrv', 'mensagemSrv', '$log',
-    function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, UtilSrv, mensagemSrv, $log) {
+    ['$scope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv', 'mensagemSrv', '$log',
+    function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv, $log) {
 
     // inicializacao
     var init = function() {
@@ -15,7 +15,7 @@ angular.module(pNmModulo).controller(pNmController,
         }
         $scope.pessoaRelacionamentoNvg = new FrzNavegadorParams($scope.cadastro.registro.relacionamentoList, 4);
     };
-    if (!$modalInstance) { init(); }
+    if (!$uibModalInstance) { init(); }
 
     // inicio rotinas de apoio
     var jaCadastrado = function(conteudo) {
@@ -36,7 +36,7 @@ angular.module(pNmModulo).controller(pNmController,
     };
     $scope.modalSelecinarRelacionado = function (size) {
         // abrir a modal
-        var modalInstance = $modal.open({
+        var modalInstance = $uibModal.open({
             animation: true,
             templateUrl: 'pessoa/pessoa-modal.html',
             controller: 'PessoaCtrl',
@@ -86,7 +86,7 @@ angular.module(pNmModulo).controller(pNmController,
 
     $scope.modalVerRelacionado = function (id) {
         // abrir a modal
-        var modalInstance = $modal.open({
+        var modalInstance = $uibModal.open({
             animation: true,
             template: '<ng-include src=\"\'pessoa/pessoa-form-modal.html\'\"></ng-include>',
             controller: 'PessoaCtrl',

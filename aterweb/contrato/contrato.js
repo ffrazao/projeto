@@ -13,16 +13,16 @@ angular.module(pNmModulo).config(['$stateProvider', function($stateProvider) {
 }]);
 
 angular.module(pNmModulo).controller(pNmController,
-    ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$modal', '$log', '$modalInstance',
+    ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance',
     'modalCadastro', 'UtilSrv', 'mensagemSrv',
-    function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $modal, $log, $modalInstance,
+    function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance,
         modalCadastro, UtilSrv, mensagemSrv) {
 
     // inicializacao
     $scope.crudInit($scope, $state, null, pNmFormulario);
 
     // código para verificar se o modal está ou não ativo
-    $scope.verificaEstado($modalInstance, $scope, 'filtro', modalCadastro, pNmFormulario);
+    $scope.verificaEstado($uibModalInstance, $scope, 'filtro', modalCadastro, pNmFormulario);
 
     // inicio: atividades do Modal
     $scope.modalOk = function () {
@@ -31,18 +31,18 @@ angular.module(pNmModulo).controller(pNmController,
         $scope.cadastro.lista.push({id: 21, nome: 'Fernando'});
         $scope.cadastro.lista.push({id: 12, nome: 'Frazao'});
 
-        $modalInstance.close($scope.cadastro);
+        $uibModalInstance.close($scope.cadastro);
         toastr.info('Operação realizada!', 'Informação');
     };
     $scope.modalCancelar = function () {
         // Cancelar a modal
-        $modalInstance.dismiss('cancel');
+        $uibModalInstance.dismiss('cancel');
         toastr.warning('Operação cancelada!', 'Atenção!');
     };
     $scope.modalAbrir = function (size) {
         // abrir a modal
         var template = '<ng-include src=\"\'' + pNmModulo + '/' + pNmModulo + '-modal.html\'\"></ng-include>';
-        var modalInstance = $modal.open({
+        var modalInstance = $uibModal.open({
             animation: true,
             template: template,
             controller: pNmController,
@@ -103,7 +103,7 @@ angular.module(pNmModulo).controller(pNmController,
 
     $scope.modalSelecinarExecutor = function (size) {
         // abrir a modal
-        var modalInstance = $modal.open({
+        var modalInstance = $uibModal.open({
             animation: true,
             template: '<ng-include src=\"\'pessoa/pessoa-modal.html\'\"></ng-include>',
             controller: 'PessoaCtrl',
@@ -131,7 +131,7 @@ angular.module(pNmModulo).controller(pNmController,
 
     $scope.modalVerExecutor = function (size) {
         // abrir a modal
-        var modalInstance = $modal.open({
+        var modalInstance = $uibModal.open({
             animation: true,
             template: '<ng-include src=\"\'pessoa/pessoa-form-modal.html\'\"></ng-include>',
             controller: 'PessoaCtrl',
@@ -155,7 +155,7 @@ angular.module(pNmModulo).controller(pNmController,
 
     $scope.modalSelecinarContraparte = function (size) {
         // abrir a modal
-        var modalInstance = $modal.open({
+        var modalInstance = $uibModal.open({
             animation: true,
             template: '<ng-include src=\"\'pessoa/pessoa-modal.html\'\"></ng-include>',
             controller: 'PessoaCtrl',
@@ -182,7 +182,7 @@ angular.module(pNmModulo).controller(pNmController,
 
     $scope.modalVerContraparte = function (size) {
         // abrir a modal
-        var modalInstance = $modal.open({
+        var modalInstance = $uibModal.open({
             animation: true,
             template: '<ng-include src=\"\'pessoa/pessoa-form-modal.html\'\"></ng-include>',
             controller: 'PessoaCtrl',

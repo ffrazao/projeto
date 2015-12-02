@@ -12,6 +12,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.FormularioDestino;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Situacao;
 import br.gov.df.emater.aterwebsrv.modelo.dto.FiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.FormularioCadFiltroDto;
@@ -31,8 +32,11 @@ public class FormularioDaoImpl implements FormularioDaoCustom {
 
 		// construção do sql
 		sql = new StringBuilder();
-		sql.append("select f.id, f.nome, f.codigo, f.situacao, f.inicio, f.termino").append("\n");
+		sql.append("select distinct f.id, f.nome, f.codigo, f.situacao, f.inicio, f.termino, f.destino, f.subformulario").append("\n");
 		sql.append("from Formulario f").append("\n");
+		if (filtro.getVersao() != null) {
+			sql.append("join f.formularioVersaoList fvl").append("\n");
+		}
 		sql.append("where 1 = 1").append("\n");
 		if (filtro.getVigente() != null && filtro.getVigente().contains(Confirmacao.S)) {
 			sql.append("and f.situacao = 'A'").append("\n");
@@ -76,13 +80,17 @@ public class FormularioDaoImpl implements FormularioDaoCustom {
 			sql.append(sqlTemp);
 			sql.append(" )").append("\n");
 		}
-		if (filtro.getDestino() != null) {
+		if (!CollectionUtils.isEmpty(filtro.getDestino()) && (FormularioDestino.values().length != (filtro.getDestino().size()))) {
 			params.add(filtro.getDestino());
-			sql.append("and f.destino = ?").append(params.size()).append("\n");
+			sql.append("and f.destino in ?").append(params.size()).append("\n");
 		}
-		if (filtro.getSubformulario() != null) {
+		if (!CollectionUtils.isEmpty(filtro.getSubformulario()) && (Confirmacao.values().length != (filtro.getSubformulario().size()))) {
 			params.add(filtro.getSubformulario());
-			sql.append("and f.subformulario = ?").append(params.size()).append("\n");
+			sql.append("and f.subformulario in ?").append(params.size()).append("\n");
+		}
+		if (filtro.getVersao() != null) {
+			params.add(filtro.getVersao());
+			sql.append("and fvl.versao = ?").append(params.size()).append("\n");
 		}
 
 		sql.append("order by f.nome, f.codigo").append("\n");

@@ -137,10 +137,10 @@
         <div ng-repeat="item in ngModel.opcao" ng-switch on="item.tipo">
             <legend ng-switch-when="nome">{{item.nome}}</legend>
             <div class="form-group" ng-switch-default ng-if="item.escondeForm !== 'S'">
-                <ng-include src="'frz-form-label.html'"/>
+                <ng-include src="'frz-form-label.html'"></ng-include>
                 <div class="col-md-{{item.tamanho?item.tamanho:'7'}}">
-                    <ng-include src="'campo_' + item.tipo"/>
-                    <ng-include src="'frz-form-ajuda.html'"/>
+                    <ng-include src="'campo_' + item.tipo"></ng-include>
+                    <ng-include src="'frz-form-ajuda.html'"></ng-include>
                 </div>
             </div>
         </div>

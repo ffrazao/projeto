@@ -3,8 +3,8 @@
 'use strict';
 
 angular.module(pNmModulo).controller(pNmController,
-    ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr', 'UtilSrv', 'mensagemSrv',
-    function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, UtilSrv, mensagemSrv) {
+    ['$scope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv', 'mensagemSrv',
+    function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv) {
 
     // inicializacao
     var init = function() {
@@ -13,10 +13,10 @@ angular.module(pNmModulo).controller(pNmController,
         }
         $scope.propriedadeRuralPendenciaNvg = new FrzNavegadorParams($scope.cadastro.registro.pendenciaList, 5);
     };
-    if (!$modalInstance) { init(); }
+    if (!$uibModalInstance) { init(); }
 
 
-    /*if ($modalInstance === null) {
+    /*if ($uibModalInstance === null) {
         $scope.navegador.dados[0].pendenciaList = [];
         for (var i = 0; i < 11; i++) {
             $scope.navegador.dados[0].pendenciaList.push({id: i, nome: 'nome ' + i, cpf: (333*i), tpExploracao: 'P', ha :(2.7*i), situacao : 'S' });

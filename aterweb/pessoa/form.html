@@ -71,14 +71,14 @@
                         </div>
                     </div>
                 </div>
-                <tabset>
-                    <tab ng-repeat="tab in tabs | filter: {'visivel': true}">
-                        <tab-heading>
+                <uib-tabset>
+                    <uib-tab ng-repeat="tab in tabs | filter: {'visivel': true}">
+                        <uib-tab-heading>
                             {{$index + 1}} {{tab.nome}} <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                        </tab-heading>
+                        </uib-tab-heading>
                         <ng-include src="tab.include"/>
-                    </tab>
-                </tabset>
+                    </uib-tab>
+                </uib-tabset>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">

@@ -3,8 +3,8 @@
 'use strict';
 
 angular.module(pNmModulo).controller(pNmController,
-    ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr', 'UtilSrv',
-    function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, UtilSrv) {
+    ['$scope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv',
+    function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv) {
 
     // inicializacao
     var init = function() {
@@ -13,10 +13,10 @@ angular.module(pNmModulo).controller(pNmController,
         }
         $scope.subVinculadoNvg = new FrzNavegadorParams($scope.cadastro.registro.vinculado, 4);
     };
-    if (!$modalInstance) { init(); }
+    if (!$uibModalInstance) { init(); }
 
 
-    if ($modalInstance === null) {
+    if ($uibModalInstance === null) {
         $scope.navegador.dados.vinculado = [];
         
         $scope.subVinculadoNvg.setDados($scope.navegador.dados.vinculado);

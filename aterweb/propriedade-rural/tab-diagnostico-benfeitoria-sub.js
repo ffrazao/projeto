@@ -4,8 +4,8 @@
 
 
 angular.module(pNmModulo).controller(pNmController,
-    ['$scope', 'FrzNavegadorParams', '$modal', '$modalInstance', 'toastr', 'UtilSrv',
-    function($scope, FrzNavegadorParams, $modal, $modalInstance, toastr, UtilSrv) {
+    ['$scope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv',
+    function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv) {
 
     // inicializacao
     var init = function() {
@@ -15,7 +15,7 @@ angular.module(pNmModulo).controller(pNmController,
         }
         $scope.DiagnosticoBenfeitoriaNvg = new FrzNavegadorParams(tmp, 4);
     };
-    if (!$modalInstance) {
+    if (!$uibModalInstance) {
         init();
     }
 

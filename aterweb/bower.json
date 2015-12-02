@@ -10,31 +10,32 @@
   "dependencies": {
     "angular": "~1.4",
     "angular-animate": "~1.4",
-    "angular-bootstrap": "~0.13",
+    "angular-bootstrap": "~0.14",
     "angular-cookies": "~1.4",
-    "angular-google-maps": "~2.1.5",
-    "angular-i18n": "~1.4.3",
-    "angular-input-masks": "~2.0.0",
+    "angular-google-maps": "~2",
+    "angular-i18n": "~1.4",
+    "angular-input-masks": "~2",
     "angular-mocks": "~1.4",
     "angular-resource": "~1.4",
-    "angular-sanitize": "~1.4.3",
-    "angular-toastr": "~1.4",
-    "angular-ui-mask": "~1.4.1",
+    "angular-sanitize": "~1.4",
+    "angular-toastr": "~1",
+    "angular-ui-mask": "~1.6",
     "angular-ui-router": "~0.2",
     "angular-ui-utils": "~3.0",
-    "bootstrap": "~3.3.5",
-    "font-awesome": "~4.4",
+    "bootstrap": "~3.3",
+    "font-awesome": "~4",
     "jquery": "~3.0",
     "less.js": "~2.5",
     "moment": "~2.10",
-    "ng-file-upload": "~10.0.2",
+    "ng-file-upload": "~10",
     "ng-flow": "~2",
     "ng-img-crop": "ngImgCrop#~0.3.2",
-    "ngSticky": "~1.7.9",
+    "ngSticky": "~1",
     "underscore": "~1.8",
-    "ng-tags-input": "3.0.0"
+    "ng-tags-input": "3.0.0",
+    "angular-simple-logger": "~0.1.5"
   },
   "devDependencies": {
-    "angular-google-maps": "~2.1.5"
+    "angular-google-maps": "~2"
   }
 }

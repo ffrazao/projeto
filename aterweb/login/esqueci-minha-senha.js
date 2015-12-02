@@ -3,8 +3,8 @@
   'use strict';
 
 angular.module(pNmModulo).controller(pNmController,
-      ['$scope', '$modalInstance', 'toastr',
-    function ($scope, $modalInstance, toastr) {
+      ['$scope', '$uibModalInstance', 'toastr',
+    function ($scope, $uibModalInstance, toastr) {
     $scope.iniciar = function() {
       $scope.registroOrig = {};
       $scope.reiniciar();
@@ -28,11 +28,11 @@ angular.module(pNmModulo).controller(pNmController,
       return;
     }
     toastr.success('Foi encaminhado um e-mail com instrucoes para recuperar seu acesso ao sistema');
-    $modalInstance.close();
+    $uibModalInstance.close();
   };
 
   $scope.cancelar = function () {
-    $modalInstance.dismiss('cancel');
+    $uibModalInstance.dismiss('cancel');
   };
 
 }]);

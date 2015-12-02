@@ -3,8 +3,8 @@
   'use strict';
 
 angular.module(pNmModulo).controller(pNmController,
-      ['$scope', '$modalInstance', 'toastr', 'registroOrig',
-    function ($scope, $modalInstance, toastr, registroOrig) {
+      ['$scope', '$uibModalInstance', 'toastr', 'registroOrig',
+    function ($scope, $uibModalInstance, toastr, registroOrig) {
     $scope.iniciar = function() {
     //$scope.registroOrig = {};
     console.log("ddd", registroOrig);
@@ -30,10 +30,10 @@ angular.module(pNmModulo).controller(pNmController,
     }
     toastr.success('Sua senha foi renovada');
     console.log('retornando ', angular.copy($scope.registro));
-    $modalInstance.close(angular.copy($scope.registro));
+    $uibModalInstance.close(angular.copy($scope.registro));
   };
   $scope.cancelar = function () {
-    $modalInstance.dismiss('cancel');
+    $uibModalInstance.dismiss('cancel');
   };
 }]);
 

@@ -3,29 +3,29 @@
 'use strict';
 
 angular.module(pNmModulo).controller(pNmController,
-    ['$scope', '$modalInstance', 'conteudo', 'funcaoOk', 'funcaoCancelar',
-    function($scope, $modalInstance, conteudo, funcaoOk, funcaoCancelar) {
+    ['$scope', '$uibModalInstance', 'conteudo', 'funcaoOk', 'funcaoCancelar',
+    function($scope, $uibModalInstance, conteudo, funcaoOk, funcaoCancelar) {
         $scope.conteudo = conteudo;
         $scope.modalOk = function () {
             // Retorno da modal
             if (funcaoOk && !funcaoOk(conteudo)) {
               return;
             }
-            $modalInstance.close(conteudo);
+            $uibModalInstance.close(conteudo);
         };
         $scope.modalCancelar = function () {
             // Cancelar a modal
             if (funcaoCancelar && !funcaoCancelar(conteudo)) {
               return;
             }
-            $modalInstance.dismiss('cancel');
+            $uibModalInstance.dismiss('cancel');
         };
     }
 ]);
 
 angular.module(pNmModulo).factory(pNmFactory,
-  ['$modal',
-    function($modal) {
+  ['$uibModal',
+    function($uibModal) {
         var formModal =  function (tipo, url, mensagem, titulo, conteudo, tamanho, funcaoOk, funcaoCancelar) {
             var botaoCancelar = null;
             if ('alerta' === tipo) {
@@ -36,7 +36,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                  botaoCancelar = '<button class="btn btn-warning" ng-click=\"modalCancelar()\">Cancelar</button>';
             }
             var nomeForm = tipo + 'Frm';
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                       animation: true,
                       controller: 'MensagemCtrl',
                       size : (tamanho ? tamanho : 'lg' ),
