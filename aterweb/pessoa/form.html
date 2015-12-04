@@ -72,7 +72,7 @@
                     </div>
                 </div>
                 <uib-tabset>
-                    <uib-tab ng-repeat="tab in tabs | filter: {'visivel': true}">
+                    <uib-tab ng-repeat="tab in tabs | filter: {'visivel': true}" select="tab.selecao()">
                         <uib-tab-heading>
                             {{$index + 1}} {{tab.nome}} <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                         </uib-tab-heading>

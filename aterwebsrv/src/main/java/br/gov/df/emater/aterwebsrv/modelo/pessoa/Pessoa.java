@@ -41,7 +41,6 @@ import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaTipo;
-import br.gov.df.emater.aterwebsrv.modelo.formulario.Formulario;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
@@ -74,7 +73,7 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	private List<PessoaArquivo> arquivoList;
 
 	@Transient
-	private List<Formulario> diagnosticoList;
+	private Object diagnosticoList;
 
 	@OneToMany(mappedBy = "pessoa")
 	private List<PessoaEmail> emailList;
@@ -169,7 +168,7 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		return arquivoList;
 	}
 
-	public List<Formulario> getDiagnosticoList() {
+	public Object getDiagnosticoList() {
 		return diagnosticoList;
 	}
 
@@ -254,7 +253,7 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		this.arquivoList = arquivoList;
 	}
 
-	public void setDiagnosticoList(List<Formulario> diagnosticoList) {
+	public void setDiagnosticoList(Object diagnosticoList) {
 		this.diagnosticoList = diagnosticoList;
 	}
 

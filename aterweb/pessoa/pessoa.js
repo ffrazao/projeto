@@ -137,25 +137,19 @@
                 }
             };
             $scope.confirmarIncluir = function(scp) {
-                preparaRegistro();
+                $scope.preparaClassePessoa($scope.cadastro.registro);
                 $rootScope.confirmarIncluir(scp);
             };
             $scope.confirmarEditar = function(scp) {
-                preparaRegistro();
+                $scope.preparaClassePessoa($scope.cadastro.registro);
                 $rootScope.confirmarEditar(scp);
             };
             $scope.confirmarExcluir = function(scp) {
-                preparaRegistro();
+                $scope.preparaClassePessoa($scope.cadastro.registro);
                 $rootScope.confirmarExcluir(scp);
             };
 
-            var preparaRegistro = function () {
-                if ($scope.cadastro.registro.pessoaTipo === 'PF') {
-                    $scope.cadastro.registro['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica';
-                } else if ($scope.cadastro.registro.pessoaTipo === 'PJ') {
-                    $scope.cadastro.registro['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica';
-                }
-            };
+            $scope.UtilSrv = UtilSrv;
 
             // fim das operaçoes atribuidas ao navagador
             // inicio ações especiais
@@ -177,6 +171,9 @@
                 'nome': 'Diagnósticos',
                 'include': 'pessoa/tab-diagnostico.html',
                 'visivel': false,
+                'selecao': function() {
+                    $scope.$broadcast ('abaDiagnosticoAtivada');
+                },
             }, {
                 'nome': 'Programas Sociais',
                 'include': 'pessoa/tab-grupo-social.html',

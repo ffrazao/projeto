@@ -3,8 +3,8 @@
 'use strict';
 
 angular.module(pNmModulo).factory(pNmFactory,
-  ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams',
-    function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams) {
+  ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams', 'FormularioSrv',
+    function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams, FormularioSrv) {
         var PessoaSrv = {
             funcionalidade: 'PESSOA',
             endereco: $rootScope.servicoUrl + '/pessoa',
@@ -34,6 +34,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                    'TelefoneTipo',
                    'RelacionamentoFuncao',
                    'PropriedadeRuralVinculoTipo',
+                   'Situacao',
                 ]}).success(function(resposta) {
                     if (resposta && resposta.resultado) {
                         scp.cadastro.apoio.pessoaTipoList = resposta.resultado[0];
@@ -71,6 +72,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                         scp.cadastro.apoio.telefoneTipoList = resposta.resultado[20];
                         scp.cadastro.apoio.relacionamentoFuncaoList = resposta.resultado[21];
                         scp.cadastro.apoio.propriedadeRuralVinculoTipoList = resposta.resultado[22];
+                        scp.cadastro.apoio.situacaoList = resposta.resultado[23];
 
                         scp.cadastro.apoio.tradicaoList = [];
                         var anoAtual = new Date().getFullYear();
@@ -105,6 +107,11 @@ angular.module(pNmModulo).factory(pNmFactory,
             },
             excluir : function() {
                 SegurancaSrv.acesso(this.funcionalidade, 'EXCLUIR');
+            },
+
+            // funcoes especiais
+            formularioFiltrarComColeta : function(filtro) {
+                return FormularioSrv.filtrarComColeta(filtro);
             },
         };
         return PessoaSrv;

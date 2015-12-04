@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
 import br.gov.df.emater.aterwebsrv.modelo.dto.FormularioCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.modelo.dto.FormularioColetaCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.Formulario;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.FormularioVersao;
 
@@ -46,6 +47,16 @@ public class FormularioRest {
 	public Resposta filtroExecutar(@RequestBody FormularioCadFiltroDto filtro, Principal usuario) {
 		try {
 			return new Resposta(facadeBo.formularioFiltroExecutar(usuario, filtro).getResposta());
+		} catch (Exception e) {
+			return new Resposta(e);
+		}
+	}
+
+	@RequestMapping(value = "/filtro-coleta-executar", method = RequestMethod.POST)
+	@Transactional(readOnly = true)
+	public Resposta filtroComColetaExecutar(@RequestBody FormularioColetaCadFiltroDto filtro, Principal usuario) {
+		try {
+			return new Resposta(facadeBo.formularioColetaFiltroExecutar(usuario, filtro).getResposta());
 		} catch (Exception e) {
 			return new Resposta(e);
 		}

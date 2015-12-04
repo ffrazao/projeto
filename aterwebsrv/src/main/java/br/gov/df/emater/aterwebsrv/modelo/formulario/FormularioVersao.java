@@ -1,9 +1,11 @@
 package br.gov.df.emater.aterwebsrv.modelo.formulario;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,7 +15,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -31,11 +32,8 @@ public class FormularioVersao extends EntidadeBase implements _ChavePrimaria<Int
 
 	private static final long serialVersionUID = 1L;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
-	@JsonSerialize(using = JsonSerializerData.class)
-	@JsonDeserialize(using = JsonDeserializerData.class)
-	private Calendar data;
+	@OneToMany(mappedBy = "formularioVersao", fetch = FetchType.LAZY)
+	private List<Coleta> coletaList;
 
 	@ManyToOne
 	@JoinColumn(name = "formulario_id")
@@ -48,13 +46,24 @@ public class FormularioVersao extends EntidadeBase implements _ChavePrimaria<Int
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
-	@Transient
-	private Object valor;
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+	@JsonSerialize(using = JsonSerializerData.class)
+	@JsonDeserialize(using = JsonDeserializerData.class)
+	private Calendar inicio;
 
 	private Integer versao;
 
-	public Calendar getData() {
-		return data;
+	public FormularioVersao() {
+		super();
+	}
+
+	public FormularioVersao(Serializable id) {
+		super(id);
+	}
+
+	public List<Coleta> getColetaList() {
+		return coletaList;
 	}
 
 	public Formulario getFormulario() {
@@ -70,16 +79,16 @@ public class FormularioVersao extends EntidadeBase implements _ChavePrimaria<Int
 		return id;
 	}
 
-	public Object getValor() {
-		return valor;
+	public Calendar getInicio() {
+		return inicio;
 	}
 
 	public Integer getVersao() {
 		return versao;
 	}
 
-	public void setData(Calendar data) {
-		this.data = data;
+	public void setColetaList(List<Coleta> coletaList) {
+		this.coletaList = coletaList;
 	}
 
 	public void setFormulario(Formulario formulario) {
@@ -95,8 +104,8 @@ public class FormularioVersao extends EntidadeBase implements _ChavePrimaria<Int
 		this.id = id;
 	}
 
-	public void setValor(Object valor) {
-		this.valor = valor;
+	public void setInicio(Calendar inicio) {
+		this.inicio = inicio;
 	}
 
 	public void setVersao(Integer versao) {

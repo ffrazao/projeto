@@ -6,7 +6,7 @@
                 <input type="checkbox" name="publicoAlvoConfirmacao" id="publicoAlvoConfirmacao" ng-model="cadastro.registro.publicoAlvoConfirmacao" ng-true-value="'S'" ng-false-value="'N'">
                 Beneficiário
             </label>
-            <label class="checkbox-inline" for="colaborador">
+            <label class="checkbox-inline" for="colaborador" ng-show="false">
                 <input type="checkbox" name="colaborador" id="colaborador" ng-model="cadastro.registro.colaborador" ng-click="tabVisivelColaborador(cadastro.registro.colaborador);">
                 Colaborador
             </label>

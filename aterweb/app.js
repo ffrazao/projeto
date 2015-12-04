@@ -223,6 +223,13 @@ angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 
         this.$apply(fn);
       }
     };
+    $rootScope.preparaClassePessoa = function (pessoa) {
+        if (pessoa.pessoaTipo === 'PF') {
+            pessoa['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica';
+        } else if (pessoa.pessoaTipo === 'PJ') {
+            pessoa['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica';
+        }
+    };
     // fim funcoes de apoio
 
     // inicio funcoes crud

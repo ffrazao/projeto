@@ -11,7 +11,7 @@ import org.joda.time.Period;
 public class UtilitarioData {
 
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
-	
+
 	private static final SimpleDateFormat DATE_FORMAT_JAVASCRIPT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
 	private static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -49,9 +49,12 @@ public class UtilitarioData {
 	}
 
 	public synchronized Calendar formataData(String date) throws ParseException {
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(DATE_FORMAT.parse(date));
-		return calendar;
+		if (date == null || date.trim().length() == 0) {
+			return null;
+		}
+		Calendar result = Calendar.getInstance();
+		result.setTime(DATE_FORMAT.parse(date));
+		return result;
 	}
 
 	public synchronized String formataDataHora(Calendar date) {

@@ -20,9 +20,9 @@ public class ColetarCmd extends _Comando {
 		System.out.println("Filtrando formulario...");
 		FormularioVersao formularioVersao = (FormularioVersao) contexto.getRequisicao();
 
-		Coleta coleta = (Coleta) formularioVersao.getValor();
-		dao.save(coleta);
-		contexto.setResposta(coleta.getId());
+//		Coleta coleta = (Coleta) formularioVersao.getValor();
+//		dao.save(coleta);
+//		contexto.setResposta(coleta.getId());
 		return false;
 	}
 

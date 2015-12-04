@@ -1,6 +1,8 @@
 package br.gov.df.emater.aterwebsrv.bo.pessoa;
 
+import java.text.ParseException;
 import java.util.Calendar;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoDao;
 import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoPropriedadeRuralDao;
+import br.gov.df.emater.aterwebsrv.dao.formulario.ColetaDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.ArquivoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.EmailDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.EnderecoDao;
@@ -25,10 +28,14 @@ import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoConfiguracaoViDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoTipoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.TelefoneDao;
+import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
+import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.CadastroAcao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
+import br.gov.df.emater.aterwebsrv.modelo.formulario.Coleta;
+import br.gov.df.emater.aterwebsrv.modelo.formulario.FormularioVersao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Arquivo;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Email;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Endereco;
@@ -44,6 +51,7 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoConfiguracaoVi;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoFuncao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoTipo;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Telefone;
+import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 
 @Service("PessoaSalvarCmd")
 public class SalvarCmd extends _Comando {
@@ -100,6 +108,9 @@ public class SalvarCmd extends _Comando {
 	@Autowired
 	private RelacionamentoDao relacionamentoDao;
 
+	@Autowired
+	private ColetaDao coletaDao;
+
 	private RelacionamentoTipo relacionamentoTipo;
 
 	@Autowired
@@ -108,6 +119,7 @@ public class SalvarCmd extends _Comando {
 	@Autowired
 	private PublicoAlvoPropriedadeRuralDao publicoAlvoPropriedadeRuralDao;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		Pessoa result = (Pessoa) contexto.getRequisicao();
@@ -119,6 +131,8 @@ public class SalvarCmd extends _Comando {
 		}
 		result.setUsuarioAlteracao(getUsuario(contexto.getUsuario().getName()));
 		result.setAlteracaoData(Calendar.getInstance());
+		
+		dao.save(result);
 
 		// publico alvo
 		if (Confirmacao.S.equals(result.getPublicoAlvoConfirmacao())) {
@@ -152,8 +166,6 @@ public class SalvarCmd extends _Comando {
 				}
 			}
 		}
-
-		dao.save(result);
 
 		// salvar enderecos
 		if (result.getEnderecoList() != null) {
@@ -328,10 +340,64 @@ public class SalvarCmd extends _Comando {
 			}
 		}
 
+		// salvar os formularios de diagnostico
+		if (result.getDiagnosticoList() != null) {
+			for (List<Object> formulario : (List<List<Object>>) result.getDiagnosticoList()) {
+				LinkedHashMap<Object, Object> f = (LinkedHashMap<Object, Object>) formulario.get(9);
+				List<LinkedHashMap<Object, Object>> c = (List<LinkedHashMap<Object, Object>>) f.get("coletaList");
+				if (c != null) {
+					for (LinkedHashMap<Object, Object> r : c) {
+						Coleta coleta = criarColeta(r);
+						coletaDao.save(coleta);
+					}
+				}
+			}
+		}
+
 		dao.flush();
 
 		contexto.setResposta(result.getId());
 		return true;
+	}
+
+	@SuppressWarnings("unchecked")
+	private Coleta criarColeta(LinkedHashMap<Object, Object> r) throws Exception {
+		Coleta result = null;
+		try {
+			result = new Coleta();
+			result.setId((Integer) r.get("id"));
+			result.setDataColeta((Calendar) UtilitarioData.getInstance().formataMilisegundos((String) r.get("dataColeta")));
+			result.setFinalizada(r.get("finalizada") != null ? Confirmacao.valueOf((String) r.get("finalizada")) : null);
+			result.setFormularioVersao(new FormularioVersao(((Integer) ((LinkedHashMap<Object, Object>) r.get("formularioVersao")).get("id"))));
+			if ((LinkedHashMap<Object, Object>) r.get("pessoa") != null) {
+				LinkedHashMap<Object, Object> obj = (LinkedHashMap<Object, Object>) r.get("pessoa");
+				if ((Integer) obj.get("id") != null) {
+					Pessoa pessoa = (Pessoa) Class.forName((String) obj.get("@class")).newInstance();
+					pessoa.setId((Integer) obj.get("id"));
+					result.setPessoa(pessoa);
+				}
+			}
+			if ((LinkedHashMap<Object, Object>) r.get("propriedadeRural") != null) {
+				LinkedHashMap<Object, Object> obj = (LinkedHashMap<Object, Object>) r.get("propriedadeRural");
+				if ((Integer) obj.get("id") != null) {
+					PropriedadeRural propriedadeRural = new PropriedadeRural();
+					propriedadeRural.setId((Integer) obj.get("id"));
+					result.setPropriedadeRural(propriedadeRural);
+				}
+			}
+			if ((LinkedHashMap<Object, Object>) r.get("usuario") != null) {
+				LinkedHashMap<Object, Object> obj = (LinkedHashMap<Object, Object>) r.get("usuario");
+				if ((Integer) obj.get("id") != null) {
+					Usuario usuario = new Usuario();
+					usuario.setId((Integer) obj.get("id"));
+					result.setUsuario(usuario);
+				}
+			}
+			result.setValorString((String) r.get("valor"));
+		} catch (ParseException e) {
+			throw e;
+		}
+		return result;
 	}
 
 }

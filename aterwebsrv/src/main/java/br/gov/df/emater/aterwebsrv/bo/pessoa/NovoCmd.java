@@ -57,7 +57,7 @@ public class NovoCmd extends _Comando {
 		if (formularioResposta.getResposta() != null) {
 			result.setDiagnosticoList(new ArrayList<Formulario>());
 			for (Object[] diagnostico : (List<Object[]>) formularioResposta.getResposta()) {
-				result.getDiagnosticoList().add(new Formulario((Integer) diagnostico[0], (String) diagnostico[1], (String) diagnostico[2], (Situacao) diagnostico[3], (Calendar) diagnostico[4], (Calendar) diagnostico[5]));
+				((ArrayList<Formulario>)result.getDiagnosticoList()).add(new Formulario((Integer) diagnostico[0], (String) diagnostico[1], (String) diagnostico[2], (Situacao) diagnostico[3], (Calendar) diagnostico[4], (Calendar) diagnostico[5]));
 			}
 		}
 		

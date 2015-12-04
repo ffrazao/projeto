@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaTipo;
 import br.gov.df.emater.aterwebsrv.modelo.dto.FormularioCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.modelo.dto.FormularioColetaCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.PessoaCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.PropriedadeRuralCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.UnidadeOrganizacionalCadFiltroDto;
@@ -60,6 +61,11 @@ public class FacadeBo implements BeanFactoryAware {
 	@Transactional(readOnly = true)
 	public _Contexto enderecoNovo(Principal usuario) throws Exception {
 		return this._executar(usuario, "EnderecoNovoCmd");
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto formularioColetaFiltroExecutar(Principal usuario, FormularioColetaCadFiltroDto filtro) throws Exception {
+		return this._executar(usuario, "FormularioFiltrarComColetaCh", filtro);
 	}
 
 	@Transactional

@@ -7,70 +7,6 @@
 angular.module(pNmModulo).factory(pNmFactory,
   ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams', 'mensagemSrv',
     function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams, mensagemSrv) {
-        var montar = function(scp, f, versao) {
-            var formulario = {
-                codigo: f.codigo,
-                tipo: 'array',
-                nome: f.nome,
-            };
-            if (!f.formularioVersaoList || f.formularioVersaoList.length === 0) {
-                toastr.error('Formulário incompleto', 'Erro ao montar');
-                return;
-            }
-            var pos, v = -1;
-            for (var i in f.formularioVersaoList) {
-                if (versao && f.formularioVersaoList[i].versao === versao) {
-                    pos = i;
-                    break;
-                } else if (f.formularioVersaoList[i].versao > v) {
-                    pos = i;
-                }
-            }
-            if (pos === null) {
-                toastr.error('Formulário incompleto', 'Erro ao montar');
-                return;
-            }
-            if (f.formularioVersaoList[pos] === null || f.formularioVersaoList[pos].formularioVersaoElementoList === null || f.formularioVersaoList[pos].formularioVersaoElementoList.length === 0) {
-                toastr.error('Formulário incompleto', 'Erro ao montar');
-                return;
-            }
-            var opcao = [];
-            var elemento = null;
-            var objOpcao = null;
-            for (i in f.formularioVersaoList[pos].formularioVersaoElementoList) {
-                elemento = f.formularioVersaoList[pos].formularioVersaoElementoList[i].elemento;
-                if (elemento.opcaoString && !elemento.opcao) {
-                    eval("objOpcao = " + elemento.opcaoString);
-                    elemento.opcao = objOpcao;
-                }
-                if (elemento.funcaoAoIniciar) {
-                    eval("objOpcao = " + elemento.funcaoAoIniciar);
-                    objOpcao();
-                }
-                // TODO fazer aqui a troca do codigo do formulario pelo formulario em si
-                if (elemento.tipo === 'array') {
-                    if (elemento.opcao.formulario.length !== 1) {
-                        toastr.error('A opção para multiplos formulários ainda não foi implementada!', 'Multiplos Formulários');
-                        return;
-                    }
-                    var subFormCodigo = elemento.opcao.formulario[0].formularioCodigo;
-                    var subFormVersao = elemento.opcao.formulario[0].formularioVersao;
-                    FormularioSrv.visualizarPorCodigo(scp, subFormCodigo).success(function(resposta) {
-                        if (resposta.mensagem === 'OK') {
-                            var subFormulario = montar(scp, resposta.resultado, subFormVersao);
-                            elemento.opcao = subFormulario.opcao;
-                        }
-                    });
-                }
-                // TODO fazer aqui a troca do codigo do formulario pelo formulario em si
-
-                opcao.push(elemento);
-            }
-            formulario.opcao = opcao;
-
-            return formulario;
-        };
-
         var FormularioSrv = {
             funcionalidade: 'FORMULARIO',
             endereco: $rootScope.servicoUrl + '/formulario',
@@ -126,6 +62,8 @@ angular.module(pNmModulo).factory(pNmFactory,
             excluir : function() {
                 SegurancaSrv.acesso(this.funcionalidade, 'EXCLUIR');
             },
+
+            // funcoes especiais
             testar : function(scp, id, versao) {
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
                 if (!id) {
@@ -134,7 +72,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                 }
                 this.visualizar(id).success(function (resposta) {
                     if (resposta.mensagem === 'OK') {
-                        var formulario = montar(scp, resposta.resultado, versao);
+                        var formulario = this.montar(scp, resposta.resultado, versao);
                         if (!formulario) {
                             return;
                         }
@@ -148,27 +86,71 @@ angular.module(pNmModulo).factory(pNmFactory,
                     }
                 });
             },
-            coletar : function(scp, id, versao) {
-                SegurancaSrv.acesso(this.funcionalidade, 'COLETAR');
-                if (!id) {
-                    toastr.error('Não foi possível identificar o formulário', 'Identificar formulário');
+            montar: function(scp, f, versao) {
+                var formulario = {
+                    codigo: f.codigo,
+                    tipo: 'array',
+                    nome: f.nome,
+                };
+                if (!f.formularioVersaoList || f.formularioVersaoList.length === 0) {
+                    toastr.error('Formulário incompleto', 'Erro ao montar');
                     return;
                 }
-                this.visualizar(id).success(function (resposta) {
-                    if (resposta.mensagem === 'OK') {
-                        var formulario = montar(scp, resposta.resultado, versao);
-                        if (!formulario) {
+                var pos, v = -1;
+                for (var i in f.formularioVersaoList) {
+                    if (versao && f.formularioVersaoList[i].versao === versao) {
+                        pos = i;
+                        break;
+                    } else if (f.formularioVersaoList[i].versao > v) {
+                        pos = i;
+                    }
+                }
+                if (pos === null) {
+                    toastr.error('Formulário incompleto', 'Erro ao montar');
+                    return;
+                }
+                if (f.formularioVersaoList[pos] === null || f.formularioVersaoList[pos].formularioVersaoElementoList === null || f.formularioVersaoList[pos].formularioVersaoElementoList.length === 0) {
+                    toastr.error('Formulário incompleto', 'Erro ao montar');
+                    return;
+                }
+                var opcao = [];
+                var elemento = null;
+                var objOpcao = null;
+                for (i in f.formularioVersaoList[pos].formularioVersaoElementoList) {
+                    elemento = f.formularioVersaoList[pos].formularioVersaoElementoList[i].elemento;
+                    if (elemento.opcaoString && !elemento.opcao) {
+                        eval("objOpcao = " + elemento.opcaoString);
+                        elemento.opcao = objOpcao;
+                    }
+                    if (elemento.funcaoAoIniciar) {
+                        eval("objOpcao = " + elemento.funcaoAoIniciar);
+                        objOpcao();
+                    }
+                    // TODO fazer aqui a troca do codigo do formulario pelo formulario em si
+                    if (elemento.tipo === 'array') {
+                        if (elemento.opcao.formulario.length !== 1) {
+                            toastr.error('A opção para multiplos formulários ainda não foi implementada!', 'Multiplos Formulários');
                             return;
                         }
-                        formulario.submetido = true;
-                        var conteudo = {formulario: formulario, dados: {}};
-                        mensagemSrv.confirmacao(false, '<frz-form ng-model="conteudo.formulario" dados="conteudo.dados"/>', 
-                            formulario.nome, conteudo).then(function(conteudo) {
-                            // processar o retorno positivo da modal
-                            mensagemSrv.alerta(false, angular.toJson(conteudo.dados), 'Coleta do Formulário');
+                        var subFormCodigo = elemento.opcao.formulario[0].formularioCodigo;
+                        var subFormVersao = elemento.opcao.formulario[0].formularioVersao;
+                        FormularioSrv.visualizarPorCodigo(scp, subFormCodigo).success(function(resposta) {
+                            if (resposta.mensagem === 'OK') {
+                                var subFormulario = this.montar(scp, resposta.resultado, subFormVersao);
+                                elemento.opcao = subFormulario.opcao;
+                            }
                         });
                     }
-                });
+                    // TODO fazer aqui a troca do codigo do formulario pelo formulario em si
+
+                    opcao.push(elemento);
+                }
+                formulario.opcao = opcao;
+
+                return formulario;
+            },
+            filtrarComColeta : function(filtro) {
+                return $http.post(this.endereco + '/filtro-coleta-executar', filtro);
             },
         };
         return FormularioSrv;

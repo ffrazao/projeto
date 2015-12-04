@@ -1,8 +1,8 @@
 package br.gov.df.emater.aterwebsrv.modelo.formulario;
 
 import java.util.Calendar;
-import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -11,11 +11,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -37,14 +38,15 @@ public class Coleta extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
 
-	@Enumerated(EnumType.STRING)
-	private Confirmacao completada;
-
+	@Column(name = "data_coleta")
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	@JsonSerialize(using = JsonSerializerData.class)
 	@JsonDeserialize(using = JsonDeserializerData.class)
-	private Calendar data;
+	private Calendar dataColeta;
+
+	@Enumerated(EnumType.STRING)
+	private Confirmacao finalizada;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "formulario_versao_id")
@@ -66,15 +68,19 @@ public class Coleta extends EntidadeBase implements _ChavePrimaria<Integer> {
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
 
-	@OneToMany(mappedBy = "coleta")
-	private List<Valor> valorList;
+	@Transient
+	private Object valor;
 
-	public Confirmacao getCompletada() {
-		return completada;
+	@Lob
+	@Column(name = "valor")
+	private String valorString;
+
+	public Calendar getDataColeta() {
+		return dataColeta;
 	}
 
-	public Calendar getData() {
-		return data;
+	public Confirmacao getFinalizada() {
+		return finalizada;
 	}
 
 	public FormularioVersao getFormularioVersao() {
@@ -98,16 +104,20 @@ public class Coleta extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return usuario;
 	}
 
-	public List<Valor> getValorList() {
-		return valorList;
+	public Object getValor() {
+		return valor;
 	}
 
-	public void setCompletada(Confirmacao completada) {
-		this.completada = completada;
+	public String getValorString() {
+		return valorString;
 	}
 
-	public void setData(Calendar data) {
-		this.data = data;
+	public void setDataColeta(Calendar dataColeta) {
+		this.dataColeta = dataColeta;
+	}
+
+	public void setFinalizada(Confirmacao finalizada) {
+		this.finalizada = finalizada;
 	}
 
 	public void setFormularioVersao(FormularioVersao formularioVersao) {
@@ -131,8 +141,12 @@ public class Coleta extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.usuario = usuario;
 	}
 
-	public void setValorList(List<Valor> valorList) {
-		this.valorList = valorList;
+	public void setValor(Object valor) {
+		this.valor = valor;
+	}
+
+	public void setValorString(String valorString) {
+		this.valorString = valorString;
 	}
 
 }
