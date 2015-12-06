@@ -1,4 +1,4 @@
-/* global StringMask:false */
+/* global StringMask:false, converterStringParaData */ /* jslint evil: true */
 
 (function(pNmModulo, pNmController, pNmFormulario) {
 
@@ -29,14 +29,11 @@ angular.module(pNmModulo).controller(pNmController,
         tipo: 'array',
         opcao: [
             {
-                nome: 'Id Formulário',
-                codigo: 'formularioId',
-                tipo: 'string',
-            },
-            {
                 nome: 'Versão Formulário',
                 codigo: 'formularioVersao',
                 tipo: 'string',
+                escondeLista: 'S',
+                escondeForm: 'S',
             },
             {
                 nome: 'Data da Coleta',
@@ -66,6 +63,7 @@ angular.module(pNmModulo).controller(pNmController,
                 nome: 'Usuario',
                 codigo: 'usuario',
                 tipo: 'string',
+                somenteLeitura: 'S',
             },
             {
                 nome: 'Formulário',
@@ -73,10 +71,12 @@ angular.module(pNmModulo).controller(pNmController,
                 tipo: 'objeto',
             },
         ],
-        funcaoIncluirAntes: function() {
+        funcaoIncluirAntes: function(form, dd) {
+            dd.formularioVersao = {id: $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[9].id};
+
             var id = $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[0];
             var versao = $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[9].versao;
-            var form = this.opcao[3];
+            var f = this.opcao[4];
             if (!id || !versao) {
                 toastr.error('Não foi possível identificar o formulário', 'Identificar formulário');
                 return;
@@ -84,12 +84,35 @@ angular.module(pNmModulo).controller(pNmController,
             FormularioSrv.visualizar(id).success(function (resposta) {
                 if (resposta.mensagem === 'OK') {
                     var formulario = FormularioSrv.montar($scope, resposta.resultado, versao);
-                    form.opcao = formulario.opcao;
+                    f.opcao = formulario.opcao;
                 }
             });
         },
-        funcaoEditarAntes: function() {
-            console.log(this.opcao);
+        funcaoEditarAntes: function(form, dd) {
+            dd.formularioVersao = {id: $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[9].id};
+
+            if (dd.valorString && !dd.valor) {
+                var x = null;
+                eval('x = ' + dd.valorString);
+                // converter string para data
+                x = converterStringParaData(x);
+                console.log(x);
+                dd.valor = x;
+            }
+
+            var id = $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[0];
+            var versao = $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[9].versao;
+            var f = this.opcao[4];
+            if (!id || !versao) {
+                toastr.error('Não foi possível identificar o formulário', 'Identificar formulário');
+                return;
+            }
+            FormularioSrv.visualizar(id).success(function (resposta) {
+                if (resposta.mensagem === 'OK') {
+                    var formulario = FormularioSrv.montar($scope, resposta.resultado, versao);
+                    f.opcao = formulario.opcao;
+                }
+            });
         },
     };
 

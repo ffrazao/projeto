@@ -1,7 +1,24 @@
-<div class="row">
-    <div class="form-group" title="Diagnósticos" style="padding: 10px;">
-        <input type="hidden" name="diagnostico" id="diagnostico" ng-model="cadastro.registro.diagnostico.length">
-        <ng-include src="'propriedade-rural/tab-diagnostico-sub.html'" ng-controller="DiagnosticoSubCtrl"></ng-include>
-    </div>
-</div>
-
+<uib-tabset>
+	<uib-tab>
+		<uib-tab-heading>
+			Captação <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+		</uib-tab-heading>
+		<div class="row">
+		    <div class="form-group col-md-12">
+		        <label class="control-label">Formulários</label>
+		        <ng-include src="'propriedade-rural/sub-diagnostico-captacao.html'" ng-controller="PropriedadeRuralDiagnosticoCaptacaoCtrl" />
+		    </div>
+		</div>
+	</uib-tab>
+	<uib-tab>
+		<uib-tab-heading>
+			Resultado <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+		</uib-tab-heading>
+		<div class="row">
+		    <div class="form-group col-md-12">
+		        <label class="control-label">Resultado</label>
+		        <ng-include src="'propriedade-rural/sub-diagnostico-resultado.html'" ng-controller="PropriedadeRuralDiagnosticoResultadoCtrl" />
+		    </div>
+		</div>
+	</uib-tab>
+</uib-tabset>

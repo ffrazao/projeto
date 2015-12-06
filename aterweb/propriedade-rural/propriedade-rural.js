@@ -14,12 +14,12 @@ angular.module(pNmModulo).config(['$stateProvider', function($stateProvider) {
 
 angular.module(pNmModulo).controller(pNmController,
     ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance',
-    'modalCadastro', 'UtilSrv', 'mensagemSrv', 'PropriedadeSrv', 'EnderecoSrv',
+    'modalCadastro', 'UtilSrv', 'mensagemSrv', 'PropriedadeRuralSrv', 'EnderecoSrv',
     function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance,
-        modalCadastro, UtilSrv, mensagemSrv, PropriedadeSrv, EnderecoSrv) {
+        modalCadastro, UtilSrv, mensagemSrv, PropriedadeRuralSrv, EnderecoSrv) {
 
         // inicializacao
-        $scope.crudInit($scope, $state, null, pNmFormulario, PropriedadeSrv);
+        $scope.crudInit($scope, $state, null, pNmFormulario, PropriedadeRuralSrv);
 
         // código para verificar se o modal está ou não ativo
         $scope.verificaEstado($uibModalInstance, $scope, 'filtro', modalCadastro, pNmFormulario);
@@ -174,52 +174,48 @@ angular.module(pNmModulo).controller(pNmController,
     };
 
     // Inicio Trabalho com tabs
-    $scope.tabs =
-      [
-          {
-              'nome': 'Principal',
-              'include': 'propriedade-rural/tab-principal.html',
-              'visivel': true,
-          },
-          {
-              'nome': 'Diagonóstico',
-              'include': 'propriedade-rural/tab-diagnostico.html',
-              'visivel': true,
-          },
-          {
-              'nome': 'Resultados',
-              'include': 'propriedade-rural/tab-resultado.html',
-              'visivel': true,
-          },
-          {
-              'nome': 'RegistroIPA',
-              'include': 'propriedade-rural/tab-ipa.html',
-              'visivel': true,
-          },
-          {
-                'nome': 'Arquivos',
-                'include': 'propriedade-rural/tab-arquivo.html',
-                'visivel': true,
-          },
-          {
-              'nome': 'Pendências',
-              'include': 'propriedade-rural/tab-pendencia.html',
-              'visivel': true,
-          },
-          {
-              'nome': 'Complementos',
-              'include': 'propriedade-rural/tab-complemento.html',
-              'visivel': false,
-          },
-          
-      ];
-//                   {nome:'Complementos',url:'propriedade-rural/tab-complemento.html'}, 
+    $scope.tabs = [
+        {
+            'nome': 'Principal',
+            'include': 'propriedade-rural/tab-principal.html',
+            'visivel': true,
+        },
+        {
+            'nome': 'Diagnósticos',
+            'include': 'propriedade-rural/tab-diagnostico.html',
+            'visivel': true,
+            'selecao': function() {
+                $scope.$broadcast ('abaDiagnosticoAtivada');
+            },
+        },
+        {
+            'nome': 'RegistroIPA',
+            'include': 'propriedade-rural/tab-ipa.html',
+            'visivel': true,
+        },
+        {
+            'nome': 'Arquivos',
+            'include': 'propriedade-rural/tab-arquivo.html',
+            'visivel': true,
+        },
+        {
+            'nome': 'Pendências',
+            'include': 'propriedade-rural/tab-pendencia.html',
+            'visivel': true,
+        },
+        {
+            'nome': 'Complementos',
+            'include': 'propriedade-rural/tab-complemento.html',
+            'visivel': false,
+        },
+    ];
+    // {nome:'Complementos',url:'propriedade-rural/tab-complemento.html'}, 
     // Fim Trabalho com tabs
 
- // Inicio Trabalho com uso do solo
+    // Inicio Trabalho com uso do solo
     // Fim Trabalho com uso do solo
 
- // inicio diagnostico
+    // inicio diagnostico
     $scope.cadastro.registro.diagnostico =
     [ { data: '19/02/1970', nome: 'Coleta X', 
         situacao: { codigo: '1', descricao: 'Em Aberto'}, 

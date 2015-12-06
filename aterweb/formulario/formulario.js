@@ -170,21 +170,23 @@
                                         tipo: 'numero',
                                         tamanho: 2,
                                         somenteLeitura: true,
+                                        funcaoRequerido: function() {return false;},
                                         opcao: {
                                             fracao: '0',
                                         }
                                     },
                                     {
                                         nome: 'Data de Início de Validade',
-                                        codigo: 'data',
+                                        codigo: 'inicio',
                                         tipo: 'data',
-                                        funcaoRequerido: function() {return false;},
+                                        funcaoRequerido: function() {return true;},
                                         tamanho: 2,
                                     },
                                     {
                                         codigo: 'formularioVersaoElementoList',
                                         tipo: 'array',
                                         nome: 'Elementos do Formulário',
+                                        funcaoRequerido: function() {return true;},
                                         tamanho: 8,
                                         opcao:
                                             [

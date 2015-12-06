@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoDao;
@@ -29,7 +31,6 @@ import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoTipoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.TelefoneDao;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
-import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.CadastroAcao;
@@ -51,7 +52,6 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoConfiguracaoVi;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoFuncao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoTipo;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Telefone;
-import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 
 @Service("PessoaSalvarCmd")
 public class SalvarCmd extends _Comando {
@@ -131,7 +131,7 @@ public class SalvarCmd extends _Comando {
 		}
 		result.setUsuarioAlteracao(getUsuario(contexto.getUsuario().getName()));
 		result.setAlteracaoData(Calendar.getInstance());
-		
+
 		dao.save(result);
 
 		// publico alvo
@@ -348,6 +348,9 @@ public class SalvarCmd extends _Comando {
 				if (c != null) {
 					for (LinkedHashMap<Object, Object> r : c) {
 						Coleta coleta = criarColeta(r);
+						coleta.setPessoa(result);
+						coleta.setPropriedadeRural(null);
+						coleta.setUsuario(getUsuario(contexto.getUsuario().getName()));
 						coletaDao.save(coleta);
 					}
 				}
@@ -366,36 +369,50 @@ public class SalvarCmd extends _Comando {
 		try {
 			result = new Coleta();
 			result.setId((Integer) r.get("id"));
-			result.setDataColeta((Calendar) UtilitarioData.getInstance().formataMilisegundos((String) r.get("dataColeta")));
+			result.setDataColeta((Calendar) stringParaData(r.get("dataColeta")));
 			result.setFinalizada(r.get("finalizada") != null ? Confirmacao.valueOf((String) r.get("finalizada")) : null);
 			result.setFormularioVersao(new FormularioVersao(((Integer) ((LinkedHashMap<Object, Object>) r.get("formularioVersao")).get("id"))));
-			if ((LinkedHashMap<Object, Object>) r.get("pessoa") != null) {
-				LinkedHashMap<Object, Object> obj = (LinkedHashMap<Object, Object>) r.get("pessoa");
-				if ((Integer) obj.get("id") != null) {
-					Pessoa pessoa = (Pessoa) Class.forName((String) obj.get("@class")).newInstance();
-					pessoa.setId((Integer) obj.get("id"));
-					result.setPessoa(pessoa);
-				}
+
+			if (r.get("valor") != null) {
+				ObjectMapper om = new ObjectMapper();
+				String json = om.writeValueAsString(r.get("valor"));
+				result.setValorString(json);
 			}
-			if ((LinkedHashMap<Object, Object>) r.get("propriedadeRural") != null) {
-				LinkedHashMap<Object, Object> obj = (LinkedHashMap<Object, Object>) r.get("propriedadeRural");
-				if ((Integer) obj.get("id") != null) {
-					PropriedadeRural propriedadeRural = new PropriedadeRural();
-					propriedadeRural.setId((Integer) obj.get("id"));
-					result.setPropriedadeRural(propriedadeRural);
-				}
-			}
-			if ((LinkedHashMap<Object, Object>) r.get("usuario") != null) {
-				LinkedHashMap<Object, Object> obj = (LinkedHashMap<Object, Object>) r.get("usuario");
-				if ((Integer) obj.get("id") != null) {
-					Usuario usuario = new Usuario();
-					usuario.setId((Integer) obj.get("id"));
-					result.setUsuario(usuario);
-				}
-			}
-			result.setValorString((String) r.get("valor"));
-		} catch (ParseException e) {
+		} catch (Exception e) {
 			throw e;
+		}
+		return result;
+	}
+
+	private Object stringParaData(Object string) throws ParseException {
+		if ((string == null) || !(string instanceof String)) {
+			return string;
+		}
+		Object result = null;
+		try {
+			result = (Calendar) UtilitarioData.getInstance().formataMilisegundos((String) string);
+		} catch (ParseException e) {
+			try {
+				result = (Calendar) UtilitarioData.getInstance().formataDataJavascript((String) string);
+			} catch (ParseException e1) {
+				try {
+					result = (Calendar) UtilitarioData.getInstance().formataTimestamp((String) string);
+				} catch (ParseException e2) {
+					try {
+						result = (Calendar) UtilitarioData.getInstance().formataMilisegundos((String) string);
+					} catch (ParseException e3) {
+						try {
+							result = (Calendar) UtilitarioData.getInstance().formataDataHora((String) string);
+						} catch (ParseException e4) {
+							try {
+								result = (Calendar) UtilitarioData.getInstance().formataData((String) string);
+							} catch (ParseException e5) {
+								result = string;
+							}
+						}
+					}
+				}
+			}
 		}
 		return result;
 	}

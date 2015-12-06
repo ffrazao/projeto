@@ -72,7 +72,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                 }
                 this.visualizar(id).success(function (resposta) {
                     if (resposta.mensagem === 'OK') {
-                        var formulario = this.montar(scp, resposta.resultado, versao);
+                        var formulario = FormularioSrv.montar(scp, resposta.resultado, versao);
                         if (!formulario) {
                             return;
                         }
@@ -136,7 +136,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                         var subFormVersao = elemento.opcao.formulario[0].formularioVersao;
                         FormularioSrv.visualizarPorCodigo(scp, subFormCodigo).success(function(resposta) {
                             if (resposta.mensagem === 'OK') {
-                                var subFormulario = this.montar(scp, resposta.resultado, subFormVersao);
+                                var subFormulario = FormularioSrv.montar(scp, resposta.resultado, subFormVersao);
                                 elemento.opcao = subFormulario.opcao;
                             }
                         });

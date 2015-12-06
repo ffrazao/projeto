@@ -3,9 +3,9 @@
 'use strict';
 
 angular.module(pNmModulo).factory(pNmFactory,
-  ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams',
-    function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams) {
-        var PropriedadeSrv = {
+  ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams', 'FormularioSrv',
+    function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams, FormularioSrv) {
+        var PropriedadeRuralSrv = {
             funcionalidade: 'PROPRIEDADE_RURAL',
             endereco: $rootScope.servicoUrl + '/propriedade-rural',
             abrir : function(scp) {
@@ -54,9 +54,15 @@ angular.module(pNmModulo).factory(pNmFactory,
             excluir : function() {
                 SegurancaSrv.acesso(this.funcionalidade, 'EXCLUIR');
             },
+
+            // funcoes especiais
+            formularioFiltrarComColeta : function(filtro) {
+                return FormularioSrv.filtrarComColeta(filtro);
+            },
+
         };
-        return PropriedadeSrv;
+        return PropriedadeRuralSrv;
     }
 ]);
 
-})('principal', 'PropriedadeSrv');
+})('principal', 'PropriedadeRuralSrv');

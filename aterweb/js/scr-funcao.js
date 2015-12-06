@@ -157,3 +157,112 @@ function geraUUID() {
     });
     return uuid;
 }
+
+function isString(s) {
+    return typeof(s) === 'string' || s instanceof String;
+}
+
+function isObject(s) {
+    return typeof(s) === 'object' || s instanceof Object;
+}
+
+function isArray(s) {
+    return isObject(s) || s instanceof Array;
+}
+
+function parseISODate (input) {
+    var iso = /^(\d{4})(?:-?W(\d+)(?:-?(\d+)D?)?|(?:-(\d+))?-(\d+))(?:[T ](\d+):(\d+)(?::(\d+)(?:\.(\d+))?)?)?(?:Z(-?\d*))?$/;
+
+    var parts = input.match(iso);
+
+    if (parts === null) {
+        throw new Error("Invalid Date");
+    }
+
+    var days, fractional, hours, localzone, milliseconds, minutes, months, seconds, timezone, weeks, year;
+
+    year = Number(parts[1]);
+
+    if (typeof parts[2] !== "undefined") {
+        /* Convert weeks to days, months 0 */
+        weeks = Number(parts[2]) - 1;
+        days  = Number(parts[3]);
+
+        if (typeof days === "undefined") {
+            days = 0;
+        }
+
+        days += weeks * 7;
+
+        months = 0;
+    }
+    else {
+        if (typeof parts[4] !== "undefined") {
+            months = Number(parts[4]) - 1;
+        }
+        else {
+            /* it's an ordinal date... */
+            months = 0;
+        }
+
+        days   = Number(parts[5]);
+    }
+
+    if (typeof parts[6] !== "undefined" &&
+        typeof parts[7] !== "undefined")
+    {
+        hours        = Number(parts[6]);
+        minutes      = Number(parts[7]);
+
+        if (typeof parts[8] !== "undefined") {
+            seconds      = Number(parts[8]);
+
+            if (typeof parts[9] !== "undefined") {
+                fractional   = Number(parts[9]);
+                milliseconds = fractional / 100;
+            }
+            else {
+                milliseconds = 0;
+            }
+        }
+        else {
+            seconds      = 0;
+            milliseconds = 0;
+        }
+    }
+    else {
+        hours        = 0;
+        minutes      = 0;
+        seconds      = 0;
+        fractional   = 0;
+        milliseconds = 0;
+    }
+
+    if (typeof parts[10] !== "undefined") {
+        /* Timezone adjustment, offset the minutes appropriately */
+        localzone = -(new Date().getTimezoneOffset());
+        timezone  = parts[10] * 60;
+
+        minutes = Number(minutes) + (timezone - localzone);
+    }
+
+    return new Date(year, months, days, hours, minutes, seconds, milliseconds);
+}
+
+function converterStringParaData(obj) {
+    if (!obj) {
+        return obj;
+    } else if (isString(obj)) {
+        try {
+            var data = parseISODate(obj);
+            return data;
+        } catch (exception) {
+            return obj;
+        }
+    } else if (isObject(obj) || isArray(obj)) {
+        for (var a in obj) {
+            obj[a] = converterStringParaData(obj[a]);
+        }
+    }
+    return obj;
+}
