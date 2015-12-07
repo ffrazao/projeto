@@ -17,6 +17,7 @@ import br.gov.df.emater.aterwebsrv.dao.sistema.UsuarioDao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.Emprego;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.Lotacao;
+import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Perfil;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.PerfilFuncionalidadeComando;
@@ -97,6 +98,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 
 		// avaliar perfis do usuario
 		avaliarPerfil(usuario.getAuthorities(), authoritiesRetorno, perfilFuncionalidadeComandoListRetorno, perfilFuncionalidadeComandoListNegadoRetorno);
+		UnidadeOrganizacional lotacaoAtual = null;
 		
 		// inicio avaliar perfis da empresa do usuario
 		for (Emprego emprego: empregoDao.findByPessoaFisicaId(usuario.getPessoa().getId())) {
@@ -108,6 +110,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 				for (Usuario usuarioUnidadeOrganizacional : usuarioDao.findByUnidadeOrganizacional(lotacao.getUnidadeOrganizacional())) {
 					avaliarPerfil(usuarioUnidadeOrganizacional.getAuthorities(), authoritiesRetorno, perfilFuncionalidadeComandoListRetorno, perfilFuncionalidadeComandoListNegadoRetorno);
 				}
+				lotacaoAtual =  lotacao.getUnidadeOrganizacional();
 			}
 		}
 		// fim avaliar perfis da empresa do usuario
@@ -160,6 +163,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 		usuarioRetorno.setPessoa(pessoaRetorno);
 		usuarioRetorno.setUsername(usuario.getUsername());
 		usuarioRetorno.setUsuarioStatusConta(usuario.getUsuarioStatusConta());
+		usuarioRetorno.setLotacaoAtual(lotacaoAtual == null ? null : lotacaoAtual.infoBasica());
 
 		// captar os perfis ativos
 		detailsChecker.check(usuarioRetorno);

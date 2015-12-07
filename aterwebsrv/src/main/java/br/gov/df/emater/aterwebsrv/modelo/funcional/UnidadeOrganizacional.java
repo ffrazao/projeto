@@ -11,13 +11,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.UnidadeOrganizacionalClassificacao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 
 @Entity
 @Table(name = "unidade_organizacional", schema = EntidadeBase.FUNCIONAL_SCHEMA)
-public class UnidadeOrganizacional extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class UnidadeOrganizacional extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<UnidadeOrganizacional> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -35,6 +36,14 @@ public class UnidadeOrganizacional extends EntidadeBase implements _ChavePrimari
 	private PessoaJuridica pessoaJuridica;
 
 	private String sigla;
+
+
+	public UnidadeOrganizacional() {
+	}
+	
+	public UnidadeOrganizacional( Integer id, String nome) {
+		setId(id); setNome(nome);
+	}
 
 	public UnidadeOrganizacionalClassificacao getClassificacao() {
 		return classificacao;
@@ -76,6 +85,12 @@ public class UnidadeOrganizacional extends EntidadeBase implements _ChavePrimari
 
 	public void setSigla(String sigla) {
 		this.sigla = sigla;
+	}
+
+	@Override
+	public UnidadeOrganizacional infoBasica() {
+		return new UnidadeOrganizacional( this.id, this.nome );
+		
 	}
 
 }

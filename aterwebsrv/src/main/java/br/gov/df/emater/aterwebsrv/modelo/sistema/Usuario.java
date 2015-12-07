@@ -75,6 +75,9 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 	@ManyToOne
 	@JoinColumn(name = "unidade_organizacional_id")
 	private UnidadeOrganizacional unidadeOrganizacional;
+	
+	@Transient
+	private UnidadeOrganizacional lotacaoAtual;
 
 	@Column(name = "nome_usuario")
 	@NotEmpty
@@ -128,6 +131,10 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 		return id;
 	}
 
+	public UnidadeOrganizacional getLotacaoAtual() {
+		return lotacaoAtual;
+	}
+
 	public String getModulo() {
 		return modulo;
 	}
@@ -164,6 +171,10 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 		int result = super.hashCode();
 		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
+	}
+
+	public Usuario infoBasica() {
+		return new Usuario(this.username);
 	}
 
 	@Override
@@ -207,6 +218,10 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 		this.id = id;
 	}
 
+	public void setLotacaoAtual(UnidadeOrganizacional lotacaoAtual) {
+		this.lotacaoAtual = lotacaoAtual;
+	}
+
 	public void setModulo(String modulo) {
 		this.modulo = modulo;
 	}
@@ -238,9 +253,5 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 	@Override
 	public String toString() {
 		return (pessoa == null ? getUsername() : (pessoa.getApelidoSigla() == null ? pessoa.getNome() : pessoa.getApelidoSigla()));
-	}
-
-	public Usuario infoBasica() {
-		return new Usuario(this.username);
 	}
 }
