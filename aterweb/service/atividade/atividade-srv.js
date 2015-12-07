@@ -9,8 +9,9 @@ angular.module(pNmModulo).factory(pNmFactory,
             funcionalidade: 'ATIVIDADE',
             endereco: $rootScope.servicoUrl + '/atividade',
             abrir : function(scp) {
-/*              
+              
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
+/*                
                 UtilSrv.dominio({ent: [
                    'UnidadeOrganizacionalOperacional',
                    'UnidadeOrganizacionalOperacionalTatica',

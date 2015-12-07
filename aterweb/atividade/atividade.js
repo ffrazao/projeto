@@ -47,6 +47,14 @@
                     $log.info('Modal dismissed at: ' + new Date());
                 });
             };
+            $scope.abrir = function() {
+                // inicia lista unidade
+                if( $rootScope.token.lotacaoAtual ){
+                  $scope.cadastro.filtro.unidadeBeneficiario = [];  
+                  $scope.cadastro.filtro.unidadeBeneficiario.push($rootScope.token.lotacaoAtual);
+                }
+                $rootScope.abrir($scope);
+            };
             // fim: atividades do Modal
 
             // inicio das operaçoes atribuidas ao navagador

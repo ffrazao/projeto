@@ -80,7 +80,7 @@
                         {
                             name: 'Registrar',
                             link: 'p.atividade.filtro',
-                            funcionalidade: 'REGISTRAR',
+                            funcionalidade: 'ATIVIDADE',
                             visivel: false,
                         },
                         {
