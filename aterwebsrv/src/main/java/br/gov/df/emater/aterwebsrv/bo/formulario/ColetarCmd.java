@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.formulario.ColetaDao;
-import br.gov.df.emater.aterwebsrv.modelo.formulario.Coleta;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.FormularioVersao;
 
 @Service("FormularioColetarCmd")

@@ -55,6 +55,13 @@
 </div>
 
 <div class="row">
+    <div class="form-group col-md-12">
+        <label class="control-label">Beneficiários Vinculados</label>
+        <ng-include src="'propriedade-rural/sub-propriedade-rural-publico-alvo.html'" ng-controller="PropriedadeRuralPublicoAlvoCtrl" />
+    </div>
+</div>
+
+<div class="row">
     <div class="form-group col-md-5">
         <label class="control-label">Situação Fundiária</label>
         <select class="form-control" id="situacaoFundiaria" name="situacaoFundiaria" ng-model="cadastro.registro.situacaoFundiaria" ng-options="item.codigo as item.descricao for item in cadastro.apoio.situacaoFundiariaList">
@@ -120,12 +127,5 @@
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             Campo Obrigatório
         </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="form-group col-md-12">
-        <label class="control-label">Beneficiários</label>
-        <ng-include src="'propriedade-rural/registro-sub-vinculado.html'" ng-controller="RegistroVinculadoCtrl" />
     </div>
 </div>

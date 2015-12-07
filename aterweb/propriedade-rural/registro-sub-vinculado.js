@@ -55,7 +55,7 @@ angular.module(pNmModulo).controller(pNmController,
 
     $scope.incluir = function() {
         var tmp = $scope.subVinculadoNvg.selecao.item;
-        var item = { arquivo: '..\\pessoa\\pessoa-modal.html', descricao: 'Pessoa', tamanho :800, dados: tmp };
+        var item = { arquivo: '../pessoa/pessoa-modal.html', descricao: 'Pessoa', tamanho :800, dados: tmp };
         $scope.abreModal(item);
     };
 

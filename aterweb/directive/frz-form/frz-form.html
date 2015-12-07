@@ -43,6 +43,18 @@
             name="f_{{ngModel.codigo}}_p_{{$index}}" 
             ng-model="dados[item.codigo]" 
             ng-required="item.funcaoRequerido()" 
+            ng-options="opcao[item.opcao.codigo] as opcao[item.opcao.descricao] for opcao in item.opcao.lista track by opcao[item.opcao.codigo]" title="{{item.pop}}" 
+            ng-readonly="item.somenteLeitura === 'S'">
+            <option value="">-- Selecione --</option>
+        </select>
+    </script>
+
+    <script type="text/ng-template" id="campo_combo_unico_objeto">
+        <select class="form-control" 
+            id="f_{{ngModel.codigo}}_p_{{$index}}" 
+            name="f_{{ngModel.codigo}}_p_{{$index}}" 
+            ng-model="dados[item.codigo]" 
+            ng-required="item.funcaoRequerido()" 
             ng-options="opcao as opcao[item.opcao.descricao] for opcao in item.opcao.lista track by opcao[item.opcao.codigo]" title="{{item.pop}}" 
             ng-readonly="item.somenteLeitura === 'S'">
             <option value="">-- Selecione --</option>
@@ -50,6 +62,17 @@
     </script>
 
     <script type="text/ng-template" id="campo_combo_multiplo">
+        <select class="form-control" 
+            id="f_{{ngModel.codigo}}_p_{{$index}}" 
+            name="f_{{ngModel.codigo}}_p_{{$index}}" 
+            ng-model="dados[item.codigo]" 
+            ng-required="item.funcaoRequerido()" 
+            ng-options="opcao[item.opcao.codigo] as opcao[item.opcao.descricao] for opcao in item.opcao.lista track by opcao[item.opcao.codigo]" title="{{item.pop}}"
+            multiple="true" ng-readonly="item.somenteLeitura === 'S'">
+        </select>
+    </script>
+
+    <script type="text/ng-template" id="campo_combo_multiplo_objeto">
         <select class="form-control" 
             id="f_{{ngModel.codigo}}_p_{{$index}}" 
             name="f_{{ngModel.codigo}}_p_{{$index}}" 

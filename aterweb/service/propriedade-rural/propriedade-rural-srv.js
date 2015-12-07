@@ -17,6 +17,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                    'AreaUtil',
                    'SistemaProducao',
                    'Confirmacao',
+                   'PropriedadeRuralVinculoTipo',
                 ]}).success(function(resposta) {
                     if (resposta && resposta.resultado) {
                         scp.cadastro.apoio.unidadeOrganizacionalList = resposta.resultado[0];
@@ -25,6 +26,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                         scp.cadastro.apoio.areaUtilList = resposta.resultado[3];
                         scp.cadastro.apoio.sistemaProducaoList = resposta.resultado[4];
                         scp.cadastro.apoio.confirmacaoList = resposta.resultado[5];
+                        scp.cadastro.apoio.propriedadeRuralVinculoTipoList = resposta.resultado[6];
                     }
                 });
             },

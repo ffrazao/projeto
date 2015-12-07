@@ -45,7 +45,7 @@ angular.module(pNmModulo).controller(pNmController,
                     {
                         nome: 'Técnico Responsável pela coleta',
                         codigo: 'tecnico',
-                        tipo: 'combo_unico',
+                        tipo: 'combo_unico_objeto',
                         opcao: {
                             lista: $scope.cadastro.apoio.tecnicoUnidadeList,
                             codigo: 'username',
@@ -55,7 +55,7 @@ angular.module(pNmModulo).controller(pNmController,
                     {
                         nome: 'Vinculação (Entidade/Organização)',
                         codigo: 'vinculacao',
-                        tipo: 'combo_unico',
+                        tipo: 'combo_unico_objeto',
                         escondeLista: 'S',
                         opcao: {
                             lista: [
@@ -155,7 +155,7 @@ angular.module(pNmModulo).controller(pNmController,
                     {
                         nome: 'Força de Trabalho',
                         codigo: 'forcaTrabalho',
-                        tipo: 'combo_unico',
+                        tipo: 'combo_unico_objeto',
                         escondeLista: 'S',
                         opcao: {
                             lista: [
@@ -345,7 +345,7 @@ angular.module(pNmModulo).controller(pNmController,
                     {
                         nome: 'Somando a renda bruta (de trabalho, aposentadoria, pensão, benefício, bolsa etc.) de todas as pessoas do seu domicílio, INCLUINDO VOCÊ, qual é o total aproximado por mês?',
                         codigo: 'somaRendaBruta',
-                        tipo: 'combo_unico',
+                        tipo: 'combo_unico_objeto',
                         escondeLista: 'S',
                         opcao: {
                             lista: [

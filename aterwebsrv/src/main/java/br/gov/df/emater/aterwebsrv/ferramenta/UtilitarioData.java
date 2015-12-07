@@ -108,4 +108,37 @@ public class UtilitarioData {
 		return calendar;
 	}
 
+	public Object stringParaData(Object string) throws ParseException {
+		if ((string == null) || !(string instanceof String)) {
+			return string;
+		}
+		Object result = null;
+		try {
+			result = (Calendar) formataMilisegundos((String) string);
+		} catch (ParseException e) {
+			try {
+				result = (Calendar) formataDataJavascript((String) string);
+			} catch (ParseException e1) {
+				try {
+					result = (Calendar) formataTimestamp((String) string);
+				} catch (ParseException e2) {
+					try {
+						result = (Calendar) formataMilisegundos((String) string);
+					} catch (ParseException e3) {
+						try {
+							result = (Calendar) formataDataHora((String) string);
+						} catch (ParseException e4) {
+							try {
+								result = (Calendar) formataData((String) string);
+							} catch (ParseException e5) {
+								result = string;
+							}
+						}
+					}
+				}
+			}
+		}
+		return result;
+	}
+
 }

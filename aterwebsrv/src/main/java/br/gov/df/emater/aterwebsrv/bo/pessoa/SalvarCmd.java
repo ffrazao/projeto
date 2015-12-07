@@ -1,6 +1,5 @@
 package br.gov.df.emater.aterwebsrv.bo.pessoa;
 
-import java.text.ParseException;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -369,7 +368,7 @@ public class SalvarCmd extends _Comando {
 		try {
 			result = new Coleta();
 			result.setId((Integer) r.get("id"));
-			result.setDataColeta((Calendar) stringParaData(r.get("dataColeta")));
+			result.setDataColeta((Calendar) UtilitarioData.getInstance().stringParaData(r.get("dataColeta")));
 			result.setFinalizada(r.get("finalizada") != null ? Confirmacao.valueOf((String) r.get("finalizada")) : null);
 			result.setFormularioVersao(new FormularioVersao(((Integer) ((LinkedHashMap<Object, Object>) r.get("formularioVersao")).get("id"))));
 
@@ -380,39 +379,6 @@ public class SalvarCmd extends _Comando {
 			}
 		} catch (Exception e) {
 			throw e;
-		}
-		return result;
-	}
-
-	private Object stringParaData(Object string) throws ParseException {
-		if ((string == null) || !(string instanceof String)) {
-			return string;
-		}
-		Object result = null;
-		try {
-			result = (Calendar) UtilitarioData.getInstance().formataMilisegundos((String) string);
-		} catch (ParseException e) {
-			try {
-				result = (Calendar) UtilitarioData.getInstance().formataDataJavascript((String) string);
-			} catch (ParseException e1) {
-				try {
-					result = (Calendar) UtilitarioData.getInstance().formataTimestamp((String) string);
-				} catch (ParseException e2) {
-					try {
-						result = (Calendar) UtilitarioData.getInstance().formataMilisegundos((String) string);
-					} catch (ParseException e3) {
-						try {
-							result = (Calendar) UtilitarioData.getInstance().formataDataHora((String) string);
-						} catch (ParseException e4) {
-							try {
-								result = (Calendar) UtilitarioData.getInstance().formataData((String) string);
-							} catch (ParseException e5) {
-								result = string;
-							}
-						}
-					}
-				}
-			}
 		}
 		return result;
 	}
