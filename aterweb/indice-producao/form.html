@@ -1,0 +1,11 @@
+<div class="panel panel-default">
+    <div class="panel-heading"><h4>{{nomeFormulario}}</h4></div>
+    <div class="panel-body">
+        <form name="frm.formulario" novalidate>
+            <fieldset ng-disabled="['INCLUINDO', 'EDITANDO'].indexOf(navegador.estadoAtual()) < 0">
+            <!--<fieldset>-->
+                <frz-form ng-model="cadastro.apoio.formulario" dados="cadastro.registro" navegador="navegador"></frz-form>
+            </fieldset>
+        </form>
+    </div>
+</div>

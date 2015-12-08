@@ -99,7 +99,7 @@
                         {
                             name: 'Índices de Produção',
                             link: 'p.indiceProducao.filtro',
-                            funcionalidade: 'IPA',
+                            funcionalidade: 'INDICE_PRODUCAO',
                             visivel: false,
                         },
                         {

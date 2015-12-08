@@ -1,0 +1,24 @@
+<div class="panel panel-default">
+    <div class="panel-heading"><h4>{{nomeFormulario}}</h4></div>
+    <div class="panel-body">
+        <form class="form-horizontal" name="frm.filtro" novalidate>
+            <fieldset>
+                <!-- Text input-->
+                <div class="form-group" title="Ano da Produção">
+                    <label class="col-md-4 control-label" for="ano">
+                        Ano da Produção
+                    </label>
+                    <div class="col-md-6">
+                        <select id="ano" name="ano" class="form-control" ng-model="cadastro.filtro.ano" ng-options="item as item for item in cadastro.apoio.anoList track by item" required="true">
+                            <option value="">-- Ignorar --</option>
+                        </select>
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.ano.$error.required">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Campo Obrigatório
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
