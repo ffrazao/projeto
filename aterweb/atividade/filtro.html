@@ -8,10 +8,8 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="unidadeBeneficiario">Unidade</label>
                     <div class="col-md-7">
-                        <tags-input id="unidadeBeneficiario" name="unidadeBeneficiario" ng-model="cadastro.filtro.unidadeBeneficiario" 
-                            display-property="nome" placeholder="Digite a Unidade" template="tag-template" 
-                            add-from-autocomplete-only="true">
-                            <auto-complete source="getTagUnidade($query)" min-length="2" load-on-empty="false" ></auto-complete>
+                        <tags-input id="unidadeBeneficiario" name="unidadeBeneficiario" ng-model="cadastro.filtro.unidadeBeneficiario" display-property="nome" placeholder="Digite a Unidade" template="tag-template" add-from-autocomplete-only="true" >
+                            <auto-complete source="getTagUnidade($query)" min-length="0" load-on-empty="false" ></auto-complete>
                         </tags-input>
                         <script type="text/ng-template" id="tag-template" >
                             <div class="tag-template">
@@ -26,6 +24,7 @@
                             Valor Inválido!
                         </div>
                     </<div>
+                    </div>
                 </div>
 
                 <div class="form-group">

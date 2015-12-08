@@ -6,8 +6,8 @@
     angular.module(pNmModulo).config(['$stateProvider', function($stateProvider) {
         criarEstadosPadrao($stateProvider, pNmModulo, pNmController, pUrlModulo);
     }]);
-    angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'AtividadeSrv',
-        function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, AtividadeSrv) {
+    angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'AtividadeSrv', 'TokenStorage',
+        function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, AtividadeSrv, TokenStorage) {
 
             // inicializacao
             $scope.crudInit($scope, $state, null, pNmFormulario, AtividadeSrv);
@@ -49,6 +49,10 @@
             };
             $scope.abrir = function() {
                 // inicia lista unidade
+                if( !$rootScope.token ){
+                    $rootScope.token = btoa(TokenStorage.retrieve());
+                }
+
                 if( $rootScope.token.lotacaoAtual ){
                   $scope.cadastro.filtro.unidadeBeneficiario = [];  
                   $scope.cadastro.filtro.unidadeBeneficiario.push($rootScope.token.lotacaoAtual);

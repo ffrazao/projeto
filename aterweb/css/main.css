@@ -117,6 +117,10 @@ form.ng-valid {
   margin-right: auto;
 }
 
+.arredonda-bordas{
+  border-radius: 4px
+}
+
 div.caixa-login {
   min-width:400px;
   width: 50%;
