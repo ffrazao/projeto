@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
@@ -42,5 +43,14 @@ public class UnidadeOrganizacionalRest {
 		}
 	}
 
+	@RequestMapping(value = "/comunidade", method = RequestMethod.GET)
+	@Transactional(readOnly = true)
+	public Resposta comunidade(@RequestParam Integer pessoaJuridicaId, Principal usuario) {
+		try {
+			return new Resposta(facadeBo.unidadeOrganizacionalComunidade(usuario, pessoaJuridicaId).getResposta());
+		} catch (Exception e) {
+			return new Resposta(e);
+		}
+	}
 
 }

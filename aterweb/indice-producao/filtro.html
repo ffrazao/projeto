@@ -1,16 +1,83 @@
 <div class="panel panel-default">
+<style type="text/css">
+    .btn {
+    margin-right: 8px;
+}
+
+.angular-ui-tree-handle {
+    background: #f8faff;
+    border: 1px solid #dae2ea;
+    color: #7c9eb2;
+    padding: 10px 10px;
+}
+
+.angular-ui-tree-handle:hover {
+    color: #438eb9;
+    background: #f4f6f7;
+    border-color: #dce2e8;
+}
+
+.angular-ui-tree-placeholder {
+    background: #f0f9ff;
+    border: 2px dashed #bed2db;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+tr.angular-ui-tree-empty {
+    height:100px
+}
+
+.group-title {
+    background-color: #687074 !important;
+    color: #FFF !important;
+}
+
+
+/* --- Tree --- */
+.tree-node {
+    border: 1px solid #dae2ea;
+    background: #f8faff;
+    color: #7c9eb2;
+}
+
+.nodrop {
+    background-color: #f2dede;
+}
+
+.tree-node-content {
+    margin: 10px;
+}
+.tree-handle {
+    padding: 10px;
+    background: #428bca;
+    color: #FFF;
+    margin-right: 10px;
+}
+
+.angular-ui-tree-handle:hover {
+}
+
+.angular-ui-tree-placeholder {
+    background: #f0f9ff;
+    border: 2px dashed #bed2db;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+</style>
     <div class="panel-heading"><h4>{{nomeFormulario}}</h4></div>
     <div class="panel-body">
         <form class="form-horizontal" name="frm.filtro" novalidate>
             <fieldset>
-                <!-- Text input-->
+                <!-- Select input-->
                 <div class="form-group" title="Ano da Produção">
                     <label class="col-md-4 control-label" for="ano">
                         Ano da Produção
                     </label>
-                    <div class="col-md-6">
+                    <div class="col-md-2">
                         <select id="ano" name="ano" class="form-control" ng-model="cadastro.filtro.ano" ng-options="item as item for item in cadastro.apoio.anoList track by item" required="true">
-                            <option value="">-- Ignorar --</option>
                         </select>
                         <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.ano.$error.required">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -18,6 +85,85 @@
                         </div>
                     </div>
                 </div>
+                <!-- Multiple Checkboxes (inline) -->
+                <div class="form-group" title="A coleta foi confirmada?">
+                    <label class="col-md-4 control-label" for="confirmacao">
+                        Coleta confirmada
+                    </label>
+                    <div class="col-md-6">
+                        <label class="checkbox-inline" for="confirmacao-{{$index}}" ng-repeat="item in cadastro.apoio.confirmacaoList">
+                            <input type="checkbox" name="confirmacao" id="confirmacao-{{$index}}" checklist-model="cadastro.filtro.confirmacao" checklist-value="item.codigo">
+                            {{item.descricao}}
+                        </label>
+                    </div>
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.confirmacao.$error.required">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        Campo Obrigatório
+                    </div>
+                </div>
+                <!-- Multiple Checkboxes (inline) -->
+                <div class="form-group" title="Unidade Organizacional/Comunidade">
+                    <label class="col-md-4 control-label" for="unidadeOrganizacionalComunidade">
+                        Unidade Organizacional/Comunidade
+                    </label>
+                    <div class="col-md-7">
+                        <!-- <label class="checkbox-inline" for="unidadeOrganizacionalComunidade-{{$index}}" ng-repeat="item in cadastro.apoio.localList">
+                            <input type="checkbox" name="unidadeOrganizacionalComunidade" id="unidadeOrganizacionalComunidade-{{$index}}" checklist-model="cadastro.filtro.unidadeOrganizacionalComunidade" checklist-value="item.codigo">
+                            {{item.descricao}}
+                        </label> -->
+                        <input type="text" class="form-control" ng-model="cadastro.apoio.localFiltro" placeholder="Filtrar Comunidade">
+                        <div class="row" style="height: 300px; overflow: scroll;">
+                            <div ui-tree data-drag-enabled="false">
+                                <ol ui-tree-nodes="" ng-model="cadastro.apoio.localList">
+                                    <li ng-repeat="item in cadastro.apoio.localList" ui-tree-node>
+                                        <div ui-tree-handle>
+                                            <div class="row">
+                                            <a class="btn btn-primary btn-xs Tooltip" data-nodrag data-ng-click="toggleChildren(this)" title="Expandir/Recolher">
+                                                <span class="glyphicon glyphicon-chevron-right" data-ng-show="collapsed"></span>
+                                                <span class="glyphicon glyphicon-chevron-down" data-ng-show="!collapsed"></span>
+                                            </a>
+                                            <label>
+                                                <input type="checkbox" data-ng-click="item.selecionado = !item.selecionado" data-ng-true-value="true" data-ng-false-value="false">
+                                                {{item.nome}}
+                                            </label>
+                                            </div>
+                                        </div>
+                                        <ol ui-tree-nodes="" ng-model="item.unidadeList" ng-class="{hidden: collapsed}">
+                                            <li ng-repeat="subItem in item.unidadeList" ui-tree-node>
+                                                <div ui-tree-handle>
+                                                    <a class="btn btn-primary btn-xs Tooltip" data-nodrag data-ng-click="toggleChildren(this)" title="Expandir/Recolher">
+                                                        <span class="glyphicon glyphicon-chevron-right" data-ng-show="collapsed"></span>
+                                                        <span class="glyphicon glyphicon-chevron-down" data-ng-show="!collapsed"></span>
+                                                    </a>
+                                                    <label>
+                                                        <input type="checkbox" data-ng-click="subItem.selecionado = !subItem.selecionado" data-ng-true-value="true" data-ng-false-value="false">
+                                                        {{subItem.nome}}
+                                                    </label>
+                                                </div>
+                                                <ol ui-tree-nodes="" ng-model="subItem.comunidadeList" ng-class="{hidden: collapsed}">
+                                                    <li ng-repeat="subSubItem in subItem.comunidadeList" ui-tree-node ng-show="visible(subSubItem)">
+                                                        <div ui-tree-handle>
+                                                            
+                                                            <label>
+                                                                <input type="checkbox" data-ng-click="subSubItem.selecionado = !subSubItem.selecionado" data-ng-true-value="true" data-ng-false-value="false">
+                                                                {{subSubItem.nome}}
+                                                            </label>
+                                                        </div>
+                                                    </li>
+                                                </ol>
+                                            </li>
+                                        </ol>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.unidadeOrganizacionalComunidade.$error.required">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        Campo Obrigatório
+                    </div>
+                </div>
+
             </fieldset>
         </form>
     </div>

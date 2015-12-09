@@ -19,6 +19,7 @@ import br.gov.df.emater.aterwebsrv.modelo.funcional.Emprego;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.Lotacao;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Perfil;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.PerfilFuncionalidadeComando;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
@@ -31,10 +32,10 @@ public class UserDetailsService implements org.springframework.security.core.use
 
 	@Autowired
 	private UsuarioDao usuarioDao;
-	
+
 	@Autowired
 	private EmpregoDao empregoDao;
-	
+
 	@Autowired
 	private LotacaoDao lotacaoDao;
 
@@ -99,27 +100,27 @@ public class UserDetailsService implements org.springframework.security.core.use
 		// avaliar perfis do usuario
 		avaliarPerfil(usuario.getAuthorities(), authoritiesRetorno, perfilFuncionalidadeComandoListRetorno, perfilFuncionalidadeComandoListNegadoRetorno);
 		UnidadeOrganizacional lotacaoAtual = null;
-		
+
 		// inicio avaliar perfis da empresa do usuario
-		for (Emprego emprego: empregoDao.findByPessoaFisicaId(usuario.getPessoa().getId())) {
-			for (Usuario usuarioEmpregador: usuarioDao.findByPessoa(emprego.getPessoaJuridica())) {
+		for (Emprego emprego : empregoDao.findByPessoaFisicaId(usuario.getPessoa().getId())) {
+			for (Usuario usuarioEmpregador : usuarioDao.findByPessoa(emprego.getPessoaJuridica())) {
 				avaliarPerfil(usuarioEmpregador.getAuthorities(), authoritiesRetorno, perfilFuncionalidadeComandoListRetorno, perfilFuncionalidadeComandoListNegadoRetorno);
 			}
 			// inicio avaliar perfis da lotacoes do usuario
-			for (Lotacao lotacao: lotacaoDao.findByEmprego(emprego)) {
+			for (Lotacao lotacao : lotacaoDao.findByEmprego(emprego)) {
 				for (Usuario usuarioUnidadeOrganizacional : usuarioDao.findByUnidadeOrganizacional(lotacao.getUnidadeOrganizacional())) {
 					avaliarPerfil(usuarioUnidadeOrganizacional.getAuthorities(), authoritiesRetorno, perfilFuncionalidadeComandoListRetorno, perfilFuncionalidadeComandoListNegadoRetorno);
 				}
-				lotacaoAtual =  lotacao.getUnidadeOrganizacional();
+				lotacaoAtual = lotacao.getUnidadeOrganizacional();
 			}
 		}
 		// fim avaliar perfis da empresa do usuario
-		
+
 		// fim avaliar perfis da lotacoes do usuario
 
 		// inicio remover as funcionalidades/comandos que não foram concedidos
 		for (Map.Entry<String, Set<String>> perfilFuncionalidadeComandoNegado : perfilFuncionalidadeComandoListNegadoRetorno.entrySet()) {
-			Map.Entry<String, Set<String>> perfilFuncionalidadeComando = null;			
+			Map.Entry<String, Set<String>> perfilFuncionalidadeComando = null;
 			for (Map.Entry<String, Set<String>> perfilFuncionalidadeComandoRetorno : perfilFuncionalidadeComandoListRetorno.entrySet()) {
 				if (perfilFuncionalidadeComandoRetorno.getKey().equals(perfilFuncionalidadeComandoNegado.getKey())) {
 					perfilFuncionalidadeComando = perfilFuncionalidadeComandoRetorno;
@@ -163,7 +164,12 @@ public class UserDetailsService implements org.springframework.security.core.use
 		usuarioRetorno.setPessoa(pessoaRetorno);
 		usuarioRetorno.setUsername(usuario.getUsername());
 		usuarioRetorno.setUsuarioStatusConta(usuario.getUsuarioStatusConta());
-		usuarioRetorno.setLotacaoAtual(lotacaoAtual == null ? null : lotacaoAtual.infoBasica());
+		if (lotacaoAtual != null) {
+			PessoaJuridica pj = lotacaoAtual.getPessoaJuridica();
+			lotacaoAtual = lotacaoAtual.infoBasica();
+			lotacaoAtual.setPessoaJuridica((PessoaJuridica) pj.infoBasica());
+			usuarioRetorno.setLotacaoAtual(lotacaoAtual);
+		}
 
 		// captar os perfis ativos
 		detailsChecker.check(usuarioRetorno);

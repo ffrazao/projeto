@@ -3,7 +3,7 @@
 'use strict';
 
 angular.module(pNmModulo, ['ui.bootstrap', 'ui.utils', 'ui.router', 'ngSanitize', 'ngAnimate', 'toastr', 'sticky',
-  'ui.mask', 'ui.utils.masks', 'ui.navbar', 'ngCookies', 'uiGmapgoogle-maps', 'ngFileUpload', 'ngTagsInput',
+  'ui.mask', 'ui.utils.masks', 'ui.navbar', 'ngCookies', 'uiGmapgoogle-maps', 'ngFileUpload', 'ngTagsInput', 'ui.tree',
   'frz.form', 'frz.tabela','frz.arquivo', 'frz.endereco', 'frz.painel.vidro', 'frz.navegador', 'casa', 'contrato', 
   'pessoa', 'formulario', 'propriedadeRural' ,'atividade', 'indiceProducao',
   ]);
@@ -30,7 +30,11 @@ angular.module(pNmModulo).factory('TokenStorage', function($cookieStore) {
             },
             clear : function() {
                 return localStorage.removeItem(storageKey);
-            }
+            },
+            token: function() {
+                var t = this.retrieve();
+                return t ? angular.fromJson(atob(t.split('.')[0])) : null;
+            },
         };      
     } else {
         return {
@@ -42,7 +46,11 @@ angular.module(pNmModulo).factory('TokenStorage', function($cookieStore) {
             },
             clear : function() {
                 return $cookieStore.remove(storageKey);
-            }
+            },
+            token: function() {
+                var t = this.retrieve();
+                return t ? angular.fromJson(atob(t.split('.')[0])) : null;
+            },
         };      
     }
 });

@@ -33,7 +33,8 @@
     "ngSticky": "~1",
     "underscore": "~1.8",
     "ng-tags-input": "3.0.0",
-    "angular-simple-logger": "~0.1.5"
+    "angular-simple-logger": "~0.1.5",
+    "angular-ui-tree": "~2.11.0"
   },
   "devDependencies": {
     "angular-google-maps": "~2"

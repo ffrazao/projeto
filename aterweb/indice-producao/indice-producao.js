@@ -56,6 +56,19 @@
 
             // inicio ações especiais
 
+            $scope.toggleChildren = function (scope) {
+                scope.toggle();
+            };
+            $scope.selecionou = function (item, selecao) {
+                item.selecionado = selecao.selected;
+            };
+
+            $scope.visible = function (item) {
+                return !($scope.cadastro.apoio.localFiltro && 
+                    $scope.cadastro.apoio.localFiltro.length > 0 && 
+                    item.nome.trim().toLowerCase().latinize().indexOf($scope.cadastro.apoio.localFiltro.trim().toLowerCase().latinize()) == -1);
+            };
+
             
             $scope.UtilSrv = UtilSrv;
             // fim ações especiais

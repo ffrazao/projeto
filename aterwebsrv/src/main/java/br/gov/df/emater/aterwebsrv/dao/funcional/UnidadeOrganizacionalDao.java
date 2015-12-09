@@ -13,5 +13,6 @@ import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 public interface UnidadeOrganizacionalDao extends JpaRepository<UnidadeOrganizacional, Integer> {
 
 	List<UnidadeOrganizacional> findByNomeLikeAndClassificacaoIn(String nome, Set<UnidadeOrganizacionalClassificacao> classificacao);
+	
 }
 	

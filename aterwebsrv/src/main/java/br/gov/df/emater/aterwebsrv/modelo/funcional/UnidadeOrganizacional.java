@@ -37,12 +37,13 @@ public class UnidadeOrganizacional extends EntidadeBase implements _ChavePrimari
 
 	private String sigla;
 
-
 	public UnidadeOrganizacional() {
 	}
-	
-	public UnidadeOrganizacional( Integer id, String nome) {
-		setId(id); setNome(nome);
+
+	public UnidadeOrganizacional(Integer id, String nome, String sigla) {
+		setId(id);
+		setNome(nome);
+		setSigla(sigla);
 	}
 
 	public UnidadeOrganizacionalClassificacao getClassificacao() {
@@ -66,6 +67,11 @@ public class UnidadeOrganizacional extends EntidadeBase implements _ChavePrimari
 		return sigla;
 	}
 
+	@Override
+	public UnidadeOrganizacional infoBasica() {
+		return new UnidadeOrganizacional(this.id, this.nome, this.sigla);
+	}
+
 	public void setClassificacao(UnidadeOrganizacionalClassificacao classificacao) {
 		this.classificacao = classificacao;
 	}
@@ -85,12 +91,6 @@ public class UnidadeOrganizacional extends EntidadeBase implements _ChavePrimari
 
 	public void setSigla(String sigla) {
 		this.sigla = sigla;
-	}
-
-	@Override
-	public UnidadeOrganizacional infoBasica() {
-		return new UnidadeOrganizacional( this.id, this.nome );
-		
 	}
 
 }

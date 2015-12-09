@@ -223,11 +223,12 @@ public class PessoaFisica extends Pessoa {
 		setGenero(genero);
 	}
 
-	public PessoaFisica(Integer id, String nome, PessoaGenero genero, String cpf) {
+	public PessoaFisica(Integer id, String nome, String apelidoSigla, PessoaGenero genero, String cpf) {
 		setId(id);
 		setNome(nome);
 		setGenero(genero);
 		setCpf(cpf);
+		setApelidoSigla(apelidoSigla);
 	}
 
 	public String getCamNumero() {
@@ -409,7 +410,7 @@ public class PessoaFisica extends Pessoa {
 //			this.setProfissao(this.getProfissao().infoBasica());
 //		}
 		
-		return new PessoaFisica(this.getId(), this.getNome(), this.getGenero(), this.getCpf());
+		return new PessoaFisica(this.getId(), this.getNome(), this.getApelidoSigla(), this.getGenero(), this.getCpf());
 	}
 
 	public void setCamNumero(String camNumero) {

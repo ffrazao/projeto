@@ -71,7 +71,7 @@ public class PessoaJuridica extends Pessoa {
 
 	@Override
 	public Pessoa infoBasica() {
-		return new PessoaJuridica(this.getId(), this.getNome(), this.getCnpj());
+		return new PessoaJuridica(this.getId(), this.getNome(), this.getApelidoSigla(), this.getCnpj());
 	}
 
 }

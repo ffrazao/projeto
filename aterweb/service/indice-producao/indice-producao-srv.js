@@ -5,25 +5,61 @@
 'use strict';
 
 angular.module(pNmModulo).factory(pNmFactory,
-  ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams', 'mensagemSrv',
-    function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams, mensagemSrv) {
+  ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams', 'mensagemSrv', 'UnidadeOrganizacionalSrv', 'TokenStorage',
+    function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams, mensagemSrv, UnidadeOrganizacionalSrv, TokenStorage) {
         var IndiceProducaoSrv = {
             funcionalidade: 'INDICE_PRODUCAO',
             endereco: $rootScope.servicoUrl + '/indice-producao',
             abrir : function(scp) {
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
+                // captar as listas de apoio
+                scp.cadastro.filtro.ano = new Date().getFullYear();
+                for (var ano = scp.cadastro.filtro.ano + 1; ano > scp.cadastro.filtro.ano - 20; ano--) {
+                    if (!scp.cadastro.apoio.anoList) {
+                        scp.cadastro.apoio.anoList = [];
+                    }
+                    scp.cadastro.apoio.anoList.push(ano);
+                }
                 UtilSrv.dominio({ent: [
                    'Confirmacao',
                 ]}).success(function(resposta) {
                     if (resposta && resposta.resultado) {
                         scp.cadastro.apoio.confirmacaoList = resposta.resultado[0];
-
-                        scp.cadastro.filtro.ano = new Date().getFullYear();
-                        for (var ano = anoAtual + 1; ano > anoAtual - 20; ano--) {
-                            scp.cadastro.apoio.anoList.push(ano);
-                        }
                     }
                 });
+                var t = TokenStorage.token();
+                if (t && t.lotacaoAtual && t.lotacaoAtual && t.lotacaoAtual.pessoaJuridica) {
+                    //var pj = {'id': t.lotacaoAtual.pessoaJuridica.id, '@class': t.lotacaoAtual.pessoaJuridica['@class']};
+                    UnidadeOrganizacionalSrv.comunidade(angular.fromJson(t.lotacaoAtual.pessoaJuridica.id)).success(function(resposta) {
+                        if (resposta && resposta.resultado && resposta.resultado.length) {
+                            var r = resposta.resultado;
+                            var empresa = angular.copy(t.lotacaoAtual.pessoaJuridica);
+                            var unid = {id: null}; var comunid = {id: null};
+                            for (var i in r) {
+                                if (unid.id !== r[i].unidadeOrganizacional.id) {
+                                    unid = angular.copy(r[i].unidadeOrganizacional);
+                                    if (!empresa.unidadeList) {
+                                        empresa.unidadeList = [];
+                                    }
+                                    empresa.unidadeList.push(unid);
+                                }
+                                if (comunid.id !== r[i].comunidade.id) {
+                                    if (!unid.comunidadeList) {
+                                        unid.comunidadeList = [];
+                                    }
+                                    comunid = angular.copy(r[i].comunidade);
+                                    unid.comunidadeList.push(comunid);
+                                }
+                            }
+
+                            scp.cadastro.apoio.localList = [];
+                            scp.cadastro.apoio.localList.push(empresa);
+                        }
+                    });
+                } else {
+                    toastr.error('Não foi possível identificar a sua lotação', 'Erro ao carregar os dados');
+                }
+                // fim captar as listas de apoio
             },
             filtrar : function(filtro) {
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');

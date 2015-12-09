@@ -18,11 +18,13 @@ import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaTipo;
 import br.gov.df.emater.aterwebsrv.modelo.dto.FormularioCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.FormularioColetaCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.modelo.dto.IndiceProducaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.PessoaCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.PropriedadeRuralCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.UnidadeOrganizacionalCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.Formulario;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.FormularioVersao;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 
 @Service
@@ -104,6 +106,31 @@ public class FacadeBo implements BeanFactoryAware {
 	}
 
 	@Transactional(readOnly = true)
+	public _Contexto indiceProducaoFiltroExecutar(Principal usuario, IndiceProducaoCadFiltroDto filtro) throws Exception {
+		return this._executar(usuario, "IndiceProducaoFiltroExecutarCh", filtro);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto indiceProducaoFiltroNovo(Principal usuario) throws Exception {
+		return this._executar(usuario, "IndiceProducaoFiltroNovoCmd");
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto indiceProducaoNovo(Principal usuario) throws Exception {
+		return this._executar(usuario, "IndiceProducaoNovoCh");
+	}
+
+	@Transactional
+	public _Contexto indiceProducaoSalvar(Principal usuario, Producao producao) throws Exception {
+		return this._executar(usuario, "IndiceProducaoSalvarCh", producao);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto indiceProducaoVisualizar(Principal usuario, Integer id) throws Exception {
+		return this._executar(usuario, "IndiceProducaoVisualizarCh", id);
+	}
+
+	@Transactional(readOnly = true)
 	public _Contexto pessoaFiltroExecutar(Principal usuario, PessoaCadFiltroDto filtro) throws Exception {
 		return this._executar(usuario, "PessoaFiltroExecutarCh", filtro);
 	}
@@ -163,6 +190,11 @@ public class FacadeBo implements BeanFactoryAware {
 	@Transactional(readOnly = true)
 	public _Contexto unidadeOrganizacionalFiltroExecutar(Principal usuario, UnidadeOrganizacionalCadFiltroDto filtro) throws Exception {
 		return this._executar(usuario, "UnidadeOrganizacionalFiltroExecutarCh", filtro);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto unidadeOrganizacionalComunidade(Principal usuario, Integer pessoaJuridicaId) throws Exception {
+		return this._executar(usuario, "UnidadeOrganizacionalComunidadeCmd", pessoaJuridicaId);
 	}
 
 	public _Contexto utilArquivo(Principal usuario, MultipartFile arquivo, HttpServletRequest request, String tipo) throws Exception {
