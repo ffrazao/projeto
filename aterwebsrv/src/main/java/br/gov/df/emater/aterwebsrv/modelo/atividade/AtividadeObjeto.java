@@ -11,7 +11,6 @@ import javax.persistence.Table;
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
-import br.gov.df.emater.aterwebsrv.modelo.ipa.Producao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 
 @Entity
@@ -33,10 +32,6 @@ public class AtividadeObjeto extends EntidadeBase implements _ChavePrimaria<Inte
 	private Pessoa pessoa;
 
 	@ManyToOne
-	@JoinColumn(name = "producao_id")
-	private Producao producao;
-
-	@ManyToOne
 	@JoinColumn(name = "propriedade_rural_id")
 	private PropriedadeRural propriedadeRural;
 
@@ -51,10 +46,6 @@ public class AtividadeObjeto extends EntidadeBase implements _ChavePrimaria<Inte
 
 	public Pessoa getPessoa() {
 		return pessoa;
-	}
-
-	public Producao getProducao() {
-		return producao;
 	}
 
 	public PropriedadeRural getPropriedadeRural() {
@@ -72,10 +63,6 @@ public class AtividadeObjeto extends EntidadeBase implements _ChavePrimaria<Inte
 
 	public void setPessoa(Pessoa pessoa) {
 		this.pessoa = pessoa;
-	}
-
-	public void setProducao(Producao producao) {
-		this.producao = producao;
 	}
 	
 	public void setPropriedadeRural(PropriedadeRural propriedadeRural) {

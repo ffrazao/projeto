@@ -29,7 +29,7 @@ public abstract class EntidadeBase implements Serializable {
 
 	public static final String FUNCIONAL_SCHEMA = "funcional";
 
-	public static final String IPA_SCHEMA = "ipa";
+	public static final String INDICE_PRODUCAO_SCHEMA = "indice_producao";
 
 	public static final String PESSOA_SCHEMA = "pessoa";
 
