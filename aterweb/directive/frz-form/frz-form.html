@@ -43,7 +43,8 @@
             name="f_{{ngModel.codigo}}_p_{{$index}}" 
             ng-model="dados[item.codigo]" 
             ng-required="item.funcaoRequerido()" 
-            ng-options="opcao[item.opcao.codigo] as opcao[item.opcao.descricao] for opcao in item.opcao.lista track by opcao[item.opcao.codigo]" title="{{item.pop}}" 
+            ng-options="opcao[item.opcao.codigo] as opcao[item.opcao.descricao] for opcao in item.opcao.lista track by opcao[item.opcao.codigo]"
+            title="{{item.pop}}" 
             ng-readonly="item.somenteLeitura === 'S'">
             <option value="">-- Selecione --</option>
         </select>

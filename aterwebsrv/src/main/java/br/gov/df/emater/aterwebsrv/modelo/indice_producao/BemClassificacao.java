@@ -28,6 +28,9 @@ public class BemClassificacao extends EntidadeBase implements _ChavePrimaria<Int
 	private BemClassificacao bemClassificacao;
 
 	@OneToMany(mappedBy = "bemClassificacao")
+	private List<BemClassificacaoFormaProducaoItem> bemClassificacaoFormaProducaoItemList;
+
+	@OneToMany(mappedBy = "bemClassificacao")
 	private List<BemClassificacao> bemClassificacaoList;
 
 	@Enumerated(EnumType.STRING)
@@ -61,6 +64,10 @@ public class BemClassificacao extends EntidadeBase implements _ChavePrimaria<Int
 
 	public BemClassificacao getBemClassificacao() {
 		return bemClassificacao;
+	}
+
+	public List<BemClassificacaoFormaProducaoItem> getBemClassificacaoFormaProducaoItemList() {
+		return bemClassificacaoFormaProducaoItemList;
 	}
 
 	public List<BemClassificacao> getBemClassificacaoList() {
@@ -98,6 +105,10 @@ public class BemClassificacao extends EntidadeBase implements _ChavePrimaria<Int
 
 	public void setBemClassificacao(BemClassificacao bemClassificacao) {
 		this.bemClassificacao = bemClassificacao;
+	}
+
+	public void setBemClassificacaoFormaProducaoItemList(List<BemClassificacaoFormaProducaoItem> bemClassificacaoFormaProducaoItemList) {
+		this.bemClassificacaoFormaProducaoItemList = bemClassificacaoFormaProducaoItemList;
 	}
 
 	public void setBemClassificacaoList(List<BemClassificacao> bemClassificacaoList) {

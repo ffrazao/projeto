@@ -33,6 +33,71 @@
                         Campo Obrigatório
                     </div>
                 </div>
+                <!-- Multiple Checkboxes (inline) -->
+                <div class="form-group" title="Classificação do Bem de Produção/ Forma de Produção">
+                    <label class="col-md-4 control-label" for="bemClassificacao">
+                        Classificação / Forma de Produção
+                    </label>
+                    <div class="col-md-7">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="cadastro.apoio.bemClassificacaoFiltro" placeholder="Filtrar por Classificação">
+                            <span class="input-group-btn">
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-default" ng-click="cadastro.apoio.bemClassificacaoFiltro = ''">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </button>
+                                </div>
+                            </span>
+                        </div>
+                        <div class="row" style="height: 200px; overflow: scroll;">
+                            <script type="text/ng-template" id="nodes_renderer.html">
+                                <div ui-tree-handle>
+                                    <a class="btn btn-primary btn-xs Tooltip" nodrag ng-click="toggleChildren(this)" title="Expandir/Recolher" ng-show="node[3].length">
+                                        <span class="glyphicon glyphicon-chevron-right" ng-show="collapsed"></span>
+                                        <span class="glyphicon glyphicon-chevron-down" ng-show="!collapsed"></span>
+                                    </a>
+                                    <label>
+                                        <input type="checkbox" ng-model="node[4]" ng-true-value="true" ng-false-value="false">
+                                        {{node[1]}}
+                                    </label>
+                                    <table width="100%" ng-show="node[2].length">
+                                        <tr>
+                                            <td colspan="2">&nbsp;</td>
+                                            <td style="color: gray"><small>Forma de Produção</small></td>
+                                        </tr>
+                                        <tr ng-repeat="forma in node[2]">
+                                            <td width="30%" style="text-align: right">
+                                                <small>{{forma[1]}}</small>
+                                            </td>
+                                            <td width="5%">
+                                                &nbsp;
+                                            </td>
+                                            <td>
+                                                <select ng-model="forma[3]" ng-options="opcao[0] as opcao[1] for opcao in forma[2] track by opcao[0]">
+                                                    <option value="">-- Selecione --</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <ol ui-tree-nodes="" ng-model="node[3]" ng-class="{hidden: collapsed}">
+                                    <li ng-repeat="node in node[3]" ui-tree-node ng-include="'nodes_renderer.html'" ng-show="visivel(cadastro.apoio.bemClassificacaoFiltro, node[1], !node[3].length)">
+                                    </li>
+                                </ol>
+                            </script>
+                            <div ui-tree drag-enabled="false">
+                                <ol ui-tree-nodes="" ng-model="cadastro.apoio.bemClassificacaoList" id="tree-root" ng-class="{hidden: collapsed}">
+                                    <li ng-repeat="node in cadastro.apoio.bemClassificacaoList" ui-tree-node ng-include="'nodes_renderer.html'">
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.unidadeOrganizacionalComunidade.$error.required">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        Campo Obrigatório
+                    </div>
+                </div>
                 <!-- Tag-input-->
                 <div class="form-group" title="Bens de Produção">
                     <label class="col-md-4 control-label" for="ano">
@@ -88,12 +153,11 @@
                                 </div>
                             </span>
                         </div>
-                        <div class="row" style="height: 300px; overflow: scroll;">
-                            <div ui-tree data-drag-enabled="false">
+                        <div class="row" style="height: 200px; overflow: scroll;">
+                            <div ui-tree drag-enabled="false">
                                 <ol ui-tree-nodes="" ng-model="cadastro.apoio.localList">
                                     <li ng-repeat="item in cadastro.apoio.localList" ui-tree-node>
                                         <div ui-tree-handle>
-                                            <div class="row">
                                             <a class="btn btn-primary btn-xs Tooltip" data-nodrag data-ng-click="toggleChildren(this)" title="Expandir/Recolher">
                                                 <span class="glyphicon glyphicon-chevron-right" data-ng-show="collapsed"></span>
                                                 <span class="glyphicon glyphicon-chevron-down" data-ng-show="!collapsed"></span>
@@ -102,7 +166,6 @@
                                                 <input type="checkbox" ng-model="item.selecionado" ng-true-value="true" ng-false-value="false">
                                                 {{item.nome}}
                                             </label>
-                                            </div>
                                         </div>
                                         <ol ui-tree-nodes="" ng-model="item.unidadeList" ng-class="{hidden: collapsed}">
                                             <li ng-repeat="subItem in item.unidadeList" ui-tree-node>

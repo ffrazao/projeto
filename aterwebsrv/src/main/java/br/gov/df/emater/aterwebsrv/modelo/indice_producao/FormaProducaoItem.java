@@ -1,11 +1,14 @@
 package br.gov.df.emater.aterwebsrv.modelo.indice_producao;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
@@ -21,6 +24,9 @@ public class FormaProducaoItem extends EntidadeBase implements _ChavePrimaria<In
 	@JoinColumn(name = "forma_producao_item_id")
 	private FormaProducaoItem formaProducaoItem;
 
+	@OneToMany(mappedBy = "formaProducaoItem")
+	private List<FormaProducaoValor> formaProducaoValorList;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
@@ -35,6 +41,10 @@ public class FormaProducaoItem extends EntidadeBase implements _ChavePrimaria<In
 		return formaProducaoItem;
 	}
 
+	public List<FormaProducaoValor> getFormaProducaoValorList() {
+		return formaProducaoValorList;
+	}
+
 	@Override
 	public Integer getId() {
 		return id;
@@ -46,6 +56,10 @@ public class FormaProducaoItem extends EntidadeBase implements _ChavePrimaria<In
 
 	public void setFormaProducaoItem(FormaProducaoItem formaProducaoItem) {
 		this.formaProducaoItem = formaProducaoItem;
+	}
+
+	public void setFormaProducaoValorList(List<FormaProducaoValor> formaProducaoValorList) {
+		this.formaProducaoValorList = formaProducaoValorList;
 	}
 
 	@Override

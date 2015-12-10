@@ -5,8 +5,8 @@
 'use strict';
 
 angular.module(pNmModulo).factory(pNmFactory,
-  ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams', 'mensagemSrv', 'UnidadeOrganizacionalSrv', 'TokenStorage', 'BemProducaoSrv',
-    function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams, mensagemSrv, UnidadeOrganizacionalSrv, TokenStorage, BemProducaoSrv) {
+  ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams', 'mensagemSrv', 'UnidadeOrganizacionalSrv', 'TokenStorage', 'BemProducaoSrv', 'BemClassificacaoSrv',
+    function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams, mensagemSrv, UnidadeOrganizacionalSrv, TokenStorage, BemProducaoSrv, BemClassificacaoSrv) {
         var IndiceProducaoSrv = {
             funcionalidade: 'INDICE_PRODUCAO',
             endereco: $rootScope.servicoUrl + '/indice-producao',
@@ -26,6 +26,9 @@ angular.module(pNmModulo).factory(pNmFactory,
                     if (resposta && resposta.resultado) {
                         scp.cadastro.apoio.confirmacaoList = resposta.resultado[0];
                     }
+                });
+                BemClassificacaoSrv.filtrar({}).success(function(resposta) {
+                    scp.cadastro.apoio.bemClassificacaoList = resposta.resultado;
                 });
                 var t = TokenStorage.token();
                 if (t && t.lotacaoAtual && t.lotacaoAtual && t.lotacaoAtual.pessoaJuridica) {
@@ -94,7 +97,6 @@ angular.module(pNmModulo).factory(pNmFactory,
             tagBem : function(nome) {
                 return BemProducaoSrv.filtrar({nome: nome});
             },
-
         };
         return IndiceProducaoSrv;
     }
