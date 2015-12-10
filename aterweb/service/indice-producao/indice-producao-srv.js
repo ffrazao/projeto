@@ -5,8 +5,8 @@
 'use strict';
 
 angular.module(pNmModulo).factory(pNmFactory,
-  ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams', 'mensagemSrv', 'UnidadeOrganizacionalSrv', 'TokenStorage',
-    function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams, mensagemSrv, UnidadeOrganizacionalSrv, TokenStorage) {
+  ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams', 'mensagemSrv', 'UnidadeOrganizacionalSrv', 'TokenStorage', 'BemProducaoSrv',
+    function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams, mensagemSrv, UnidadeOrganizacionalSrv, TokenStorage, BemProducaoSrv) {
         var IndiceProducaoSrv = {
             funcionalidade: 'INDICE_PRODUCAO',
             endereco: $rootScope.servicoUrl + '/indice-producao',
@@ -40,6 +40,10 @@ angular.module(pNmModulo).factory(pNmFactory,
                                     unid = angular.copy(r[i].unidadeOrganizacional);
                                     if (!empresa.unidadeList) {
                                         empresa.unidadeList = [];
+                                    }
+                                    if (unid.id === t.lotacaoAtual.id) {
+                                        unid.selecionado = true;
+
                                     }
                                     empresa.unidadeList.push(unid);
                                 }
@@ -87,6 +91,10 @@ angular.module(pNmModulo).factory(pNmFactory,
             excluir : function() {
                 SegurancaSrv.acesso(this.funcionalidade, 'EXCLUIR');
             },
+            tagBem : function(nome) {
+                return BemProducaoSrv.filtrar({nome: nome});
+            },
+
         };
         return IndiceProducaoSrv;
     }

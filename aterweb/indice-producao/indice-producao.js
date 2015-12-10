@@ -66,9 +66,41 @@
             $scope.visible = function (item) {
                 return !($scope.cadastro.apoio.localFiltro && 
                     $scope.cadastro.apoio.localFiltro.length > 0 && 
-                    item.nome.trim().toLowerCase().latinize().indexOf($scope.cadastro.apoio.localFiltro.trim().toLowerCase().latinize()) == -1);
+                    item.nome.trim().toLowerCase().latinize().indexOf($scope.cadastro.apoio.localFiltro.trim().toLowerCase().latinize()) === -1);
             };
 
+            $scope.getTagBem = function($query) {
+                var carregarClassificacao = function(a, r) {
+                    if (r) {
+                        a.push(r.nome);
+                    }
+                    if (r.bemClassificacao) {
+                        carregarClassificacao(a, r.bemClassificacao);
+                    }
+                }
+                var montarClassificacao = function(a) {
+                    var result = null;
+                    for (var i = a.length -1; i>=0; i--) {
+                        if (result != null) {
+                            result += '/';
+                        } else {
+                            result = '';
+                        }
+                        result += a[i];
+                    }
+                    return result;
+                }
+                return IndiceProducaoSrv.tagBem($query).then(function(response) { 
+                    var retorno = {data: []};
+                    var classificacao;
+                    for (var i in response.data.resultado) {
+                        classificacao = [];
+                        carregarClassificacao(classificacao, response.data.resultado[i][2]);
+                        retorno.data.push({id: response.data.resultado[i][0], nome: response.data.resultado[i][1], classificacao: montarClassificacao(classificacao)});
+                    }
+                    return retorno;
+                });
+            };
             
             $scope.UtilSrv = UtilSrv;
             // fim ações especiais

@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaTipo;
+import br.gov.df.emater.aterwebsrv.modelo.dto.BemProducaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.FormularioCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.FormularioColetaCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.IndiceProducaoCadFiltroDto;
@@ -108,6 +109,11 @@ public class FacadeBo implements BeanFactoryAware {
 	@Transactional(readOnly = true)
 	public _Contexto indiceProducaoFiltroExecutar(Principal usuario, IndiceProducaoCadFiltroDto filtro) throws Exception {
 		return this._executar(usuario, "IndiceProducaoFiltroExecutarCh", filtro);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto bemProducaoFiltroExecutar(Principal usuario, BemProducaoCadFiltroDto filtro) throws Exception {
+		return this._executar(usuario, "BemProducaoFiltroExecutarCh", filtro);
 	}
 
 	@Transactional(readOnly = true)
