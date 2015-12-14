@@ -10,23 +10,31 @@
         <table class="table table-hover table-striped">
             <thead>
                 <tr>
+                    <th colspan="6">&nbsp;</th>
+                    <th colspan="2">Volume</th>
+                    <th>&nbsp;</th>
+                    <th colspan="2">Produtores</th>
+                </tr>
+                <tr>
                     <th>
                         <frz-seletor ng-model="navegador"></frz-seletor>
                     </th>
                     <th width="30">
                         #
                     </th>
-                    <th>Nome</th>
-                    <th>Código</th>
-                    <th>Situação</th>
-                    <th>Início</th>
-                    <th>Término</th>
-                    <th>Destino</th>
-                    <th>Subformulário</th>
+                    <th>Ano</th>
+                    <th>Local</th>
+                    <th>Classificação / Forma de Produção</th>
+                    <th>Bem de Produção</th>
+                    <th>Esperado</th>
+                    <th>Confirmado</th>
+                    <th>Unid. Medida</th>
+                    <th>Esperado</th>
+                    <th>Confirmado</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr ng-repeat="item in navegador.dados | orderBy: 'nome' | pagina: navegador.paginaAtual : navegador.tamanhoPagina | limitTo: navegador.tamanhoPagina" ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)">
+            <tbody ng-init="cadastro.apoio.escondeDetalhe = false">
+                <tr ng-repeat-start="item in navegador.dados | orderBy: '4' | orderBy: '3' | orderBy: '2' | orderBy: '-1' | pagina: navegador.paginaAtual : navegador.tamanhoPagina | limitTo: navegador.tamanhoPagina" ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)">
                     <td width="30px">
                         <input type="radio" ng-show="navegador.selecao.tipo === 'U'" ng-model="navegador.selecao.item" ng-value="item"/>
                         <input type="checkbox" ng-show="navegador.selecao.tipo === 'M'" checklist-model="navegador.selecao.items" checklist-value="item" ng-click="crudMataClick(scp, $event);"/>
@@ -36,13 +44,92 @@
                     </td>
                     <td>{{item[1]}}</td>
                     <td>{{item[2]}}</td>
-                    <td>{{UtilSrv.indiceDePorCampo(cadastro.apoio.situacaoList, item[3], 'codigo').descricao}}</td>
-                    <td>{{item[4] | date: 'dd/MM/yyyy'}}</td>
-                    <td>{{item[5] | date: 'dd/MM/yyyy'}}</td>
-                    <td>{{UtilSrv.indiceDePorCampo(cadastro.apoio.formularioDestinoList, item[6], 'codigo').descricao}}</td>
-                    <td>{{UtilSrv.indiceDePorCampo(cadastro.apoio.confirmacaoList, item[7], 'codigo').descricao}}</td>
+                    <td>{{item[3]}}</td>
+                    <td>{{item[4]}}</td>
+                    <td class="text-right">{{soma(item[6], 1) | number: 5}}</td>
+                    <td class="text-right">{{soma(item[6], 2) | number: 5}}</td>
+                    <td>{{item[5]}}</td>
+                    <td class="text-right">{{soma(item[6], 3) | number: 0}}</td>
+                    <td class="text-right">{{soma(item[6], 4) | number: 0}}</td>
+                </tr>
+                <tr ng-repeat-end ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)" 
+                    ng-if="!cadastro.apoio.escondeDetalhe && item[6].length"
+                    style="font-size: 90%; padding:0; margin:0;">
+                    <td style="padding:0; margin:0;"></td>
+                    <td colspan="10" style="padding:0; margin:0;">
+                        <table class="table table-hover table-striped" style="padding:0; margin:0;">
+                            <thead>
+                                <tr>
+                                    <th colspan="{{item[6][0][0].length}}">Forma de Produção</th>
+                                    <th>A</th>
+                                    <th>B</th>
+                                    <th>C</th>
+                                    <th colspan="2">Volume = ({{item[8]}})</th>
+                                    <th>Unidade</th>
+                                    <th colspan="2">Produtores</th>
+                                </tr>
+                                <tr>
+                                    <th ng-repeat="forma in item[6][0][0] | orderBy: '2'">
+                                        {{forma[0]}}
+                                    </th>
+                                    <th>{{item[9]}}</th>
+                                    <th>{{item[10]}}</th>
+                                    <th>{{item[11]}}</th>
+                                    <th>Esperado</th>
+                                    <th>Confirmado</th>
+                                    <th>Medida</th>
+                                    <th>Esperado</th>
+                                    <th>Confirmado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="linha in item[6] | orderBy: '0.4' | orderBy: '0.3' | orderBy: '0.2' | orderBy: '0.1' | orderBy: '0.0'">
+                                    <td ng-repeat="forma in linha[0] | orderBy: '2'">
+                                        {{forma[1]}}
+                                    </td>
+                                    <td class="text-right">
+                                        {{linha[5] | number: 5}}<span ng-show="!linha[5]">--</span>
+                                    </td>
+                                    <td class="text-right">
+                                        {{linha[6] | number: 5}}<span ng-show="!linha[6]">--</span>
+                                    </td>
+                                    <td class="text-right">
+                                        {{linha[7] | number: 5}}<span ng-show="!linha[7]">--</span>
+                                    </td>
+                                    <td class="text-right">
+                                        {{formulaX(item[8], linha[5], linha[6], linha[7]) | number: 5}}
+                                    </td>
+                                    <td class="text-right">
+                                        {{linha[2] | number: 5}}
+                                    </td>
+                                    <td>
+                                        {{item[5]}}
+                                    </td>
+                                    <td class="text-right">
+                                        {{linha[3] | number: 0}}
+                                    </td>
+                                    <td class="text-right">
+                                        {{linha[4] | number: 0}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th colspan="{{item[6][0][0].length}}" class="text-right">Total</th>
+                                    <th class="text-right">{{soma(item[6], 5) | number: 5}}</th>
+                                    <th class="text-right">{{soma(item[6], 6) | number: 5}}</th>
+                                    <th class="text-right">{{soma(item[6], 7) | number: 5}}</th>
+                                    <th class="text-right">{{soma(item[6], 1) | number: 5}}</th>
+                                    <th class="text-right">{{soma(item[6], 2) | number: 5}}</th>
+                                    <th></th>
+                                    <th class="text-right">{{soma(item[6], 3) | number: 0}}</th>
+                                    <th class="text-right">{{soma(item[6], 4) | number: 0}}</th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
                 </tr>
             </tbody>
         </table>
     </div>
 </div>
+<label class="control-label" ng-if="navegador.selecao.item">Produtores</label>
+<ng-include src="'indice-producao/sub-produtores.html'" ng-controller="ProdutoresCtrl" ng-if="navegador.selecao.item"></ng-include>

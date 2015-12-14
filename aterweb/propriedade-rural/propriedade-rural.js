@@ -198,11 +198,11 @@ angular.module(pNmModulo).controller(pNmController,
             'include': 'propriedade-rural/tab-arquivo.html',
             'visivel': true,
         },
-        {
+        /*{
             'nome': 'Pendências',
             'include': 'propriedade-rural/tab-pendencia.html',
             'visivel': true,
-        },
+        },*/
         {
             'nome': 'Complementos',
             'include': 'propriedade-rural/tab-complemento.html',

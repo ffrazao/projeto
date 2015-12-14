@@ -22,13 +22,25 @@ angular.module(pNmModulo).factory(pNmFactory,
                 }
                 UtilSrv.dominio({ent: [
                    'Confirmacao',
+                   'ItemNome',
                 ]}).success(function(resposta) {
                     if (resposta && resposta.resultado) {
-                        scp.cadastro.apoio.confirmacaoList = resposta.resultado[0];
+                        scp.cadastro.apoio.confirmadoList = resposta.resultado[0];
+                        scp.cadastro.apoio.quantitativoList = resposta.resultado[1];
                     }
                 });
+                var identificaPai = function(lista, pai) {
+                    for (var i in lista) {
+                        lista[i][lista[i].length] = pai;
+                        if (lista[i][3] && lista[i][3].length) {
+                            identificaPai(lista[i][3], lista[i]);
+                        }
+                    }
+                };
                 BemClassificacaoSrv.filtrar({}).success(function(resposta) {
                     scp.cadastro.apoio.bemClassificacaoList = resposta.resultado;
+                    identificaPai(scp.cadastro.apoio.bemClassificacaoList, null);
+                    //console.log(scp.cadastro.apoio.bemClassificacaoList);
                 });
                 var t = TokenStorage.token();
                 if (t && t.lotacaoAtual && t.lotacaoAtual && t.lotacaoAtual.pessoaJuridica) {

@@ -2,9 +2,114 @@
     <div class="panel-heading"><h4>{{nomeFormulario}}</h4></div>
     <div class="panel-body">
         <form name="frm.formulario" novalidate>
-            <fieldset ng-disabled="['INCLUINDO', 'EDITANDO'].indexOf(navegador.estadoAtual()) < 0">
-            <!--<fieldset>-->
-                <frz-form ng-model="cadastro.apoio.formulario" dados="cadastro.registro" navegador="navegador"></frz-form>
+            <fieldset > <!-- ng-disabled="['INCLUINDO', 'EDITANDO'].indexOf(navegador.estadoAtual()) < 0">> -->
+                <div class="row">
+                    <div class="col-md-12" title="Ano da Produção">
+                        <div class="form-group">
+                            <label class="control-label" for="ano">Ano da Produção</label>
+                            <select id="ano" name="ano" class="form-control" ng-model="cadastro.registro.ano" ng-options="item as item for item in cadastro.apoio.anoList track by item" required="true">
+                            </select>
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.XXX.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" title="Classificação do Bem de Produção">
+                        <div class="form-group">
+                            <label class="control-label" for="bemClassificacao">Classificação do Bem de Produção</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" ng-model="cadastro.apoio.bemClassificacaoFiltro" placeholder="Filtrar por Classificação">
+                                <span class="input-group-btn">
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-default" ng-click="cadastro.apoio.bemClassificacaoFiltro = ''">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </button>
+                                    </div>
+                                </span>
+                            </div>
+                            <div class="row" style="height: 200px; overflow: scroll;">
+                                <script type="text/ng-template" id="nodes_renderer.html">
+                                    <div ui-tree-handle>
+                                        <a class="btn btn-primary btn-xs Tooltip" nodrag ng-click="toggleChildren(this)" title="Expandir/Recolher" ng-show="node[3].length">
+                                            <span class="glyphicon glyphicon-chevron-right" ng-show="collapsed"></span>
+                                            <span class="glyphicon glyphicon-chevron-down" ng-show="!collapsed"></span>
+                                        </a>
+                                        <label>
+                                            <input type="radio" ng-model="cadastro.registro.bemClassificacao" name="bemClassificacao" ng-value="node" ng-if="!node[3].length" ng-disabled="cadastro.registro.formaProducao.length">
+                                            {{node[1]}}
+                                        </label>
+                                    </div>
+                                    <ol ui-tree-nodes="" ng-model="node[3]" ng-class="{hidden: collapsed}">
+                                        <li ng-repeat="node in node[3]" ui-tree-node ng-include="'nodes_renderer.html'" ng-show="visivel(cadastro.apoio.bemClassificacaoFiltro, node[1], !node[3].length)">
+                                        </li>
+                                    </ol>
+                                </script>
+                                <div ui-tree drag-enabled="false">
+                                    <ol ui-tree-nodes="" ng-model="cadastro.apoio.bemClassificacaoList" id="tree-root" ng-class="{hidden: collapsed}">
+                                        <li ng-repeat="node in cadastro.apoio.bemClassificacaoList" ui-tree-node ng-include="'nodes_renderer.html'">
+                                        </li>
+                                    </ol>
+                                </div>
+                            </div>
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.bemClassificacao.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4" title="Bens de Produção">
+                        <div class="form-group">
+                            <label class="control-label" for="bem">Bens de Produção</label>
+                            <select id="bem" name="bem" class="form-control" ng-model="cadastro.registro.bem" ng-options="item as item for item in cadastro.apoio.bemList track by item" required="true">
+                            </select>
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.bem.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4" title="Unidade Organizacional">
+                        <div class="form-group">
+                            <label class="control-label" for="unidadeOrganizacional">Unidade Organizacional</label>
+                            <select id="unidadeOrganizacional" name="unidadeOrganizacional" class="form-control" ng-model="cadastro.registro.unidadeOrganizacional" ng-options="item as item for item in cadastro.apoio.unidadeOrganizacionalList track by item" required="true">
+                            </select>
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.unidadeOrganizacional.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4" title="Comunidade">
+                        <div class="form-group">
+                            <label class="control-label" for="comunidade">Comunidade</label>
+                            <select id="comunidade" name="comunidade" class="form-control" ng-model="cadastro.registro.comunidade" ng-options="item as item for item in cadastro.apoio.comunidadeList track by item" required="true">
+                            </select>
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.comunidade.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-if="cadastro.registro.bemClassificacao">
+                    <div class="col-md-12" title="Forma de Produção">
+                        <div class="form-group">
+                            <label class="control-label" for="formaProducao">Forma de Produção</label>
+
+                            <frz-tabela ng-model="cadastro.apoio.bemClassificacaoForm" dados="cadastro.registro.formaProducao"></frz-tabela>
+
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.formaProducao.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </fieldset>
         </form>
     </div>

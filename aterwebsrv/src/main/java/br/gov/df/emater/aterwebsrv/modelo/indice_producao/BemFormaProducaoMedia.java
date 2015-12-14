@@ -24,12 +24,16 @@ public class BemFormaProducaoMedia extends EntidadeBase implements _ChavePrimari
 	private static final long serialVersionUID = 1L;
 
 	@ManyToOne
-	@JoinColumn(name = "bem_forma_producao_id")
-	private BemFormaProducao bemFormaProducao;
+	@JoinColumn(name = "bem_id")
+	private Bem bem;
 
 	@ManyToOne
 	@JoinColumn(name = "comunidade_id")
 	private Comunidade comunidade;
+
+	@ManyToOne
+	@JoinColumn(name = "forma_producao_valor_id")
+	private FormaProducaoValor formaProducaoValor;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -59,12 +63,16 @@ public class BemFormaProducaoMedia extends EntidadeBase implements _ChavePrimari
 		super();
 	}
 
-	public BemFormaProducao getBemFormaProducao() {
-		return bemFormaProducao;
+	public Bem getBem() {
+		return bem;
 	}
 
 	public Comunidade getComunidade() {
 		return comunidade;
+	}
+
+	public FormaProducaoValor getFormaProducaoValor() {
+		return formaProducaoValor;
 	}
 
 	@Override
@@ -96,12 +104,16 @@ public class BemFormaProducaoMedia extends EntidadeBase implements _ChavePrimari
 		return valorUnitario;
 	}
 
-	public void setBemFormaProducao(BemFormaProducao bemFormaProducao) {
-		this.bemFormaProducao = bemFormaProducao;
+	public void setBem(Bem bem) {
+		this.bem = bem;
 	}
 
 	public void setComunidade(Comunidade comunidade) {
 		this.comunidade = comunidade;
+	}
+
+	public void setFormaProducaoValor(FormaProducaoValor formaProducaoValor) {
+		this.formaProducaoValor = formaProducaoValor;
 	}
 
 	@Override

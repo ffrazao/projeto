@@ -12,14 +12,10 @@ import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 
 @Entity
-@Table(name = "bem_forma_producao", schema = EntidadeBase.INDICE_PRODUCAO_SCHEMA)
-public class BemFormaProducao extends EntidadeBase implements _ChavePrimaria<Integer> {
+@Table(name = "producao_forma_composicao", schema = EntidadeBase.INDICE_PRODUCAO_SCHEMA)
+public class ProducaoFormaComposicao extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
-
-	@ManyToOne
-	@JoinColumn(name = "bem_id")
-	private Bem bem;
 
 	@ManyToOne
 	@JoinColumn(name = "forma_producao_valor_id")
@@ -29,13 +25,11 @@ public class BemFormaProducao extends EntidadeBase implements _ChavePrimaria<Int
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
-	public BemFormaProducao() {
-		super();
-	}
+	private Integer ordem;
 
-	public Bem getBem() {
-		return bem;
-	}
+	@ManyToOne
+	@JoinColumn(name = "producao_forma_id")
+	private ProducaoForma producaoForma;
 
 	public FormaProducaoValor getFormaProducaoValor() {
 		return formaProducaoValor;
@@ -46,8 +40,12 @@ public class BemFormaProducao extends EntidadeBase implements _ChavePrimaria<Int
 		return id;
 	}
 
-	public void setBem(Bem bem) {
-		this.bem = bem;
+	public Integer getOrdem() {
+		return ordem;
+	}
+
+	public ProducaoForma getProducaoForma() {
+		return producaoForma;
 	}
 
 	public void setFormaProducaoValor(FormaProducaoValor formaProducaoValor) {
@@ -57,6 +55,14 @@ public class BemFormaProducao extends EntidadeBase implements _ChavePrimaria<Int
 	@Override
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public void setOrdem(Integer ordem) {
+		this.ordem = ordem;
+	}
+
+	public void setProducaoForma(ProducaoForma producaoForma) {
+		this.producaoForma = producaoForma;
 	}
 
 }

@@ -3,6 +3,7 @@
     <div class="panel-body">
         <form class="form-horizontal" name="frm.filtro" novalidate>
             <fieldset>
+                <legend>Dados Básicos</legend>
                 <!-- Select input-->
                 <div class="form-group" title="Ano da Produção">
                     <label class="col-md-4 control-label" for="ano">
@@ -19,16 +20,16 @@
                 </div>
                 <!-- Multiple Checkboxes (inline) -->
                 <div class="form-group" title="A coleta foi confirmada?">
-                    <label class="col-md-4 control-label" for="confirmacao">
+                    <label class="col-md-4 control-label" for="confirmado">
                         Coleta confirmada
                     </label>
                     <div class="col-md-6">
-                        <label class="checkbox-inline" for="confirmacao-{{$index}}" ng-repeat="item in cadastro.apoio.confirmacaoList">
-                            <input type="checkbox" name="confirmacao" id="confirmacao-{{$index}}" checklist-model="cadastro.filtro.confirmacao" checklist-value="item.codigo">
+                        <label class="checkbox-inline" for="confirmado-{{$index}}" ng-repeat="item in cadastro.apoio.confirmadoList">
+                            <input type="checkbox" name="confirmado" id="confirmado-{{$index}}" checklist-model="cadastro.filtro.confirmado" checklist-value="item.codigo">
                             {{item.descricao}}
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.confirmacao.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.confirmado.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
@@ -198,6 +199,52 @@
                         </div>
                     </div>
                     <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.unidadeOrganizacionalComunidade.$error.required">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        Campo Obrigatório
+                    </div>
+                </div>
+                <legend>Quantitativos</legend>
+                <!-- Select input-->
+                <div class="form-group" title="Volume de Produção">
+                    <label class="col-md-4 control-label" for="volumeIni">
+                        Volume de produção entre 
+                    </label>
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <input id="volumeIni" name="volumeIni" type="text" placeholder="placeholder" class="form-control input-md" ng-model="cadastro.filtro.volumeIni" ui-number-mask="4">
+                            </div>
+                            <label class="col-md-2">
+                                e 
+                            </label>
+                            <div class="col-md-5">
+                                <input id="volumeFim" name="volumeFim" type="text" placeholder="placeholder" class="form-control input-md" ng-model="cadastro.filtro.volumeFim" ui-number-mask="4">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.volumeIni.$error.required">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        Campo Obrigatório
+                    </div>
+                </div>
+                <div class="form-group" title="Quantitativos" ng-repeat="item in cadastro.apoio.quantitativoList">
+                    <label class="col-md-4 control-label" for="quantitativoIni">
+                        {{item.nome}}
+                    </label>
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <input id="quantitativoIni{{item.id}}" name="quantitativoIni{{item.id}}" type="text" placeholder="placeholder" class="form-control input-md" ng-model="cadastro.filtro.quantitativoIni[item.id]" ui-number-mask="4">
+                            </div>
+                            <label class="col-md-2">
+                                e 
+                            </label>
+                            <div class="col-md-5">
+                                <input id="quantitativoFim{{item.id}}" name="quantitativoFim{{item.id}}" type="text" placeholder="placeholder" class="form-control input-md" ng-model="cadastro.filtro.quantitativoFim[item.id]" ui-number-mask="4">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.quantitativoIni{{item.id}}.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>

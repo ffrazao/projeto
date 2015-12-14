@@ -6,8 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -19,10 +17,6 @@ import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 public class FormaProducaoItem extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
-
-	@ManyToOne
-	@JoinColumn(name = "forma_producao_item_id")
-	private FormaProducaoItem formaProducaoItem;
 
 	@OneToMany(mappedBy = "formaProducaoItem")
 	private List<FormaProducaoValor> formaProducaoValorList;
@@ -37,10 +31,6 @@ public class FormaProducaoItem extends EntidadeBase implements _ChavePrimaria<In
 		super();
 	}
 
-	public FormaProducaoItem getFormaProducaoItem() {
-		return formaProducaoItem;
-	}
-
 	public List<FormaProducaoValor> getFormaProducaoValorList() {
 		return formaProducaoValorList;
 	}
@@ -52,10 +42,6 @@ public class FormaProducaoItem extends EntidadeBase implements _ChavePrimaria<In
 
 	public String getNome() {
 		return nome;
-	}
-
-	public void setFormaProducaoItem(FormaProducaoItem formaProducaoItem) {
-		this.formaProducaoItem = formaProducaoItem;
 	}
 
 	public void setFormaProducaoValorList(List<FormaProducaoValor> formaProducaoValorList) {

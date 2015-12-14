@@ -1,0 +1,163 @@
+<div class="panel panel-default">
+    <div class="panel-heading container-fluid">
+        <frz-navegador
+        ng-model="produtoresNvg" exibe-texto-botao="false"
+        dados="navegador.selecao.item[7]"
+        acoes-especiais="acoesEspeciais"
+        on-abrir = "abrir()"
+        on-agir = "agir()"
+        on-editar = "editar()"
+        on-especial = "especial()"
+        on-excluir = "excluir()"
+        on-filtrar = "filtrar()"
+        on-incluir = "incluir()"
+        on-listar = "listar()"
+        on-navegar-primeiro = "navegarPrimeiro()"
+        on-navegar-anterior = "navegarAnterior()"
+        on-navegar-proximo = "navegarPosterior()"
+        on-navegar-ultimo = "navegarUltimo()"
+        on-proxima-pagina="proximaPagina()"
+        on-ultima-pagina="ultimaPagina()"
+        ></frz-navegador>
+    </div>
+    <div class="painel-body"  ng-hide="navegador.selecao.item[7].length">
+        <div class="alert alert-warning" style="margin: 0px;" role="alert">
+            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+            Nenhum registro localizado!
+        </div>
+    </div>
+    <div class="table-responsible" ng-show="navegador.selecao.item[7].length > 0">
+        <ng-form name="produtoresFrm">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th colspan="4"></th>
+                        <th colspan="2">Volume</th>
+                        <th colspan="2">Unidade</th>
+                    </tr>
+                    <tr>
+                        <th>
+                            <frz-seletor ng-model="produtoresNvg"></frz-seletor>
+                        </th>
+                        <th width="30">
+                            #
+                        </th>
+                        <th>Propriedade</th>
+                        <th>Beneficiário</th>
+                        <th>Esperado</th>
+                        <th>Confirmado</th>
+                        <th>Medida</th>
+                        <th>Ação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat-start="produtor in produtoresNvg.dados | orderBy: 'nome' | pagina: produtoresNvg.paginaAtual : produtoresNvg.tamanhoPagina | limitTo: produtoresNvg.tamanhoPagina" ng-click="produtoresNvg.folhaAtual = $index + ((produtoresNvg.paginaAtual-1) * produtoresNvg.tamanhoPagina)">
+                        <td width="30px">
+                            <input type="radio" ng-show="produtoresNvg.selecao.tipo === 'U'" ng-model="produtoresNvg.selecao.item" ng-value="produtor"/>
+                            <input type="checkbox" ng-show="produtoresNvg.selecao.tipo === 'M'" checklist-model="produtoresNvg.selecao.items" checklist-value="produtor" ng-click="crudMataClick(scp, $event);"/>
+                        </td>
+                        <td>
+                            {{$index + 1 + ((produtoresNvg.paginaAtual-1) * produtoresNvg.tamanhoPagina)}}
+                        </td>
+                        <td>{{produtor[0]}}</td>
+                        <td>{{produtor[1]}}</td>
+                        <td>{{soma(produtor[2], 1) | number: 5}}</td>
+                        <td>00000000000000</td>
+                        <td>{{navegador.selecao.item[5]}}</td>
+                        <th><button class="btn btn-primary btn-sm">Confirmar</button></th>
+                    </tr>
+                    <tr ng-repeat-end ng-click="produtoresNvg.folhaAtual = $index + ((produtoresNvg.paginaAtual-1) * produtoresNvg.tamanhoPagina)" 
+                        ng-if="!cadastro.apoio.escondeDetalhe && produtor[2].length"
+                        style="font-size: 90%; padding:0; margin:0;">
+                        <td style="padding:0; margin:0;"></td>
+                        <td colspan="10" style="padding:0; margin:0;">
+                            <table class="table table-hover table-striped" style="padding:0; margin:0;">
+                                <thead>
+                                    <tr>
+                                        <th colspan="{{produtor[2][0][0].length}}">Forma de Produção</th>
+                                        <th>A</th>
+                                        <th>B</th>
+                                        <th>C</th>
+                                        <th>Volume</th>
+                                        <th>Unidade</th>
+                                        <th></th>
+                                    </tr>
+                                    <tr>
+                                        <th ng-repeat="forma in produtor[2][0][0] | orderBy: '2'">
+                                            {{forma[0]}}
+                                        </th>
+                                        <th>{{navegador.selecao.item[9]}}</th>
+                                        <th>{{navegador.selecao.item[10]}}</th>
+                                        <th>{{navegador.selecao.item[11]}}</th>
+                                        <th>({{navegador.selecao.item[8]}})</th>
+                                        <th>Medida</th>
+                                        <th>Confirmado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="linha in produtor[2] | orderBy: '0.4' | orderBy: '0.3' | orderBy: '0.2' | orderBy: '0.1' | orderBy: '0.0'"
+                                        ng-class="{danger: !linha[10]}">
+                                        <td ng-repeat="forma in linha[0] | orderBy: '2'">
+                                            {{forma[1]}}
+                                        </td>
+                                        <td class="text-right">
+                                            {{linha[5] | number: 5}}<span ng-show="!linha[5]">--</span>
+                                        </td>
+                                        <td class="text-right">
+                                            {{linha[6] | number: 5}}<span ng-show="!linha[6]">--</span>
+                                        </td>
+                                        <td class="text-right">
+                                            {{linha[7] | number: 5}}<span ng-show="!linha[7]">--</span>
+                                        </td>
+                                        <td class="text-right">
+                                            {{formula(navegador.selecao.item[8], linha[5], linha[6], linha[7]) | number: 5}}
+                                        </td>
+                                        <td>
+                                            {{navegador.selecao.item[5]}}
+                                        </td>
+                                        <td>
+                                            {{linha[10] | date: 'dd/MM/yyyy'}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="{{produtor[2][0][0].length}}" class="text-right">Total</th>
+                                        <th class="text-right">{{soma(produtor[2], 5) | number: 5}}</th>
+                                        <th class="text-right">{{soma(produtor[2], 6) | number: 5}}</th>
+                                        <th class="text-right">{{soma(produtor[2], 7) | number: 5}}</th>
+                                        <th class="text-right">{{soma(produtor[2], 1) | number: 5}}</th>
+                                        <th>{{navegador.selecao.item[5]}}</th>
+                                        <th></th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+        </ng-form>
+    </div>
+    <div class="panel-footer">
+    </div>
+    <script type="text/ng-template" id="pessoa-email-frm.html">
+        <div class="modal-body">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-8">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" name="endereco" ng-model="conteudo.email.endereco" required="true">
+                        <div class="label label-danger" ng-show="confirmacaoFrm.endereco.$error.required">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                             Campo Obrigatório
+                        </div>
+                        <div class="label label-danger" ng-show="confirmacaoFrm.endereco.$error.email">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                             Endereço inválido!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+</div>

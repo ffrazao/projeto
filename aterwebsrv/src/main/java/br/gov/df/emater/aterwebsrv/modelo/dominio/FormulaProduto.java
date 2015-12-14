@@ -2,7 +2,7 @@ package br.gov.df.emater.aterwebsrv.modelo.dominio;
 
 public enum FormulaProduto {
 	
-	A("", 1), B("", 2);
+	A("A", 1), B("A * B", 2);
 
 	private String descricao;
 
