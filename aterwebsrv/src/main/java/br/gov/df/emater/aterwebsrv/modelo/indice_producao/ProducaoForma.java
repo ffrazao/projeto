@@ -6,8 +6,6 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,7 +23,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
@@ -36,7 +33,7 @@ public class ProducaoForma extends EntidadeBase implements _ChavePrimaria<Intege
 
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "alteracao_data")
+	@Column(name = "alteracao_data", insertable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	@JsonSerialize(using = JsonSerializerData.class)
@@ -46,9 +43,6 @@ public class ProducaoForma extends EntidadeBase implements _ChavePrimaria<Intege
 	@ManyToOne
 	@JoinColumn(name = "alteracao_usuario_id")
 	private Usuario alteracaoUsuario;
-
-	@Enumerated(EnumType.STRING)
-	private Confirmacao confirmado;
 
 	@Column(name = "data_confirmacao")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -61,7 +55,7 @@ public class ProducaoForma extends EntidadeBase implements _ChavePrimaria<Intege
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
-	@Column(name = "inclusao_data")
+	@Column(name = "inclusao_data", insertable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	@JsonSerialize(using = JsonSerializerData.class)
@@ -109,10 +103,6 @@ public class ProducaoForma extends EntidadeBase implements _ChavePrimaria<Intege
 
 	public Usuario getAlteracaoUsuario() {
 		return alteracaoUsuario;
-	}
-
-	public Confirmacao getConfirmado() {
-		return confirmado;
 	}
 
 	public Calendar getDataConfirmacao() {
@@ -174,10 +164,6 @@ public class ProducaoForma extends EntidadeBase implements _ChavePrimaria<Intege
 
 	public void setAlteracaoUsuario(Usuario alteracaoUsuario) {
 		this.alteracaoUsuario = alteracaoUsuario;
-	}
-
-	public void setConfirmado(Confirmacao confirmado) {
-		this.confirmado = confirmado;
 	}
 
 	public void setDataConfirmacao(Calendar dataConfirmacao) {

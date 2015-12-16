@@ -13,7 +13,8 @@ angular.module(pNmModulo).factory(pNmFactory,
             abrir : function(scp) {
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
                 // captar as listas de apoio
-                scp.cadastro.filtro.ano = new Date().getFullYear();
+                scp.cadastro.apoio.ano = new Date().getFullYear();
+                scp.cadastro.filtro.ano = scp.cadastro.apoio.ano;
                 for (var ano = scp.cadastro.filtro.ano + 1; ano > scp.cadastro.filtro.ano - 20; ano--) {
                     if (!scp.cadastro.apoio.anoList) {
                         scp.cadastro.apoio.anoList = [];
@@ -23,10 +24,12 @@ angular.module(pNmModulo).factory(pNmFactory,
                 UtilSrv.dominio({ent: [
                    'Confirmacao',
                    'ItemNome',
+                   'UnidadeOrganizacional',
                 ]}).success(function(resposta) {
                     if (resposta && resposta.resultado) {
                         scp.cadastro.apoio.confirmadoList = resposta.resultado[0];
                         scp.cadastro.apoio.quantitativoList = resposta.resultado[1];
+                        scp.cadastro.apoio.unidadeOrganizacionalList = resposta.resultado[2];
                     }
                 });
                 var identificaPai = function(lista, pai) {

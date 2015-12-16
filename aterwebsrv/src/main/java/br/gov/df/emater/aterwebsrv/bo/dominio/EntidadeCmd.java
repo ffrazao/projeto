@@ -42,15 +42,19 @@ public class EntidadeCmd extends _Comando {
 
 	private void fetch(List<?> result, String entidade, String[] fetchs) throws Exception {
 		// verificar se deve fazer o fetch de algum resultado
-		if (fetchs != null && result != null) {
+		if (fetchs != null && result != null && result.size() > 0) {
 			List<Method> metodos = new ArrayList<Method>();
+			
 			for (String campo : fetchs) {
-				metodos.add(Class.forName(String.format("gov.emater.aterweb.model.%s", entidade)).getMethod(String.format("get%s%s", campo.substring(0, 1).toUpperCase(), campo.substring(1, campo.length()))));
+				metodos.add(Class.forName(result.get(0).getClass().getName()).getMethod(String.format("get%s%s", campo.substring(0, 1).toUpperCase(), campo.substring(1, campo.length()))));
 			}
 			for (Object registro : result) {
 				for (Method fetch : metodos) {
-					List<?> itens = (List<?>) fetch.invoke(registro);
-					itens.size();
+					try {
+						List<?> itens = (List<?>) fetch.invoke(registro);
+						itens.size();
+					} catch (Exception e) {
+					}
 				}
 			}
 		}

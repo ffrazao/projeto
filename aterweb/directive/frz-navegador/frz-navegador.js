@@ -202,6 +202,9 @@
                     delete b1.visivel;
                 }
             }
+            if (!estadoAtual) {
+                return;
+            }
             // exibir somente os botoes do estado atual
             var ordem = 0;
             for (var botao2 in $scope.estados[estadoAtual].botoes) {

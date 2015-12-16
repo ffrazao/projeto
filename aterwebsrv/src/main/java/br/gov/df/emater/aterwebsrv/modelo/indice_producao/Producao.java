@@ -35,7 +35,7 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "alteracao_data")
+	@Column(name = "alteracao_data", insertable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	@JsonSerialize(using = JsonSerializerData.class)
@@ -60,7 +60,7 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer> {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
-	@Column(name = "inclusao_data")
+	@Column(name = "inclusao_data", insertable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	@JsonSerialize(using = JsonSerializerData.class)

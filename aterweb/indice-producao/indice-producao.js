@@ -1,5 +1,5 @@
 /* jslint evil: true, browser: true, plusplus: true, loopfunc: true */
-/* global criarEstadosPadrao */ 
+/* global criarEstadosPadrao, removerCampo */ 
 
 (function(pNmModulo, pNmController, pNmFormulario, pUrlModulo) {
     'use strict';
@@ -8,7 +8,9 @@
         criarEstadosPadrao($stateProvider, pNmModulo, pNmController, pUrlModulo);
     }]);
     angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'IndiceProducaoSrv',
-        function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, IndiceProducaoSrv) {
+        'TokenStorage',
+        function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, IndiceProducaoSrv, 
+            TokenStorage) {
 
             // inicializacao
             $scope.crudInit($scope, $state, null, pNmFormulario, IndiceProducaoSrv);
@@ -74,42 +76,62 @@
                 ];
                 $rootScope.abrir(scp);
             };
+            $scope.incluir = function(scp, modelo) {
+                $scope.servico.novo(modelo).success(function(resposta) {
+                    $scope.navegador.mudarEstado('INCLUINDO');
+                    $scope.crudVaiPara(scp, $scope.stt, 'form');
+                    var t = TokenStorage.token();
+                    if (t && t.lotacaoAtual) {
+                        resposta.resultado.unidadeOrganizacional = t.lotacaoAtual;
+                    }
+                    $scope.cadastro.original = resposta.resultado;
+                    $scope.cadastro.registro = angular.copy($scope.cadastro.original);
+                    $scope.navegador.submetido = false;
+                }).error(function(erro){
+                    toastr.error(erro, 'Erro ao inserir');
+                });
+            };
+            $scope.confirmarIncluir = function(scp) {
+                if (!scp.confirmar(scp)) {
+                    return;
+                }
+                var reg = angular.copy(scp.cadastro.registro);
+                removerCampo(reg, ['@jsonId', 'bemClassificacao', 'unidadeOrganizacional']);
+                scp.servico.incluir(reg).success(function (resposta) {
+                    if (resposta.mensagem && resposta.mensagem === 'OK') {
+                        scp.navegador.voltar(scp);
+                        scp.navegador.mudarEstado('VISUALIZANDO');
+                        scp.crudVaiPara(scp, scp.stt, 'form');
+                        scp.navegador.submetido = false;
+                        scp.navegador.dados.push(scp.cadastro.registro);
+                        if (scp.navegador.selecao.tipo === 'U') {
+                            scp.navegador.selecao.item = scp.cadastro.registro;
+                        } else {
+                            scp.navegador.folhaAtual = scp.navegador.selecao.items.length;
+                            scp.navegador.selecao.items.push(scp.cadastro.registro);
+                        }
+                        scp.navegador.refresh();
+
+                        toastr.info('Operação realizada!', 'Informação');
+                            
+                    } else {
+                        toastr.error(resposta.mensagem, 'Erro ao incluir');
+                    }
+                }).error(function (erro) {
+                    toastr.error(erro, 'Erro ao incluir');
+                });
+            };
+            $scope.cadastro.apoio.producaoFormaForm = {
+                codigo: 'producaoFormaList',
+                tipo: 'array',
+                nome: 'Forma de Produção',
+                funcaoRequerido: function() {return true;},
+                opcao: [],
+            };
+
             // fim das operaçoes atribuidas ao navagador
 
             // inicio ações especiais
-            $scope.cadastro.apoio.bemClassificacaoForm = {
-                codigo: 'formaProducao',
-                tipo: 'array',
-                nome: 'Formulário',
-                opcao:
-                    [
-                        {
-                            nome: 'Item A',
-                            codigo: 'itemAValor',
-                            tipo: 'numero',
-                            funcaoRequerido: function() {return true;},
-                        },
-                        {
-                            nome: 'Item B',
-                            codigo: 'itemBValor',
-                            tipo: 'numero',
-                            funcaoRequerido: function() {return true;},
-                        },
-                        {
-                            nome: 'Item C',
-                            codigo: 'itemCValor',
-                            tipo: 'numero',
-                            funcaoRequerido: function() {return true;},
-                        },
-                        {
-                            nome: 'Volume',
-                            codigo: 'volume',
-                            tipo: 'numero',
-                            funcaoRequerido: function() {return true;},
-                        },
-                    ],
-            };
-
             $scope.soma = function(array, campo) {
                 if (!array || !campo) {
                     return null;
@@ -195,27 +217,26 @@
                     return;
                 }
                 array.push(item);
-                if (item[4]) {
-                    pai(array, item[4]);
+                if (item[9]) {
+                    pai(array, item[9]);
                 }
             };
             $scope.$watch('cadastro.registro.bemClassificacao', function(novo) {
                 //console.log($scope.cadastro.registro.bemClassificacao);
+                if (!novo) {
+                    return;
+                }
                 var array = [];
                 pai(array, novo);
                 if (array.length) {
                     array.reverse();
-                    $scope.cadastro.apoio.bemClassificacaoForm = {
-                        codigo: 'formaProducao',
-                        tipo: 'array',
-                        nome: 'Formulário',
-                        opcao: [],
-                    };
+                    $scope.cadastro.apoio.producaoFormaForm.opcao = [];
+                    var unidadeMedida, itemANome, itemBNome, itemCNome, formula;
                     for (var i in array) {
                         //console.log(array[i][2]);
                         if (array[i][2]) {
                             for (var j in array[i][2]) {
-                                $scope.cadastro.apoio.bemClassificacaoForm.opcao.push({
+                                $scope.cadastro.apoio.producaoFormaForm.opcao.push({
                                     codigo: 'valor' + array[i][2][j][0],
                                     nome: array[i][2][j][1],
                                     tipo: 'combo_unico_objeto',
@@ -228,42 +249,96 @@
                                 });
                             }
                         }
+                        if (!unidadeMedida && array[i][4]) {
+                            unidadeMedida = array[i][4];
+                        }
+                        if (!itemANome && array[i][5]) {
+                            itemANome = array[i][5];
+                        }
+                        if (!itemBNome && array[i][6]) {
+                            itemBNome = array[i][6];
+                        }
+                        if (!itemCNome && array[i][7]) {
+                            itemCNome = array[i][7];
+                        }
+                        if (!formula && array[i][8]) {
+                            formula = array[i][8];
+                        }
                     }
-                    $scope.cadastro.apoio.bemClassificacaoForm.opcao.push({
-                                    nome: 'Item A',
-                                    codigo: 'itemAValor',
-                                    tipo: 'numero',
-                                    funcaoRequerido: function() {return true;},
-                                });
-                    $scope.cadastro.apoio.bemClassificacaoForm.opcao.push({
-                                    nome: 'Item B',
-                                    codigo: 'itemBValor',
-                                    tipo: 'numero',
-                                    funcaoRequerido: function() {return true;},
-                                });
-                    $scope.cadastro.apoio.bemClassificacaoForm.opcao.push({
-                                    nome: 'Item C',
-                                    codigo: 'itemCValor',
-                                    tipo: 'numero',
-                                    funcaoRequerido: function() {return true;},
-                                });
-                    $scope.cadastro.apoio.bemClassificacaoForm.opcao.push({
-                                    nome: 'Volume',
-                                    codigo: 'volume',
-                                    tipo: 'numero',
-                                    funcaoRequerido: function() {return true;},
-                                });
-                    $scope.cadastro.apoio.bemClassificacaoForm.opcao.push({
-                                    nome: 'Unidade Medida',
+                    if (itemANome) {
+                        $scope.cadastro.apoio.producaoFormaForm.opcao.push({
+                                        nome: itemANome,
+                                        codigo: 'itemAValor',
+                                        tipo: 'numero',
+                                        funcaoRequerido: function() {return true;},
+                                    });
+                    }
+                    if (itemBNome) {
+                        $scope.cadastro.apoio.producaoFormaForm.opcao.push({
+                                        nome: itemBNome,
+                                        codigo: 'itemBValor',
+                                        tipo: 'numero',
+                                        funcaoRequerido: function() {return true;},
+                                    });
+                    }
+                    if (itemCNome) {
+                        $scope.cadastro.apoio.producaoFormaForm.opcao.push({
+                                        nome: itemCNome,
+                                        codigo: 'itemCValor',
+                                        tipo: 'numero',
+                                        funcaoRequerido: function() {return true;},
+                                    });
+                    }
+                    if (formula) {
+                        $scope.cadastro.apoio.producaoFormaForm.opcao.push({
+                                        nome: 'Volume = ' + formula,
+                                        codigo: 'volume',
+                                        tipo: 'numero',
+                                        funcaoRequerido: function() {return true;},
+                                    });
+                    }
+                    $scope.cadastro.apoio.producaoFormaForm.opcao.push({
+                                    nome: 'Unidade Medida ' + unidadeMedida,
                                     codigo: 'unidadeMedida',
                                     tipo: 'string',
                                 });
-                    $scope.cadastro.apoio.bemClassificacaoForm.opcao.push({
+                    $scope.cadastro.apoio.producaoFormaForm.opcao.push({
                                     nome: 'Quantidade de Produtores',
                                     codigo: 'quantidadeProdutores',
                                     tipo: 'numero',
                                     funcaoRequerido: function() {return true;},
                                 });
+                }
+                UtilSrv.dominio({ent: [
+                       'Bem',
+                    ], 
+                    npk: 'bemClassificacao.id', 
+                    vpk: novo[0]}).success(function(resposta) {
+                    if (resposta && resposta.mensagem === "OK") {
+                        $scope.cadastro.apoio.bemList = resposta.resultado[0];
+                    }
+                });
+
+            });
+            $scope.$watch('cadastro.registro.unidadeOrganizacional', function(novo) {
+                if (novo && novo.id) {
+                    UtilSrv.dominio({ent: [
+                           'UnidadeOrganizacionalComunidade',
+                        ], 
+                        npk: 'unidadeOrganizacional.id', 
+                        vpk: novo.id, 
+                        fetchs: 'comunidade'}).success(function(resposta) {
+                        if (resposta && resposta.mensagem === "OK") {
+                            if (!$scope.cadastro.apoio.comunidadeList) {
+                                $scope.cadastro.apoio.comunidadeList = [];
+                            } else {
+                                $scope.cadastro.apoio.comunidadeList.length = 0;
+                            }
+                            for (var i in resposta.resultado[0]) {
+                                $scope.cadastro.apoio.comunidadeList.push(resposta.resultado[0][i].comunidade);
+                            }
+                        }
+                    });
                 }
             });
             // fim dos watches

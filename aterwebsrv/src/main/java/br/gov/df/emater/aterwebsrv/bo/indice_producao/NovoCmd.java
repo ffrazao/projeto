@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.bo.indice_producao;
 
+import java.util.Calendar;
+
 import org.springframework.stereotype.Service;
 
 import br.gov.df.emater.aterwebsrv.bo._Comando;
@@ -11,7 +13,9 @@ public class NovoCmd extends _Comando {
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
-		Producao result = null;
+		Producao result = new Producao();
+		
+		result.setAno(Calendar.getInstance().get(Calendar.YEAR));
 
 		contexto.setResposta(result);
 

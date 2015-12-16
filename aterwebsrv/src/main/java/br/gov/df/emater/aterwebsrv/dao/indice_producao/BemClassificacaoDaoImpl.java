@@ -1,6 +1,7 @@
 package br.gov.df.emater.aterwebsrv.dao.indice_producao;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -96,7 +97,33 @@ public class BemClassificacaoDaoImpl implements BemClassificacaoDaoCustom {
 				}
 			}
 			linha.add(bemClassificacaoList);
-
+			
+			if (bc.getUnidadeMedida() != null) {				
+				linha.add(bc.getUnidadeMedida().getNome());
+			} else {
+				linha.add(null);
+			}
+			if (bc.getItemANome() != null) {				
+				linha.add(bc.getItemANome().getNome());
+			} else {
+				linha.add(null);
+			}
+			if (bc.getItemBNome() != null) {				
+				linha.add(bc.getItemBNome().getNome());
+			} else {
+				linha.add(null);
+			}
+			if (bc.getItemCNome() != null) {				
+				linha.add(bc.getItemCNome().getNome());
+			} else {
+				linha.add(null);
+			}
+			if (bc.getFormula() != null) {				
+				linha.add(bc.getFormula().toString());
+			} else {
+				linha.add(null);
+			}
+			
 			if (result == null) {
 				result = new ArrayList<Object[]>();
 			}

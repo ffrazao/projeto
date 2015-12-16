@@ -41,7 +41,7 @@ public class UtilDaoImpl implements UtilDao {
 	@Override
 	public List<?> getDominio(String entidade, String nomeChavePrimaria, String valorChavePrimaria, String order) {
 		if (logger.isTraceEnabled()) {
-			logger.trace(String.format("Recuperando dom�nio para Entidade[%s], NomeChavePrimaria[%s], ValorChavePrim�ria[%s]", entidade, nomeChavePrimaria, valorChavePrimaria));
+			logger.trace(String.format("Recuperando domínio para Entidade[%s], NomeChavePrimaria[%s], ValorChavePrim�ria[%s]", entidade, nomeChavePrimaria, valorChavePrimaria));
 		}
 
 		StringBuilder sql = new StringBuilder();

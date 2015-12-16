@@ -35,12 +35,13 @@ module.exports = function (grunt) {
   // load all grunt tasks
   require('load-grunt-tasks')(grunt);
 
-  // Project configuration.
+  // Project configuration. 9001
   grunt.initConfig({
     connect: {
       main: {
         options: {
-          port: 9001
+          port: 80,
+          hostname: '0.0.0.0'
         }
       }
     },
