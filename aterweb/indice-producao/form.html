@@ -16,7 +16,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row" ng-show="cadastro.registro.ano">
+                <div class="row" ng-shows="cadastro.registro.ano">
                     <div class="col-md-12" title="Classificação do Bem de Produção">
                         <div class="form-group">
                             <label class="control-label" for="bemClassificacao">Classificação do Bem de Produção</label>
@@ -38,7 +38,7 @@
                                             <span class="glyphicon glyphicon-chevron-down" ng-show="!collapsed"></span>
                                         </a>
                                         <label>
-                                            <input type="radio" ng-model="cadastro.registro.bemClassificacao" name="bemClassificacao" id="bemClassificacao{{$index}}" ng-value="node" ng-if="!node[3].length" ng-disabled="cadastro.registro.formaProducao.length" ng-required="true">
+                                            <input type="radio" ng-model="cadastro.registro.bemClassificacao" name="bemClassificacao" id="bemClassificacao{{$index}}" ng-value="node" ng-if="!node[3].length" ng-disabled="cadastro.registro.producaoFormaList.length" ng-required="true">
                                             {{node[1]}}
                                         </label>
                                     </div>
@@ -61,7 +61,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row" ng-show="cadastro.registro.bemClassificacao">
+                <div class="row" ng-shows="cadastro.registro.bemClassificacao">
                     <div class="col-md-4" title="Bens de Produção">
                         <div class="form-group">
                             <label class="control-label" for="bem">Bens de Produção</label>
@@ -96,15 +96,16 @@
                         </div>
                     </div>
                 </div>
-                <div class="row" ng-show="cadastro.registro.bem">
+                <div class="row" ng-shows="cadastro.registro.bem">
                     <div class="col-md-12" title="Forma de Produção">
                         <div class="form-group">
                             <label class="control-label" for="formaProducao">Forma de Produção</label>
 
-                            <frz-tabela ng-model="cadastro.apoio.producaoFormaForm" dados="cadastro.registro.producaoFormaList" ng-class="{'ng-invalid': frm.formulario.formaProducao.$error.ngValorMin}"></frz-tabela>
-                            <input type="hidden" id="formaProducao" name="formaProducao" ng-model="cadastro.registro.formaProducao.length" ng-valor-min="1">
+                            <ng-include src="'indice-producao/sub-producao-forma.html'" ng-controller="ProducaoFormaCtrl"></ng-include>
 
-                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.formaProducao.$error.ngValorMin">
+                            <input type="hidden" id="formaProducao" name="formaProducao" ng-model="cadastro.registro.producaoFormaList.length" ng-valor-min="1">
+
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.producaoFormaList.$error.ngValorMin">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>

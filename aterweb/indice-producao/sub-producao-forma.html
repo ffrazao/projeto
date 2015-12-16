@@ -1,0 +1,78 @@
+<div class="panel panel-default">
+    <div class="panel-heading container-fluid">
+        <frz-navegador
+            ng-model="producaoFormaNvg" exibe-texto-botao="false"
+            dados="cadastro.registro.producaoFormaList"
+            acoes-especiais="acoesEspeciais"
+            on-abrir = "abrir()"
+            on-agir = "agir()"
+            on-editar = "editar()"
+            on-especial = "especial()"
+            on-excluir = "excluir()"
+            on-filtrar = "filtrar()"
+            on-incluir = "incluir()"
+            on-listar = "listar()"
+            on-navegar-primeiro = "navegarPrimeiro()"
+            on-navegar-anterior = "navegarAnterior()"
+            on-navegar-proximo = "navegarPosterior()"
+            on-navegar-ultimo = "navegarUltimo()"
+            on-proxima-pagina="proximaPagina()"
+            on-ultima-pagina="ultimaPagina()"
+            >
+        </frz-navegador>
+    </div>
+    <div class="painel-body"  ng-hide="cadastro.registro.producaoFormaList.length">
+        <div class="alert alert-warning" style="margin: 0px;" role="alert">
+            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+            Nenhum registro localizado!
+        </div>
+    </div>
+    <div class="table-responsible" ng-show="cadastro.registro.producaoFormaList.length > 0">
+        <ng-form name="produtoresFrm">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th colspan="2">Forma Produção</th>
+                        <th colspan="2">Fórmula</th>
+                        <th colspan="4"></th>
+                    </tr>
+                    <tr>
+                        <th>
+                            <frz-seletor ng-model="producaoFormaNvg"></frz-seletor>
+                        </th>
+                        <th width="30">
+                            #
+                        </th>
+                        <th>Propriedade</th>
+                        <th>Beneficiário</th>
+                        <th>Esperado</th>
+                        <th>Confirmado</th>
+                        <th>Medida</th>
+                        <th>Ação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="produtor in producaoFormaNvg.dados | orderBy: 'nome' | pagina: producaoFormaNvg.paginaAtual : producaoFormaNvg.tamanhoPagina | limitTo: producaoFormaNvg.tamanhoPagina" ng-click="producaoFormaNvg.folhaAtual = $index + ((producaoFormaNvg.paginaAtual-1) * producaoFormaNvg.tamanhoPagina)">
+                        <td width="30px">
+                            <input type="radio" ng-show="producaoFormaNvg.selecao.tipo === 'U'" ng-model="producaoFormaNvg.selecao.item" ng-value="produtor"/>
+                            <input type="checkbox" ng-show="producaoFormaNvg.selecao.tipo === 'M'" checklist-model="producaoFormaNvg.selecao.items" checklist-value="produtor" ng-click="crudMataClick(scp, $event);"/>
+                        </td>
+                        <td>
+                            {{$index + 1 + ((producaoFormaNvg.paginaAtual-1) * producaoFormaNvg.tamanhoPagina)}}
+                        </td>
+                        <td>{{produtor[0]}}</td>
+                        <td>{{produtor[1]}}</td>
+                        <td>{{soma(produtor[2], 1) | number: 5}}</td>
+                        <td>00000000000000</td>
+                        <td>{{navegador.selecao.item[5]}}</td>
+                        <th><button class="btn btn-primary btn-sm">Confirmar</button></th>
+                    </tr>
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+        </ng-form>
+    </div>
+    <div class="panel-footer">
+    </div>
+</div>
