@@ -11,20 +11,21 @@ angular.module(pNmModulo).factory(pNmFactory,
             abrir : function(scp) {
               
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
-/*                
                 UtilSrv.dominio({ent: [
-                   'UnidadeOrganizacionalOperacional',
-                   'UnidadeOrganizacionalOperacionalTatica',
-                   'Organizacao',
+                   'PessoaGenero',
+                   'PessoaGeracao',
+                   'PessoaSituacao',
+                   'PublicoAlvoSegmento',
+                   'PublicoAlvoCategoria',
                 ]}).success(function(resposta) {
                     if (resposta && resposta.resultado) {
-                        scp.cadastro.apoio.unidadeBeneficiario = resposta.resultado[0];
-                        scp.cadastro.apoio.unidadeTecnico = resposta.resultado[1];
-                        scp.cadastro.apoio.organizacao = resposta.resultado[2];
-
-                    }
+                        scp.cadastro.apoio.generoList = resposta.resultado[0];
+                        scp.cadastro.apoio.pessoaGeracaoList = resposta.resultado[1];
+                        scp.cadastro.apoio.pessoaSituacaoList = resposta.resultado[2];
+                        scp.cadastro.apoio.publicoAlvoSegmentoList = resposta.resultado[3];
+                        scp.cadastro.apoio.publicoAlvoCategoriaList = resposta.resultado[4];
+                   }
                 });
-*/                
             },
             filtrar : function(filtro) {
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
