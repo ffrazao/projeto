@@ -130,7 +130,7 @@
                     }
                 }
                 return result;
-            }
+            };
             $scope.visualizarDepois = function (registro) {
                 registro.bemClassificacao = encontraBemClassificacao(registro.bem.bemClassificacao.id);
                 registro.unidadeOrganizacional = angular.copy(registro.comunidade.unidadeOrganizacional);

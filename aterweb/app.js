@@ -561,7 +561,7 @@ angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 
         if (!(scp.servico) || (!(scp.servico.novo))) {
             scp.navegador.mudarEstado('INCLUINDO');
             scp.crudVaiPara(scp, scp.stt, 'form');
-            var objeto = {}
+            var objeto = {};
             if (scp.incluirDepois) {
                 scp.incluirDepois(objeto);
             }
