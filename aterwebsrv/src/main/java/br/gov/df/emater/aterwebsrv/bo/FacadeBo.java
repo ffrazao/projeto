@@ -18,6 +18,7 @@ import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaTipo;
 import br.gov.df.emater.aterwebsrv.modelo.dto.BemClassificacaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.BemProducaoCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.modelo.dto.ComunidadeListaDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.FormularioCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.FormularioColetaCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.IndiceProducaoCadFiltroDto;
@@ -198,12 +199,21 @@ public class FacadeBo implements BeanFactoryAware {
 	}
 
 	// Unidade Organizacional
-	// Fitlro Executar
+	// Lista
 	@Transactional(readOnly = true)
 	public _Contexto unidadeOrganizacionalFiltroExecutar(Principal usuario, UnidadeOrganizacionalCadFiltroDto filtro) throws Exception {
 		return this._executar(usuario, "UnidadeOrganizacionalFiltroExecutarCh", filtro);
 	}
 
+	
+	// Comunidade 
+	// Lista
+	@Transactional(readOnly = true)
+	public _Contexto comunidadeLista(Principal usuario, ComunidadeListaDto filtro) throws Exception {
+		return this._executar(usuario, "ComunidadeListaCmd", filtro);
+	}
+	
+	
 	@Transactional(readOnly = true)
 	public _Contexto unidadeOrganizacionalComunidade(Principal usuario, Integer pessoaJuridicaId) throws Exception {
 		return this._executar(usuario, "UnidadeOrganizacionalComunidadeCmd", pessoaJuridicaId);

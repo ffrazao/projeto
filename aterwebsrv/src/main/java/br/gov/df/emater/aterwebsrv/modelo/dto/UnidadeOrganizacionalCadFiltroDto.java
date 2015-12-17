@@ -13,7 +13,11 @@ public class UnidadeOrganizacionalCadFiltroDto extends FiltroDtoCustom {
 	private Set<UnidadeOrganizacionalClassificacao> classificacao;
 
 	public String getNomeLike() {
-		return String.format( "%%%s%%", this.nome);
+		if( this.nome != null ){
+			return String.format( "%%%s%%", this.nome);
+		} else {
+			return "%";	
+		}
 	}
 
 	public String getNome() {
