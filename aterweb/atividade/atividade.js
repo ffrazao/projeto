@@ -281,6 +281,17 @@
                         });
             };
 
+            $scope.getTagComunidade = function($query) {
+                var unidadeOrganizacionalList =[];
+                for( var i in $scope.cadastro.filtro.unidadeBeneficiario ){
+                    unidadeOrganizacionalList.push( $scope.cadastro.filtro.unidadeBeneficiario[i].id );
+                }
+                return AtividadeSrv.tagComunidade(unidadeOrganizacionalList, $query).then( function( response ){ 
+                            var retorno = {data:response.data.resultado};
+                            return retorno;
+                        });
+            };
+
             $scope.selecionaFotoPerfil = function() {
                 if (['INCLUINDO', 'EDITANDO'].indexOf($scope.navegador.estadoAtual()) < 0) {
                     return;

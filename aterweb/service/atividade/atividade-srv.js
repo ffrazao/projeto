@@ -55,6 +55,9 @@ angular.module(pNmModulo).factory(pNmFactory,
             tagUnidade : function(nome) {
                 return $http.post($rootScope.servicoUrl + '/unidade-organizacional/lista', {"nome":nome, "classificacao":["OP"]}, { cache: false} );
             },
+            tagComunidade : function( unidade, nome) {
+                return $http.post($rootScope.servicoUrl + '/comunidade/lista', {"unidadeOrganizacionalList": unidade, "nome":nome}, { cache: false} );
+            },
 
         };
         return AtividadeSrv;

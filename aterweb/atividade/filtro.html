@@ -8,10 +8,10 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="unidadeBeneficiario">Unidade</label>
                     <div class="col-md-7">
-                        <tags-input id="unidadeBeneficiario" name="unidadeBeneficiario" ng-model="cadastro.filtro.unidadeBeneficiario" display-property="nome" placeholder="Digite a Unidade" template="tag-template" add-from-autocomplete-only="true" >
+                        <tags-input id="unidadeBeneficiario" name="unidadeBeneficiario" ng-model="cadastro.filtro.unidadeBeneficiario" display-property="nome" placeholder="Digite a Unidade" template="tag-template-unidadeBeneficiario" add-from-autocomplete-only="true" >
                             <auto-complete source="getTagUnidade($query)" min-length="0" load-on-empty="false" ></auto-complete>
                         </tags-input>
-                        <script type="text/ng-template" id="tag-template" >
+                        <script type="text/ng-template" id="tag-template-unidadeBeneficiario" >
                             <div class="tag-template">
                                <div class="right-panel">
                                     <span>{{$getDisplayText()}}</span>
@@ -29,33 +29,113 @@
 
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="comunidadeBeneficiario">Comunidade</label>
-                    <div class="col-md-4">
-                        <select id="comunidadeBeneficiario" name="comunidadeBeneficiario" class="form-control" ng-model="cadastro.filtro.comunidadeBeneficiario" ng-options="item.id as item.nome for item in cadastro.apoio.comunidadeBeneficiario" multiple="true">
-                        </select>
+                    <div class="col-md-7">
+                        <tags-input id="comunidadeBeneficiario" name="comunidadeBeneficiario" ng-model="cadastro.filtro.comunidadeBeneficiario" display-property="nome" placeholder="Digite a Comunidade" template="tag-template-comunidadeBeneficiario" add-from-autocomplete-only="true" >
+                            <auto-complete source="getTagComunidade($query)" min-length="0" load-on-empty="false" ></auto-complete>
+                        </tags-input>
+                        <script type="text/ng-template" id="tag-template-comunidadeBeneficiario" >
+                            <div class="tag-template">
+                               <div class="right-panel">
+                                    <span>{{$getDisplayText()}}</span>
+                                    <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
+                                </div>
+                            </div>
+                        </script>
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.comunidadeBeneficiario.$error.leftoverText">
+                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Valor Inválido!
+                        </div>
+                    </<div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="beneficiario">Beneficiario</label>
-                    <div class="col-md-4">
-                        <select id="beneficiario" name="beneficiario" class="form-control" ng-model="cadastro.filtro.beneficiario" ng-options="item.id as item.nome for item in cadastro.apoio.beneficiario" multiple="true">
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="categoria">Comunidade</label>
-                    <div class="col-md-4">
-                        <select id="categoria" name="categoria" class="form-control" ng-model="cadastro.filtro.categoria" ng-options="item.id as item.nome for item in cadastro.apoio.categoria" multiple="true">
-                        </select>
+                    <label class="col-md-4 control-label" for="beneficiario">Beneficiário</label>
+                    <div class="col-md-7">
+                        <tags-input id="beneficiario" name="beneficiario" ng-model="cadastro.filtro.beneficiario" display-property="nome" placeholder="Digite o Beneficiário" template="tag-template-beneficiario" add-from-autocomplete-only="true" >
+                            <auto-complete source="getTagBeneficiario($query)" min-length="0" load-on-empty="false" ></auto-complete>
+                        </tags-input>
+                        <script type="text/ng-template" id="tag-template-beneficiario" >
+                            <div class="tag-template">
+                               <div class="right-panel">
+                                    <span>{{$getDisplayText()}}</span>
+                                    <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
+                                </div>
+                            </div>
+                        </script>
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.beneficiario.$error.leftoverText">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Valor Inválido!
+                        </div>
+                    </<div>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="organizacao">Organização</label>
-                    <div class="col-md-4">
-                        <select id="organizacao" name="organizacao" class="form-control" ng-model="cadastro.filtro.organizacao" ng-options="item.id as item.nome for item in cadastro.apoio.organizacao">
-                        </select>
+                    <div class="col-md-7">
+                        <tags-input id="organizacao" name="organizacao" ng-model="cadastro.filtro.organizacao" display-property="nome" placeholder="Digite a Organização" template="tag-template-organizacao" add-from-autocomplete-only="true" >
+                            <auto-complete source="getTagOrganizacao($query)" min-length="0" load-on-empty="false" ></auto-complete>
+                        </tags-input>
+                        <script type="text/ng-template" id="tag-template-organizacao" >
+                            <div class="tag-template">
+                               <div class="right-panel">
+                                    <span>{{$getDisplayText()}}</span>
+                                    <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
+                                </div>
+                            </div>
+                        </script>
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.organizacao.$error.leftoverText">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Valor Inválido!
+                        </div>
+                    </<div>
+                    </div>
+                </div>
+   
+                <legend>Dados de Planejamento</legend>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="metaEstrategica">Meta Estratégica</label>
+                    <div class="col-md-7">
+                        <tags-input id="metaEstrategica" name="metaEstrategica" ng-model="cadastro.filtro.metaEstrategica" display-property="nome" placeholder="Digite a Meta Estratégica" template="tag-template-metaEstrategica" add-from-autocomplete-only="true" >
+                            <auto-complete source="getTagMetaEstrategica($query)" min-length="0" load-on-empty="false" ></auto-complete>
+                        </tags-input>
+                        <script type="text/ng-template" id="tag-template-metaEstrategica" >
+                            <div class="tag-template">
+                               <div class="right-panel">
+                                    <span>{{$getDisplayText()}}</span>
+                                    <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
+                                </div>
+                            </div>
+                        </script>
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.metaEstrategica.$error.leftoverText">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Valor Inválido!
+                        </div>
+                    </<div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="metaTatica">Meta Tática</label>
+                    <div class="col-md-7">
+                        <tags-input id="metaTatica" name="metaTatica" ng-model="cadastro.filtro.metaTatica" display-property="nome" placeholder="Digite a Meta Tática" template="tag-template-metaTatica" add-from-autocomplete-only="true" >
+                            <auto-complete source="getTagUnidade($query)" min-length="0" load-on-empty="false" ></auto-complete>
+                        </tags-input>
+                        <script type="text/ng-template" id="tag-template-metaTatica" >
+                            <div class="tag-template">
+                               <div class="right-panel">
+                                    <span>{{$getDisplayText()}}</span>
+                                    <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
+                                </div>
+                            </div>
+                        </script>
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.metaTatica.$error.leftoverText">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Valor Inválido!
+                        </div>
+                    </<div>
                     </div>
                 </div>
 
@@ -63,21 +143,25 @@
 
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="codigo">Código da Atividade</label>
-                    <div class="col-md-3">
-                        <input id="codigo" name="codigo" type="text" placeholder="" class="form-control input-md" ng-model="cadastro.filtro.codigo">
+                    <div class="col-md-2">
+                        <input id="codigo" name="codigo" type="text" class="form-control input-md" ng-model="cadastro.filtro.codigo" placeholder="Digite a Atividade">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="unidade">Início</label>
-                    <input class="form-control" type="text" id="dataInicio" name="dataInicio" ng-model="cadastro.filtro.dataInicio" ui-date-mask/>
+                    <label class="col-md-4 control-label" for="dataInicio">Início</label>
+                    <div class="col-md-2">
+                        <input class="form-control" type="text" id="dataInicio" name="dataInicio" ng-model="cadastro.filtro.dataInicio" placeholder="Digite o Início" ui-date-mask/>
+                    </div>
                     <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.dataInicio.$error.date">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Valor Inválido!
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="unidade">Fim</label>
-                    <input class="form-control" type="text" id="dataFinal" name="dataFinal" ng-model="cadastro.filtro.dataFinal" ui-date-mask/>
+                    <label class="col-md-4 control-label" for="dataFinal">Fim</label>
+                    <div class="col-md-2">
+                        <input class="form-control" type="text" id="dataFinal" name="dataFinal" ng-model="cadastro.filtro.dataFinal" ui-date-mask/ placeholder="Digite o Final">
+                    </div>    
                     <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.dataFinal.$error.date">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Valor Inválido!
@@ -85,15 +169,48 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="unidadeTecnico">Unidade</label>
-                    <div class="col-md-4">
-                        <select id="unidadeTecnico" name="unidadeTecnico" class="form-control" ng-model="cadastro.filtro.unidadeTecnico" ng-options="item.id as item.nome for item in cadastro.apoio.unidadeTecnico">
-                            <option value="">-- Ignorar --</option>
-                        </select>
+                    <label class="col-md-4 control-label" for="assunto">Assunto</label>
+                    <div class="col-md-7">
+                        <tags-input id="assunto" name="assunto" ng-model="cadastro.filtro.assunto" display-property="nome" placeholder="Digite o Assunto" template="tag-template-assunto" add-from-autocomplete-only="true" >
+                            <auto-complete source="getTagAssunto($query)" min-length="0" load-on-empty="false" ></auto-complete>
+                        </tags-input>
+                        <script type="text/ng-template" id="tag-template-assunto" >
+                            <div class="tag-template">
+                               <div class="right-panel">
+                                    <span>{{$getDisplayText()}}</span>
+                                    <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
+                                </div>
+                            </div>
+                        </script>
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.assunto.$error.leftoverText">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Valor Inválido!
+                        </div>
+                    </<div>
                     </div>
                 </div>
-    
 
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="or">Metodo</label>
+                    <div class="col-md-7">
+                        <tags-input id="metodo" name="metodo" ng-model="cadastro.filtro.metodo" display-property="nome" placeholder="Digite o Método" template="tag-template-metodo" add-from-autocomplete-only="true" >
+                            <auto-complete source="getTagMetodo($query)" min-length="0" load-on-empty="false" ></auto-complete>
+                        </tags-input>
+                        <script type="text/ng-template" id="tag-template-metodo" >
+                            <div class="tag-template">
+                               <div class="right-panel">
+                                    <span>{{$getDisplayText()}}</span>
+                                    <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
+                                </div>
+                            </div>
+                        </script>
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.metodo.$error.leftoverText">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Valor Inválido!
+                        </div>
+                    </<div>
+                    </div>
+                </div>
 
             </fieldset>
         </form>
