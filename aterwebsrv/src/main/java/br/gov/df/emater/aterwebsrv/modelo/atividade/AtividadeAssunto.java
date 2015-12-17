@@ -30,17 +30,12 @@ public class AtividadeAssunto extends EntidadeBase implements _ChavePrimaria<Int
 	@JoinColumn(name = "atividade_id")
 	private Atividade atividade;
 
-	@Column(name = "descricao")
-	@Lob
-	private String descricao;
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
-	@Column(name = "transversal")
-	@Enumerated(EnumType.STRING)
-	private Confirmacao transversal;
+	private String observacao;
+
 
 	public AtividadeAssunto() {
 		super();
@@ -58,17 +53,12 @@ public class AtividadeAssunto extends EntidadeBase implements _ChavePrimaria<Int
 		return atividade;
 	}
 
-	public String getDescricao() {
-		return descricao;
-	}
-
-	@Override
 	public Integer getId() {
 		return id;
 	}
 
-	public Confirmacao getTransversal() {
-		return transversal;
+	public String getObservacao() {
+		return observacao;
 	}
 
 	public void setAssuntoAcao(AssuntoAcao assuntoAcao) {
@@ -79,17 +69,13 @@ public class AtividadeAssunto extends EntidadeBase implements _ChavePrimaria<Int
 		this.atividade = atividade;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
-
-	@Override
 	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public void setTransversal(Confirmacao transversal) {
-		this.transversal = transversal;
+	public void setObservacao(String observacao) {
+		this.observacao = observacao;
 	}
+
 
 }

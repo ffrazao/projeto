@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import br.gov.df.emater.aterwebsrv.modelo.teste.Teste;
 
 @Repository("AtividadeDao")
-public interface AtividadeDao extends JpaRepository<Teste, Long> {
+public interface AtividadeDao extends JpaRepository<Teste, Long>, AtividadeDaoCustom {
+
 
 }
