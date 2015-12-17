@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaTipo;
+import br.gov.df.emater.aterwebsrv.modelo.dto.AtividadeFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.BemClassificacaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.BemProducaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.ComunidadeListaDto;
@@ -49,6 +50,30 @@ public class FacadeBo implements BeanFactoryAware {
 
 	private Command _getComando(String comandoNome) {
 		return (Command) this.beanFactory.getBean(comandoNome);
+	}
+
+	// Atividade 
+	// filtro-executar
+	@Transactional(readOnly = true)
+	public _Contexto atividadeFiltroExecutar(Principal usuario, AtividadeFiltroDto filtro) throws Exception {
+		return this._executar(usuario, "AtividadeFiltroExecutarCh", filtro);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto bemClassificacaoFiltroExecutar(Principal usuario, BemClassificacaoCadFiltroDto filtro) throws Exception {
+		return this._executar(usuario, "BemClassificacaoFiltroExecutarCh", filtro);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto bemProducaoFiltroExecutar(Principal usuario, BemProducaoCadFiltroDto filtro) throws Exception {
+		return this._executar(usuario, "BemProducaoFiltroExecutarCh", filtro);
+	}
+
+	// Comunidade 
+	// Lista
+	@Transactional(readOnly = true)
+	public _Contexto comunidadeLista(Principal usuario, ComunidadeListaDto filtro) throws Exception {
+		return this._executar(usuario, "ComunidadeListaCmd", filtro);
 	}
 
 	@Transactional(readOnly = true)
@@ -111,16 +136,6 @@ public class FacadeBo implements BeanFactoryAware {
 	@Transactional(readOnly = true)
 	public _Contexto indiceProducaoFiltroExecutar(Principal usuario, IndiceProducaoCadFiltroDto filtro) throws Exception {
 		return this._executar(usuario, "IndiceProducaoFiltroExecutarCh", filtro);
-	}
-
-	@Transactional(readOnly = true)
-	public _Contexto bemClassificacaoFiltroExecutar(Principal usuario, BemClassificacaoCadFiltroDto filtro) throws Exception {
-		return this._executar(usuario, "BemClassificacaoFiltroExecutarCh", filtro);
-	}
-
-	@Transactional(readOnly = true)
-	public _Contexto bemProducaoFiltroExecutar(Principal usuario, BemProducaoCadFiltroDto filtro) throws Exception {
-		return this._executar(usuario, "BemProducaoFiltroExecutarCh", filtro);
 	}
 
 	@Transactional(readOnly = true)
@@ -193,30 +208,23 @@ public class FacadeBo implements BeanFactoryAware {
 		return this._executar(usuario, "PropriedadeRuralVisualizarCh", id);
 	}
 
+	
 	@Override
 	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
 		this.beanFactory = beanFactory;
 	}
 
+	@Transactional(readOnly = true)
+	public _Contexto unidadeOrganizacionalComunidade(Principal usuario, Integer pessoaJuridicaId) throws Exception {
+		return this._executar(usuario, "UnidadeOrganizacionalComunidadeCmd", pessoaJuridicaId);
+	}
+
+	
 	// Unidade Organizacional
 	// Lista
 	@Transactional(readOnly = true)
 	public _Contexto unidadeOrganizacionalFiltroExecutar(Principal usuario, UnidadeOrganizacionalCadFiltroDto filtro) throws Exception {
 		return this._executar(usuario, "UnidadeOrganizacionalFiltroExecutarCh", filtro);
-	}
-
-	
-	// Comunidade 
-	// Lista
-	@Transactional(readOnly = true)
-	public _Contexto comunidadeLista(Principal usuario, ComunidadeListaDto filtro) throws Exception {
-		return this._executar(usuario, "ComunidadeListaCmd", filtro);
-	}
-	
-	
-	@Transactional(readOnly = true)
-	public _Contexto unidadeOrganizacionalComunidade(Principal usuario, Integer pessoaJuridicaId) throws Exception {
-		return this._executar(usuario, "UnidadeOrganizacionalComunidadeCmd", pessoaJuridicaId);
 	}
 
 	public _Contexto utilArquivo(Principal usuario, MultipartFile arquivo, HttpServletRequest request, String tipo) throws Exception {
