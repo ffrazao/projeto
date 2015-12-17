@@ -87,7 +87,7 @@
                     return;
                 }
                 var reg = angular.copy(scp.cadastro.registro);
-                removerCampo(reg, ['@jsonId', 'bemClassificacao', 'unidadeOrganizacional', 'formula']);
+                removerCampo(reg, ['@jsonId', 'unidadeOrganizacional', 'formula']);
 
                 // preparar composicao da forma de producao
                 scp.servico.incluir(reg).success(function (resposta) {
@@ -132,7 +132,7 @@
                 return result;
             };
             $scope.visualizarDepois = function (registro) {
-                registro.bemClassificacao = encontraBemClassificacao(registro.bem.bemClassificacao.id);
+                $scope.cadastro.apoio.bemClassificacao = encontraBemClassificacao(registro.bem.bemClassificacao.id);
                 registro.unidadeOrganizacional = angular.copy(registro.comunidade.unidadeOrganizacional);
             };
             $scope.cadastro.apoio.producaoForma = {composicao: []};
@@ -232,7 +232,7 @@
                     pai(array, item[9]);
                 }
             };
-            $scope.$watch('cadastro.registro.bemClassificacao', function(novo) {
+            $scope.$watch('cadastro.apoio.bemClassificacao', function(novo) {
                 //console.log($scope.cadastro.registro.bemClassificacao);
                 if (!novo) {
                     return;

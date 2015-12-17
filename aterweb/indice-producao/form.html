@@ -38,17 +38,17 @@
                                             <span class="glyphicon glyphicon-chevron-down" ng-show="!collapsed"></span>
                                         </a>
                                         <label>
-                                            <input type="radio" ng-model="cadastro.registro.bemClassificacao" name="bemClassificacao" id="bemClassificacao{{$index}}" ng-value="node" ng-if="!node[3].length" 
-                                                ng-disabled="cadastro.registro.producaoFormaList.length" ng-required="true" ng-checked="(cadastro.registro.bemClassificacao.id === node[0])">
-                                            {{node[1]}} /{{node[0]}}/ x{{cadastro.registro.bemClassificacao.id}}x
+                                            <input type="radio" ng-model="cadastro.apoio.bemClassificacao" name="bemClassificacao" id="bemClassificacao{{$index}}" ng-value="node" ng-if="!node[3].length" 
+                                                ng-disabled="cadastro.registro.producaoFormaList.length" ng-required="true" ng-checked="(cadastro.apoio.bemClassificacao.id === node[0])">
+                                            {{node[1]}} /{{node[0]}}/ x{{cadastro.apoio.bemClassificacao}}x
                                         </label>
-                                    </div>
-                                    <ol ui-tree-nodes="" ng-model="node[3]" ng-class="{hidden: collapsed}">
+                                    </div 
+                                   <ol ui-tree-nodes="" ng-model="node[3]" ng-class="{hidden: collapsed}">
                                         <li ng-repeat="node in node[3]" ui-tree-node ng-include="'nodes_renderer.html'" ng-show="visivel(cadastro.apoio.bemClassificacaoFiltro, node[1], !node[3].length)">
                                         </li>
                                     </ol>
                                 </script>
-                                <div ui-tree drag-enabled="false" ng-class="{'ng-invalid': frm.formulario.bemClassificacao.$error.required}">
+                                <div ui-tree drag-enablde="false" ng-class="{'ng-invalid': frm.formulario.bemClassificacao.$error.required}">
                                     <ol ui-tree-nodes="" ng-model="cadastro.apoio.bemClassificacaoList" id="tree-root" ng-class="{hidden: collapsed}">
                                         <li ng-repeat="node in cadastro.apoio.bemClassificacaoList" ui-tree-node ng-include="'nodes_renderer.html'">
                                         </li>
@@ -62,7 +62,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row" ng-shows="cadastro.registro.bemClassificacao">
+                <div class="row" ng-shows="cadastro.apoio.bemClassificacao">
                     <div class="col-md-4" title="Bens de Produção">
                         <div class="form-group">
                             <label class="control-label" for="bem">Bens de Produção</label>
