@@ -76,20 +76,11 @@
                 ];
                 $rootScope.abrir(scp);
             };
-            $scope.incluir = function(scp, modelo) {
-                $scope.servico.novo(modelo).success(function(resposta) {
-                    $scope.navegador.mudarEstado('INCLUINDO');
-                    $scope.crudVaiPara(scp, $scope.stt, 'form');
-                    var t = TokenStorage.token();
-                    if (t && t.lotacaoAtual) {
-                        resposta.resultado.unidadeOrganizacional = t.lotacaoAtual;
-                    }
-                    $scope.cadastro.original = resposta.resultado;
-                    $scope.cadastro.registro = angular.copy($scope.cadastro.original);
-                    $scope.navegador.submetido = false;
-                }).error(function(erro){
-                    toastr.error(erro, 'Erro ao inserir');
-                });
+            $scope.incluirDepois = function (objeto) {
+                var t = TokenStorage.token();
+                if (t && t.lotacaoAtual) {
+                    objeto.unidadeOrganizacional = t.lotacaoAtual;
+                }
             };
             $scope.confirmarIncluir = function(scp) {
                 if (!scp.confirmar(scp)) {
@@ -122,6 +113,27 @@
                 }).error(function (erro) {
                     toastr.error(erro, 'Erro ao incluir');
                 });
+            };
+            var encontraBemClassificacao = function (id, lista) {
+                if (!lista) {
+                    lista = $scope.cadastro.apoio.bemClassificacaoList;
+                }
+                var result;
+                for (var i in lista) {
+                    if (id === lista[i][0]) {
+                        result = lista[i];
+                    } else if (lista[i][3]) {
+                        result = encontraBemClassificacao(id, lista[i][3]);
+                    }
+                    if (result) {
+                        break;
+                    }
+                }
+                return result;
+            }
+            $scope.visualizarDepois = function (registro) {
+                registro.bemClassificacao = encontraBemClassificacao(registro.bem.bemClassificacao.id);
+                registro.unidadeOrganizacional = angular.copy(registro.comunidade.unidadeOrganizacional);
             };
             $scope.cadastro.apoio.producaoForma = {composicao: []};
 

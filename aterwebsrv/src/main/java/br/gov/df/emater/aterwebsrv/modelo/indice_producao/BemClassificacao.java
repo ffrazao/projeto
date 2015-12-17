@@ -62,6 +62,10 @@ public class BemClassificacao extends EntidadeBase implements _ChavePrimaria<Int
 		super();
 	}
 
+	public BemClassificacao(Integer id) {
+		super(id);
+	}
+
 	public BemClassificacao getBemClassificacao() {
 		return bemClassificacao;
 	}

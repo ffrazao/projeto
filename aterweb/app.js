@@ -561,7 +561,11 @@ angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 
         if (!(scp.servico) || (!(scp.servico.novo))) {
             scp.navegador.mudarEstado('INCLUINDO');
             scp.crudVaiPara(scp, scp.stt, 'form');
-            scp.cadastro.original = {};
+            var objeto = {}
+            if (scp.incluirDepois) {
+                scp.incluirDepois(objeto);
+            }
+            scp.cadastro.original = objeto;
             scp.cadastro.registro = angular.copy(scp.cadastro.original);
             scp.navegador.submetido = false;
             return;
@@ -569,6 +573,9 @@ angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 
         scp.servico.novo(modelo).success(function(resposta) {
             scp.navegador.mudarEstado('INCLUINDO');
             scp.crudVaiPara(scp, scp.stt, 'form');
+            if (scp.incluirDepois) {
+                scp.incluirDepois(resposta.resultado);
+            }
             scp.cadastro.original = resposta.resultado;
             scp.cadastro.registro = angular.copy(scp.cadastro.original);
             scp.navegador.submetido = false;
@@ -619,6 +626,9 @@ angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 
                     }
                     scp.navegador.mudarEstado('VISUALIZANDO');
                     scp.crudVaiPara(scp, scp.stt, 'form',  id);
+                    if (scp.visualizarDepois) {
+                        scp.visualizarDepois(resposta.resultado);
+                    }
                     scp.cadastro.original = angular.copy(resposta.resultado);
                     scp.cadastro.registro = angular.copy(scp.cadastro.original);
                     scp.crudVerRegistro(scp);

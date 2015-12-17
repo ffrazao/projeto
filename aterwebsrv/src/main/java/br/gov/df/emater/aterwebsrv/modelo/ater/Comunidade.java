@@ -14,6 +14,7 @@ import javax.persistence.Table;
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
+import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacionalComunidade;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Cidade;
 
@@ -41,10 +42,18 @@ public class Comunidade extends EntidadeBase implements _ChavePrimaria<Integer>,
 
 	private String sigla;
 
+	@ManyToOne
+	@JoinColumn(name = "unidade_organizacional_id")
+	private UnidadeOrganizacional unidadeOrganizacional;
+
 	@OneToMany(mappedBy = "comunidade")
 	private List<UnidadeOrganizacionalComunidade> unidadeOrganizacionalComunidadeList;
 
 	public Comunidade() {
+	}
+
+	public Comunidade(Integer id) {
+		super(id);
 	}
 
 	public Comunidade(Integer id, String nome) {
@@ -72,8 +81,17 @@ public class Comunidade extends EntidadeBase implements _ChavePrimaria<Integer>,
 		return sigla;
 	}
 
+	public UnidadeOrganizacional getUnidadeOrganizacional() {
+		return unidadeOrganizacional;
+	}
+
 	public List<UnidadeOrganizacionalComunidade> getUnidadeOrganizacionalComunidadeList() {
 		return unidadeOrganizacionalComunidadeList;
+	}
+
+	@Override
+	public Comunidade infoBasica() {
+		return new Comunidade(this.getId(), this.getNome());
 	}
 
 	public void setCidade(Cidade cidade) {
@@ -96,13 +114,12 @@ public class Comunidade extends EntidadeBase implements _ChavePrimaria<Integer>,
 		this.sigla = sigla;
 	}
 
-	public void setUnidadeOrganizacionalComunidadeList(List<UnidadeOrganizacionalComunidade> unidadeOrganizacionalComunidadeList) {
-		this.unidadeOrganizacionalComunidadeList = unidadeOrganizacionalComunidadeList;
+	public void setUnidadeOrganizacional(UnidadeOrganizacional unidadeOrganizacional) {
+		this.unidadeOrganizacional = unidadeOrganizacional;
 	}
 
-	@Override
-	public Comunidade infoBasica() {
-		return new Comunidade(this.getId(), this.getNome());
+	public void setUnidadeOrganizacionalComunidadeList(List<UnidadeOrganizacionalComunidade> unidadeOrganizacionalComunidadeList) {
+		this.unidadeOrganizacionalComunidadeList = unidadeOrganizacionalComunidadeList;
 	}
 
 }

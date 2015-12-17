@@ -38,8 +38,9 @@
                                             <span class="glyphicon glyphicon-chevron-down" ng-show="!collapsed"></span>
                                         </a>
                                         <label>
-                                            <input type="radio" ng-model="cadastro.registro.bemClassificacao" name="bemClassificacao" id="bemClassificacao{{$index}}" ng-value="node" ng-if="!node[3].length" ng-disabled="cadastro.registro.producaoFormaList.length" ng-required="true">
-                                            {{node[1]}}
+                                            <input type="radio" ng-model="cadastro.registro.bemClassificacao" name="bemClassificacao" id="bemClassificacao{{$index}}" ng-value="node" ng-if="!node[3].length" 
+                                                ng-disabled="cadastro.registro.producaoFormaList.length" ng-required="true" ng-checked="(cadastro.registro.bemClassificacao.id === node[0])">
+                                            {{node[1]}} /{{node[0]}}/ x{{cadastro.registro.bemClassificacao.id}}x
                                         </label>
                                     </div>
                                     <ol ui-tree-nodes="" ng-model="node[3]" ng-class="{hidden: collapsed}">

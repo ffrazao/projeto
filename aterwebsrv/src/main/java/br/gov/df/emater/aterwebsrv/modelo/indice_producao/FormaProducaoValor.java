@@ -33,6 +33,10 @@ public class FormaProducaoValor extends EntidadeBase implements _ChavePrimaria<I
 		super();
 	}
 
+	public FormaProducaoValor(Integer id) {
+		super(id);
+	}
+
 	public FormaProducaoItem getFormaProducaoItem() {
 		return formaProducaoItem;
 	}
