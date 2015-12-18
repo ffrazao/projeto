@@ -87,7 +87,7 @@
                     return;
                 }
                 var reg = angular.copy(scp.cadastro.registro);
-                removerCampo(reg, ['@jsonId', 'unidadeOrganizacional', 'formula']);
+                removerCampo(reg, ['@jsonId', 'formula']);
 
                 // preparar composicao da forma de producao
                 scp.servico.incluir(reg).success(function (resposta) {
@@ -133,7 +133,7 @@
             };
             $scope.visualizarDepois = function (registro) {
                 $scope.cadastro.apoio.bemClassificacao = encontraBemClassificacao(registro.bem.bemClassificacao.id);
-                registro.unidadeOrganizacional = angular.copy(registro.comunidade.unidadeOrganizacional);
+                $scope.cadastro.apoio.unidadeOrganizacional = angular.copy(registro.comunidade.unidadeOrganizacional);
             };
             $scope.cadastro.apoio.producaoForma = {composicao: []};
 
@@ -233,7 +233,7 @@
                 }
             };
             $scope.$watch('cadastro.apoio.bemClassificacao', function(novo) {
-                //console.log($scope.cadastro.registro.bemClassificacao);
+                console.log($scope.cadastro.apoio.bemClassificacao);
                 if (!novo) {
                     return;
                 }
@@ -295,13 +295,14 @@
                 }
             });
 
-            $scope.$watch('cadastro.registro.unidadeOrganizacional', function(novo) {
-                if (novo && novo.id) {
+            $scope.$watch('cadastro.apoio.unidadeOrganizacional.id', function(novo) {
+                console.log($scope.cadastro.apoio.unidadeOrganizacional);
+                if (novo) {
                     UtilSrv.dominio({ent: [
                            'UnidadeOrganizacionalComunidade',
                         ], 
                         npk: 'unidadeOrganizacional.id', 
-                        vpk: novo.id, 
+                        vpk: novo, 
                         fetchs: 'comunidade'}).success(function(resposta) {
                         if (resposta && resposta.mensagem === "OK") {
                             if (!$scope.cadastro.apoio.comunidadeList) {
