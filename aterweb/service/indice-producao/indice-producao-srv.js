@@ -47,7 +47,6 @@ angular.module(pNmModulo).factory(pNmFactory,
                 });
                 var t = TokenStorage.token();
                 if (t && t.lotacaoAtual && t.lotacaoAtual && t.lotacaoAtual.pessoaJuridica) {
-                    //var pj = {'id': t.lotacaoAtual.pessoaJuridica.id, '@class': t.lotacaoAtual.pessoaJuridica['@class']};
                     UnidadeOrganizacionalSrv.comunidade(angular.fromJson(t.lotacaoAtual.pessoaJuridica.id)).success(function(resposta) {
                         if (resposta && resposta.resultado && resposta.resultado.length) {
                             var r = resposta.resultado;

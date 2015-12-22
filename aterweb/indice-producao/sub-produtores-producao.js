@@ -10,13 +10,13 @@ angular.module(pNmModulo).controller(pNmController,
 
     // inicializacao
     var init = function() {
-        if (!angular.isObject($scope.navegador.selecao.item)) {
-            $scope.navegador.selecao.item = {};
+        if (!angular.isObject($scope.conteudo)) {
+            $scope.conteudo = {};
         }
-        if (!angular.isObject($scope.navegador.selecao.item[7])) {
-            $scope.navegador.selecao.item[7] = [];
+        if (!angular.isObject($scope.conteudo.producaoFormaList)) {
+            $scope.conteudo.producaoFormaList = [];
         }
-        $scope.produtoresNvg = new FrzNavegadorParams($scope.navegador.selecao.item[7], 4);
+        $scope.produtoresProducaoNvg = new FrzNavegadorParams($scope.conteudo.producaoFormaList, 4);
     };
     if (!$uibModalInstance) { init(); }
 
@@ -35,9 +35,7 @@ angular.module(pNmModulo).controller(pNmController,
         return true;
     };
     var editarItem = function (destino, item) {
-        //console.log($scope.navegador.selecao.item);
         var form = 
-
         '<div class="modal-body">' +
         '    <div class="container-fluid">' +
         '        <div class="row">' +
@@ -46,7 +44,7 @@ angular.module(pNmModulo).controller(pNmController,
         '            </div>' +
         '            <div class="col-md-9">' +
         '                <div class="form-control">' +
-                            $scope.navegador.selecao.item[1] +
+                            //$scope.navegador.selecao.item[1] +
         '                </div>' +
         '            </div>' +
         '        </div>' +
@@ -56,7 +54,7 @@ angular.module(pNmModulo).controller(pNmController,
         '            </div>' +
         '            <div class="col-md-9">' +
         '                <div class="form-control">' +
-                            $scope.navegador.selecao.item[2] +
+                            //$scope.navegador.selecao.item[2] +
         '                </div>' +
         '            </div>' +
         '        </div>' +
@@ -66,7 +64,7 @@ angular.module(pNmModulo).controller(pNmController,
         '            </div>' +
         '            <div class="col-md-9">' +
         '                <div class="form-control">' +
-                            $scope.navegador.selecao.item[3] +
+                            //$scope.navegador.selecao.item[3] +
         '                </div>' +
         '            </div>' +
         '        </div>' +
@@ -76,7 +74,7 @@ angular.module(pNmModulo).controller(pNmController,
         '            </div>' +
         '            <div class="col-md-9">' +
         '                <div class="form-control">' +
-                            $scope.navegador.selecao.item[4] +
+                            //$scope.navegador.selecao.item[4] +
         '                </div>' +
         '            </div>' +
         '        </div>' +
@@ -99,17 +97,57 @@ angular.module(pNmModulo).controller(pNmController,
                             '' +
         '                </div>' +
         '            </div>' +
-        '        </div>' +
-        '        <div class="row">' +
-        '            <div class="col-md-12">' +
-        '                <label class="form-label">Forma de Produção</label>' +
-        '                <ng-include src="\'indice-producao/sub-produtores-producao.html\'" ng-controller="ProdutoresProducaoCtrl"></ng-include>' +
-        '            </div>' +
-        '        </div>' +
+        '        </div>';
+
+        // calcular as formas de producao possiveis
+        var formaProducaoList = {};
+        var i, j, k, existe, opcao, id, nome, valor;
+        for (i in $scope.conteudo.principal[6]) {
+            for (j in $scope.conteudo.principal[6][i][0]) {
+                valor = $scope.conteudo.principal[6][i][0][j][0];
+                id = $scope.conteudo.principal[6][i][0][j][3];
+                nome = $scope.conteudo.principal[6][i][0][j][1];
+                opcao = {'id': id, 'nome': nome};
+                if (!formaProducaoList[valor]) {
+                    formaProducaoList[valor] = [opcao];
+                } else {
+                    existe = false;
+                    for (k in formaProducaoList[valor]) {
+                        if (formaProducaoList[valor][k].id === opcao.id) {
+                            existe = true;
+                            break;
+                        }
+                    }
+                    if (!existe) {
+                        formaProducaoList[valor].push(opcao);
+                    }
+                }
+            }
+        }
+        console.log(formaProducaoList);
+
+        j = 0;
+        item.apoio = [];
+        for (i in formaProducaoList) {
+            item.apoio[j] = formaProducaoList[i];
+            form +=
+            '        <div class="row">' +
+            '            <div class="col-md-3 text-right">' +
+            '                <label class="form-label">' + i + '</label>' +
+            '            </div>' +
+            '            <div class="col-md-9">' +
+            '                <select class="form-control" ng-required="true" ng-model="conteudo.producaoFormaComposicaoList[' + j + '].formaProducaoValor" ng-options="vlr as vlr.nome for vlr in conteudo.apoio[' + j++ +'] track by vlr.id">' +
+                                '' +
+            '                </select>' +
+            '            </div>' +
+            '        </div>';
+        }
+
+
+        form +=
         '    </div>' +
         '</div>';
 
-        item.principal = $scope.navegador.selecao.item;
 
         mensagemSrv.confirmacao(false, form, 'Produção', item, null, jaCadastrado).then(function (conteudo) {
             // processar o retorno positivo da modal
@@ -122,7 +160,7 @@ angular.module(pNmModulo).controller(pNmController,
                 conteudo['cadastroAcao'] = 'I';
                 if (!$scope.navegador.selecao.item[7]) {
                     $scope.navegador.selecao.item[7] = [];
-                    $scope.produtoresNvg.setDados($scope.navegador.selecao.item[7]);
+                    $scope.produtoresProducaoNvg.setDados($scope.navegador.selecao.item[7]);
                 }
                 $scope.navegador.selecao.item[7].push(conteudo);
             }
@@ -134,7 +172,7 @@ angular.module(pNmModulo).controller(pNmController,
     // fim rotinas de apoio
 
     // inicio das operaçoes atribuidas ao navagador
-    $scope.abrir = function() { $scope.produtoresNvg.mudarEstado('ESPECIAL'); };
+    $scope.abrir = function() { $scope.produtoresProducaoNvg.mudarEstado('ESPECIAL'); };
     $scope.incluir = function() {
         var item = {email: {endereco: null}};
         editarItem(null, item);
@@ -142,13 +180,13 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.editar = function() {
         var item = null;
         var i, j;
-        if ($scope.produtoresNvg.selecao.tipo === 'U' && $scope.produtoresNvg.selecao.item) {
-            item = angular.copy($scope.produtoresNvg.selecao.item);
-            editarItem($scope.produtoresNvg.selecao.item, item);
-        } else if ($scope.produtoresNvg.selecao.items && $scope.produtoresNvg.selecao.items.length) {
-            for (i in $scope.produtoresNvg.selecao.items) {
+        if ($scope.produtoresProducaoNvg.selecao.tipo === 'U' && $scope.produtoresProducaoNvg.selecao.item) {
+            item = angular.copy($scope.produtoresProducaoNvg.selecao.item);
+            editarItem($scope.produtoresProducaoNvg.selecao.item, item);
+        } else if ($scope.produtoresProducaoNvg.selecao.items && $scope.produtoresProducaoNvg.selecao.items.length) {
+            for (i in $scope.produtoresProducaoNvg.selecao.items) {
                 for (j in $scope.navegador.selecao.item[7]) {
-                    if (angular.equals($scope.produtoresNvg.selecao.items[i], $scope.navegador.selecao.item[7][j])) {
+                    if (angular.equals($scope.produtoresProducaoNvg.selecao.items[i], $scope.navegador.selecao.item[7][j])) {
                         item = angular.copy($scope.navegador.selecao.item[7][j]);
                         editarItem($scope.navegador.selecao.item[7][j], item);
                     }
@@ -159,27 +197,27 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.excluir = function() {
         mensagemSrv.confirmacao(false, 'confirme a exclusão').then(function (conteudo) {
             var i, j;
-            if ($scope.produtoresNvg.selecao.tipo === 'U' && $scope.produtoresNvg.selecao.item) {
+            if ($scope.produtoresProducaoNvg.selecao.tipo === 'U' && $scope.produtoresProducaoNvg.selecao.item) {
                 for (j = $scope.navegador.selecao.item[7].length -1; j >= 0; j--) {
-                    if (angular.equals($scope.navegador.selecao.item[7][j].email.endereco, $scope.produtoresNvg.selecao.item.email.endereco)) {
+                    if (angular.equals($scope.navegador.selecao.item[7][j].email.endereco, $scope.produtoresProducaoNvg.selecao.item.email.endereco)) {
                         //$scope.navegador.selecao.item[7].splice(j, 1);
                         $scope.navegador.selecao.item[7][j].cadastroAcao = 'E';
                     }
                 }
-                $scope.produtoresNvg.selecao.item = null;
-                $scope.produtoresNvg.selecao.selecionado = false;
-            } else if ($scope.produtoresNvg.selecao.items && $scope.produtoresNvg.selecao.items.length) {
+                $scope.produtoresProducaoNvg.selecao.item = null;
+                $scope.produtoresProducaoNvg.selecao.selecionado = false;
+            } else if ($scope.produtoresProducaoNvg.selecao.items && $scope.produtoresProducaoNvg.selecao.items.length) {
                 for (j = $scope.navegador.selecao.item[7].length-1; j >= 0; j--) {
-                    for (i in $scope.produtoresNvg.selecao.items) {
-                        if (angular.equals($scope.navegador.selecao.item[7][j].email.endereco, $scope.produtoresNvg.selecao.items[i].email.endereco)) {
+                    for (i in $scope.produtoresProducaoNvg.selecao.items) {
+                        if (angular.equals($scope.navegador.selecao.item[7][j].email.endereco, $scope.produtoresProducaoNvg.selecao.items[i].email.endereco)) {
                             //$scope.navegador.selecao.item[7].splice(j, 1);
                             $scope.navegador.selecao.item[7][j].cadastroAcao = 'E';
                             break;
                         }
                     }
                 }
-                for (i = $scope.produtoresNvg.selecao.items.length -1; i >= 0; i--) {
-                    $scope.produtoresNvg.selecao.items.splice(i, 1);
+                for (i = $scope.produtoresProducaoNvg.selecao.items.length -1; i >= 0; i--) {
+                    $scope.produtoresProducaoNvg.selecao.items.splice(i, 1);
                 }
             }
         }, function () {
@@ -216,12 +254,9 @@ angular.module(pNmModulo).controller(pNmController,
     // fim das operaçoes atribuidas ao navagador
 
     // inicio dos watches
-    $scope.$watch('navegador.selecao.item', function() {
-        $scope.produtoresNvg.setDados($scope.navegador.selecao.item && $scope.navegador.selecao.item[7] ? $scope.navegador.selecao.item[7] : []);
-    });
     // fim dos watches
 
 } // fim função
 ]);
 
-})('indiceProducao', 'ProdutoresCtrl', 'Produtores dos bens');
+})('indiceProducao', 'ProdutoresProducaoCtrl', 'Produtores dos bens');

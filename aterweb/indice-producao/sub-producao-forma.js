@@ -1,4 +1,4 @@
-/* global StringMask:false */
+/* global StringMask:false, removerCampo */
 
 (function(pNmModulo, pNmController, pNmFormulario) {
 
@@ -18,20 +18,37 @@ angular.module(pNmModulo).controller(pNmController,
     if (!$uibModalInstance) { init(); }
 
     // inicio rotinas de apoio
+    var pegaComposicaoId = function (formaProducao) {
+        if (formaProducao === null) {
+            return null;
+        }
+        var result = [];
+        for (var i in formaProducao.producaoFormaComposicaoList) {
+            result.push(formaProducao.producaoFormaComposicaoList[i].formaProducaoValor.id);
+        }
+        // ordenar
+        result.sort(function (a, b) {
+            return a - b;
+        });
+        return result;
+    };
     var jaCadastrado = function(conteudo) {
-        for (var j in $scope.cadastro.registro.producaoFormaList) {
-            if (angular.equals($scope.cadastro.registro.producaoFormaList[j].email.endereco, conteudo.email.endereco)) {
-                if ($scope.cadastro.registro.producaoFormaList[j].cadastroAcao === 'E') {
-                    return true;
-                } else {
+        var composicao = pegaComposicaoId(conteudo);
+        var j, igual;
+        for (j in $scope.cadastro.registro.producaoFormaList) {
+            igual = angular.equals(composicao, pegaComposicaoId($scope.cadastro.registro.producaoFormaList[j]));
+            if (igual) {
+                if (conteudo.id !== $scope.cadastro.registro.producaoFormaList[j].id) {
                     toastr.error('Registro já cadastrado');
                     return false;
+                } else {
+                    return true;
                 }
             }
         }
         return true;
     };
-    var editarItem = function (destino, item) {
+    var editarItem = function (destino, item, selecaoId) {
 
         var composicao = $scope.cadastro.apoio.producaoForma.composicao;
 
@@ -68,18 +85,18 @@ angular.module(pNmModulo).controller(pNmController,
             '                <label class="form-label">' + composicao[i][1] + '</label>' +
             '            </div>' +
             '            <div class="col-md-9">' +
-            '                <select class="form-control" id="composicao' + i + '" name="composicao' + i + '" ng-options="item[0] as item[1] for item in ['; 
+            '                <select class="form-control" id="composicao' + i + '" name="composicao' + i + '" ng-options="item as item.nome for item in ['; 
 
             for (j in composicao[i][2]) {
                 if (j > 0) {
                     form += ',';
                 }
-                form += '[' + composicao[i][2][j][0] + ', \'' + composicao[i][2][j][1] + '\']';
+                form += '{id:' + composicao[i][2][j][0] + ', nome:\'' + composicao[i][2][j][1] + '\'}';
             }
 
             form +=
-            '] track by item[0]"' +
-            '                    ng-model="conteudo.producaoFormaComposicaoList[' + i + '].formaProducaoValor.id" ng-requires="true">' +
+            '] track by item.id"' +
+            '                    ng-model="conteudo.producaoFormaComposicaoList[' + i + '].formaProducaoValor" ng-required="true">' +
             '                </select>' +
             '                <div class="label label-danger" ng-show="confirmacaoFrm.composicao' + i + '.$error.required">' +
             '                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' +
@@ -165,19 +182,36 @@ angular.module(pNmModulo).controller(pNmController,
             '</div>';
 
         item.formula = $scope.formula;
+        if (!item.producaoFormaComposicaoList) {
+            item.producaoFormaComposicaoList = [];
+        }
 
         mensagemSrv.confirmacao(false, form, null, item, null, jaCadastrado).then(function (conteudo) {
             // processar o retorno positivo da modal
+            delete conteudo['formula'];
             if (destino) {
-                if (destino['cadastroAcao'] && destino['cadastroAcao'] !== 'I') {
-                    destino['cadastroAcao'] = 'A';
+                if (!conteudo['cadastroAcao'] || (conteudo['cadastroAcao'] && conteudo['cadastroAcao'] !== 'I')) {
+                    conteudo['cadastroAcao'] = 'A';
                 }
-                destino.email.endereco = angular.copy(conteudo.email.endereco);
+                destino = angular.copy(conteudo,destino);
+                if (selecaoId) {
+                    $scope.producaoFormaNvg.selecao.items[selecaoId] = destino;
+                }
             } else {
                 conteudo['cadastroAcao'] = 'I';
                 if (!$scope.cadastro.registro.producaoFormaList) {
                     $scope.cadastro.registro.producaoFormaList = [];
                     $scope.producaoFormaNvg.setDados($scope.cadastro.registro.producaoFormaList);
+                }
+                var composicao = pegaComposicaoId(conteudo);
+                var j, igual;
+                for (j in $scope.cadastro.registro.producaoFormaList) {
+                    igual = angular.equals(composicao, pegaComposicaoId($scope.cadastro.registro.producaoFormaList[j]));
+                    if (igual) {
+                        $scope.cadastro.registro.producaoFormaList[j] = angular.copy(conteudo);
+                        toastr.warning('Um registro recentemente incluido, porém ainda não salvo, foi atualizado');
+                        return;
+                    }
                 }
                 $scope.cadastro.registro.producaoFormaList.push(conteudo);
             }
@@ -205,20 +239,22 @@ angular.module(pNmModulo).controller(pNmController,
                 for (j in $scope.cadastro.registro.producaoFormaList) {
                     if (angular.equals($scope.producaoFormaNvg.selecao.items[i], $scope.cadastro.registro.producaoFormaList[j])) {
                         item = angular.copy($scope.cadastro.registro.producaoFormaList[j]);
-                        editarItem($scope.cadastro.registro.producaoFormaList[j], item);
+                        editarItem($scope.cadastro.registro.producaoFormaList[j], item, i);
+                        break;
                     }
                 }
             }
         }
     };
     $scope.excluir = function() {
-        mensagemSrv.confirmacao(false, 'confirme a exclusão').then(function (conteudo) {
+        mensagemSrv.confirmacao(false, 'Confirme a exclusão').then(function (conteudo) {
             var i, j;
             if ($scope.producaoFormaNvg.selecao.tipo === 'U' && $scope.producaoFormaNvg.selecao.item) {
                 for (j = $scope.cadastro.registro.producaoFormaList.length -1; j >= 0; j--) {
-                    if (angular.equals($scope.cadastro.registro.producaoFormaList[j].email.endereco, $scope.producaoFormaNvg.selecao.item.email.endereco)) {
+                    if (angular.equals($scope.cadastro.registro.producaoFormaList[j], $scope.producaoFormaNvg.selecao.item)) {
+                        $scope.marcarParaExclusao($scope, 'producaoFormaList', j);
                         //$scope.cadastro.registro.producaoFormaList.splice(j, 1);
-                        $scope.cadastro.registro.producaoFormaList[j].cadastroAcao = 'E';
+                        //$scope.cadastro.registro.producaoFormaList[j].cadastroAcao = 'E';
                     }
                 }
                 $scope.producaoFormaNvg.selecao.item = null;
@@ -226,9 +262,10 @@ angular.module(pNmModulo).controller(pNmController,
             } else if ($scope.producaoFormaNvg.selecao.items && $scope.producaoFormaNvg.selecao.items.length) {
                 for (j = $scope.cadastro.registro.producaoFormaList.length-1; j >= 0; j--) {
                     for (i in $scope.producaoFormaNvg.selecao.items) {
-                        if (angular.equals($scope.cadastro.registro.producaoFormaList[j].email.endereco, $scope.producaoFormaNvg.selecao.items[i].email.endereco)) {
+                        if (angular.equals($scope.cadastro.registro.producaoFormaList[j], $scope.producaoFormaNvg.selecao.items[i])) {
+                            $scope.marcarParaExclusao($scope, 'producaoFormaList', j);
                             //$scope.cadastro.registro.producaoFormaList.splice(j, 1);
-                            $scope.cadastro.registro.producaoFormaList[j].cadastroAcao = 'E';
+                            //$scope.cadastro.registro.producaoFormaList[j].cadastroAcao = 'E';
                             break;
                         }
                     }

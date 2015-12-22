@@ -41,6 +41,10 @@ public class PublicoAlvoPropriedadeRural extends EntidadeBase implements _ChaveP
 	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
 	private BigDecimal area;
 
+	@ManyToOne
+	@JoinColumn(name = "comunidade_id")
+	private Comunidade comunidade;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
@@ -75,6 +79,10 @@ public class PublicoAlvoPropriedadeRural extends EntidadeBase implements _ChaveP
 		return area;
 	}
 
+	public Comunidade getComunidade() {
+		return comunidade;
+	}
+
 	@Override
 	public Integer getId() {
 		return id;
@@ -102,6 +110,10 @@ public class PublicoAlvoPropriedadeRural extends EntidadeBase implements _ChaveP
 
 	public void setArea(BigDecimal area) {
 		this.area = area;
+	}
+
+	public void setComunidade(Comunidade comunidade) {
+		this.comunidade = comunidade;
 	}
 
 	@Override

@@ -1,8 +1,8 @@
 <div class="panel panel-default">
     <div class="panel-heading container-fluid">
         <frz-navegador
-        ng-model="produtoresNvg" exibe-texto-botao="false"
-        dados="navegador.selecao.item[7]"
+        ng-model="produtoresProducaoNvg" exibe-texto-botao="false"
+        dados="conteudo.producaoFormaList"
         acoes-especiais="acoesEspeciais"
         on-abrir = "abrir()"
         on-agir = "agir()"
@@ -20,13 +20,14 @@
         on-ultima-pagina="ultimaPagina()"
         ></frz-navegador>
     </div>
-    <div class="painel-body"  ng-hide="navegador.selecao.item[7].length">
+    /{{conteudo.principal}}/
+    <div class="painel-body"  ng-hide="conteudo.producaoFormaList.length">
         <div class="alert alert-warning" style="margin: 0px;" role="alert">
             <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
             Nenhum registro localizado!
         </div>
     </div>
-    <div class="table-responsible" ng-show="navegador.selecao.item[7].length > 0">
+    <div class="table-responsible" ng-show="conteudo.producaoFormaList.length > 0">
         <ng-form name="produtoresFrm">
             <table class="table table-striped">
                 <thead>
@@ -37,7 +38,7 @@
                     </tr>
                     <tr>
                         <th>
-                            <frz-seletor ng-model="produtoresNvg"></frz-seletor>
+                            <frz-seletor ng-model="produtoresProducaoNvg"></frz-seletor>
                         </th>
                         <th width="30">
                             #
@@ -51,13 +52,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat-start="produtor in produtoresNvg.dados | orderBy: 'nome' | pagina: produtoresNvg.paginaAtual : produtoresNvg.tamanhoPagina | limitTo: produtoresNvg.tamanhoPagina" ng-click="produtoresNvg.folhaAtual = $index + ((produtoresNvg.paginaAtual-1) * produtoresNvg.tamanhoPagina)">
+                    <tr ng-repeat-start="produtor in produtoresProducaoNvg.dados | orderBy: 'nome' | pagina: produtoresProducaoNvg.paginaAtual : produtoresProducaoNvg.tamanhoPagina | limitTo: produtoresProducaoNvg.tamanhoPagina" ng-click="produtoresProducaoNvg.folhaAtual = $index + ((produtoresProducaoNvg.paginaAtual-1) * produtoresProducaoNvg.tamanhoPagina)">
                         <td width="30px">
-                            <input type="radio" ng-show="produtoresNvg.selecao.tipo === 'U'" ng-model="produtoresNvg.selecao.item" ng-value="produtor"/>
-                            <input type="checkbox" ng-show="produtoresNvg.selecao.tipo === 'M'" checklist-model="produtoresNvg.selecao.items" checklist-value="produtor" ng-click="crudMataClick(scp, $event);"/>
+                            <input type="radio" ng-show="produtoresProducaoNvg.selecao.tipo === 'U'" ng-model="produtoresProducaoNvg.selecao.item" ng-value="produtor"/>
+                            <input type="checkbox" ng-show="produtoresProducaoNvg.selecao.tipo === 'M'" checklist-model="produtoresProducaoNvg.selecao.items" checklist-value="produtor" ng-click="crudMataClick(scp, $event);"/>
                         </td>
                         <td>
-                            {{$index + 1 + ((produtoresNvg.paginaAtual-1) * produtoresNvg.tamanhoPagina)}}
+                            {{$index + 1 + ((produtoresProducaoNvg.paginaAtual-1) * produtoresProducaoNvg.tamanhoPagina)}}
                         </td>
                         <td>{{produtor[0]}}</td>
                         <td>{{produtor[1]}}</td>
@@ -66,7 +67,7 @@
                         <td>{{navegador.selecao.item[5]}}</td>
                         <th><button class="btn btn-primary btn-sm">Confirmar</button></th>
                     </tr>
-                    <tr ng-repeat-end ng-click="produtoresNvg.folhaAtual = $index + ((produtoresNvg.paginaAtual-1) * produtoresNvg.tamanhoPagina)" 
+                    <tr ng-repeat-end ng-click="produtoresProducaoNvg.folhaAtual = $index + ((produtoresProducaoNvg.paginaAtual-1) * produtoresProducaoNvg.tamanhoPagina)" 
                         ng-if="!cadastro.apoio.escondeDetalhe && produtor[2].length"
                         style="font-size: 90%; padding:0; margin:0;">
                         <td style="padding:0; margin:0;"></td>

@@ -24,7 +24,7 @@
                     </th>
                     <th>Ano</th>
                     <th>Local</th>
-                    <th>Classificação / Forma de Produção</th>
+                    <th>Classificação</th>
                     <th>Bem de Produção</th>
                     <th>Esperado</th>
                     <th>Confirmado</th>
@@ -97,7 +97,7 @@
                                         {{linha[7] | number: 5}}<span ng-show="!linha[7]">--</span>
                                     </td>
                                     <td class="text-right">
-                                        {{formulaX(item[8], linha[5], linha[6], linha[7]) | number: 5}}
+                                        {{formula(item[8], linha[5], linha[6], linha[7]) | number: 5}}
                                     </td>
                                     <td class="text-right">
                                         {{linha[2] | number: 5}}
@@ -132,4 +132,4 @@
     </div>
 </div>
 <label class="control-label" ng-if="navegador.selecao.item">Produtores</label>
-<ng-include src="'indice-producao/sub-produtores.html'" ng-controller="ProdutoresCtrl" ng-if="navegador.selecao.item"></ng-include>
+<ng-include src="'indice-producao/sub-produtores.html'" ng-controller="ProdutoresCtrl" ng-if="navegador.selecao.tipo === 'U' && navegador.selecao.item"></ng-include>

@@ -79,7 +79,8 @@
             $scope.incluirDepois = function (objeto) {
                 var t = TokenStorage.token();
                 if (t && t.lotacaoAtual) {
-                    objeto.unidadeOrganizacional = t.lotacaoAtual;
+//                    objeto.unidadeOrganizacional = t.lotacaoAtual;
+                    $scope.cadastro.apoio.unidadeOrganizacional = t.lotacaoAtual;
                 }
             };
             $scope.confirmarIncluir = function(scp) {
@@ -88,6 +89,7 @@
                 }
                 var reg = angular.copy(scp.cadastro.registro);
                 removerCampo(reg, ['@jsonId', 'formula']);
+                console.log(reg);
 
                 // preparar composicao da forma de producao
                 scp.servico.incluir(reg).success(function (resposta) {
@@ -151,6 +153,9 @@
                 return result;
             };
             $scope.formula = function(formula, itemA, itemB, itemC) {
+                if (!formula) {
+                    return null;
+                }
                 formula = formula.replace(new RegExp('A', 'g'), itemA);
                 formula = formula.replace(new RegExp('B', 'g'), itemB);
                 formula = formula.replace(new RegExp('C', 'g'), itemC);
@@ -233,7 +238,7 @@
                 }
             };
             $scope.$watch('cadastro.apoio.bemClassificacao', function(novo) {
-                console.log($scope.cadastro.apoio.bemClassificacao);
+                //console.log($scope.cadastro.apoio.bemClassificacao);
                 if (!novo) {
                     return;
                 }
@@ -296,7 +301,7 @@
             });
 
             $scope.$watch('cadastro.apoio.unidadeOrganizacional.id', function(novo) {
-                console.log($scope.cadastro.apoio.unidadeOrganizacional);
+                //console.log($scope.cadastro.apoio.unidadeOrganizacional);
                 if (novo) {
                     UtilSrv.dominio({ent: [
                            'UnidadeOrganizacionalComunidade',
@@ -313,6 +318,7 @@
                             for (var i in resposta.resultado[0]) {
                                 $scope.cadastro.apoio.comunidadeList.push(resposta.resultado[0][i].comunidade);
                             }
+                            removerCampo($scope.cadastro.apoio.comunidadeList, ['unidadeOrganizacional']);
                         }
                     });
                 }

@@ -238,6 +238,30 @@ angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 
             pessoa['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica';
         }
     };
+    $rootScope.marcarParaExclusao = function(scp, nomeLista, item) {
+        if (!scp.cadastro.excluido[nomeLista]) {
+            scp.cadastro.excluido[nomeLista] = [];
+        }
+        scp.cadastro.registro[nomeLista][item]['cadastroAcao'] = 'E';
+        scp.cadastro.excluido[nomeLista].push(scp.cadastro.registro[nomeLista][item]);
+        scp.cadastro.registro[nomeLista].splice(item, 1);
+    };
+    $rootScope.pegarRegistroMarcadoExclusao = function (scp) {
+        var result = angular.copy(scp.cadastro.registro);
+        for (var i in result) {
+            for (var j in scp.cadastro.excluido) {
+                if (i === j) {
+                    result[i] = result[i].concat(scp.cadastro.excluido[j]);
+                    break;
+                }
+            }
+        }
+        return result;
+    };
+    $rootScope.limparRegistroMarcadoExclusao = function (scp) {
+        scp.cadastro.excluido = {};
+    };
+
     // fim funcoes de apoio
 
     // inicio funcoes crud
@@ -248,7 +272,7 @@ angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 
         scope.stt = state; // esta foi a forma encontrada para fazer com que o escopo seja transferido entre funcoes ver $rootScope.crudSeleciona e  $rootScope.crudMataClick
         scope.nomeFormulario = nomeFormulario;
         scope.frm = {};
-        scope.cadastro = cadastro != null ? cadastro : {filtro: {}, lista: [], registro: {}, original: {}, apoio: {}};
+        scope.cadastro = cadastro != null ? cadastro : {filtro: {}, lista: [], registro: {}, original: {}, apoio: {}, excluido: {}};
         scope.navegador = new FrzNavegadorParams(scope.cadastro.lista);
         scope.servico = {};
         if (servico) {
@@ -417,13 +441,17 @@ angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 
         if (!scp.confirmar(scp)) {
             return;
         }
-        scp.servico.editar(scp.cadastro.registro).success(function (resposta) {
+        // inserir os registros marcados para exclusao
+        var registro = $rootScope.pegarRegistroMarcadoExclusao(scp);
+
+        scp.servico.editar(registro).success(function (resposta) {
             if (resposta.mensagem && resposta.mensagem === 'OK') {
                 scp.navegador.voltar(scp);
                 scp.navegador.mudarEstado('VISUALIZANDO');
                 scp.crudVaiPara(scp, scp.stt, 'form');
                 scp.navegador.submetido = false;
                 angular.copy(scp.cadastro.registro, scp.cadastro.original);
+                $rootScope.limparRegistroMarcadoExclusao(scp);
                 toastr.info('Operação realizada!', 'Informação');
             } else {
                 toastr.error(resposta.mensagem, 'Erro ao editar');
@@ -598,6 +626,7 @@ angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 
     $rootScope.paginarUltimo = function(scp) {};
     $rootScope.restaurar = function(scp) {
         angular.copy(scp.cadastro.original, scp.cadastro.registro);
+        $rootScope.limparRegistroMarcadoExclusao(scp);
     };
     $rootScope.visualizar = function(scp) {
         var id = null;

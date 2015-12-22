@@ -52,6 +52,9 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 			if (filtro.getPublicoAlvoSetor() != null) {
 				sql.append("left join alvo.publicoAlvoSetorList paSetor").append("\n");
 			}
+			if (filtro.getComunidade() != null) {
+				sql.append("left join alvo.publicoAlvoPropriedadeRuralList paPropriedadeRural").append("\n");
+			}
 		}
 		sql.append("where (1 = 1)").append("\n");
 		if (filtrarPublicoAlvo(filtro)) {
@@ -119,6 +122,10 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 			params.add(filtro.getPublicoAlvoSetor());
 			sql.append("and paSetor.setor.id = ?").append(params.size()).append("\n");
 		}
+		if (filtro.getComunidade() != null) {
+			params.add(filtro.getComunidade().getId());
+			sql.append("and paPropriedadeRural.comunidade.id = ?").append(params.size()).append("\n");
+		}
 		if (!StringUtils.isEmpty(filtro.getPublicoAlvoPropriedadeUtilizacaoEspacoRural())) {
 			// TODO Este campo nao foi implementado no BD - resolver
 //			params.add(filtro.getPublicoAlvoPropriedadeUtilizacaoEspacoRural().getId());
@@ -148,7 +155,8 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 		return 	(filtro.getPublicoAlvoSegmento() != null && (PublicoAlvoSegmento.values().length != (filtro.getPublicoAlvoSegmento().size()))) 
 				||  (filtro.getPublicoAlvoCategoria() != null && (PublicoAlvoCategoria.values().length != (filtro.getPublicoAlvoCategoria().size())))
 				||  (filtro.getPublicoAlvoSetor() != null)
-				||  (filtro.getPublicoAlvoPropriedadeUtilizacaoEspacoRural() != null);
+				||  (filtro.getPublicoAlvoPropriedadeUtilizacaoEspacoRural() != null)
+		        ||  (filtro.getComunidade() != null);
 	}
 
 }

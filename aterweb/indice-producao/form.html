@@ -16,11 +16,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="row" ng-shows="cadastro.registro.ano">
+                <div class="row" ng-show="cadastro.registro.ano">
                     <div class="col-md-12" title="Classificação do Bem de Produção">
                         <div class="form-group">
                             <label class="control-label" for="bemClassificacao">Classificação do Bem de Produção</label>
-                            <div class="input-group">
+                            <div class="input-group" ng-show="!cadastro.registro.producaoFormaList.length">
                                 <input type="text" class="form-control" ng-model="cadastro.apoio.bemClassificacaoFiltro" placeholder="Filtrar por Classificação">
                                 <span class="input-group-btn">
                                     <div class="btn-group" role="group">
@@ -30,7 +30,7 @@
                                     </div>
                                 </span>
                             </div>
-                            <div class="row" style="height: 200px; overflow: scroll;">
+                            <div class="row" style="height: 200px; overflow: scroll;" ng-show="!cadastro.registro.producaoFormaList.length">
                                 <script type="text/ng-template" id="nodes_renderer.html">
                                     <div ui-tree-handle>
                                         <a class="btn btn-primary btn-xs Tooltip" nodrag ng-click="toggleChildren(this)" title="Expandir/Recolher" ng-show="node[3].length">
@@ -40,7 +40,7 @@
                                         <label>
                                             <input type="radio" ng-model="cadastro.apoio.bemClassificacao" name="bemClassificacao" id="bemClassificacao{{$index}}" ng-value="node" ng-if="!node[3].length" 
                                                 ng-disabled="cadastro.registro.producaoFormaList.length" ng-required="true" ng-checked="(cadastro.apoio.bemClassificacao.id === node[0])">
-                                            {{node[1]}} /{{node[0]}}/ x{{cadastro.apoio.bemClassificacao}}x
+                                            {{node[1]}}
                                         </label>
                                     </div>
                                    <ol ui-tree-nodes="" ng-model="node[3]" ng-class="{hidden: collapsed}">
@@ -59,14 +59,18 @@
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
+                            <div class="form-control" ng-show="cadastro.apoio.bemClassificacao && cadastro.registro.producaoFormaList.length">
+                                {{cadastro.apoio.producaoForma.bemClassificacao}}
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="row" ng-shows="cadastro.apoio.bemClassificacao">
+                <div class="row" ng-show="cadastro.apoio.bemClassificacao">
                     <div class="col-md-4" title="Bens de Produção">
                         <div class="form-group">
                             <label class="control-label" for="bem">Bens de Produção</label>
-                            <select id="bem" name="bem" class="form-control" ng-model="cadastro.registro.bem" ng-options="item as item.nome for item in cadastro.apoio.bemList track by item.id" required="true">
+                            <select id="bem" name="bem" class="form-control" ng-model="cadastro.registro.bem" ng-options="item as item.nome for item in cadastro.apoio.bemList track by item.id" required="true"
+                                ng-disabled="cadastro.registro.producaoFormaList.length">
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.bem.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -77,7 +81,8 @@
                     <div class="col-md-4" title="Unidade Organizacional">
                         <div class="form-group">
                             <label class="control-label" for="unidadeOrganizacional">Unidade Organizacional</label>
-                            <select id="unidadeOrganizacional" name="unidadeOrganizacional" class="form-control" ng-model="cadastro.apoio.unidadeOrganizacional" ng-options="item as item.nome for item in cadastro.apoio.unidadeOrganizacionalList track by item.id" required="true" ng-disabled="false">
+                            <select id="unidadeOrganizacional" name="unidadeOrganizacional" class="form-control" ng-model="cadastro.apoio.unidadeOrganizacional" ng-options="item as item.nome for item in cadastro.apoio.unidadeOrganizacionalList track by item.id" required="true" 
+                                ng-disabled="false">
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.unidadeOrganizacional.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -97,7 +102,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row" ng-shows="cadastro.registro.bem">
+                <div class="row" ng-show="cadastro.registro.bem.id">
                     <div class="col-md-12" title="Forma de Produção">
                         <div class="form-group">
                             <label class="control-label" for="formaProducao">Forma de Produção</label>

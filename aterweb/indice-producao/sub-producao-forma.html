@@ -1,4 +1,4 @@
-<div class="panel panel-default">
+<div class="panel panel-default" ng-class="{'ng-invalid': producaoFormaFrm.producaoFormaList.$error.ngValorMin}">
     <div class="panel-heading container-fluid">
         <frz-navegador
             ng-model="producaoFormaNvg" exibe-texto-botao="false"
@@ -28,13 +28,19 @@
         </div>
     </div>
     <div class="table-responsible" ng-show="cadastro.registro.producaoFormaList.length > 0">
-        <ng-form name="produtoresFrm">
+        <ng-form name="producaoFormaFrm">
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th colspan="2">Forma Produção</th>
-                        <th colspan="2">Fórmula</th>
-                        <th colspan="4"></th>
+                        <th></th>
+                        <th></th>
+                        <th colspan="{{cadastro.apoio.producaoForma.composicao.length}}">Forma Produção</th>
+                        <th>A</th>
+                        <th>B</th>
+                        <th>C</th>
+                        <th></th>
+                        <th>Unidade</th>
+                        <th>Quantidade</th>
                     </tr>
                     <tr>
                         <th>
@@ -43,16 +49,17 @@
                         <th width="30">
                             #
                         </th>
-                        <th>Propriedade</th>
-                        <th>Beneficiário</th>
-                        <th>Esperado</th>
-                        <th>Confirmado</th>
+                        <th ng-repeat="item in cadastro.apoio.producaoForma.composicao">{{item[1]}}</th>
+                        <th>{{cadastro.apoio.producaoForma.itemANome}}</th>
+                        <th>{{cadastro.apoio.producaoForma.itemBNome}}</th>
+                        <th>{{cadastro.apoio.producaoForma.itemCNome}}</th>
+                        <th>Volume = ({{cadastro.apoio.producaoForma.formula}})</th>
                         <th>Medida</th>
-                        <th>Ação</th>
+                        <th>Produtores</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="produtor in producaoFormaNvg.dados | orderBy: 'nome' | pagina: producaoFormaNvg.paginaAtual : producaoFormaNvg.tamanhoPagina | limitTo: producaoFormaNvg.tamanhoPagina" ng-click="producaoFormaNvg.folhaAtual = $index + ((producaoFormaNvg.paginaAtual-1) * producaoFormaNvg.tamanhoPagina)">
+                    <tr ng-repeat="produtor in cadastro.registro.producaoFormaList | orderBy: 'nome' | pagina: producaoFormaNvg.paginaAtual : producaoFormaNvg.tamanhoPagina | limitTo: producaoFormaNvg.tamanhoPagina" ng-click="producaoFormaNvg.folhaAtual = $index + ((producaoFormaNvg.paginaAtual-1) * producaoFormaNvg.tamanhoPagina)">
                         <td width="30px">
                             <input type="radio" ng-show="producaoFormaNvg.selecao.tipo === 'U'" ng-model="producaoFormaNvg.selecao.item" ng-value="produtor"/>
                             <input type="checkbox" ng-show="producaoFormaNvg.selecao.tipo === 'M'" checklist-model="producaoFormaNvg.selecao.items" checklist-value="produtor" ng-click="crudMataClick(scp, $event);"/>
@@ -60,19 +67,26 @@
                         <td>
                             {{$index + 1 + ((producaoFormaNvg.paginaAtual-1) * producaoFormaNvg.tamanhoPagina)}}
                         </td>
-                        <td>{{produtor[0]}}</td>
-                        <td>{{produtor[1]}}</td>
-                        <td>{{soma(produtor[2], 1) | number: 5}}</td>
-                        <td>00000000000000</td>
-                        <td>{{navegador.selecao.item[5]}}</td>
-                        <th><button class="btn btn-primary btn-sm">Confirmar</button></th>
+                        <td ng-repeat="forma in produtor.producaoFormaComposicaoList">{{UtilSrv.indiceDePorCampo(cadastro.apoio.producaoForma.composicao[$index][2], forma.formaProducaoValor.id, '0')[1]}}</td>
+                        <td>{{produtor.itemAValor | number: 5}}</td>
+                        <td>{{produtor.itemBValor | number: 5}}</td>
+                        <td>{{produtor.itemCValor | number: 5}}</td>
+                        <td>{{formula(cadastro.apoio.producaoForma.formula, produtor.itemAValor, produtor.itemBValor, produtor.itemCValor) | number: 5}}</td>
+                        <td>{{cadastro.apoio.producaoForma.unidadeMedida}}</td>
+                        <td>{{produtor.quantidadeProdutores}}</td>
                     </tr>
                 </tbody>
                 <tfoot>
                 </tfoot>
             </table>
+            <input type="hidden" id="producaoFormaList" name="producaoFormaList" ng-model="cadastro.registro.producaoFormaList.length" ng-valor-min="1">
+
         </ng-form>
     </div>
     <div class="panel-footer">
+    </div>
+    <div class="label label-danger" ng-show="navegador.submetido && producaoFormaFrm.producaoFormaList.$error.ngValorMin">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        Campo Obrigatório
     </div>
 </div>

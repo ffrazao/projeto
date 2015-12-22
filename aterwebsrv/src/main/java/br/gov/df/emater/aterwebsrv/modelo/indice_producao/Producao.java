@@ -68,7 +68,7 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer> {
 	private Calendar inclusaoData;
 
 	@ManyToOne
-	@JoinColumn(name = "inclusao_usuario_id")
+	@JoinColumn(name = "inclusao_usuario_id", updatable = false)
 	private Usuario inclusaoUsuario;
 
 	@OneToMany(mappedBy = "producao")

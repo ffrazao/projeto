@@ -103,8 +103,8 @@ public class ProducaoDaoImpl implements ProducaoDaoCustom {
 			List<Producao> producaoList = dao.findByAnoAndBemAndPropriedadeRuralComunidade(producao.getAno(), producao.getBem(), producao.getComunidade());
 			for (Producao p : producaoList) {
 				List<Object> linha = new ArrayList<Object>();
-				linha.add(p.getPropriedadeRural().getNome());
-				linha.add(p.getPublicoAlvo().getPessoa().getNome());
+				linha.add(p.getPropriedadeRural() != null ? p.getPropriedadeRural().getNome() : null);
+				linha.add(p.getPublicoAlvo() != null ? p.getPublicoAlvo().getPessoa().getNome() : null);
 				linha.add(fetchProducaoForma(p.getProducaoFormaList()));
 				if (result == null) {
 					result = new ArrayList<Object[]>();
@@ -130,7 +130,7 @@ public class ProducaoDaoImpl implements ProducaoDaoCustom {
 				linha.add(pf.getItemCValor());
 				linha.add(pf.getValorUnitario());
 				linha.add(pf.getValorTotal());
-				linha.add(pf.getDataConfirmacao());				
+				linha.add(pf.getDataConfirmacao());
 				if (result == null) {
 					result = new ArrayList<Object[]>();
 				}
@@ -148,6 +148,7 @@ public class ProducaoDaoImpl implements ProducaoDaoCustom {
 				linha.add(pfc.getFormaProducaoValor().getFormaProducaoItem().getNome());
 				linha.add(pfc.getFormaProducaoValor().getNome());
 				linha.add(pfc.getOrdem());
+				linha.add(pfc.getFormaProducaoValor().getId());
 				if (result == null) {
 					result = new ArrayList<Object[]>();
 				}

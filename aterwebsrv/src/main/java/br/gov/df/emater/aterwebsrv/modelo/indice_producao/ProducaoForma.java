@@ -63,7 +63,7 @@ public class ProducaoForma extends EntidadeBase implements _ChavePrimaria<Intege
 	private Calendar inclusaoData;
 
 	@ManyToOne
-	@JoinColumn(name = "inclusao_usuario_id")
+	@JoinColumn(name = "inclusao_usuario_id", updatable = false)
 	private Usuario inclusaoUsuario;
 
 	@Column(name = "item_a_valor")

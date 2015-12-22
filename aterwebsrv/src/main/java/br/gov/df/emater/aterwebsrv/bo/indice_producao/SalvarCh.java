@@ -14,7 +14,7 @@ public class SalvarCh extends _Cadeia {
 	public SalvarCh(AutenticarUsuarioCmd c1, SalvarCmd c2, LogCmd c3) {
 		super.addCommand(c1);
 		super.addCommand(c2);
-		super.addCommand(c2);
+		super.addCommand(c3);
 	}
 
 }

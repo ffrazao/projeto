@@ -143,7 +143,7 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="publicoAlvoSetor">Setor</label>
                     <div class="col-md-4">
-                        <select id="publicoAlvoSetor" name="publicoAlvoSetor" class="form-control" ng-model="cadastro.filtro.publicoAlvoSetor" ng-options="item.id as item.nome for item in cadastro.apoio.setorList">
+                        <select id="publicoAlvoSetor" name="publicoAlvoSetor" class="form-control" ng-model="cadastro.filtro.publicoAlvoSetor" ng-options="item as item.nome for item in cadastro.apoio.setorList track by item.id">
                             <option value="">-- Ignorar --</option>
                         </select>
                     </div>
@@ -162,7 +162,7 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="comunidade">Comunidade</label>
                     <div class="col-md-4">
-                        <select id="comunidade" name="comunidade" class="form-control" ng-model="cadastro.filtro.comunidade" ng-options="item.id as item.nome for item in cadastro.apoio.comunidadeList">
+                        <select id="comunidade" name="comunidade" class="form-control" ng-model="cadastro.filtro.comunidade" ng-options="item as item.nome for item in cadastro.apoio.comunidadeList track by item.id">
                             <option value="">-- Ignorar --</option>
                         </select>
                     </div>
