@@ -1,3 +1,5 @@
+/* global removerCampo */ 
+
 (function(pNmModulo, pNmFactory, pNmController) {
 
 'use strict';
@@ -79,6 +81,8 @@ angular.module(pNmModulo).factory(pNmFactory,
                         for (var ano = anoAtual; ano > anoAtual - 100; ano--) {
                             scp.cadastro.apoio.tradicaoList.push(ano);
                         }
+
+                        removerCampo(scp.cadastro.apoio.comunidadeList, ['@jsonId', 'unidadeOrganizacional']);
                     }
                 });
             },
