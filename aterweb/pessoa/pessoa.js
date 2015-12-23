@@ -9,37 +9,8 @@
     angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'PessoaSrv',
         function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, PessoaSrv) {
 
-            $scope.vlr = [
-                    {
-                        sigla: "BSM",
-                        nome: "Brasil Sem Miséria",
-                    },
-                    {
-                        nome: "INCRA",
-                    },
-                ];
-
-            $scope.formulario = {
-                codigo: "documento",
-                tipo: "array",
-                nome: "Documento",
-                opcao: [
-                    {
-                        nome: 'Nome do Grupo',
-                        codigo: 'nome',
-                        tipo: 'string',
-                    },
-                    {
-                        nome: 'Sigla do Grupo',
-                        codigo: 'sigla',
-                        tipo: 'string',
-                    },
-                ],
-            };
-
-
             // inicializacao
-            $scope.crudInit($scope, $state, null, pNmFormulario, PessoaSrv);
+            $scope.crudInit($scope, $state, modalCadastro, pNmFormulario, PessoaSrv);
 
             // código para verificar se o modal está ou não ativo
             $scope.verificaEstado($uibModalInstance, $scope, 'filtro', modalCadastro, pNmFormulario);
@@ -63,7 +34,7 @@
                     size: size,
                     resolve: {
                         modalCadastro: function() {
-                            return {filtro: {}, lista: [], registro: {}, original: {}, apoio: [],};
+                            return $scope.cadastroBase();
                         }
                     }
                 });

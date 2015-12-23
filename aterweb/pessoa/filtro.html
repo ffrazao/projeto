@@ -162,7 +162,7 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="comunidade">Comunidade</label>
                     <div class="col-md-4">
-                        <select id="comunidade" name="comunidade" class="form-control" ng-model="cadastro.filtro.comunidade" ng-options="item as item.nome for item in cadastro.apoio.comunidadeList track by item.id">
+                        <select id="comunidade" name="comunidade" class="form-control" ng-model="cadastro.filtro.comunidade" ng-options="item as item.nome for item in cadastro.apoio.comunidadeList track by item.id" ng-disabled="cadastro.apoio.comunidadeSomenteLeitura">
                             <option value="">-- Ignorar --</option>
                         </select>
                     </div>

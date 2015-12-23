@@ -111,6 +111,9 @@ angular.module(pNmModulo).factory(pNmFactory,
             tagBem : function(nome) {
                 return BemProducaoSrv.filtrar({nome: nome});
             },
+            filtrarPorPublicoAlvoComunidade : function (filtro) {
+                return $http.post($rootScope.servicoUrl + '/propriedade-rural/filtrar-por-publico-alvo-comunidade', filtro);
+            }
         };
         return IndiceProducaoSrv;
     }

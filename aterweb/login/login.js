@@ -5,11 +5,7 @@
     angular.module(pNmModulo).controller(pNmController, ['$scope', '$rootScope', '$location', '$uibModal', 'toastr', '$state', '$http', 'TokenStorage', '$cookies', '$uibModalInstance',
 
         function($scope, $rootScope, $location, $uibModal, toastr, $state, $http, TokenStorage, $cookies, $uibModalInstance) {
-            $scope.cadastro = {
-                registro: {},
-                apoio: {},
-                original: {}
-            };
+            $scope.cadastro = $scope.cadastroBase();
 
             $scope.iniciar = function() {
                 $scope.cadastro.original = $location.search();

@@ -43,7 +43,7 @@ angular.module(pNmModulo).controller(pNmController,
             size: 'lg',
             resolve: {
                 modalCadastro: function() {
-                    return {filtro: {}, lista: [], registro: {}, original: {}, apoio: [],};
+                    return $scope.cadastroBase();
                 }
             }
         });

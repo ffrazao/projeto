@@ -39,7 +39,7 @@
                     size: size,
                     resolve: {
                         modalCadastro: function() {
-                            return {filtro: {}, lista: [], registro: {}, original: {}, apoio: [],};
+                            return $scope.cadastroBase();
                         }
                     }
                 });

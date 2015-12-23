@@ -25,6 +25,7 @@ import br.gov.df.emater.aterwebsrv.modelo.dto.FormularioColetaCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.IndiceProducaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.PessoaCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.PropriedadeRuralCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.modelo.dto.PropriedadeRuralPorComunidadePublicoAlvoDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.UnidadeOrganizacionalCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.Formulario;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.FormularioVersao;
@@ -52,7 +53,7 @@ public class FacadeBo implements BeanFactoryAware {
 		return (Command) this.beanFactory.getBean(comandoNome);
 	}
 
-	// Atividade 
+	// Atividade
 	// filtro-executar
 	@Transactional(readOnly = true)
 	public _Contexto atividadeFiltroExecutar(Principal usuario, AtividadeCadFiltroDto filtro) throws Exception {
@@ -69,7 +70,7 @@ public class FacadeBo implements BeanFactoryAware {
 		return this._executar(usuario, "BemProducaoFiltroExecutarCh", filtro);
 	}
 
-	// Comunidade 
+	// Comunidade
 	// Lista
 	@Transactional(readOnly = true)
 	public _Contexto comunidadeLista(Principal usuario, ComunidadeListaDto filtro) throws Exception {
@@ -184,6 +185,11 @@ public class FacadeBo implements BeanFactoryAware {
 	}
 
 	@Transactional(readOnly = true)
+	public _Contexto propriedadeRuralFiltrarPorPublicoAlvoEComunidade(Principal usuario, PropriedadeRuralPorComunidadePublicoAlvoDto filtro) throws Exception {
+		return this._executar(usuario, "PropriedadeRuralFiltrarPorPublicoAlvoEComunidadeCmd", filtro);
+	}
+
+	@Transactional(readOnly = true)
 	public _Contexto propriedadeRuralFiltroExecutar(Principal usuario, PropriedadeRuralCadFiltroDto filtro) throws Exception {
 		return this._executar(usuario, "PropriedadeRuralFiltroExecutarCh", filtro);
 	}
@@ -208,7 +214,6 @@ public class FacadeBo implements BeanFactoryAware {
 		return this._executar(usuario, "PropriedadeRuralVisualizarCh", id);
 	}
 
-	
 	@Override
 	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
 		this.beanFactory = beanFactory;
@@ -219,7 +224,6 @@ public class FacadeBo implements BeanFactoryAware {
 		return this._executar(usuario, "UnidadeOrganizacionalComunidadeCmd", pessoaJuridicaId);
 	}
 
-	
 	// Unidade Organizacional
 	// Lista
 	@Transactional(readOnly = true)

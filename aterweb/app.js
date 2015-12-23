@@ -267,12 +267,15 @@ angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 
     // inicio funcoes crud
 
     // inicializacao
+    $rootScope.cadastroBase = function() {
+        return {filtro: {}, lista: [], registro: {}, original: {}, apoio: {}, excluido: {}};
+    };
     $rootScope.crudInit = function(scope, state, cadastro, nomeFormulario, servico) {
         scope.scp = scope; // esta foi a forma encontrada para fazer com que o escopo seja transferido entre funcoes ver $rootScope.crudSeleciona e  $rootScope.crudMataClick
         scope.stt = state; // esta foi a forma encontrada para fazer com que o escopo seja transferido entre funcoes ver $rootScope.crudSeleciona e  $rootScope.crudMataClick
         scope.nomeFormulario = nomeFormulario;
         scope.frm = {};
-        scope.cadastro = cadastro != null ? cadastro : {filtro: {}, lista: [], registro: {}, original: {}, apoio: {}, excluido: {}};
+        scope.cadastro = cadastro != null ? cadastro : $rootScope.cadastroBase();
         scope.navegador = new FrzNavegadorParams(scope.cadastro.lista);
         scope.servico = {};
         if (servico) {

@@ -80,7 +80,7 @@ angular.module(pNmModulo).controller(pNmController,
         '        </div>' +
         '        <div class="row">' +
         '            <div class="col-md-3 text-right">' +
-        '                <label class="form-label">Beneficiário</label>' +
+        '                <label class="form-label">Produtor</label>' +
         '            </div>' +
         '            <div class="col-md-9">' +
         '                <div class="form-control">' +

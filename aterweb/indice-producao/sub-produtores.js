@@ -5,8 +5,8 @@
 'use strict';
 
 angular.module(pNmModulo).controller(pNmController,
-    ['$scope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv', 'mensagemSrv',
-    function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv) {
+    ['$scope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv', 'mensagemSrv', 'IndiceProducaoSrv', 
+    function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv, IndiceProducaoSrv) {
 
     // inicializacao
     var init = function() {
@@ -21,6 +21,93 @@ angular.module(pNmModulo).controller(pNmController,
     if (!$uibModalInstance) { init(); }
 
     // inicio rotinas de apoio
+
+    $scope.modalSelecinarPropriedadeRural = function (size) {
+        // abrir a modal
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'pessoa/pessoa-modal.html',
+            controller: 'PessoaCtrl',
+            size: 'lg',
+            resolve: {
+                modalCadastro: function() {
+                    var cadastro = $scope.cadastroBase();
+                    cadastro.filtro.comunidade = {id: $scope.navegador.selecao.item[12]};
+                    cadastro.apoio.comunidadeSomenteLeitura = true;
+                    return cadastro;
+                }
+            }
+        });
+        // processar retorno da modal
+        var criarPessoa = function (id, nome, tipo) {
+            var pessoa = {
+                id: id, 
+                nome: nome,
+                pessoaTipo: tipo,
+            };
+            $scope.preparaClassePessoa(pessoa);
+            var reg = {pessoa: pessoa};
+            return reg;
+        };
+        modalInstance.result.then(function (resultado) {
+            // processar o retorno positivo da modal
+            var reg = null, pessoa = null;
+            $scope.cadastro.apoio.publicoAlvoList = [];
+            if (resultado.tipo === 'U') {
+                $scope.cadastro.apoio.publicoAlvoList.push(criarPessoa(resultado.item[0], resultado.item[1], resultado.item[3]));
+            } else {
+                for (var i in resultado.items) {
+                    $scope.cadastro.apoio.publicoAlvoList.push(criarPessoa(resultado.item[i][0], resultado.item[i][1], resultado.item[i][3]));
+                }
+            }
+            if (!$scope.cadastro.apoio.publicoAlvoList.length) {
+                toastr.error('Nenhum registro selecionado');
+            } else {
+                IndiceProducaoSrv.filtrarPorPublicoAlvoComunidade(
+                    {
+                        comunidade: {id: $scope.navegador.selecao.item[12]},
+                        publicoAlvoList: $scope.cadastro.apoio.publicoAlvoList,
+                    }).success(function(resposta) {
+                    if (resposta.mensagem === 'OK') {
+                        if (!resposta.resultado || !resposta.resultado.length) {
+                            console.log(resposta.resultado);
+                        }
+                    }
+                }).error(function(erro){
+                    toastr.error(erro, 'Erro ao selecionar propriedades');
+                });
+            }
+        }, function () {
+            // processar o retorno negativo da modal
+            
+        });
+    };
+
+    $scope.modalVerPropriedadeRural = function (id) {
+        // abrir a modal
+        var modalInstance = $uibModal.open({
+            animation: true,
+            template: '<ng-include src=\"\'pessoa/pessoa-form-modal.html\'\"></ng-include>',
+            controller: 'PessoaCtrl',
+            size: 'lg',
+            resolve: {
+                modalCadastro: function () {
+                    var cadastro = {registro: {id: id}, filtro: {}, lista: [], original: {}, apoio: [],};
+                    return cadastro;
+                }
+            }
+        });
+        // processar retorno da modal
+        modalInstance.result.then(function (cadastroModificado) {
+            // processar o retorno positivo da modal
+
+        }, function () {
+            // processar o retorno negativo da modal
+            //$log.info('Modal dismissed at: ' + new Date());
+        });
+    };
+
+
     var jaCadastrado = function(conteudo) {
         for (var j in $scope.navegador.selecao.item[7]) {
             if (angular.equals($scope.navegador.selecao.item[7][j].email.endereco, conteudo.email.endereco)) {
@@ -82,7 +169,7 @@ angular.module(pNmModulo).controller(pNmController,
         '        </div>' +
         '        <div class="row">' +
         '            <div class="col-md-3 text-right">' +
-        '                <label class="form-label">Beneficiário</label>' +
+        '                <label class="form-label">Produtor</label>' +
         '            </div>' +
         '            <div class="col-md-9">' +
         '                <div class="form-control">' +
@@ -136,8 +223,9 @@ angular.module(pNmModulo).controller(pNmController,
     // inicio das operaçoes atribuidas ao navagador
     $scope.abrir = function() { $scope.produtoresNvg.mudarEstado('ESPECIAL'); };
     $scope.incluir = function() {
-        var item = {email: {endereco: null}};
-        editarItem(null, item);
+        //var item = {email: {endereco: null}};
+        //editarItem(null, item);
+        $scope.modalSelecinarPropriedadeRural();
     };
     $scope.editar = function() {
         var item = null;
