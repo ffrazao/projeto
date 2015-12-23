@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.indice_producao;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,6 +31,10 @@ public class Bem extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	public Bem() {
 		super();
+	}
+
+	public Bem(Serializable id) {
+		super(id);
 	}
 
 	public BemClassificacao getBemClassificacao() {

@@ -65,11 +65,16 @@ angular.module(pNmModulo).controller(pNmController,
             } else {
                 IndiceProducaoSrv.filtrarPorPublicoAlvoComunidade(
                     {
+                        ano: $scope.navegador.selecao.item[1],
+                        bem: {id: $scope.navegador.selecao.item[13]},
                         comunidade: {id: $scope.navegador.selecao.item[12]},
                         publicoAlvoList: $scope.cadastro.apoio.publicoAlvoList,
                     }).success(function(resposta) {
                     if (resposta.mensagem === 'OK') {
-                        if (!resposta.resultado || !resposta.resultado.length) {
+                        if (resposta.resultado && resposta.resultado.length) {
+                            for (var i in resposta.resultado) {
+                                editarItem($scope.navegador.selecao.item[7], resposta.resultado[i]);
+                            }
                             console.log(resposta.resultado);
                         }
                     }

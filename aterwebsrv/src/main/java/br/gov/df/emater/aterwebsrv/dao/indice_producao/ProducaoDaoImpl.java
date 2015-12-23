@@ -89,6 +89,7 @@ public class ProducaoDaoImpl implements ProducaoDaoCustom {
 				linha.add(obj.get(4));
 				linha.add(obj.get(5));
 				linha.add(producao.getComunidade().getId());
+				linha.add(producao.getBem().getId());
 				if (result == null) {
 					result = new ArrayList<Object[]>();
 				}

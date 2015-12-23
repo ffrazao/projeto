@@ -216,8 +216,12 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 	public PublicoAlvo() {
 	}
 
+	public PublicoAlvo(Integer id) {
+		super(id);
+	}
+
 	public PublicoAlvo(Integer id, Pessoa pessoa) {
-		setId(id);
+		this(id);
 		setPessoa(pessoa.infoBasica());
 	}
 

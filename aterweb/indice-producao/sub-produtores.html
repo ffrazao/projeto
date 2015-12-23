@@ -42,8 +42,8 @@
                         <th width="30">
                             #
                         </th>
-                        <th>Propriedade</th>
                         <th>Produtor</th>
+                        <th>Propriedade</th>
                         <th>Esperado</th>
                         <th>Confirmado</th>
                         <th>Medida</th>
@@ -59,8 +59,8 @@
                         <td>
                             {{$index + 1 + ((produtoresNvg.paginaAtual-1) * produtoresNvg.tamanhoPagina)}}
                         </td>
-                        <td>{{produtor[0]}}</td>
                         <td>{{produtor[1]}}</td>
+                        <td>{{produtor[0]}}</td>
                         <td>{{soma(produtor[2], 1) | number: 5}}</td>
                         <td>00000000000000</td>
                         <td>{{navegador.selecao.item[5]}}</td>

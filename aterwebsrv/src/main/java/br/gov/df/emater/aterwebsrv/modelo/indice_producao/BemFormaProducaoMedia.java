@@ -1,6 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.indice_producao;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
@@ -27,13 +29,11 @@ public class BemFormaProducaoMedia extends EntidadeBase implements _ChavePrimari
 	@JoinColumn(name = "bem_id")
 	private Bem bem;
 
-	@ManyToOne
-	@JoinColumn(name = "comunidade_id")
-	private Comunidade comunidade;
+	@OneToMany(mappedBy = "bemFormaProducaoMedia")
+	private List<BemFormaProducaoMediaComposicao> bemFormaProducaoMediaComposicaoList;
 
 	@ManyToOne
-	@JoinColumn(name = "forma_producao_valor_id")
-	private FormaProducaoValor formaProducaoValor;
+	private Comunidade comunidade;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -56,8 +56,15 @@ public class BemFormaProducaoMedia extends EntidadeBase implements _ChavePrimari
 	@JoinColumn(name = "publico_alvo_id")
 	private PublicoAlvo publicoAlvo;
 
+	@Column(name = "valor_total")
+	private BigDecimal valorTotal;
+
 	@Column(name = "valor_unitario")
 	private BigDecimal valorUnitario;
+
+	@JoinColumn(name = "comunidade_id")
+
+	private BigDecimal volume;
 
 	public BemFormaProducaoMedia() {
 		super();
@@ -67,12 +74,12 @@ public class BemFormaProducaoMedia extends EntidadeBase implements _ChavePrimari
 		return bem;
 	}
 
-	public Comunidade getComunidade() {
-		return comunidade;
+	public List<BemFormaProducaoMediaComposicao> getBemFormaProducaoMediaComposicaoList() {
+		return bemFormaProducaoMediaComposicaoList;
 	}
 
-	public FormaProducaoValor getFormaProducaoValor() {
-		return formaProducaoValor;
+	public Comunidade getComunidade() {
+		return comunidade;
 	}
 
 	@Override
@@ -100,20 +107,28 @@ public class BemFormaProducaoMedia extends EntidadeBase implements _ChavePrimari
 		return publicoAlvo;
 	}
 
+	public BigDecimal getValorTotal() {
+		return valorTotal;
+	}
+
 	public BigDecimal getValorUnitario() {
 		return valorUnitario;
+	}
+
+	public BigDecimal getVolume() {
+		return volume;
 	}
 
 	public void setBem(Bem bem) {
 		this.bem = bem;
 	}
 
-	public void setComunidade(Comunidade comunidade) {
-		this.comunidade = comunidade;
+	public void setBemFormaProducaoMediaComposicaoList(List<BemFormaProducaoMediaComposicao> bemFormaProducaoMediaComposicaoList) {
+		this.bemFormaProducaoMediaComposicaoList = bemFormaProducaoMediaComposicaoList;
 	}
 
-	public void setFormaProducaoValor(FormaProducaoValor formaProducaoValor) {
-		this.formaProducaoValor = formaProducaoValor;
+	public void setComunidade(Comunidade comunidade) {
+		this.comunidade = comunidade;
 	}
 
 	@Override
@@ -141,8 +156,16 @@ public class BemFormaProducaoMedia extends EntidadeBase implements _ChavePrimari
 		this.publicoAlvo = publicoAlvo;
 	}
 
+	public void setValorTotal(BigDecimal valorTotal) {
+		this.valorTotal = valorTotal;
+	}
+
 	public void setValorUnitario(BigDecimal valorUnitario) {
 		this.valorUnitario = valorUnitario;
+	}
+
+	public void setVolume(BigDecimal volume) {
+		this.volume = volume;
 	}
 
 }

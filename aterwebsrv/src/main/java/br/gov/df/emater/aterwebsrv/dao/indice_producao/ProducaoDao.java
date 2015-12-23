@@ -14,4 +14,6 @@ public interface ProducaoDao extends JpaRepository<Producao, Integer>, ProducaoD
 
 	List<Producao> findByAnoAndBemAndPropriedadeRuralComunidade(Integer ano, Bem bem, Comunidade comunidade);
 
+	Producao findOneByAnoAndBemAndComunidadeAndPublicoAlvoIsNullAndPropriedadeRuralIsNull(Integer ano, Bem bem, Comunidade comunidade);
+
 }
