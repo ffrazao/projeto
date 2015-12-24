@@ -90,7 +90,7 @@ public class FiltrarPorPublicoAlvoEComunidadeCmd extends _Comando {
 					}
 
 					List<ProducaoForma> producaoFormaList = null;
-					
+
 					// captar dados da producao
 					if (producaoEsperada != null) {
 						producao = new Producao();
@@ -99,12 +99,14 @@ public class FiltrarPorPublicoAlvoEComunidadeCmd extends _Comando {
 						producao.setPropriedadeRural(new PropriedadeRural(publicoAlvoPropriedadeRural.getPropriedadeRural().getId()));
 						producao.setPublicoAlvo(new PublicoAlvo(pa.getId()));
 
-						// captar as médias de producao da propriedade e do produtor
+						// captar as médias de producao da propriedade e do
+						// produtor
 						List<BemFormaProducaoMedia> bemFormaProducaoMediaList = bemFormaProducaoMediaDao.findByBemAndPropriedadeRuralAndPublicoAlvo(bem, producao.getPropriedadeRural(), producao.getPublicoAlvo());
 
 						if (producaoEsperada.getProducaoFormaList() != null) {
 							for (ProducaoForma producaoForma : producaoEsperada.getProducaoFormaList()) {
-								// encontrar média de producao pela composição da forma de produção
+								// encontrar média de producao pela composição
+								// da forma de produção
 								BemFormaProducaoMedia bemFormaProducaoMedia = pegaBemFormaProducaoMedia(producaoForma.getProducaoFormaComposicaoList(), bemFormaProducaoMediaList);
 								ProducaoForma pf = new ProducaoForma();
 								if (bemFormaProducaoMedia != null) {
@@ -124,14 +126,14 @@ public class FiltrarPorPublicoAlvoEComunidadeCmd extends _Comando {
 									pf.setValorUnitario(producaoForma.getValorUnitario());
 								}
 								List<ProducaoFormaComposicao> producaoFormaComposicaoList = new ArrayList<ProducaoFormaComposicao>();
-								for (ProducaoFormaComposicao producaoFormaComposicao: producaoForma.getProducaoFormaComposicaoList()) {
+								for (ProducaoFormaComposicao producaoFormaComposicao : producaoForma.getProducaoFormaComposicaoList()) {
 									ProducaoFormaComposicao pfc = new ProducaoFormaComposicao();
 									pfc.setOrdem(producaoFormaComposicao.getOrdem());
 									pfc.setFormaProducaoValor(new FormaProducaoValor(producaoFormaComposicao.getProducaoForma().getId()));
 									producaoFormaComposicaoList.add(pfc);
 								}
 								pf.setProducaoFormaComposicaoList(producaoFormaComposicaoList);
-								
+
 								if (producaoFormaList == null) {
 									producaoFormaList = new ArrayList<ProducaoForma>();
 								}
@@ -139,12 +141,14 @@ public class FiltrarPorPublicoAlvoEComunidadeCmd extends _Comando {
 							}
 						}
 					}
-					producao.setProducaoFormaList(producaoFormaList);
-					
-					if (result == null) {
-						result = new ArrayList<Producao>();
+					if (producao != null && producaoFormaList != null) {
+						producao.setProducaoFormaList(producaoFormaList);
+
+						if (result == null) {
+							result = new ArrayList<Producao>();
+						}
+						result.add(producao);
 					}
-					result.add(producao);					
 				}
 			}
 		}
@@ -158,26 +162,26 @@ public class FiltrarPorPublicoAlvoEComunidadeCmd extends _Comando {
 		if (producaoFormaComposicaoList == null || bemFormaProducaoMediaList == null) {
 			return null;
 		}
-		
+
 		Integer producao[] = new Integer[producaoFormaComposicaoList.size()];
 		int pos = 0;
-		for (ProducaoFormaComposicao producaoFormaComposicao: producaoFormaComposicaoList) {
+		for (ProducaoFormaComposicao producaoFormaComposicao : producaoFormaComposicaoList) {
 			producao[pos++] = producaoFormaComposicao.getFormaProducaoValor().getId();
 		}
 		Arrays.sort(producao);
-		
+
 		media: for (BemFormaProducaoMedia bemFormaProducaoMedia : bemFormaProducaoMediaList) {
 			Integer media[] = new Integer[bemFormaProducaoMedia.getBemFormaProducaoMediaComposicaoList().size()];
 			pos = 0;
-			for (BemFormaProducaoMediaComposicao bemFormaProducaoMediaComposicao: bemFormaProducaoMedia.getBemFormaProducaoMediaComposicaoList()) {
+			for (BemFormaProducaoMediaComposicao bemFormaProducaoMediaComposicao : bemFormaProducaoMedia.getBemFormaProducaoMediaComposicaoList()) {
 				media[pos++] = bemFormaProducaoMediaComposicao.getFormaProducaoValor().getId();
 			}
 			Arrays.sort(media);
-			
+
 			if (media.length != producao.length) {
 				continue;
 			}
-			
+
 			for (pos = 0; pos < media.length; pos++) {
 				if (media[pos] != producao[pos]) {
 					continue media;
@@ -186,7 +190,7 @@ public class FiltrarPorPublicoAlvoEComunidadeCmd extends _Comando {
 			// encontrou a media
 			return bemFormaProducaoMedia;
 		}
-		
+
 		// não encontrou nada
 		return null;
 	}
