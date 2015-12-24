@@ -75,7 +75,6 @@ angular.module(pNmModulo).controller(pNmController,
                             for (var i in resposta.resultado) {
                                 editarItem($scope.navegador.selecao.item[7], resposta.resultado[i]);
                             }
-                            console.log(resposta.resultado);
                         }
                     }
                 }).error(function(erro){
@@ -127,6 +126,21 @@ angular.module(pNmModulo).controller(pNmController,
         return true;
     };
     var editarItem = function (destino, item) {
+        if (item.id) {
+            IndiceProducaoSrv.visualizar(item.id).success(function(resposta) {
+                if (resposta.mensagem && resposta.mensagem === 'OK') {
+                    exibirItem(destino, resposta.resultado);
+                } else {
+                    toastr.error(resposta.mensagem, 'Erro ao editar');
+                }
+            }).error(function(erro){
+                toastr.error(erro, 'Erro ao editar');
+            });
+        } else {
+            exibirItem(destino, item);
+        }
+    };
+    var exibirItem = function (destino, item) {
         //console.log($scope.navegador.selecao.item);
         var form = 
 
@@ -178,7 +192,9 @@ angular.module(pNmModulo).controller(pNmController,
         '            </div>' +
         '            <div class="col-md-9">' +
         '                <div class="form-control">' +
-                            '' +
+        '                   <a ng-click="modalVerPessoa(' + item.publicoAlvo.pessoa.id + ')">' +
+                                item.publicoAlvo.pessoa.nome +
+        '                   </a>' +
         '                </div>' +
         '            </div>' +
         '        </div>' +
@@ -188,7 +204,9 @@ angular.module(pNmModulo).controller(pNmController,
         '            </div>' +
         '            <div class="col-md-9">' +
         '                <div class="form-control">' +
-                            '' +
+        '                   <a ng-click="modalVerPropriedadeRural(' + item.propriedadeRural.id + ')">' +
+                                item.propriedadeRural.nome +
+        '                   </a>' +
         '                </div>' +
         '            </div>' +
         '        </div>' +
@@ -202,6 +220,7 @@ angular.module(pNmModulo).controller(pNmController,
         '</div>';
 
         item.principal = $scope.navegador.selecao.item;
+        item.formula = $scope.formula;
 
         mensagemSrv.confirmacao(false, form, 'Produção', item, null, jaCadastrado).then(function (conteudo) {
             // processar o retorno positivo da modal
@@ -223,13 +242,13 @@ angular.module(pNmModulo).controller(pNmController,
             //$log.info('Modal dismissed at: ' + new Date());
         });
     };
+    $scope.UtilSrv = UtilSrv;
+
     // fim rotinas de apoio
 
     // inicio das operaçoes atribuidas ao navagador
     $scope.abrir = function() { $scope.produtoresNvg.mudarEstado('ESPECIAL'); };
     $scope.incluir = function() {
-        //var item = {email: {endereco: null}};
-        //editarItem(null, item);
         $scope.modalSelecinarPropriedadeRural();
     };
     $scope.editar = function() {
@@ -237,13 +256,13 @@ angular.module(pNmModulo).controller(pNmController,
         var i, j;
         if ($scope.produtoresNvg.selecao.tipo === 'U' && $scope.produtoresNvg.selecao.item) {
             item = angular.copy($scope.produtoresNvg.selecao.item);
-            editarItem($scope.produtoresNvg.selecao.item, item);
+            editarItem($scope.produtoresNvg.selecao.item, {id: item[3]});
         } else if ($scope.produtoresNvg.selecao.items && $scope.produtoresNvg.selecao.items.length) {
             for (i in $scope.produtoresNvg.selecao.items) {
                 for (j in $scope.navegador.selecao.item[7]) {
                     if (angular.equals($scope.produtoresNvg.selecao.items[i], $scope.navegador.selecao.item[7][j])) {
                         item = angular.copy($scope.navegador.selecao.item[7][j]);
-                        editarItem($scope.navegador.selecao.item[7][j], item);
+                        editarItem($scope.navegador.selecao.item[7][j], {id: item[3]});
                     }
                 }
             }

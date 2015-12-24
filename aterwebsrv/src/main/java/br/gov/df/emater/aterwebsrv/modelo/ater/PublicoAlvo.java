@@ -111,10 +111,10 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 	private String dapSituacao;
 
 	@Column(name = "forca_trab_eventual")
-	private int forcaTrabEventual;
+	private Integer forcaTrabEventual;
 
 	@Column(name = "forca_trab_permanente")
-	private int forcaTrabPermanente;
+	private Integer forcaTrabPermanente;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -211,7 +211,7 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 	@Enumerated(EnumType.STRING)
 	private PublicoAlvoSegmento segmento;
 
-	private int tradicao;
+	private Integer tradicao;
 
 	public PublicoAlvo() {
 	}
@@ -289,11 +289,11 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 		return dapSituacao;
 	}
 
-	public int getForcaTrabEventual() {
+	public Integer getForcaTrabEventual() {
 		return forcaTrabEventual;
 	}
 
-	public int getForcaTrabPermanente() {
+	public Integer getForcaTrabPermanente() {
 		return forcaTrabPermanente;
 	}
 
@@ -378,7 +378,7 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 		return segmento;
 	}
 
-	public int getTradicao() {
+	public Integer getTradicao() {
 		return tradicao;
 	}
 
@@ -446,11 +446,11 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 		this.dapSituacao = dapSituacao;
 	}
 
-	public void setForcaTrabEventual(int forcaTrabEventual) {
+	public void setForcaTrabEventual(Integer forcaTrabEventual) {
 		this.forcaTrabEventual = forcaTrabEventual;
 	}
 
-	public void setForcaTrabPermanente(int forcaTrabPermanente) {
+	public void setForcaTrabPermanente(Integer forcaTrabPermanente) {
 		this.forcaTrabPermanente = forcaTrabPermanente;
 	}
 
@@ -535,7 +535,7 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 		this.segmento = segmento;
 	}
 
-	public void setTradicao(int tradicao) {
+	public void setTradicao(Integer tradicao) {
 		this.tradicao = tradicao;
 	}
 

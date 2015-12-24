@@ -1,5 +1,6 @@
 package br.gov.df.emater.aterwebsrv.modelo.indice_producao;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -14,12 +15,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FormulaProduto;
 
 @Entity
 @Table(name = "bem_classificacao", schema = EntidadeBase.INDICE_PRODUCAO_SCHEMA)
-public class BemClassificacao extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class BemClassificacao extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<BemClassificacao> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -62,8 +64,14 @@ public class BemClassificacao extends EntidadeBase implements _ChavePrimaria<Int
 		super();
 	}
 
-	public BemClassificacao(Integer id) {
+	public BemClassificacao(Serializable id) {
 		super(id);
+	}
+
+	public BemClassificacao(Serializable id, String nome, BemClassificacao bemClassificacao) {
+		super(id);
+		setNome(nome);
+		setBemClassificacao(bemClassificacao != null ? bemClassificacao.infoBasica() : null);
 	}
 
 	public BemClassificacao getBemClassificacao() {
@@ -146,6 +154,11 @@ public class BemClassificacao extends EntidadeBase implements _ChavePrimaria<Int
 
 	public void setUnidadeMedida(UnidadeMedida unidadeMedida) {
 		this.unidadeMedida = unidadeMedida;
+	}
+
+	@Override
+	public BemClassificacao infoBasica() {
+		return new BemClassificacao(getId(), getNome(), getBemClassificacao());
 	}
 
 }

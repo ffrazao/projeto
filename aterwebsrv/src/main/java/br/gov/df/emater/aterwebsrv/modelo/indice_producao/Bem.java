@@ -11,11 +11,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 
 @Entity
 @Table(name = "bem", schema = EntidadeBase.INDICE_PRODUCAO_SCHEMA)
-public class Bem extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class Bem extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<Bem> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -35,6 +36,12 @@ public class Bem extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	public Bem(Serializable id) {
 		super(id);
+	}
+
+	public Bem(Integer id, String nome, BemClassificacao bemClassificacao) {
+		this(id);
+		setNome(nome);
+		setBemClassificacao(bemClassificacao.infoBasica());
 	}
 
 	public BemClassificacao getBemClassificacao() {
@@ -61,6 +68,11 @@ public class Bem extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	@Override
+	public Bem infoBasica() {
+		return new Bem(getId(), getNome(), getBemClassificacao());
 	}
 
 }

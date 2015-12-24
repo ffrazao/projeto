@@ -88,8 +88,7 @@
                     return;
                 }
                 var reg = angular.copy(scp.cadastro.registro);
-                removerCampo(reg, ['@jsonId', 'formula']);
-                console.log(reg);
+                removerCampo(reg, ['@jsonId', 'formula', 'bemClassificacao']);
 
                 // preparar composicao da forma de producao
                 scp.servico.incluir(reg).success(function (resposta) {

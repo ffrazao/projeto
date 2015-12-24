@@ -267,6 +267,48 @@ angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 
     // inicio funcoes crud
 
     // inicializacao
+    $rootScope.modalVerPessoa = function (id) {
+        // abrir a modal
+        var modalInstance = $uibModal.open({
+            animation: true,
+            template: '<ng-include src=\"\'pessoa/pessoa-form-modal.html\'\"></ng-include>',
+            controller: 'PessoaCtrl',
+            size: 'lg',
+            resolve: {
+                modalCadastro: function () {
+                    var cadastro = {registro: {id: id}, filtro: {}, lista: [], original: {}, apoio: [],};
+                    return cadastro;
+                }
+            }
+        });
+        // processar retorno da modal
+        modalInstance.result.then(function (cadastroModificado) {
+            // processar o retorno positivo da modal
+        }, function () {
+            // processar o retorno negativo da modal
+        });
+    };    
+    $rootScope.modalVerPropriedadeRural = function (id) {
+        // abrir a modal
+        var modalInstance = $uibModal.open({
+            animation: true,
+            template: '<ng-include src=\"\'propriedade-rural/propriedade-rural-form-modal.html\'\"></ng-include>',
+            controller: 'PropriedadeRuralCtrl',
+            size: 'lg',
+            resolve: {
+                modalCadastro: function () {
+                    var cadastro = {registro: {id: id}, filtro: {}, lista: [], original: {}, apoio: [],};
+                    return cadastro;
+                }
+            }
+        });
+        // processar retorno da modal
+        modalInstance.result.then(function (cadastroModificado) {
+            // processar o retorno positivo da modal
+        }, function () {
+            // processar o retorno negativo da modal
+        });
+    };    
     $rootScope.cadastroBase = function() {
         return {filtro: {}, lista: [], registro: {}, original: {}, apoio: {}, excluido: {}};
     };

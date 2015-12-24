@@ -169,6 +169,7 @@ angular.module(pNmModulo).controller(pNmController,
             //$log.info('Modal dismissed at: ' + new Date());
         });
     };
+    $scope.UtilSrv = UtilSrv;
     // fim rotinas de apoio
 
     // inicio das operaçoes atribuidas ao navagador

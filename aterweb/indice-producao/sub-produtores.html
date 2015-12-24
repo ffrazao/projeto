@@ -75,9 +75,9 @@
                                 <thead>
                                     <tr>
                                         <th colspan="{{produtor[2][0][0].length}}">Forma de Produção</th>
-                                        <th>A</th>
-                                        <th>B</th>
-                                        <th>C</th>
+                                        <th ng-if="navegador.selecao.item[9]">A</th>
+                                        <th ng-if="navegador.selecao.item[10]">B</th>
+                                        <th ng-if="navegador.selecao.item[11]">C</th>
                                         <th>Volume</th>
                                         <th>Unidade</th>
                                         <th></th>
@@ -86,9 +86,9 @@
                                         <th ng-repeat="forma in produtor[2][0][0] | orderBy: '2'">
                                             {{forma[0]}}
                                         </th>
-                                        <th>{{navegador.selecao.item[9]}}</th>
-                                        <th>{{navegador.selecao.item[10]}}</th>
-                                        <th>{{navegador.selecao.item[11]}}</th>
+                                        <th ng-if="navegador.selecao.item[9]">{{navegador.selecao.item[9]}}</th>
+                                        <th ng-if="navegador.selecao.item[10]">{{navegador.selecao.item[10]}}</th>
+                                        <th ng-if="navegador.selecao.item[11]">{{navegador.selecao.item[11]}}</th>
                                         <th>({{navegador.selecao.item[8]}})</th>
                                         <th>Medida</th>
                                         <th>Confirmado</th>
@@ -100,14 +100,14 @@
                                         <td ng-repeat="forma in linha[0] | orderBy: '2'">
                                             {{forma[1]}}
                                         </td>
-                                        <td class="text-right">
-                                            {{linha[5] | number: 5}}<span ng-show="!linha[5]">--</span>
+                                        <td class="text-right" ng-if="navegador.selecao.item[9]">
+                                            {{linha[5] | number: 5}}
                                         </td>
-                                        <td class="text-right">
-                                            {{linha[6] | number: 5}}<span ng-show="!linha[6]">--</span>
+                                        <td class="text-right" ng-if="navegador.selecao.item[10]">
+                                            {{linha[6] | number: 5}}
                                         </td>
-                                        <td class="text-right">
-                                            {{linha[7] | number: 5}}<span ng-show="!linha[7]">--</span>
+                                        <td class="text-right" ng-if="navegador.selecao.item[11]">
+                                            {{linha[7] | number: 5}}
                                         </td>
                                         <td class="text-right">
                                             {{formula(navegador.selecao.item[8], linha[5], linha[6], linha[7]) | number: 5}}
@@ -121,9 +121,9 @@
                                     </tr>
                                     <tr>
                                         <th colspan="{{produtor[2][0][0].length}}" class="text-right">Total</th>
-                                        <th class="text-right">{{soma(produtor[2], 5) | number: 5}}</th>
-                                        <th class="text-right">{{soma(produtor[2], 6) | number: 5}}</th>
-                                        <th class="text-right">{{soma(produtor[2], 7) | number: 5}}</th>
+                                        <th class="text-right" ng-if="navegador.selecao.item[9]">{{soma(produtor[2], 5) | number: 5}}</th>
+                                        <th class="text-right" ng-if="navegador.selecao.item[10]">{{soma(produtor[2], 6) | number: 5}}</th>
+                                        <th class="text-right" ng-if="navegador.selecao.item[11]">{{soma(produtor[2], 7) | number: 5}}</th>
                                         <th class="text-right">{{soma(produtor[2], 1) | number: 5}}</th>
                                         <th>{{navegador.selecao.item[5]}}</th>
                                         <th></th>

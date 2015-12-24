@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.indice_producao;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,11 +11,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 
 @Entity
 @Table(name = "forma_producao_valor", schema = EntidadeBase.INDICE_PRODUCAO_SCHEMA)
-public class FormaProducaoValor extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class FormaProducaoValor extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<FormaProducaoValor> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -33,8 +36,13 @@ public class FormaProducaoValor extends EntidadeBase implements _ChavePrimaria<I
 		super();
 	}
 
-	public FormaProducaoValor(Integer id) {
+	public FormaProducaoValor(Serializable id) {
 		super(id);
+	}
+
+	public FormaProducaoValor(Serializable id, String nome) {
+		super(id);
+		setNome(nome);
 	}
 
 	public FormaProducaoItem getFormaProducaoItem() {
@@ -52,6 +60,11 @@ public class FormaProducaoValor extends EntidadeBase implements _ChavePrimaria<I
 
 	public Integer getOrdem() {
 		return ordem;
+	}
+
+	@Override
+	public FormaProducaoValor infoBasica() {
+		return new FormaProducaoValor(getId(), getNome());
 	}
 
 	public void setFormaProducaoItem(FormaProducaoItem formaProducaoItem) {

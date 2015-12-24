@@ -61,9 +61,9 @@
                             <thead>
                                 <tr>
                                     <th colspan="{{item[6][0][0].length}}">Forma de Produção</th>
-                                    <th>A</th>
-                                    <th>B</th>
-                                    <th>C</th>
+                                    <th ng-if="item[9]">A</th>
+                                    <th ng-if="item[10]">B</th>
+                                    <th ng-if="item[11]">C</th>
                                     <th colspan="2">Volume = ({{item[8]}})</th>
                                     <th>Unidade</th>
                                     <th colspan="2">Produtores</th>
@@ -72,9 +72,9 @@
                                     <th ng-repeat="forma in item[6][0][0] | orderBy: '2'">
                                         {{forma[0]}}
                                     </th>
-                                    <th>{{item[9]}}</th>
-                                    <th>{{item[10]}}</th>
-                                    <th>{{item[11]}}</th>
+                                    <th ng-if="item[9]">{{item[9]}}</th>
+                                    <th ng-if="item[10]">{{item[10]}}</th>
+                                    <th ng-if="item[11]">{{item[11]}}</th>
                                     <th>Esperado</th>
                                     <th>Confirmado</th>
                                     <th>Medida</th>
@@ -87,14 +87,14 @@
                                     <td ng-repeat="forma in linha[0] | orderBy: '2'">
                                         {{forma[1]}}
                                     </td>
-                                    <td class="text-right">
-                                        {{linha[5] | number: 5}}<span ng-show="!linha[5]">--</span>
+                                    <td class="text-right" ng-if="item[9]">
+                                        {{linha[5] | number: 5}}
                                     </td>
-                                    <td class="text-right">
-                                        {{linha[6] | number: 5}}<span ng-show="!linha[6]">--</span>
+                                    <td class="text-right" ng-if="item[10]">
+                                        {{linha[6] | number: 5}}
                                     </td>
-                                    <td class="text-right">
-                                        {{linha[7] | number: 5}}<span ng-show="!linha[7]">--</span>
+                                    <td class="text-right" ng-if="item[11]">
+                                        {{linha[7] | number: 5}}
                                     </td>
                                     <td class="text-right">
                                         {{formula(item[8], linha[5], linha[6], linha[7]) | number: 5}}
@@ -114,9 +114,9 @@
                                 </tr>
                                 <tr>
                                     <th colspan="{{item[6][0][0].length}}" class="text-right">Total</th>
-                                    <th class="text-right">{{soma(item[6], 5) | number: 5}}</th>
-                                    <th class="text-right">{{soma(item[6], 6) | number: 5}}</th>
-                                    <th class="text-right">{{soma(item[6], 7) | number: 5}}</th>
+                                    <th class="text-right" ng-if="item[9]">{{soma(item[6], 5) | number: 5}}</th>
+                                    <th class="text-right" ng-if="item[10]">{{soma(item[6], 6) | number: 5}}</th>
+                                    <th class="text-right" ng-if="item[11]">{{soma(item[6], 7) | number: 5}}</th>
                                     <th class="text-right">{{soma(item[6], 1) | number: 5}}</th>
                                     <th class="text-right">{{soma(item[6], 2) | number: 5}}</th>
                                     <th></th>

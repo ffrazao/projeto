@@ -52,7 +52,7 @@
                             {{$index + 1 + ((publicoAlvoPropriedadeRuralNvg.paginaAtual-1) * publicoAlvoPropriedadeRuralNvg.tamanhoPagina)}}
                         </td>
                         <td>{{reg.comunidade.nome}}</td>
-                        <td>{{reg.propriedadeRural.nome}}</td>
+                        <td><a ng-click="modalVerPropriedadeRural(reg.propriedadeRural.id)">{{reg.propriedadeRural.nome}}</a></td>
                         <td>
                             <select class="form-control input-sm" id="vinculo" name="vinculo{{$index}}" ng-model="reg.vinculo" ng-options="item.codigo as item.descricao for item in scp.cadastro.apoio.propriedadeRuralVinculoTipoList" ng-required="reg.propriedadeRural" ng-show="reg.propriedadeRural">
                             </select>

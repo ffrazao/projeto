@@ -17,7 +17,6 @@ import br.gov.df.emater.aterwebsrv.dao.indice_producao.BemDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.BemFormaProducaoMediaDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoDao;
 import br.gov.df.emater.aterwebsrv.modelo.ater.Comunidade;
-import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
@@ -26,7 +25,6 @@ import br.gov.df.emater.aterwebsrv.modelo.dto.PropriedadeRuralPorComunidadePubli
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Bem;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemFormaProducaoMedia;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemFormaProducaoMediaComposicao;
-import br.gov.df.emater.aterwebsrv.modelo.indice_producao.FormaProducaoValor;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoForma;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoFormaComposicao;
@@ -95,9 +93,9 @@ public class FiltrarPorPublicoAlvoEComunidadeCmd extends _Comando {
 					if (producaoEsperada != null) {
 						producao = new Producao();
 						producao.setAno(producaoEsperada.getAno());
-						producao.setBem(new Bem(producaoEsperada.getBem().getId()));
-						producao.setPropriedadeRural(new PropriedadeRural(publicoAlvoPropriedadeRural.getPropriedadeRural().getId()));
-						producao.setPublicoAlvo(new PublicoAlvo(pa.getId()));
+						producao.setBem(producaoEsperada.getBem().infoBasica());
+						producao.setPropriedadeRural(publicoAlvoPropriedadeRural.getPropriedadeRural().infoBasica());
+						producao.setPublicoAlvo(pa.infoBasica());
 
 						// captar as médias de producao da propriedade e do
 						// produtor
@@ -129,7 +127,7 @@ public class FiltrarPorPublicoAlvoEComunidadeCmd extends _Comando {
 								for (ProducaoFormaComposicao producaoFormaComposicao : producaoForma.getProducaoFormaComposicaoList()) {
 									ProducaoFormaComposicao pfc = new ProducaoFormaComposicao();
 									pfc.setOrdem(producaoFormaComposicao.getOrdem());
-									pfc.setFormaProducaoValor(new FormaProducaoValor(producaoFormaComposicao.getProducaoForma().getId()));
+									pfc.setFormaProducaoValor(producaoFormaComposicao.getFormaProducaoValor().infoBasica());
 									producaoFormaComposicaoList.add(pfc);
 								}
 								pf.setProducaoFormaComposicaoList(producaoFormaComposicaoList);

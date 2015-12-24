@@ -10,8 +10,6 @@ import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoDao;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
-import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacao;
-import br.gov.df.emater.aterwebsrv.modelo.indice_producao.FormaProducaoValor;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoForma;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoFormaComposicao;
@@ -39,14 +37,16 @@ public class VisualizarCmd extends _Comando {
 		result.setAlteracaoData(null);
 		result.setInclusaoUsuario(null);
 		result.setInclusaoData(null);
-		
-		UnidadeOrganizacional unidadeOrganizacional = result.getComunidade().getUnidadeOrganizacional().infoBasica();
-		result.setComunidade(result.getComunidade() != null ? result.getComunidade().infoBasica(): null);
-		result.getComunidade().setUnidadeOrganizacional(unidadeOrganizacional);
-		
-		result.setPropriedadeRural(result.getPropriedadeRural() != null? result.getPropriedadeRural().infoBasica(): null);
+
+		UnidadeOrganizacional unidadeOrganizacional = null;
+		if (result.getComunidade() != null) {
+			unidadeOrganizacional = result.getComunidade().getUnidadeOrganizacional().infoBasica();
+			result.setComunidade(result.getComunidade() != null ? result.getComunidade().infoBasica() : null);
+			result.getComunidade().setUnidadeOrganizacional(unidadeOrganizacional);
+		}
+		result.setPropriedadeRural(result.getPropriedadeRural() != null ? result.getPropriedadeRural().infoBasica() : null);
 		result.setPublicoAlvo(result.getPublicoAlvo() != null ? result.getPublicoAlvo().infoBasica() : null);
-		result.getBem().setBemClassificacao(new BemClassificacao(result.getBem().getBemClassificacao().getId()));
+		result.setBem(result.getBem().infoBasica());
 		if (result.getProducaoFormaList() != null) {
 			for (ProducaoForma pf : result.getProducaoFormaList()) {
 				pf.setAlteracaoUsuario(null);
@@ -57,7 +57,7 @@ public class VisualizarCmd extends _Comando {
 				if (pf.getProducaoFormaComposicaoList() != null) {
 					for (ProducaoFormaComposicao pfc : pf.getProducaoFormaComposicaoList()) {
 						pfc.setProducaoForma(null);
-						pfc.setFormaProducaoValor(new FormaProducaoValor(pfc.getFormaProducaoValor().getId()));
+						pfc.setFormaProducaoValor(pfc.getFormaProducaoValor().infoBasica());
 					}
 				}
 			}

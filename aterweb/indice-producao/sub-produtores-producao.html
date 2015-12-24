@@ -20,7 +20,6 @@
         on-ultima-pagina="ultimaPagina()"
         ></frz-navegador>
     </div>
-    /{{conteudo.principal}}/
     <div class="painel-body"  ng-hide="conteudo.producaoFormaList.length">
         <div class="alert alert-warning" style="margin: 0px;" role="alert">
             <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
@@ -32,9 +31,15 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th colspan="4"></th>
-                        <th colspan="2">Volume</th>
-                        <th colspan="2">Unidade</th>
+                        <th colspan="2"></th>
+                        <!-- th colspan="{{conteudo.producaoFormaList[0].producaoFormaComposicaoList.length}}">Forma de Produção /{{conteudo.producaoFormaList[0].producaoFormaComposicaoList.length}}/</th -->
+                        <th colspan="{{conteudo.principal[6][0][0].length}}">Forma de Produção</th>
+                        <th ng-if="conteudo.principal[9]">A</th>
+                        <th ng-if="conteudo.principal[10]">B</th>
+                        <th ng-if="conteudo.principal[11]">C</th>
+                        <th>Volume</th>
+                        <th>Unidade</th>
+                        <th></th>
                     </tr>
                     <tr>
                         <th>
@@ -43,12 +48,13 @@
                         <th width="30">
                             #
                         </th>
-                        <th>Propriedade</th>
-                        <th>Produtor</th>
-                        <th>Esperado</th>
-                        <th>Confirmado</th>
+                        <th ng-repeat="forma in conteudo.principal[6][0][0]">{{forma[0]}}</th>
+                        <th ng-if="conteudo.principal[9]">{{conteudo.principal[9]}}</th>
+                        <th ng-if="conteudo.principal[10]">{{conteudo.principal[10]}}</th>
+                        <th ng-if="conteudo.principal[11]">{{conteudo.principal[11]}}</th>
+                        <th>({{conteudo.principal[8]}})</th>
                         <th>Medida</th>
-                        <th>Ação</th>
+                        <th>Confirmado</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -60,11 +66,15 @@
                         <td>
                             {{$index + 1 + ((produtoresProducaoNvg.paginaAtual-1) * produtoresProducaoNvg.tamanhoPagina)}}
                         </td>
-                        <td>{{produtor[0]}}</td>
-                        <td>{{produtor[1]}}</td>
-                        <td>{{soma(produtor[2], 1) | number: 5}}</td>
-                        <td>00000000000000</td>
-                        <td>{{navegador.selecao.item[5]}}</td>
+                        <td ng-repeat="forma in produtor.producaoFormaComposicaoList">
+                            {{forma.formaProducaoValor.nome}}
+                            <!--{{UtilSrv.indiceDePorCampo(forma[], conteudo.producaoFormaList[0].producaoFormaComposicaoList[$index].formaProducaoValor.id, forma[])}}-->
+                        </td>
+                        <td ng-if="conteudo.principal[9]"><input class="form-control" id="itemAValor" name="itemAValor{{$index}}" ng-model="produtor.itemAValor" ui-number-mask="5" ng-required="conteudo.principal[9]"></td>
+                        <td ng-if="conteudo.principal[10]"><input class="form-control" id="itemBValor" name="itemBValor{{$index}}" ng-model="produtor.itemBValor" ui-number-mask="5" ng-required="conteudo.principal[10]"></td>
+                        <td ng-if="conteudo.principal[11]"><input class="form-control" id="itemCValor" name="itemCValor{{$index}}" ng-model="produtor.itemCValor" ui-number-mask="5" ng-required="conteudo.principal[11]"></td>
+                        <td>{{conteudo.formula(conteudo.principal[8], produtor.itemAValor, produtor.itemBValor, produtor.itemCValor) | number: 5}}</td>
+                        <td>{{conteudo.principal[5]}}</td>
                         <th><button class="btn btn-primary btn-sm">Confirmar</button></th>
                     </tr>
                     <tr ng-repeat-end ng-click="produtoresProducaoNvg.folhaAtual = $index + ((produtoresProducaoNvg.paginaAtual-1) * produtoresProducaoNvg.tamanhoPagina)" 

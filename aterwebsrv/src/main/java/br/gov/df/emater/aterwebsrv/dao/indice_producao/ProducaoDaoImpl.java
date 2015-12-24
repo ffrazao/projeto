@@ -108,6 +108,7 @@ public class ProducaoDaoImpl implements ProducaoDaoCustom {
 				linha.add(p.getPropriedadeRural() != null ? p.getPropriedadeRural().getNome() : null);
 				linha.add(p.getPublicoAlvo() != null ? p.getPublicoAlvo().getPessoa().getNome() : null);
 				linha.add(fetchProducaoForma(p.getProducaoFormaList()));
+				linha.add(p.getId());
 				if (result == null) {
 					result = new ArrayList<Object[]>();
 				}

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.BemClassificacaoDao;
+import br.gov.df.emater.aterwebsrv.dao.indice_producao.BemDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoFormaComposicaoDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoFormaDao;
@@ -27,6 +28,9 @@ public class SalvarCmd extends _Comando {
 	
 	@Autowired
 	private BemClassificacaoDao bemClassificacaoDao;
+	
+	@Autowired
+	private BemDao bemDao;
 
 	@Autowired
 	private ProducaoFormaDao producaoFormaDao;
@@ -41,6 +45,7 @@ public class SalvarCmd extends _Comando {
 			result.setInclusaoUsuario(getUsuario(contexto.getUsuario().getName()));
 		}
 		result.setAlteracaoUsuario(getUsuario(contexto.getUsuario().getName()));
+		result.setBem(bemDao.findOne(result.getBem().getId()));
 		dao.save(result);
 		
 		// proceder a exclusao dos registros
