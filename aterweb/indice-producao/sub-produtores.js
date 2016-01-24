@@ -57,7 +57,7 @@ angular.module(pNmModulo).controller(pNmController,
                 $scope.cadastro.apoio.publicoAlvoList.push(criarPessoa(resultado.item[0], resultado.item[1], resultado.item[3]));
             } else {
                 for (var i in resultado.items) {
-                    $scope.cadastro.apoio.publicoAlvoList.push(criarPessoa(resultado.item[i][0], resultado.item[i][1], resultado.item[i][3]));
+                    $scope.cadastro.apoio.publicoAlvoList.push(criarPessoa(resultado.items[i][0], resultado.items[i][1], resultado.items[i][3]));
                 }
             }
             if (!$scope.cadastro.apoio.publicoAlvoList.length) {
@@ -87,43 +87,24 @@ angular.module(pNmModulo).controller(pNmController,
         });
     };
 
-    $scope.modalVerPropriedadeRural = function (id) {
-        // abrir a modal
-        var modalInstance = $uibModal.open({
-            animation: true,
-            template: '<ng-include src=\"\'pessoa/pessoa-form-modal.html\'\"></ng-include>',
-            controller: 'PessoaCtrl',
-            size: 'lg',
-            resolve: {
-                modalCadastro: function () {
-                    var cadastro = {registro: {id: id}, filtro: {}, lista: [], original: {}, apoio: [],};
-                    return cadastro;
-                }
-            }
-        });
-        // processar retorno da modal
-        modalInstance.result.then(function (cadastroModificado) {
-            // processar o retorno positivo da modal
-
-        }, function () {
-            // processar o retorno negativo da modal
-            //$log.info('Modal dismissed at: ' + new Date());
-        });
-    };
-
-
-    var jaCadastrado = function(conteudo) {
-        for (var j in $scope.navegador.selecao.item[7]) {
-            if (angular.equals($scope.navegador.selecao.item[7][j].email.endereco, conteudo.email.endereco)) {
-                if ($scope.navegador.selecao.item[7][j].cadastroAcao === 'E') {
-                    return true;
-                } else {
-                    toastr.error('Registro já cadastrado');
-                    return false;
-                }
-            }
+    var jaCadastrado = function(conteudo, modalInstance) {
+        var acao = null;
+        if (!conteudo.id) {
+            acao = IndiceProducaoSrv.incluir(conteudo);
+        } else {
+            acao = IndiceProducaoSrv.editar(conteudo);
         }
-        return true;
+        acao.success(function(resposta) {
+            if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {
+                //console.log(resposta, conteudo);
+                modalInstance.close(resposta.resultado);
+            } else {
+                toastr.error(resposta.mensagem, 'Erro ao salvar');
+            }
+        }).error(function(erro){
+            toastr.error(erro, 'Erro ao salvar');
+        });
+        return false;
     };
     var editarItem = function (destino, item) {
         if (item.id) {
@@ -221,22 +202,25 @@ angular.module(pNmModulo).controller(pNmController,
 
         item.principal = $scope.navegador.selecao.item;
         item.formula = $scope.formula;
+        if (!item.producaoFormaList) {
+            item.producaoFormaList = [];
+        }
 
-        mensagemSrv.confirmacao(false, form, 'Produção', item, null, jaCadastrado).then(function (conteudo) {
+        mensagemSrv.confirmacao(false, form, 'Produção do Produtor', item, null, jaCadastrado).then(function (conteudo) {
             // processar o retorno positivo da modal
-            if (destino) {
-                if (destino['cadastroAcao'] && destino['cadastroAcao'] !== 'I') {
-                    destino['cadastroAcao'] = 'A';
+
+            IndiceProducaoSrv.filtrar({id: conteudo}).success(function(resposta) {
+                for (var i in $scope.navegador.selecao.item[7]) {
+                    if ($scope.navegador.selecao.item[7][i][3] === resposta.resultado[0][3]) {
+                        angular.copy(resposta.resultado[0], $scope.navegador.selecao.item[7][i]);
+                        return;
+                    }
                 }
-                destino.email.endereco = angular.copy(conteudo.email.endereco);
-            } else {
-                conteudo['cadastroAcao'] = 'I';
-                if (!$scope.navegador.selecao.item[7]) {
-                    $scope.navegador.selecao.item[7] = [];
-                    $scope.produtoresNvg.setDados($scope.navegador.selecao.item[7]);
-                }
-                $scope.navegador.selecao.item[7].push(conteudo);
-            }
+                $scope.navegador.selecao.item[7].push(resposta.resultado[0]);
+            }).error(function(erro){
+                toastr.error(erro, 'Erro ao salvar');
+            });
+
         }, function () {
             // processar o retorno negativo da modal
             //$log.info('Modal dismissed at: ' + new Date());

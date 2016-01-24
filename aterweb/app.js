@@ -261,7 +261,9 @@ angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 
     $rootScope.limparRegistroMarcadoExclusao = function (scp) {
         scp.cadastro.excluido = {};
     };
-
+    $rootScope.hoje = function() {
+        return new Date();
+    };
     // fim funcoes de apoio
 
     // inicio funcoes crud

@@ -8,7 +8,7 @@ angular.module(pNmModulo).controller(pNmController,
         $scope.conteudo = conteudo;
         $scope.modalOk = function () {
             // Retorno da modal
-            if (funcaoOk && !funcaoOk(conteudo)) {
+            if (funcaoOk && !funcaoOk(conteudo, $uibModalInstance)) {
               return;
             }
             $uibModalInstance.close(conteudo);

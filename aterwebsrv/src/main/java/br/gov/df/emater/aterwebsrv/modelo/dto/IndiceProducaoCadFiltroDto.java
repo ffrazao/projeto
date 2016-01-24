@@ -12,6 +12,8 @@ public class IndiceProducaoCadFiltroDto extends FiltroDtoCustom {
 
 	private Set<Confirmacao> confirmado;
 
+	private Integer id;
+
 	public IndiceProducaoCadFiltroDto() {
 
 	}
@@ -24,12 +26,20 @@ public class IndiceProducaoCadFiltroDto extends FiltroDtoCustom {
 		return confirmado;
 	}
 
+	public Integer getId() {
+		return id;
+	}
+
 	public void setAno(Integer ano) {
 		this.ano = ano;
 	}
 
 	public void setConfirmado(Set<Confirmacao> confirmado) {
 		this.confirmado = confirmado;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 }

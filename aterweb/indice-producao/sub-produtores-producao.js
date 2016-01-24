@@ -5,8 +5,8 @@
 'use strict';
 
 angular.module(pNmModulo).controller(pNmController,
-    ['$scope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv', 'mensagemSrv',
-    function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv) {
+    ['$scope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv', 'mensagemSrv', '$filter',
+    function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv, $filter) {
 
     // inicializacao
     var init = function() {
@@ -22,15 +22,35 @@ angular.module(pNmModulo).controller(pNmController,
 
     // inicio rotinas de apoio
     var jaCadastrado = function(conteudo) {
-        for (var j in $scope.navegador.selecao.item[7]) {
-            if (angular.equals($scope.navegador.selecao.item[7][j].email.endereco, conteudo.email.endereco)) {
-                if ($scope.navegador.selecao.item[7][j].cadastroAcao === 'E') {
-                    return true;
-                } else {
-                    toastr.error('Registro já cadastrado');
-                    return false;
+        var novo, cadastrado, i, j, k;
+        var orderBy = $filter('orderBy');
+
+        novo = [];
+        for (i in conteudo.producaoFormaComposicaoList) {
+            novo.push(conteudo.producaoFormaComposicaoList[i].formaProducaoValor);
+        }
+        orderBy(novo, 'id', true);
+
+        producaoForma: for (i in $scope.conteudo.producaoFormaList) {
+            cadastrado = [];
+            for (j in $scope.conteudo.producaoFormaList[i].producaoFormaComposicaoList) {
+                cadastrado.push($scope.conteudo.producaoFormaList[i].producaoFormaComposicaoList[j].formaProducaoValor);
+            }
+            orderBy(cadastrado, 'id', true);
+
+            if (novo.length !== cadastrado.length) {
+                continue;
+            }
+
+            // conferir se já existe
+            for (j = 0; j < novo.length; j++) {
+                if (novo[j].id !== cadastrado[j].id) {
+                    continue producaoForma;
                 }
             }
+
+            toastr.error('Registro já cadastrado');
+            return false;
         }
         return true;
     };
@@ -44,7 +64,7 @@ angular.module(pNmModulo).controller(pNmController,
         '            </div>' +
         '            <div class="col-md-9">' +
         '                <div class="form-control">' +
-                            //$scope.navegador.selecao.item[1] +
+                            $scope.conteudo.principal[1] + 
         '                </div>' +
         '            </div>' +
         '        </div>' +
@@ -54,7 +74,7 @@ angular.module(pNmModulo).controller(pNmController,
         '            </div>' +
         '            <div class="col-md-9">' +
         '                <div class="form-control">' +
-                            //$scope.navegador.selecao.item[2] +
+                            $scope.conteudo.principal[2] + 
         '                </div>' +
         '            </div>' +
         '        </div>' +
@@ -64,7 +84,7 @@ angular.module(pNmModulo).controller(pNmController,
         '            </div>' +
         '            <div class="col-md-9">' +
         '                <div class="form-control">' +
-                            //$scope.navegador.selecao.item[3] +
+                            $scope.conteudo.principal[3] + 
         '                </div>' +
         '            </div>' +
         '        </div>' +
@@ -74,7 +94,7 @@ angular.module(pNmModulo).controller(pNmController,
         '            </div>' +
         '            <div class="col-md-9">' +
         '                <div class="form-control">' +
-                            //$scope.navegador.selecao.item[4] +
+                            $scope.conteudo.principal[4] + 
         '                </div>' +
         '            </div>' +
         '        </div>' +
@@ -84,7 +104,9 @@ angular.module(pNmModulo).controller(pNmController,
         '            </div>' +
         '            <div class="col-md-9">' +
         '                <div class="form-control">' +
-                            '' +
+        '                   <a ng-click="modalVerPessoa(' + $scope.conteudo.publicoAlvo.pessoa.id + ')">' +
+                                $scope.conteudo.publicoAlvo.pessoa.nome +
+        '                   </a>' +
         '                </div>' +
         '            </div>' +
         '        </div>' +
@@ -94,7 +116,9 @@ angular.module(pNmModulo).controller(pNmController,
         '            </div>' +
         '            <div class="col-md-9">' +
         '                <div class="form-control">' +
-                            '' +
+        '                   <a ng-click="modalVerPropriedadeRural(' + $scope.conteudo.propriedadeRural.id + ')">' +
+                                $scope.conteudo.propriedadeRural.nome +
+        '                   </a>' +
         '                </div>' +
         '            </div>' +
         '        </div>';
@@ -148,22 +172,18 @@ angular.module(pNmModulo).controller(pNmController,
         '    </div>' +
         '</div>';
 
+        if (!item.producaoFormaComposicaoList) {
+            item.producaoFormaComposicaoList = [];
+        }
 
-        mensagemSrv.confirmacao(false, form, 'Produção', item, null, jaCadastrado).then(function (conteudo) {
+        mensagemSrv.confirmacao(false, form, 'Forma de Produção do Produtor', item, null, jaCadastrado).then(function (conteudo) {
             // processar o retorno positivo da modal
-            if (destino) {
-                if (destino['cadastroAcao'] && destino['cadastroAcao'] !== 'I') {
-                    destino['cadastroAcao'] = 'A';
-                }
-                destino.email.endereco = angular.copy(conteudo.email.endereco);
-            } else {
                 conteudo['cadastroAcao'] = 'I';
-                if (!$scope.navegador.selecao.item[7]) {
-                    $scope.navegador.selecao.item[7] = [];
-                    $scope.produtoresProducaoNvg.setDados($scope.navegador.selecao.item[7]);
+                if (!$scope.conteudo.producaoFormaList) {
+                    $scope.conteudo.producaoFormaList = [];
+                    $scope.produtoresProducaoNvg.setDados($scope.conteudo.producaoFormaList);
                 }
-                $scope.navegador.selecao.item[7].push(conteudo);
-            }
+                $scope.conteudo.producaoFormaList.push(conteudo);
         }, function () {
             // processar o retorno negativo da modal
             //$log.info('Modal dismissed at: ' + new Date());
@@ -173,12 +193,15 @@ angular.module(pNmModulo).controller(pNmController,
     // fim rotinas de apoio
 
     // inicio das operaçoes atribuidas ao navagador
-    $scope.abrir = function() { $scope.produtoresProducaoNvg.mudarEstado('ESPECIAL'); };
+    $scope.abrir = function() { 
+        $scope.produtoresProducaoNvg.mudarEstado('ESPECIAL');
+        $scope.produtoresProducaoNvg.botao('edicao').exibir = function() {return false;};
+    };
     $scope.incluir = function() {
-        var item = {email: {endereco: null}};
+        var item = {};
         editarItem(null, item);
     };
-    $scope.editar = function() {
+    /*$scope.editar = function() {
         var item = null;
         var i, j;
         if ($scope.produtoresProducaoNvg.selecao.tipo === 'U' && $scope.produtoresProducaoNvg.selecao.item) {
@@ -194,15 +217,22 @@ angular.module(pNmModulo).controller(pNmController,
                 }
             }
         }
-    };
+    };*/
     $scope.excluir = function() {
         mensagemSrv.confirmacao(false, 'confirme a exclusão').then(function (conteudo) {
             var i, j;
             if ($scope.produtoresProducaoNvg.selecao.tipo === 'U' && $scope.produtoresProducaoNvg.selecao.item) {
-                for (j = $scope.navegador.selecao.item[7].length -1; j >= 0; j--) {
-                    if (angular.equals($scope.navegador.selecao.item[7][j].email.endereco, $scope.produtoresProducaoNvg.selecao.item.email.endereco)) {
-                        //$scope.navegador.selecao.item[7].splice(j, 1);
-                        $scope.navegador.selecao.item[7][j].cadastroAcao = 'E';
+                for (j = $scope.conteudo.producaoFormaList.length -1; j >= 0; j--) {
+                    if (angular.equals($scope.conteudo.producaoFormaList[j], $scope.produtoresProducaoNvg.selecao.item)) {
+                        if (!$scope.excluido) {
+                            $scope.excluido = {};
+                        }
+                        if (!$scope.excluido.producaoFormaList) {
+                            $scope.excluido.producaoFormaList = [];
+                        }
+                        $scope.produtoresProducaoNvg.selecao.item['cadastroAcao'] = 'E';
+                        $scope.excluido.producaoFormaList.push($scope.produtoresProducaoNvg.selecao.item);
+                        $scope.conteudo.producaoFormaList.splice(j, 1);
                     }
                 }
                 $scope.produtoresProducaoNvg.selecao.item = null;

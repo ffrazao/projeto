@@ -89,9 +89,9 @@ angular.module(pNmModulo).factory(pNmFactory,
             executarFiltro : function() {
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
             },
-            novo : function(indiceProducaoTipo) {
+            novo : function() {
                 SegurancaSrv.acesso(this.funcionalidade, 'INCLUIR');
-                return $http.get(this.endereco + '/novo', {params: {modelo: indiceProducaoTipo}});
+                return $http.get(this.endereco + '/novo');
             },
             incluir : function(indiceProducao) {
                 SegurancaSrv.acesso(this.funcionalidade, 'INCLUIR');

@@ -1,4 +1,4 @@
-<div class="panel panel-default">
+<div class="panel panel-default" ng-class="{'ng-invalid': produtoresFrm.producaoFormaList.$error.ngValorMin}">
     <div class="panel-heading container-fluid">
         <frz-navegador
         ng-model="produtoresProducaoNvg" exibe-texto-botao="false"
@@ -26,8 +26,8 @@
             Nenhum registro localizado!
         </div>
     </div>
-    <div class="table-responsible" ng-show="conteudo.producaoFormaList.length > 0">
-        <ng-form name="produtoresFrm">
+    <ng-form name="produtoresFrm">
+        <div class="table-responsive" ng-show="conteudo.producaoFormaList.length > 0">
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -70,12 +70,24 @@
                             {{forma.formaProducaoValor.nome}}
                             <!--{{UtilSrv.indiceDePorCampo(forma[], conteudo.producaoFormaList[0].producaoFormaComposicaoList[$index].formaProducaoValor.id, forma[])}}-->
                         </td>
-                        <td ng-if="conteudo.principal[9]"><input class="form-control" id="itemAValor" name="itemAValor{{$index}}" ng-model="produtor.itemAValor" ui-number-mask="5" ng-required="conteudo.principal[9]"></td>
-                        <td ng-if="conteudo.principal[10]"><input class="form-control" id="itemBValor" name="itemBValor{{$index}}" ng-model="produtor.itemBValor" ui-number-mask="5" ng-required="conteudo.principal[10]"></td>
-                        <td ng-if="conteudo.principal[11]"><input class="form-control" id="itemCValor" name="itemCValor{{$index}}" ng-model="produtor.itemCValor" ui-number-mask="5" ng-required="conteudo.principal[11]"></td>
+                        <td ng-if="conteudo.principal[9]"><input class="form-control input-sm" id="itemAValor" name="itemAValor{{$index}}" ng-model="produtor.itemAValor" ui-number-mask="5" ng-required="conteudo.principal[9]"></td>
+                        <td ng-if="conteudo.principal[10]"><input class="form-control input-sm" id="itemBValor" name="itemBValor{{$index}}" ng-model="produtor.itemBValor" ui-number-mask="5" ng-required="conteudo.principal[10]"></td>
+                        <td ng-if="conteudo.principal[11]"><input class="form-control input-sm" id="itemCValor" name="itemCValor{{$index}}" ng-model="produtor.itemCValor" ui-number-mask="5" ng-required="conteudo.principal[11]"></td>
                         <td>{{conteudo.formula(conteudo.principal[8], produtor.itemAValor, produtor.itemBValor, produtor.itemCValor) | number: 5}}</td>
                         <td>{{conteudo.principal[5]}}</td>
-                        <th><button class="btn btn-primary btn-sm">Confirmar</button></th>
+                        <th>
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control input-sm" aria-label="..." ui-date-mask ng-model="produtor.dataConfirmacao">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" 
+                                        aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li><a ng-click="produtor.dataConfirmacao = hoje()">Hoje</a></li>
+                                        <li><a ng-click="produtor.dataConfirmacao = null">Limpar</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </th>
                     </tr>
                     <tr ng-repeat-end ng-click="produtoresProducaoNvg.folhaAtual = $index + ((produtoresProducaoNvg.paginaAtual-1) * produtoresProducaoNvg.tamanhoPagina)" 
                         ng-if="!cadastro.apoio.escondeDetalhe && produtor[2].length"
@@ -86,9 +98,9 @@
                                 <thead>
                                     <tr>
                                         <th colspan="{{produtor[2][0][0].length}}">Forma de Produção</th>
-                                        <th>A</th>
-                                        <th>B</th>
-                                        <th>C</th>
+                                        <th ng-if="navegador.selecao.item[9]">A</th>
+                                        <th ng-if="navegador.selecao.item[10]">B</th>
+                                        <th ng-if="navegador.selecao.item[11]">C</th>
                                         <th>Volume</th>
                                         <th>Unidade</th>
                                         <th></th>
@@ -97,9 +109,9 @@
                                         <th ng-repeat="forma in produtor[2][0][0] | orderBy: '2'">
                                             {{forma[0]}}
                                         </th>
-                                        <th>{{navegador.selecao.item[9]}}</th>
-                                        <th>{{navegador.selecao.item[10]}}</th>
-                                        <th>{{navegador.selecao.item[11]}}</th>
+                                        <th ng-if="navegador.selecao.item[9]">{{navegador.selecao.item[9]}}</th>
+                                        <th ng-if="navegador.selecao.item[10]">{{navegador.selecao.item[10]}}</th>
+                                        <th ng-if="navegador.selecao.item[11]">{{navegador.selecao.item[11]}}</th>
                                         <th>({{navegador.selecao.item[8]}})</th>
                                         <th>Medida</th>
                                         <th>Confirmado</th>
@@ -111,14 +123,14 @@
                                         <td ng-repeat="forma in linha[0] | orderBy: '2'">
                                             {{forma[1]}}
                                         </td>
-                                        <td class="text-right">
-                                            {{linha[5] | number: 5}}<span ng-show="!linha[5]">--</span>
+                                        <td class="text-right" ng-if="navegador.selecao.item[9]">
+                                            {{linha[5] | number: 5}}
                                         </td>
-                                        <td class="text-right">
-                                            {{linha[6] | number: 5}}<span ng-show="!linha[6]">--</span>
+                                        <td class="text-right" ng-if="navegador.selecao.item[10]">
+                                            {{linha[6] | number: 5}}
                                         </td>
-                                        <td class="text-right">
-                                            {{linha[7] | number: 5}}<span ng-show="!linha[7]">--</span>
+                                        <td class="text-right" ng-if="navegador.selecao.item[11]">
+                                            {{linha[7] | number: 5}}
                                         </td>
                                         <td class="text-right">
                                             {{formula(navegador.selecao.item[8], linha[5], linha[6], linha[7]) | number: 5}}
@@ -132,9 +144,9 @@
                                     </tr>
                                     <tr>
                                         <th colspan="{{produtor[2][0][0].length}}" class="text-right">Total</th>
-                                        <th class="text-right">{{soma(produtor[2], 5) | number: 5}}</th>
-                                        <th class="text-right">{{soma(produtor[2], 6) | number: 5}}</th>
-                                        <th class="text-right">{{soma(produtor[2], 7) | number: 5}}</th>
+                                        <th class="text-right" ng-if="navegador.selecao.item[9]">{{soma(produtor[2], 5) | number: 5}}</th>
+                                        <th class="text-right" ng-if="navegador.selecao.item[10]">{{soma(produtor[2], 6) | number: 5}}</th>
+                                        <th class="text-right" ng-if="navegador.selecao.item[11]">{{soma(produtor[2], 7) | number: 5}}</th>
                                         <th class="text-right">{{soma(produtor[2], 1) | number: 5}}</th>
                                         <th>{{navegador.selecao.item[5]}}</th>
                                         <th></th>
@@ -147,8 +159,13 @@
                 <tfoot>
                 </tfoot>
             </table>
-        </ng-form>
-    </div>
+            <input type="hidden" id="producaoFormaList" name="producaoFormaList" ng-model="produtoresProducaoNvg.dados.length" ng-valor-min="1">
+            <div class="label label-danger" ng-show="produtoresFrm.producaoFormaList.$error.ngValorMin">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                Campo Obrigatório
+            </div>
+        </div>
+    </ng-form>
     <div class="panel-footer">
     </div>
 </div>

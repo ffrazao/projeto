@@ -1,7 +1,11 @@
 package br.gov.df.emater.aterwebsrv.bo.indice_producao;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
@@ -46,7 +50,20 @@ public class SalvarCmd extends _Comando {
 		}
 		result.setAlteracaoUsuario(getUsuario(contexto.getUsuario().getName()));
 		result.setBem(bemDao.findOne(result.getBem().getId()));
-		dao.save(result);
+		try {
+			dao.save(result);
+		} catch (DataIntegrityViolationException e) {
+			if (e.getCause() instanceof ConstraintViolationException) {
+				ConstraintViolationException c = (ConstraintViolationException) e.getCause();
+				if (c.getCause() instanceof MySQLIntegrityConstraintViolationException) {
+					MySQLIntegrityConstraintViolationException m = (MySQLIntegrityConstraintViolationException) c.getCause();
+					if (m.getMessage().indexOf("Duplicate entry") >= 0) {
+						throw new RuntimeException("Registro já cadastrado", e);
+					}
+				}
+			}
+			throw e;
+		}
 		
 		// proceder a exclusao dos registros
 		for (ProducaoForma producaoForma : result.getProducaoFormaList()) {

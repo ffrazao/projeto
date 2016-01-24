@@ -7,28 +7,27 @@
         </div>
     </div>
     <div class="table-responsive" ng-if="navegador.dados.length">
-        <table class="table table-hover table-striped">
+        <table class="table table-hover table-striped" style="padding:0; margin:0;">
             <thead>
                 <tr>
-                    <th colspan="6">&nbsp;</th>
+                    <th rowspan="2">
+                        <frz-seletor ng-model="navegador"></frz-seletor>
+                    </th>
+                    <th rowspan="2" width="30">
+                        #
+                    </th>
+                    <th rowspan="2">Ano</th>
+                    <th rowspan="2">Local</th>
+                    <th rowspan="2">Classificação</th>
+                    <th rowspan="2">Bem de Produção</th>
+
                     <th colspan="2">Volume</th>
-                    <th>&nbsp;</th>
+                    <th rowspan="2">Unidade de Medida</th>
                     <th colspan="2">Produtores</th>
                 </tr>
                 <tr>
-                    <th>
-                        <frz-seletor ng-model="navegador"></frz-seletor>
-                    </th>
-                    <th width="30">
-                        #
-                    </th>
-                    <th>Ano</th>
-                    <th>Local</th>
-                    <th>Classificação</th>
-                    <th>Bem de Produção</th>
                     <th>Esperado</th>
                     <th>Confirmado</th>
-                    <th>Unid. Medida</th>
                     <th>Esperado</th>
                     <th>Confirmado</th>
                 </tr>
@@ -57,79 +56,82 @@
                     style="font-size: 90%; padding:0; margin:0;">
                     <td style="padding:0; margin:0;"></td>
                     <td colspan="10" style="padding:0; margin:0;">
-                        <table class="table table-hover table-striped" style="padding:0; margin:0;">
-                            <thead>
-                                <tr>
-                                    <th colspan="{{item[6][0][0].length}}">Forma de Produção</th>
-                                    <th ng-if="item[9]">A</th>
-                                    <th ng-if="item[10]">B</th>
-                                    <th ng-if="item[11]">C</th>
-                                    <th colspan="2">Volume = ({{item[8]}})</th>
-                                    <th>Unidade</th>
-                                    <th colspan="2">Produtores</th>
-                                </tr>
-                                <tr>
-                                    <th ng-repeat="forma in item[6][0][0] | orderBy: '2'">
-                                        {{forma[0]}}
-                                    </th>
-                                    <th ng-if="item[9]">{{item[9]}}</th>
-                                    <th ng-if="item[10]">{{item[10]}}</th>
-                                    <th ng-if="item[11]">{{item[11]}}</th>
-                                    <th>Esperado</th>
-                                    <th>Confirmado</th>
-                                    <th>Medida</th>
-                                    <th>Esperado</th>
-                                    <th>Confirmado</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="linha in item[6] | orderBy: '0.4' | orderBy: '0.3' | orderBy: '0.2' | orderBy: '0.1' | orderBy: '0.0'">
-                                    <td ng-repeat="forma in linha[0] | orderBy: '2'">
-                                        {{forma[1]}}
-                                    </td>
-                                    <td class="text-right" ng-if="item[9]">
-                                        {{linha[5] | number: 5}}
-                                    </td>
-                                    <td class="text-right" ng-if="item[10]">
-                                        {{linha[6] | number: 5}}
-                                    </td>
-                                    <td class="text-right" ng-if="item[11]">
-                                        {{linha[7] | number: 5}}
-                                    </td>
-                                    <td class="text-right">
-                                        {{formula(item[8], linha[5], linha[6], linha[7]) | number: 5}}
-                                    </td>
-                                    <td class="text-right">
-                                        {{linha[2] | number: 5}}
-                                    </td>
-                                    <td>
-                                        {{item[5]}}
-                                    </td>
-                                    <td class="text-right">
-                                        {{linha[3] | number: 0}}
-                                    </td>
-                                    <td class="text-right">
-                                        {{linha[4] | number: 0}}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th colspan="{{item[6][0][0].length}}" class="text-right">Total</th>
-                                    <th class="text-right" ng-if="item[9]">{{soma(item[6], 5) | number: 5}}</th>
-                                    <th class="text-right" ng-if="item[10]">{{soma(item[6], 6) | number: 5}}</th>
-                                    <th class="text-right" ng-if="item[11]">{{soma(item[6], 7) | number: 5}}</th>
-                                    <th class="text-right">{{soma(item[6], 1) | number: 5}}</th>
-                                    <th class="text-right">{{soma(item[6], 2) | number: 5}}</th>
-                                    <th></th>
-                                    <th class="text-right">{{soma(item[6], 3) | number: 0}}</th>
-                                    <th class="text-right">{{soma(item[6], 4) | number: 0}}</th>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped table-bordered table-condensed table-sm" style="padding:0; margin:0;">
+                                <thead>
+                                    <tr>
+                                        <th colspan="{{item[6][0][0].length}}">Forma de Produção</th>
+                                        <th ng-if="item[9]">A</th>
+                                        <th ng-if="item[10]">B</th>
+                                        <th ng-if="item[11]">C</th>
+                                        <th colspan="2">Volume = ({{item[8]}})</th>
+                                        <th rowspan="2">Unidade de Medida</th>
+                                        <th colspan="2">Produtores</th>
+                                    </tr>
+                                    <tr>
+                                        <th ng-repeat="forma in item[6][0][0] | orderBy: '2'">
+                                            {{forma[0]}}
+                                        </th>
+                                        <th ng-if="item[9]">{{item[9]}}</th>
+                                        <th ng-if="item[10]">{{item[10]}}</th>
+                                        <th ng-if="item[11]">{{item[11]}}</th>
+                                        <th>Esperado</th>
+                                        <th>Confirmado</th>
+                                        <th>Esperado</th>
+                                        <th>Confirmado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="linha in item[6] | orderBy: '0.4' | orderBy: '0.3' | orderBy: '0.2' | orderBy: '0.1' | orderBy: '0.0'">
+                                        <td ng-repeat="forma in linha[0] | orderBy: '2'">
+                                            {{forma[1]}}
+                                        </td>
+                                        <td class="text-right" ng-if="item[9]">
+                                            {{linha[5] | number: 5}}
+                                        </td>
+                                        <td class="text-right" ng-if="item[10]">
+                                            {{linha[6] | number: 5}}
+                                        </td>
+                                        <td class="text-right" ng-if="item[11]">
+                                            {{linha[7] | number: 5}}
+                                        </td>
+                                        <td class="text-right">
+                                            {{formula(item[8], linha[5], linha[6], linha[7], linha, 1) | number: 5}}
+                                        </td>
+                                        <td class="text-right">
+                                            {{linha[2] | number: 5}}
+                                        </td>
+                                        <td>
+                                            {{item[5]}}
+                                        </td>
+                                        <td class="text-right">
+                                            {{linha[3] | number: 0}}
+                                        </td>
+                                        <td class="text-right">
+                                            {{linha[4] | number: 0}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="{{item[6][0][0].length}}" class="text-right">Total</th>
+                                        <th class="text-right" ng-if="item[9]">{{resultado(item[9], item[6], 5) | number: 5}}</th>
+                                        <th class="text-right" ng-if="item[10]">{{resultado(item[10], item[6], 6) | number: 5}}</th>
+                                        <th class="text-right" ng-if="item[11]">{{resultado(item[11], item[6], 7) | number: 5}}</th>
+                                        <th class="text-right">{{soma(item[6], 1) | number: 5}}</th>
+                                        <th class="text-right">{{soma(item[6], 2) | number: 5}}</th>
+                                        <th></th>
+                                        <th class="text-right">{{soma(item[6], 3) | number: 0}}</th>
+                                        <th class="text-right">{{soma(item[6], 4) | number: 0}}</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
 </div>
-<label class="control-label" ng-if="navegador.selecao.item">Produtores</label>
+<label class="control-label" ng-if="navegador.selecao.tipo === 'U' && navegador.selecao.item">Produtores</label>
 <ng-include src="'indice-producao/sub-produtores.html'" ng-controller="ProdutoresCtrl" ng-if="navegador.selecao.tipo === 'U' && navegador.selecao.item"></ng-include>

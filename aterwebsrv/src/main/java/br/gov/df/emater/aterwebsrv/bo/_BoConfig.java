@@ -8,9 +8,5 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @ComponentScan(basePackages = { "br.gov.df.emater.aterwebsrv.bo" })
 @WebAppConfiguration
 public class _BoConfig {
-	
-	public _BoConfig() {
-		System.out.println("novo _BoConfig");
-	}
 
 }

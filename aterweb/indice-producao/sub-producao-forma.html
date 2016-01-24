@@ -27,7 +27,7 @@
             Nenhum registro localizado!
         </div>
     </div>
-    <div class="table-responsible" ng-show="cadastro.registro.producaoFormaList.length > 0">
+    <div class="table-responsive" ng-show="cadastro.registro.producaoFormaList.length > 0">
         <ng-form name="producaoFormaFrm">
             <table class="table table-striped">
                 <thead>
@@ -35,9 +35,9 @@
                         <th></th>
                         <th></th>
                         <th colspan="{{cadastro.apoio.producaoForma.composicao.length}}">Forma Produção</th>
-                        <th>A</th>
-                        <th>B</th>
-                        <th>C</th>
+                        <th ng-if="cadastro.apoio.producaoForma.itemANome">A</th>
+                        <th ng-if="cadastro.apoio.producaoForma.itemBNome">B</th>
+                        <th ng-if="cadastro.apoio.producaoForma.itemCNome">C</th>
                         <th></th>
                         <th>Unidade</th>
                         <th>Quantidade</th>
@@ -50,9 +50,9 @@
                             #
                         </th>
                         <th ng-repeat="item in cadastro.apoio.producaoForma.composicao">{{item[1]}}</th>
-                        <th>{{cadastro.apoio.producaoForma.itemANome}}</th>
-                        <th>{{cadastro.apoio.producaoForma.itemBNome}}</th>
-                        <th>{{cadastro.apoio.producaoForma.itemCNome}}</th>
+                        <th ng-if="cadastro.apoio.producaoForma.itemANome">{{cadastro.apoio.producaoForma.itemANome}}</th>
+                        <th ng-if="cadastro.apoio.producaoForma.itemBNome">{{cadastro.apoio.producaoForma.itemBNome}}</th>
+                        <th ng-if="cadastro.apoio.producaoForma.itemCNome">{{cadastro.apoio.producaoForma.itemCNome}}</th>
                         <th>Volume = ({{cadastro.apoio.producaoForma.formula}})</th>
                         <th>Medida</th>
                         <th>Produtores</th>
@@ -68,9 +68,9 @@
                             {{$index + 1 + ((producaoFormaNvg.paginaAtual-1) * producaoFormaNvg.tamanhoPagina)}}
                         </td>
                         <td ng-repeat="forma in produtor.producaoFormaComposicaoList">{{UtilSrv.indiceDePorCampo(cadastro.apoio.producaoForma.composicao[$index][2], forma.formaProducaoValor.id, '0')[1]}}</td>
-                        <td>{{produtor.itemAValor | number: 5}}</td>
-                        <td>{{produtor.itemBValor | number: 5}}</td>
-                        <td>{{produtor.itemCValor | number: 5}}</td>
+                        <td ng-if="cadastro.apoio.producaoForma.itemANome">{{produtor.itemAValor | number: 5}}</td>
+                        <td ng-if="cadastro.apoio.producaoForma.itemBNome">{{produtor.itemBValor | number: 5}}</td>
+                        <td ng-if="cadastro.apoio.producaoForma.itemCNome">{{produtor.itemCValor | number: 5}}</td>
                         <td>{{formula(cadastro.apoio.producaoForma.formula, produtor.itemAValor, produtor.itemBValor, produtor.itemCValor) | number: 5}}</td>
                         <td>{{cadastro.apoio.producaoForma.unidadeMedida}}</td>
                         <td>{{produtor.quantidadeProdutores}}</td>

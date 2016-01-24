@@ -141,6 +141,19 @@
             // fim das operaçoes atribuidas ao navagador
 
             // inicio ações especiais
+            $scope.resultado = function(item, array, campo) {
+                if (!item) {
+                    return null;
+                }
+                switch (UtilSrv.indiceDePorCampo($scope.cadastro.apoio.quantitativoList, item, 'nome').resultado) {
+                    case 'S': 
+                        return $scope.soma(array, campo);
+                    case 'M': 
+                        return $scope.media(array, campo);
+                    case 'N': 
+                        return null;
+                }
+            };
             $scope.soma = function(array, campo) {
                 if (!array || !campo) {
                     return null;
@@ -151,7 +164,10 @@
                 }
                 return result;
             };
-            $scope.formula = function(formula, itemA, itemB, itemC) {
+            $scope.media = function(array, campo) {
+                return $scope.soma(array, campo) / (array && array.length ? array.length : 1);
+            };
+            $scope.formula = function(formula, itemA, itemB, itemC, array, indice) {
                 if (!formula) {
                     return null;
                 }
@@ -163,6 +179,7 @@
                 if (!result || isNaN(result)) {
                     result = 0;
                 }
+                array[indice] = result;
                 return result;
             };
             $scope.toggleChildren = function (scope) {
