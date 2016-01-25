@@ -17,9 +17,8 @@
                         #
                     </th>
                     <th rowspan="2">Ano</th>
+                    <th rowspan="2">Bem de Produção / <br>Classificação</th>
                     <th rowspan="2">Local</th>
-                    <th rowspan="2">Classificação</th>
-                    <th rowspan="2">Bem de Produção</th>
 
                     <th colspan="2">Volume</th>
                     <th rowspan="2">Unidade de Medida</th>
@@ -42,9 +41,8 @@
                         {{$index + 1 + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)}}
                     </td>
                     <td>{{item[1]}}</td>
+                    <td>{{item[4]}}<br><small>{{item[3]}}</small></td>
                     <td>{{item[2]}}</td>
-                    <td>{{item[3]}}</td>
-                    <td>{{item[4]}}</td>
                     <td class="text-right">{{soma(item[6], 1) | number: 5}}</td>
                     <td class="text-right">{{soma(item[6], 2) | number: 5}}</td>
                     <td>{{item[5]}}</td>
