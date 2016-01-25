@@ -19,21 +19,15 @@
                     <th rowspan="2">Ano</th>
                     <th rowspan="2">Bem de Produção / <br>Classificação</th>
                     <th rowspan="2">Local</th>
-                    <th colspan="4">Esperado</th>
-                    <th colspan="4">Confirmado</th>
+                    <th colspan="2">Volume</th>
                     <th rowspan="2">Unidade de Medida</th>
+                    <th colspan="2">Produtores</th>
                 </tr>
                 <tr>
-                    <th>A</th>
-                    <th>B</th>
-                    <th>C</th>
-                    <th>Volume</th>
-                    <th>Produtores</th>
-                    <th>A</th>
-                    <th>B</th>
-                    <th>C</th>
-                    <th>Volume</th>
-                    <th>Produtores</th>
+                    <th>Esperado</th>
+                    <th>Confirmado</th>
+                    <th>Esperado</th>
+                    <th>Confirmado</th>
                 </tr>
             </thead>
             <tbody ng-init="cadastro.apoio.escondeDetalhe = false">
@@ -48,23 +42,17 @@
                     <td>{{item[1]}}</td>
                     <td>{{item[4]}}<br><small>{{item[3]}}</small></td>
                     <td>{{item[2]}}</td>
-                    <td class="text-right">{{resultado(item[9], item[6], 5) | number: 5}}</td>
-                    <td class="text-right">{{resultado(item[10], item[6], 6) | number: 5}}</td>
-                    <td class="text-right">{{resultado(item[11], item[6], 7) | number: 5}}</td>
                     <td class="text-right">{{soma(item[6], 1) | number: 5}}</td>
-                    <td class="text-right">{{soma(item[6], 3) | number: 0}}</td>
-                    <td class="text-right">{{0 | number: 5}}</td>
-                    <td class="text-right">{{0 | number: 5}}</td>
-                    <td class="text-right">{{0 | number: 5}}</td>
                     <td class="text-right">{{soma(item[6], 2) | number: 5}}</td>
-                    <td class="text-right">{{soma(item[6], 4) | number: 0}}</td>
                     <td>{{item[5]}}</td>
+                    <td class="text-right">{{soma(item[6], 3) | number: 0}}</td>
+                    <td class="text-right">{{soma(item[6], 4) | number: 0}}</td>
                 </tr>
                 <tr ng-repeat-end ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)" 
                     ng-if="!cadastro.apoio.escondeDetalhe && item[6].length"
                     style="font-size: 90%; padding:0; margin:0;">
                     <td style="padding:0; margin:0;"></td>
-                    <td colspan="13" style="padding:0; margin:0;">
+                    <td colspan="10" style="padding:0; margin:0;">
                         <div class="table-responsive">
                             <table class="table table-hover table-striped table-bordered table-condensed table-sm" style="padding:0; margin:0;">
                                 <thead>
