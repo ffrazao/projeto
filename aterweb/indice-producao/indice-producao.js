@@ -139,7 +139,7 @@
             $scope.cadastro.apoio.producaoForma = {composicao: []};
 
             $scope.confirmarFiltrarDepois = function () {
-                alert($scope.cadastro.lista.length);
+                //alert($scope.cadastro.lista.length);
             };
 
             // fim das operaçoes atribuidas ao navagador
