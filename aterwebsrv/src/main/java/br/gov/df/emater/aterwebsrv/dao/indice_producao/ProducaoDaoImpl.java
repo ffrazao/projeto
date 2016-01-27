@@ -33,21 +33,22 @@ public class ProducaoDaoImpl implements ProducaoDaoCustom {
 		if (producaoList != null) {
 			for (Producao producao : producaoList) {
 				List<Object> linha = new ArrayList<Object>();
-				linha.add(producao.getId());
-				linha.add(producao.getAno());
-				linha.add(String.format("%s/%s", producao.getComunidade().getUnidadeOrganizacionalComunidadeList().get(0).getUnidadeOrganizacional().getNome(), producao.getComunidade().getNome()));
+				linha.add(producao.getId()); // PRODUCAO_ID
+				linha.add(producao.getAno()); // PRODUCAO_ANO
+				linha.add(producao.getComunidade().getUnidadeOrganizacionalComunidadeList().get(0).getUnidadeOrganizacional().getNome()); // PRODUCAO_UNIDADE_LOCAL
 				List<Object> bemClassificacaoList = fetchBemClassificacao(producao.getBem().getBemClassificacao());
-				linha.add(bemClassificacaoList.get(1));
-				linha.add(producao.getBem().getNome());
-				linha.add(bemClassificacaoList.get(0));
-				linha.add(fetchProducaoFormaList(producao.getProducaoFormaList()));
-				linha.add(fetchProdutores(producao));
-				linha.add(bemClassificacaoList.get(2));
-				linha.add(bemClassificacaoList.get(3));
-				linha.add(bemClassificacaoList.get(4));
-				linha.add(bemClassificacaoList.get(5));
-				linha.add(producao.getComunidade().getId());
-				linha.add(producao.getBem().getId());
+				linha.add(bemClassificacaoList.get(1)); // CLASSIFICACAO_BEM
+				linha.add(producao.getBem().getNome()); // BEM_NOME
+				linha.add(bemClassificacaoList.get(0)); // UNIDADE_MEDIDA
+				linha.add(fetchProducaoFormaList(producao.getProducaoFormaList())); // PRODUCAO_FORMA_LIST
+				linha.add(fetchProdutores(producao)); // PRODUTORES_LIST
+				linha.add(bemClassificacaoList.get(2)); // FORMULA
+				linha.add(bemClassificacaoList.get(3)); // ITEM_NOME_A
+				linha.add(bemClassificacaoList.get(4)); // ITEM_NOME_B
+				linha.add(bemClassificacaoList.get(5)); // ITEM_NOME_C
+				linha.add(producao.getComunidade().getId()); // COMUNIDADE_ID
+				linha.add(producao.getBem().getId()); // BEM_ID
+				linha.add(producao.getComunidade().getNome()); // PRODUCAO_COMUNIDADE
 				if (result == null) {
 					result = new ArrayList<Object[]>();
 				}
@@ -115,17 +116,17 @@ public class ProducaoDaoImpl implements ProducaoDaoCustom {
 		if (producaoFormaList != null) {
 			for (ProducaoForma producaoForma : producaoFormaList) {
 				List<Object> linha = new ArrayList<Object>();
-				linha.add(fetchProducaoFormaComposicaoList(producaoForma.getProducaoFormaComposicaoList()));
-				linha.add(producaoForma.getVolume());
-				linha.add(0);
-				linha.add(producaoForma.getQuantidadeProdutores());
-				linha.add(0);
-				linha.add(producaoForma.getItemAValor());
-				linha.add(producaoForma.getItemBValor());
-				linha.add(producaoForma.getItemCValor());
-				linha.add(producaoForma.getValorUnitario());
-				linha.add(producaoForma.getValorTotal());
-				linha.add(producaoForma.getDataConfirmacao());
+				linha.add(fetchProducaoFormaComposicaoList(producaoForma.getProducaoFormaComposicaoList())); // PRODUCAO_FORMA_COMPOSICAO_LIST
+				linha.add(producaoForma.getVolume()); // PROD_FORMA_VOLUME
+				linha.add(0); // PROD_FORMA_VOLUME_ESPERADO
+				linha.add(producaoForma.getQuantidadeProdutores()); // PROD_FORMA_QTD_PRODUTORES
+				linha.add(0); // PROD_FORMA_VOLUME_CONFIRMADO
+				linha.add(producaoForma.getItemAValor()); // PROD_FORMA_ITEM_A_VALOR
+				linha.add(producaoForma.getItemBValor()); // PROD_FORMA_ITEM_B_VALOR
+				linha.add(producaoForma.getItemCValor()); // PROD_FORMA_ITEM_C_VALOR
+				linha.add(producaoForma.getValorUnitario()); // PROD_FORMA_VLR_UNITARIO
+				linha.add(producaoForma.getValorTotal()); // PROD_FORMA_VLR_TOTAL
+				linha.add(producaoForma.getDataConfirmacao()); // PROD_FORMA_DT_CONFIRM
 				if (result == null) {
 					result = new ArrayList<Object[]>();
 				}
@@ -140,10 +141,10 @@ public class ProducaoDaoImpl implements ProducaoDaoCustom {
 		if (producaoFormaComposicaoList != null) {
 			for (ProducaoFormaComposicao producaoFormaComposicao : producaoFormaComposicaoList) {
 				List<Object> linha = new ArrayList<Object>();
-				linha.add(producaoFormaComposicao.getFormaProducaoValor().getFormaProducaoItem().getNome());
-				linha.add(producaoFormaComposicao.getFormaProducaoValor().getNome());
-				linha.add(producaoFormaComposicao.getOrdem());
-				linha.add(producaoFormaComposicao.getFormaProducaoValor().getId());
+				linha.add(producaoFormaComposicao.getFormaProducaoValor().getFormaProducaoItem().getNome()); // COMPOSICAO_FORMA_PRODUCAO_VALOR_ITEM_NOME
+				linha.add(producaoFormaComposicao.getFormaProducaoValor().getNome()); // COMPOSICAO_FORMA_PRODUCAO_VALOR_NOME
+				linha.add(producaoFormaComposicao.getOrdem()); // COMPOSICAO_ORDEM
+				linha.add(producaoFormaComposicao.getFormaProducaoValor().getId()); // COMPOSICAO_FORMA_PRODUCAO_VALOR_ID
 				if (result == null) {
 					result = new ArrayList<Object[]>();
 				}
@@ -157,10 +158,10 @@ public class ProducaoDaoImpl implements ProducaoDaoCustom {
 		List<Object> result = null;
 		if (producao != null) {
 			result = new ArrayList<Object>();
-			result.add(producao.getPropriedadeRural() != null ? producao.getPropriedadeRural().getNome() : null);
-			result.add(producao.getPublicoAlvo() != null ? producao.getPublicoAlvo().getPessoa().getNome() : null);
-			result.add(fetchProducaoFormaList(producao.getProducaoFormaList()));
-			result.add(producao.getId());
+			result.add(producao.getPropriedadeRural() != null ? producao.getPropriedadeRural().getNome() : null);// PROPRIEDADE_RURAL_NOME
+			result.add(producao.getPublicoAlvo() != null ? producao.getPublicoAlvo().getPessoa().getNome() : null);// PUBLICO_ALVO_NOME
+			result.add(fetchProducaoFormaList(producao.getProducaoFormaList()));// PRODUTOR_PRODUCAO_FORMA_LIST
+			result.add(producao.getId());// PRODUTOR_PRODUCAO_ID
 		}
 		return result;
 	}

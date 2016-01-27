@@ -138,9 +138,54 @@
             };
             $scope.cadastro.apoio.producaoForma = {composicao: []};
 
+            $scope.confirmarFiltrarDepois = function () {
+                alert($scope.cadastro.lista.length);
+            };
+
             // fim das operaçoes atribuidas ao navagador
 
             // inicio ações especiais
+
+            // nomes dos campos para listagem
+            $scope.PRODUCAO_ID = 0;
+            $scope.PRODUCAO_ANO = 1;
+            $scope.PRODUCAO_UNIDADE_LOCAL = 2;
+            $scope.CLASSIFICACAO_BEM = 3;
+            $scope.BEM_NOME = 4;
+            $scope.UNIDADE_MEDIDA = 5;
+            $scope.PRODUCAO_FORMA_LIST = 6;
+
+                $scope.PRODUCAO_FORMA_COMPOSICAO_LIST = 0;
+                    $scope.COMPOSICAO_FORMA_PRODUCAO_VALOR_ITEM_NOME = 0;
+                    $scope.COMPOSICAO_FORMA_PRODUCAO_VALOR_NOME = 1;
+                    $scope.COMPOSICAO_ORDEM = 2;
+                    $scope.COMPOSICAO_FORMA_PRODUCAO_VALOR_ID = 3;
+
+                $scope.PROD_FORMA_VOLUME = 1;
+                $scope.PROD_FORMA_VOLUME_ESPERADO = 2;
+                $scope.PROD_FORMA_QTD_PRODUTORES = 3;
+                $scope.PROD_FORMA_VOLUME_CONFIRMADO = 4;
+                $scope.PROD_FORMA_ITEM_A_VALOR = 5;
+                $scope.PROD_FORMA_ITEM_B_VALOR = 6;
+                $scope.PROD_FORMA_ITEM_C_VALOR = 7;
+                $scope.PROD_FORMA_VLR_UNITARIO = 8;
+                $scope.PROD_FORMA_VLR_TOTAL = 9;
+                $scope.PROD_FORMA_DT_CONFIRM = 10;
+
+            $scope.PRODUTORES_LIST = 7;
+                $scope.PROPRIEDADE_RURAL_NOME = 0;
+                $scope.PUBLICO_ALVO_NOME = 1;
+                $scope.PRODUTOR_PRODUCAO_FORMA_LIST = 2;
+                $scope.PRODUTOR_PRODUCAO_ID = 3;
+
+            $scope.FORMULA = 8;
+            $scope.ITEM_NOME_A = 9;
+            $scope.ITEM_NOME_B = 10;
+            $scope.ITEM_NOME_C = 11;
+            $scope.COMUNIDADE_ID = 12;
+            $scope.BEM_ID = 13;
+            $scope.PRODUCAO_COMUNIDADE = 14;
+
             $scope.resultado = function(item, array, campo) {
                 if (!item) {
                     return null;

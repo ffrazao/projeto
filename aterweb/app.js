@@ -600,6 +600,9 @@ angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 
                         scp.cadastro.filtro.ultimaPagina = false;
                     }
                     scp.cadastro.filtro.temMaisRegistros = null;
+                    if (scp.confirmarFiltrarDepois) {
+                        scp.confirmarFiltrarDepois();
+                    }
                 }
             }).error(function(erro){
                 toastr.error(erro, 'Erro ao filtrar');

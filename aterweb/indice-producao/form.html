@@ -81,8 +81,7 @@
                     <div class="col-md-4" title="Unidade Organizacional">
                         <div class="form-group">
                             <label class="control-label" for="unidadeOrganizacional">Unidade Organizacional</label>
-                            <select id="unidadeOrganizacional" name="unidadeOrganizacional" class="form-control" ng-model="cadastro.apoio.unidadeOrganizacional" ng-options="item as item.nome for item in cadastro.apoio.unidadeOrganizacionalList track by item.id" required="true" 
-                                ng-disabled="false">
+                            <select id="unidadeOrganizacional" name="unidadeOrganizacional" class="form-control" ng-model="cadastro.apoio.unidadeOrganizacional" ng-options="item as item.nome for item in cadastro.apoio.unidadeOrganizacionalList | orderBy:'nome' track by item.id" required="true" ng-disabled="false">
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.unidadeOrganizacional.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -93,7 +92,7 @@
                     <div class="col-md-4" title="Comunidade">
                         <div class="form-group">
                             <label class="control-label" for="comunidade">Comunidade</label>
-                            <select id="comunidade" name="comunidade" class="form-control" ng-model="cadastro.registro.comunidade" ng-options="item as item.nome for item in cadastro.apoio.comunidadeList track by item.id" required="true">
+                            <select id="comunidade" name="comunidade" class="form-control" ng-model="cadastro.registro.comunidade" ng-options="item as item.nome for item in cadastro.apoio.comunidadeList | orderBy:'nome' track by item.id" required="true">
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.comunidade.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
