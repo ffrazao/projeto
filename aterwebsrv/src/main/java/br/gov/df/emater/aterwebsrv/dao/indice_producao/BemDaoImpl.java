@@ -21,9 +21,9 @@ public class BemDaoImpl implements BemDaoCustom {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Object[]> filtrar(BemProducaoCadFiltroDto filtro) {
+	public List<Object> filtrar(BemProducaoCadFiltroDto filtro) {
 		// objetos de trabalho
-		List<Object[]> result = null;
+		List<Object> result = null;
 		List<Object> params = new ArrayList<Object>();
 		StringBuilder sql, sqlTemp;
 
@@ -52,7 +52,7 @@ public class BemDaoImpl implements BemDaoCustom {
 		sql.append("order by b.nome").append("\n");
 
 		// criar a query
-		TypedQuery<Object[]> query = em.createQuery(sql.toString(), Object[].class);
+		TypedQuery<Object> query = em.createQuery(sql.toString(), Object.class);
 
 		// inserir os parametros
 		for (int i = 1; i <= params.size(); i++) {
@@ -64,9 +64,10 @@ public class BemDaoImpl implements BemDaoCustom {
 
 		// executar a consulta
 		result = query.getResultList();
-		
+
 		if (result != null) {
-			for (Object[] o: result) {
+			for (Object ob : result) {
+				Object[] o = (Object[]) ob;
 				fetchBemClassificacao((BemClassificacao) o[2]);
 			}
 		}

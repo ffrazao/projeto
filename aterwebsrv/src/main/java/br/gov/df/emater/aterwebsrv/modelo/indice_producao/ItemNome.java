@@ -22,21 +22,21 @@ public class ItemNome extends EntidadeBase implements _ChavePrimaria<Integer> {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
+	private String nome;
+
 	@Enumerated(EnumType.STRING)
 	private ItemNomeResultado resultado;
 
-	public ItemNomeResultado getResultado() {
-		return resultado;
-	}
-
-	public void setResultado(ItemNomeResultado resultado) {
-		this.resultado = resultado;
-	}
-
-	private String nome;
-
 	public ItemNome() {
 		super();
+	}
+
+	public ItemNome(Integer id) {
+		super(id);
+	}
+
+	public ItemNome(String nome) {
+		setNome(nome);
 	}
 
 	@Override
@@ -48,6 +48,10 @@ public class ItemNome extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return nome;
 	}
 
+	public ItemNomeResultado getResultado() {
+		return resultado;
+	}
+
 	@Override
 	public void setId(Integer id) {
 		this.id = id;
@@ -55,6 +59,10 @@ public class ItemNome extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public void setResultado(ItemNomeResultado resultado) {
+		this.resultado = resultado;
 	}
 
 }

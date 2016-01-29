@@ -16,11 +16,12 @@ public class FiltrarCmd extends _Comando {
 	@Autowired
 	private BemDao dao;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		BemProducaoCadFiltroDto filtro = (BemProducaoCadFiltroDto) contexto.getRequisicao();
-		List<Object[]> result = null;
-		result = dao.filtrar(filtro);
+		List<Object> result = null;
+		result = (List<Object>) dao.filtrar(filtro);
 		contexto.setResposta(result);
 		return false;
 	}

@@ -118,7 +118,6 @@ public class SalvarCmd extends _Comando {
 	@Autowired
 	private PublicoAlvoPropriedadeRuralDao publicoAlvoPropriedadeRuralDao;
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		Pessoa result = (Pessoa) contexto.getRequisicao();

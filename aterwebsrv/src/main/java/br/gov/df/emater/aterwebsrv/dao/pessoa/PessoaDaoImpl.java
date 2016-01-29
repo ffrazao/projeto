@@ -28,9 +28,9 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Object[]> filtrar(PessoaCadFiltroDto filtro) {
+	public List<Object> filtrar(PessoaCadFiltroDto filtro) {
 		// objetos de trabalho
-		List<Object[]> result = null;
+		List<Object> result = null;
 		List<Object> params = new ArrayList<Object>();
 		StringBuilder sql, sqlTemp;
 
@@ -134,7 +134,7 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 		sql.append("order by p.nome, p.apelidoSigla").append("\n");
 
 		// criar a query
-		TypedQuery<Object[]> query = em.createQuery(sql.toString(), Object[].class);
+		TypedQuery<Object> query = em.createQuery(sql.toString(), Object.class);
 
 		// inserir os parametros
 		for (int i = 1; i <= params.size(); i++) {

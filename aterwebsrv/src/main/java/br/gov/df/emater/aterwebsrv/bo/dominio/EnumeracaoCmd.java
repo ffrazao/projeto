@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
-import br.gov.df.emater.aterwebsrv.dao.UtilDao;
+import br.gov.df.emater.aterwebsrv.dao.ferramenta.UtilDao;
 
 @Service("EnumeracaoCmd")
 public class EnumeracaoCmd extends _Comando {

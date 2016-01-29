@@ -1,6 +1,7 @@
 package br.gov.df.emater.aterwebsrv.ferramenta;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -23,6 +24,8 @@ public class UtilitarioNumero {
 	private final NumberFormat BIG_DECIMAL_FORMATO_MOEDA;
 
 	private final NumberFormat BIG_DECIMAL_FORMATO_PORCENTUAL;
+
+	public static final MathContext BIG_DECIMAL_PRECISAO = new MathContext(5);
 
 	private final NumberFormat NUMBER_FORMATO;
 

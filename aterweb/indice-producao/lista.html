@@ -52,23 +52,23 @@
                 </tr>
                 <tr ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)">
                     <td>Esperado</td>
-                    <td class="text-right">{{resultado(item[ITEM_NOME_A], item[PRODUCAO_FORMA_LIST], PROD_FORMA_ITEM_A_VALOR) | number: 5}}</td>
-                    <td class="text-right">{{resultado(item[ITEM_NOME_B], item[PRODUCAO_FORMA_LIST], PROD_FORMA_ITEM_B_VALOR) | number: 5}}</td>
-                    <td class="text-right">{{resultado(item[ITEM_NOME_C], item[PRODUCAO_FORMA_LIST], PROD_FORMA_ITEM_C_VALOR) | number: 5}}</td>
-                    <td class="text-right">{{soma(item[PRODUCAO_FORMA_LIST], PROD_FORMA_VOLUME) | number: 5}}</td>
-                    <td class="text-right">{{soma(item[PRODUCAO_FORMA_LIST], PROD_FORMA_QTD_PRODUTORES) | number: 0}}</td>
+                    <td class="text-right">{{item[PRODUCAO_FORMA_LIST][PROD_FORMA_ITEM_A_VALOR] | number: 5}}</td>
+                    <td class="text-right">{{item[PRODUCAO_FORMA_LIST][PROD_FORMA_ITEM_B_VALOR] | number: 5}}</td>
+                    <td class="text-right">{{item[PRODUCAO_FORMA_LIST][PROD_FORMA_ITEM_C_VALOR] | number: 5}}</td>
+                    <td class="text-right">{{item[PRODUCAO_FORMA_LIST][PROD_FORMA_VOLUME] | number: 5}}</td>
+                    <td class="text-right">{{item[PRODUCAO_FORMA_LIST][PROD_FORMA_QTD_PRODUTORES] | number: 0}}</td>
                     <td class="text-right">{{item[PRODUCAO_FORMA_LIST][PROD_FORMA_VLR_UNITARIO] | currency}}</td>
-                    <td class="text-right">{{(soma(item[PRODUCAO_FORMA_LIST], PROD_FORMA_VOLUME) * item[PRODUCAO_FORMA_LIST][PROD_FORMA_VLR_UNITARIO]) | currency}}</td>
+                    <td class="text-right">{{item[PRODUCAO_FORMA_LIST][PROD_FORMA_VLR_TOTAL] | currency}}</td>
                 </tr>
                 <tr ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)">
                     <td>Confirmado</td>
-                    <td class="text-right">{{resultado(item[ITEM_NOME_A], item[PRODUCAO_FORMA_LIST], PROD_FORMA_ITEM_A_VALOR) | number: 5}}</td>
-                    <td class="text-right">{{resultado(item[ITEM_NOME_B], item[PRODUCAO_FORMA_LIST], PROD_FORMA_ITEM_B_VALOR) | number: 5}}</td>
-                    <td class="text-right">{{resultado(item[ITEM_NOME_C], item[PRODUCAO_FORMA_LIST], PROD_FORMA_ITEM_C_VALOR) | number: 5}}</td>
-                    <td class="text-right">{{soma(item[PRODUCAO_FORMA_LIST], PROD_FORMA_VOLUME) | number: 5}}</td>
-                    <td class="text-right">{{soma(item[PRODUCAO_FORMA_LIST], PROD_FORMA_QTD_PRODUTORES) | number: 0}}</td>
-                    <td class="text-right">{{item[PRODUCAO_FORMA_LIST][PROD_FORMA_VLR_UNITARIO] | currency}}</td>
-                    <td class="text-right">{{(soma(item[PRODUCAO_FORMA_LIST], PROD_FORMA_VOLUME) * item[PRODUCAO_FORMA_LIST][PROD_FORMA_VLR_UNITARIO]) | currency}}</td>
+                    <td class="text-right">{{item[PRODUCAO_FORMA_LIST][PROD_FORMA_ITEM_A_VALOR_CONFIRM] | number: 5}}</td>
+                    <td class="text-right">{{item[PRODUCAO_FORMA_LIST][PROD_FORMA_ITEM_B_VALOR_CONFIRM] | number: 5}}</td>
+                    <td class="text-right">{{item[PRODUCAO_FORMA_LIST][PROD_FORMA_ITEM_C_VALOR_CONFIRM] | number: 5}}</td>
+                    <td class="text-right">{{item[PRODUCAO_FORMA_LIST][PROD_FORMA_VOLUME_CONFIRM] | number: 5}}</td>
+                    <td class="text-right">{{item[PRODUCAO_FORMA_LIST][PROD_FORMA_QTD_PRODUTORES_CONFIRM] | number: 0}}</td>
+                    <td class="text-right">{{item[PRODUCAO_FORMA_LIST][PROD_FORMA_VLR_UNITARIO_CONFIRM] | currency}}</td>
+                    <td class="text-right">{{item[PRODUCAO_FORMA_LIST][PROD_FORMA_VLR_TOTAL_CONFIRM] | currency}}</td>
                 </tr>
                 <tr ng-repeat-end ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)" 
                     ng-if="!cadastro.apoio.escondeDetalhe && item[PRODUCAO_FORMA_LIST].length"

@@ -16,12 +16,13 @@ public class FiltrarCmd extends _Comando {
 	@Autowired
 	private AtividadeDao atividadeDao;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		System.out.println("Filtrando atividade...");
 		AtividadeCadFiltroDto filtro = (AtividadeCadFiltroDto) contexto.getRequisicao();
-		List<Object[]> result = null;
-		result = atividadeDao.filtrar(filtro);
+		List<Object> result = null;
+		result = (List<Object>) atividadeDao.filtrar(filtro);
 		contexto.setResposta(result);
 		return false;
 	}

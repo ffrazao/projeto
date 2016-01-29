@@ -16,12 +16,13 @@ public class FiltrarCmd extends _Comando {
 	@Autowired
 	private PropriedadeRuralDao propriedadeRuralDao;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		System.out.println("Filtrando propriedadeRural...");
 		PropriedadeRuralCadFiltroDto filtro = (PropriedadeRuralCadFiltroDto) contexto.getRequisicao();
-		List<Object[]> result = null;
-		result = propriedadeRuralDao.filtrar(filtro);
+		List<Object> result = null;
+		result = (List<Object>) propriedadeRuralDao.filtrar(filtro);
 		contexto.setResposta(result);
 		return false;
 	}

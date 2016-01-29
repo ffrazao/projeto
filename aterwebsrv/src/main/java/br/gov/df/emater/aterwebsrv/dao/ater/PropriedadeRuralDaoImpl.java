@@ -26,9 +26,9 @@ public class PropriedadeRuralDaoImpl implements PropriedadeRuralDaoCustom {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Object[]> filtrar(PropriedadeRuralCadFiltroDto filtro) {
+	public List<Object> filtrar(PropriedadeRuralCadFiltroDto filtro) {
 		// objetos de trabalho
-		List<Object[]> result = null;
+		List<Object> result = null;
 		List<Object> params = new ArrayList<Object>();
 		StringBuilder sql, sqlTemp;
 
@@ -124,7 +124,7 @@ public class PropriedadeRuralDaoImpl implements PropriedadeRuralDaoCustom {
 		sql.append("order by p.nome").append("\n");
 
 		// criar a query
-		TypedQuery<Object[]> query = em.createQuery(sql.toString(), Object[].class);
+		TypedQuery<Object> query = em.createQuery(sql.toString(), Object.class);
 
 		// inserir os parametros
 		for (int i = 1; i <= params.size(); i++) {
@@ -142,16 +142,17 @@ public class PropriedadeRuralDaoImpl implements PropriedadeRuralDaoCustom {
 	}
 
 	@SuppressWarnings("unchecked")
-	private List<Object[]> processaResultado(List<Object[]> lista) {
+	private List<Object> processaResultado(List<Object> lista) {
 		if (lista == null || lista.size() == 0) {
 			return lista;
 		}
-		List<Object[]> result = new ArrayList<Object[]>();
+		List<Object> result = new ArrayList<Object>();
 
 		Integer id = null;
 		Object[] reg = null;
 		int c = 0;
-		for (Object[] l : lista) {
+		for (Object lin : (List<Object>) lista) {
+			Object[] l = (Object[]) lin;
 			if (id != (Integer) l[0]) {
 				if (reg != null) {
 					result.add(reg);					

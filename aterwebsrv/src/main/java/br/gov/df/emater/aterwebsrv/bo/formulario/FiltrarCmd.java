@@ -16,12 +16,13 @@ public class FiltrarCmd extends _Comando {
 	@Autowired
 	private FormularioDao formularioDao;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		System.out.println("Filtrando formulario...");
 		FormularioCadFiltroDto filtro = (FormularioCadFiltroDto) contexto.getRequisicao();
-		List<Object[]> result = null;
-		result = formularioDao.filtrar(filtro);
+		List<Object> result = null;
+		result = (List<Object>) formularioDao.filtrar(filtro);
 		contexto.setResposta(result);
 		return false;
 	}

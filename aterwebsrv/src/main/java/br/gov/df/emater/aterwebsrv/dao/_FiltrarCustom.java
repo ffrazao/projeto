@@ -6,6 +6,6 @@ import br.gov.df.emater.aterwebsrv.modelo.dto.Dto;
 
 public interface _FiltrarCustom<E extends Dto> {
 	
-	List<Object[]> filtrar(E filtro);
+	List<? extends Object> filtrar(E filtro);
 
 }

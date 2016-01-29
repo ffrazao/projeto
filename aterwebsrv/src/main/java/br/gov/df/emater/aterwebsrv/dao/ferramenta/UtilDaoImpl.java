@@ -1,4 +1,4 @@
-package br.gov.df.emater.aterwebsrv.dao;
+package br.gov.df.emater.aterwebsrv.dao.ferramenta;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -16,6 +16,11 @@ import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import br.gov.df.emater.aterwebsrv.modelo.dominio.FormulaProduto;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacao;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ItemNome;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.UnidadeMedida;
 
 @Repository
 public class UtilDaoImpl implements UtilDao {
@@ -125,4 +130,58 @@ public class UtilDaoImpl implements UtilDao {
 		}
 		return result;
 	}
+
+	public Map<String, Object> ipaBemClassificacaoDetalhes(BemClassificacao bemClassificacao) {
+		Map<String, Object> result = null;
+		if (bemClassificacao != null) {
+			UnidadeMedida unidadeMedida = null;
+			FormulaProduto formulaProduto = null;
+			ItemNome itemA = null;
+			ItemNome itemB = null;
+			ItemNome itemC = null;
+			List<BemClassificacao> bemClassificacaoList = new ArrayList<BemClassificacao>();
+
+			// percorrer a classificacao ate a raiz da arvore
+			BemClassificacao b = bemClassificacao;
+			do {
+				bemClassificacaoList.add(b);
+				if (unidadeMedida == null && b.getUnidadeMedida() != null) {
+					unidadeMedida = b.getUnidadeMedida();
+				}
+				if (formulaProduto == null && b.getFormula() != null) {
+					formulaProduto = b.getFormula();
+				}
+				if (itemA == null && b.getItemANome() != null) {
+					itemA = b.getItemANome();
+				}
+				if (itemB == null && b.getItemBNome() != null) {
+					itemB = b.getItemBNome();
+				}
+				if (itemC == null && b.getItemCNome() != null) {
+					itemC = b.getItemCNome();
+				}
+				b = b.getBemClassificacao();
+			} while (b != null);
+
+			Collections.reverse(bemClassificacaoList);
+			StringBuilder bemClassificacaoSb = new StringBuilder();
+			for (BemClassificacao item : bemClassificacaoList) {
+				if (bemClassificacaoSb.length() > 0) {
+					bemClassificacaoSb.append("/");
+				}
+				bemClassificacaoSb.append(item.getNome());
+			}
+			if (result == null) {
+				result = new HashMap<String, Object>();
+			}
+			result.put("unidadeMedida", unidadeMedida != null ? unidadeMedida : null);
+			result.put("bemClassificacao", bemClassificacaoSb != null ? bemClassificacaoSb.toString() : null);
+			result.put("formulaProduto", formulaProduto != null ? formulaProduto : null);
+			result.put("itemA", itemA != null ? itemA : null);
+			result.put("itemB", itemB != null ? itemB : null);
+			result.put("itemC", itemC != null ? itemC : null);
+		}
+		return result;
+	}
+
 }

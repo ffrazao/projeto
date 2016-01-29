@@ -1,7 +1,6 @@
 package br.gov.df.emater.aterwebsrv.dao.indice_producao;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -24,9 +23,9 @@ public class BemClassificacaoDaoImpl implements BemClassificacaoDaoCustom {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Object[]> filtrar(BemClassificacaoCadFiltroDto filtro) {
+	public List<Object> filtrar(BemClassificacaoCadFiltroDto filtro) {
 		// objetos de trabalho
-		List<Object[]> result = null;
+		List<Object> result = null;
 		List<BemClassificacao> bemClassificacaoList = null;
 		List<Object> params = new ArrayList<Object>();
 		StringBuilder sql, sqlTemp;
@@ -76,12 +75,12 @@ public class BemClassificacaoDaoImpl implements BemClassificacaoDaoCustom {
 		return result;
 	}
 
-	private List<Object[]> fetchBemClassificacao(List<Object[]> result, BemClassificacao bc) {
+	private List<Object> fetchBemClassificacao(List<Object> result, BemClassificacao bc) {
 		if (bc != null) {
 			List<Object> linha = new ArrayList<Object>();
 			linha.add(bc.getId());
 			linha.add(bc.getNome());
-			
+
 			List<Object[]> bemClassificacaoFormaProducaoItemList = null;
 			if (bc.getBemClassificacaoFormaProducaoItemList() != null) {
 				for (BemClassificacaoFormaProducaoItem b : bc.getBemClassificacaoFormaProducaoItemList()) {
@@ -89,43 +88,43 @@ public class BemClassificacaoDaoImpl implements BemClassificacaoDaoCustom {
 				}
 			}
 			linha.add(bemClassificacaoFormaProducaoItemList);
-			
-			List<Object[]> bemClassificacaoList = null;
+
+			List<Object> bemClassificacaoList = null;
 			if (bc.getBemClassificacaoList() != null) {
 				for (BemClassificacao b : bc.getBemClassificacaoList()) {
 					bemClassificacaoList = fetchBemClassificacao(bemClassificacaoList, b);
 				}
 			}
 			linha.add(bemClassificacaoList);
-			
-			if (bc.getUnidadeMedida() != null) {				
+
+			if (bc.getUnidadeMedida() != null) {
 				linha.add(bc.getUnidadeMedida().getNome());
 			} else {
 				linha.add(null);
 			}
-			if (bc.getItemANome() != null) {				
+			if (bc.getItemANome() != null) {
 				linha.add(bc.getItemANome().getNome());
 			} else {
 				linha.add(null);
 			}
-			if (bc.getItemBNome() != null) {				
+			if (bc.getItemBNome() != null) {
 				linha.add(bc.getItemBNome().getNome());
 			} else {
 				linha.add(null);
 			}
-			if (bc.getItemCNome() != null) {				
+			if (bc.getItemCNome() != null) {
 				linha.add(bc.getItemCNome().getNome());
 			} else {
 				linha.add(null);
 			}
-			if (bc.getFormula() != null) {				
+			if (bc.getFormula() != null) {
 				linha.add(bc.getFormula().toString());
 			} else {
 				linha.add(null);
 			}
-			
+
 			if (result == null) {
-				result = new ArrayList<Object[]>();
+				result = new ArrayList<Object>();
 			}
 			result.add(linha.toArray());
 		}
@@ -137,9 +136,9 @@ public class BemClassificacaoDaoImpl implements BemClassificacaoDaoCustom {
 			List<Object> linha = new ArrayList<Object>();
 			linha.add(bc.getFormaProducaoItem().getId());
 			linha.add(bc.getFormaProducaoItem().getNome());
-			
+
 			List<Object[]> formaProducaoValorList = new ArrayList<Object[]>();
-			for (FormaProducaoValor v: bc.getFormaProducaoItem().getFormaProducaoValorList()) {
+			for (FormaProducaoValor v : bc.getFormaProducaoItem().getFormaProducaoValorList()) {
 				List<Object> linhaSub = new ArrayList<Object>();
 				linhaSub.add(v.getId());
 				linhaSub.add(v.getNome());

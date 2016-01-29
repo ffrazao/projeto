@@ -3,7 +3,6 @@ package br.gov.df.emater.aterwebsrv.modelo.atividade;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -31,10 +30,10 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
 
-	@OneToMany(mappedBy="atividade")
+	@OneToMany(mappedBy = "atividade")
 	private List<AtividadeAssunto> atividadeAssuntoList;
 
-	@OneToMany(mappedBy="atividade")
+	@OneToMany(mappedBy = "atividade")
 	private List<AtividadePessoa> atividadePessoaList;
 
 	private String codigo;
@@ -50,7 +49,7 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer> {
 	private Integer id;
 
 	@ManyToOne
-	@JoinColumn(name="metodo_id")
+	@JoinColumn(name = "metodo_id")
 	private Metodo metodo;
 
 	public List<AtividadeAssunto> getAtividadeAssuntoList() {
@@ -83,16 +82,16 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	public void setAtividadePessoaList(List<AtividadePessoa> atividadePessoaList) {
 		this.atividadePessoaList = atividadePessoaList;
-	}		
+	}
 
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}
-	
+
 	public void setData(Calendar data) {
 		this.data = data;
 	}
-	
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
@@ -100,6 +99,5 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer> {
 	public void setMetodo(Metodo metodo) {
 		this.metodo = metodo;
 	}
-	
-	
+
 }

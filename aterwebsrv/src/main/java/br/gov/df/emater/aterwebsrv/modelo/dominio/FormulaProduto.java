@@ -9,6 +9,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioNumero;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoForma;
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
@@ -62,6 +63,6 @@ public enum FormulaProduto {
 		Double result = null;
 		result = future.get();
 
-		return new BigDecimal(result);
+		return new BigDecimal(result, UtilitarioNumero.BIG_DECIMAL_PRECISAO);
 	}
 }

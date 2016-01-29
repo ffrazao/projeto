@@ -18,9 +18,9 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Object[]> filtrar(AtividadeCadFiltroDto filtro) {
+	public List<Object> filtrar(AtividadeCadFiltroDto filtro) {
 		// objetos de trabalho
-		List<Object[]> result = null;
+		List<Object> result = null;
 		List<Object> params = new ArrayList<Object>();
 		StringBuilder sql;
 
@@ -32,7 +32,7 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 		//-- até aki
 		
 		// criar a query
-		TypedQuery<Object[]> query = em.createQuery(sql.toString(), Object[].class);
+		TypedQuery<Object> query = em.createQuery(sql.toString(), Object.class);
 
 		// inserir os parametros
 		for (int i = 1; i <= params.size(); i++) {
