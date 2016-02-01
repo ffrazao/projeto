@@ -2,6 +2,7 @@ package br.gov.df.emater.aterwebsrv.modelo.ater;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -32,7 +33,8 @@ public class Comunidade extends EntidadeBase implements _ChavePrimaria<Integer>,
 	@JoinColumn(name = "cidade_id")
 	private Cidade cidade;
 
-	private String codigo;
+	@Column(name = "codigo_sisater")
+	private String codigoSisater;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -65,8 +67,8 @@ public class Comunidade extends EntidadeBase implements _ChavePrimaria<Integer>,
 		return cidade;
 	}
 
-	public String getCodigo() {
-		return codigo;
+	public String getCodigoSisater() {
+		return codigoSisater;
 	}
 
 	public Integer getId() {
@@ -98,8 +100,8 @@ public class Comunidade extends EntidadeBase implements _ChavePrimaria<Integer>,
 		this.cidade = cidade;
 	}
 
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
+	public void setCodigoSisater(String codigoSisater) {
+		this.codigoSisater = codigoSisater;
 	}
 
 	public void setId(Integer id) {

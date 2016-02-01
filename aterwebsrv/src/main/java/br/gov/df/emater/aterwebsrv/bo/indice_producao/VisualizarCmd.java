@@ -9,7 +9,6 @@ import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoDao;
-import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoForma;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoFormaComposicao;
@@ -38,11 +37,8 @@ public class VisualizarCmd extends _Comando {
 		result.setInclusaoUsuario(null);
 		result.setInclusaoData(null);
 
-		UnidadeOrganizacional unidadeOrganizacional = null;
-		if (result.getComunidade() != null) {
-			unidadeOrganizacional = result.getComunidade().getUnidadeOrganizacional().infoBasica();
-			result.setComunidade(result.getComunidade() != null ? result.getComunidade().infoBasica() : null);
-			result.getComunidade().setUnidadeOrganizacional(unidadeOrganizacional);
+		if (result.getUnidadeOrganizacional() != null) {
+			result.setUnidadeOrganizacional(result.getUnidadeOrganizacional() == null ? null : result.getUnidadeOrganizacional().infoBasica());
 		}
 		result.setPropriedadeRural(result.getPropriedadeRural() != null ? result.getPropriedadeRural().infoBasica() : null);
 		result.setPublicoAlvo(result.getPublicoAlvo() != null ? result.getPublicoAlvo().infoBasica() : null);

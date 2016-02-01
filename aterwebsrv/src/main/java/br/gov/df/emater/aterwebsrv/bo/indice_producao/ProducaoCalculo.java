@@ -44,29 +44,29 @@ public class ProducaoCalculo {
 
 	public void abreProducao(Integer producaoId) {
 		// recuperar a produção que foi salva
-		Producao producao = dao.findOne(producaoId);
-
-		// verificar o tipo de producao
-		if (producao.getComunidade() == null) {
-			// captar o registro da producao principal
-			Producao producaoPrincipal = dao.findOneByAnoAndBemAndComunidadeAndPublicoAlvoIsNullAndPropriedadeRuralIsNull(producao.getAno(), producao.getBem(), producao.getPropriedadeRural().getComunidade());
-			if (producaoPrincipal == null) {
-				throw new BoException(String.format("Producao principal inexistente [%s, %s, %s]", producao.getAno(), producao.getBem().getNome(), producao.getPropriedadeRural().getComunidade().getNome()));
-			}
-			producao = producaoPrincipal;
-		}
-
-		// encontrar os produtores do bem
-		List<Producao> producaoProdutorList = dao.findByAnoAndBemAndPropriedadeRuralComunidade(producao.getAno(), producao.getBem(), producao.getComunidade());
-
-		this.producao = producao;
-		this.producaoProdutorList = producaoProdutorList;
-		Map<String, Object> bemClassificacaoDetalhes = utilDao.ipaBemClassificacaoDetalhes(producao.getBem().getBemClassificacao());
-		this.bemClassificacao = new BemClassificacao();
-		this.bemClassificacao.setFormula((FormulaProduto) bemClassificacaoDetalhes.get("formulaProduto"));
-		this.bemClassificacao.setItemANome((ItemNome) bemClassificacaoDetalhes.get("itemA"));
-		this.bemClassificacao.setItemBNome((ItemNome) bemClassificacaoDetalhes.get("itemB"));
-		this.bemClassificacao.setItemCNome((ItemNome) bemClassificacaoDetalhes.get("itemC"));
+//		Producao producao = dao.findOne(producaoId);
+//
+//		// verificar o tipo de producao
+//		if (producao.getComunidade() == null) {
+//			// captar o registro da producao principal
+//			Producao producaoPrincipal = dao.findOneByAnoAndBemAndComunidadeAndPublicoAlvoIsNullAndPropriedadeRuralIsNull(producao.getAno(), producao.getBem(), producao.getPropriedadeRural().getComunidade());
+//			if (producaoPrincipal == null) {
+//				throw new BoException(String.format("Producao principal inexistente [%s, %s, %s]", producao.getAno(), producao.getBem().getNome(), producao.getPropriedadeRural().getComunidade().getNome()));
+//			}
+//			producao = producaoPrincipal;
+//		}
+//
+//		// encontrar os produtores do bem
+//		List<Producao> producaoProdutorList = dao.findByAnoAndBemAndPropriedadeRuralComunidade(producao.getAno(), producao.getBem(), producao.getComunidade());
+//
+//		this.producao = producao;
+//		this.producaoProdutorList = producaoProdutorList;
+//		Map<String, Object> bemClassificacaoDetalhes = utilDao.ipaBemClassificacaoDetalhes(producao.getBem().getBemClassificacao());
+//		this.bemClassificacao = new BemClassificacao();
+//		this.bemClassificacao.setFormula((FormulaProduto) bemClassificacaoDetalhes.get("formulaProduto"));
+//		this.bemClassificacao.setItemANome((ItemNome) bemClassificacaoDetalhes.get("itemA"));
+//		this.bemClassificacao.setItemBNome((ItemNome) bemClassificacaoDetalhes.get("itemB"));
+//		this.bemClassificacao.setItemCNome((ItemNome) bemClassificacaoDetalhes.get("itemC"));
 	}
 
 	@SuppressWarnings("unchecked")

@@ -60,7 +60,7 @@ public class FiltrarPorPublicoAlvoEComunidadeCmd extends _Comando {
 
 		Bem bem = bemDao.findOne(requisicao.getBem().getId());
 
-		Producao producaoEsperada = producaoDao.findOneByAnoAndBemAndComunidadeAndPublicoAlvoIsNullAndPropriedadeRuralIsNull(requisicao.getAno(), bem, comunidade);
+		//Producao producaoEsperada = producaoDao.findOneByAnoAndBemAndComunidadeAndPublicoAlvoIsNullAndPropriedadeRuralIsNull(requisicao.getAno(), bem, comunidade);
 
 		Calendar inicio = Calendar.getInstance();
 
@@ -90,55 +90,55 @@ public class FiltrarPorPublicoAlvoEComunidadeCmd extends _Comando {
 					List<ProducaoForma> producaoFormaList = null;
 
 					// captar dados da producao
-					if (producaoEsperada != null) {
-						producao = new Producao();
-						producao.setAno(producaoEsperada.getAno());
-						producao.setBem(producaoEsperada.getBem().infoBasica());
-						producao.setPropriedadeRural(publicoAlvoPropriedadeRural.getPropriedadeRural().infoBasica());
-						producao.setPublicoAlvo(pa.infoBasica());
-
-						// captar as médias de producao da propriedade e do
-						// produtor
-						List<BemFormaProducaoMedia> bemFormaProducaoMediaList = bemFormaProducaoMediaDao.findByBemAndPropriedadeRuralAndPublicoAlvo(bem, producao.getPropriedadeRural(), producao.getPublicoAlvo());
-
-						if (producaoEsperada.getProducaoFormaList() != null) {
-							for (ProducaoForma producaoForma : producaoEsperada.getProducaoFormaList()) {
-								// encontrar média de producao pela composição
-								// da forma de produção
-								BemFormaProducaoMedia bemFormaProducaoMedia = pegaBemFormaProducaoMedia(producaoForma.getProducaoFormaComposicaoList(), bemFormaProducaoMediaList);
-								ProducaoForma pf = new ProducaoForma();
-								if (bemFormaProducaoMedia != null) {
-									pf.setItemAValor(bemFormaProducaoMedia.getItemAMedia());
-									pf.setItemBValor(bemFormaProducaoMedia.getItemBMedia());
-									pf.setItemCValor(bemFormaProducaoMedia.getItemCMedia());
-									pf.setVolume(bemFormaProducaoMedia.getVolume());
-									pf.setValorTotal(bemFormaProducaoMedia.getValorTotal());
-									pf.setValorUnitario(bemFormaProducaoMedia.getValorUnitario());
-								} else {
-									// captar valores da comunidade
-									pf.setItemAValor(producaoForma.getItemAValor());
-									pf.setItemBValor(producaoForma.getItemBValor());
-									pf.setItemCValor(producaoForma.getItemCValor());
-									pf.setVolume(producaoForma.getVolume());
-									pf.setValorTotal(producaoForma.getValorTotal());
-									pf.setValorUnitario(producaoForma.getValorUnitario());
-								}
-								List<ProducaoFormaComposicao> producaoFormaComposicaoList = new ArrayList<ProducaoFormaComposicao>();
-								for (ProducaoFormaComposicao producaoFormaComposicao : producaoForma.getProducaoFormaComposicaoList()) {
-									ProducaoFormaComposicao pfc = new ProducaoFormaComposicao();
-									pfc.setOrdem(producaoFormaComposicao.getOrdem());
-									pfc.setFormaProducaoValor(producaoFormaComposicao.getFormaProducaoValor().infoBasica());
-									producaoFormaComposicaoList.add(pfc);
-								}
-								pf.setProducaoFormaComposicaoList(producaoFormaComposicaoList);
-
-								if (producaoFormaList == null) {
-									producaoFormaList = new ArrayList<ProducaoForma>();
-								}
-								producaoFormaList.add(pf);
-							}
-						}
-					}
+//					if (producaoEsperada != null) {
+//						producao = new Producao();
+//						producao.setAno(producaoEsperada.getAno());
+//						producao.setBem(producaoEsperada.getBem().infoBasica());
+//						producao.setPropriedadeRural(publicoAlvoPropriedadeRural.getPropriedadeRural().infoBasica());
+//						producao.setPublicoAlvo(pa.infoBasica());
+//
+//						// captar as médias de producao da propriedade e do
+//						// produtor
+//						List<BemFormaProducaoMedia> bemFormaProducaoMediaList = bemFormaProducaoMediaDao.findByBemAndPropriedadeRuralAndPublicoAlvo(bem, producao.getPropriedadeRural(), producao.getPublicoAlvo());
+//
+//						if (producaoEsperada.getProducaoFormaList() != null) {
+//							for (ProducaoForma producaoForma : producaoEsperada.getProducaoFormaList()) {
+//								// encontrar média de producao pela composição
+//								// da forma de produção
+//								BemFormaProducaoMedia bemFormaProducaoMedia = pegaBemFormaProducaoMedia(producaoForma.getProducaoFormaComposicaoList(), bemFormaProducaoMediaList);
+//								ProducaoForma pf = new ProducaoForma();
+//								if (bemFormaProducaoMedia != null) {
+//									pf.setItemAValor(bemFormaProducaoMedia.getItemAMedia());
+//									pf.setItemBValor(bemFormaProducaoMedia.getItemBMedia());
+//									pf.setItemCValor(bemFormaProducaoMedia.getItemCMedia());
+//									pf.setVolume(bemFormaProducaoMedia.getVolume());
+//									pf.setValorTotal(bemFormaProducaoMedia.getValorTotal());
+//									pf.setValorUnitario(bemFormaProducaoMedia.getValorUnitario());
+//								} else {
+//									// captar valores da comunidade
+//									pf.setItemAValor(producaoForma.getItemAValor());
+//									pf.setItemBValor(producaoForma.getItemBValor());
+//									pf.setItemCValor(producaoForma.getItemCValor());
+//									pf.setVolume(producaoForma.getVolume());
+//									pf.setValorTotal(producaoForma.getValorTotal());
+//									pf.setValorUnitario(producaoForma.getValorUnitario());
+//								}
+//								List<ProducaoFormaComposicao> producaoFormaComposicaoList = new ArrayList<ProducaoFormaComposicao>();
+//								for (ProducaoFormaComposicao producaoFormaComposicao : producaoForma.getProducaoFormaComposicaoList()) {
+//									ProducaoFormaComposicao pfc = new ProducaoFormaComposicao();
+//									pfc.setOrdem(producaoFormaComposicao.getOrdem());
+//									pfc.setFormaProducaoValor(producaoFormaComposicao.getFormaProducaoValor().infoBasica());
+//									producaoFormaComposicaoList.add(pfc);
+//								}
+//								pf.setProducaoFormaComposicaoList(producaoFormaComposicaoList);
+//
+//								if (producaoFormaList == null) {
+//									producaoFormaList = new ArrayList<ProducaoForma>();
+//								}
+//								producaoFormaList.add(pf);
+//							}
+//						}
+//					}
 					if (producao != null && producaoFormaList != null) {
 						producao.setProducaoFormaList(producaoFormaList);
 

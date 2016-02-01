@@ -22,9 +22,9 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
-import br.gov.df.emater.aterwebsrv.modelo.ater.Comunidade;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
+import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
@@ -52,10 +52,6 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer> {
 	@JoinColumn(name = "bem_id")
 	private Bem bem;
 
-	@ManyToOne
-	@JoinColumn(name = "comunidade_id")
-	private Comunidade comunidade;
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
@@ -82,6 +78,10 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer> {
 	@JoinColumn(name = "publico_alvo_id")
 	private PublicoAlvo publicoAlvo;
 
+	@ManyToOne
+	@JoinColumn(name = "unidade_organizacional_id")
+	private UnidadeOrganizacional unidadeOrganizacional;
+
 	public Producao() {
 		super();
 	}
@@ -100,10 +100,6 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	public Bem getBem() {
 		return bem;
-	}
-
-	public Comunidade getComunidade() {
-		return comunidade;
 	}
 
 	@Override
@@ -131,6 +127,10 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return publicoAlvo;
 	}
 
+	public UnidadeOrganizacional getUnidadeOrganizacional() {
+		return unidadeOrganizacional;
+	}
+
 	public void setAlteracaoData(Calendar alteracaoData) {
 		this.alteracaoData = alteracaoData;
 	}
@@ -145,10 +145,6 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	public void setBem(Bem bem) {
 		this.bem = bem;
-	}
-
-	public void setComunidade(Comunidade comunidade) {
-		this.comunidade = comunidade;
 	}
 
 	@Override
@@ -174,6 +170,10 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	public void setPublicoAlvo(PublicoAlvo publicoAlvo) {
 		this.publicoAlvo = publicoAlvo;
+	}
+
+	public void setUnidadeOrganizacional(UnidadeOrganizacional unidadeOrganizacional) {
+		this.unidadeOrganizacional = unidadeOrganizacional;
 	}
 
 }
