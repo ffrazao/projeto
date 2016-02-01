@@ -171,6 +171,13 @@
                 $scope.PROD_FORMA_VLR_UNITARIO = 8;
                 $scope.PROD_FORMA_VLR_TOTAL = 9;
                 $scope.PROD_FORMA_DT_CONFIRM = 10;
+                $scope.PROD_FORMA_ITEM_A_VALOR_CONFIRM = 11;
+                $scope.PROD_FORMA_ITEM_B_VALOR_CONFIRM = 12;
+                $scope.PROD_FORMA_ITEM_C_VALOR_CONFIRM = 13;
+                $scope.PROD_FORMA_VOLUME_CONFIRM = 14;
+                $scope.PROD_FORMA_VLR_UNITARIO_CONFIRM = 15;
+                $scope.PROD_FORMA_VLR_TOTAL_CONFIRM = 16;
+                $scope.PROD_FORMA_QTD_PRODUTORES_CONFIRM = 17;
 
             $scope.PRODUTORES_LIST = 7;
                 $scope.PROPRIEDADE_RURAL_NOME = 0;
