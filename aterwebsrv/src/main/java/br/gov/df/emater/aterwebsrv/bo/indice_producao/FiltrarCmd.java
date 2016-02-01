@@ -135,6 +135,25 @@ public class FiltrarCmd extends _Comando {
 
 						}
 					}
+					
+					Integer quantidadeProdutores = 0;
+					ProducaoCalculo temp = new ProducaoCalculo();
+					for (Map.Entry<String, CalculoItem> item: calculoProducaoEsperada.matriz.entrySet()) {
+						temp.acumulaItem("", item.getValue().producaoFormaTotal, 0, false);
+						quantidadeProdutores += item.getValue().publicoAlvoList.size();
+					}
+					temp.matriz.get("").producaoFormaTotal.setQuantidadeProdutores(quantidadeProdutores);
+					calculoProducaoEsperada.acumulaItem("", temp.matriz.get("").producaoFormaTotal, 0, false);
+
+					quantidadeProdutores = 0;
+					temp = new ProducaoCalculo();
+					for (Map.Entry<String, CalculoItem> item: calculoProducaoConfirmada.matriz.entrySet()) {
+						temp.acumulaItem("", item.getValue().producaoFormaTotal, 0, false);
+						quantidadeProdutores += item.getValue().publicoAlvoList.size();
+					}
+					temp.matriz.get("").producaoFormaTotal.setQuantidadeProdutores(quantidadeProdutores);
+					calculoProducaoConfirmada.acumulaItem("", temp.matriz.get("").producaoFormaTotal, 0, false);
+
 					result.add(fetch(producao, bemClassificacaoList, calculoProducaoEsperada, calculoProducaoConfirmada, resultProdutor));
 				}
 			}
