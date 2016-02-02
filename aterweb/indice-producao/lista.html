@@ -1,4 +1,74 @@
-<div class="panel panel-default">
+
+<table>
+    <thead>
+        <tr>
+            <th>Ano</th>
+            <th>Bem</th>
+            <th>Classificacao</th>
+            <th>Unidade Organizacional</th>
+        </tr> 
+    </thead>
+    <tbody>
+        <tr ng-repeat-start="producao in navegador.dados">
+            <td>{{producao[PRODUCAO_ANO]}}</td>
+            <td>{{producao[PRODUCAO_BEM_NOME]}}</td>
+            <td>{{producao[PRODUCAO_BEM_CLASSIFICACAO]}}</td>
+            <td>{{producao[PRODUCAO_UNID_ORG_NOME]}}</td>
+        </tr>
+        <tr ng-repeat-end>
+            <td colspan="4">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="{{navegador.dados[PRODUCAO_FORMA_LIST][0][FORMA_COMPOSICAO_LIST].length}}">Forma de Producao</th>
+                            <th>Situacao</th>
+                            <th>A</th>
+                            <th>B</th>
+                            <th>C</th>
+                            <th>Volume</th>
+                            <th>Valor Unitário</th>
+                            <th>Valor Total</th>
+                            <th>Quantidade de Produtores</th>
+                        </tr> 
+                    </thead>
+                    <tbody>
+                        <tr>
+                        </tr>
+                        <tr ng-repeat="forma in navegador.dados[PRODUCAO_FORMA_LIST]">
+                            <td colspan="55">{{forma[FORMA_COMPOSICAO_LIST]}}</td>
+                            <td ng-repeat="composicao in forma[PRODUCAO_FORMA_LIST][FORMA_COMPOSICAO_LIST]">
+                                {{composicao[COMPOSICAO_FORMA_PRODUCAO_VALOR_ITEM_NOME]}} = {{composicao[COMPOSICAO_FORMA_PRODUCAO_VALOR_NOME]}}
+                            </td>
+                            <td>{{forma[FORMA_VALOR_ITEM_A]}}</td>
+                            <td>{{forma[FORMA_VALOR_ITEM_B]}}</td>
+                            <td>{{forma[FORMA_VALOR_ITEM_C]}}</td>
+                            <td>{{forma[FORMA_VOLUME]}}</td>
+                            <td>{{forma[FORMA_VLR_UNIT]}}</td>
+                            <td>{{forma[FORMA_VLR_TOTAL]}}</td>
+                            <td>{{forma[FORMA_QTD_PRODUTORES]}}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th></th>
+                        </tr> 
+                    </tfoot>
+                </table>
+
+
+
+
+            </td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <th></th>
+        </tr> 
+    </tfoot>
+</table>
+<!-- <div class="panel panel-default">
     <div class="panel-heading"><h4>{{nomeFormulario}}</h4></div>
     <div class="panel-body" ng-if="!navegador.dados.length">
         <div class="alert alert-warning" style="margin: 0px;" role="alert">
@@ -76,3 +146,4 @@
 </div>
 <label class="control-label" ng-if="navegador.selecao.tipo === 'U' && navegador.selecao.item">Produtores</label>
 <ng-include src="'indice-producao/sub-produtores.html'" ng-controller="ProdutoresCtrl" ng-if="navegador.selecao.tipo === 'U' && navegador.selecao.item"></ng-include>
+-->

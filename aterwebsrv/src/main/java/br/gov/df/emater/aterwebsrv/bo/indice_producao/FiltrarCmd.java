@@ -2,6 +2,7 @@ package br.gov.df.emater.aterwebsrv.bo.indice_producao;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -208,7 +209,7 @@ public class FiltrarCmd extends _Comando {
 		return result.toArray();
 	}
 
-	private List<Object> fetchProducaoFormaList(List<ProducaoForma> producaoFormaList, ProducaoCalculo esperada, ProducaoCalculo confirmada) {
+	private Object[] fetchProducaoFormaList(List<ProducaoForma> producaoFormaList, ProducaoCalculo esperada, ProducaoCalculo confirmada) {
 		List<Object> result = new ArrayList<Object>();
 
 
@@ -216,23 +217,23 @@ public class FiltrarCmd extends _Comando {
 		if (producaoFormaList != null) {
 			List<Object> registro = null;
 			for (ProducaoForma producaoForma : producaoFormaList) {
-				registro = fetchProducaoForma(producaoForma);
+				registro = Arrays.asList(fetchProducaoForma(producaoForma));
 				String composicao = esperada.getComposicao(producaoForma);
 
 				// inserir o totalizador das formas esperadas
 				if (esperada != null && esperada.matriz.containsKey(composicao)) {
 					CalculoItem calculoItem = esperada.matriz.get(composicao);
 					calculoItem.producaoFormaTotal.setQuantidadeProdutores(calculoItem.publicoAlvoList.size());
-					registro.addAll(fetchProducaoForma(calculoItem.producaoFormaTotal));
+					registro.addAll(Arrays.asList(fetchProducaoForma(calculoItem.producaoFormaTotal)));
 				}
 
 				// inserir o totalizador das formas confirmadas
 				if (confirmada != null && confirmada.matriz.containsKey(composicao)) {
 					CalculoItem calculoItem = confirmada.matriz.get(composicao);
 					calculoItem.producaoFormaTotal.setQuantidadeProdutores(calculoItem.publicoAlvoList.size());
-					registro.addAll(fetchProducaoForma(calculoItem.producaoFormaTotal));
+					registro.addAll(Arrays.asList(fetchProducaoForma(calculoItem.producaoFormaTotal)));
 				}
-				result.add(registro);
+				result.add(registro.toArray());
 			}
 		}
 
@@ -248,10 +249,10 @@ public class FiltrarCmd extends _Comando {
 			result.add(fetchProducaoForma(calculoItem.producaoFormaTotal));
 		}
 
-		return result;
+		return result.toArray();
 	}
 
-	private List<Object> fetchProducaoForma(ProducaoForma producaoForma) {
+	private Object[] fetchProducaoForma(ProducaoForma producaoForma) {
 		List<Object> result = new ArrayList<Object>();
 
 		result.add(fetchProducaoFormaComposicaoList(producaoForma.getProducaoFormaComposicaoList())); // FORMA_COMPOSICAO_LIST
@@ -268,7 +269,7 @@ public class FiltrarCmd extends _Comando {
 		result.add(producaoForma.getAlteracaoUsuario() == null ? null : producaoForma.getAlteracaoUsuario().getPessoa().getNome()); // FORMA_ALTERACAO_NOME
 		result.add(producaoForma.getAlteracaoData()); // FORMA_ALTERACAO_DATA
 
-		return result;
+		return result.toArray();
 	}
 
 	private List<Object[]> fetchProducaoFormaComposicaoList(List<ProducaoFormaComposicao> producaoFormaComposicaoList) {
