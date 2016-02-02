@@ -1,4 +1,4 @@
-
+<br><br><br><br><br><br>
 <table>
     <thead>
         <tr>
@@ -17,29 +17,33 @@
         </tr>
         <tr ng-repeat-end>
             <td colspan="4">
-
                 <table>
                     <thead>
                         <tr>
-                            <th colspan="{{navegador.dados[PRODUCAO_FORMA_LIST][0][FORMA_COMPOSICAO_LIST].length}}">Forma de Producao</th>
-                            <th>Situacao</th>
-                            <th>A</th>
-                            <th>B</th>
-                            <th>C</th>
-                            <th>Volume</th>
-                            <th>Valor Unitário</th>
-                            <th>Valor Total</th>
-                            <th>Quantidade de Produtores</th>
+                            <th colspan="{{producao[PRODUCAO_FORMA_LIST][0][FORMA_COMPOSICAO_LIST].length}}">Forma de Producao</th>
+                            <th rowspan="2">Situacao</th>
+                            <th rowspan="2">A</th>
+                            <th rowspan="2">B</th>
+                            <th rowspan="2">C</th>
+                            <th rowspan="2">Volume</th>
+                            <th rowspan="2">Valor Unitário</th>
+                            <th rowspan="2">Valor Total</th>
+                            <th rowspan="2">Quantidade de Produtores</th>
+                        </tr> 
+                        <tr>
+                            <th ng-repeat="composicao in producao[PRODUCAO_FORMA_LIST][0][FORMA_COMPOSICAO_LIST]">
+                                {{composicao[COMPOSICAO_FORMA_PRODUCAO_VALOR_ITEM_NOME]}}
+                            </th>
                         </tr> 
                     </thead>
                     <tbody>
                         <tr>
                         </tr>
-                        <tr ng-repeat="forma in navegador.dados[PRODUCAO_FORMA_LIST]">
-                            <td colspan="55">{{forma[FORMA_COMPOSICAO_LIST]}}</td>
-                            <td ng-repeat="composicao in forma[PRODUCAO_FORMA_LIST][FORMA_COMPOSICAO_LIST]">
-                                {{composicao[COMPOSICAO_FORMA_PRODUCAO_VALOR_ITEM_NOME]}} = {{composicao[COMPOSICAO_FORMA_PRODUCAO_VALOR_NOME]}}
+                        <tr ng-repeat-start="forma in producao[PRODUCAO_FORMA_LIST] | limitTo: producao[PRODUCAO_FORMA_LIST] - 2">
+                            <td rowspan="3" ng-repeat="composicao in forma[FORMA_COMPOSICAO_LIST]">
+                                {{composicao[COMPOSICAO_FORMA_PRODUCAO_VALOR_NOME]}}
                             </td>
+                            <td>Cadastrado</td>
                             <td>{{forma[FORMA_VALOR_ITEM_A]}}</td>
                             <td>{{forma[FORMA_VALOR_ITEM_B]}}</td>
                             <td>{{forma[FORMA_VALOR_ITEM_C]}}</td>
@@ -47,6 +51,26 @@
                             <td>{{forma[FORMA_VLR_UNIT]}}</td>
                             <td>{{forma[FORMA_VLR_TOTAL]}}</td>
                             <td>{{forma[FORMA_QTD_PRODUTORES]}}</td>
+                        </tr>
+                        <tr>
+                            <td>Estimado</td>
+                            <td>{{forma[FORMA_VALOR_ITEM_A + 13]}}</td>
+                            <td>{{forma[FORMA_VALOR_ITEM_B + 13]}}</td>
+                            <td>{{forma[FORMA_VALOR_ITEM_C + 13]}}</td>
+                            <td>{{forma[FORMA_VOLUME + 13]}}</td>
+                            <td>{{forma[FORMA_VLR_UNIT + 13]}}</td>
+                            <td>{{forma[FORMA_VLR_TOTAL + 13]}}</td>
+                            <td>{{forma[FORMA_QTD_PRODUTORES + 13]}}</td>
+                        </tr>
+                        <tr ng-repeat-end>
+                            <td>Confirmado</td>
+                            <td>{{forma[FORMA_VALOR_ITEM_A + 26]}}</td>
+                            <td>{{forma[FORMA_VALOR_ITEM_B + 26]}}</td>
+                            <td>{{forma[FORMA_VALOR_ITEM_C + 26]}}</td>
+                            <td>{{forma[FORMA_VOLUME + 26]}}</td>
+                            <td>{{forma[FORMA_VLR_UNIT + 26]}}</td>
+                            <td>{{forma[FORMA_VLR_TOTAL + 26]}}</td>
+                            <td>{{forma[FORMA_QTD_PRODUTORES + 26]}}</td>
                         </tr>
                     </tbody>
                     <tfoot>

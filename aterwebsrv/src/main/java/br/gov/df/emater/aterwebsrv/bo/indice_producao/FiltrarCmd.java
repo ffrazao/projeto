@@ -61,7 +61,7 @@ public class FiltrarCmd extends _Comando {
 				calculo.producaoFormaTotal.setVolume(acumula(producaoForma.getVolume(), calculo.producaoFormaTotal.getVolume()));
 				calculo.producaoFormaTotal.setValorUnitario(acumula(producaoForma.getValorUnitario(), calculo.producaoFormaTotal.getValorUnitario()));
 				calculo.producaoFormaTotal.setValorTotal(acumula(producaoForma.getValorTotal(), calculo.producaoFormaTotal.getValorTotal()));
-				
+
 				if (publicoAlvoId != null) {
 					calculo.publicoAlvoList.add(publicoAlvoId);
 				}
@@ -91,7 +91,7 @@ public class FiltrarCmd extends _Comando {
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		IndiceProducaoCadFiltroDto filtro = (IndiceProducaoCadFiltroDto) contexto.getRequisicao();
-		List<Object[]> result = new ArrayList<Object[]>();
+		List<Object> result = new ArrayList<Object>();
 		List<Producao> producaoList = null;
 		producaoList = (List<Producao>) dao.filtrar(filtro);
 
@@ -100,23 +100,21 @@ public class FiltrarCmd extends _Comando {
 			if (filtro.getId() != null) {
 				if (producaoList != null && producaoList.size() == 1) {
 					producaoList = new ArrayList<Producao>();
-					// result.add(fetchProdutor(result.get(0)).toArray());
+					// result.add(fetchProdutor(result.get(0)));
 				}
 			} else {
 
 				// contabilizar a producao
 				for (Producao producao : producaoList) {
-					List<Object[]> resultProdutor = null;
+					List<Object> resultProdutor = null;
 
 					ProducaoCalculo calculoProducaoEsperada = new ProducaoCalculo();
 					ProducaoCalculo calculoProducaoConfirmada = new ProducaoCalculo();
 
-					Map<String, Object> bemClassificacaoList = utilDao.ipaBemClassificacaoDetalhes(producao.getBem().getBemClassificacao());
-
 					// contabilizar os produtores da producao
 					List<Producao> produtorProducaoList = dao.findByAnoAndBemAndPropriedadeRuralComunidadeUnidadeOrganizacional(producao.getAno(), producao.getBem(), producao.getUnidadeOrganizacional());
 					if (produtorProducaoList != null) {
-						resultProdutor = new ArrayList<Object[]>();
+						resultProdutor = new ArrayList<Object>();
 						for (Producao produtorProducao : produtorProducaoList) {
 
 							if (produtorProducao.getProducaoFormaList() != null) {
@@ -136,10 +134,10 @@ public class FiltrarCmd extends _Comando {
 
 						}
 					}
-					
+
 					Integer quantidadeProdutores = 0;
 					ProducaoCalculo temp = new ProducaoCalculo();
-					for (Map.Entry<String, CalculoItem> item: calculoProducaoEsperada.matriz.entrySet()) {
+					for (Map.Entry<String, CalculoItem> item : calculoProducaoEsperada.matriz.entrySet()) {
 						temp.acumulaItem("", item.getValue().producaoFormaTotal, 0, false);
 						quantidadeProdutores += item.getValue().publicoAlvoList.size();
 					}
@@ -148,12 +146,14 @@ public class FiltrarCmd extends _Comando {
 
 					quantidadeProdutores = 0;
 					temp = new ProducaoCalculo();
-					for (Map.Entry<String, CalculoItem> item: calculoProducaoConfirmada.matriz.entrySet()) {
+					for (Map.Entry<String, CalculoItem> item : calculoProducaoConfirmada.matriz.entrySet()) {
 						temp.acumulaItem("", item.getValue().producaoFormaTotal, 0, false);
 						quantidadeProdutores += item.getValue().publicoAlvoList.size();
 					}
 					temp.matriz.get("").producaoFormaTotal.setQuantidadeProdutores(quantidadeProdutores);
 					calculoProducaoConfirmada.acumulaItem("", temp.matriz.get("").producaoFormaTotal, 0, false);
+
+					Map<String, Object> bemClassificacaoList = utilDao.ipaBemClassificacaoDetalhes(producao.getBem().getBemClassificacao());
 
 					result.add(fetch(producao, bemClassificacaoList, calculoProducaoEsperada, calculoProducaoConfirmada, resultProdutor));
 				}
@@ -164,11 +164,11 @@ public class FiltrarCmd extends _Comando {
 		return false;
 	}
 
-	private Object[] fetch(Producao producao, Map<String, Object> bemClassificacaoList, ProducaoCalculo calculoProducaoEsperada, ProducaoCalculo calculoProducaoConfirmada) {
+	private List<Object> fetch(Producao producao, Map<String, Object> bemClassificacaoList, ProducaoCalculo calculoProducaoEsperada, ProducaoCalculo calculoProducaoConfirmada) {
 		return fetch(producao, bemClassificacaoList, calculoProducaoEsperada, calculoProducaoConfirmada, null);
 	}
 
-	private Object[] fetch(Producao producao, Map<String, Object> bemClassificacaoList, ProducaoCalculo esperada, ProducaoCalculo confirmada, List<Object[]> resultProdutor) {
+	private List<Object> fetch(Producao producao, Map<String, Object> bemClassificacaoList, ProducaoCalculo esperada, ProducaoCalculo confirmada, List<Object> resultProdutor) {
 		List<Object> result = new ArrayList<Object>();
 
 		result.add(producao.getId()); // PRODUCAO_ID
@@ -206,34 +206,33 @@ public class FiltrarCmd extends _Comando {
 
 		result.add(resultProdutor); // PRODUCAO_PRODUTOR_LIST
 
-		return result.toArray();
+		return result;
 	}
 
-	private Object[] fetchProducaoFormaList(List<ProducaoForma> producaoFormaList, ProducaoCalculo esperada, ProducaoCalculo confirmada) {
+	private List<Object> fetchProducaoFormaList(List<ProducaoForma> producaoFormaList, ProducaoCalculo esperada, ProducaoCalculo confirmada) {
 		List<Object> result = new ArrayList<Object>();
-
 
 		// inserir todas as formas de producao
 		if (producaoFormaList != null) {
 			List<Object> registro = null;
 			for (ProducaoForma producaoForma : producaoFormaList) {
-				registro = Arrays.asList(fetchProducaoForma(producaoForma));
+				registro = fetchProducaoForma(producaoForma);
 				String composicao = esperada.getComposicao(producaoForma);
 
 				// inserir o totalizador das formas esperadas
 				if (esperada != null && esperada.matriz.containsKey(composicao)) {
 					CalculoItem calculoItem = esperada.matriz.get(composicao);
 					calculoItem.producaoFormaTotal.setQuantidadeProdutores(calculoItem.publicoAlvoList.size());
-					registro.addAll(Arrays.asList(fetchProducaoForma(calculoItem.producaoFormaTotal)));
+					registro.addAll(fetchProducaoForma(calculoItem.producaoFormaTotal));
 				}
 
 				// inserir o totalizador das formas confirmadas
 				if (confirmada != null && confirmada.matriz.containsKey(composicao)) {
 					CalculoItem calculoItem = confirmada.matriz.get(composicao);
 					calculoItem.producaoFormaTotal.setQuantidadeProdutores(calculoItem.publicoAlvoList.size());
-					registro.addAll(Arrays.asList(fetchProducaoForma(calculoItem.producaoFormaTotal)));
+					registro.addAll(fetchProducaoForma(calculoItem.producaoFormaTotal));
 				}
-				result.add(registro.toArray());
+				result.add(registro);
 			}
 		}
 
@@ -249,10 +248,10 @@ public class FiltrarCmd extends _Comando {
 			result.add(fetchProducaoForma(calculoItem.producaoFormaTotal));
 		}
 
-		return result.toArray();
+		return result;
 	}
 
-	private Object[] fetchProducaoForma(ProducaoForma producaoForma) {
+	private List<Object> fetchProducaoForma(ProducaoForma producaoForma) {
 		List<Object> result = new ArrayList<Object>();
 
 		result.add(fetchProducaoFormaComposicaoList(producaoForma.getProducaoFormaComposicaoList())); // FORMA_COMPOSICAO_LIST
@@ -269,11 +268,11 @@ public class FiltrarCmd extends _Comando {
 		result.add(producaoForma.getAlteracaoUsuario() == null ? null : producaoForma.getAlteracaoUsuario().getPessoa().getNome()); // FORMA_ALTERACAO_NOME
 		result.add(producaoForma.getAlteracaoData()); // FORMA_ALTERACAO_DATA
 
-		return result.toArray();
+		return result;
 	}
 
-	private List<Object[]> fetchProducaoFormaComposicaoList(List<ProducaoFormaComposicao> producaoFormaComposicaoList) {
-		List<Object[]> result = null;
+	private List<Object> fetchProducaoFormaComposicaoList(List<ProducaoFormaComposicao> producaoFormaComposicaoList) {
+		List<Object> result = null;
 		if (producaoFormaComposicaoList != null) {
 			for (ProducaoFormaComposicao producaoFormaComposicao : producaoFormaComposicaoList) {
 				List<Object> linha = new ArrayList<Object>();
@@ -282,9 +281,9 @@ public class FiltrarCmd extends _Comando {
 				linha.add(producaoFormaComposicao.getFormaProducaoValor().getNome()); // COMPOSICAO_FORMA_PRODUCAO_VALOR_NOME
 				linha.add(producaoFormaComposicao.getOrdem()); // COMPOSICAO_ORDEM
 				if (result == null) {
-					result = new ArrayList<Object[]>();
+					result = new ArrayList<Object>();
 				}
-				result.add(linha.toArray());
+				result.add(linha);
 			}
 		}
 		return result;
