@@ -129,7 +129,7 @@ public class FiltrarCmd extends _Comando {
 									calculoProducaoEsperada.acumulaItem(composicao, producaoForma, publicoAlvoId, false);
 									calculoProducaoConfirmada.acumulaItem(composicao, producaoForma, publicoAlvoId, true);
 								}
-								resultProdutor.add(fetch(produtorProducao, null, calculoProdutorEsperada, calculoProdutorConfirmada));
+								resultProdutor.add(fetch(produtorProducao, bemClassificacaoList, calculoProdutorEsperada, calculoProdutorConfirmada));
 							}
 
 						}

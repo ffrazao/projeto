@@ -2,33 +2,135 @@
     <div class="panel panel-default">
         <div class="panel-heading container-fluid">
             <frz-navegador
-            ng-model="produtoresNvg" exibe-texto-botao="false"
-            dados="navegador.selecao.item[7]"
-            acoes-especiais="acoesEspeciais"
-            on-abrir = "abrir()"
-            on-agir = "agir()"
-            on-editar = "editar()"
-            on-especial = "especial()"
-            on-excluir = "excluir()"
-            on-filtrar = "filtrar()"
-            on-incluir = "incluir()"
-            on-listar = "listar()"
-            on-navegar-primeiro = "navegarPrimeiro()"
-            on-navegar-anterior = "navegarAnterior()"
-            on-navegar-proximo = "navegarPosterior()"
-            on-navegar-ultimo = "navegarUltimo()"
-            on-proxima-pagina="proximaPagina()"
-            on-ultima-pagina="ultimaPagina()"
-            ></frz-navegador>
+                ng-model="produtoresNvg" exibe-texto-botao="false"
+                dados="navegador.selecao.item[PRODUCAO_PRODUTOR_LIST]"
+                acoes-especiais="acoesEspeciais"
+                on-abrir = "abrir()"
+                on-agir = "agir()"
+                on-editar = "editar()"
+                on-especial = "especial()"
+                on-excluir = "excluir()"
+                on-filtrar = "filtrar()"
+                on-incluir = "incluir()"
+                on-listar = "listar()"
+                on-navegar-primeiro = "navegarPrimeiro()"
+                on-navegar-anterior = "navegarAnterior()"
+                on-navegar-proximo = "navegarPosterior()"
+                on-navegar-ultimo = "navegarUltimo()"
+                on-proxima-pagina="proximaPagina()"
+                on-ultima-pagina="ultimaPagina()"
+                ></frz-navegador>
         </div>
-        <div class="painel-body"  ng-hide="navegador.selecao.item[7].length">
+        <div class="painel-body"  ng-hide="navegador.selecao.item[PRODUCAO_PRODUTOR_LIST].length">
             <div class="alert alert-warning" style="margin: 0px;" role="alert">
                 <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
                 Nenhum registro localizado!
             </div>
         </div>
-        <div class="table-responsive" ng-show="navegador.selecao.item[7].length > 0">
-            <table class="table table-hover table-striped" style="padding:0; margin:0;">
+        <div class="table-responsive" ng-show="navegador.selecao.item[PRODUCAO_PRODUTOR_LIST].length > 0">
+
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            <frz-seletor ng-model="produtoresNvg"></frz-seletor>
+                        </th>
+                        <th width="30">
+                            #
+                        </th>
+                        <th>Produtor</th>
+                        <th>Propriedade</th>
+                        <th>Comunidade</th>
+                        <th>Ação</th>
+                    </tr> 
+                </thead>
+                <tbody>
+                    <tr ng-repeat-start="item in navegador.selecao.item[PRODUCAO_PRODUTOR_LIST] | orderBy: [PRODUCAO_PUBLICO_ALVO_NOME] | orderBy: [PRODUCAO_PROPRIEDADE_RURAL_NOME] | orderBy: [PRODUCAO_COMUNIDADE_NOME] | pagina: produtoresNvg.paginaAtual : produtoresNvg.tamanhoPagina | limitTo: produtoresNvg.tamanhoPagina" ng-click="produtoresNvg.folhaAtual = $index + ((produtoresNvg.paginaAtual-1) * produtoresNvg.tamanhoPagina)">
+                        <td width="30px" rowspan="2">
+                            <input type="radio" ng-show="produtoresNvg.selecao.tipo === 'U'" ng-model="produtoresNvg.selecao.item" ng-value="item"/>
+                            <input type="checkbox" ng-show="produtoresNvg.selecao.tipo === 'M'" checklist-model="produtoresNvg.selecao.items" checklist-value="item" ng-click="crudMataClick(scp, $event);"/>
+                        </td>
+                        <td rowspan="2">
+                            {{$index + 1 + ((produtoresNvg.paginaAtual-1) * produtoresNvg.tamanhoPagina)}}
+                        </td>
+                        <td><a ng-click="modalVerPessoa(item[PRODUCAO_PUBLICO_ALVO_ID])">{{item[PRODUCAO_PUBLICO_ALVO_NOME]}}</a></td>
+                        <td><a ng-click="modalVerPropriedadeRural(item[PRODUCAO_PROPRIEDADE_RURAL_ID])">{{item[PRODUCAO_PROPRIEDADE_RURAL_NOME]}}</a></td>
+                        <td>{{item[PRODUCAO_COMUNIDADE_NOME]}}</td>
+                        <td><button class="btn btn-primary btn-sm">Confirmar</button></td>
+                    </tr>
+                    <tr ng-repeat-end>
+                        <td colspan="4">
+                            <table class="table table-hover table-striped table-condensed" style="font-size: 12px;">
+                                <thead>
+                                    <tr>
+                                        <th colspan="{{item[PRODUCAO_FORMA_LIST][0][FORMA_COMPOSICAO_LIST].length}}"><span ng-if="cadastro.apoio.escondeDetalhe">Forma de Producao</span></th>
+                                        <th>A</th>
+                                        <th>B</th>
+                                        <th>C</th>
+                                        <th>Volume</th>
+                                        <th rowspan="2">Valor Unitário</th>
+                                        <th rowspan="2">Valor Total</th>
+                                        <th rowspan="2">Data de Confirmação</th>
+                                    </tr> 
+                                    <tr>
+                                        <th ng-repeat="composicao in item[PRODUCAO_FORMA_LIST][0][FORMA_COMPOSICAO_LIST]">
+                                            <span ng-if="cadastro.apoio.escondeDetalhe">{{composicao[COMPOSICAO_FORMA_PRODUCAO_VALOR_ITEM_NOME]}}</span>
+                                        </th>
+                                        <th><small ng-if="item[PRODUCAO_NOME_ITEM_A]">({{item[PRODUCAO_NOME_ITEM_A]}})</small></th>
+                                        <th><small ng-if="item[PRODUCAO_NOME_ITEM_B]">({{item[PRODUCAO_NOME_ITEM_B]}})</small></th>
+                                        <th><small ng-if="item[PRODUCAO_NOME_ITEM_C]">({{item[PRODUCAO_NOME_ITEM_C]}})</small></th>
+                                        <th><small ng-if="item[PRODUCAO_FORMULA]">({{item[PRODUCAO_FORMULA]}})</small></th>
+                                    </tr> 
+                                </thead>
+                                <tbody ng-if="cadastro.apoio.escondeDetalhe">
+                                    <tr ng-repeat="forma in item[PRODUCAO_FORMA_LIST] | limitTo: item[PRODUCAO_FORMA_LIST].length - 2"
+
+                                        ng-class="{danger: (!forma[FORMA_DATA_CONFIRMACAO])}">
+                                        <td ng-repeat="composicao in forma[FORMA_COMPOSICAO_LIST]">
+                                            {{composicao[COMPOSICAO_FORMA_PRODUCAO_VALOR_NOME]}}
+                                        </td>
+                                        <td>{{forma[FORMA_VALOR_ITEM_A]}}</td>
+                                        <td>{{forma[FORMA_VALOR_ITEM_B]}}</td>
+                                        <td>{{forma[FORMA_VALOR_ITEM_C]}}</td>
+                                        <td>{{forma[FORMA_VOLUME]}}</td>
+                                        <td>{{forma[FORMA_VLR_UNIT]}}</td>
+                                        <td>{{forma[FORMA_VLR_TOTAL]}}</td>
+                                        <td>{{forma[FORMA_DATA_CONFIRMACAO] | date: 'dd/MM/yyyy'}}</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr ng-repeat="forma in item[PRODUCAO_FORMA_LIST] | limitTo: -2">
+                                        <td class="text-right" colspan="{{item[PRODUCAO_FORMA_LIST][0][FORMA_COMPOSICAO_LIST].length}}">Total</td>
+                                        <td>{{forma[FORMA_VALOR_ITEM_A]}}</td>
+                                        <td>{{forma[FORMA_VALOR_ITEM_B]}}</td>
+                                        <td>{{forma[FORMA_VALOR_ITEM_C]}}</td>
+                                        <td>{{forma[FORMA_VOLUME]}}</td>
+                                        <td>{{forma[FORMA_VLR_UNIT]}}</td>
+                                        <td>{{forma[FORMA_VLR_TOTAL]}}</td>
+                                        <td>--</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th></th>
+                    </tr> 
+                </tfoot>
+            </table>
+
+
+
+
+
+
+
+
+<!--
+
+            <table class="sr-only table table-hover table-striped" style="padding:0; margin:0;">
                 <thead>
                     <tr>
                         <th rowspan="2">
@@ -49,7 +151,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat-start="produtor in produtoresNvg.dados | orderBy: 'nome' | pagina: produtoresNvg.paginaAtual : produtoresNvg.tamanhoPagina | limitTo: produtoresNvg.tamanhoPagina" ng-click="produtoresNvg.folhaAtual = $index + ((produtoresNvg.paginaAtual-1) * produtoresNvg.tamanhoPagina)">
+                    <tr ng-repeat-start="produtor in navegador.selecao.item[PRODUCAO_PRODUTOR_LIST] | orderBy: 'nome' | pagina: produtoresNvg.paginaAtual : produtoresNvg.tamanhoPagina | limitTo: produtoresNvg.tamanhoPagina" ng-click="produtoresNvg.folhaAtual = $index + ((produtoresNvg.paginaAtual-1) * produtoresNvg.tamanhoPagina)">
                         <td width="30px">
                             <input type="radio" ng-show="produtoresNvg.selecao.tipo === 'U'" ng-model="produtoresNvg.selecao.item" ng-value="produtor"/>
                             <input type="checkbox" ng-show="produtoresNvg.selecao.tipo === 'M'" checklist-model="produtoresNvg.selecao.items" checklist-value="produtor" ng-click="crudMataClick(scp, $event);"/>
@@ -135,7 +237,7 @@
                         </td>
                     </tr>
                 </tbody>
-            </table>
+            </table> -->
         </div>
     </div>
 </ng-form>
