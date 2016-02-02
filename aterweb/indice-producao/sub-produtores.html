@@ -45,7 +45,8 @@
                     </tr> 
                 </thead>
                 <tbody>
-                    <tr ng-repeat-start="item in navegador.selecao.item[PRODUCAO_PRODUTOR_LIST] | orderBy: [PRODUCAO_PUBLICO_ALVO_NOME] | orderBy: [PRODUCAO_PROPRIEDADE_RURAL_NOME] | orderBy: [PRODUCAO_COMUNIDADE_NOME] | pagina: produtoresNvg.paginaAtual : produtoresNvg.tamanhoPagina | limitTo: produtoresNvg.tamanhoPagina" ng-click="produtoresNvg.folhaAtual = $index + ((produtoresNvg.paginaAtual-1) * produtoresNvg.tamanhoPagina)">
+                    <tr ng-repeat-start="item in navegador.selecao.item[PRODUCAO_PRODUTOR_LIST] | orderBy: [PRODUCAO_PUBLICO_ALVO_NOME] | orderBy: [PRODUCAO_PROPRIEDADE_RURAL_NOME] | orderBy: [PRODUCAO_COMUNIDADE_NOME] | pagina: produtoresNvg.paginaAtual : produtoresNvg.tamanhoPagina | limitTo: produtoresNvg.tamanhoPagina" ng-click="produtoresNvg.folhaAtual = $index + ((produtoresNvg.paginaAtual-1) * produtoresNvg.tamanhoPagina)"
+                         title="Cadastrado por: {{item[PRODUCAO_INCLUSAO_NOME]}} em {{item[PRODUCAO_INCLUSAO_DATA] | date: 'dd/MM/yyyy'}}, alterado por: {{item[PRODUCAO_ALTERACAO_NOME]}} em {{item[PRODUCAO_ALTERACAO_DATA] | date: 'dd/MM/yyyy'}}">
                         <td width="30px" rowspan="2">
                             <input type="radio" ng-show="produtoresNvg.selecao.tipo === 'U'" ng-model="produtoresNvg.selecao.item" ng-value="item"/>
                             <input type="checkbox" ng-show="produtoresNvg.selecao.tipo === 'M'" checklist-model="produtoresNvg.selecao.items" checklist-value="item" ng-click="crudMataClick(scp, $event);"/>
@@ -53,12 +54,14 @@
                         <td rowspan="2">
                             {{$index + 1 + ((produtoresNvg.paginaAtual-1) * produtoresNvg.tamanhoPagina)}}
                         </td>
-                        <td><a ng-click="modalVerPessoa(item[PRODUCAO_PUBLICO_ALVO_ID])">{{item[PRODUCAO_PUBLICO_ALVO_NOME]}}</a></td>
+                        <td>
+                            <a ng-click="modalVerPessoa(item[PRODUCAO_PUBLICO_ALVO_ID])">{{item[PRODUCAO_PUBLICO_ALVO_NOME]}}</a>
+                        </td>
                         <td><a ng-click="modalVerPropriedadeRural(item[PRODUCAO_PROPRIEDADE_RURAL_ID])">{{item[PRODUCAO_PROPRIEDADE_RURAL_NOME]}}</a></td>
                         <td>{{item[PRODUCAO_COMUNIDADE_NOME]}}</td>
                         <td><button class="btn btn-primary btn-sm">Confirmar</button></td>
                     </tr>
-                    <tr ng-repeat-end>
+                    <tr ng-repeat-end  title="Cadastrado por: {{item[PRODUCAO_INCLUSAO_NOME]}} em {{item[PRODUCAO_INCLUSAO_DATA] | date: 'dd/MM/yyyy'}}, alterado por: {{item[PRODUCAO_ALTERACAO_NOME]}} em {{item[PRODUCAO_ALTERACAO_DATA] | date: 'dd/MM/yyyy'}}">
                         <td colspan="4">
                             <table class="table table-hover table-striped table-condensed" style="font-size: 12px;">
                                 <thead>
@@ -83,9 +86,7 @@
                                     </tr> 
                                 </thead>
                                 <tbody ng-if="cadastro.apoio.escondeDetalhe">
-                                    <tr ng-repeat="forma in item[PRODUCAO_FORMA_LIST] | limitTo: item[PRODUCAO_FORMA_LIST].length - 2"
-
-                                        ng-class="{danger: (!forma[FORMA_DATA_CONFIRMACAO])}">
+                                    <tr ng-repeat="forma in item[PRODUCAO_FORMA_LIST] | limitTo: item[PRODUCAO_FORMA_LIST].length - 2" ng-class="{danger: (!forma[FORMA_DATA_CONFIRMACAO])}" title="Cadastrado por: {{forma[FORMA_INCLUSAO_NOME]}} em {{forma[FORMA_INCLUSAO_DATA] | date: 'dd/MM/yyyy'}}, alterado por: {{forma[FORMA_ALTERACAO_NOME]}} em {{forma[FORMA_ALTERACAO_DATA] | date: 'dd/MM/yyyy'}}">
                                         <td ng-repeat="composicao in forma[FORMA_COMPOSICAO_LIST]">
                                             {{composicao[COMPOSICAO_FORMA_PRODUCAO_VALOR_NOME]}}
                                         </td>

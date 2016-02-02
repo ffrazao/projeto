@@ -7,7 +7,7 @@
         </div>
     </div>
     <div class="table-responsive" ng-if="navegador.dados.length">
-        <table class="table table-hover table-striped" ng-init="cadastro.apoio.escondeDetalhe = false">
+        <table class="table table-hover table-striped" ng-init="cadastro.apoio.escondeDetalhe = true">
             <thead>
                 <tr>
                     <th>
@@ -23,7 +23,7 @@
                 </tr> 
             </thead>
             <tbody>
-                <tr ng-repeat-start="item in navegador.dados | orderBy: '4' | orderBy: '3' | orderBy: '2' | orderBy: '-1' | pagina: navegador.paginaAtual : navegador.tamanhoPagina | limitTo: navegador.tamanhoPagina" ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)">
+                <tr ng-repeat-start="item in navegador.dados | orderBy: '4' | orderBy: '3' | orderBy: '2' | orderBy: '-1' | pagina: navegador.paginaAtual : navegador.tamanhoPagina | limitTo: navegador.tamanhoPagina" ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)"  title="Cadastrado por: {{item[PRODUCAO_INCLUSAO_NOME]}} em {{item[PRODUCAO_INCLUSAO_DATA] | date: 'dd/MM/yyyy'}}, alterado por: {{item[PRODUCAO_ALTERACAO_NOME]}} em {{item[PRODUCAO_ALTERACAO_DATA] | date: 'dd/MM/yyyy'}}">
                     <td width="30px" rowspan="2">
                         <input type="radio" ng-show="navegador.selecao.tipo === 'U'" ng-model="navegador.selecao.item" ng-value="item"/>
                         <input type="checkbox" ng-show="navegador.selecao.tipo === 'M'" checklist-model="navegador.selecao.items" checklist-value="item" ng-click="crudMataClick(scp, $event);"/>
@@ -31,12 +31,14 @@
                     <td rowspan="2">
                         {{$index + 1 + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)}}
                     </td>
-                    <td>{{item[PRODUCAO_ANO]}}</td>
+                    <td>
+                        {{item[PRODUCAO_ANO]}}
+                    </td>
                     <td>{{item[PRODUCAO_BEM_NOME]}}</td>
                     <td>{{item[PRODUCAO_BEM_CLASSIFICACAO]}}</td>
                     <td>{{item[PRODUCAO_UNID_ORG_NOME]}}</td>
                 </tr>
-                <tr ng-repeat-end ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)">
+                <tr ng-repeat-end ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)"  title="Cadastrado por: {{item[PRODUCAO_INCLUSAO_NOME]}} em {{item[PRODUCAO_INCLUSAO_DATA] | date: 'dd/MM/yyyy'}}, alterado por: {{item[PRODUCAO_ALTERACAO_NOME]}} em {{item[PRODUCAO_ALTERACAO_DATA] | date: 'dd/MM/yyyy'}}">
                     <td colspan="4">
                         <table class="table table-hover table-striped table-condensed" style="font-size: 12px;">
                             <thead>
@@ -62,7 +64,7 @@
                                 </tr> 
                             </thead>
                             <tbody ng-if="cadastro.apoio.escondeDetalhe">
-                                <tr ng-repeat-start="forma in item[PRODUCAO_FORMA_LIST] | limitTo: item[PRODUCAO_FORMA_LIST].length - 2">
+                                <tr ng-repeat-start="forma in item[PRODUCAO_FORMA_LIST] | limitTo: item[PRODUCAO_FORMA_LIST].length - 3" title="Cadastrado por: {{forma[FORMA_INCLUSAO_NOME]}} em {{forma[FORMA_INCLUSAO_DATA] | date: 'dd/MM/yyyy'}}, alterado por: {{forma[FORMA_ALTERACAO_NOME]}} em {{forma[FORMA_ALTERACAO_DATA] | date: 'dd/MM/yyyy'}}">
                                     <td rowspan="3" ng-repeat="composicao in forma[FORMA_COMPOSICAO_LIST]">
                                         {{composicao[COMPOSICAO_FORMA_PRODUCAO_VALOR_NOME]}}
                                     </td>
@@ -75,7 +77,7 @@
                                     <td>{{forma[FORMA_VLR_TOTAL]}}</td>
                                     <td>{{forma[FORMA_QTD_PRODUTORES]}}</td>
                                 </tr>
-                                <tr>
+                                <tr title="Cadastrado por: {{forma[FORMA_INCLUSAO_NOME]}} em {{forma[FORMA_INCLUSAO_DATA] | date: 'dd/MM/yyyy'}}, alterado por: {{forma[FORMA_ALTERACAO_NOME]}} em {{forma[FORMA_ALTERACAO_DATA] | date: 'dd/MM/yyyy'}}">
                                     <td>Estimado</td>
                                     <td>{{forma[FORMA_VALOR_ITEM_A + 13]}}</td>
                                     <td>{{forma[FORMA_VALOR_ITEM_B + 13]}}</td>
@@ -85,7 +87,7 @@
                                     <td>{{forma[FORMA_VLR_TOTAL + 13]}}</td>
                                     <td>{{forma[FORMA_QTD_PRODUTORES + 13]}}</td>
                                 </tr>
-                                <tr ng-repeat-end>
+                                <tr ng-repeat-end title="Cadastrado por: {{forma[FORMA_INCLUSAO_NOME]}} em {{forma[FORMA_INCLUSAO_DATA] | date: 'dd/MM/yyyy'}}, alterado por: {{forma[FORMA_ALTERACAO_NOME]}} em {{forma[FORMA_ALTERACAO_DATA] | date: 'dd/MM/yyyy'}}">
                                     <td>Confirmado</td>
                                     <td>{{forma[FORMA_VALOR_ITEM_A + 26]}}</td>
                                     <td>{{forma[FORMA_VALOR_ITEM_B + 26]}}</td>
@@ -97,7 +99,7 @@
                                 </tr>
                             </tbody>
                             <tfoot>
-                                <tr ng-repeat="forma in item[PRODUCAO_FORMA_LIST] | limitTo: -2">
+                                <tr ng-repeat="forma in item[PRODUCAO_FORMA_LIST] | limitTo: -3">
                                     <td class="text-right" colspan="{{item[PRODUCAO_FORMA_LIST][0][FORMA_COMPOSICAO_LIST].length}}">Total</td>
                                     <td>&nbsp;</td>
                                     <td>{{forma[FORMA_VALOR_ITEM_A]}}</td>

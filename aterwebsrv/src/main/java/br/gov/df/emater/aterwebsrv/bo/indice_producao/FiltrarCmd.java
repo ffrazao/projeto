@@ -2,7 +2,6 @@ package br.gov.df.emater.aterwebsrv.bo.indice_producao;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -107,6 +106,8 @@ public class FiltrarCmd extends _Comando {
 				// contabilizar a producao
 				for (Producao producao : producaoList) {
 					List<Object> resultProdutor = null;
+					
+					Map<String, Object> bemClassificacaoList = utilDao.ipaBemClassificacaoDetalhes(producao.getBem().getBemClassificacao());
 
 					ProducaoCalculo calculoProducaoEsperada = new ProducaoCalculo();
 					ProducaoCalculo calculoProducaoConfirmada = new ProducaoCalculo();
@@ -135,6 +136,11 @@ public class FiltrarCmd extends _Comando {
 						}
 					}
 
+					ProducaoCalculo calculoProducaoTotal = new ProducaoCalculo();
+					for (ProducaoForma producaoForma : producao.getProducaoFormaList()) {
+						calculoProducaoTotal.acumulaItem("", producaoForma, 0, false);
+					}
+					
 					Integer quantidadeProdutores = 0;
 					ProducaoCalculo temp = new ProducaoCalculo();
 					for (Map.Entry<String, CalculoItem> item : calculoProducaoEsperada.matriz.entrySet()) {
@@ -153,9 +159,7 @@ public class FiltrarCmd extends _Comando {
 					temp.matriz.get("").producaoFormaTotal.setQuantidadeProdutores(quantidadeProdutores);
 					calculoProducaoConfirmada.acumulaItem("", temp.matriz.get("").producaoFormaTotal, 0, false);
 
-					Map<String, Object> bemClassificacaoList = utilDao.ipaBemClassificacaoDetalhes(producao.getBem().getBemClassificacao());
-
-					result.add(fetch(producao, bemClassificacaoList, calculoProducaoEsperada, calculoProducaoConfirmada, resultProdutor));
+					result.add(fetch(producao, bemClassificacaoList, calculoProducaoEsperada, calculoProducaoConfirmada, resultProdutor, calculoProducaoTotal));
 				}
 			}
 		}
@@ -165,10 +169,10 @@ public class FiltrarCmd extends _Comando {
 	}
 
 	private List<Object> fetch(Producao producao, Map<String, Object> bemClassificacaoList, ProducaoCalculo calculoProducaoEsperada, ProducaoCalculo calculoProducaoConfirmada) {
-		return fetch(producao, bemClassificacaoList, calculoProducaoEsperada, calculoProducaoConfirmada, null);
+		return fetch(producao, bemClassificacaoList, calculoProducaoEsperada, calculoProducaoConfirmada, null, null);
 	}
 
-	private List<Object> fetch(Producao producao, Map<String, Object> bemClassificacaoList, ProducaoCalculo esperada, ProducaoCalculo confirmada, List<Object> resultProdutor) {
+	private List<Object> fetch(Producao producao, Map<String, Object> bemClassificacaoList, ProducaoCalculo esperada, ProducaoCalculo confirmada, List<Object> resultProdutor, ProducaoCalculo total) {
 		List<Object> result = new ArrayList<Object>();
 
 		result.add(producao.getId()); // PRODUCAO_ID
@@ -197,7 +201,7 @@ public class FiltrarCmd extends _Comando {
 		result.add(producao.getPropriedadeRural() == null ? null : producao.getPropriedadeRural().getComunidade().getNome()); // PRODUCAO_COMUNIDADE_NOME
 
 		// TODO fazer o totalizador final esperado e confirmado
-		result.add(fetchProducaoFormaList(producao.getProducaoFormaList(), esperada, confirmada)); // PRODUCAO_FORMA_LIST
+		result.add(fetchProducaoFormaList(producao.getProducaoFormaList(), total, esperada, confirmada)); // PRODUCAO_FORMA_LIST
 
 		result.add(producao.getInclusaoUsuario() == null ? null : producao.getInclusaoUsuario().getPessoa().getNome()); // PRODUCAO_INCLUSAO_NOME
 		result.add(producao.getInclusaoUsuario() == null ? null : producao.getInclusaoData()); // PRODUCAO_INCLUSAO_DATA
@@ -209,7 +213,7 @@ public class FiltrarCmd extends _Comando {
 		return result;
 	}
 
-	private List<Object> fetchProducaoFormaList(List<ProducaoForma> producaoFormaList, ProducaoCalculo esperada, ProducaoCalculo confirmada) {
+	private List<Object> fetchProducaoFormaList(List<ProducaoForma> producaoFormaList, ProducaoCalculo total, ProducaoCalculo esperada, ProducaoCalculo confirmada) {
 		List<Object> result = new ArrayList<Object>();
 
 		// inserir todas as formas de producao
@@ -234,6 +238,14 @@ public class FiltrarCmd extends _Comando {
 				}
 				result.add(registro);
 			}
+		}
+		
+		
+
+		// inserir o totalizador total das formas esperadas
+		if (total != null && total.matriz.containsKey("")) {
+			CalculoItem calculoItem = total.matriz.get("");
+			result.add(fetchProducaoForma(calculoItem.producaoFormaTotal));
 		}
 
 		// inserir o totalizador das formas esperadas
