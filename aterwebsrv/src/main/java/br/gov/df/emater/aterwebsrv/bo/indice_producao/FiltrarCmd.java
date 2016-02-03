@@ -18,6 +18,7 @@ import br.gov.df.emater.aterwebsrv.dao.ferramenta.UtilDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoDao;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioNumero;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.ItemNomeResultado;
 import br.gov.df.emater.aterwebsrv.modelo.dto.IndiceProducaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ItemNome;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
@@ -38,13 +39,33 @@ public class FiltrarCmd extends _Comando {
 
 	private class ProducaoCalculo {
 
-		private Map<String, CalculoItem> matriz = new HashMap<String, CalculoItem>();
-
-		private BigDecimal acumula(BigDecimal origem, BigDecimal destino) {
-			return origem == null ? null : (destino == null ? new BigDecimal("0") : destino).add(origem, UtilitarioNumero.BIG_DECIMAL_PRECISAO);
+		ProducaoCalculo(Map<String, Object> bemClassificacaoList, String nomeCalculo) {
+			this.bemClassificacaoList = bemClassificacaoList;
+			this.nomeCalculo = nomeCalculo;
 		}
 
-		public void acumulaItem(String composicaoProducaoFormaId, ProducaoForma producaoForma, Integer publicoAlvoId, boolean confirmado) {
+		private String nomeCalculo;
+
+		private Map<String, Object> bemClassificacaoList;
+
+		private Map<String, CalculoItem> matriz = new HashMap<String, CalculoItem>();
+
+		private BigDecimal acumula(Integer origem, Integer destino) {
+			return acumula(new BigDecimal(origem == null ? 0 : origem), new BigDecimal(destino == null ? 0 : destino));
+		}
+
+		private BigDecimal acumula(BigDecimal origem, BigDecimal destino) {
+			if (origem == null && destino == null) {
+				return null;
+			}
+			if (origem == null && destino != null) {
+				origem = new BigDecimal("0");
+			}
+			return (destino == null ? new BigDecimal("0") : destino).add(origem, UtilitarioNumero.BIG_DECIMAL_PRECISAO);
+		}
+
+		@SuppressWarnings("unchecked")
+		public void acumulaItem(String composicaoProducaoFormaId, ProducaoForma producaoForma, Object publicoAlvoId, boolean confirmado) {
 			CalculoItem calculo = null;
 
 			if (matriz.containsKey(composicaoProducaoFormaId)) {
@@ -62,7 +83,13 @@ public class FiltrarCmd extends _Comando {
 				calculo.producaoFormaTotal.setValorTotal(acumula(producaoForma.getValorTotal(), calculo.producaoFormaTotal.getValorTotal()));
 
 				if (publicoAlvoId != null) {
-					calculo.publicoAlvoList.add(publicoAlvoId);
+					if (publicoAlvoId instanceof Integer) {
+						calculo.publicoAlvoList.add((Integer) publicoAlvoId);
+					} else {
+						calculo.publicoAlvoList.addAll((Set<Integer>) publicoAlvoId);
+					}
+				} else {
+					calculo.producaoFormaTotal.setQuantidadeProdutores(acumula(producaoForma.getQuantidadeProdutores(), calculo.producaoFormaTotal.getQuantidadeProdutores()).intValue());
 				}
 			}
 
@@ -78,6 +105,73 @@ public class FiltrarCmd extends _Comando {
 			return UtilitarioString.collectionToString(idList);
 		}
 
+		public void totalizar() {
+			ProducaoCalculo temp = new ProducaoCalculo(bemClassificacaoList, null);
+			for (Map.Entry<String, CalculoItem> item : this.matriz.entrySet()) {
+				temp.acumulaItem("", item.getValue().producaoFormaTotal, item.getValue().publicoAlvoList, false);
+			}
+			this.acumulaItem("", temp.matriz.get("").producaoFormaTotal, temp.matriz.get("").publicoAlvoList, false);
+		}
+
+		public void atualizarMedias(CalculoItem calculoItem) {
+			ItemNome itemA = (ItemNome) this.bemClassificacaoList.get("itemA");
+			ItemNome itemB = (ItemNome) this.bemClassificacaoList.get("itemB");
+			ItemNome itemC = (ItemNome) this.bemClassificacaoList.get("itemC");
+
+			if (calculoItem.producaoFormaTotal.getItemAValor() != null && itemA != null && ItemNomeResultado.M.equals(itemA.getResultado())) {
+				BigDecimal vlr = new BigDecimal("0");
+				if (calculoItem.producaoFormaTotal.getItemBValor() != null && ItemNomeResultado.S.equals(itemB.getResultado())) {
+					vlr = vlr.add(calculoItem.producaoFormaTotal.getItemBValor(), UtilitarioNumero.BIG_DECIMAL_PRECISAO);
+				}
+				if (calculoItem.producaoFormaTotal.getItemCValor() != null && ItemNomeResultado.S.equals(itemC.getResultado())) {
+					vlr = vlr.add(calculoItem.producaoFormaTotal.getItemCValor(), UtilitarioNumero.BIG_DECIMAL_PRECISAO);
+				}
+				if (BigDecimal.ZERO.equals(vlr)) {
+					calculoItem.producaoFormaTotal.setItemAValor(BigDecimal.ZERO);
+				} else {
+					calculoItem.producaoFormaTotal.setItemAValor(calculoItem.producaoFormaTotal.getVolume().divide(vlr, UtilitarioNumero.BIG_DECIMAL_PRECISAO));
+				}
+			}
+			
+			if (calculoItem.producaoFormaTotal.getItemBValor() != null && itemB != null && ItemNomeResultado.M.equals(itemB.getResultado())) {
+				BigDecimal vlr = new BigDecimal("0");
+				if (calculoItem.producaoFormaTotal.getItemAValor() != null && ItemNomeResultado.S.equals(itemA.getResultado())) {
+					vlr = vlr.add(calculoItem.producaoFormaTotal.getItemAValor(), UtilitarioNumero.BIG_DECIMAL_PRECISAO);
+				}
+				if (calculoItem.producaoFormaTotal.getItemCValor() != null && ItemNomeResultado.S.equals(itemC.getResultado())) {
+					vlr = vlr.add(calculoItem.producaoFormaTotal.getItemCValor(), UtilitarioNumero.BIG_DECIMAL_PRECISAO);
+				}
+				if (BigDecimal.ZERO.equals(vlr)) {
+					calculoItem.producaoFormaTotal.setItemBValor(BigDecimal.ZERO);
+				} else {
+					calculoItem.producaoFormaTotal.setItemBValor(calculoItem.producaoFormaTotal.getVolume().divide(vlr, UtilitarioNumero.BIG_DECIMAL_PRECISAO));
+				}
+			}
+			
+			if (calculoItem.producaoFormaTotal.getItemCValor() != null && itemC != null && ItemNomeResultado.M.equals(itemC.getResultado())) {
+				BigDecimal vlr = new BigDecimal("0");
+				if (calculoItem.producaoFormaTotal.getItemAValor() != null && ItemNomeResultado.S.equals(itemA.getResultado())) {
+					vlr = vlr.add(calculoItem.producaoFormaTotal.getItemAValor(), UtilitarioNumero.BIG_DECIMAL_PRECISAO);
+				}
+				if (calculoItem.producaoFormaTotal.getItemBValor() != null && ItemNomeResultado.S.equals(itemB.getResultado())) {
+					vlr = vlr.add(calculoItem.producaoFormaTotal.getItemBValor(), UtilitarioNumero.BIG_DECIMAL_PRECISAO);
+				}
+				if (BigDecimal.ZERO.equals(vlr)) {
+					calculoItem.producaoFormaTotal.setItemCValor(BigDecimal.ZERO);
+				} else {
+					calculoItem.producaoFormaTotal.setItemCValor(calculoItem.producaoFormaTotal.getVolume().divide(vlr, UtilitarioNumero.BIG_DECIMAL_PRECISAO));
+				}
+			}
+			
+			if (calculoItem.producaoFormaTotal.getVolume() != null && calculoItem.producaoFormaTotal.getValorTotal() != null) {				
+				if (BigDecimal.ZERO.equals(calculoItem.producaoFormaTotal.getVolume())) {
+					calculoItem.producaoFormaTotal.setValorUnitario(BigDecimal.ZERO);
+				} else {
+					calculoItem.producaoFormaTotal.setValorUnitario(calculoItem.producaoFormaTotal.getValorTotal().divide(calculoItem.producaoFormaTotal.getVolume(), UtilitarioNumero.BIG_DECIMAL_PRECISAO));
+				}
+			}
+		}
+
 	}
 
 	@Autowired
@@ -90,7 +184,7 @@ public class FiltrarCmd extends _Comando {
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		IndiceProducaoCadFiltroDto filtro = (IndiceProducaoCadFiltroDto) contexto.getRequisicao();
-		List<Object> result = new ArrayList<Object>();
+		List<Object> result = null;
 		List<Producao> producaoList = null;
 		producaoList = (List<Producao>) dao.filtrar(filtro);
 
@@ -106,60 +200,55 @@ public class FiltrarCmd extends _Comando {
 				// contabilizar a producao
 				for (Producao producao : producaoList) {
 					List<Object> resultProdutor = null;
-					
+
 					Map<String, Object> bemClassificacaoList = utilDao.ipaBemClassificacaoDetalhes(producao.getBem().getBemClassificacao());
 
-					ProducaoCalculo calculoProducaoEsperada = new ProducaoCalculo();
-					ProducaoCalculo calculoProducaoConfirmada = new ProducaoCalculo();
+					ProducaoCalculo calculoProducaoTotal = new ProducaoCalculo(bemClassificacaoList, "Estimada");
+					ProducaoCalculo calculoProducaoProdutoresEsperada = new ProducaoCalculo(bemClassificacaoList, "Calculada");
+					ProducaoCalculo calculoProducaoProdutoresConfirmada = new ProducaoCalculo(bemClassificacaoList, "Confirmada");
 
 					// contabilizar os produtores da producao
 					List<Producao> produtorProducaoList = dao.findByAnoAndBemAndPropriedadeRuralComunidadeUnidadeOrganizacional(producao.getAno(), producao.getBem(), producao.getUnidadeOrganizacional());
 					if (produtorProducaoList != null) {
-						resultProdutor = new ArrayList<Object>();
-						for (Producao produtorProducao : produtorProducaoList) {
 
+						// looping pelos produtores cadastrados
+						for (Producao produtorProducao : produtorProducaoList) {
 							if (produtorProducao.getProducaoFormaList() != null) {
-								ProducaoCalculo calculoProdutorEsperada = new ProducaoCalculo();
-								ProducaoCalculo calculoProdutorConfirmada = new ProducaoCalculo();
+								ProducaoCalculo calculoProdutorEsperada = new ProducaoCalculo(bemClassificacaoList, "Estimada");
+								ProducaoCalculo calculoProdutorConfirmada = new ProducaoCalculo(bemClassificacaoList, "Confirmada");
 								for (ProducaoForma producaoForma : produtorProducao.getProducaoFormaList()) {
 									String composicao = calculoProdutorEsperada.getComposicao(producaoForma);
 									Integer publicoAlvoId = produtorProducao.getPublicoAlvo().getId();
 
+									// acumular os totais do produtor
+									calculoProducaoProdutoresEsperada.acumulaItem(composicao, producaoForma, publicoAlvoId, false);
+									calculoProducaoProdutoresConfirmada.acumulaItem(composicao, producaoForma, publicoAlvoId, true);
+
+									// acumular os totais da producao
 									calculoProdutorEsperada.acumulaItem("", producaoForma, publicoAlvoId, false);
 									calculoProdutorConfirmada.acumulaItem("", producaoForma, publicoAlvoId, true);
-									calculoProducaoEsperada.acumulaItem(composicao, producaoForma, publicoAlvoId, false);
-									calculoProducaoConfirmada.acumulaItem(composicao, producaoForma, publicoAlvoId, true);
 								}
-								resultProdutor.add(fetch(produtorProducao, bemClassificacaoList, calculoProdutorEsperada, calculoProdutorConfirmada));
+								if (resultProdutor == null) {
+									resultProdutor = new ArrayList<Object>();
+								}
+								resultProdutor.add(fetch(produtorProducao, calculoProdutorEsperada, calculoProdutorConfirmada));
 							}
-
 						}
 					}
 
-					ProducaoCalculo calculoProducaoTotal = new ProducaoCalculo();
+					// calcular a produção estimada informada
 					for (ProducaoForma producaoForma : producao.getProducaoFormaList()) {
-						calculoProducaoTotal.acumulaItem("", producaoForma, 0, false);
+						calculoProducaoTotal.acumulaItem("", producaoForma, null, false);
 					}
-					
-					Integer quantidadeProdutores = 0;
-					ProducaoCalculo temp = new ProducaoCalculo();
-					for (Map.Entry<String, CalculoItem> item : calculoProducaoEsperada.matriz.entrySet()) {
-						temp.acumulaItem("", item.getValue().producaoFormaTotal, 0, false);
-						quantidadeProdutores += item.getValue().publicoAlvoList.size();
-					}
-					temp.matriz.get("").producaoFormaTotal.setQuantidadeProdutores(quantidadeProdutores);
-					calculoProducaoEsperada.acumulaItem("", temp.matriz.get("").producaoFormaTotal, 0, false);
 
-					quantidadeProdutores = 0;
-					temp = new ProducaoCalculo();
-					for (Map.Entry<String, CalculoItem> item : calculoProducaoConfirmada.matriz.entrySet()) {
-						temp.acumulaItem("", item.getValue().producaoFormaTotal, 0, false);
-						quantidadeProdutores += item.getValue().publicoAlvoList.size();
-					}
-					temp.matriz.get("").producaoFormaTotal.setQuantidadeProdutores(quantidadeProdutores);
-					calculoProducaoConfirmada.acumulaItem("", temp.matriz.get("").producaoFormaTotal, 0, false);
+					calculoProducaoProdutoresEsperada.totalizar();
 
-					result.add(fetch(producao, bemClassificacaoList, calculoProducaoEsperada, calculoProducaoConfirmada, resultProdutor, calculoProducaoTotal));
+					calculoProducaoProdutoresConfirmada.totalizar();
+
+					if (result == null) {
+						result = new ArrayList<Object>();
+					}
+					result.add(fetch(producao, calculoProducaoProdutoresEsperada, calculoProducaoProdutoresConfirmada, calculoProducaoTotal, resultProdutor));
 				}
 			}
 		}
@@ -168,11 +257,11 @@ public class FiltrarCmd extends _Comando {
 		return false;
 	}
 
-	private List<Object> fetch(Producao producao, Map<String, Object> bemClassificacaoList, ProducaoCalculo calculoProducaoEsperada, ProducaoCalculo calculoProducaoConfirmada) {
-		return fetch(producao, bemClassificacaoList, calculoProducaoEsperada, calculoProducaoConfirmada, null, null);
+	private List<Object> fetch(Producao producao, ProducaoCalculo calculoProducaoEsperada, ProducaoCalculo calculoProducaoConfirmada) {
+		return fetch(producao, calculoProducaoEsperada, calculoProducaoConfirmada, null, null);
 	}
 
-	private List<Object> fetch(Producao producao, Map<String, Object> bemClassificacaoList, ProducaoCalculo esperada, ProducaoCalculo confirmada, List<Object> resultProdutor, ProducaoCalculo total) {
+	private List<Object> fetch(Producao producao, ProducaoCalculo esperada, ProducaoCalculo confirmada, ProducaoCalculo total, List<Object> resultProdutor) {
 		List<Object> result = new ArrayList<Object>();
 
 		result.add(producao.getId()); // PRODUCAO_ID
@@ -180,12 +269,12 @@ public class FiltrarCmd extends _Comando {
 		result.add(producao.getBem().getId()); // PRODUCAO_BEM_ID
 		result.add(producao.getBem().getNome()); // PRODUCAO_BEM_NOME
 
-		result.add(bemClassificacaoList == null ? null : bemClassificacaoList.get("bemClassificacao")); // PRODUCAO_BEM_CLASSIFICACAO
-		result.add(bemClassificacaoList == null ? null : bemClassificacaoList.get("unidadeMedida") == null ? null : ((UnidadeMedida) bemClassificacaoList.get("unidadeMedida")).getNome()); // PRODUCAO_UNIDADE_MEDIDA
-		result.add(bemClassificacaoList == null ? null : bemClassificacaoList.get("formulaProduto") == null ? null : bemClassificacaoList.get("formulaProduto").toString()); // PRODUCAO_FORMULA
-		result.add(bemClassificacaoList == null ? null : bemClassificacaoList.get("itemA") == null ? null : ((ItemNome) bemClassificacaoList.get("itemA")).getNome()); // PRODUCAO_NOME_ITEM_A
-		result.add(bemClassificacaoList == null ? null : bemClassificacaoList.get("itemB") == null ? null : ((ItemNome) bemClassificacaoList.get("itemB")).getNome()); // PRODUCAO_NOME_ITEM_B
-		result.add(bemClassificacaoList == null ? null : bemClassificacaoList.get("itemC") == null ? null : ((ItemNome) bemClassificacaoList.get("itemC")).getNome()); // PRODUCAO_NOME_ITEM_C
+		result.add(esperada.bemClassificacaoList == null ? null : esperada.bemClassificacaoList.get("bemClassificacao")); // PRODUCAO_BEM_CLASSIFICACAO
+		result.add(esperada.bemClassificacaoList == null ? null : esperada.bemClassificacaoList.get("unidadeMedida") == null ? null : ((UnidadeMedida) esperada.bemClassificacaoList.get("unidadeMedida")).getNome()); // PRODUCAO_UNIDADE_MEDIDA
+		result.add(esperada.bemClassificacaoList == null ? null : esperada.bemClassificacaoList.get("formulaProduto") == null ? null : esperada.bemClassificacaoList.get("formulaProduto").toString()); // PRODUCAO_FORMULA
+		result.add(esperada.bemClassificacaoList == null ? null : esperada.bemClassificacaoList.get("itemA") == null ? null : ((ItemNome) esperada.bemClassificacaoList.get("itemA")).getNome()); // PRODUCAO_NOME_ITEM_A
+		result.add(esperada.bemClassificacaoList == null ? null : esperada.bemClassificacaoList.get("itemB") == null ? null : ((ItemNome) esperada.bemClassificacaoList.get("itemB")).getNome()); // PRODUCAO_NOME_ITEM_B
+		result.add(esperada.bemClassificacaoList == null ? null : esperada.bemClassificacaoList.get("itemC") == null ? null : ((ItemNome) esperada.bemClassificacaoList.get("itemC")).getNome()); // PRODUCAO_NOME_ITEM_C
 
 		result.add(producao.getUnidadeOrganizacional() == null ? null : producao.getUnidadeOrganizacional().getId()); // PRODUCAO_UNID_ORG_ID
 		result.add(producao.getUnidadeOrganizacional() == null ? null : producao.getUnidadeOrganizacional().getNome()); // PRODUCAO_UNID_ORG_NOME
@@ -215,7 +304,7 @@ public class FiltrarCmd extends _Comando {
 
 	private List<Object> fetchProducaoFormaList(List<ProducaoForma> producaoFormaList, ProducaoCalculo total, ProducaoCalculo esperada, ProducaoCalculo confirmada) {
 		List<Object> result = new ArrayList<Object>();
-
+		
 		// inserir todas as formas de producao
 		if (producaoFormaList != null) {
 			List<Object> registro = null;
@@ -227,6 +316,7 @@ public class FiltrarCmd extends _Comando {
 				if (esperada != null && esperada.matriz.containsKey(composicao)) {
 					CalculoItem calculoItem = esperada.matriz.get(composicao);
 					calculoItem.producaoFormaTotal.setQuantidadeProdutores(calculoItem.publicoAlvoList.size());
+					esperada.atualizarMedias(calculoItem);
 					registro.addAll(fetchProducaoForma(calculoItem.producaoFormaTotal));
 				}
 
@@ -234,36 +324,45 @@ public class FiltrarCmd extends _Comando {
 				if (confirmada != null && confirmada.matriz.containsKey(composicao)) {
 					CalculoItem calculoItem = confirmada.matriz.get(composicao);
 					calculoItem.producaoFormaTotal.setQuantidadeProdutores(calculoItem.publicoAlvoList.size());
+					confirmada.atualizarMedias(calculoItem);
 					registro.addAll(fetchProducaoForma(calculoItem.producaoFormaTotal));
 				}
 				result.add(registro);
 			}
 		}
-		
-		
 
 		// inserir o totalizador total das formas esperadas
 		if (total != null && total.matriz.containsKey("")) {
 			CalculoItem calculoItem = total.matriz.get("");
-			result.add(fetchProducaoForma(calculoItem.producaoFormaTotal));
+			//calculoItem.producaoFormaTotal.setQuantidadeProdutores(calculoItem.publicoAlvoList.size());
+			total.atualizarMedias(calculoItem);
+			result.add(fetchProducaoForma(calculoItem.producaoFormaTotal, total.nomeCalculo));
 		}
 
 		// inserir o totalizador das formas esperadas
 		if (esperada != null && esperada.matriz.containsKey("")) {
 			CalculoItem calculoItem = esperada.matriz.get("");
-			result.add(fetchProducaoForma(calculoItem.producaoFormaTotal));
+			calculoItem.producaoFormaTotal.setQuantidadeProdutores(calculoItem.publicoAlvoList.size());
+			esperada.atualizarMedias(calculoItem);
+			result.add(fetchProducaoForma(calculoItem.producaoFormaTotal, esperada.nomeCalculo));
 		}
 
 		// inserir o totalizador das formas confirmadas
 		if (confirmada != null && confirmada.matriz.containsKey("")) {
 			CalculoItem calculoItem = confirmada.matriz.get("");
-			result.add(fetchProducaoForma(calculoItem.producaoFormaTotal));
+			calculoItem.producaoFormaTotal.setQuantidadeProdutores(calculoItem.publicoAlvoList.size());
+			confirmada.atualizarMedias(calculoItem);
+			result.add(fetchProducaoForma(calculoItem.producaoFormaTotal, confirmada.nomeCalculo));
 		}
 
 		return result;
 	}
 
 	private List<Object> fetchProducaoForma(ProducaoForma producaoForma) {
+		return fetchProducaoForma(producaoForma, null);
+	}
+
+	private List<Object> fetchProducaoForma(ProducaoForma producaoForma, String nomeCalculo) {
 		List<Object> result = new ArrayList<Object>();
 
 		result.add(fetchProducaoFormaComposicaoList(producaoForma.getProducaoFormaComposicaoList())); // FORMA_COMPOSICAO_LIST
@@ -279,6 +378,7 @@ public class FiltrarCmd extends _Comando {
 		result.add(producaoForma.getInclusaoData()); // FORMA_INCLUSAO_DATA
 		result.add(producaoForma.getAlteracaoUsuario() == null ? null : producaoForma.getAlteracaoUsuario().getPessoa().getNome()); // FORMA_ALTERACAO_NOME
 		result.add(producaoForma.getAlteracaoData()); // FORMA_ALTERACAO_DATA
+		result.add(nomeCalculo); // FORMA_NOME_CALCULO
 
 		return result;
 	}

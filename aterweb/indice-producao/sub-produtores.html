@@ -90,24 +90,24 @@
                                         <td ng-repeat="composicao in forma[FORMA_COMPOSICAO_LIST]">
                                             {{composicao[COMPOSICAO_FORMA_PRODUCAO_VALOR_NOME]}}
                                         </td>
-                                        <td>{{forma[FORMA_VALOR_ITEM_A]}}</td>
-                                        <td>{{forma[FORMA_VALOR_ITEM_B]}}</td>
-                                        <td>{{forma[FORMA_VALOR_ITEM_C]}}</td>
-                                        <td>{{forma[FORMA_VOLUME]}}</td>
-                                        <td>{{forma[FORMA_VLR_UNIT]}}</td>
-                                        <td>{{forma[FORMA_VLR_TOTAL]}}</td>
+                                        <td class="text-right">{{forma[FORMA_VALOR_ITEM_A]}}</td>
+                                        <td class="text-right">{{forma[FORMA_VALOR_ITEM_B]}}</td>
+                                        <td class="text-right">{{forma[FORMA_VALOR_ITEM_C]}}</td>
+                                        <td class="text-right">{{forma[FORMA_VOLUME]}}</td>
+                                        <td class="text-right">{{forma[FORMA_VLR_UNIT] | currency}}</td>
+                                        <td class="text-right">{{forma[FORMA_VLR_TOTAL] | currency}}</td>
                                         <td>{{forma[FORMA_DATA_CONFIRMACAO] | date: 'dd/MM/yyyy'}}</td>
                                     </tr>
                                 </tbody>
                                 <tfoot>
                                     <tr ng-repeat="forma in item[PRODUCAO_FORMA_LIST] | limitTo: -2">
-                                        <td class="text-right" colspan="{{item[PRODUCAO_FORMA_LIST][0][FORMA_COMPOSICAO_LIST].length}}">Total</td>
-                                        <td>{{forma[FORMA_VALOR_ITEM_A]}}</td>
-                                        <td>{{forma[FORMA_VALOR_ITEM_B]}}</td>
-                                        <td>{{forma[FORMA_VALOR_ITEM_C]}}</td>
-                                        <td>{{forma[FORMA_VOLUME]}}</td>
-                                        <td>{{forma[FORMA_VLR_UNIT]}}</td>
-                                        <td>{{forma[FORMA_VLR_TOTAL]}}</td>
+                                        <td class="text-right" colspan="{{item[PRODUCAO_FORMA_LIST][0][FORMA_COMPOSICAO_LIST].length}}">Total {{forma[FORMA_NOME_CALCULO]}}</td>
+                                        <td class="text-right">{{forma[FORMA_VALOR_ITEM_A]}}</td>
+                                        <td class="text-right">{{forma[FORMA_VALOR_ITEM_B]}}</td>
+                                        <td class="text-right">{{forma[FORMA_VALOR_ITEM_C]}}</td>
+                                        <td class="text-right">{{forma[FORMA_VOLUME]}}</td>
+                                        <td class="text-right">{{forma[FORMA_VLR_UNIT] | currency}}</td>
+                                        <td class="text-right">{{forma[FORMA_VLR_TOTAL] | currency}}</td>
                                         <td>--</td>
                                     </tr>
                                 </tfoot>

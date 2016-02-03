@@ -68,47 +68,47 @@
                                     <td rowspan="3" ng-repeat="composicao in forma[FORMA_COMPOSICAO_LIST]">
                                         {{composicao[COMPOSICAO_FORMA_PRODUCAO_VALOR_NOME]}}
                                     </td>
-                                    <td>Cadastrado</td>
-                                    <td>{{forma[FORMA_VALOR_ITEM_A]}}</td>
-                                    <td>{{forma[FORMA_VALOR_ITEM_B]}}</td>
-                                    <td>{{forma[FORMA_VALOR_ITEM_C]}}</td>
-                                    <td>{{forma[FORMA_VOLUME]}}</td>
-                                    <td>{{forma[FORMA_VLR_UNIT]}}</td>
-                                    <td>{{forma[FORMA_VLR_TOTAL]}}</td>
-                                    <td>{{forma[FORMA_QTD_PRODUTORES]}}</td>
+                                    <td>Estimada</td>
+                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_A]}}</td>
+                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_B]}}</td>
+                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_C]}}</td>
+                                    <td class="text-right">{{forma[FORMA_VOLUME]}}</td>
+                                    <td class="text-right">{{forma[FORMA_VLR_UNIT] | currency}}</td>
+                                    <td class="text-right">{{forma[FORMA_VLR_TOTAL] | currency}}</td>
+                                    <td class="text-right">{{forma[FORMA_QTD_PRODUTORES]}}</td>
                                 </tr>
                                 <tr title="Cadastrado por: {{forma[FORMA_INCLUSAO_NOME]}} em {{forma[FORMA_INCLUSAO_DATA] | date: 'dd/MM/yyyy'}}, alterado por: {{forma[FORMA_ALTERACAO_NOME]}} em {{forma[FORMA_ALTERACAO_DATA] | date: 'dd/MM/yyyy'}}">
-                                    <td>Estimado</td>
-                                    <td>{{forma[FORMA_VALOR_ITEM_A + 13]}}</td>
-                                    <td>{{forma[FORMA_VALOR_ITEM_B + 13]}}</td>
-                                    <td>{{forma[FORMA_VALOR_ITEM_C + 13]}}</td>
-                                    <td>{{forma[FORMA_VOLUME + 13]}}</td>
-                                    <td>{{forma[FORMA_VLR_UNIT + 13]}}</td>
-                                    <td>{{forma[FORMA_VLR_TOTAL + 13]}}</td>
-                                    <td>{{forma[FORMA_QTD_PRODUTORES + 13]}}</td>
+                                    <td>Calculada</td>
+                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_A + 14]}}</td>
+                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_B + 14]}}</td>
+                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_C + 14]}}</td>
+                                    <td class="text-right">{{forma[FORMA_VOLUME + 14]}}</td>
+                                    <td class="text-right">{{forma[FORMA_VLR_UNIT + 14] | currency}}</td>
+                                    <td class="text-right">{{forma[FORMA_VLR_TOTAL + 14] | currency}}</td>
+                                    <td class="text-right">{{forma[FORMA_QTD_PRODUTORES + 14]}}</td>
                                 </tr>
                                 <tr ng-repeat-end title="Cadastrado por: {{forma[FORMA_INCLUSAO_NOME]}} em {{forma[FORMA_INCLUSAO_DATA] | date: 'dd/MM/yyyy'}}, alterado por: {{forma[FORMA_ALTERACAO_NOME]}} em {{forma[FORMA_ALTERACAO_DATA] | date: 'dd/MM/yyyy'}}">
-                                    <td>Confirmado</td>
-                                    <td>{{forma[FORMA_VALOR_ITEM_A + 26]}}</td>
-                                    <td>{{forma[FORMA_VALOR_ITEM_B + 26]}}</td>
-                                    <td>{{forma[FORMA_VALOR_ITEM_C + 26]}}</td>
-                                    <td>{{forma[FORMA_VOLUME + 26]}}</td>
-                                    <td>{{forma[FORMA_VLR_UNIT + 26]}}</td>
-                                    <td>{{forma[FORMA_VLR_TOTAL + 26]}}</td>
-                                    <td>{{forma[FORMA_QTD_PRODUTORES + 26]}}</td>
+                                    <td>Confirmada</td>
+                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_A + 28]}}</td>
+                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_B + 28]}}</td>
+                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_C + 28]}}</td>
+                                    <td class="text-right">{{forma[FORMA_VOLUME + 28]}}</td>
+                                    <td class="text-right">{{forma[FORMA_VLR_UNIT + 28] | currency}}</td>
+                                    <td class="text-right">{{forma[FORMA_VLR_TOTAL + 28] | currency}}</td>
+                                    <td class="text-right">{{forma[FORMA_QTD_PRODUTORES + 28]}}</td>
                                 </tr>
                             </tbody>
                             <tfoot>
                                 <tr ng-repeat="forma in item[PRODUCAO_FORMA_LIST] | limitTo: -3">
                                     <td class="text-right" colspan="{{item[PRODUCAO_FORMA_LIST][0][FORMA_COMPOSICAO_LIST].length}}">Total</td>
-                                    <td>&nbsp;</td>
-                                    <td>{{forma[FORMA_VALOR_ITEM_A]}}</td>
-                                    <td>{{forma[FORMA_VALOR_ITEM_B]}}</td>
-                                    <td>{{forma[FORMA_VALOR_ITEM_C]}}</td>
-                                    <td>{{forma[FORMA_VOLUME]}}</td>
-                                    <td>{{forma[FORMA_VLR_UNIT]}}</td>
-                                    <td>{{forma[FORMA_VLR_TOTAL]}}</td>
-                                    <td>{{forma[FORMA_QTD_PRODUTORES]}}</td>
+                                    <td>{{forma[FORMA_NOME_CALCULO]}}</td>
+                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_A]}}</td>
+                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_B]}}</td>
+                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_C]}}</td>
+                                    <td class="text-right">{{forma[FORMA_VOLUME]}}</td>
+                                    <td class="text-right">{{forma[FORMA_VLR_UNIT] | currency}}</td>
+                                    <td class="text-right">{{forma[FORMA_VLR_TOTAL] | currency}}</td>
+                                    <td class="text-right">{{forma[FORMA_QTD_PRODUTORES]}}</td>
                                 </tr>
                             </tfoot>
                         </table>

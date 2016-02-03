@@ -184,6 +184,8 @@
                 $scope.FORMA_INCLUSAO_DATA = 10;
                 $scope.FORMA_ALTERACAO_NOME = 11;
                 $scope.FORMA_ALTERACAO_DATA = 12;
+                $scope.FORMA_NOME_CALCULO = 13;
+
             $scope.PRODUCAO_INCLUSAO_NOME = 20;
             $scope.PRODUCAO_INCLUSAO_DATA = 21;
             $scope.PRODUCAO_ALTERACAO_NOME = 22;
