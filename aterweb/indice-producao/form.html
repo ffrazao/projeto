@@ -78,23 +78,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4" title="Unidade Organizacional">
+                    <div class="col-md-8" title="Unidade Organizacional">
                         <div class="form-group">
                             <label class="control-label" for="unidadeOrganizacional">Unidade Organizacional</label>
-                            <select id="unidadeOrganizacional" name="unidadeOrganizacional" class="form-control" ng-model="cadastro.apoio.unidadeOrganizacional" ng-options="item as item.nome for item in cadastro.apoio.unidadeOrganizacionalList | orderBy:'nome' track by item.id" required="true" ng-disabled="false">
+                            <select id="unidadeOrganizacional" name="unidadeOrganizacional" class="form-control" ng-model="cadastro.registro.unidadeOrganizacional" ng-options="item as item.nome for item in cadastro.apoio.unidadeOrganizacionalList | orderBy:'nome' track by item.id" required="true" ng-disabled="false">
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.unidadeOrganizacional.$error.required">
-                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                                Campo Obrigatório
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4" title="Comunidade">
-                        <div class="form-group">
-                            <label class="control-label" for="comunidade">Comunidade</label>
-                            <select id="comunidade" name="comunidade" class="form-control" ng-model="cadastro.registro.comunidade" ng-options="item as item.nome for item in cadastro.apoio.comunidadeList | orderBy:'nome' track by item.id" required="true">
-                            </select>
-                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.comunidade.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
@@ -104,11 +93,11 @@
                 <div class="row" ng-show="cadastro.registro.bem.id">
                     <div class="col-md-12" title="Forma de Produção">
                         <div class="form-group">
-                            <label class="control-label" for="formaProducao">Forma de Produção</label>
+                            <label class="control-label" for="producaoFormaList">Forma de Produção</label>
 
                             <ng-include src="'indice-producao/sub-producao-forma.html'" ng-controller="ProducaoFormaCtrl"></ng-include>
 
-                            <input type="hidden" id="formaProducao" name="formaProducao" ng-model="cadastro.registro.producaoFormaList.length" ng-valor-min="1">
+                            <input type="hidden" id="producaoFormaList" name="producaoFormaList" ng-model="cadastro.registro.producaoFormaList.length" ng-valor-min="1" required="true">
 
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.producaoFormaList.$error.ngValorMin">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>

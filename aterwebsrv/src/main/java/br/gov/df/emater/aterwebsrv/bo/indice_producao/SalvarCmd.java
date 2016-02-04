@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.bo.indice_producao;
 
+import java.util.Map;
+
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -9,11 +11,14 @@ import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationExceptio
 
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
+import br.gov.df.emater.aterwebsrv.dao.ferramenta.UtilDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.BemDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoFormaComposicaoDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoFormaDao;
+import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioNumero;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.CadastroAcao;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.FormulaProduto;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoForma;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoFormaComposicao;
@@ -26,6 +31,9 @@ public class SalvarCmd extends _Comando {
 
 	@Autowired
 	private ProducaoDao dao;
+
+	@Autowired
+	private UtilDao utilDao;
 
 	@Autowired
 	private BemDao bemDao;
@@ -72,6 +80,8 @@ public class SalvarCmd extends _Comando {
 				producaoFormaDao.delete(producaoForma.getId());
 			}
 		}
+		
+		Map<String, Object> bemClassificacaoDetalhe = utilDao.ipaBemClassificacaoDetalhes(result.getBem().getBemClassificacao());
 
 		// salvar demais itens
 		for (ProducaoForma producaoForma : result.getProducaoFormaList()) {
@@ -84,6 +94,14 @@ public class SalvarCmd extends _Comando {
 				producaoForma.setInclusaoUsuario(getUsuario(contexto.getUsuario().getName()));
 			}
 			producaoForma.setAlteracaoUsuario(getUsuario(contexto.getUsuario().getName()));
+			
+			try {
+				producaoForma.setVolume(((FormulaProduto) bemClassificacaoDetalhe.get("formulaProduto")).volume(producaoForma));
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+			producaoForma.setValorTotal(producaoForma.getVolume().multiply(producaoForma.getValorUnitario(), UtilitarioNumero.BIG_DECIMAL_PRECISAO));
+			
 			producaoFormaDao.save(producaoForma);
 
 			Integer ordem = 0;

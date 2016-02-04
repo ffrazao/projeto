@@ -69,46 +69,46 @@
                                         {{composicao[COMPOSICAO_FORMA_PRODUCAO_VALOR_NOME]}}
                                     </td>
                                     <td>Estimada</td>
-                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_A]}}</td>
-                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_B]}}</td>
-                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_C]}}</td>
-                                    <td class="text-right">{{forma[FORMA_VOLUME]}}</td>
+                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_A] | number: globalFracaoHectares}}</td>
+                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_B] | number: globalFracaoHectares}}</td>
+                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_C] | number: globalFracaoHectares}}</td>
+                                    <td class="text-right">{{forma[FORMA_VOLUME] | number: globalFracaoHectares}}</td>
                                     <td class="text-right">{{forma[FORMA_VLR_UNIT] | currency}}</td>
                                     <td class="text-right">{{forma[FORMA_VLR_TOTAL] | currency}}</td>
                                     <td class="text-right">{{forma[FORMA_QTD_PRODUTORES]}}</td>
                                 </tr>
                                 <tr title="Cadastrado por: {{forma[FORMA_INCLUSAO_NOME]}} em {{forma[FORMA_INCLUSAO_DATA] | date: 'dd/MM/yyyy'}}, alterado por: {{forma[FORMA_ALTERACAO_NOME]}} em {{forma[FORMA_ALTERACAO_DATA] | date: 'dd/MM/yyyy'}}">
                                     <td>Calculada</td>
-                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_A + 14]}}</td>
-                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_B + 14]}}</td>
-                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_C + 14]}}</td>
-                                    <td class="text-right">{{forma[FORMA_VOLUME + 14]}}</td>
+                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_A + 14] | number: globalFracaoHectares}}</td>
+                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_B + 14] | number: globalFracaoHectares}}</td>
+                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_C + 14] | number: globalFracaoHectares}}</td>
+                                    <td class="text-right">{{forma[FORMA_VOLUME + 14] | number: globalFracaoHectares}}</td>
                                     <td class="text-right">{{forma[FORMA_VLR_UNIT + 14] | currency}}</td>
                                     <td class="text-right">{{forma[FORMA_VLR_TOTAL + 14] | currency}}</td>
                                     <td class="text-right">{{forma[FORMA_QTD_PRODUTORES + 14]}}</td>
                                 </tr>
                                 <tr ng-repeat-end title="Cadastrado por: {{forma[FORMA_INCLUSAO_NOME]}} em {{forma[FORMA_INCLUSAO_DATA] | date: 'dd/MM/yyyy'}}, alterado por: {{forma[FORMA_ALTERACAO_NOME]}} em {{forma[FORMA_ALTERACAO_DATA] | date: 'dd/MM/yyyy'}}">
                                     <td>Confirmada</td>
-                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_A + 28]}}</td>
-                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_B + 28]}}</td>
-                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_C + 28]}}</td>
-                                    <td class="text-right">{{forma[FORMA_VOLUME + 28]}}</td>
+                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_A + 28] | number: globalFracaoHectares}}</td>
+                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_B + 28] | number: globalFracaoHectares}}</td>
+                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_C + 28] | number: globalFracaoHectares}}</td>
+                                    <td class="text-right">{{forma[FORMA_VOLUME + 28] | number: globalFracaoHectares}}</td>
                                     <td class="text-right">{{forma[FORMA_VLR_UNIT + 28] | currency}}</td>
                                     <td class="text-right">{{forma[FORMA_VLR_TOTAL + 28] | currency}}</td>
-                                    <td class="text-right">{{forma[FORMA_QTD_PRODUTORES + 28]}}</td>
+                                    <td class="text-right">{{forma[FORMA_QTD_PRODUTORES + 28] | number: 0}}</td>
                                 </tr>
                             </tbody>
                             <tfoot>
                                 <tr ng-repeat="forma in item[PRODUCAO_FORMA_LIST] | limitTo: -3">
                                     <td class="text-right" colspan="{{item[PRODUCAO_FORMA_LIST][0][FORMA_COMPOSICAO_LIST].length}}">Total</td>
                                     <td>{{forma[FORMA_NOME_CALCULO]}}</td>
-                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_A]}}</td>
-                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_B]}}</td>
-                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_C]}}</td>
-                                    <td class="text-right">{{forma[FORMA_VOLUME]}}</td>
+                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_A] | number: globalFracaoHectares}}</td>
+                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_B] | number: globalFracaoHectares}}</td>
+                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_C] | number: globalFracaoHectares}}</td>
+                                    <td class="text-right">{{forma[FORMA_VOLUME] | number: globalFracaoHectares}}</td>
                                     <td class="text-right">{{forma[FORMA_VLR_UNIT] | currency}}</td>
                                     <td class="text-right">{{forma[FORMA_VLR_TOTAL] | currency}}</td>
-                                    <td class="text-right">{{forma[FORMA_QTD_PRODUTORES]}}</td>
+                                    <td class="text-right">{{forma[FORMA_QTD_PRODUTORES] | number: 0}}</td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -125,83 +125,3 @@
 </div>
 <label class="control-label" ng-if="navegador.selecao.tipo === 'U' && navegador.selecao.item">Produtores ({{navegador.selecao.item[PRODUCAO_BEM_NOME]}}) ({{navegador.selecao.item[PRODUCAO_UNID_ORG_NOME]}})</label>
 <ng-include src="'indice-producao/sub-produtores.html'" ng-controller="ProdutoresCtrl" ng-if="navegador.selecao.tipo === 'U' && navegador.selecao.item"></ng-include>
-
-<!-- <div class="panel panel-default">
-    <div class="panel-heading"><h4>{{nomeFormulario}}</h4></div>
-    <div class="panel-body" ng-if="!navegador.dados.length">
-        <div class="alert alert-warning" style="margin: 0px;" role="alert">
-            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-            Nenhum registro localizado!
-        </div>
-    </div>
-    <div class="table-responsive" ng-if="navegador.dados.length">
-        <table class="table table-hover table-striped" style="padding:0; margin:0;">
-            <thead>
-                <tr>
-                    <th>
-                        <frz-seletor ng-model="navegador"></frz-seletor>
-                    </th>
-                    <th width="30">
-                        #
-                    </th>
-                    <th>Ano</th>
-                    <th>Bem de Produção / <br>Classificação</th>
-                    <th>Unidade Local</th>
-                    <th>Situação</th>
-                    <th>A</th>
-                    <th>B</th>
-                    <th>C</th>
-                    <th>Volume</th>
-                    <th>Vlr. Unit.</th>
-                    <th>Vlr. Total</th>
-                    <th>Produtores</th>
-                    <th>Unidade de Medida</th>
-                </tr>
-            </thead>
-            <tbody ng-init="cadastro.apoio.escondeDetalhe = false">
-                <tr ng-repeat-start="item in navegador.dados | orderBy: '4' | orderBy: '3' | orderBy: '2' | orderBy: '-1' | pagina: navegador.paginaAtual : navegador.tamanhoPagina | limitTo: navegador.tamanhoPagina" ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)">
-                    <td width="30px" rowspan="3">
-                        <input type="radio" ng-show="navegador.selecao.tipo === 'U'" ng-model="navegador.selecao.item" ng-value="item"/>
-                        <input type="checkbox" ng-show="navegador.selecao.tipo === 'M'" checklist-model="navegador.selecao.items" checklist-value="item" ng-click="crudMataClick(scp, $event);"/>
-                    </td>
-                    <td rowspan="3">
-                        {{$index + 1 + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)}}
-                    </td>
-                    <td rowspan="3">{{item[PRODUCAO_ANO]}}</td>
-                    <td rowspan="3">{{item[PRODUCAO_BEM_NOME]}}<br><small>{{item[PRODUCAO_BEM_CLASSIFICACAO]}}</small></td>
-                    <td rowspan="3">{{item[PRODUCAO_UNID_ORG_NOME]}}<small></td>
-                    <td>&nbsp;</td>
-                    <td><small ng-if="item[PRODUCAO_NOME_ITEM_A]">({{item[PRODUCAO_NOME_ITEM_A]}})</small></td>
-                    <td><small ng-if="item[PRODUCAO_NOME_ITEM_B]">({{item[PRODUCAO_NOME_ITEM_B]}})</small></td>
-                    <td><small ng-if="item[PRODUCAO_NOME_ITEM_C]">({{item[PRODUCAO_NOME_ITEM_C]}})</small></td>
-                    <td><small>({{item[PRODUCAO_FORMULA]}})</small></td>
-                    <td colspan="3">&nbsp;</td>
-                    <td rowspan="3">{{item[PRODUCAO_UNIDADE_MEDIDA]}}</td>
-                </tr>
-                <tr ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)">
-                    <td>Esperado</td>
-                    <td class="text-right">{{item[PRODUCAO_FORMA_LIST][item[PRODUCAO_FORMA_LIST].length - 2][FORMA_VALOR_ITEM_A] | number: 5}}</td>
-                    <td class="text-right">{{item[PRODUCAO_FORMA_LIST][item[PRODUCAO_FORMA_LIST].length - 2][FORMA_VALOR_ITEM_B] | number: 5}}</td>
-                    <td class="text-right">{{item[PRODUCAO_FORMA_LIST][item[PRODUCAO_FORMA_LIST].length - 2][FORMA_VALOR_ITEM_C] | number: 5}}</td>
-                    <td class="text-right">{{item[PRODUCAO_FORMA_LIST][item[PRODUCAO_FORMA_LIST].length - 2][FORMA_VOLUME] | number: 5}}</td>
-                    <td class="text-right">{{item[PRODUCAO_FORMA_LIST][item[PRODUCAO_FORMA_LIST].length - 2][FORMA_VLR_UNIT] | currency}}</td>
-                    <td class="text-right">{{item[PRODUCAO_FORMA_LIST][item[PRODUCAO_FORMA_LIST].length - 2][FORMA_VLR_TOTAL] | currency}}</td>
-                    <td class="text-right">{{item[PRODUCAO_FORMA_LIST][item[PRODUCAO_FORMA_LIST].length - 2][FORMA_QTD_PRODUTORES] | number: 0}}</td>
-                </tr>
-                <tr ng-repeat-end ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)">
-                    <td>Confirmado</td>
-                    <td class="text-right">/{{item[PRODUCAO_FORMA_LIST].length}}/{{item[PRODUCAO_FORMA_LIST][item[PRODUCAO_FORMA_LIST].length - 1][FORMA_VALOR_ITEM_A] | number: 5}}</td>
-                    <td class="text-right">{{item[PRODUCAO_FORMA_LIST][item[PRODUCAO_FORMA_LIST].length - 1][FORMA_VALOR_ITEM_B] | number: 5}}</td>
-                    <td class="text-right">{{item[PRODUCAO_FORMA_LIST][item[PRODUCAO_FORMA_LIST].length - 1][FORMA_VALOR_ITEM_C] | number: 5}}</td>
-                    <td class="text-right">{{item[PRODUCAO_FORMA_LIST][item[PRODUCAO_FORMA_LIST].length - 1][FORMA_VOLUME] | number: 5}}</td>
-                    <td class="text-right">{{item[PRODUCAO_FORMA_LIST][item[PRODUCAO_FORMA_LIST].length - 1][FORMA_VLR_UNIT] | currency}}</td>
-                    <td class="text-right">{{item[PRODUCAO_FORMA_LIST][item[PRODUCAO_FORMA_LIST].length - 1][FORMA_VLR_TOTAL] | currency}}</td>
-                    <td class="text-right">{{item[PRODUCAO_FORMA_LIST][item[PRODUCAO_FORMA_LIST].length - 1][FORMA_QTD_PRODUTORES] | number: 0}}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-<label class="control-label" ng-if="navegador.selecao.tipo === 'U' && navegador.selecao.item">Produtores</label>
-<ng-include src="'indice-producao/sub-produtores.html'" ng-controller="ProdutoresCtrl" ng-if="navegador.selecao.tipo === 'U' && navegador.selecao.item"></ng-include>
--->

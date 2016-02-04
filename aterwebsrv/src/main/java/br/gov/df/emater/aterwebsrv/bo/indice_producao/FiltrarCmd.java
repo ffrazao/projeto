@@ -110,7 +110,11 @@ public class FiltrarCmd extends _Comando {
 			for (Map.Entry<String, CalculoItem> item : this.matriz.entrySet()) {
 				temp.acumulaItem("", item.getValue().producaoFormaTotal, item.getValue().publicoAlvoList, false);
 			}
-			this.acumulaItem("", temp.matriz.get("").producaoFormaTotal, temp.matriz.get("").publicoAlvoList, false);
+			if (temp.matriz.get("") != null) {
+				this.acumulaItem("", temp.matriz.get("").producaoFormaTotal, temp.matriz.get("").publicoAlvoList, false);
+			} else {
+				this.acumulaItem("", new ProducaoForma(), null, false);
+			}
 		}
 
 		public void atualizarMedias(CalculoItem calculoItem) {

@@ -90,10 +90,10 @@
                                         <td ng-repeat="composicao in forma[FORMA_COMPOSICAO_LIST]">
                                             {{composicao[COMPOSICAO_FORMA_PRODUCAO_VALOR_NOME]}}
                                         </td>
-                                        <td class="text-right">{{forma[FORMA_VALOR_ITEM_A]}}</td>
-                                        <td class="text-right">{{forma[FORMA_VALOR_ITEM_B]}}</td>
-                                        <td class="text-right">{{forma[FORMA_VALOR_ITEM_C]}}</td>
-                                        <td class="text-right">{{forma[FORMA_VOLUME]}}</td>
+                                        <td class="text-right">{{forma[FORMA_VALOR_ITEM_A] | number: globalFracaoHectares}}</td>
+                                        <td class="text-right">{{forma[FORMA_VALOR_ITEM_B] | number: globalFracaoHectares}}</td>
+                                        <td class="text-right">{{forma[FORMA_VALOR_ITEM_C] | number: globalFracaoHectares}}</td>
+                                        <td class="text-right">{{forma[FORMA_VOLUME] | number: globalFracaoHectares}}</td>
                                         <td class="text-right">{{forma[FORMA_VLR_UNIT] | currency}}</td>
                                         <td class="text-right">{{forma[FORMA_VLR_TOTAL] | currency}}</td>
                                         <td>{{forma[FORMA_DATA_CONFIRMACAO] | date: 'dd/MM/yyyy'}}</td>
@@ -102,10 +102,10 @@
                                 <tfoot>
                                     <tr ng-repeat="forma in item[PRODUCAO_FORMA_LIST] | limitTo: -2">
                                         <td class="text-right" colspan="{{item[PRODUCAO_FORMA_LIST][0][FORMA_COMPOSICAO_LIST].length}}">Total {{forma[FORMA_NOME_CALCULO]}}</td>
-                                        <td class="text-right">{{forma[FORMA_VALOR_ITEM_A]}}</td>
-                                        <td class="text-right">{{forma[FORMA_VALOR_ITEM_B]}}</td>
-                                        <td class="text-right">{{forma[FORMA_VALOR_ITEM_C]}}</td>
-                                        <td class="text-right">{{forma[FORMA_VOLUME]}}</td>
+                                        <td class="text-right">{{forma[FORMA_VALOR_ITEM_A] | number: globalFracaoHectares}}</td>
+                                        <td class="text-right">{{forma[FORMA_VALOR_ITEM_B] | number: globalFracaoHectares}}</td>
+                                        <td class="text-right">{{forma[FORMA_VALOR_ITEM_C] | number: globalFracaoHectares}}</td>
+                                        <td class="text-right">{{forma[FORMA_VOLUME] | number: globalFracaoHectares}}</td>
                                         <td class="text-right">{{forma[FORMA_VLR_UNIT] | currency}}</td>
                                         <td class="text-right">{{forma[FORMA_VLR_TOTAL] | currency}}</td>
                                         <td>--</td>
@@ -121,124 +121,6 @@
                     </tr> 
                 </tfoot>
             </table>
-
-
-
-
-
-
-
-
-<!--
-
-            <table class="sr-only table table-hover table-striped" style="padding:0; margin:0;">
-                <thead>
-                    <tr>
-                        <th rowspan="2">
-                            <frz-seletor ng-model="produtoresNvg"></frz-seletor>
-                        </th>
-                        <th rowspan="2" width="30">
-                            #
-                        </th>
-                        <th rowspan="2">Produtor</th>
-                        <th rowspan="2">Propriedade</th>
-                        <th colspan="2">Volume</th>
-                        <th rowspan="2">Unidade de Medida</th>
-                        <th rowspan="2">Ação</th>
-                    </tr>
-                    <tr>
-                        <th>Esperado</th>
-                        <th>Confirmado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat-start="produtor in navegador.selecao.item[PRODUCAO_PRODUTOR_LIST] | orderBy: 'nome' | pagina: produtoresNvg.paginaAtual : produtoresNvg.tamanhoPagina | limitTo: produtoresNvg.tamanhoPagina" ng-click="produtoresNvg.folhaAtual = $index + ((produtoresNvg.paginaAtual-1) * produtoresNvg.tamanhoPagina)">
-                        <td width="30px">
-                            <input type="radio" ng-show="produtoresNvg.selecao.tipo === 'U'" ng-model="produtoresNvg.selecao.item" ng-value="produtor"/>
-                            <input type="checkbox" ng-show="produtoresNvg.selecao.tipo === 'M'" checklist-model="produtoresNvg.selecao.items" checklist-value="produtor" ng-click="crudMataClick(scp, $event);"/>
-                        </td>
-                        <td>
-                            {{$index + 1 + ((produtoresNvg.paginaAtual-1) * produtoresNvg.tamanhoPagina)}}
-                        </td>
-                        <td>
-                            <a ng-click="modalVerPessoa(22)">{{produtor[1]}}</a>
-                        </td>
-                        <td><a ng-click="modalVerPropriedadeRural(2)">{{produtor[0]}}</a></td>
-                        <td>{{soma(produtor[2], 1) | number: 5}}</td>
-                        <td>00000000000000</td>
-                        <td>{{navegador.selecao.item[5]}}</td>
-                        <th><button class="btn btn-primary btn-sm">Confirmar</button></th>
-                    </tr>
-                    <tr ng-repeat-end ng-click="produtoresNvg.folhaAtual = $index + ((produtoresNvg.paginaAtual-1) * produtoresNvg.tamanhoPagina)" 
-                        ng-if="!cadastro.apoio.escondeDetalhe && produtor[2].length"
-                        style="font-size: 90%; padding:0; margin:0;">
-                        <td style="padding:0; margin:0;"></td>
-                        <td colspan="10" style="padding:0; margin:0;">
-                            <div class="table-responsive">
-                                <table class="table table-hover table-striped table-bordered table-condensed table-sm" style="padding:0; margin:0;">
-                                    <thead>
-                                        <tr>
-                                            <th colspan="{{produtor[2][0][0].length}}">Forma de Produção</th>
-                                            <th ng-if="navegador.selecao.item[9]">A</th>
-                                            <th ng-if="navegador.selecao.item[10]">B</th>
-                                            <th ng-if="navegador.selecao.item[11]">C</th>
-                                            <th>Volume</th>
-                                            <th rowspan="2">Unidade de Medida</th>
-                                            <th rowspan="2">Confirmado em</th>
-                                        </tr>
-                                        <tr>
-                                            <th ng-repeat="forma in produtor[2][0][0] | orderBy: '2'">
-                                                {{forma[0]}}
-                                            </th>
-                                            <th ng-if="navegador.selecao.item[9]">{{navegador.selecao.item[9]}}</th>
-                                            <th ng-if="navegador.selecao.item[10]">{{navegador.selecao.item[10]}}</th>
-                                            <th ng-if="navegador.selecao.item[11]">{{navegador.selecao.item[11]}}</th>
-                                            <th>({{navegador.selecao.item[8]}})</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr ng-repeat="linha in produtor[2] | orderBy: '0.4' | orderBy: '0.3' | orderBy: '0.2' | orderBy: '0.1' | orderBy: '0.0'"
-                                            ng-class="{danger: !linha[10]}">
-                                            <td ng-repeat="forma in linha[0] | orderBy: '2'">
-                                                {{forma[1]}}
-                                            </td>
-                                            <td class="text-right" ng-if="navegador.selecao.item[9]">
-                                                {{linha[5] | number: 5}}
-                                            </td>
-                                            <td class="text-right" ng-if="navegador.selecao.item[10]">
-                                                {{linha[6] | number: 5}}
-                                            </td>
-                                            <td class="text-right" ng-if="navegador.selecao.item[11]">
-                                                {{linha[7] | number: 5}}
-                                            </td>
-                                            <td class="text-right">
-                                                {{formula(navegador.selecao.item[8], linha[5], linha[6], linha[7], linha, 1) | number: 5}}
-                                            </td>
-                                            <td>
-                                                {{navegador.selecao.item[5]}}
-                                            </td>
-                                            <td>
-                                                {{linha[10] | date: 'dd/MM/yyyy'}}
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th colspan="{{produtor[2][0][0].length}}" class="text-right">Total</th>
-                                            <th class="text-right" ng-if="navegador.selecao.item[9]">{{resultado(navegador.selecao.item[9], produtor[2], 5) | number: 5}}</th>
-                                            <th class="text-right" ng-if="navegador.selecao.item[10]">{{resultado(navegador.selecao.item[10], produtor[2], 6) | number: 5}}</th>
-                                            <th class="text-right" ng-if="navegador.selecao.item[11]">{{resultado(navegador.selecao.item[11], produtor[2], 7) | number: 5}}</th>
-                                            <th class="text-right">{{soma(produtor[2], 1) | number: 5}}</th>
-                                            <th>{{navegador.selecao.item[5]}}</th>
-                                            <th></th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table> -->
         </div>
     </div>
 </ng-form>

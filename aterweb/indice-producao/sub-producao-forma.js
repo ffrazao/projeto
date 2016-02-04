@@ -168,6 +168,28 @@ angular.module(pNmModulo).controller(pNmController,
             '        </div>' +
             '        <div class="row">' +
             '            <div class="col-md-3 text-right">' +
+            '                <label class="form-label">Valor Unitário</label>' +
+            '            </div>' +
+            '            <div class="col-md-3">' +
+            '                <input class="form-control text-right" id="valorUnitario" name="valorUnitario" ng-model="conteudo.valorUnitario" ng-required="true" ui-currency-mask="0">' +
+            '                <div class="label label-danger" ng-show="confirmacaoFrm.valorUnitario.$error.required">' +
+            '                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' +
+            '                     Campo Obrigatório' +
+            '                </div>' +
+            '            </div>' +
+            '        </div>' +
+            '        <div class="row">' +
+            '            <div class="col-md-3 text-right">' +
+            '                <label class="form-label">Valor Total</label>' +
+            '            </div>' +
+            '            <div class="col-md-3">' +
+            '                <div class="form-control text-right">' +
+            '                   {{conteudo.formula(\"' + $scope.cadastro.apoio.producaoForma.formula + '\", conteudo.itemAValor, conteudo.itemBValor, conteudo.itemCValor) * conteudo.valorUnitario | currency}}' +
+            '                </div>' +
+            '            </div>' +
+            '        </div>' +
+            '        <div class="row">' +
+            '            <div class="col-md-3 text-right">' +
             '                <label class="form-label">Quantidade de Produtores</label>' +
             '            </div>' +
             '            <div class="col-md-3">' +

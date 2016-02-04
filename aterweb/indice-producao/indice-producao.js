@@ -79,8 +79,7 @@
             $scope.incluirDepois = function (objeto) {
                 var t = TokenStorage.token();
                 if (t && t.lotacaoAtual) {
-//                    objeto.unidadeOrganizacional = t.lotacaoAtual;
-                    $scope.cadastro.apoio.unidadeOrganizacional = t.lotacaoAtual;
+                    objeto.unidadeOrganizacional = t.lotacaoAtual;
                 }
             };
             $scope.confirmarIncluir = function(scp) {
@@ -231,7 +230,9 @@
                 if (!result || isNaN(result)) {
                     result = 0;
                 }
-                array[indice] = result;
+                if (array && indice) {
+                    array[indice] = result;
+                }
                 return result;
             };
             $scope.toggleChildren = function (scope) {
