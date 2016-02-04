@@ -1,7 +1,5 @@
 package br.gov.df.emater.aterwebsrv.modelo.ater;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,14 +7,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
-import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacionalComunidade;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Cidade;
 
 /**
@@ -47,9 +43,6 @@ public class Comunidade extends EntidadeBase implements _ChavePrimaria<Integer>,
 	@ManyToOne
 	@JoinColumn(name = "unidade_organizacional_id")
 	private UnidadeOrganizacional unidadeOrganizacional;
-
-	@OneToMany(mappedBy = "comunidade")
-	private List<UnidadeOrganizacionalComunidade> unidadeOrganizacionalComunidadeList;
 
 	public Comunidade() {
 	}
@@ -87,10 +80,6 @@ public class Comunidade extends EntidadeBase implements _ChavePrimaria<Integer>,
 		return unidadeOrganizacional;
 	}
 
-	public List<UnidadeOrganizacionalComunidade> getUnidadeOrganizacionalComunidadeList() {
-		return unidadeOrganizacionalComunidadeList;
-	}
-
 	@Override
 	public Comunidade infoBasica() {
 		return new Comunidade(this.getId(), this.getNome());
@@ -118,10 +107,6 @@ public class Comunidade extends EntidadeBase implements _ChavePrimaria<Integer>,
 
 	public void setUnidadeOrganizacional(UnidadeOrganizacional unidadeOrganizacional) {
 		this.unidadeOrganizacional = unidadeOrganizacional;
-	}
-
-	public void setUnidadeOrganizacionalComunidadeList(List<UnidadeOrganizacionalComunidade> unidadeOrganizacionalComunidadeList) {
-		this.unidadeOrganizacionalComunidadeList = unidadeOrganizacionalComunidadeList;
 	}
 
 }
