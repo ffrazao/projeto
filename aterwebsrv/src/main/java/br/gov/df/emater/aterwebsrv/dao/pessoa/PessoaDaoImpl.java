@@ -28,15 +28,15 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Object> filtrar(PessoaCadFiltroDto filtro) {
+	public List<Object[]> filtrar(PessoaCadFiltroDto filtro) {
 		// objetos de trabalho
-		List<Object> result = null;
+		List<Object[]> result = null;
 		List<Object> params = new ArrayList<Object>();
 		StringBuilder sql, sqlTemp;
 
 		// construção do sql
 		sql = new StringBuilder();
-		sql.append("select p.id").append("\n");
+		sql.append("select distinct p.id").append("\n");
 		sql.append("     , p.nome").append("\n");
 		sql.append("     , p.apelidoSigla").append("\n");
 		sql.append("     , p.pessoaTipo").append("\n");
@@ -52,7 +52,7 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 			if (filtro.getPublicoAlvoSetor() != null) {
 				sql.append("left join alvo.publicoAlvoSetorList paSetor").append("\n");
 			}
-			if (filtro.getComunidade() != null) {
+			if (!CollectionUtils.isEmpty(filtro.getEmpresaList()) || !CollectionUtils.isEmpty(filtro.getUnidadeOrganizacionalList()) || !CollectionUtils.isEmpty(filtro.getComunidadeList())) {
 				sql.append("left join alvo.publicoAlvoPropriedadeRuralList paPropriedadeRural").append("\n");
 			}
 		}
@@ -122,19 +122,28 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 			params.add(filtro.getPublicoAlvoSetor());
 			sql.append("and paSetor.setor.id = ?").append(params.size()).append("\n");
 		}
-		if (filtro.getComunidade() != null) {
-			params.add(filtro.getComunidade().getId());
-			sql.append("and paPropriedadeRural.comunidade.id = ?").append(params.size()).append("\n");
+		if (!CollectionUtils.isEmpty(filtro.getComunidadeList())) {
+			params.add(filtro.getComunidadeList());
+			sql.append("and paPropriedadeRural.comunidade in ?").append(params.size()).append("\n");
+		}
+		if (!CollectionUtils.isEmpty(filtro.getUnidadeOrganizacionalList())) {
+			params.add(filtro.getUnidadeOrganizacionalList());
+			sql.append("and paPropriedadeRural.comunidade.unidadeOrganizacional in ?").append(params.size()).append("\n");
+		}
+		if (!CollectionUtils.isEmpty(filtro.getEmpresaList())) {
+			params.add(filtro.getEmpresaList());
+			sql.append("and paPropriedadeRural.comunidade.unidadeOrganizacional.pessoaJuridica in ?").append(params.size()).append("\n");
 		}
 		if (!StringUtils.isEmpty(filtro.getPublicoAlvoPropriedadeUtilizacaoEspacoRural())) {
 			// TODO Este campo nao foi implementado no BD - resolver
-//			params.add(filtro.getPublicoAlvoPropriedadeUtilizacaoEspacoRural().getId());
-//			sql.append("and paSetor.setor.id = ?").append(params.size()).append("\n");
+			// params.add(filtro.getPublicoAlvoPropriedadeUtilizacaoEspacoRural().getId());
+			// sql.append("and paSetor.setor.id =
+			// ?").append(params.size()).append("\n");
 		}
 		sql.append("order by p.nome, p.apelidoSigla").append("\n");
 
 		// criar a query
-		TypedQuery<Object> query = em.createQuery(sql.toString(), Object.class);
+		TypedQuery<Object[]> query = em.createQuery(sql.toString(), Object[].class);
 
 		// inserir os parametros
 		for (int i = 1; i <= params.size(); i++) {
@@ -152,11 +161,8 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 	}
 
 	private boolean filtrarPublicoAlvo(PessoaCadFiltroDto filtro) {
-		return 	(filtro.getPublicoAlvoSegmento() != null && (PublicoAlvoSegmento.values().length != (filtro.getPublicoAlvoSegmento().size()))) 
-				||  (filtro.getPublicoAlvoCategoria() != null && (PublicoAlvoCategoria.values().length != (filtro.getPublicoAlvoCategoria().size())))
-				||  (filtro.getPublicoAlvoSetor() != null)
-				||  (filtro.getPublicoAlvoPropriedadeUtilizacaoEspacoRural() != null)
-		        ||  (filtro.getComunidade() != null);
+		return (filtro.getPublicoAlvoSegmento() != null && (PublicoAlvoSegmento.values().length != (filtro.getPublicoAlvoSegmento().size()))) || (filtro.getPublicoAlvoCategoria() != null && (PublicoAlvoCategoria.values().length != (filtro.getPublicoAlvoCategoria().size())))
+				|| (filtro.getPublicoAlvoSetor() != null) || (filtro.getPublicoAlvoPropriedadeUtilizacaoEspacoRural() != null) || (filtro.getEmpresaList() != null) || (filtro.getUnidadeOrganizacionalList() != null) || (filtro.getComunidadeList() != null);
 	}
 
 }

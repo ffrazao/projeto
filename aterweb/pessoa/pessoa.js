@@ -119,11 +119,46 @@
                 $scope.preparaClassePessoa($scope.cadastro.registro);
                 $rootScope.confirmarExcluir(scp);
             };
+            $scope.confirmarFiltrarAntes = function(filtro) {
+                filtro.empresaList = [];
+                filtro.unidadeOrganizacionalList = [];
+                filtro.comunidadeList = [];
+                var i, j, k;
+                for (i in $scope.cadastro.apoio.localList) {
+                    // filtrar as empressas
+                    if ($scope.cadastro.apoio.localList[i].selecionado) {
+                        filtro.empresaList.push({id: $scope.cadastro.apoio.localList[i].id, '@class': 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica'});
+                    } else {
+                        for (j in $scope.cadastro.apoio.localList[i].unidadeList) {
+                            // filtrar as unidades organizacionais
+                            if ($scope.cadastro.apoio.localList[i].unidadeList[j].selecionado) {
+                                filtro.unidadeOrganizacionalList.push({id: $scope.cadastro.apoio.localList[i].unidadeList[j].id});
+                            } else {
+                                for (k in $scope.cadastro.apoio.localList[i].unidadeList[j].comunidadeList) {
+                                    // filtrar as unidades organizacionais
+                                    if ($scope.cadastro.apoio.localList[i].unidadeList[j].comunidadeList[k].selecionado) {
+                                        filtro.comunidadeList.push({id: $scope.cadastro.apoio.localList[i].unidadeList[j].comunidadeList[k].id});
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
             $scope.UtilSrv = UtilSrv;
 
             // fim das operaçoes atribuidas ao navagador
             // inicio ações especiais
+            $scope.toggleChildren = function (scope) {
+                scope.toggle();
+            };
+            $scope.visible = function (item) {
+                return !($scope.cadastro.apoio.localFiltro && 
+                    $scope.cadastro.apoio.localFiltro.length > 0 && 
+                    item.nome.trim().toLowerCase().latinize().indexOf($scope.cadastro.apoio.localFiltro.trim().toLowerCase().latinize()) === -1);
+            };
+
             // fim ações especiais
             // inicio trabalho tab
             $scope.tabs = [

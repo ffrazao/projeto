@@ -60,7 +60,6 @@ angular.module(pNmModulo).factory(pNmFactory,
                                     }
                                     if (unid.id === t.lotacaoAtual.id) {
                                         unid.selecionado = true;
-
                                     }
                                     empresa.unidadeList.push(unid);
                                 }
@@ -72,7 +71,6 @@ angular.module(pNmModulo).factory(pNmFactory,
                                     unid.comunidadeList.push(comunid);
                                 }
                             }
-
                             scp.cadastro.apoio.localList = [];
                             scp.cadastro.apoio.localList.push(empresa);
                         }

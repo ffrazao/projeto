@@ -5,14 +5,16 @@ import java.util.Set;
 
 import br.gov.df.emater.aterwebsrv.modelo.ater.Comunidade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGeracao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaTipo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PropriedadeUtilizacaoEspacoRural;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoCategoria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoSegmento;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;
+import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.GrupoSocial;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 
 public class PessoaCadFiltroDto extends FiltroDtoCustom {
 
@@ -20,9 +22,11 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 
 	private String cnpj;
 
-	private Comunidade comunidade;
+	private List<Comunidade> comunidadeList;
 
 	private String cpf;
+
+	private List<PessoaJuridica> empresaList;
 
 	private List<GrupoSocial> grupoSocialList;
 
@@ -70,16 +74,22 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 
 	private Set<PessoaTipo> tipoPessoa;
 
+	private List<UnidadeOrganizacional> unidadeOrganizacionalList;
+
 	public String getCnpj() {
 		return cnpj;
 	}
 
-	public Comunidade getComunidade() {
-		return comunidade;
+	public List<Comunidade> getComunidadeList() {
+		return comunidadeList;
 	}
 
 	public String getCpf() {
 		return cpf;
+	}
+
+	public List<PessoaJuridica> getEmpresaList() {
+		return empresaList;
 	}
 
 	public List<GrupoSocial> getGrupoSocialList() {
@@ -174,16 +184,24 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 		return tipoPessoa;
 	}
 
+	public List<UnidadeOrganizacional> getUnidadeOrganizacionalList() {
+		return unidadeOrganizacionalList;
+	}
+
 	public void setCnpj(String cnpj) {
 		this.cnpj = cnpj;
 	}
 
-	public void setComunidade(Comunidade comunidade) {
-		this.comunidade = comunidade;
+	public void setComunidadeList(List<Comunidade> comunidadeList) {
+		this.comunidadeList = comunidadeList;
 	}
 
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
+	}
+
+	public void setEmpresaList(List<PessoaJuridica> empresaList) {
+		this.empresaList = empresaList;
 	}
 
 	public void setGrupoSocialList(List<GrupoSocial> grupoSocialList) {
@@ -276,5 +294,9 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 
 	public void setTipoPessoa(Set<PessoaTipo> tipoPessoa) {
 		this.tipoPessoa = tipoPessoa;
+	}
+
+	public void setUnidadeOrganizacionalList(List<UnidadeOrganizacional> unidadeOrganizacionalList) {
+		this.unidadeOrganizacionalList = unidadeOrganizacionalList;
 	}
 }

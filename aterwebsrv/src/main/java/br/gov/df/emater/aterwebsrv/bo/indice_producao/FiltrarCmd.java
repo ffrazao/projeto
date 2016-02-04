@@ -175,7 +175,6 @@ public class FiltrarCmd extends _Comando {
 				}
 			}
 		}
-
 	}
 
 	@Autowired

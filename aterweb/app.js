@@ -564,6 +564,10 @@ angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 
         scp.cadastro.filtro['numeroPagina'] = numeroPagina;
         scp.cadastro.filtro['temMaisRegistros'] = temMaisRegistros;
 
+        if (scp.confirmarFiltrarAntes) {
+            scp.confirmarFiltrarAntes(scp.cadastro.filtro);
+        }
+
         if (scp.servico && scp.servico.filtrar) {
             scp.servico.filtrar(scp.cadastro.filtro).success(function(resposta) {
                 if (resposta.mensagem === 'OK') {
