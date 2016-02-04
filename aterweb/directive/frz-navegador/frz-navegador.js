@@ -357,10 +357,10 @@
             scope: {
                 ngModel: '=',
 
-                exibeNomeBotao: '=',
-                exibeEstadoAtual: '=',
+                exibeNomeBotao: '=?',
+                exibeEstadoAtual: '=?',
 
-                funcionalidade: '=',
+                funcionalidade: '=?',
 
                 onAbrir: '&',
 
