@@ -5,8 +5,8 @@
 'use strict';
 
 angular.module(pNmModulo).factory(pNmFactory,
-  ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams', 'FormularioSrv', 'TokenStorage', 'UnidadeOrganizacionalSrv',
-    function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams, FormularioSrv, TokenStorage, UnidadeOrganizacionalSrv) {
+  ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams', 'FormularioSrv', 'TokenStorage', 'ComunidadeSrv',
+    function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams, FormularioSrv, TokenStorage, ComunidadeSrv) {
         var PessoaSrv = {
             funcionalidade: 'PESSOA',
             endereco: $rootScope.servicoUrl + '/pessoa',
@@ -87,34 +87,14 @@ angular.module(pNmModulo).factory(pNmFactory,
                 });
                 var t = TokenStorage.token();
                 if (t && t.lotacaoAtual && t.lotacaoAtual && t.lotacaoAtual.pessoaJuridica) {
-                    UnidadeOrganizacionalSrv.comunidade(angular.fromJson(t.lotacaoAtual.pessoaJuridica.id)).success(function(resposta) {
-                        if (resposta && resposta.resultado && resposta.resultado.length) {
-                            var r = resposta.resultado;
-                            var empresa = angular.copy(t.lotacaoAtual.pessoaJuridica);
-                            var unid = {id: null}; var comunid = {id: null};
-                            for (var i in r) {
-                                if (unid.id !== r[i].unidadeOrganizacional.id) {
-                                    unid = angular.copy(r[i].unidadeOrganizacional);
-                                    if (!empresa.unidadeList) {
-                                        empresa.unidadeList = [];
-                                    }
-                                    if (unid.id === t.lotacaoAtual.id) {
-                                        unid.selecionado = true;
-                                    }
-                                    empresa.unidadeList.push(unid);
-                                }
-                                if (comunid.id !== r[i].comunidade.id) {
-                                    if (!unid.comunidadeList) {
-                                        unid.comunidadeList = [];
-                                    }
-                                    comunid = angular.copy(r[i].comunidade);
-                                    unid.comunidadeList.push(comunid);
-                                }
-                            }
-                            scp.cadastro.apoio.localList = [];
-                            scp.cadastro.apoio.localList.push(empresa);
-                        }
-                    });
+                    scp.cadastro.apoio.localList = [];
+                    var fltr = null;
+                    if (scp.cadastro.apoio.unidadeOrganizacionalSomenteLeitura) {
+                        fltr = {unidadeOrganizacionalList: scp.cadastro.filtro.unidadeOrganizacionalList};
+                    } else {
+                        fltr = {pessoaJuridicaList: [angular.fromJson(t.lotacaoAtual.pessoaJuridica.id)]};
+                    }
+                    ComunidadeSrv.lista(fltr, scp.cadastro.apoio.localList, t);
                 } else {
                     toastr.error('Não foi possível identificar a sua lotação', 'Erro ao carregar os dados');
                 }

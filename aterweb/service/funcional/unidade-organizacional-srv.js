@@ -7,9 +7,8 @@ angular.module(pNmModulo).factory(pNmFactory,
     function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams) {
         var UnidadeOrganizacionalSrv = {
             endereco: $rootScope.servicoUrl + '/unidade-organizacional',
-            comunidade: function(pessoaJuridicaId) {
-                return $http.get(this.endereco + '/comunidade', {params: {"pessoaJuridicaId": pessoaJuridicaId}});
-            },
+            // TODO antes avia um metodo aqui para selecionar comunidades da unidade organizacional. Não existe mais
+            // TODO inserir aqui novos metodos
 
         };
         return UnidadeOrganizacionalSrv;

@@ -8,6 +8,8 @@ public class ComunidadeListaDto extends FiltroDtoCustom {
 
 	private String nome;
 
+	private Set<Integer> pessoaJuridicaList;
+
 	private Set<Integer> unidadeOrganizacionalList;
 
 	public String getNome() {
@@ -15,10 +17,10 @@ public class ComunidadeListaDto extends FiltroDtoCustom {
 	}
 
 	public String getNomeLike() {
-		if( this.nome != null ){
-			return String.format( "%%%s%%", this.nome);
+		if (this.nome != null) {
+			return String.format("%%%s%%", this.nome);
 		} else {
-			return "%";	
+			return "%";
 		}
 	}
 
@@ -30,9 +32,16 @@ public class ComunidadeListaDto extends FiltroDtoCustom {
 		this.nome = nome;
 	}
 
+	public Set<Integer> getPessoaJuridicaList() {
+		return pessoaJuridicaList;
+	}
+
+	public void setPessoaJuridicaList(Set<Integer> pessoaJuridicaList) {
+		this.pessoaJuridicaList = pessoaJuridicaList;
+	}
+
 	public void setUnidadeOrganizacionalList(Set<Integer> unidadeOrganizacionalList) {
 		this.unidadeOrganizacionalList = unidadeOrganizacionalList;
 	}
-
 
 }

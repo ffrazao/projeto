@@ -183,7 +183,7 @@
                                                 <span class="glyphicon glyphicon-chevron-down" data-ng-show="!collapsed"></span>
                                             </a>
                                             <label>
-                                                <input type="checkbox" ng-model="item.selecionado" ng-true-value="true" ng-false-value="false">
+                                                <input type="checkbox" ng-model="item.selecionado" ng-true-value="true" ng-false-value="false" ng-if="!cadastro.apoio.unidadeOrganizacionalSomenteLeitura">
                                                 {{item.nome}}
                                             </label>
                                         </div>

@@ -32,8 +32,8 @@ angular.module(pNmModulo).controller(pNmController,
             resolve: {
                 modalCadastro: function() {
                     var cadastro = $scope.cadastroBase();
-                    cadastro.filtro.comunidade = {id: $scope.navegador.selecao.item[12]};
-                    cadastro.apoio.comunidadeSomenteLeitura = true;
+                    cadastro.filtro.unidadeOrganizacionalList = [$scope.navegador.selecao.item[$scope.PRODUCAO_UNID_ORG_ID]];
+                    cadastro.apoio.unidadeOrganizacionalSomenteLeitura = true;
                     return cadastro;
                 }
             }
@@ -63,14 +63,14 @@ angular.module(pNmModulo).controller(pNmController,
             if (!$scope.cadastro.apoio.publicoAlvoList.length) {
                 toastr.error('Nenhum registro selecionado');
             } else {
-                IndiceProducaoSrv.filtrarPorPublicoAlvoComunidade(
-                    {
-                        ano: $scope.navegador.selecao.item[1],
-                        bem: {id: $scope.navegador.selecao.item[13]},
-                        comunidade: {id: $scope.navegador.selecao.item[12]},
+                IndiceProducaoSrv.filtrarPropriedadeRuralPorPublicoAlvo(
+                    {  
+                        comunidadeList: [{id: $scope.navegador.selecao.item[$scope.PRODUCAO_COMUNIDADE_ID]}],
                         publicoAlvoList: $scope.cadastro.apoio.publicoAlvoList,
                     }).success(function(resposta) {
                     if (resposta.mensagem === 'OK') {
+                        ano: $scope.navegador.selecao.item[$scope.PRODUCAO_ANO],
+                        bem: {id: $scope.navegador.selecao.item[$scope.PRODUCAO_BEM_ID]},
                         if (resposta.resultado && resposta.resultado.length) {
                             for (var i in resposta.resultado) {
                                 editarItem($scope.navegador.selecao.item[7], resposta.resultado[i]);

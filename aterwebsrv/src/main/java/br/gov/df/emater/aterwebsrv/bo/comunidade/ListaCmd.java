@@ -1,15 +1,19 @@
 package br.gov.df.emater.aterwebsrv.bo.comunidade;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.ater.ComunidadeDao;
 import br.gov.df.emater.aterwebsrv.modelo.ater.Comunidade;
 import br.gov.df.emater.aterwebsrv.modelo.dto.ComunidadeListaDto;
+import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 
 @Service("ComunidadeListaCmd")
 public class ListaCmd extends _Comando {
@@ -20,11 +24,26 @@ public class ListaCmd extends _Comando {
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		ComunidadeListaDto filtro = (ComunidadeListaDto) contexto.getRequisicao();
-		List<Comunidade> result = null;
-		if(filtro.getUnidadeOrganizacionalList() != null ){
-			result = dao.findByUnidadeOrganizacionalIdInAndNomeLike(filtro.getUnidadeOrganizacionalList(), filtro.getNomeLike());
+		List<Comunidade> comunidadeList = null;
+		List<Object> result = null;
+		if (!CollectionUtils.isEmpty(filtro.getPessoaJuridicaList())) {
+			comunidadeList = dao.findByUnidadeOrganizacionalPessoaJuridicaIdInAndNomeLikeOrderByNomeAsc(filtro.getPessoaJuridicaList(), filtro.getNomeLike());
+		} else if (!CollectionUtils.isEmpty(filtro.getUnidadeOrganizacionalList())) {
+			comunidadeList = dao.findByUnidadeOrganizacionalIdInAndNomeLikeOrderByNomeAsc(filtro.getUnidadeOrganizacionalList(), filtro.getNomeLike());
 		} else {
-			result = dao.findByNomeLike( filtro.getNomeLike());
+			comunidadeList = dao.findByNomeLikeOrderByNomeAsc(filtro.getNomeLike());
+		}
+		for (Comunidade c: comunidadeList) {
+			PessoaJuridica pessoaJuridica = (PessoaJuridica) c.getUnidadeOrganizacional().getPessoaJuridica().infoBasica();
+			UnidadeOrganizacional unidadeOrganizacional = c.getUnidadeOrganizacional().infoBasica();
+			Comunidade comunidade = c.infoBasica();
+			
+			unidadeOrganizacional.setPessoaJuridica(pessoaJuridica);
+			comunidade.setUnidadeOrganizacional(unidadeOrganizacional);
+			if (result == null) {
+				result = new ArrayList<Object>();
+			}
+			result.add(comunidade);
 		}
 		contexto.setResposta(result);
 		return false;

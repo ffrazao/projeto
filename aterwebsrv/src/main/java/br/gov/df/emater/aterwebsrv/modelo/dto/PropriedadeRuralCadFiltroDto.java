@@ -1,13 +1,16 @@
 package br.gov.df.emater.aterwebsrv.modelo.dto;
 
+import java.util.List;
 import java.util.Set;
 
 import br.gov.df.emater.aterwebsrv.modelo.ater.Comunidade;
+import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 import br.gov.df.emater.aterwebsrv.modelo.ater.SistemaProducao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.AreaUtil;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.SituacaoFundiaria;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 
 public class PropriedadeRuralCadFiltroDto extends FiltroDtoCustom {
 
@@ -15,26 +18,65 @@ public class PropriedadeRuralCadFiltroDto extends FiltroDtoCustom {
 
 	private AreaUtil areaUtil;
 
-	private Comunidade comunidade;
+	private List<PessoaJuridica> empresaList;
+	private List<UnidadeOrganizacional> unidadeOrganizacionalList;
+	private List<Comunidade> comunidadeList;
+	private List<PublicoAlvo> publicoAlvoList;
+	
+	private String pessoaVinculada;
+
+	public String getPessoaVinculada() {
+		return pessoaVinculada;
+	}
+
+	public void setPessoaVinculada(String pessoaVinculada) {
+		this.pessoaVinculada = pessoaVinculada;
+	}
+
+	public List<PessoaJuridica> getEmpresaList() {
+		return empresaList;
+	}
+
+	public void setEmpresaList(List<PessoaJuridica> empresaList) {
+		this.empresaList = empresaList;
+	}
+
+	public List<UnidadeOrganizacional> getUnidadeOrganizacionalList() {
+		return unidadeOrganizacionalList;
+	}
+
+	public void setUnidadeOrganizacionalList(List<UnidadeOrganizacional> unidadeOrganizacionalList) {
+		this.unidadeOrganizacionalList = unidadeOrganizacionalList;
+	}
+
+	public List<Comunidade> getComunidadeList() {
+		return comunidadeList;
+	}
+
+	public void setComunidadeList(List<Comunidade> comunidadeList) {
+		this.comunidadeList = comunidadeList;
+	}
+
+	public List<PublicoAlvo> getPublicoAlvoList() {
+		return publicoAlvoList;
+	}
+
+	public void setPublicoAlvoList(List<PublicoAlvo> publicoAlvoList) {
+		this.publicoAlvoList = publicoAlvoList;
+	}
 
 	private String nomePropriedade;
 
 	private Set<Confirmacao> outorga;
 
-	private String pessoaVinculada;
-
 	private SistemaProducao sistemaProducao;
 
 	private SituacaoFundiaria situacaoFundiaria;
 
-	private UnidadeOrganizacional unidadeOrganizacional;
+
 
 	public AreaUtil getAreaUtil() {
 		return areaUtil;
-	}
-
-	public Comunidade getComunidade() {
-		return comunidade;
 	}
 
 	public String getNomePropriedade() {
@@ -45,10 +87,6 @@ public class PropriedadeRuralCadFiltroDto extends FiltroDtoCustom {
 		return outorga;
 	}
 
-	public String getPessoaVinculada() {
-		return pessoaVinculada;
-	}
-
 	public SistemaProducao getSistemaProducao() {
 		return sistemaProducao;
 	}
@@ -57,16 +95,8 @@ public class PropriedadeRuralCadFiltroDto extends FiltroDtoCustom {
 		return situacaoFundiaria;
 	}
 
-	public UnidadeOrganizacional getUnidadeOrganizacional() {
-		return unidadeOrganizacional;
-	}
-
 	public void setAreaUtil(AreaUtil areaUtil) {
 		this.areaUtil = areaUtil;
-	}
-
-	public void setComunidade(Comunidade comunidade) {
-		this.comunidade = comunidade;
 	}
 
 	public void setNomePropriedade(String nomePropriedade) {
@@ -77,20 +107,12 @@ public class PropriedadeRuralCadFiltroDto extends FiltroDtoCustom {
 		this.outorga = outorga;
 	}
 
-	public void setPessoaVinculada(String pessoaVinculada) {
-		this.pessoaVinculada = pessoaVinculada;
-	}
-
 	public void setSistemaProducao(SistemaProducao sistemaProducao) {
 		this.sistemaProducao = sistemaProducao;
 	}
 
 	public void setSituacaoFundiaria(SituacaoFundiaria situacaoFundiaria) {
 		this.situacaoFundiaria = situacaoFundiaria;
-	}
-
-	public void setUnidadeOrganizacional(UnidadeOrganizacional unidadeOrganizacional) {
-		this.unidadeOrganizacional = unidadeOrganizacional;
 	}
 
 }

@@ -3,8 +3,8 @@
 'use strict';
 
 angular.module(pNmModulo).factory(pNmFactory,
-  ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams',
-    function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams) {
+  ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams', 'ComunidadeSrv',
+    function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams, ComunidadeSrv) {
         var AtividadeSrv = {
             funcionalidade: 'ATIVIDADE',
             endereco: $rootScope.servicoUrl + '/atividade',
@@ -54,10 +54,10 @@ angular.module(pNmModulo).factory(pNmFactory,
                 SegurancaSrv.acesso(this.funcionalidade, 'EXCLUIR');
             },
             tagUnidade : function(nome) {
-                return $http.post($rootScope.servicoUrl + '/unidade-organizacional/lista', {"nome":nome, "classificacao":["OP"]}, { cache: false} );
+                return $http.post($rootScope.servicoUrl + '/unidade-organizacional/lista', {"nome":nome, "classificacao":["OP"]}, { cache: false } );
             },
             tagComunidade : function( unidade, nome) {
-                return $http.post($rootScope.servicoUrl + '/comunidade/lista', {"unidadeOrganizacionalList": unidade, "nome":nome}, { cache: false} );
+                return ComunidadeSrv.lista({"unidadeOrganizacionalList": [unidade], "nome":nome});
             },
 
         };

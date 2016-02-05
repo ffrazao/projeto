@@ -11,11 +11,10 @@ import br.gov.df.emater.aterwebsrv.modelo.ater.Comunidade;
 @Repository("ComunidadeDao")
 public interface ComunidadeDao extends JpaRepository<Comunidade, Integer> {
 
-	List<Comunidade> findByUnidadeOrganizacionalIdInAndNomeLike(Set<Integer> unidadeOrganizacionalList,
-			String nomeLike);
+	List<Comunidade> findByNomeLikeOrderByNomeAsc(String nomeLike);
 
-	List<Comunidade> findByNomeLike(String nomeLike);
+	List<Comunidade> findByUnidadeOrganizacionalIdInAndNomeLikeOrderByNomeAsc(Set<Integer> unidadeOrganizacionalList, String nomeLike);
 
-	
+	List<Comunidade> findByUnidadeOrganizacionalPessoaJuridicaIdInAndNomeLikeOrderByNomeAsc(Set<Integer> pessoaJuridicaList, String nomeLike);
 
 }

@@ -25,7 +25,6 @@ import br.gov.df.emater.aterwebsrv.modelo.dto.FormularioColetaCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.IndiceProducaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.PessoaCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.PropriedadeRuralCadFiltroDto;
-import br.gov.df.emater.aterwebsrv.modelo.dto.PropriedadeRuralPorComunidadePublicoAlvoDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.UnidadeOrganizacionalCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.Formulario;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.FormularioVersao;
@@ -182,11 +181,6 @@ public class FacadeBo implements BeanFactoryAware {
 	@Transactional(readOnly = true)
 	public _Contexto pessoaVisualizar(Principal usuario, Integer id) throws Exception {
 		return this._executar(usuario, "PessoaVisualizarCh", id);
-	}
-
-	@Transactional(readOnly = true)
-	public _Contexto propriedadeRuralFiltrarPorPublicoAlvoEComunidade(Principal usuario, PropriedadeRuralPorComunidadePublicoAlvoDto filtro) throws Exception {
-		return this._executar(usuario, "PropriedadeRuralFiltrarPorPublicoAlvoEComunidadeCmd", filtro);
 	}
 
 	@Transactional(readOnly = true)

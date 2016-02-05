@@ -43,12 +43,6 @@ public class PropriedadeRuralDaoImpl implements PropriedadeRuralDaoCustom {
 		sql.append("     , vinculados").append("\n");
 		sql.append("from PropriedadeRural p").append("\n");
 		sql.append("left join p.publicoAlvoPropriedadeRuralList vinculados").append("\n");
-
-		if (filtro.getUnidadeOrganizacional() != null) {
-			sql.append("join p.comunidade com").append("\n");
-			sql.append("join p.comunidade.unidadeOrganizacionalComunidadeList unid").append("\n");
-		}
-
 		sql.append("where (1 = 1)").append("\n");
 
 		if (!StringUtils.isEmpty(filtro.getPessoaVinculada())) {
@@ -81,16 +75,19 @@ public class PropriedadeRuralDaoImpl implements PropriedadeRuralDaoCustom {
 			sql.append(" )").append("\n");
 		}
 
-		if (filtro.getUnidadeOrganizacional() != null && filtro.getUnidadeOrganizacional().getId() != null) {
-			params.add(filtro.getUnidadeOrganizacional());
-			sql.append("and unid.unidadeOrganizacional = ?").append(params.size()).append("\n");
+		if (!CollectionUtils.isEmpty(filtro.getComunidadeList())) {
+			params.add(filtro.getComunidadeList());
+			sql.append("and vinculados.comunidade in ?").append(params.size()).append("\n");
 		}
-
-		if (filtro.getComunidade() != null && filtro.getComunidade().getId() != null) {
-			params.add(filtro.getComunidade());
-			sql.append("and p.comunidade = ?").append(params.size()).append("\n");
+		if (!CollectionUtils.isEmpty(filtro.getUnidadeOrganizacionalList())) {
+			params.add(filtro.getUnidadeOrganizacionalList());
+			sql.append("and vinculados.comunidade.unidadeOrganizacional in ?").append(params.size()).append("\n");
 		}
-
+		if (!CollectionUtils.isEmpty(filtro.getEmpresaList())) {
+			params.add(filtro.getEmpresaList());
+			sql.append("and vinculados.comunidade.unidadeOrganizacional.pessoaJuridica in ?").append(params.size()).append("\n");
+		}		
+		
 		if (filtro.getAreaUtil() != null) {
 			if (filtro.getAreaUtil().getAte() == null) {
 				params.add(filtro.getAreaUtil().getDe());

@@ -61,6 +61,9 @@ angular.module(pNmModulo).factory(pNmFactory,
             formularioFiltrarComColeta : function(filtro) {
                 return FormularioSrv.filtrarComColeta(filtro);
             },
+            filtrarPorPublicoAlvoUnidadeOrganizacionalComunidade : function (filtro) {
+                return $http.post(this.endereco + '/filtrar-por-publico-alvo-unidade-organizacional-comunidade', filtro);
+            }
 
         };
         return PropriedadeRuralSrv;

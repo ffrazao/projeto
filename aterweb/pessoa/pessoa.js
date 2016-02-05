@@ -144,6 +144,10 @@
                         }
                     }
                 }
+                if ($scope.cadastro.apoio.unidadeOrganizacionalSomenteLeitura && !$scope.cadastro.filtro.unidadeOrganizacionalList.length && !$scope.cadastro.filtro.comunidadeList.length) {
+                    toastr.error('Informe pelo menos uma comunidade', 'Erro ao filtrar');
+                    throw 'Informe pelo menos uma comunidade';
+                }
             };
 
             $scope.UtilSrv = UtilSrv;
