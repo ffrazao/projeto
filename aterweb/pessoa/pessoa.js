@@ -144,7 +144,7 @@
                         }
                     }
                 }
-            }
+            };
 
             $scope.UtilSrv = UtilSrv;
 
