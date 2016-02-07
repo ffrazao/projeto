@@ -13,9 +13,14 @@ public class NovoCmd extends _Comando {
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
-		Producao result = new Producao();
+		Producao result = (Producao) contexto.getRequisicao();
 		
-		result.setAno(Calendar.getInstance().get(Calendar.YEAR));
+		if (result == null) {
+			result = new Producao();
+		}
+		if (result.getAno() == null) {			
+			result.setAno(Calendar.getInstance().get(Calendar.YEAR));
+		}
 
 		contexto.setResposta(result);
 

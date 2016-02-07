@@ -39,25 +39,15 @@ angular.module(pNmModulo).controller(pNmController,
             }
         });
         // processar retorno da modal
-        var criarPessoa = function (id, nome, tipo) {
-            var pessoa = {
-                id: id, 
-                nome: nome,
-                pessoaTipo: tipo,
-            };
-            $scope.preparaClassePessoa(pessoa);
-            var reg = {pessoa: pessoa};
-            return reg;
-        };
         modalInstance.result.then(function (resultado) {
             // processar o retorno positivo da modal
             var reg = null, pessoa = null;
             $scope.cadastro.apoio.publicoAlvoList = [];
-            if (resultado.tipo === 'U') {
-                $scope.cadastro.apoio.publicoAlvoList.push(criarPessoa(resultado.item[0], resultado.item[1], resultado.item[3]));
+            if (resultado.selecao.tipo === 'U') {
+                $scope.cadastro.apoio.publicoAlvoList.push({id: resultado.selecao.item[10]});
             } else {
-                for (var i in resultado.items) {
-                    $scope.cadastro.apoio.publicoAlvoList.push(criarPessoa(resultado.items[i][0], resultado.items[i][1], resultado.items[i][3]));
+                for (var i in resultado.selecao.items) {
+                    $scope.cadastro.apoio.publicoAlvoList.push({id: resultado.selecao.items[i][10]});
                 }
             }
             if (!$scope.cadastro.apoio.publicoAlvoList.length) {
@@ -65,15 +55,27 @@ angular.module(pNmModulo).controller(pNmController,
             } else {
                 IndiceProducaoSrv.filtrarPropriedadeRuralPorPublicoAlvo(
                     {  
-                        comunidadeList: [{id: $scope.navegador.selecao.item[$scope.PRODUCAO_COMUNIDADE_ID]}],
+                        empresaList: resultado.cadastro.filtro.empresaList,
+                        unidadeOrganizacionalList: resultado.cadastro.filtro.unidadeOrganizacionalList,
+                        comunidadeList: resultado.cadastro.filtro.comunidadeList,
                         publicoAlvoList: $scope.cadastro.apoio.publicoAlvoList,
                     }).success(function(resposta) {
                     if (resposta.mensagem === 'OK') {
-                        ano: $scope.navegador.selecao.item[$scope.PRODUCAO_ANO],
-                        bem: {id: $scope.navegador.selecao.item[$scope.PRODUCAO_BEM_ID]},
+                        // ano: $scope.navegador.selecao.item[$scope.PRODUCAO_ANO],
+                        // bem: {id: $scope.navegador.selecao.item[$scope.PRODUCAO_BEM_ID]},
                         if (resposta.resultado && resposta.resultado.length) {
-                            for (var i in resposta.resultado) {
-                                editarItem($scope.navegador.selecao.item[7], resposta.resultado[i]);
+                            var i, j, k;
+                            // percorrer todas as propriedades
+                            for (i in resposta.resultado) {
+                                // percorrer o publico alvo
+                                for (j in $scope.cadastro.apoio.publicoAlvoList) {
+                                    for (k in resposta.resultado[i][6]) {
+                                        if (resposta.resultado[i][6][k][1] === $scope.cadastro.apoio.publicoAlvoList[j].id) {
+                                            editarItem($scope.navegador.selecao.item[7], resposta.resultado[i]);
+                                            break;
+                                        }
+                                    }
+                                }
                             }
                         }
                     }

@@ -31,7 +31,7 @@ angular.module(pNmModulo).controller(pNmController,
         $scope.cadastro.lista.push({id: 21, nome: 'Fernando'});
         $scope.cadastro.lista.push({id: 12, nome: 'Frazao'});
 
-        $uibModalInstance.close($scope.cadastro);
+        $uibModalInstance.close({cadastro: angular.copy($scope.cadastro), selecao: angular.copy($scope.navegador.selecao)});
         toastr.info('Operação realizada!', 'Informação');
     };
     $scope.modalCancelar = function () {

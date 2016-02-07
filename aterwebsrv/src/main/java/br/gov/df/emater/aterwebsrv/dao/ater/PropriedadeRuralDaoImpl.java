@@ -26,9 +26,9 @@ public class PropriedadeRuralDaoImpl implements PropriedadeRuralDaoCustom {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Object> filtrar(PropriedadeRuralCadFiltroDto filtro) {
+	public List<Object[]> filtrar(PropriedadeRuralCadFiltroDto filtro) {
 		// objetos de trabalho
-		List<Object> result = null;
+		List<Object[]> result = null;
 		List<Object> params = new ArrayList<Object>();
 		StringBuilder sql, sqlTemp;
 
@@ -88,6 +88,11 @@ public class PropriedadeRuralDaoImpl implements PropriedadeRuralDaoCustom {
 			sql.append("and vinculados.comunidade.unidadeOrganizacional.pessoaJuridica in ?").append(params.size()).append("\n");
 		}		
 		
+		if (!CollectionUtils.isEmpty(filtro.getPublicoAlvoList())) {
+			params.add(filtro.getPublicoAlvoList());
+			sql.append("and vinculados.publicoAlvo in ?").append(params.size()).append("\n");
+		}		
+		
 		if (filtro.getAreaUtil() != null) {
 			if (filtro.getAreaUtil().getAte() == null) {
 				params.add(filtro.getAreaUtil().getDe());
@@ -121,7 +126,7 @@ public class PropriedadeRuralDaoImpl implements PropriedadeRuralDaoCustom {
 		sql.append("order by p.nome").append("\n");
 
 		// criar a query
-		TypedQuery<Object> query = em.createQuery(sql.toString(), Object.class);
+		TypedQuery<Object[]> query = em.createQuery(sql.toString(), Object[].class);
 
 		// inserir os parametros
 		for (int i = 1; i <= params.size(); i++) {
@@ -139,16 +144,16 @@ public class PropriedadeRuralDaoImpl implements PropriedadeRuralDaoCustom {
 	}
 
 	@SuppressWarnings("unchecked")
-	private List<Object> processaResultado(List<Object> lista) {
+	private List<Object[]> processaResultado(List<Object[]> lista) {
 		if (lista == null || lista.size() == 0) {
 			return lista;
 		}
-		List<Object> result = new ArrayList<Object>();
+		List<Object[]> result = new ArrayList<Object[]>();
 
 		Integer id = null;
 		Object[] reg = null;
 		int c = 0;
-		for (Object lin : (List<Object>) lista) {
+		for (Object lin : (List<Object[]>) lista) {
 			Object[] l = (Object[]) lin;
 			if (id != (Integer) l[0]) {
 				if (reg != null) {
@@ -162,13 +167,13 @@ public class PropriedadeRuralDaoImpl implements PropriedadeRuralDaoCustom {
 				reg[++c] = (Comunidade) l[c] == null ? null : ((Comunidade) l[c]).getNome();
 				reg[++c] = (BaciaHidrografica) l[c] == null ? null : ((BaciaHidrografica) l[c]).getNome();				
 				reg[++c] = l[c];
-				reg[++c] = new ArrayList<String>();
+				reg[++c] = new ArrayList<Object[]>();
 				
 				id = (Integer) reg[0]; 
 			}
 			PublicoAlvoPropriedadeRural papr = (PublicoAlvoPropriedadeRural) l[c];
 			if (papr != null) {
-				((List<String>) reg[c]).add(papr.getPublicoAlvo().getPessoa().getNome());
+				((List<Object[]>) reg[c]).add(new Object[] {papr.getPublicoAlvo().getPessoa().getNome(), papr.getPublicoAlvo().getId()});
 			}
 		}
 		if (reg != null) {
