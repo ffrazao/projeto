@@ -5,8 +5,8 @@
 'use strict';
 
 angular.module(pNmModulo).controller(pNmController,
-    ['$scope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv', 'mensagemSrv', 'IndiceProducaoSrv', 
-    function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv, IndiceProducaoSrv) {
+    ['$scope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv', 'mensagemSrv', 'IndiceProducaoSrv', '$rootScope',
+    function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv, IndiceProducaoSrv, $rootScope) {
 
     // inicializacao
     var init = function() {
@@ -233,26 +233,54 @@ angular.module(pNmModulo).controller(pNmController,
     // fim rotinas de apoio
 
     // inicio das operaçoes atribuidas ao navagador
-    $scope.abrir = function() { $scope.produtoresNvg.mudarEstado('ESPECIAL'); };
+    $scope.abrir = function() {
+        $scope.produtoresNvg.mudarEstado('ESPECIAL');
+
+        $scope.produtoresNvg.botao('acao', 'acao')['subFuncoes'] = [
+        {
+            nome: 'Inserir seleção de produtores',
+            descricao: 'Permite cadastrar diversos produtores de uma vez numa produção',
+            acao: function() {
+                $scope.modalSelecinarPropriedadeRural();
+            },
+            exibir: function() {
+                return false;
+            },
+        },];
+
+    };
     $scope.incluir = function() {
-        $scope.modalSelecinarPropriedadeRural();
+        $rootScope.incluir($scope, $scope.navegador.selecao.item[$scope.PRODUCAO_ID]);
+    };
+    $scope.incluirDepois = function(registro) {
+        $scope.cadastro.apoio.bemClassificacao = $scope.encontraBemClassificacao(registro.bem.bemClassificacao.id);
+        $scope.cadastro.apoio.producaoUnidadeOrganizacional = false;
+        $scope.cadastro.apoio.unidadeOrganizacional = {id: $scope.navegador.selecao.item[$scope.PRODUCAO_UNID_ORG_ID], nome: $scope.navegador.selecao.item[$scope.PRODUCAO_UNID_ORG_NOME], sigla: $scope.navegador.selecao.item[$scope.PRODUCAO_UNID_ORG_SIGLA]};
+        $scope.cadastro.apoio.porProdutor = true;
     };
     $scope.editar = function() {
-        var item = null;
-        var i, j;
-        if ($scope.produtoresNvg.selecao.tipo === 'U' && $scope.produtoresNvg.selecao.item) {
-            item = angular.copy($scope.produtoresNvg.selecao.item);
-            editarItem($scope.produtoresNvg.selecao.item, {id: item[3]});
-        } else if ($scope.produtoresNvg.selecao.items && $scope.produtoresNvg.selecao.items.length) {
-            for (i in $scope.produtoresNvg.selecao.items) {
-                for (j in $scope.navegador.selecao.item[7]) {
-                    if (angular.equals($scope.produtoresNvg.selecao.items[i], $scope.navegador.selecao.item[7][j])) {
-                        item = angular.copy($scope.navegador.selecao.item[7][j]);
-                        editarItem($scope.navegador.selecao.item[7][j], {id: item[3]});
-                    }
-                }
+
+        var id = $scope.produtoresNvg.selecao.item[0];
+
+        $scope.servico.visualizar(id).success(function(resposta) {
+            if (resposta.mensagem && resposta.mensagem === 'OK') {
+                $scope.navegador.mudarEstado('VISUALIZANDO');
+                $scope.crudVaiPara($scope, $scope.stt, 'form',  id);
+                // ajustar o registro
+                $scope.cadastro.apoio.bemClassificacao = $scope.encontraBemClassificacao(resposta.resultado.bem.bemClassificacao.id);
+                $scope.cadastro.apoio.producaoUnidadeOrganizacional = false;
+                $scope.cadastro.apoio.unidadeOrganizacional = {id: $scope.navegador.selecao.item[$scope.PRODUCAO_UNID_ORG_ID], nome: $scope.navegador.selecao.item[$scope.PRODUCAO_UNID_ORG_NOME], sigla: $scope.navegador.selecao.item[$scope.PRODUCAO_UNID_ORG_SIGLA]};
+                $scope.cadastro.apoio.porProdutor = true;
+                
+                $scope.cadastro.original = angular.copy(resposta.resultado);
+                $scope.cadastro.registro = angular.copy($scope.cadastro.original);
+                $scope.crudVerRegistro($scope);
+            } else {
+                toastr.error(resposta.mensagem, 'Erro ao visualizar');
             }
-        }
+        }).error(function(erro){
+            toastr.error(erro, 'Erro ao visualizar');
+        });
     };
     $scope.excluir = function() {
         mensagemSrv.confirmacao(false, 'confirme a exclusão').then(function (conteudo) {

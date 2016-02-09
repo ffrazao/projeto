@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.dto.PropriedadeRuralCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.modelo.dto.PublicoAlvoPropriedadeRuralCadFiltroDto;
 
 @RestController
 @RequestMapping("/propriedade-rural")
@@ -28,6 +29,16 @@ public class PropriedadeRuralRest {
 	@Transactional
 	public Resposta editar(@RequestBody PropriedadeRural propriedadeRural, Principal usuario) {
 		return salvar(propriedadeRural, usuario);
+	}
+
+	@RequestMapping(value = "/filtro-publico-alvo-propriedade-rural-comunidade", method = RequestMethod.POST)
+	@Transactional(readOnly = true)
+	public Resposta filtrarPorPublicoAlvoPropriedadeRuralComunidade(@RequestBody PublicoAlvoPropriedadeRuralCadFiltroDto filtro, Principal usuario) {
+		try {
+			return new Resposta(facadeBo.propriedadeRuralFiltrarPorPublicoAlvoPropriedadeRuralComunidade(usuario, filtro).getResposta());
+		} catch (Exception e) {
+			return new Resposta(e);
+		}
 	}
 
 	@RequestMapping(value = "/filtro-executar", method = RequestMethod.POST)

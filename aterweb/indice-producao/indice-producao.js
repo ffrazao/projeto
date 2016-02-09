@@ -7,9 +7,9 @@
     angular.module(pNmModulo).config(['$stateProvider', function($stateProvider) {
         criarEstadosPadrao($stateProvider, pNmModulo, pNmController, pUrlModulo);
     }]);
-    angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'IndiceProducaoSrv',
+    angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'IndiceProducaoSrv', 'PropriedadeRuralSrv',
         'TokenStorage',
-        function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, IndiceProducaoSrv, 
+        function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, IndiceProducaoSrv,  PropriedadeRuralSrv,
             TokenStorage) {
 
             // inicializacao
@@ -81,6 +81,9 @@
                 if (t && t.lotacaoAtual) {
                     objeto.unidadeOrganizacional = t.lotacaoAtual;
                 }
+                $scope.cadastro.apoio.producaoUnidadeOrganizacional = true;
+                delete $scope.cadastro.apoio.unidadeOrganizacional;
+                delete $scope.cadastro.apoio.porProdutor;
             };
             $scope.confirmarIncluir = function(scp) {
                 if (!scp.confirmar(scp)) {
@@ -114,7 +117,7 @@
                     toastr.error(erro, 'Erro ao incluir');
                 });
             };
-            var encontraBemClassificacao = function (id, lista) {
+            $scope.encontraBemClassificacao = function (id, lista) {
                 if (!lista) {
                     lista = $scope.cadastro.apoio.bemClassificacaoList;
                 }
@@ -123,7 +126,7 @@
                     if (id === lista[i][0]) {
                         result = lista[i];
                     } else if (lista[i][3]) {
-                        result = encontraBemClassificacao(id, lista[i][3]);
+                        result = $scope.encontraBemClassificacao(id, lista[i][3]);
                     }
                     if (result) {
                         break;
@@ -132,8 +135,8 @@
                 return result;
             };
             $scope.visualizarDepois = function (registro) {
-                $scope.cadastro.apoio.bemClassificacao = encontraBemClassificacao(registro.bem.bemClassificacao.id);
-                $scope.cadastro.apoio.unidadeOrganizacional = angular.copy(registro.comunidade.unidadeOrganizacional);
+                $scope.cadastro.apoio.bemClassificacao = $scope.encontraBemClassificacao(registro.bem.bemClassificacao.id);
+                $scope.cadastro.apoio.unidadeOrganizacional = angular.copy(registro.unidadeOrganizacional);
             };
             $scope.cadastro.apoio.producaoForma = {composicao: []};
 
@@ -291,6 +294,136 @@
             };
             
             $scope.UtilSrv = UtilSrv;
+
+            $scope.modalSelecinarPublicoAlvo = function (size) {
+                // abrir a modal
+                var modalInstance = $uibModal.open({
+                    animation: true,
+                    template: '<ng-include src=\"\'pessoa/pessoa-modal.html\'\"></ng-include>',
+                    controller: 'PessoaCtrl',
+                    size: size,
+                    resolve: {
+                        modalCadastro: function () {
+                            return $scope.cadastroBase();
+                        }
+                    }
+                });
+                // processar retorno da modal
+                modalInstance.result.then(function (resultado) {
+                    // processar o retorno positivo da modal
+                    if (resultado.selecao.tipo === 'U') {
+                        var pessoa = {
+                            id: resultado.selecao.item[0], 
+                            nome: resultado.selecao.item[1], 
+                            pessoaTipo: resultado.selecao.item[3],
+                        };
+                        $scope.preparaClassePessoa(pessoa);
+                        $scope.cadastro.registro.publicoAlvo = 
+                            {
+                                id: resultado.selecao.item[10], 
+                                pessoa: pessoa,
+                            };
+                    } else {
+                        var pessoa = {
+                            id: resultado.selecao.items[0][0], 
+                            nome: resultado.selecao.items[0][1], 
+                            pessoaTipo: resultado.selecao.items[0][3],
+                        };
+                        $scope.preparaClassePessoa(pessoa);
+                        $scope.cadastro.registro.publicoAlvo = 
+                            {
+                                id: resultado.selecao.items[0][10], 
+                                pessoa: pessoa,
+                            };
+                    }
+                }, function () {
+                    // processar o retorno negativo da modal
+                    $log.info('Modal dismissed at: ' + new Date());
+                });
+            };
+
+            $scope.modalVerPublicoAlvo = function (size) {
+                // abrir a modal
+                var modalInstance = $uibModal.open({
+                    animation: true,
+                    template: '<ng-include src=\"\'pessoa/pessoa-form-modal.html\'\"></ng-include>',
+                    controller: 'PessoaCtrl',
+                    size: size,
+                    resolve: {
+                        modalCadastro: function () {
+                            var cadastro = {registro: angular.copy($scope.cadastro.registro.publicoAlvo.pessoa), filtro: {}, lista: [], original: {}, apoio: [],};
+                            return cadastro;
+                        }
+                    }
+                });
+                // processar retorno da modal
+                modalInstance.result.then(function (cadastroModificado) {
+                    // processar o retorno positivo da modal
+
+                }, function () {
+                    // processar o retorno negativo da modal
+                    $log.info('Modal dismissed at: ' + new Date());
+                });
+            };
+
+            $scope.modalSelecinarPropriedadeRural = function (size) {
+                // abrir a modal
+                var modalInstance = $uibModal.open({
+                    animation: true,
+                    template: '<ng-include src=\"\'propriedade-rural/propriedade-rural-modal.html\'\"></ng-include>',
+                    controller: 'PropriedadeRuralCtrl',
+                    size: size,
+                    resolve: {
+                        modalCadastro: function () {
+                            return $scope.cadastroBase();
+                        }
+                    }
+                });
+                // processar retorno da modal
+                modalInstance.result.then(function (resultado) {
+                    // processar o retorno positivo da modal
+                    if (resultado.selecao.tipo === 'U') {
+                        $scope.cadastro.registro.propriedadeRural = 
+                            {
+                                id: resultado.selecao.item[0],
+                                nome: resultado.selecao.item[1],
+                            };
+                    } else {
+                        $scope.cadastro.registro.propriedadeRural = 
+                            {
+                                id: resultado.selecao.items[0][0],
+                                nome: resultado.selecao.items[0][1],
+                            };
+                    }
+                }, function () {
+                    // processar o retorno negativo da modal
+                    $log.info('Modal dismissed at: ' + new Date());
+                });
+            };
+
+            $scope.modalVerPropriedadeRural = function (size) {
+                // abrir a modal
+                var modalInstance = $uibModal.open({
+                    animation: true,
+                    template: '<ng-include src=\"\'propriedade-rural/propriedade-rural-form-modal.html\'\"></ng-include>',
+                    controller: 'PropriedadeRuralCtrl',
+                    size: size,
+                    resolve: {
+                        modalCadastro: function () {
+                            var cadastro = {registro: angular.copy($scope.cadastro.registro.propriedadeRural), filtro: {}, lista: [], original: {}, apoio: [],};
+                            return cadastro;
+                        }
+                    }
+                });
+                // processar retorno da modal
+                modalInstance.result.then(function (cadastroModificado) {
+                    // processar o retorno positivo da modal
+
+                }, function () {
+                    // processar o retorno negativo da modal
+                    $log.info('Modal dismissed at: ' + new Date());
+                });
+            };
             // fim ações especiais
 
             // inicio trabalho tab
@@ -367,6 +500,48 @@
                     $scope.cadastro.apoio.producaoForma.formula = formula;
                     $scope.cadastro.apoio.producaoForma.unidadeMedida = unidadeMedida;
                 }
+            });
+
+            $scope.$watch('cadastro.registro.publicoAlvo.id', function(novo) {
+                if (!$scope.cadastro.apoio.unidadeOrganizacional) {
+                    return;
+                }
+                PropriedadeRuralSrv.filtrarPorPublicoAlvoUnidadeOrganizacionalComunidade({
+                    unidadeOrganizacionalList: [{id: $scope.cadastro.apoio.unidadeOrganizacional.id}],
+                    publicoAlvoList: [{id: $scope.cadastro.registro.publicoAlvo.id}],
+                }).success(function (resposta) {
+                    if (resposta && resposta.mensagem === "OK") {
+                        $scope.cadastro.apoio.propriedadeRuralList = [];
+                        for (var i in resposta.resultado) {
+                            $scope.cadastro.apoio.propriedadeRuralList.push({id: resposta.resultado[i][0], nome: resposta.resultado[i][1]});
+                        }                        
+                        if ($scope.cadastro.apoio.propriedadeRuralList.length === 1) {
+                            $scope.cadastro.registro.propriedadeRural = $scope.cadastro.apoio.propriedadeRuralList[0];
+                        }
+                    }
+                });
+            });
+
+            $scope.$watch('cadastro.registro.propriedadeRural.id', function(novo) {
+                if (!$scope.cadastro.apoio.unidadeOrganizacional) {
+                    return;
+                }
+                PropriedadeRuralSrv.filtrarPorPublicoAlvoUnidadeOrganizacionalComunidade({
+                    unidadeOrganizacionalList: [{id: $scope.cadastro.apoio.unidadeOrganizacional.id}],
+                    propriedadeRuralList: [{id: $scope.cadastro.registro.propriedadeRural.id}],
+                }).success(function (resposta) {
+                    if (resposta && resposta.mensagem === "OK") {
+                        $scope.cadastro.apoio.publicoAlvoList = [];
+                        for (var i in resposta.resultado) {
+                            var pessoa = {id: resposta.resultado[i][0], pessoa: {nome: resposta.resultado[i][1], pessoaTipo: resposta.resultado[i][2]}};
+                            $scope.preparaClassePessoa(pessoa);
+                            $scope.cadastro.apoio.publicoAlvoList.push(pessoa);
+                        }                        
+                        if ($scope.cadastro.apoio.publicoAlvoList.length === 1) {
+                            $scope.cadastro.registro.publicoAlvo = $scope.cadastro.apoio.publicoAlvoList[0];
+                        }
+                    }
+                });
             });
 
             $scope.$watch('cadastro.apoio.unidadeOrganizacional.id', function(novo) {

@@ -86,6 +86,10 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer> {
 		super();
 	}
 
+	public Producao(Integer id) {
+		super(id);
+	}
+
 	public Calendar getAlteracaoData() {
 		return alteracaoData;
 	}

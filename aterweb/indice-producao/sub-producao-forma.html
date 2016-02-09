@@ -32,34 +32,29 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th></th>
-                        <th></th>
-                        <th colspan="{{cadastro.apoio.producaoForma.composicao.length}}">Forma Produção</th>
+                        <th rowspan="2">
+                            <frz-seletor ng-model="producaoFormaNvg"></frz-seletor>
+                        </th>
+                        <th width="30" rowspan="2">
+                            #
+                        </th>
+                        <th colspan="{{cadastro.apoio.producaoForma.composicao.length}}" ng-if="cadastro.apoio.producaoForma.composicao.length">Forma de Produção</th>
                         <th ng-if="cadastro.apoio.producaoForma.itemANome">A</th>
                         <th ng-if="cadastro.apoio.producaoForma.itemBNome">B</th>
                         <th ng-if="cadastro.apoio.producaoForma.itemCNome">C</th>
-                        <th></th>
-                        <th>Unidade</th>
-                        <th>Quantidade</th>
-                        <th>Valor Unitário</th>
-                        <th>Valor Total</th>
+                        <th>Volume</th>
+                        <th rowspan="2">Unidade de Medida</th>
+                        <th rowspan="2">Valor Unitário</th>
+                        <th rowspan="2">Valor Total</th>
+                        <th rowspan="2" ng-if="cadastro.apoio.producaoUnidadeOrganizacional">Quantidade de Produtores</th>
+                        <th rowspan="2" ng-if="!cadastro.apoio.producaoUnidadeOrganizacional">Confirmação</th>
                     </tr>
                     <tr>
-                        <th>
-                            <frz-seletor ng-model="producaoFormaNvg"></frz-seletor>
-                        </th>
-                        <th width="30">
-                            #
-                        </th>
-                        <th ng-repeat="item in cadastro.apoio.producaoForma.composicao">{{item[1]}}</th>
-                        <th ng-if="cadastro.apoio.producaoForma.itemANome">{{cadastro.apoio.producaoForma.itemANome}}</th>
-                        <th ng-if="cadastro.apoio.producaoForma.itemBNome">{{cadastro.apoio.producaoForma.itemBNome}}</th>
-                        <th ng-if="cadastro.apoio.producaoForma.itemCNome">{{cadastro.apoio.producaoForma.itemCNome}}</th>
-                        <th>Volume = ({{cadastro.apoio.producaoForma.formula}})</th>
-                        <th>Medida</th>
-                        <th>Produtores</th>
-                        <th></th>
-                        <th></th>
+                        <th ng-repeat="item in cadastro.apoio.producaoForma.composicao" ng-if="cadastro.apoio.producaoForma.composicao.length"><small>{{item[1]}}</small></th>
+                        <th ng-if="cadastro.apoio.producaoForma.itemANome"><small>{{cadastro.apoio.producaoForma.itemANome}}</small></th>
+                        <th ng-if="cadastro.apoio.producaoForma.itemBNome"><small>{{cadastro.apoio.producaoForma.itemBNome}}</small></th>
+                        <th ng-if="cadastro.apoio.producaoForma.itemCNome"><small>{{cadastro.apoio.producaoForma.itemCNome}}</small></th>
+                        <th><small>({{cadastro.apoio.producaoForma.formula}})</small></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -71,15 +66,61 @@
                         <td>
                             {{$index + 1 + ((producaoFormaNvg.paginaAtual-1) * producaoFormaNvg.tamanhoPagina)}}
                         </td>
-                        <td ng-repeat="forma in produtor.producaoFormaComposicaoList">{{UtilSrv.indiceDePorCampo(cadastro.apoio.producaoForma.composicao[$index][2], forma.formaProducaoValor.id, '0')[1]}}</td>
-                        <td ng-if="cadastro.apoio.producaoForma.itemANome">{{produtor.itemAValor | number: 5}}</td>
-                        <td ng-if="cadastro.apoio.producaoForma.itemBNome">{{produtor.itemBValor | number: 5}}</td>
-                        <td ng-if="cadastro.apoio.producaoForma.itemCNome">{{produtor.itemCValor | number: 5}}</td>
+                        <td ng-repeat="forma in produtor.producaoFormaComposicaoList" ng-if="cadastro.apoio.producaoForma.composicao.length">{{UtilSrv.indiceDePorCampo(cadastro.apoio.producaoForma.composicao[$index][2], forma.formaProducaoValor.id, '0')[1]}}</td>
+                        <td ng-if="cadastro.apoio.producaoForma.itemANome">
+                            <input class="form-control input-sm text-right" id="itemAValor" name="itemAValor" ng-model="produtor.itemAValor" ng-required="true" ui-number-mask="5" style="min-width: 75px;">
+                            <div class="label label-danger" ng-show="navegador.submetido && producaoFormaFrm.itemAValor.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                        <td ng-if="cadastro.apoio.producaoForma.itemBNome">
+                            <input class="form-control input-sm text-right" id="itemBValor" name="itemBValor" ng-model="produtor.itemBValor" ng-required="true" ui-number-mask="5" style="min-width: 75px;">
+                            <div class="label label-danger" ng-show="navegador.submetido && producaoFormaFrm.itemBValor.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                        <td ng-if="cadastro.apoio.producaoForma.itemCNome">
+                            <input class="form-control input-sm text-right" id="itemCValor" name="itemCValor" ng-model="produtor.itemCValor" ng-required="true" ui-number-mask="5" style="min-width: 75px;">
+                            <div class="label label-danger" ng-show="navegador.submetido && producaoFormaFrm.itemCValor.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
                         <td>{{formula(cadastro.apoio.producaoForma.formula, produtor.itemAValor, produtor.itemBValor, produtor.itemCValor) | number: 5}}</td>
                         <td>{{cadastro.apoio.producaoForma.unidadeMedida}}</td>
-                        <td>{{produtor.quantidadeProdutores}}</td>
-                        <td>{{produtor.valorUnitario | currency }}</td>
+                        <td>
+                            <input class="form-control input-sm text-right" id="valorUnitario" name="valorUnitario" ng-model="produtor.valorUnitario" ng-required="true" ui-money-mask="2" style="min-width: 75px;">
+                            <div class="label label-danger" ng-show="navegador.submetido && producaoFormaFrm.valorUnitario.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
                         <td>{{formula(cadastro.apoio.producaoForma.formula, produtor.itemAValor, produtor.itemBValor, produtor.itemCValor) * produtor.valorUnitario | currency }}</td>
+                        <td ng-if="cadastro.apoio.producaoUnidadeOrganizacional">
+                            <input class="form-control input-sm text-right" id="quantidadeProdutores" name="quantidadeProdutores" ng-model="produtor.quantidadeProdutores" ng-required="true" ui-number-mask="0" style="min-width: 75px;">
+                            <div class="label label-danger" ng-show="navegador.submetido && producaoFormaFrm.quantidadeProdutores.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                        <td ng-if="!cadastro.apoio.producaoUnidadeOrganizacional">
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control input-sm" id="dataConfirmacao" name="dataConfirmacao" aria-label="..." ui-date-mask ng-model="produtor.dataConfirmacao" style="min-width: 75px;">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li><a ng-click="produtor.dataConfirmacao = hoje()">Hoje</a></li>
+                                        <li><a ng-click="produtor.dataConfirmacao = null">Limpar</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="label label-danger" ng-show="navegador.submetido && producaoFormaFrm.dataConfirmacao.$error.date">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Data inválida!
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
                 <tfoot>

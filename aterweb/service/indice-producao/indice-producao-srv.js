@@ -52,6 +52,9 @@ angular.module(pNmModulo).factory(pNmFactory,
                 } else {
                     toastr.error('Não foi possível identificar a sua lotação', 'Erro ao carregar os dados');
                 }
+                if (typeof scp.cadastro.apoio.producaoUnidadeOrganizacional === "undefined") {
+                    scp.cadastro.apoio.producaoUnidadeOrganizacional = true;
+                }
                 // fim captar as listas de apoio
             },
             filtrar : function(filtro) {
@@ -61,9 +64,9 @@ angular.module(pNmModulo).factory(pNmFactory,
             executarFiltro : function() {
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
             },
-            novo : function() {
+            novo : function(modelo) {
                 SegurancaSrv.acesso(this.funcionalidade, 'INCLUIR');
-                return $http.get(this.endereco + '/novo');
+                return $http.get(this.endereco + '/novo', {params: {id: modelo}});
             },
             incluir : function(indiceProducao) {
                 SegurancaSrv.acesso(this.funcionalidade, 'INCLUIR');

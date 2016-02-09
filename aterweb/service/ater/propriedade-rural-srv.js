@@ -62,7 +62,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                 return FormularioSrv.filtrarComColeta(filtro);
             },
             filtrarPorPublicoAlvoUnidadeOrganizacionalComunidade : function (filtro) {
-                return $http.post(this.endereco + '/filtrar-por-publico-alvo-unidade-organizacional-comunidade', filtro);
+                return $http.post(this.endereco + '/filtro-publico-alvo-propriedade-rural-comunidade', filtro);
             }
 
         };

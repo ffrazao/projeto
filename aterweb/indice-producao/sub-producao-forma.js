@@ -59,6 +59,26 @@ angular.module(pNmModulo).controller(pNmController,
             '    <div class="container-fluid">' +
             '        <div class="row">' +
             '            <div class="col-md-3 text-right">' +
+            '                <label class="form-label">Tipo de Registro</label>' +
+            '            </div>' +
+            '            <div class="col-md-7">' +
+            '                <div class="form-control">' +
+            '                   Estimativa de produção de um' + ($scope.cadastro.apoio.producaoUnidadeOrganizacional ? 'a Unidade Organizacional' : ' Produtor') +
+            '                </div>' +
+            '            </div>' +
+            '        </div>' +
+            '        <div class="row">' +
+            '            <div class="col-md-3 text-right">' +
+            '                <label class="form-label">Ano</label>' +
+            '            </div>' +
+            '            <div class="col-md-3">' +
+            '                <div class="form-control">' +
+            '                   ' + $scope.cadastro.registro.ano +
+            '                </div>' +
+            '            </div>' +
+            '        </div>' +
+            '        <div class="row">' +
+            '            <div class="col-md-3 text-right">' +
             '                <label class="form-label">Classificação</label>' +
             '            </div>' +
             '            <div class="col-md-9">' +
@@ -77,6 +97,51 @@ angular.module(pNmModulo).controller(pNmController,
             '                </div>' +
             '            </div>' +
             '        </div>';
+        if ($scope.cadastro.registro.unidadeOrganizacional) {
+            form +=
+            '        <div class="row">' +
+            '            <div class="col-md-3 text-right">' +
+            '                <label class="form-label">Unidade Organizacional</label>' +
+            '            </div>' +
+            '            <div class="col-md-9">' +
+            '                <div class="form-control">' +
+            '                   ' + $scope.cadastro.registro.unidadeOrganizacional.nome +
+            '                </div>' +
+            '            </div>' +
+            '        </div>';
+        } else {
+            form +=
+            '        <div class="row">' +
+            '            <div class="col-md-3 text-right">' +
+            '                <label class="form-label">Unidade Organizacional</label>' +
+            '            </div>' +
+            '            <div class="col-md-9">' +
+            '                <div class="form-control">' +
+            '                   ' + $scope.cadastro.apoio.unidadeOrganizacional.nome +
+            '                </div>' +
+            '            </div>' +
+            '        </div>' +
+            '        <div class="row">' +
+            '            <div class="col-md-3 text-right">' +
+            '                <label class="form-label">Produtor</label>' +
+            '            </div>' +
+            '            <div class="col-md-9">' +
+            '                <div class="form-control">' +
+            '                   <a ng-click="modalVerPessoa(' + $scope.cadastro.registro.publicoAlvo.pessoa.id + ')">' + $scope.cadastro.registro.publicoAlvo.pessoa.nome + '</a>' +
+            '                </div>' +
+            '            </div>' +
+            '        </div>' +
+            '        <div class="row">' +
+            '            <div class="col-md-3 text-right">' +
+            '                <label class="form-label">PropriedadeRural</label>' +
+            '            </div>' +
+            '            <div class="col-md-9">' +
+            '                <div class="form-control">' +
+            '                   <a ng-click="modalVerPropriedadeRural(' + $scope.cadastro.registro.propriedadeRural.id + ')">' + $scope.cadastro.registro.propriedadeRural.nome + '</a>' +
+            '                </div>' +
+            '            </div>' +
+            '        </div>';
+        }
 
         for (i in composicao) {
             form +=
@@ -171,7 +236,7 @@ angular.module(pNmModulo).controller(pNmController,
             '                <label class="form-label">Valor Unitário</label>' +
             '            </div>' +
             '            <div class="col-md-3">' +
-            '                <input class="form-control text-right" id="valorUnitario" name="valorUnitario" ng-model="conteudo.valorUnitario" ng-required="true" ui-currency-mask="0">' +
+            '                <input class="form-control text-right" id="valorUnitario" name="valorUnitario" ng-model="conteudo.valorUnitario" ng-required="true" ui-money-mask="2">' +
             '                <div class="label label-danger" ng-show="confirmacaoFrm.valorUnitario.$error.required">' +
             '                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' +
             '                     Campo Obrigatório' +
@@ -187,7 +252,9 @@ angular.module(pNmModulo).controller(pNmController,
             '                   {{conteudo.formula(\"' + $scope.cadastro.apoio.producaoForma.formula + '\", conteudo.itemAValor, conteudo.itemBValor, conteudo.itemCValor) * conteudo.valorUnitario | currency}}' +
             '                </div>' +
             '            </div>' +
-            '        </div>' +
+            '        </div>';
+        if ($scope.cadastro.apoio.producaoUnidadeOrganizacional) {
+            form +=
             '        <div class="row">' +
             '            <div class="col-md-3 text-right">' +
             '                <label class="form-label">Quantidade de Produtores</label>' +
@@ -199,7 +266,9 @@ angular.module(pNmModulo).controller(pNmController,
             '                     Campo Obrigatório' +
             '                </div>' +
             '            </div>' +
-            '        </div>' +
+            '        </div>';
+        }
+        form +=
             '    </div>' +
             '</div>';
 
