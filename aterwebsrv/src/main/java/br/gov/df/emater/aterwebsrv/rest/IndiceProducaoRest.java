@@ -30,6 +30,16 @@ public class IndiceProducaoRest {
 		return salvar(producao, usuario);
 	}
 
+	@RequestMapping(value = "/excluir", method = RequestMethod.POST)
+	@Transactional
+	public Resposta excluir(@RequestBody Producao producao, Principal usuario) {
+		try {
+			return new Resposta(facadeBo.indiceProducaoExcluir(usuario, producao).getResposta());
+		} catch (Exception e) {
+			return new Resposta(e);
+		}
+	}
+
 	@RequestMapping(value = "/filtro-executar", method = RequestMethod.POST)
 	@Transactional(readOnly = true)
 	public Resposta filtroExecutar(@RequestBody IndiceProducaoCadFiltroDto filtro, Principal usuario) {

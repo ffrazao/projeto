@@ -80,8 +80,9 @@ angular.module(pNmModulo).factory(pNmFactory,
                 SegurancaSrv.acesso(this.funcionalidade, 'EDITAR');
                 return $http.post(this.endereco + '/editar', indiceProducao);
             },
-            excluir : function() {
+            excluir : function(registro) {
                 SegurancaSrv.acesso(this.funcionalidade, 'EXCLUIR');
+                return $http.post(this.endereco + '/excluir', registro);
             },
             tagBem : function(nome) {
                 return BemProducaoSrv.filtrar({nome: nome});

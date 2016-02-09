@@ -134,6 +134,11 @@ public class FacadeBo implements BeanFactoryAware {
 		return this._executar(usuario, "FormularioVisualizarPorCodigoCh", codigo);
 	}
 
+	@Transactional
+	public _Contexto indiceProducaoExcluir(Principal usuario, Producao producao) throws Exception {
+		return this._executar(usuario, "IndiceProducaoExcluirCh", producao);
+	}
+
 	@Transactional(readOnly = true)
 	public _Contexto indiceProducaoFiltroExecutar(Principal usuario, IndiceProducaoCadFiltroDto filtro) throws Exception {
 		return this._executar(usuario, "IndiceProducaoFiltroExecutarCh", filtro);

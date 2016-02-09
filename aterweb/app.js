@@ -510,38 +510,100 @@ angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 
     $rootScope.confirmarExcluir = function(scp) {
         if (scp.crudMeuEstado(scp, scp.stt, 'form')) {
             if (scp.navegador.selecao.tipo === 'U') {
-                scp.navegador.dados.splice(UtilSrv.indiceDe(scp.navegador.dados, scp.navegador.selecao.item), 1);
-                scp.navegador.selecao.item = null;
-                scp.navegador.mudarEstado('LISTANDO');
-                scp.crudVaiPara(scp, scp.stt, 'lista');
-            } else {
-                var reg = scp.navegador.selecao.items[scp.navegador.folhaAtual];
-                scp.navegador.dados.splice(UtilSrv.indiceDe(scp.navegador.dados, reg), 1);
-                scp.navegador.selecao.items.splice(UtilSrv.indiceDe(scp.navegador.selecao.items, reg), 1);
-                if (!scp.navegador.selecao.items.length) {
+                if (scp.servico) {
+                    scp.servico.excluir({id: scp.navegador.selecao.item[0]}).success(function (resposta) {
+                        if (resposta.mensagem && resposta.mensagem === 'OK') {
+                            scp.navegador.dados.splice(UtilSrv.indiceDe(scp.navegador.dados, scp.navegador.selecao.item), 1);
+                            scp.navegador.selecao.item = null;
+                            scp.navegador.mudarEstado('LISTANDO');
+                            scp.crudVaiPara(scp, scp.stt, 'lista');
+                            toastr.info('Operação realizada!', 'Informação');
+                        } else {
+                            toastr.error(resposta.mensagem, 'Erro ao excluir');
+                        }
+                    });
+                } else {
+                    scp.navegador.dados.splice(UtilSrv.indiceDe(scp.navegador.dados, scp.navegador.selecao.item), 1);
+                    scp.navegador.selecao.item = null;
                     scp.navegador.mudarEstado('LISTANDO');
                     scp.crudVaiPara(scp, scp.stt, 'lista');
+                    toastr.info('Operação realizada!', 'Informação');
+                }
+            } else {
+                var reg = scp.navegador.selecao.items[scp.navegador.folhaAtual];
+                if (scp.servico) {
+                    scp.servico.excluir({id: reg[0]}).success(function (resposta) {
+                        if (resposta.mensagem && resposta.mensagem === 'OK') {
+                            scp.navegador.dados.splice(UtilSrv.indiceDe(scp.navegador.dados, reg), 1);
+                            scp.navegador.selecao.items.splice(UtilSrv.indiceDe(scp.navegador.selecao.items, reg), 1);
+                            if (!scp.navegador.selecao.items.length) {
+                                scp.navegador.mudarEstado('LISTANDO');
+                                scp.crudVaiPara(scp, scp.stt, 'lista');
+                            } else {
+                                if (scp.navegador.folhaAtual >= scp.navegador.selecao.items.length) {
+                                    scp.navegador.folhaAtual = scp.navegador.selecao.items.length -1;
+                                }
+                                scp.crudVerRegistro(scp);
+                                scp.voltar(scp);
+                            }
+                            toastr.info('Operação realizada!', 'Informação');
+                        } else {
+                            toastr.error(resposta.mensagem, 'Erro ao excluir');
+                        }
+                    });
                 } else {
-                    if (scp.navegador.folhaAtual >= scp.navegador.selecao.items.length) {
-                        scp.navegador.folhaAtual = scp.navegador.selecao.items.length -1;
+                    scp.navegador.dados.splice(UtilSrv.indiceDe(scp.navegador.dados, reg), 1);
+                    scp.navegador.selecao.items.splice(UtilSrv.indiceDe(scp.navegador.selecao.items, reg), 1);
+                    if (!scp.navegador.selecao.items.length) {
+                        scp.navegador.mudarEstado('LISTANDO');
+                        scp.crudVaiPara(scp, scp.stt, 'lista');
+                    } else {
+                        if (scp.navegador.folhaAtual >= scp.navegador.selecao.items.length) {
+                            scp.navegador.folhaAtual = scp.navegador.selecao.items.length -1;
+                        }
+                        scp.crudVerRegistro(scp);
+                        scp.voltar(scp);
                     }
-                    scp.crudVerRegistro(scp);
-                    scp.voltar(scp);
+                    toastr.info('Operação realizada!', 'Informação');
                 }
             }
         } else if (scp.crudMeuEstado(scp, scp.stt, 'lista')) {
             if (scp.navegador.selecao.tipo === 'U') {
-                scp.navegador.dados.splice(UtilSrv.indiceDe(scp.navegador.dados, scp.navegador.selecao.item), 1);
-                scp.navegador.selecao.item = null;
+                if (scp.servico) {
+                    scp.servico.excluir({id: scp.navegador.selecao.item[0]}).success(function (resposta) {
+                        if (resposta.mensagem && resposta.mensagem === 'OK') {
+                            scp.navegador.dados.splice(UtilSrv.indiceDe(scp.navegador.dados, scp.navegador.selecao.item), 1);
+                            scp.navegador.selecao.item = null;
+                            toastr.info('Operação realizada!', 'Informação');
+                        } else {
+                            toastr.error(resposta.mensagem, 'Erro ao excluir');
+                        }
+                    });
+                } else {
+                    scp.navegador.dados.splice(UtilSrv.indiceDe(scp.navegador.dados, scp.navegador.selecao.item), 1);
+                    scp.navegador.selecao.item = null;
+                }
             } else {
                 for (var item = scp.navegador.selecao.items.length; item--;) {
-                    scp.navegador.dados.splice(UtilSrv.indiceDe(scp.navegador.dados, scp.navegador.selecao.items[item]), 1);
+                    if (scp.servico) {
+                        scp.servico.excluir({id: scp.navegador.selecao.items[item][0]}).success(function (resposta) {
+                            if (resposta.mensagem && resposta.mensagem === 'OK') {
+                                scp.navegador.dados.splice(UtilSrv.indiceDe(scp.navegador.dados, scp.navegador.selecao.items[item]), 1);
+                                toastr.info('Operação realizada!', 'Informação');
+                            } else {
+                                toastr.error(resposta.mensagem, 'Erro ao excluir');
+                            }
+                        });
+                    } else {
+                        scp.navegador.dados.splice(UtilSrv.indiceDe(scp.navegador.dados, scp.navegador.selecao.items[item]), 1);
+                        toastr.info('Operação realizada!', 'Informação');
+                    }
                 }
                 scp.navegador.selecao.items = [];
             }
             scp.voltar(scp);
         }
-        toastr.info('Operação realizada!', 'Informação');
+        //toastr.info('Operação realizada!', 'Informação');
     };
     $rootScope.temMaisRegistros = function(scp) {
         if (!scp.cadastro.filtro.ultimaPagina) {
