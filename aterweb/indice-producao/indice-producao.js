@@ -311,8 +311,9 @@
                 // processar retorno da modal
                 modalInstance.result.then(function (resultado) {
                     // processar o retorno positivo da modal
+                    var pessoa = null;
                     if (resultado.selecao.tipo === 'U') {
-                        var pessoa = {
+                        pessoa = {
                             id: resultado.selecao.item[0], 
                             nome: resultado.selecao.item[1], 
                             pessoaTipo: resultado.selecao.item[3],
@@ -324,7 +325,7 @@
                                 pessoa: pessoa,
                             };
                     } else {
-                        var pessoa = {
+                        pessoa = {
                             id: resultado.selecao.items[0][0], 
                             nome: resultado.selecao.items[0][1], 
                             pessoaTipo: resultado.selecao.items[0][3],

@@ -16,6 +16,8 @@ public class Metodo extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
 
+	private String finalidade;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
@@ -36,6 +38,10 @@ public class Metodo extends EntidadeBase implements _ChavePrimaria<Integer> {
 		setNome(nome);
 	}
 
+	public String getFinalidade() {
+		return finalidade;
+	}
+
 	@Override
 	public Integer getId() {
 		return id;
@@ -43,6 +49,10 @@ public class Metodo extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	public String getNome() {
 		return nome;
+	}
+
+	public void setFinalidade(String finalidade) {
+		this.finalidade = finalidade;
 	}
 
 	@Override

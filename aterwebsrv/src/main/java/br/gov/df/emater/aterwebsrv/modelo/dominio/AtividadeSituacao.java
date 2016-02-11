@@ -2,7 +2,7 @@ package br.gov.df.emater.aterwebsrv.modelo.dominio;
 
 public enum AtividadeSituacao {
 
-	B("Bloqueada", 5, false, false), C("Conclu�da", 3, true, true), E("Em Execu��o", 2, true, true), N("N�o Iniciada", 1, true, false), S("Suspensa", 6, false, true), X("Cancelada", 4, false, true);
+	B("Bloqueada", 5, false, false), C("Concluída", 3, true, true), E("Em Execução", 2, true, true), N("Não Iniciada", 1, true, false), S("Suspensa", 6, false, true), X("Cancelada", 4, false, true);
 
 	private String descricao;
 

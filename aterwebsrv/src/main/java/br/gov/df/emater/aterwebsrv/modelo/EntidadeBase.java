@@ -27,6 +27,8 @@ public abstract class EntidadeBase implements Serializable {
 
 	public static final String ENQUETE_SCHEMA = "enquete";
 
+	public static final String FORMULARIO_SCHEMA = "formulario";
+
 	public static final String FUNCIONAL_SCHEMA = "funcional";
 
 	public static final String INDICE_PRODUCAO_SCHEMA = "indice_producao";
@@ -36,8 +38,6 @@ public abstract class EntidadeBase implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public static final String SISTEMA_SCHEMA = "sistema";
-
-	public static final String FORMULARIO_SCHEMA = "formulario";
 
 	@Transient
 	private CadastroAcao cadastroAcao;

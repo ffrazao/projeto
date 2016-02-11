@@ -2,7 +2,7 @@ package br.gov.df.emater.aterwebsrv.modelo.dominio;
 
 public enum AtividadeFormato {
 
-	P("Planejamento"), E("Execucao");
+	P("Planejamento"), E("Execução");
 
 	private String descricao;
 

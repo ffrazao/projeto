@@ -17,6 +17,12 @@ angular.module(pNmModulo).factory(pNmFactory,
                    'PessoaSituacao',
                    'PublicoAlvoSegmento',
                    'PublicoAlvoCategoria',
+                   'AtividadeFormato',
+                   'AtividadeFinalidade',
+                   'AtividadeNatureza',
+                   'AtividadePrioridade',
+                   'AtividadeSituacao',
+                   'Metodo',
                 ]}).success(function(resposta) {
                     if (resposta && resposta.resultado) {
                         scp.cadastro.apoio.generoList = resposta.resultado[0];
@@ -24,6 +30,12 @@ angular.module(pNmModulo).factory(pNmFactory,
                         scp.cadastro.apoio.pessoaSituacaoList = resposta.resultado[2];
                         scp.cadastro.apoio.publicoAlvoSegmentoList = resposta.resultado[3];
                         scp.cadastro.apoio.publicoAlvoCategoriaList = resposta.resultado[4];
+                        scp.cadastro.apoio.atividadeFormatoList = resposta.resultado[5];
+                        scp.cadastro.apoio.atividadeFinalidadeList = resposta.resultado[6];
+                        scp.cadastro.apoio.atividadeNaturezaList = resposta.resultado[7];
+                        scp.cadastro.apoio.atividadePrioridadeList = resposta.resultado[8];
+                        scp.cadastro.apoio.atividadeSituacaoList = resposta.resultado[9];
+                        scp.cadastro.apoio.metodoList = resposta.resultado[10];
                    }
                 });
             },

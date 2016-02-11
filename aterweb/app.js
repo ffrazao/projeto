@@ -1,3 +1,5 @@
+/* jslint loopfunc: true */
+
 (function(pNmModulo, pNmController, pNmFormulario) {
 
 'use strict';

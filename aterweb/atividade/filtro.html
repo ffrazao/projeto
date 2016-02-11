@@ -3,237 +3,251 @@
     <div class="panel-body">
         <form class="form-horizontal" name="frm.filtro" novalidate>
             <fieldset>
-
-                <legend>Dados da Atividade</legend>
-
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="codigo">Código da Atividade</label>
+                <legend>Dados Básicos</legend>
+                <!-- Select input-->
+                <div class="form-group" title="Ano da Produção">
+                    <label class="col-md-4 control-label" for="ano">
+                        Ano da Produção
+                    </label>
                     <div class="col-md-2">
-                        <input id="codigo" name="codigo" type="text" class="form-control input-md" ng-model="cadastro.filtro.codigo" placeholder="Digite a Atividade">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="dataInicio">Início</label>
-                    <div class="col-md-2">
-                        <input class="form-control" type="text" id="dataInicio" name="dataInicio" ng-model="cadastro.filtro.dataInicio" placeholder="Digite o Início" ui-date-mask/>
-                    </div>
-                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.dataInicio.$error.date">
-                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                        Valor Inválido!
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="dataFinal">Fim</label>
-                    <div class="col-md-2">
-                        <input class="form-control" type="text" id="dataFinal" name="dataFinal" ng-model="cadastro.filtro.dataFinal" ui-date-mask/ placeholder="Digite o Final">
-                    </div>    
-                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.dataFinal.$error.date">
-                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                        Valor Inválido!
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="assunto">Assunto</label>
-                    <div class="col-md-7">
-                        <tags-input id="assunto" name="assunto" ng-model="cadastro.filtro.assunto" display-property="nome" placeholder="Digite o Assunto" template="tag-template-assunto" add-from-autocomplete-only="true" >
-                            <auto-complete source="getTagAssunto($query)" min-length="0" load-on-empty="false" ></auto-complete>
-                        </tags-input>
-                        <script type="text/ng-template" id="tag-template-assunto" >
-                            <div class="tag-template">
-                               <div class="right-panel">
-                                    <span>{{$getDisplayText()}}</span>
-                                    <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
-                                </div>
-                            </div>
-                        </script>
-                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.assunto.$error.leftoverText">
+                        <select id="ano" name="ano" class="form-control" ng-model="cadastro.filtro.ano" ng-options="item as item for item in cadastro.apoio.anoList track by item" required="true">
+                        </select>
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.ano.$error.required">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                            Valor Inválido!
+                            Campo Obrigatório
                         </div>
-                    </<div>
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="or">Metodo</label>
-                    <div class="col-md-7">
-                        <tags-input id="metodo" name="metodo" ng-model="cadastro.filtro.metodo" display-property="nome" placeholder="Digite o Método" template="tag-template-metodo" add-from-autocomplete-only="true" >
-                            <auto-complete source="getTagMetodo($query)" min-length="0" load-on-empty="false" ></auto-complete>
-                        </tags-input>
-                        <script type="text/ng-template" id="tag-template-metodo" >
-                            <div class="tag-template">
-                               <div class="right-panel">
-                                    <span>{{$getDisplayText()}}</span>
-                                    <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
-                                </div>
-                            </div>
-                        </script>
-                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.metodo.$error.leftoverText">
-                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                            Valor Inválido!
-                        </div>
-                    </<div>
-                    </div>
-                </div>
-
-
-                <legend>Dados do Beneficiário</legend>
-
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="unidadeBeneficiario">Unidade</label>
-                    <div class="col-md-7">
-                        <tags-input id="unidadeBeneficiario" name="unidadeBeneficiario" ng-model="cadastro.filtro.unidadeBeneficiario" display-property="nome" placeholder="Digite a Unidade" template="tag-template-unidadeBeneficiario" add-from-autocomplete-only="true" >
-                            <auto-complete source="getTagUnidade($query)" min-length="0" load-on-empty="false" ></auto-complete>
-                        </tags-input>
-                        <script type="text/ng-template" id="tag-template-unidadeBeneficiario" >
-                            <div class="tag-template">
-                               <div class="right-panel">
-                                    <span>{{$getDisplayText()}}</span>
-                                    <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
-                                </div>
-                            </div>
-                        </script>
-                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.unidadeBeneficiario.$error.leftoverText">
-                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                            Valor Inválido!
-                        </div>
-                    </<div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="comunidadeBeneficiario">Comunidade</label>
-                    <div class="col-md-7">
-                        <tags-input id="comunidadeBeneficiario" name="comunidadeBeneficiario" ng-model="cadastro.filtro.comunidadeBeneficiario" display-property="nome" placeholder="Digite a Comunidade" template="tag-template-comunidadeBeneficiario" add-from-autocomplete-only="true" >
-                            <auto-complete source="getTagComunidade($query)" min-length="0" load-on-empty="false" ></auto-complete>
-                        </tags-input>
-                        <script type="text/ng-template" id="tag-template-comunidadeBeneficiario" >
-                            <div class="tag-template">
-                               <div class="right-panel">
-                                    <span>{{$getDisplayText()}}</span>
-                                    <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
-                                </div>
-                            </div>
-                        </script>
-                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.comunidadeBeneficiario.$error.leftoverText">
-                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                            Valor Inválido!
-                        </div>
-                    </<div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="beneficiario">Beneficiário</label>
-                    <div class="col-md-7">
-                        <tags-input id="beneficiario" name="beneficiario" ng-model="cadastro.filtro.beneficiario" display-property="nome" placeholder="Digite o Beneficiário" template="tag-template-beneficiario" add-from-autocomplete-only="true" >
-                            <auto-complete source="getTagBeneficiario($query)" min-length="0" load-on-empty="false" ></auto-complete>
-                        </tags-input>
-                        <script type="text/ng-template" id="tag-template-beneficiario" >
-                            <div class="tag-template">
-                               <div class="right-panel">
-                                    <span>{{$getDisplayText()}}</span>
-                                    <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
-                                </div>
-                            </div>
-                        </script>
-                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.beneficiario.$error.leftoverText">
-                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                            Valor Inválido!
-                        </div>
-                    </<div>
-                    </div>
-                </div>
-
-                <div class="form-group" title="Gênero" >
-                    <label class="col-md-4 control-label" for="genero">Gênero</label>
-                    <div class="col-md-6">
-                        <label class="checkbox-inline" for="genero-{{$index}}" ng-repeat="item in cadastro.apoio.generoList">
-                            <input type="checkbox" name="genero" id="genero-{{$index}}" checklist-model="cadastro.filtro.genero" checklist-value="item.codigo">
-                            {{item.descricao}}
-                        </label>
-                    </div>
-                </div>
-                <div class="form-group" title="Geração" >
-                    <label class="col-md-4 control-label" for="pessoaGeracao">Geração</label>
-                    <div class="col-md-6">
-                        <label class="checkbox-inline" for="pessoaGeracao-{{$index}}" ng-repeat="item in cadastro.apoio.pessoaGeracaoList">
-                            <input type="checkbox" name="pessoaGeracao" id="pessoaGeracao-{{$index}}" checklist-model="cadastro.filtro.pessoaGeracao" checklist-value="item.codigo">
-                            {{item.descricao}}
-                        </label>
-                    </div>
-                </div>
-
                 <!-- Multiple Checkboxes (inline) -->
-                <div class="form-group" title="Segmento">
-                    <label class="col-md-4 control-label" for="publicoAlvoSegmento">Segmento</label>
-                    <div class="col-md-8">
-                        <label class="checkbox-inline" for="publicoAlvoSegmento-{{$index}}" ng-repeat="item in cadastro.apoio.publicoAlvoSegmentoList">
-                            <input type="checkbox" name="publicoAlvoSegmento" id="publicoAlvoSegmento-{{$index}}" checklist-model="cadastro.filtro.publicoAlvoSegmento" checklist-value="item.codigo">
+                <div class="form-group" title="A coleta foi confirmada?">
+                    <label class="col-md-4 control-label" for="confirmado">
+                        Coleta confirmada
+                    </label>
+                    <div class="col-md-6">
+                        <label class="checkbox-inline" for="confirmado-{{$index}}" ng-repeat="item in cadastro.apoio.confirmadoList">
+                            <input type="checkbox" name="confirmado" id="confirmado-{{$index}}" checklist-model="cadastro.filtro.confirmado" checklist-value="item.codigo">
                             {{item.descricao}}
                         </label>
                     </div>
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.confirmado.$error.required">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        Campo Obrigatório
+                    </div>
                 </div>
-
                 <!-- Multiple Checkboxes (inline) -->
-                <div class="form-group" title="Categoria">
-                    <label class="col-md-4 control-label" for="publicoAlvoCategoria">Categoria</label>
-                    <div class="col-md-8">
-                        <label class="checkbox-inline" for="publicoAlvoCategoria-{{$index}}" ng-repeat="item in cadastro.apoio.publicoAlvoCategoriaList">
-                            <input type="checkbox" name="publicoAlvoCategoria" id="publicoAlvoCategoria-{{$index}}" checklist-model="cadastro.filtro.publicoAlvoCategoria" checklist-value="item.codigo">
-                            {{item.descricao}}
-                        </label>
+                <div class="form-group" title="Classificação do Bem de Produção/ Forma de Produção">
+                    <label class="col-md-4 control-label" for="bemClassificacao">
+                        Classificação / Forma de Produção
+                    </label>
+                    <div class="col-md-7">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="cadastro.apoio.bemClassificacaoFiltro" placeholder="Filtrar por Classificação">
+                            <span class="input-group-btn">
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-default" ng-click="cadastro.apoio.bemClassificacaoFiltro = ''">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </button>
+                                </div>
+                            </span>
+                        </div>
+                        <div class="row" style="height: 200px; overflow: scroll;">
+                            <script type="text/ng-template" id="nodes_renderer.html">
+                                <div ui-tree-handle>
+                                    <a class="btn btn-primary btn-xs Tooltip" nodrag ng-click="toggleChildren(this)" title="Expandir/Recolher" ng-show="node[3].length">
+                                        <span class="glyphicon glyphicon-chevron-right" ng-show="collapsed"></span>
+                                        <span class="glyphicon glyphicon-chevron-down" ng-show="!collapsed"></span>
+                                    </a>
+                                    <label>
+                                        <input type="checkbox" ng-model="node[4]" ng-true-value="true" ng-false-value="false">
+                                        {{node[1]}}
+                                    </label>
+                                    <table width="100%" ng-show="node[2].length">
+                                        <tr>
+                                            <td colspan="2">&nbsp;</td>
+                                            <td style="color: gray"><small>Forma de Produção</small></td>
+                                        </tr>
+                                        <tr ng-repeat="forma in node[2]">
+                                            <td width="30%" style="text-align: right">
+                                                <small>{{forma[1]}}</small>
+                                            </td>
+                                            <td width="5%">
+                                                &nbsp;
+                                            </td>
+                                            <td>
+                                                <select ng-model="forma[3]" ng-options="opcao[0] as opcao[1] for opcao in forma[2] track by opcao[0]">
+                                                    <option value="">-- Selecione --</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <ol ui-tree-nodes="" ng-model="node[3]" ng-class="{hidden: collapsed}">
+                                    <li ng-repeat="node in node[3]" ui-tree-node ng-include="'nodes_renderer.html'" ng-show="visivel(cadastro.apoio.bemClassificacaoFiltro, node[1], !node[3].length)">
+                                    </li>
+                                </ol>
+                            </script>
+                            <div ui-tree drag-enabled="false">
+                                <ol ui-tree-nodes="" ng-model="cadastro.apoio.bemClassificacaoList" id="tree-root" ng-class="{hidden: collapsed}">
+                                    <li ng-repeat="node in cadastro.apoio.bemClassificacaoList" ui-tree-node ng-include="'nodes_renderer.html'">
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.unidadeOrganizacionalComunidade.$error.required">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        Campo Obrigatório
                     </div>
                 </div>
-
-   
-                <legend>Dados de Planejamento</legend>
-
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="metaEstrategica">Meta Estratégica</label>
+                <!-- Tag-input-->
+                <div class="form-group" title="Bens de Produção">
+                    <label class="col-md-4 control-label" for="ano">
+                        Bens de Produção
+                    </label>
                     <div class="col-md-7">
-                        <tags-input id="metaEstrategica" name="metaEstrategica" ng-model="cadastro.filtro.metaEstrategica" display-property="nome" placeholder="Digite a Meta Estratégica" template="tag-template-metaEstrategica" add-from-autocomplete-only="true" >
-                            <auto-complete source="getTagMetaEstrategica($query)" min-length="0" load-on-empty="false" ></auto-complete>
+                        <tags-input id="bem" name="bem" ng-model="cadastro.filtro.bem" display-property="nome" placeholder="Digite o nome do Bem de Produção" 
+                            template="tag-template" add-from-autocomplete-only="true">
+                            <auto-complete source="getTagBem($query)" min-length="0" load-on-empty="false"
+                            template="autocomplete-template"></auto-complete>
                         </tags-input>
-                        <script type="text/ng-template" id="tag-template-metaEstrategica" >
+                        <script type="text/ng-template" id="tag-template" >
                             <div class="tag-template">
-                               <div class="right-panel">
+                                <div class="right-panel">
                                     <span>{{$getDisplayText()}}</span>
+                                    <small style="font-size: 70%;color: yellow">({{data.classificacao}})</small>
                                     <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
                                 </div>
                             </div>
                         </script>
-                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.metaEstrategica.$error.leftoverText">
-                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                            Valor Inválido!
-                        </div>
-                    </<div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="metaTatica">Meta Tática</label>
-                    <div class="col-md-7">
-                        <tags-input id="metaTatica" name="metaTatica" ng-model="cadastro.filtro.metaTatica" display-property="nome" placeholder="Digite a Meta Tática" template="tag-template-metaTatica" add-from-autocomplete-only="true" >
-                            <auto-complete source="getTagUnidade($query)" min-length="0" load-on-empty="false" ></auto-complete>
-                        </tags-input>
-                        <script type="text/ng-template" id="tag-template-metaTatica" >
-                            <div class="tag-template">
-                               <div class="right-panel">
+                        <script type="text/ng-template" id="autocomplete-template">
+                            <div class="autocomplete-template">
+                                <div class="right-panel">
                                     <span>{{$getDisplayText()}}</span>
+                                    <small style="font-size: 70%">({{data.classificacao}})</small>
                                     <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
                                 </div>
                             </div>
                         </script>
-                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.metaTatica.$error.leftoverText">
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.bem.$error.leftoverText">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             Valor Inválido!
                         </div>
-                    </<div>
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.ano.$error.required">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Campo Obrigatório
+                        </div>
                     </div>
                 </div>
-
+                <!-- Multiple Checkboxes (inline) -->
+                <div class="form-group" title="Unidade Organizacional/Comunidade">
+                    <label class="col-md-4 control-label" for="unidadeOrganizacionalComunidade">
+                        Unidade Organizacional/Comunidade
+                    </label>
+                    <div class="col-md-7">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="cadastro.apoio.localFiltro" placeholder="Filtrar por Comunidade">
+                            <span class="input-group-btn">
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-default" ng-click="cadastro.apoio.localFiltro = ''">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </button>
+                                </div>
+                            </span>
+                        </div>
+                        <div class="row" style="height: 200px; overflow: scroll;">
+                            <div ui-tree drag-enabled="false">
+                                <ol ui-tree-nodes="" ng-model="cadastro.apoio.localList">
+                                    <li ng-repeat="item in cadastro.apoio.localList" ui-tree-node>
+                                        <div ui-tree-handle>
+                                            <a class="btn btn-primary btn-xs Tooltip" data-nodrag data-ng-click="toggleChildren(this)" title="Expandir/Recolher">
+                                                <span class="glyphicon glyphicon-chevron-right" data-ng-show="collapsed"></span>
+                                                <span class="glyphicon glyphicon-chevron-down" data-ng-show="!collapsed"></span>
+                                            </a>
+                                            <label>
+                                                <input type="checkbox" ng-model="item.selecionado" ng-true-value="true" ng-false-value="false">
+                                                {{item.nome}}
+                                            </label>
+                                        </div>
+                                        <ol ui-tree-nodes="" ng-model="item.unidadeList" ng-class="{hidden: collapsed}">
+                                            <li ng-repeat="subItem in item.unidadeList" ui-tree-node>
+                                                <div ui-tree-handle>
+                                                    <a class="btn btn-primary btn-xs Tooltip" data-nodrag data-ng-click="toggleChildren(this)" title="Expandir/Recolher">
+                                                        <span class="glyphicon glyphicon-chevron-right" data-ng-show="collapsed"></span>
+                                                        <span class="glyphicon glyphicon-chevron-down" data-ng-show="!collapsed"></span>
+                                                    </a>
+                                                    <label>
+                                                        <input type="checkbox" ng-model="subItem.selecionado" ng-true-value="true" ng-false-value="false">
+                                                        {{subItem.nome}}
+                                                    </label>
+                                                </div>
+                                                <ol ui-tree-nodes="" ng-model="subItem.comunidadeList" ng-class="{hidden: collapsed}">
+                                                    <li ng-repeat="subSubItem in subItem.comunidadeList" ui-tree-node ng-show="visible(subSubItem)">
+                                                        <div ui-tree-handle>
+                                                            <label>
+                                                                <input type="checkbox" ng-model="subSubItem.selecionado" ng-true-value="true" ng-false-value="false">
+                                                                {{subSubItem.nome}}
+                                                            </label>
+                                                        </div>
+                                                    </li>
+                                                </ol>
+                                            </li>
+                                        </ol>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.unidadeOrganizacionalComunidade.$error.required">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        Campo Obrigatório
+                    </div>
+                </div>
+                <legend>Quantitativos</legend>
+                <!-- Select input-->
+                <div class="form-group" title="Volume de Produção">
+                    <label class="col-md-4 control-label" for="volumeIni">
+                        Volume de produção entre 
+                    </label>
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <input id="volumeIni" name="volumeIni" type="text" placeholder="placeholder" class="form-control input-md" ng-model="cadastro.filtro.volumeIni" ui-number-mask="4">
+                            </div>
+                            <label class="col-md-2">
+                                e 
+                            </label>
+                            <div class="col-md-5">
+                                <input id="volumeFim" name="volumeFim" type="text" placeholder="placeholder" class="form-control input-md" ng-model="cadastro.filtro.volumeFim" ui-number-mask="4">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.volumeIni.$error.required">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        Campo Obrigatório
+                    </div>
+                </div>
+                <div class="form-group" title="Quantitativos" ng-repeat="item in cadastro.apoio.quantitativoList">
+                    <label class="col-md-4 control-label" for="quantitativoIni">
+                        {{item.nome}}
+                    </label>
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <input id="quantitativoIni{{item.id}}" name="quantitativoIni{{item.id}}" type="text" placeholder="placeholder" class="form-control input-md" ng-model="cadastro.filtro.quantitativoIni[item.id]" ui-number-mask="4">
+                            </div>
+                            <label class="col-md-2">
+                                e 
+                            </label>
+                            <div class="col-md-5">
+                                <input id="quantitativoFim{{item.id}}" name="quantitativoFim{{item.id}}" type="text" placeholder="placeholder" class="form-control input-md" ng-model="cadastro.filtro.quantitativoFim[item.id]" ui-number-mask="4">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.quantitativoIni{{item.id}}.$error.required">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        Campo Obrigatório
+                    </div>
+                </div>
             </fieldset>
         </form>
     </div>

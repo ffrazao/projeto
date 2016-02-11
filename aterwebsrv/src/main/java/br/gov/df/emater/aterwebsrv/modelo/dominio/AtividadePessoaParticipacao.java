@@ -1,10 +1,12 @@
 package br.gov.df.emater.aterwebsrv.modelo.dominio;
 
-public enum AtividadePessoaFuncao {
-	D("Demandante"), E("Executor"), ER("Executor Responsável");
+public enum AtividadePessoaParticipacao {
+
+	D("Demandante"), E("Executor");
+
 	private String descricao;
 
-	private AtividadePessoaFuncao(String descricao) {
+	private AtividadePessoaParticipacao(String descricao) {
 		this.descricao = descricao;
 	}
 

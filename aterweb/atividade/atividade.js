@@ -1,16 +1,21 @@
-/* global criarEstadosPadrao */
+/* jslint evil: true, browser: true, plusplus: true, loopfunc: true */
+/* global criarEstadosPadrao, removerCampo */ 
 
 (function(pNmModulo, pNmController, pNmFormulario, pUrlModulo) {
     'use strict';
-    angular.module(pNmModulo, ['ui.bootstrap', 'ui.utils', 'ui.router', 'ngAnimate', 'frz.navegador', 'frz.form']);
+    angular.module(pNmModulo, ['ui.bootstrap', 'ui.utils', 'ui.router', 'ngAnimate', 'frz.navegador', 'frz.form', 'ngSanitize']);
     angular.module(pNmModulo).config(['$stateProvider', function($stateProvider) {
         criarEstadosPadrao($stateProvider, pNmModulo, pNmController, pUrlModulo);
     }]);
-    angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'AtividadeSrv', 'TokenStorage',
-        function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, AtividadeSrv, TokenStorage) {
+    angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'AtividadeSrv', 'PropriedadeRuralSrv',
+        'TokenStorage',
+        function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, AtividadeSrv,  PropriedadeRuralSrv,
+            TokenStorage) {
 
             // inicializacao
             $scope.crudInit($scope, $state, null, pNmFormulario, AtividadeSrv);
+
+            $scope.produtoresNvg = new FrzNavegadorParams([]);
 
             // código para verificar se o modal está ou não ativo
             $scope.verificaEstado($uibModalInstance, $scope, 'filtro', modalCadastro, pNmFormulario);
@@ -47,279 +52,528 @@
                     $log.info('Modal dismissed at: ' + new Date());
                 });
             };
-            $scope.abrir = function() {
-                // inicia lista unidade
-                if( !$rootScope.token ){
-                    $rootScope.token = btoa(TokenStorage.retrieve());
-                }
 
-                if( $rootScope.token.lotacaoAtual ){
-                  $scope.cadastro.filtro.unidadeBeneficiario = [];  
-                  $scope.cadastro.filtro.unidadeBeneficiario.push($rootScope.token.lotacaoAtual);
-                }
-                $rootScope.abrir($scope);
-            };
             // fim: atividades do Modal
 
             // inicio das operaçoes atribuidas ao navagador
-            var executaIncluir = function() {
-                var conf = 
-                    '<div class="form-group">' + 
-                    '    <label class="col-md-4 control-label" for="cnfTipoAtividade">Incluir que tipo de Atividade?</label>' + 
-                    '    <div class="col-md-8">';
-                for (var item in $scope.cadastro.apoio.atividadeTipoList) {
-                    conf +=
-                    '        <label class="radio-inline" for="cnfTipoAtividade-' + item + '">' + 
-                    '            <input type="radio" name="cnfTipoAtividade" id="cnfTipoAtividade-' + item + '" value="' + $scope.cadastro.apoio.atividadeTipoList[item].codigo + '" ng-model="conteudo.tipoAtividade" required>' + 
-                    '            ' + $scope.cadastro.apoio.atividadeTipoList[item].descricao +
-                    '        </label>';
-                }
-                conf +=
-                '        <div class="label label-danger" ng-show="confirmacaoFrm.cnfTipoAtividade.$error.required">' + 
-                '            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' + 
-                '             Campo Obrigatório' + 
-                '        </div>' + 
-                '    </div>' + 
-                '</div>';
-                mensagemSrv.confirmacao(false, conf, null, {
-                    tipoAtividade: null
-                }).then(function(conteudo) {
-                    // processar o retorno positivo da modal
-                    $rootScope.incluir($scope, conteudo.tipoAtividade);
-                }, function() {
-                // processar o retorno negativo da modal
-                //$log.info('Modal dismissed at: ' + new Date());
-                });
+            $scope.abrir = function(scp) {
+                // ajustar o menu das acoes especiais
+                $scope.navegador.botao('acao', 'acao')['subFuncoes'] = [
+                    {
+                        nome: 'Exibir/Esconder Detalhes',
+                        descricao: 'Exibe ou esconde os detalhes da atividade',
+                        acao: function() {
+                            if (!$scope.cadastro.apoio.escondeDetalhe) {
+                                $scope.cadastro.apoio.escondeDetalhe = false;
+                            }
+                            $scope.cadastro.apoio.escondeDetalhe = !$scope.cadastro.apoio.escondeDetalhe;
+                        },
+                        exibir: function() {
+                            var estado = $scope.navegador.estadoAtual();
+                            return estado === 'LISTANDO';
+                        },
+                    },
+                ];
+                $rootScope.abrir(scp);
             };
-            $scope.incluir = function(scp) {
-                if (!$scope.cadastro.apoio.atividadeTipoList) {
-                    UtilSrv.dominioLista($scope.cadastro.apoio.atividadeTipoList, {ent:['AtividadeTipo']}, function(resultado) {
-                        if (!$scope.cadastro.apoio.atividadeTipoList) {
-                            $scope.cadastro.apoio.atividadeTipoList = [];
-                        }
-                        $scope.cadastro.apoio.atividadeTipoList.splice(0, $scope.cadastro.apoio.atividadeTipoList.length);
-                        for (var i in resultado) {
-                            $scope.cadastro.apoio.atividadeTipoList.push(resultado[i]);
-                        }
-                        executaIncluir();
-                    });
-                } else {
-                    executaIncluir();
+            $scope.incluirDepois = function (objeto) {
+                var t = TokenStorage.token();
+                if (t && t.lotacaoAtual) {
+                    objeto.unidadeOrganizacional = t.lotacaoAtual;
                 }
-            };
-            $scope.paisPadrao = function(id) {
-                if (!id) {
-                    return;
-                }
-                var pais = UtilSrv.indiceDePorCampo($scope.cadastro.apoio.paisList, id, 'id');
-                if (pais) {
-                    return pais.padrao;
-                } else {
-                    //toastr.warning('Não poi possível identificar o valor padrão!', 'Atenção!');
-                    return null;
-                }
+                $scope.cadastro.apoio.producaoUnidadeOrganizacional = true;
+                delete $scope.cadastro.apoio.unidadeOrganizacional;
+                delete $scope.cadastro.apoio.porProdutor;
             };
             $scope.confirmarIncluir = function(scp) {
-                preparaRegistro();
-                $rootScope.confirmarIncluir(scp);
-            };
-            $scope.confirmarEditar = function(scp) {
-                preparaRegistro();
-                $rootScope.confirmarEditar(scp);
-            };
-            $scope.confirmarExcluir = function(scp) {
-                preparaRegistro();
-                $rootScope.confirmarExcluir(scp);
-            };
-
-            var preparaRegistro = function () {
-                if ($scope.cadastro.registro.atividadeTipo === 'PF') {
-                    $scope.cadastro.registro['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.atividade.AtividadeFisica';
-                } else if ($scope.cadastro.registro.atividadeTipo === 'PJ') {
-                    $scope.cadastro.registro['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.atividade.AtividadeJuridica';
+                if (!scp.confirmar(scp)) {
+                    return;
                 }
+                var reg = angular.copy(scp.cadastro.registro);
+                removerCampo(reg, ['@jsonId', 'formula', 'bemClassificacao']);
+
+                // preparar composicao da forma de producao
+                scp.servico.incluir(reg).success(function (resposta) {
+                    if (resposta.mensagem && resposta.mensagem === 'OK') {
+                        scp.navegador.voltar(scp);
+                        scp.navegador.mudarEstado('VISUALIZANDO');
+                        scp.crudVaiPara(scp, scp.stt, 'form');
+                        scp.navegador.submetido = false;
+                        scp.navegador.dados.push(scp.cadastro.registro);
+                        if (scp.navegador.selecao.tipo === 'U') {
+                            scp.navegador.selecao.item = scp.cadastro.registro;
+                        } else {
+                            scp.navegador.folhaAtual = scp.navegador.selecao.items.length;
+                            scp.navegador.selecao.items.push(scp.cadastro.registro);
+                        }
+                        scp.navegador.refresh();
+
+                        toastr.info('Operação realizada!', 'Informação');
+                            
+                    } else {
+                        toastr.error(resposta.mensagem, 'Erro ao incluir');
+                    }
+                }).error(function (erro) {
+                    toastr.error(erro, 'Erro ao incluir');
+                });
+            };
+            $scope.encontraBemClassificacao = function (id, lista) {
+                if (!lista) {
+                    lista = $scope.cadastro.apoio.bemClassificacaoList;
+                }
+                var result;
+                for (var i in lista) {
+                    if (id === lista[i][0]) {
+                        result = lista[i];
+                    } else if (lista[i][3]) {
+                        result = $scope.encontraBemClassificacao(id, lista[i][3]);
+                    }
+                    if (result) {
+                        break;
+                    }
+                }
+                return result;
+            };
+            $scope.visualizarDepois = function (registro) {
+                $scope.cadastro.apoio.bemClassificacao = $scope.encontraBemClassificacao(registro.bem.bemClassificacao.id);
+                $scope.cadastro.apoio.unidadeOrganizacional = angular.copy(registro.unidadeOrganizacional);
+            };
+            $scope.cadastro.apoio.producaoForma = {composicao: []};
+
+            $scope.confirmarFiltrarDepois = function () {
+                //alert($scope.cadastro.lista.length);
             };
 
             // fim das operaçoes atribuidas ao navagador
 
             // inicio ações especiais
+
+            // nomes dos campos para listagem
+            $scope.PRODUCAO_ID = 0;
+            $scope.PRODUCAO_ANO = 1;
+            $scope.PRODUCAO_BEM_ID = 2;
+            $scope.PRODUCAO_BEM_NOME = 3;
+            $scope.PRODUCAO_BEM_CLASSIFICACAO = 4;
+            $scope.PRODUCAO_UNIDADE_MEDIDA = 5;
+            $scope.PRODUCAO_FORMULA = 6;
+            $scope.PRODUCAO_NOME_ITEM_A = 7;
+            $scope.PRODUCAO_NOME_ITEM_B = 8;
+            $scope.PRODUCAO_NOME_ITEM_C = 9;
+            $scope.PRODUCAO_UNID_ORG_ID = 10;
+            $scope.PRODUCAO_UNID_ORG_NOME = 11;
+            $scope.PRODUCAO_UNID_ORG_SIGLA = 12;
+            $scope.PRODUCAO_PUBLICO_ALVO_ID = 13;
+            $scope.PRODUCAO_PUBLICO_ALVO_NOME = 14;
+            $scope.PRODUCAO_PROPRIEDADE_RURAL_ID = 15;
+            $scope.PRODUCAO_PROPRIEDADE_RURAL_NOME = 16;
+            $scope.PRODUCAO_COMUNIDADE_ID = 17;
+            $scope.PRODUCAO_COMUNIDADE_NOME = 18;
+            $scope.PRODUCAO_FORMA_LIST = 19;
+                $scope.FORMA_COMPOSICAO_LIST = 0;
+                    $scope.COMPOSICAO_FORMA_PRODUCAO_VALOR_ID = 0;
+                    $scope.COMPOSICAO_FORMA_PRODUCAO_VALOR_ITEM_NOME = 1;
+                    $scope.COMPOSICAO_FORMA_PRODUCAO_VALOR_NOME = 2;
+                    $scope.COMPOSICAO_ORDEM = 3;
+                $scope.FORMA_VALOR_ITEM_A = 1;
+                $scope.FORMA_VALOR_ITEM_B = 2;
+                $scope.FORMA_VALOR_ITEM_C = 3;
+                $scope.FORMA_VOLUME = 4;
+                $scope.FORMA_VLR_UNIT = 5;
+                $scope.FORMA_VLR_TOTAL = 6;
+                $scope.FORMA_QTD_PRODUTORES = 7;
+                $scope.FORMA_DATA_CONFIRMACAO = 8;
+                $scope.FORMA_INCLUSAO_NOME = 9;
+                $scope.FORMA_INCLUSAO_DATA = 10;
+                $scope.FORMA_ALTERACAO_NOME = 11;
+                $scope.FORMA_ALTERACAO_DATA = 12;
+                $scope.FORMA_NOME_CALCULO = 13;
+
+            $scope.PRODUCAO_INCLUSAO_NOME = 20;
+            $scope.PRODUCAO_INCLUSAO_DATA = 21;
+            $scope.PRODUCAO_ALTERACAO_NOME = 22;
+            $scope.PRODUCAO_ALTERACAO_DATA = 23;
+            $scope.PRODUCAO_PRODUTOR_LIST = 24;
+
+
+            $scope.resultado = function(item, array, campo) {
+                if (!item) {
+                    return null;
+                }
+                switch (UtilSrv.indiceDePorCampo($scope.cadastro.apoio.quantitativoList, item, 'nome').resultado) {
+                    case 'S': 
+                        return $scope.soma(array, campo);
+                    case 'M': 
+                        return $scope.media(array, campo);
+                    case 'N': 
+                        return null;
+                }
+            };
+            $scope.soma = function(array, campo) {
+                if (!array || !campo) {
+                    return null;
+                }
+                var result = 0;
+                for (var i in array) {
+                    result += array[i][campo];
+                }
+                return result;
+            };
+            $scope.media = function(array, campo) {
+                return $scope.soma(array, campo) / (array && array.length ? array.length : 1);
+            };
+            $scope.formula = function(formula, itemA, itemB, itemC, array, indice) {
+                if (!formula) {
+                    return null;
+                }
+                formula = formula.replace(new RegExp('A', 'g'), itemA);
+                formula = formula.replace(new RegExp('B', 'g'), itemB);
+                formula = formula.replace(new RegExp('C', 'g'), itemC);
+                var result = 0;
+                eval('result = ' + formula);
+                if (!result || isNaN(result)) {
+                    result = 0;
+                }
+                if (array && indice) {
+                    array[indice] = result;
+                }
+                return result;
+            };
+            $scope.toggleChildren = function (scope) {
+                scope.toggle();
+            };
+            $scope.selecionou = function (item, selecao) {
+                item.selecionado = selecao.selected;
+            };
+
+            $scope.visible = function (item) {
+                return !($scope.cadastro.apoio.localFiltro && 
+                    $scope.cadastro.apoio.localFiltro.length > 0 && 
+                    item.nome.trim().toLowerCase().latinize().indexOf($scope.cadastro.apoio.localFiltro.trim().toLowerCase().latinize()) === -1);
+            };
+
+            $scope.visivel = function (filtro, no, folha) {
+                if (!folha) {
+                    return true;
+                }
+                return !(filtro && 
+                    filtro.length > 0 && 
+                    no.trim().toLowerCase().latinize().indexOf(filtro.trim().toLowerCase().latinize()) === -1);
+            };
+
+            $scope.getTagBem = function($query) {
+                var carregarClassificacao = function(a, r) {
+                    if (r) {
+                        a.push(r.nome);
+                    }
+                    if (r.bemClassificacao) {
+                        carregarClassificacao(a, r.bemClassificacao);
+                    }
+                };
+                var montarClassificacao = function(a) {
+                    var result = null;
+                    for (var i = a.length -1; i>=0; i--) {
+                        if (result != null) {
+                            result += '/';
+                        } else {
+                            result = '';
+                        }
+                        result += a[i];
+                    }
+                    return result;
+                };
+                return AtividadeSrv.tagBem($query).then(function(response) { 
+                    var retorno = {data: []};
+                    var classificacao;
+                    for (var i in response.data.resultado) {
+                        classificacao = [];
+                        carregarClassificacao(classificacao, response.data.resultado[i][2]);
+                        retorno.data.push({id: response.data.resultado[i][0], nome: response.data.resultado[i][1], classificacao: montarClassificacao(classificacao)});
+                    }
+                    return retorno;
+                });
+            };
+            
+            $scope.UtilSrv = UtilSrv;
+
+            $scope.hoveringOver = function(value) {
+                $scope.overStar = value;
+                $scope.percent = 100 * (value / $scope.max);
+            };
+
+
+            $scope.modalSelecinarPublicoAlvo = function (size) {
+                // abrir a modal
+                var modalInstance = $uibModal.open({
+                    animation: true,
+                    template: '<ng-include src=\"\'pessoa/pessoa-modal.html\'\"></ng-include>',
+                    controller: 'PessoaCtrl',
+                    size: size,
+                    resolve: {
+                        modalCadastro: function () {
+                            return $scope.cadastroBase();
+                        }
+                    }
+                });
+                // processar retorno da modal
+                modalInstance.result.then(function (resultado) {
+                    // processar o retorno positivo da modal
+                    var pessoa = null;
+                    if (resultado.selecao.tipo === 'U') {
+                        pessoa = {
+                            id: resultado.selecao.item[0], 
+                            nome: resultado.selecao.item[1], 
+                            pessoaTipo: resultado.selecao.item[3],
+                        };
+                        $scope.preparaClassePessoa(pessoa);
+                        $scope.cadastro.registro.publicoAlvo = 
+                            {
+                                id: resultado.selecao.item[10], 
+                                pessoa: pessoa,
+                            };
+                    } else {
+                        pessoa = {
+                            id: resultado.selecao.items[0][0], 
+                            nome: resultado.selecao.items[0][1], 
+                            pessoaTipo: resultado.selecao.items[0][3],
+                        };
+                        $scope.preparaClassePessoa(pessoa);
+                        $scope.cadastro.registro.publicoAlvo = 
+                            {
+                                id: resultado.selecao.items[0][10], 
+                                pessoa: pessoa,
+                            };
+                    }                }, function () {
+                    // processar o retorno negativo da modal
+                    $log.info('Modal dismissed at: ' + new Date());
+                });
+            };
+
+            $scope.modalVerPublicoAlvo = function (size) {
+                // abrir a modal
+                var modalInstance = $uibModal.open({
+                    animation: true,
+                    template: '<ng-include src=\"\'pessoa/pessoa-form-modal.html\'\"></ng-include>',
+                    controller: 'PessoaCtrl',
+                    size: size,
+                    resolve: {
+                        modalCadastro: function () {
+                            var cadastro = {registro: angular.copy($scope.cadastro.registro.publicoAlvo.pessoa), filtro: {}, lista: [], original: {}, apoio: [],};
+                            return cadastro;
+                        }
+                    }
+                });
+                // processar retorno da modal
+                modalInstance.result.then(function (cadastroModificado) {
+                    // processar o retorno positivo da modal
+
+                }, function () {
+                    // processar o retorno negativo da modal
+                    $log.info('Modal dismissed at: ' + new Date());
+                });
+            };
+
+            $scope.modalSelecinarPropriedadeRural = function (size) {
+                // abrir a modal
+                var modalInstance = $uibModal.open({
+                    animation: true,
+                    template: '<ng-include src=\"\'propriedade-rural/propriedade-rural-modal.html\'\"></ng-include>',
+                    controller: 'PropriedadeRuralCtrl',
+                    size: size,
+                    resolve: {
+                        modalCadastro: function () {
+                            return $scope.cadastroBase();
+                        }
+                    }
+                });
+                // processar retorno da modal
+                modalInstance.result.then(function (resultado) {
+                    // processar o retorno positivo da modal
+                    if (resultado.selecao.tipo === 'U') {
+                        $scope.cadastro.registro.propriedadeRural = 
+                            {
+                                id: resultado.selecao.item[0],
+                                nome: resultado.selecao.item[1],
+                            };
+                    } else {
+                        $scope.cadastro.registro.propriedadeRural = 
+                            {
+                                id: resultado.selecao.items[0][0],
+                                nome: resultado.selecao.items[0][1],
+                            };
+                    }
+                }, function () {
+                    // processar o retorno negativo da modal
+                    $log.info('Modal dismissed at: ' + new Date());
+                });
+            };
+
+            $scope.modalVerPropriedadeRural = function (size) {
+                // abrir a modal
+                var modalInstance = $uibModal.open({
+                    animation: true,
+                    template: '<ng-include src=\"\'propriedade-rural/propriedade-rural-form-modal.html\'\"></ng-include>',
+                    controller: 'PropriedadeRuralCtrl',
+                    size: size,
+                    resolve: {
+                        modalCadastro: function () {
+                            var cadastro = {registro: angular.copy($scope.cadastro.registro.propriedadeRural), filtro: {}, lista: [], original: {}, apoio: [],};
+                            return cadastro;
+                        }
+                    }
+                });
+                // processar retorno da modal
+                modalInstance.result.then(function (cadastroModificado) {
+                    // processar o retorno positivo da modal
+
+                }, function () {
+                    // processar o retorno negativo da modal
+                    $log.info('Modal dismissed at: ' + new Date());
+                });
+            };
             // fim ações especiais
 
             // inicio trabalho tab
-            $scope.tabs = [{
-                'nome': 'Principal',
-                'include': 'atividade/tab-principal.html',
-                'visivel': true,
-            }, {
-                'nome': 'Beneficiário',
-                'include': 'atividade/tab-beneficiario.html',
-                'visivel': false,
-            }, /*{
-                'nome': 'Colaborador',
-                'include': 'atividade/tab-colaborador.html',
-                'visivel': false,
-            },*/ {
-                'nome': 'Diagnósticos',
-                'include': 'atividade/tab-diagnostico.html',
-                'visivel': false,
-            }, {
-                'nome': 'Programas Sociais',
-                'include': 'atividade/tab-grupo-social.html',
-                'visivel': true,
-            }, /*{
-                'nome': 'Atividades',
-                'include': 'atividade/tab-atividade.html',
-                'visivel': true,
-            },*/ {
-                'nome': 'Arquivos',
-                'include': 'atividade/tab-arquivo.html',
-                'visivel': true,
-            },/* {
-                'nome': 'Pendências',
-                'include': 'atividade/tab-pendencia.html',
-                'visivel': true,
-            }, */];
-            $scope.tabs.activeTab = 'Arquivos';
-            $scope.tabVisivelPublicoAlvo = function(visivel) {
-                $scope.tabVisivel('Beneficiário', visivel);
-                var outro = $scope.tabVisivel('Colaborador');
-                $scope.tabVisivel('Diagnósticos', visivel || outro);
-            };
-            $scope.tabVisivelColaborador = function(visivel) {
-                $scope.tabVisivel('Colaborador', visivel);
-                var outro = $scope.tabVisivel('Beneficiário');
-                $scope.tabVisivel('Diagnósticos', visivel || outro);
-            };
-            $scope.tabVisivel = function(tabNome, visivel) {
-                for (var t in $scope.tabs) {
-                    if ($scope.tabs[t].nome === tabNome) {
-                        if (angular.isDefined(visivel)) {
-                            $scope.tabs[t].visivel = visivel;
-                            return;
-                        } else {
-                            return $scope.tabs[t].visivel;
-                        }
-                    }
-                }
-            };
             // fim trabalho tab
 
             // inicio dos watches
-            $scope.$watch('cadastro.registro.nascimento', function(newValue, oldValue) {
-                $scope.cadastro.registro.idade = null;
-                $scope.cadastro.registro.geracao = null;
-                var nascimento = null;
-                if(newValue instanceof Date) {
-                    nascimento = newValue;
-                } else {
-                    if (newValue === oldValue || newValue === undefined || newValue.length !== 10) {return;}
-                    var partes = newValue.split('/');
-                    nascimento = new Date(partes[2],partes[1]-1,partes[0]);
-                }
-                var hoje = new Date();
-                var idade = hoje.getFullYear() - nascimento.getFullYear();
-                if ( new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate()) < 
-                        new Date(hoje.getFullYear(), nascimento.getMonth(), nascimento.getDate()) ) {
-                    idade--;
-                }
-                $scope.cadastro.registro.idade = idade >= 0 ? idade : null;
-                if (idade >= 0 && idade < 12) {
-                    $scope.cadastro.registro.geracao = 'C';
-                    $scope.cadastro.apoio.geracao = 'Criança';
-                } else if (idade >= 12 && idade < 18) {
-                    $scope.cadastro.registro.geracao = 'J';
-                    $scope.cadastro.apoio.geracao = 'Jovem';
-                } else if (idade >= 18 && idade < 60) {
-                    $scope.cadastro.registro.geracao = 'A';
-                    $scope.cadastro.apoio.geracao = 'Adulto';
-                } else if (idade >= 60 && idade < 140) {
-                    $scope.cadastro.registro.geracao = 'I';
-                    $scope.cadastro.apoio.geracao = 'Idoso';
-                } else {
-                    $scope.cadastro.apoio.geracao = 'Inválido';
-                }
-            });
-            $scope.$watch('cadastro.registro.nascimentoPais.id', function(newValue, oldValue) {
-                if (newValue && newValue > 0) {
-                    UtilSrv.dominioLista($scope.cadastro.apoio.nascimentoEstadoList, {ent:['Estado'], npk: ['pais.id'], vpk: [newValue]});
-                } else {
-                    $scope.cadastro.apoio.nascimentoEstadoList = [];
-                }
-            });
-            $scope.$watch('cadastro.registro.nascimentoEstado.id', function(newValue, oldValue) {
-                if (newValue && newValue > 0) {
-                    UtilSrv.dominioLista($scope.cadastro.apoio.nascimentoMunicipioList, {ent:['Municipio'], npk: ['estado.id'], vpk: [newValue]});
-                } else {
-                    $scope.cadastro.apoio.nascimentoMunicipioList = [];
-                }
-            });
-            $scope.$watch('cadastro.registro.nascimentoPais.id + cadastro.registro.naturalizado', function(newValue, oldValue) {
-                $scope.cadastro.registro.nacionalidade = null;
-                if (!($scope.cadastro.registro.nascimentoPais && $scope.cadastro.registro.nascimentoPais.id)) {
+            var pai = function(array, item) {
+                if (!array || !item) {
                     return;
                 }
-                if ($scope.cadastro.registro.nascimentoPais.id === 1) {
-                    $scope.cadastro.registro.nacionalidade = 'BN'; 
-                    $scope.cadastro.registro.naturalizado = false;
-                } else {
-                    $scope.cadastro.registro.nacionalidade = $scope.cadastro.registro.naturalizado ? 'NA' : 'ES';
+                array.push(item);
+                if (item[9]) {
+                    pai(array, item[9]);
                 }
-                if ($scope.cadastro.registro.nacionalidade) {
-                    $scope.cadastro.apoio.nacionalidade = UtilSrv.indiceDePorCampo($scope.cadastro.apoio.nacionalidadeList, $scope.cadastro.registro.nacionalidade, 'codigo');
-                }
-            });
-            $scope.$watch('cadastro.registro.publicoAlvoConfirmacao', function() {
-                $scope.tabVisivelPublicoAlvo($scope.cadastro.registro.publicoAlvoConfirmacao === 'S');
-            });
-           
-            // fim dos watches
-
-            $scope.getTagUnidade = function($query) {
-                return AtividadeSrv.tagUnidade($query).then( function( response ){ 
-                            var retorno = {data:response.data.resultado};
-                            return retorno;
-                        });
             };
-
-            $scope.getTagComunidade = function($query) {
-                var unidadeOrganizacionalList =[];
-                for( var i in $scope.cadastro.filtro.unidadeBeneficiario ){
-                    unidadeOrganizacionalList.push( $scope.cadastro.filtro.unidadeBeneficiario[i].id );
-                }
-                return AtividadeSrv.tagComunidade(unidadeOrganizacionalList, $query).then( function( response ){ 
-                            var retorno = {data:response.data.resultado};
-                            return retorno;
-                        });
-            };
-
-            $scope.selecionaFotoPerfil = function() {
-                if (['INCLUINDO', 'EDITANDO'].indexOf($scope.navegador.estadoAtual()) < 0) {
+            $scope.$watch('cadastro.apoio.bemClassificacao', function(novo) {
+                //console.log($scope.cadastro.apoio.bemClassificacao);
+                if (!novo) {
                     return;
                 }
-                var conf = 
-                    '<div class="form-group">' + 
-                    '    <label class="col-md-4 control-label" for="nomeArquivo">Foto do Perfil</label>' + 
-                    '    <div class="row">' +
-                    '       <div class="col-md-8">' +
-                    '           <frz-arquivo ng-model="conteudo.nomeArquivo" tipo="PERFIL"></frz-arquivo>' +
-                    '           <input type="hidden" id="nomeArquivo" name="nomeArquivo" ng-model="conteudo.nomeArquivo"/>' +
-                    '           <div class="label label-danger" ng-show="confirmacaoFrm.nomeArquivo.$error.required">' + 
-                    '               <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' + 
-                    '               Campo Obrigatório' + 
-                    '           </div>' + 
-                    '       </div>' + 
-                    '    </div>' + 
-                    '</div>';
-                mensagemSrv.confirmacao(false, conf, null, {
-                    nomeArquivo: $scope.cadastro.registro.fotoPerfil
-                }).then(function(conteudo) {
-                    // processar o retorno positivo da modal
-                    $scope.cadastro.registro.fotoPerfil = conteudo.nomeArquivo;
-                }, function() {
-                    // processar o retorno negativo da modal
-                    //$log.info('Modal dismissed at: ' + new Date());
+                UtilSrv.dominio({ent: [
+                        'Bem',
+                    ], 
+                    npk: 'bemClassificacao.id', 
+                    vpk: novo[0]}).success(function(resposta) {
+                    if (resposta && resposta.mensagem === "OK") {
+                        $scope.cadastro.apoio.bemList = resposta.resultado[0];
+                    }
                 });
-            };
+                $scope.cadastro.apoio.producaoForma.bemClassificacao = '';
+                $scope.cadastro.apoio.producaoForma.composicao = [];
+                var array = [];
+                pai(array, novo);
+                if (array.length) {
+                    array.reverse();
+                    var unidadeMedida, itemANome, itemBNome, itemCNome, formula;
+                    for (var i in array) {
+                        //console.log(array[i][2]);
+                        if (i > 0) {
+                            $scope.cadastro.apoio.producaoForma.bemClassificacao += '/';
+                        }
+                        $scope.cadastro.apoio.producaoForma.bemClassificacao += array[i][1];
+                        if (array[i][2]) {
+                            for (var j in array[i][2]) {
+                                $scope.cadastro.apoio.producaoForma.composicao.push(array[i][2][j]);
+                            }
+                        }
+                        if (!unidadeMedida && array[i][4]) {
+                            unidadeMedida = array[i][4];
+                        }
+                        if (!itemANome && array[i][5]) {
+                            itemANome = array[i][5];
+                        }
+                        if (!itemBNome && array[i][6]) {
+                            itemBNome = array[i][6];
+                        }
+                        if (!itemCNome && array[i][7]) {
+                            itemCNome = array[i][7];
+                        }
+                        if (!formula && array[i][8]) {
+                            formula = array[i][8];
+                        }
+                    }
+                    // cadastrar a composicao
+                    if (itemANome) {
+                        $scope.cadastro.apoio.producaoForma.itemANome = itemANome;
+                    }
+                    if (itemBNome) {
+                        $scope.cadastro.apoio.producaoForma.itemBNome = itemBNome;
+                    }
+                    if (itemCNome) {
+                        $scope.cadastro.apoio.producaoForma.itemCNome = itemCNome;
+                    }
+                    $scope.cadastro.apoio.producaoForma.formula = formula;
+                    $scope.cadastro.apoio.producaoForma.unidadeMedida = unidadeMedida;
+                }
+            });
+
+            $scope.$watch('cadastro.registro.publicoAlvo.id', function(novo) {
+                if (!$scope.cadastro.apoio.unidadeOrganizacional) {
+                    return;
+                }
+                PropriedadeRuralSrv.filtrarPorPublicoAlvoUnidadeOrganizacionalComunidade({
+                    unidadeOrganizacionalList: [{id: $scope.cadastro.apoio.unidadeOrganizacional.id}],
+                    publicoAlvoList: [{id: $scope.cadastro.registro.publicoAlvo.id}],
+                }).success(function (resposta) {
+                    if (resposta && resposta.mensagem === "OK") {
+                        $scope.cadastro.apoio.propriedadeRuralList = [];
+                        for (var i in resposta.resultado) {
+                            $scope.cadastro.apoio.propriedadeRuralList.push({id: resposta.resultado[i][0], nome: resposta.resultado[i][1]});
+                        }                        
+                        if ($scope.cadastro.apoio.propriedadeRuralList.length === 1) {
+                            $scope.cadastro.registro.propriedadeRural = $scope.cadastro.apoio.propriedadeRuralList[0];
+                        }
+                    }
+                });
+            });
+
+            $scope.$watch('cadastro.registro.propriedadeRural.id', function(novo) {
+                if (!$scope.cadastro.apoio.unidadeOrganizacional) {
+                    return;
+                }
+                PropriedadeRuralSrv.filtrarPorPublicoAlvoUnidadeOrganizacionalComunidade({
+                    unidadeOrganizacionalList: [{id: $scope.cadastro.apoio.unidadeOrganizacional.id}],
+                    propriedadeRuralList: [{id: $scope.cadastro.registro.propriedadeRural.id}],
+                }).success(function (resposta) {
+                    if (resposta && resposta.mensagem === "OK") {
+                        $scope.cadastro.apoio.publicoAlvoList = [];
+                        for (var i in resposta.resultado) {
+                            var pessoa = {id: resposta.resultado[i][0], pessoa: {nome: resposta.resultado[i][1], pessoaTipo: resposta.resultado[i][2]}};
+                            $scope.preparaClassePessoa(pessoa);
+                            $scope.cadastro.apoio.publicoAlvoList.push(pessoa);
+                        }                        
+                        if ($scope.cadastro.apoio.publicoAlvoList.length === 1) {
+                            $scope.cadastro.registro.publicoAlvo = $scope.cadastro.apoio.publicoAlvoList[0];
+                        }
+                    }
+                });
+            });
+
+            $scope.$watch('cadastro.apoio.unidadeOrganizacional.id', function(novo) {
+                //console.log($scope.cadastro.apoio.unidadeOrganizacional);
+                if (novo) {
+                    UtilSrv.dominio({ent: [
+                           'UnidadeOrganizacionalComunidade',
+                        ], 
+                        npk: 'unidadeOrganizacional.id', 
+                        vpk: novo, 
+                        fetchs: 'comunidade'}).success(function(resposta) {
+                        if (resposta && resposta.mensagem === "OK") {
+                            if (!$scope.cadastro.apoio.comunidadeList) {
+                                $scope.cadastro.apoio.comunidadeList = [];
+                            } else {
+                                $scope.cadastro.apoio.comunidadeList.length = 0;
+                            }
+                            for (var i in resposta.resultado[0]) {
+                                $scope.cadastro.apoio.comunidadeList.push(resposta.resultado[0][i].comunidade);
+                            }
+                            removerCampo($scope.cadastro.apoio.comunidadeList, ['unidadeOrganizacional']);
+                        }
+                    });
+                }
+            });
+            // fim dos watches
         }
     ]);
 })('atividade', 'AtividadeCtrl', 'Cadastro de Atividades', 'atividade');

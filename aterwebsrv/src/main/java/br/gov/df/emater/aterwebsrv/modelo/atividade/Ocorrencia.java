@@ -18,6 +18,9 @@ import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.AtividadePrioridade;
@@ -26,9 +29,6 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerMilisegundos;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerMilisegundos;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity
 @Table(name = "ocorrencia", schema = EntidadeBase.ATIVIDADE_SCHEMA)
@@ -40,12 +40,14 @@ public class Ocorrencia extends EntidadeBase implements _ChavePrimaria<Integer> 
 	@JoinColumn(name = "atividade_id")
 	private Atividade atividade;
 
+	@Column(name = "duracao_suspencao")
+	private Integer duracaoSuspencao;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "incidente")
 	private Confirmacao incidente;
 
 	@Column(name = "inicio_suspensao")
@@ -66,14 +68,12 @@ public class Ocorrencia extends EntidadeBase implements _ChavePrimaria<Integer> 
 	@Column(name = "prioridade")
 	private AtividadePrioridade prioridade;
 
-	@Column(name = "registro")
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	@JsonSerialize(using = JsonSerializerMilisegundos.class)
 	@JsonDeserialize(using = JsonDeserializerMilisegundos.class)
 	private Calendar registro;
 
-	@Column(name = "relato")
 	@Lob
 	private String relato;
 
@@ -92,11 +92,22 @@ public class Ocorrencia extends EntidadeBase implements _ChavePrimaria<Integer> 
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
 
+	public Ocorrencia() {
+		super();
+	}
+
+	public Ocorrencia(Integer id) {
+		super(id);
+	}
+
 	public Atividade getAtividade() {
 		return atividade;
 	}
 
-	@Override
+	public Integer getDuracaoSuspencao() {
+		return duracaoSuspencao;
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -145,7 +156,10 @@ public class Ocorrencia extends EntidadeBase implements _ChavePrimaria<Integer> 
 		this.atividade = atividade;
 	}
 
-	@Override
+	public void setDuracaoSuspencao(Integer duracaoSuspencao) {
+		this.duracaoSuspencao = duracaoSuspencao;
+	}
+
 	public void setId(Integer id) {
 		this.id = id;
 	}

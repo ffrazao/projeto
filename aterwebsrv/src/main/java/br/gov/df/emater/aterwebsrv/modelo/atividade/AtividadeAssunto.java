@@ -18,8 +18,8 @@ public class AtividadeAssunto extends EntidadeBase implements _ChavePrimaria<Int
 	private static final long serialVersionUID = 1L;
 
 	@ManyToOne
-	@JoinColumn(name = "assunto_acao_id")
-	private AssuntoAcao assuntoAcao;
+	@JoinColumn(name = "assunto_id")
+	private Assunto assunto;
 
 	@ManyToOne
 	@JoinColumn(name = "atividade_id")
@@ -39,8 +39,8 @@ public class AtividadeAssunto extends EntidadeBase implements _ChavePrimaria<Int
 		super(id);
 	}
 
-	public AssuntoAcao getAssuntoAcao() {
-		return assuntoAcao;
+	public Assunto getAssunto() {
+		return assunto;
 	}
 
 	public Atividade getAtividade() {
@@ -55,8 +55,8 @@ public class AtividadeAssunto extends EntidadeBase implements _ChavePrimaria<Int
 		return observacao;
 	}
 
-	public void setAssuntoAcao(AssuntoAcao assuntoAcao) {
-		this.assuntoAcao = assuntoAcao;
+	public void setAssunto(Assunto assunto) {
+		this.assunto = assunto;
 	}
 
 	public void setAtividade(Atividade atividade) {
