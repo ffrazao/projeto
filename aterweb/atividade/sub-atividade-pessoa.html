@@ -1,0 +1,97 @@
+<div class="panel panel-default">
+    <div class="panel-heading container-fluid">
+        <frz-navegador
+        ng-model="atividadePessoaNvg" exibe-nome-botao="false"
+        dados="cadastro.registro[lista]"
+        acoes-especiais="acoesEspeciais"
+        on-abrir = "abrir()"
+        on-agir = "agir()"
+        on-editar = "editar()"
+        on-especial = "especial()"
+        on-excluir = "excluir()"
+        on-filtrar = "filtrar()"
+        on-incluir = "incluir()"
+        on-listar = "listar()"
+        on-navegar-primeiro = "navegarPrimeiro()"
+        on-navegar-anterior = "navegarAnterior()"
+        on-navegar-proximo = "navegarPosterior()"
+        on-navegar-ultimo = "navegarUltimo()"
+        on-proxima-pagina="proximaPagina()"
+        on-ultima-pagina="ultimaPagina()"
+        ></frz-navegador>
+    </div>
+    <div class="painel-body"  ng-hide="cadastro.registro[lista].length">
+        <div class="alert alert-warning" style="margin: 0px;" role="alert">
+            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+            Nenhum registro localizado!
+        </div>
+    </div>
+    <div class="table-responsive" ng-show="cadastro.registro[lista].length > 0">
+        <ng-form name="atividadePessoaListFrm">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th><frz-seletor ng-model="atividadePessoaNvg" dados="cadastro.registro[lista]"></frz-seletor></th>
+                        <th>#</th>
+                        <th>Beneficiário</th>
+                        <th>Exploração</th>
+                        <th>Área (ha)</th>
+                        <th>Início</th>
+                        <th>Término</th>
+                        <th>Mapa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="reg in cadastro.registro[lista] | filter: {cadastroAcao: '!E'} | pagina: atividadePessoaNvg.paginaAtual : atividadePessoaNvg.tamanhoPagina | limitTo: atividadePessoaNvg.tamanhoPagina">
+                        <td>
+                            <input type="radio" ng-show="atividadePessoaNvg.selecao.tipo === 'U'" ng-model="atividadePessoaNvg.selecao.item" ng-value="reg"/>
+                            <input type="checkbox" ng-show="atividadePessoaNvg.selecao.tipo === 'M'" checklist-model="atividadePessoaNvg.selecao.items" checklist-value="reg"/>
+                        </td>
+                        <td>
+                            {{$index + 1 + ((atividadePessoaNvg.paginaAtual-1) * atividadePessoaNvg.tamanhoPagina)}}
+                        </td>
+                        <td><a ng-click="modalVerPessoa(pessoa.id)">{{reg.pessoa.nome}}</a></td>
+                        <td>
+                            <select class="form-control input-sm" id="vinculo" name="vinculo{{$index}}" ng-model="reg.vinculo" ng-options="item.codigo as item.descricao for item in scp.cadastro.apoio.propriedadeRuralVinculoTipoList" ng-required="true">
+                            </select>
+                            <div class="label label-danger" ng-show="navegador.submetido && atividadePessoaListFrm.vinculo{{$index}}.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control input-sm" id="area" name="area{{$index}}" ng-model="reg.area" ng-required="['PR', 'PA'].indexOf(reg.vinculo) >= 0"  ui-number-mask="globalFracaoHectares">
+                            <div class="label label-danger" ng-show="navegador.submetido && atividadePessoaListFrm.area{{$index}}.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control input-sm" id="inicio" name="inicio{{$index}}" ng-model="reg.inicio" ui-date-mask>
+                            <div class="label label-danger" ng-show="navegador.submetido && atividadePessoaListFrm.inicio{{$index}}.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control input-sm" id="termino" name="termino{{$index}}" ng-model="reg.termino" ui-date-mask>
+                            <div class="label label-danger" ng-show="navegador.submetido && atividadePessoaListFrm.termino{{$index}}.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                        <td>
+                            <button id="exibeMapa" name="exibeMapa" class="btn btn-primary" ng-click="exibeMapa()">
+                                <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+        </ng-form>
+    </div>
+    <div class="panel-footer">
+    </div>
+</div>

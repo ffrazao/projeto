@@ -54,12 +54,12 @@ angular.module(pNmModulo).controller(pNmController,
         modalInstance.result.then(function (resultado) {
             // processar o retorno positivo da modal
             var reg = null;
-            if (resultado.tipo === 'U') {
+            if (resultado.selecao.tipo === 'U') {
                 reg = {
                     publicoAlvo: {
                         pessoa: {
-                            id: resultado.item[0], 
-                            nome: resultado.item[1]
+                            id: resultado.selecao.item[0], 
+                            nome: resultado.selecao.item[1]
                         },
                     },
                 };
@@ -69,12 +69,12 @@ angular.module(pNmModulo).controller(pNmController,
                 }
                 $scope.cadastro.registro.publicoAlvoPropriedadeRuralList.push(reg);
             } else {
-                for (var i in resultado.items) {
+                for (var i in resultado.selecao.items) {
                     reg = {
                         publicoAlvo: {
                             pessoa:  {
-                                id: resultado.items[i][0], 
-                                nome: resultado.items[i][1],
+                                id: resultado.selecao.items[i][0], 
+                                nome: resultado.selecao.items[i][1],
                             },
                         },
                     };

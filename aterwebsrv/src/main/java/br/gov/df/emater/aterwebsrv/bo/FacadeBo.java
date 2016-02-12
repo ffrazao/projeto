@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
+import br.gov.df.emater.aterwebsrv.modelo.atividade.Atividade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaTipo;
 import br.gov.df.emater.aterwebsrv.modelo.dto.AtividadeCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.BemClassificacaoCadFiltroDto;
@@ -53,11 +54,34 @@ public class FacadeBo implements BeanFactoryAware {
 		return (Command) this.beanFactory.getBean(comandoNome);
 	}
 
-	// Atividade
-	// filtro-executar
+	@Transactional
+	public _Contexto atividadeExcluir(Principal usuario, Atividade atividade) throws Exception {
+		return this._executar(usuario, "AtividadeExcluirCh", atividade);
+	}
+
 	@Transactional(readOnly = true)
 	public _Contexto atividadeFiltroExecutar(Principal usuario, AtividadeCadFiltroDto filtro) throws Exception {
 		return this._executar(usuario, "AtividadeFiltroExecutarCh", filtro);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto atividadeFiltroNovo(Principal usuario) throws Exception {
+		return this._executar(usuario, "AtividadeFiltroNovoCmd");
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto atividadeNovo(Principal usuario, Atividade atividade) throws Exception {
+		return this._executar(usuario, "AtividadeNovoCh", atividade);
+	}
+
+	@Transactional
+	public _Contexto atividadeSalvar(Principal usuario, Atividade atividade) throws Exception {
+		return this._executar(usuario, "AtividadeSalvarCh", atividade);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto atividadeVisualizar(Principal usuario, Integer id) throws Exception {
+		return this._executar(usuario, "AtividadeVisualizarCh", id);
 	}
 
 	@Transactional(readOnly = true)

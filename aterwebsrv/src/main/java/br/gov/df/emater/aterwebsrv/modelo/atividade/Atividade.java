@@ -18,6 +18,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -55,7 +56,12 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer> {
 	private List<AtividadeAssunto> atividadeAssuntoList;
 
 	@OneToMany(mappedBy = "atividade")
-	private List<AtividadePessoa> atividadePessoaList;
+	@Where(clause = "participacao = 'D'")
+	private List<AtividadePessoa> atividadePessoaDemandanteList;
+
+	@OneToMany(mappedBy = "atividade")
+	@Where(clause = "participacao = 'E'")
+	private List<AtividadePessoa> atividadePessoaExecutorList;
 
 	private String codigo;
 
@@ -149,8 +155,12 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return atividadeAssuntoList;
 	}
 
-	public List<AtividadePessoa> getAtividadePessoaList() {
-		return atividadePessoaList;
+	public List<AtividadePessoa> getAtividadePessoaDemandanteList() {
+		return atividadePessoaDemandanteList;
+	}
+
+	public List<AtividadePessoa> getAtividadePessoaExecutorList() {
+		return atividadePessoaExecutorList;
 	}
 
 	public String getCodigo() {
@@ -242,8 +252,12 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.atividadeAssuntoList = atividadeAssuntoList;
 	}
 
-	public void setAtividadePessoaList(List<AtividadePessoa> atividadePessoaList) {
-		this.atividadePessoaList = atividadePessoaList;
+	public void setAtividadePessoaDemandanteList(List<AtividadePessoa> atividadePessoaDemandanteList) {
+		this.atividadePessoaDemandanteList = atividadePessoaDemandanteList;
+	}
+
+	public void setAtividadePessoaExecutorList(List<AtividadePessoa> atividadePessoaExecutorList) {
+		this.atividadePessoaExecutorList = atividadePessoaExecutorList;
 	}
 
 	public void setCodigo(String codigo) {
