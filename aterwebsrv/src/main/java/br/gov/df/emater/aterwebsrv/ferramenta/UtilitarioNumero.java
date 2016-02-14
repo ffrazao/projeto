@@ -10,11 +10,15 @@ import java.util.Locale;
 // Singleton utilitario para numeros
 public class UtilitarioNumero {
 
-	private static UtilitarioNumero instance;
+	public static final MathContext BIG_DECIMAL_PRECISAO = new MathContext(5);
 
-	public static UtilitarioNumero getInstance() {
+	private static volatile UtilitarioNumero instance;
+
+	public static final UtilitarioNumero getInstance() {
 		if (instance == null) {
-			instance = new UtilitarioNumero();
+			synchronized (UtilitarioNumero.class) {
+				instance = new UtilitarioNumero();
+			}
 		}
 		return instance;
 	}
@@ -24,8 +28,6 @@ public class UtilitarioNumero {
 	private final NumberFormat BIG_DECIMAL_FORMATO_MOEDA;
 
 	private final NumberFormat BIG_DECIMAL_FORMATO_PORCENTUAL;
-
-	public static final MathContext BIG_DECIMAL_PRECISAO = new MathContext(5);
 
 	private final NumberFormat NUMBER_FORMATO;
 

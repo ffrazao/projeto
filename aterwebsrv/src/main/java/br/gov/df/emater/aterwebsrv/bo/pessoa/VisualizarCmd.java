@@ -94,7 +94,7 @@ public class VisualizarCmd extends _Comando {
 				Integer idRelacionamento = null;
 				RelacionamentoFuncao relacionadoFuncao = null;
 				for (PessoaRelacionamento relacionados : relacionamento.getPessoaRelacionamentoList()) {
-					if (relacionados.getPessoa().getId() != result.getId()) {
+					if (!relacionados.getPessoa().getId().equals(result.getId())) {
 						if (relacionados.getPessoa() instanceof PessoaFisica) {
 							relacionado = new PessoaFisica(relacionados.getPessoa().getId(), relacionados.getPessoa().getNome(), relacionados.getPessoa().getApelidoSigla(), ((PessoaFisica) relacionados.getPessoa()).getCpf(), ((PessoaFisica) relacionados.getPessoa()).getGenero());
 						} else if (relacionados.getPessoa() instanceof PessoaJuridica) {

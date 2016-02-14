@@ -155,7 +155,7 @@ public class PropriedadeRuralDaoImpl implements PropriedadeRuralDaoCustom {
 		int c = 0;
 		for (Object lin : (List<Object[]>) lista) {
 			Object[] l = (Object[]) lin;
-			if (id != (Integer) l[0]) {
+			if (!((Integer) l[0]).equals(id)) {
 				if (reg != null) {
 					result.add(reg);					
 				}

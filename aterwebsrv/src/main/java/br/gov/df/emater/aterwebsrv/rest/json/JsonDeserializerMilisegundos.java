@@ -22,7 +22,7 @@ public class JsonDeserializerMilisegundos extends JsonDeserializer<Calendar> {
 		try {
 			result = UtilitarioData.getInstance().formataMilisegundos(jp.getText());
 		} catch (ParseException e) {
-			new RuntimeException(e);
+			throw new RuntimeException(e);
 		}
 		return result;
 	}

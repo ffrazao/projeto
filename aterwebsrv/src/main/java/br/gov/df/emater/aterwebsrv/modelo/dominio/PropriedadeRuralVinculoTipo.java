@@ -2,7 +2,7 @@ package br.gov.df.emater.aterwebsrv.modelo.dominio;
 
 public enum PropriedadeRuralVinculoTipo {
 
-	HA("Habitante", 3), PA("Parceria", 2), PR("Proprietário", 1), TR("Trabalhador", 4);
+	AR("Arrendamento", 5), HA("Habitante", 3), PA("Parceria", 2), PR("Proprietário", 1), TR("Trabalhador", 4);
 
 	private String descricao;
 

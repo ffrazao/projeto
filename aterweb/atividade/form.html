@@ -9,7 +9,7 @@
                         <div class="form-group">
                             <label class="control-label" for="codigo">Código da Atividade</label>
                             
-                            <input type="text" class="form-control text-center codigoAtividade" id="codigo" name="codigo" readonly="readonly" data-ng-model="cadastro.registro.codigo" required="required">
+                            <input type="text" class="form-control text-center codigoAtividade" id="codigo" name="codigo" readonly="true" data-ng-model="cadastro.registro.codigo" required="required">
                             
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.codigo.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -23,7 +23,7 @@
                             
                             <div class="radio" ng-repeat="item in cadastro.apoio.atividadeFormatoList track by item.codigo">
                                 <label for="formato-{{$index}}">
-                                    <input type="radio" name="formato" id="formato-{{$index}}" ng-model="cadastro.registro.formato" ng-value="item.codigo" required="true">
+                                    <input type="radio" name="formato" id="formato-{{$index}}" ng-model="cadastro.registro.formato" ng-value="item.codigo" required="true" ng-disabled="true">
                                     {{item.descricao}}
                                 </label>
                             </div>
@@ -40,7 +40,7 @@
                             
                             <div class="radio" ng-repeat="item in cadastro.apoio.atividadeFinalidadeList track by item.codigo">
                                 <label for="finalidade-{{$index}}">
-                                    <input type="radio" name="finalidade" id="finalidade-{{$index}}" ng-model="cadastro.registro.finalidade" ng-value="item.codigo" required="true">
+                                    <input type="radio" name="finalidade" id="finalidade-{{$index}}" ng-model="cadastro.registro.finalidade" ng-value="item.codigo" required="true" ng-disabled="true">
                                     {{item.descricao}}
                                 </label>
                             </div>
@@ -57,7 +57,7 @@
                             
                             <div class="radio" ng-repeat="item in cadastro.apoio.atividadeNaturezaList track by item.codigo">
                                 <label for="natureza-{{$index}}">
-                                    <input type="radio" name="natureza" id="natureza-{{$index}}" ng-model="cadastro.registro.natureza" ng-value="item.codigo" required="true">
+                                    <input type="radio" name="natureza" id="natureza-{{$index}}" ng-model="cadastro.registro.natureza" ng-value="item.codigo" required="true" ng-disabled="true">
                                     {{item.descricao}}
                                 </label>
                             </div>
@@ -74,7 +74,7 @@
                             
                             <div class="radio" ng-repeat="item in cadastro.apoio.atividadePrioridadeList track by item.codigo">
                                 <label for="prioridade-{{$index}}">
-                                    <input type="radio" name="prioridade" id="prioridade-{{$index}}" ng-model="cadastro.registro.prioridade" ng-value="item.codigo" required="true">
+                                    <input type="radio" name="prioridade" id="prioridade-{{$index}}" ng-model="cadastro.registro.prioridade" ng-value="item.codigo" required="true" ng-disabled="true">
                                     {{item.descricao}}
                                 </label>
                             </div>
@@ -89,7 +89,7 @@
                         <div class="form-group">
                             <label class="control-label" for="situacao">Situação</label>
                             
-                            <select id="situacao" name="situacao" class="form-control" ng-model="cadastro.registro.situacao" ng-options="item.codigo as item.descricao for item in cadastro.apoio.atividadeSituacaoList" required="true">
+                            <select id="situacao" name="situacao" class="form-control" ng-model="cadastro.registro.situacao" ng-options="item.codigo as item.descricao for item in cadastro.apoio.atividadeSituacaoList" required="true" ng-disabled="true">
                             </select>
 
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.situacao.$error.required">
@@ -101,11 +101,11 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-2" title="Início">
+                    <div class="col-md-3" title="Início">
                         <div class="form-group">
                             <label class="control-label" for="inicio">Início</label>
                             
-                            <input type="text" id="inicio" nome="inicio" ng-model="cadastro.registro.inicio"></input>
+                            <input class="form-control" type="text" id="inicio" nome="inicio" ng-model="cadastro.registro.inicio"></input>
                             
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.inicio.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -113,11 +113,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2" title="Previsão Conclusão">
+                    <div class="col-md-3" title="Previsão Conclusão">
                         <div class="form-group">
                             <label class="control-label" for="previsaoConclusao">Previsão Conclusão</label>
                             
-                            <input type="text" id="previsaoConclusao" nome="previsaoConclusao" ng-model="cadastro.registro.previsaoConclusao"></input>
+                            <input class="form-control" type="text" id="previsaoConclusao" nome="previsaoConclusao" ng-model="cadastro.registro.previsaoConclusao"></input>
                             
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.previsaoConclusao.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -125,16 +125,16 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2" title="Percentual Conclusão">
+                    <div class="col-md-3" title="Percentual Conclusão">
                         <div class="form-group">
                             <label class="control-label" for="YYY">Percentual Conclusão</label>
                             
                             <div class="form-control" id="percentualConclusao" name="percentualConclusao" 
-                                data-ng-class="{'texto-branco': cadastro.registro.percentualConclusao > 0,'': cadastro.registro.percentualConclusao<1, 'label-warning': cadastro.registro.percentualConclusao>=1 && cadastro.registro.percentualConclusao<3, 'label-info': cadastro.registro.percentualConclusao>=3 && cadastro.registro.percentualConclusao<7, 'label-success': cadastro.registro.percentualConclusao>=7}"
+                                data-ng-class="{'texto-branco': cadastro.registro.percentualConclusao > 0,'': cadastro.registro.percentualConclusao<1, 'label-warning': cadastro.registro.percentualConclusao>=1 && cadastro.registro.percentualConclusao<3, 'label-info': cadastro.registro.percentualConclusao>=3 && cadastro.registro.percentualConclusao<5, 'label-success': cadastro.registro.percentualConclusao>=5}"
                                 data-ng-disabled="cadastro.registro.id">
-                                <uib-rating ng-model="cadastro.registro.percentualConclusao" min="0" max="10" on-hover="hoveringOver(value)" on-leave="overStar = null" readonly="cadastro.registro.id"></uib-rating>
+                                <uib-rating ng-model="cadastro.registro.percentualConclusao" min="0" max="5" on-hover="hoveringOver(value)" on-leave="overStar = null" readonly="cadastro.registro.id"></uib-rating>
                                 <span class="label" data-ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}" data-ng-show="overStar && !isReadonly">{{percent}}%</span>
-                                <span class="pull-right">{{cadastro.registro.percentualConclusao*10}}%<span class="glyphicon glyphicon-trash" data-ng-click="cadastro.registro.percentualConclusao = 0" data-ng-hide="cadastro.registro.id"></span></span>
+                                <span class="pull-right">{{cadastro.registro.percentualConclusao ? cadastro.registro.percentualConclusao * 20: 0}}%<span class="glyphicon glyphicon-trash" data-ng-click="cadastro.registro.percentualConclusao = 0" data-ng-hide="cadastro.registro.id"></span></span>
                             </div>
 
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.YYY.$error.required">
@@ -143,11 +143,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2" title="Conclusão">
+                    <div class="col-md-3" title="Conclusão">
                         <div class="form-group">
                             <label class="control-label" for="YYY">Conclusão</label>
                             
-                            <input type="text" id="conclusao" nome="conclusao" ng-model="cadastro.registro.conclusao"></input>
+                            <input class="form-control" type="text" id="conclusao" nome="conclusao" ng-model="cadastro.registro.conclusao"></input>
                             
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.YYY.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -155,11 +155,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2" title="Duração Estimada">
+                </div>
+                <div class="row">
+                    <div class="col-md-3" title="Duração Estimada (horas)">
                         <div class="form-group">
-                            <label class="control-label" for="YYY">Duração Estimada</label>
+                            <label class="control-label" for="YYY">Duração Estimada (horas)</label>
                             
-                            <input type="text" id="duracaoEstimada" nome="duracaoEstimada" ng-model="cadastro.registro.duracaoEstimada"></input>
+                            <input class="form-control" type="text" id="duracaoEstimada" nome="duracaoEstimada" ng-model="cadastro.registro.duracaoEstimada"></input>
 
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.YYY.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -167,11 +169,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2" title="Duração Real">
+                    <div class="col-md-3" title="Duração Real (horas)">
                         <div class="form-group">
-                            <label class="control-label" for="duracaoReal">Duração Real</label>
+                            <label class="control-label" for="duracaoReal">Duração Real (horas)</label>
                             
-                            <input type="text" id="duracaoReal" nome="duracaoReal" ng-model="cadastro.registro.duracaoReal"></input>
+                            <input class="form-control" type="text" id="duracaoReal" nome="duracaoReal" ng-model="cadastro.registro.duracaoReal" ng-disabled="true"></input>
                             
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.duracaoReal.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -185,7 +187,7 @@
                         <div class="form-group">
                             <label class="control-label" for="YYY">Demandantes</label>
                             
-                            <ng-include src="'atividade/sub-atividade-pessoa.html'" ng-controller="DemandanteAtividadePessoaCtrl" />
+                            <ng-include src="'atividade/sub-pessoa.html'" ng-controller="DemandanteAtividadePessoaCtrl" />
 
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.YYY.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -197,7 +199,7 @@
                         <div class="form-group">
                             <label class="control-label" for="YYY">Executores</label>
                             
-                            <ng-include src="'atividade/sub-atividade-pessoa.html'" ng-controller="ExecutorAtividadePessoaCtrl" />
+                            <ng-include src="'atividade/sub-pessoa.html'" ng-controller="ExecutorAtividadePessoaCtrl" />
                             
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.YYY.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -226,7 +228,7 @@
                         <div class="form-group">
                             <label class="control-label" for="YYY">Publico Estimado</label>
                             
-                            <input type="text" id="publicoEstimado" nome="publicoEstimado" ng-model="cadastro.registro.publicoEstimado"></input>
+                            <input class="form-control" type="text" id="publicoEstimado" nome="publicoEstimado" ng-model="cadastro.registro.publicoEstimado"></input>
                             
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.publicoEstimado.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -238,7 +240,7 @@
                         <div class="form-group">
                             <label class="control-label" for="publicoReal">Publico Real</label>
                             
-                            <input type="text" id="publicoReal" nome="publicoReal" ng-model="cadastro.registro.publicoReal"></input>
+                            <input class="form-control" type="text" id="publicoReal" nome="publicoReal" ng-model="cadastro.registro.publicoReal"></input>
 
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.publicoReal.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -252,7 +254,8 @@
                     <div class="col-md-12" title="Assunto">
                         <div class="form-group">
                             <label class="control-label" for="YYY">Assunto</label>
-                            
+
+                            <ng-include src="'atividade/sub-assunto.html'" ng-controller="AtividadeAssuntoCtrl" />
                             
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.YYY.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -266,7 +269,8 @@
                     <div class="col-md-12" title="Ocorrências">
                         <div class="form-group">
                             <label class="control-label" for="YYY">Ocorrências</label>
-                            
+
+                            <ng-include src="'atividade/sub-ocorrencia.html'" ng-controller="AtividadeOcorrenciaCtrl" />
                             
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.YYY.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>

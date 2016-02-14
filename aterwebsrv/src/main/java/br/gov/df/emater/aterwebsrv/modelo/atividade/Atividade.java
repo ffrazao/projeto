@@ -121,7 +121,7 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer> {
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	@JsonSerialize(using = JsonSerializerData.class)
 	@JsonDeserialize(using = JsonDeserializerData.class)
-	private Calendar previsao_conclusao;
+	private Calendar previsaoConclusao;
 
 	@Enumerated(EnumType.STRING)
 	private AtividadePrioridade prioridade;
@@ -220,8 +220,8 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return percentualConclusao;
 	}
 
-	public Calendar getPrevisao_conclusao() {
-		return previsao_conclusao;
+	public Calendar getPrevisaoConclusao() {
+		return previsaoConclusao;
 	}
 
 	public AtividadePrioridade getPrioridade() {
@@ -317,8 +317,8 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.percentualConclusao = percentualConclusao;
 	}
 
-	public void setPrevisao_conclusao(Calendar previsao_conclusao) {
-		this.previsao_conclusao = previsao_conclusao;
+	public void setPrevisaoConclusao(Calendar previsaoConclusao) {
+		this.previsaoConclusao = previsaoConclusao;
 	}
 
 	public void setPrioridade(AtividadePrioridade prioridade) {

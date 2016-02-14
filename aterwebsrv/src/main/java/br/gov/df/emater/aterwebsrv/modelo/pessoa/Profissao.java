@@ -66,7 +66,6 @@ public class Profissao extends EntidadeBase implements _ChavePrimaria<Integer>, 
 
 	@Override
 	public Profissao infoBasica() {
-		// TODO Auto-generated method stub
 		return new Profissao(this.id, this.nome);
 	}
 

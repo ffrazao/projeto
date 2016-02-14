@@ -98,7 +98,7 @@ public class UtilDaoImpl implements UtilDao {
 			}
 		}
 		if (!c.isEnum()) {
-			throw new ServiceException(String.format("% não é uma enumeração válida!", enumeracao));
+			throw new ServiceException(String.format("%s não é uma enumeração válida!", enumeracao));
 		}
 		boolean emOrdem = false;
 		for (Field campo : c.getDeclaredFields()) {

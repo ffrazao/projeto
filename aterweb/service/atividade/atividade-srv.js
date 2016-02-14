@@ -23,6 +23,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                    'AtividadePrioridade',
                    'AtividadeSituacao',
                    'Metodo',
+                   'Assunto',
                 ]}).success(function(resposta) {
                     if (resposta && resposta.resultado) {
                         scp.cadastro.apoio.generoList = resposta.resultado[0];
@@ -36,6 +37,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                         scp.cadastro.apoio.atividadePrioridadeList = resposta.resultado[8];
                         scp.cadastro.apoio.atividadeSituacaoList = resposta.resultado[9];
                         scp.cadastro.apoio.metodoList = resposta.resultado[10];
+                        scp.cadastro.apoio.assuntoList = resposta.resultado[11];
                    }
                 });
             },

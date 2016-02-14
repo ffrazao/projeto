@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.bo.atividade;
 
+import java.util.Calendar;
+
 import org.springframework.stereotype.Service;
 
 import br.gov.df.emater.aterwebsrv.bo._Comando;
@@ -22,11 +24,18 @@ public class NovoCmd extends _Comando {
 			result = new Atividade();
 		}
 
+		result.setCodigo("ABCD.EFGH-3");
 		result.setFormato(AtividadeFormato.E);
 		result.setPrioridade(AtividadePrioridade.N);
 		result.setFinalidade(AtividadeFinalidade.O);
 		result.setNatureza(AtividadeNatureza.D);
 		result.setSituacao(AtividadeSituacao.C);
+		Calendar hoje = Calendar.getInstance();
+		result.setInicio(hoje);
+		result.setPrevisaoConclusao(hoje);
+		result.setConclusao(hoje);
+		result.setDuracaoEstimada(0);
+		result.setDuracaoReal(0);
 
 		contexto.setResposta(result);
 

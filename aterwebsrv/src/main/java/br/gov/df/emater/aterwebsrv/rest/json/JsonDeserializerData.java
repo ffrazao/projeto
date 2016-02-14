@@ -29,7 +29,7 @@ public class JsonDeserializerData extends JsonDeserializer<Calendar> {
 				}
 				result = UtilitarioData.getInstance().formataDataJavascript(data);
 			} catch (ParseException e1) {
-				new RuntimeException(e1);
+				throw new RuntimeException(e1);
 			}
 		}
 		return result;

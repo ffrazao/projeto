@@ -16,17 +16,15 @@ public class UtilitarioData {
 
 	private static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-	private static UtilitarioData instance;
-
-	private static final SimpleDateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss.SSS");
+	private static volatile UtilitarioData instance;
 
 	private static final SimpleDateFormat MILISEGUNDOS_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
 
-	private static Object lock = new Object();
+	private static final SimpleDateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss.SSS");
 
-	public static UtilitarioData getInstance() {
+	public static final UtilitarioData getInstance() {
 		if (instance == null) {
-			synchronized (lock) {
+			synchronized (UtilitarioData.class) {
 				instance = new UtilitarioData();
 			}
 		}
@@ -67,13 +65,9 @@ public class UtilitarioData {
 		return calendar;
 	}
 
-	public synchronized String formataTimestamp(Calendar date) {
-		return TIMESTAMP_FORMAT.format(date.getTime());
-	}
-
-	public synchronized Calendar formataTimestamp(String date) throws ParseException {
+	public synchronized Calendar formataDataJavascript(String date) throws ParseException {
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(TIMESTAMP_FORMAT.parse(date));
+		calendar.setTime(DATE_FORMAT_JAVASCRIPT.parse(date));
 		return calendar;
 	}
 
@@ -87,12 +81,13 @@ public class UtilitarioData {
 		return calendar;
 	}
 
-	public synchronized Calendar sqlTimestampToCalendar(Timestamp date) {
-		if (date == null) {
-			return null;
-		}
+	public synchronized String formataTimestamp(Calendar date) {
+		return TIMESTAMP_FORMAT.format(date.getTime());
+	}
+
+	public synchronized Calendar formataTimestamp(String date) throws ParseException {
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTimeInMillis(date.getTime());
+		calendar.setTime(TIMESTAMP_FORMAT.parse(date));
 		return calendar;
 	}
 
@@ -102,9 +97,12 @@ public class UtilitarioData {
 		return period.getYears();
 	}
 
-	public Calendar formataDataJavascript(String date) throws ParseException {
+	public synchronized Calendar sqlTimestampToCalendar(Timestamp date) {
+		if (date == null) {
+			return null;
+		}
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(DATE_FORMAT_JAVASCRIPT.parse(date));
+		calendar.setTimeInMillis(date.getTime());
 		return calendar;
 	}
 

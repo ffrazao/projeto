@@ -1,0 +1,73 @@
+<div class="panel panel-default">
+    <div class="panel-heading container-fluid">
+        <frz-navegador
+        ng-model="atividadeAssuntoNvg" exibe-nome-botao="false"
+        dados="cadastro.registro.atividadeAssuntoList"
+        acoes-especiais="acoesEspeciais"
+        on-abrir = "abrir()"
+        on-agir = "agir()"
+        on-editar = "editar()"
+        on-especial = "especial()"
+        on-excluir = "excluir()"
+        on-filtrar = "filtrar()"
+        on-incluir = "incluir()"
+        on-listar = "listar()"
+        on-navegar-primeiro = "navegarPrimeiro()"
+        on-navegar-anterior = "navegarAnterior()"
+        on-navegar-proximo = "navegarPosterior()"
+        on-navegar-ultimo = "navegarUltimo()"
+        on-proxima-pagina="proximaPagina()"
+        on-ultima-pagina="ultimaPagina()"
+        ></frz-navegador>
+    </div>
+    <div class="painel-body"  ng-hide="cadastro.registro.atividadeAssuntoList.length">
+        <div class="alert alert-warning" style="margin: 0px;" role="alert">
+            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+            Nenhum registro localizado!
+        </div>
+    </div>
+    <div class="table-responsive" ng-show="cadastro.registro.atividadeAssuntoList.length > 0">
+        <ng-form name="atividadeAssuntoListFrm">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th><frz-seletor ng-model="atividadeAssuntoNvg" dados="cadastro.registro.atividadeAssuntoList"></frz-seletor></th>
+                        <th>#</th>
+                        <th>Assunto</th>
+                        <th>Descrição</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="reg in cadastro.registro.atividadeAssuntoList | filter: {cadastroAcao: '!E'} | pagina: atividadeAssuntoNvg.paginaAtual : atividadeAssuntoNvg.tamanhoPagina | limitTo: atividadeAssuntoNvg.tamanhoPagina">
+                        <td>
+                            <input type="radio" ng-show="atividadeAssuntoNvg.selecao.tipo === 'U'" ng-model="atividadeAssuntoNvg.selecao.item" ng-value="reg"/>
+                            <input type="checkbox" ng-show="atividadeAssuntoNvg.selecao.tipo === 'M'" checklist-model="atividadeAssuntoNvg.selecao.items" checklist-value="reg"/>
+                        </td>
+                        <td>
+                            {{$index + 1 + ((atividadeAssuntoNvg.paginaAtual-1) * atividadeAssuntoNvg.tamanhoPagina)}}
+                        </td>
+                        <td>
+                            <select class="form-control input-sm" id="assunto" name="assunto{{$index}}" ng-model="reg.assunto" ng-options="item as item.nome for item in scp.cadastro.apoio.assuntoList track by item.id" ng-required="true">
+                            </select>
+                            <div class="label label-danger" ng-show="navegador.submetido && atividadeAssuntoListFrm.assunto{{$index}}.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                        <td>
+                            <textarea class="form-control input-sm" id="descricao{{$index}}" name="descricao{{$index}}" ng-model="reg.descricao"></textarea>
+                            <div class="label label-danger" ng-show="navegador.submetido && atividadeAssuntoListFrm.descricao{{$index}}.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+        </ng-form>
+    </div>
+    <div class="panel-footer">
+    </div>
+</div>
