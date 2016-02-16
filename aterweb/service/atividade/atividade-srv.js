@@ -3,8 +3,8 @@
 'use strict';
 
 angular.module(pNmModulo).factory(pNmFactory,
-  ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams', 'ComunidadeSrv',
-    function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams, ComunidadeSrv) {
+  ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams', 'ComunidadeSrv', 'TokenStorage',
+    function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams, ComunidadeSrv, TokenStorage) {
         var AtividadeSrv = {
             funcionalidade: 'ATIVIDADE',
             endereco: $rootScope.servicoUrl + '/atividade',
@@ -24,6 +24,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                    'AtividadeSituacao',
                    'Metodo',
                    'Assunto',
+                   'Confirmacao',
                 ]}).success(function(resposta) {
                     if (resposta && resposta.resultado) {
                         scp.cadastro.apoio.generoList = resposta.resultado[0];
@@ -38,8 +39,17 @@ angular.module(pNmModulo).factory(pNmFactory,
                         scp.cadastro.apoio.atividadeSituacaoList = resposta.resultado[9];
                         scp.cadastro.apoio.metodoList = resposta.resultado[10];
                         scp.cadastro.apoio.assuntoList = resposta.resultado[11];
+                        scp.cadastro.apoio.confirmacaoList = resposta.resultado[12];
                    }
                 });
+                var t = TokenStorage.token();
+                if (t && t.lotacaoAtual && t.lotacaoAtual && t.lotacaoAtual.pessoaJuridica) {
+                    scp.cadastro.apoio.localList = [];
+                    ComunidadeSrv.lista({pessoaJuridicaList: [angular.fromJson(t.lotacaoAtual.pessoaJuridica.id)]}, scp.cadastro.apoio.localList, t);
+                } else {
+                    toastr.error('Não foi possível identificar a sua lotação', 'Erro ao carregar os dados');
+                }
+
             },
             filtrar : function(filtro) {
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');

@@ -12,9 +12,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import br.gov.df.emater.aterwebsrv.modelo.atividade.Assunto;
+import br.gov.df.emater.aterwebsrv.modelo.atividade.Metodo;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGeracao;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoCategoria;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
@@ -23,19 +25,7 @@ public class AtividadeCadFiltroDto extends FiltroDtoCustom {
 
 	private static final long serialVersionUID = 1L;
 
-	private List<Integer> assunto;
-
-	private List<Integer> beneficiario;
-
 	private String codigo;
-
-	private List<Integer> comunidade;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
-	@JsonSerialize(using = JsonSerializerData.class)
-	@JsonDeserialize(using = JsonDeserializerData.class)
-	private Calendar fim;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
@@ -43,133 +33,134 @@ public class AtividadeCadFiltroDto extends FiltroDtoCustom {
 	@JsonDeserialize(using = JsonDeserializerData.class)
 	private Calendar inicio;
 
-	private List<Integer> meta_estrategica;
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+	@JsonSerialize(using = JsonSerializerData.class)
+	@JsonDeserialize(using = JsonDeserializerData.class)
+	private Calendar termino;
 
-	private List<Integer> meta_tatica;
+	private Metodo metodo;
 
-	private List<Integer> metodo;
+	private Assunto assunto;
 
-	private Set<PessoaGenero> pessoaGenero;
+	private String demandante;
 
-	private Set<PessoaGeracao> pessoaGeracao;
+	private String executor;
 
-	private Set<PessoaSituacao> pessoaSituacao;
+	private Set<PublicoAlvoCategoria> categoria;
 
-	private Set<PublicoAlvoCategoria> publicoAlvoCategoria;
+	private Set<PessoaGenero> genero;
 
-	private List<Integer> unidade;
+	private Set<PessoaGeracao> geracao;
 
-	public List<Integer> getAssunto() {
-		return assunto;
-	}
+	private Set<Confirmacao> organizacao;
 
-	public List<Integer> getBeneficiario() {
-		return beneficiario;
-	}
+	private List<Integer> unidadeOrganizacional;
+
+	private List<Integer> comunidade;
 
 	public String getCodigo() {
 		return codigo;
-	}
-
-	public List<Integer> getComunidade() {
-		return comunidade;
-	}
-
-	public Calendar getFim() {
-		return fim;
-	}
-
-	public Calendar getInicio() {
-		return inicio;
-	}
-
-	public List<Integer> getMeta_estrategica() {
-		return meta_estrategica;
-	}
-
-	public List<Integer> getMeta_tatica() {
-		return meta_tatica;
-	}
-
-	public List<Integer> getMetodo() {
-		return metodo;
-	}
-
-	public Set<PessoaGenero> getPessoaGenero() {
-		return pessoaGenero;
-	}
-
-	public Set<PessoaGeracao> getPessoaGeracao() {
-		return pessoaGeracao;
-	}
-
-	public Set<PessoaSituacao> getPessoaSituacao() {
-		return pessoaSituacao;
-	}
-
-	public Set<PublicoAlvoCategoria> getPublicoAlvoCategoria() {
-		return publicoAlvoCategoria;
-	}
-
-	public List<Integer> getUnidade() {
-		return unidade;
-	}
-
-	public void setAssunto(List<Integer> assunto) {
-		this.assunto = assunto;
-	}
-
-	public void setBeneficiario(List<Integer> beneficiario) {
-		this.beneficiario = beneficiario;
 	}
 
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}
 
-	public void setComunidade(List<Integer> comunidade) {
-		this.comunidade = comunidade;
-	}
-
-	public void setFim(Calendar fim) {
-		this.fim = fim;
+	public Calendar getInicio() {
+		return inicio;
 	}
 
 	public void setInicio(Calendar inicio) {
 		this.inicio = inicio;
 	}
 
-	public void setMeta_estrategica(List<Integer> meta_estrategica) {
-		this.meta_estrategica = meta_estrategica;
+	public Calendar getTermino() {
+		return termino;
 	}
 
-	public void setMeta_tatica(List<Integer> meta_tatica) {
-		this.meta_tatica = meta_tatica;
+	public void setTermino(Calendar termino) {
+		this.termino = termino;
 	}
 
-	public void setMetodo(List<Integer> metodo) {
+	public Metodo getMetodo() {
+		return metodo;
+	}
+
+	public void setMetodo(Metodo metodo) {
 		this.metodo = metodo;
 	}
 
-	public void setPessoaGenero(Set<PessoaGenero> pessoaGenero) {
-		this.pessoaGenero = pessoaGenero;
+	public Assunto getAssunto() {
+		return assunto;
 	}
 
-	public void setPessoaGeracao(Set<PessoaGeracao> pessoaGeracao) {
-		this.pessoaGeracao = pessoaGeracao;
+	public void setAssunto(Assunto assunto) {
+		this.assunto = assunto;
 	}
 
-	public void setPessoaSituacao(Set<PessoaSituacao> pessoaSituacao) {
-		this.pessoaSituacao = pessoaSituacao;
+	public String getDemandante() {
+		return demandante;
 	}
 
-	public void setPublicoAlvoCategoria(Set<PublicoAlvoCategoria> publicoAlvoCategoria) {
-		this.publicoAlvoCategoria = publicoAlvoCategoria;
+	public void setDemandante(String demandante) {
+		this.demandante = demandante;
 	}
 
-	public void setUnidade(List<Integer> unidade) {
-		this.unidade = unidade;
+	public String getExecutor() {
+		return executor;
 	}
 
+	public void setExecutor(String executor) {
+		this.executor = executor;
+	}
+
+	public Set<PublicoAlvoCategoria> getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Set<PublicoAlvoCategoria> categoria) {
+		this.categoria = categoria;
+	}
+
+	public Set<PessoaGenero> getGenero() {
+		return genero;
+	}
+
+	public void setGenero(Set<PessoaGenero> genero) {
+		this.genero = genero;
+	}
+
+	public Set<PessoaGeracao> getGeracao() {
+		return geracao;
+	}
+
+	public void setGeracao(Set<PessoaGeracao> geracao) {
+		this.geracao = geracao;
+	}
+
+	public Set<Confirmacao> getOrganizacao() {
+		return organizacao;
+	}
+
+	public void setOrganizacao(Set<Confirmacao> organizacao) {
+		this.organizacao = organizacao;
+	}
+
+	public List<Integer> getUnidadeOrganizacional() {
+		return unidadeOrganizacional;
+	}
+
+	public void setUnidadeOrganizacional(List<Integer> unidadeOrganizacional) {
+		this.unidadeOrganizacional = unidadeOrganizacional;
+	}
+
+	public List<Integer> getComunidade() {
+		return comunidade;
+	}
+
+	public void setComunidade(List<Integer> comunidade) {
+		this.comunidade = comunidade;
+	}
 
 }
