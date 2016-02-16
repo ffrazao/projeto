@@ -71,22 +71,22 @@ angular.module(pNmModulo).controller(pNmController,
 
     // inicio das operaçoes atribuidas ao navagador
     var init = function() {
-        if (!angular.isArray($scope.cadastro.registro.assuntoList)) {
-            $scope.cadastro.registro.assuntoList = [];
+        if (!angular.isArray($scope.cadastro.registro.planoAcaoList)) {
+            $scope.cadastro.registro.planoAcaoList = [];
         }
-        $scope.atividadeAssuntoNvg = new FrzNavegadorParams($scope.cadastro.registro.assuntoList, 4);
+        $scope.atividadePlanoAcaoNvg = new FrzNavegadorParams($scope.cadastro.registro.planoAcaoList, 4);
     };
     init();
 
     $scope.abrir = function() { 
-        $scope.atividadeAssuntoNvg.mudarEstado('ESPECIAL'); 
-        $scope.atividadeAssuntoNvg.botao('edicao').visivel = false;
+        $scope.atividadePlanoAcaoNvg.mudarEstado('ESPECIAL'); 
+        $scope.atividadePlanoAcaoNvg.botao('edicao').visivel = false;
     };
     $scope.incluir = function() {
-        if (!angular.isArray($scope.cadastro.registro.assuntoList)) {
-            $scope.cadastro.registro.assuntoList = [];
+        if (!angular.isArray($scope.cadastro.registro.planoAcaoList)) {
+            $scope.cadastro.registro.planoAcaoList = [];
         }
-        $scope.cadastro.registro.assuntoList.push({});
+        $scope.cadastro.registro.planoAcaoList.push({});
     };
     $scope.editar = function() {};
     $scope.excluir = function(nvg, dados) {
@@ -155,18 +155,18 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.voltar = function() {};
     // fim das operaçoes atribuidas ao navagador
 
-    $scope.$watch('cadastro.registro.assuntoList', function() {
-        if (angular.isArray($scope.cadastro.registro.assuntoList) && !angular.isArray($scope.atividadeAssuntoNvg.dados)) {
-            $scope.atividadeAssuntoNvg.setDados($scope.cadastro.registro.assuntoList);
-            $scope.atividadeAssuntoNvg.botao('edicao').visivel = false;
+    $scope.$watch('cadastro.registro.planoAcaoList', function() {
+        if (angular.isArray($scope.cadastro.registro.planoAcaoList) && !angular.isArray($scope.atividadePlanoAcaoNvg.dados)) {
+            $scope.atividadePlanoAcaoNvg.setDados($scope.cadastro.registro.planoAcaoList);
+            $scope.atividadePlanoAcaoNvg.botao('edicao').visivel = false;
             return;
         }
-        if (!angular.isArray($scope.cadastro.registro.assuntoList)) {
+        if (!angular.isArray($scope.cadastro.registro.planoAcaoList)) {
             return;
         }
-        if ($scope.cadastro.registro.assuntoList.length !== $scope.atividadeAssuntoNvg.dados.length) {
-            $scope.atividadeAssuntoNvg.setDados($scope.cadastro.registro.assuntoList);
-            $scope.atividadeAssuntoNvg.botao('edicao').visivel = false;
+        if ($scope.cadastro.registro.planoAcaoList.length !== $scope.atividadePlanoAcaoNvg.dados.length) {
+            $scope.atividadePlanoAcaoNvg.setDados($scope.cadastro.registro.planoAcaoList);
+            $scope.atividadePlanoAcaoNvg.botao('edicao').visivel = false;
             return;
         }
     }, true);
@@ -174,4 +174,4 @@ angular.module(pNmModulo).controller(pNmController,
 } // fim função
 ]);
 
-})('atividade', 'AtividadeAssuntoCtrl', 'Assunto da Atividade!');
+})('atividade', 'AtividadePlanoAcaoCtrl', 'PlanoAcao da Atividade!');

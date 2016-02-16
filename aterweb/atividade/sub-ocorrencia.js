@@ -71,10 +71,10 @@ angular.module(pNmModulo).controller(pNmController,
 
     // inicio das operaçoes atribuidas ao navagador
     var init = function() {
-        if (!angular.isArray($scope.cadastro.registro.atividadeOcorrenciaList)) {
-            $scope.cadastro.registro.atividadeOcorrenciaList = [];
+        if (!angular.isArray($scope.cadastro.registro.ocorrenciaList)) {
+            $scope.cadastro.registro.ocorrenciaList = [];
         }
-        $scope.atividadeOcorrenciaNvg = new FrzNavegadorParams($scope.cadastro.registro.atividadeOcorrenciaList, 4);
+        $scope.atividadeOcorrenciaNvg = new FrzNavegadorParams($scope.cadastro.registro.ocorrenciaList, 4);
     };
     init();
 
@@ -83,10 +83,10 @@ angular.module(pNmModulo).controller(pNmController,
         $scope.atividadeOcorrenciaNvg.botao('edicao').visivel = false;
     };
     $scope.incluir = function() {
-        if (!angular.isArray($scope.cadastro.registro.atividadeOcorrenciaList)) {
-            $scope.cadastro.registro.atividadeOcorrenciaList = [];
+        if (!angular.isArray($scope.cadastro.registro.ocorrenciaList)) {
+            $scope.cadastro.registro.ocorrenciaList = [];
         }
-        $scope.cadastro.registro.atividadeOcorrenciaList.push({});
+        $scope.cadastro.registro.ocorrenciaList.push({});
     };
     $scope.editar = function() {};
     $scope.excluir = function(nvg, dados) {
@@ -155,17 +155,17 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.voltar = function() {};
     // fim das operaçoes atribuidas ao navagador
 
-    $scope.$watch('cadastro.registro.atividadeOcorrenciaList', function() {
-        if (angular.isArray($scope.cadastro.registro.atividadeOcorrenciaList) && !angular.isArray($scope.atividadeOcorrenciaNvg.dados)) {
-            $scope.atividadeOcorrenciaNvg.setDados($scope.cadastro.registro.atividadeOcorrenciaList);
+    $scope.$watch('cadastro.registro.ocorrenciaList', function() {
+        if (angular.isArray($scope.cadastro.registro.ocorrenciaList) && !angular.isArray($scope.atividadeOcorrenciaNvg.dados)) {
+            $scope.atividadeOcorrenciaNvg.setDados($scope.cadastro.registro.ocorrenciaList);
             $scope.atividadeOcorrenciaNvg.botao('edicao').visivel = false;
             return;
         }
-        if (!angular.isArray($scope.cadastro.registro.atividadeOcorrenciaList)) {
+        if (!angular.isArray($scope.cadastro.registro.ocorrenciaList)) {
             return;
         }
-        if ($scope.cadastro.registro.atividadeOcorrenciaList.length !== $scope.atividadeOcorrenciaNvg.dados.length) {
-            $scope.atividadeOcorrenciaNvg.setDados($scope.cadastro.registro.atividadeOcorrenciaList);
+        if ($scope.cadastro.registro.ocorrenciaList.length !== $scope.atividadeOcorrenciaNvg.dados.length) {
+            $scope.atividadeOcorrenciaNvg.setDados($scope.cadastro.registro.ocorrenciaList);
             $scope.atividadeOcorrenciaNvg.botao('edicao').visivel = false;
             return;
         }

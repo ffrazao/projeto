@@ -24,18 +24,28 @@ public class NovoCmd extends _Comando {
 			result = new Atividade();
 		}
 
-		result.setCodigo("ABCD.EFGH-3");
 		result.setFormato(AtividadeFormato.E);
 		result.setPrioridade(AtividadePrioridade.N);
 		result.setFinalidade(AtividadeFinalidade.O);
 		result.setNatureza(AtividadeNatureza.D);
 		result.setSituacao(AtividadeSituacao.C);
+
 		Calendar hoje = Calendar.getInstance();
 		result.setInicio(hoje);
-		result.setPrevisaoConclusao(hoje);
-		result.setConclusao(hoje);
+
+		Calendar amanha = Calendar.getInstance();
+		amanha.setTimeInMillis(hoje.getTimeInMillis());
+		// amanha.add(Calendar.DAY_OF_MONTH, 1);
+		result.setPrevisaoConclusao(amanha);
+
+		Calendar depoisDeAmanha = Calendar.getInstance();
+		depoisDeAmanha.setTimeInMillis(hoje.getTimeInMillis());
+		// depoisDeAmanha.add(Calendar.DAY_OF_MONTH, 2);
+		result.setConclusao(depoisDeAmanha);
+
 		result.setDuracaoEstimada(0);
 		result.setDuracaoReal(0);
+		result.setDuracaoSuspensao(0);
 
 		contexto.setResposta(result);
 

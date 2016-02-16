@@ -21,6 +21,8 @@ angular.module(pNmModulo).controller(pNmController,
         return true;
     };
 
+    $scope.cadastro.apoio.principal = {};
+
     $scope.modalSelecinarPessoa = function (destino) {
         // abrir a modal
         var modalInstance = $uibModal.open({
@@ -46,8 +48,14 @@ angular.module(pNmModulo).controller(pNmController,
                         pessoaTipo: resultado.selecao.item[3],
                     },
                 };
+                reg.inicio = new Date();
+                reg.ativo = 'S';
                 $scope.preparaClassePessoa(reg.pessoa);
-                destino.push(reg);
+                if (!$scope.$parent.cadastro.registro[destino].length) {
+                    reg.responsavel = 'S';
+                    $scope.cadastro.apoio.principal[destino] = reg.pessoa;
+                }
+                $scope.$parent.cadastro.registro[destino].push(reg);
             } else {
                 for (var i in resultado.selecao.items) {
                     reg = {
@@ -57,8 +65,14 @@ angular.module(pNmModulo).controller(pNmController,
                             pessoaTipo: resultado.selecao.items[i][3],
                         },
                     };
+                    reg.inicio = new Date();
+                    reg.ativo = 'S';
                     $scope.preparaClassePessoa(reg.pessoa);
-                    destino.push(reg);
+                    if (!$scope.$parent.cadastro.registro[destino].length) {
+                        reg.responsavel = 'S';
+                        $scope.cadastro.apoio.principal[destino] = reg.pessoa;
+                    }
+                    $scope.$parent.cadastro.registro[destino].push(reg);
                 }
             }
             toastr.info('Operação realizada!', 'Informação');
@@ -78,7 +92,7 @@ angular.module(pNmModulo).controller(pNmController,
         if (!angular.isArray($scope.$parent.cadastro.registro[destino])) {
             $scope.$parent.cadastro.registro[destino] = [];
         }
-        $scope.modalSelecinarPessoa($scope.$parent.cadastro.registro[destino]);
+        $scope.modalSelecinarPessoa(destino);
     };
     $scope.editar = function() {};
     $scope.excluir = function(nvg, dados) {
@@ -156,7 +170,7 @@ angular.module(pNmModulo).controller('Demandante' + pNmController,
     function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv, $log) {
     // inicializacao
 
-    $scope.lista = 'atividadePessoaDemandanteList';
+    $scope.lista = 'pessoaDemandanteList';
 
     var init = function() {
         if (!angular.isArray($scope.$parent.cadastro.registro[$scope.lista])) {
@@ -200,7 +214,7 @@ angular.module(pNmModulo).controller('Executor' + pNmController,
     function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv, $log) {
     // inicializacao
 
-    $scope.lista = 'atividadePessoaExecutorList';
+    $scope.lista = 'pessoaExecutorList';
 
     var init = function() {
         if (!angular.isArray($scope.$parent.cadastro.registro[$scope.lista])) {

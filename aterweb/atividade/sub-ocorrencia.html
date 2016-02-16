@@ -2,7 +2,7 @@
     <div class="panel-heading container-fluid">
         <frz-navegador
         ng-model="atividadeOcorrenciaNvg" exibe-nome-botao="false"
-        dados="cadastro.registro.atividadeOcorrenciaList"
+        dados="cadastro.registro.ocorrenciaList"
         acoes-especiais="acoesEspeciais"
         on-abrir = "abrir()"
         on-agir = "agir()"
@@ -20,31 +20,28 @@
         on-ultima-pagina="ultimaPagina()"
         ></frz-navegador>
     </div>
-    <div class="painel-body" ng-hide="cadastro.registro.atividadeOcorrenciaList.length">
+    <div class="painel-body" ng-hide="cadastro.registro.ocorrenciaList.length">
         <div class="alert alert-warning" style="margin: 0px;" role="alert">
             <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
             Nenhum registro localizado!
         </div>
     </div>
-    <div class="table-responsive" ng-show="cadastro.registro.atividadeOcorrenciaList.length > 0">
+    <div class="table-responsive" ng-show="cadastro.registro.ocorrenciaList.length > 0">
         <ng-form name="atividadePessoaListFrm">
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th><frz-seletor ng-model="atividadeOcorrenciaNvg" dados="cadastro.registro.atividadeOcorrenciaList"></frz-seletor></th>
+                        <th><frz-seletor ng-model="atividadeOcorrenciaNvg" dados="cadastro.registro.ocorrenciaList"></frz-seletor></th>
                         <th>#</th>
                         <th>Usuário</th>
                         <th>Data</th>
                         <th>Relato</th>
+                        <th>Automatico?</th>
                         <th>Incidente?</th>
-                        <th>Início Suspensão</th>
-                        <th>Motivo Suspensão</th>
-                        <th>Término Suspensão</th>
-                        <th>Duração Suspensão</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="reg in cadastro.registro.atividadeOcorrenciaList | filter: {cadastroAcao: '!E'} | pagina: atividadeOcorrenciaNvg.paginaAtual : atividadeOcorrenciaNvg.tamanhoPagina | limitTo: atividadeOcorrenciaNvg.tamanhoPagina">
+                    <tr ng-repeat="reg in cadastro.registro.ocorrenciaList | filter: {cadastroAcao: '!E'} | pagina: atividadeOcorrenciaNvg.paginaAtual : atividadeOcorrenciaNvg.tamanhoPagina | limitTo: atividadeOcorrenciaNvg.tamanhoPagina | orderBy: '-registro'">
                         <td>
                             <input type="radio" ng-show="atividadeOcorrenciaNvg.selecao.tipo === 'U'" ng-model="atividadeOcorrenciaNvg.selecao.item" ng-value="reg"/>
                             <input type="checkbox" ng-show="atividadeOcorrenciaNvg.selecao.tipo === 'M'" checklist-model="atividadeOcorrenciaNvg.selecao.items" checklist-value="reg"/>
@@ -52,56 +49,37 @@
                         <td>
                             {{$index + 1 + ((atividadeOcorrenciaNvg.paginaAtual-1) * atividadeOcorrenciaNvg.tamanhoPagina)}}
                         </td>
-                        <td><a ng-click="modalVerPessoa(pessoa.id)">{{reg.pessoa.nome}}</a></td>
+                        <td><a ng-click="modalVerPessoa(reg.usuario.pessoa.id)">{{reg.usuario.pessoa.nome}}</a></td>
                         <td>
-                            <input type="text" class="form-control input-sm" id="inicio" name="inicio{{$index}}" ng-model="reg.inicio" ui-date-mask>
-                            <div class="label label-danger" ng-show="navegador.submetido && atividadePessoaListFrm.inicio{{$index}}.$error.required">
+                            <input type="text" class="form-control input-sm" id="registro" name="registro{{$index}}" ng-model="reg.registro" required="true" ui-date-mask>
+                            <div class="label label-danger" ng-show="navegador.submetido && atividadePessoaListFrm.registro{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
                         </td>
                         <td>
-                            <textarea class="form-control input-sm" id="inicio" name="inicio{{$index}}" ng-model="reg.inicio">
-                            <div class="label label-danger" ng-show="navegador.submetido && atividadePessoaListFrm.inicio{{$index}}.$error.required">
+                            <textarea class="form-control input-sm" id="relato" name="relato{{$index}}" ng-model="reg.relato"></textarea>
+                            <div class="label label-danger" ng-show="navegador.submetido && atividadePessoaListFrm.relato{{$index}}.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                        <td>
+                            <label for="automatico{{$index}}">
+                                <input type="checkbox" id="automatico" name="automatico{{$index}}" ng-model="reg.automatico" ng-true-value="'S'" ng-false-value="'N'" ng-disabled="true">
+                            </label>
+                            <div class="label label-danger" ng-show="navegador.submetido && atividadePessoaListFrm.automatico{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
                         </td>
                         <td>
                             <div class="checkbox">
-                                <label for="ativo{{$index}}">
-                                    <input type="checkbox" id="ativo" name="ativo{{$index}}" ng-model="reg.ativo" ng-true-value="'S'" ng-false-value="'N'">
+                                <label for="incidente{{$index}}">
+                                    <input type="checkbox" id="incidente" name="incidente{{$index}}" ng-model="reg.incidente" ng-true-value="'S'" ng-false-value="'N'" ng-disabled="reg.automatico === 'S'">
                                 </label>
                             </div>
-                            <div class="label label-danger" ng-show="navegador.submetido && atividadePessoaListFrm.vinculo{{$index}}.$error.required">
-                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                                Campo Obrigatório
-                            </div>
-                        </td>
-                        <td>
-                            <input type="text" class="form-control input-sm" id="inicio" name="inicio{{$index}}" ng-model="reg.inicio" ui-date-mask>
-                            <div class="label label-danger" ng-show="navegador.submetido && atividadePessoaListFrm.area{{$index}}.$error.required">
-                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                                Campo Obrigatório
-                            </div>
-                        </td>
-                        <td>
-                            <textarea class="form-control input-sm" id="inicio" name="inicio{{$index}}" ng-model="reg.inicio">
-                            <div class="label label-danger" ng-show="navegador.submetido && atividadePessoaListFrm.termino{{$index}}.$error.required">
-                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                                Campo Obrigatório
-                            </div>
-                        </td>
-                        <td>
-                            <input type="text" class="form-control input-sm" id="inicio" name="inicio{{$index}}" ng-model="reg.inicio" ui-date-mask>
-                            <div class="label label-danger" ng-show="navegador.submetido && atividadePessoaListFrm.area{{$index}}.$error.required">
-                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                                Campo Obrigatório
-                            </div>
-                        </td>
-                        <td>
-                            <input type="text" class="form-control input-sm" id="inicio" name="inicio{{$index}}" ng-model="reg.inicio">
-                            <div class="label label-danger" ng-show="navegador.submetido && atividadePessoaListFrm.area{{$index}}.$error.required">
+                            <div class="label label-danger" ng-show="navegador.submetido && atividadePessoaListFrm.incidente{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>

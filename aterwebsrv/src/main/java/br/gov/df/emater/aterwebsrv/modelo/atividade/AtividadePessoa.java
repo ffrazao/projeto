@@ -23,6 +23,7 @@ import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.AtividadePessoaParticipacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
+import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
@@ -58,6 +59,10 @@ public class AtividadePessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	@ManyToOne
 	@JoinColumn(name = "pessoa_id")
 	private Pessoa pessoa;
+
+	@ManyToOne
+	@JoinColumn(name = "unidade_organizacional_id")
+	private UnidadeOrganizacional unidadeOrganizacional;
 
 	@Enumerated(EnumType.STRING)
 	private Confirmacao responsavel;

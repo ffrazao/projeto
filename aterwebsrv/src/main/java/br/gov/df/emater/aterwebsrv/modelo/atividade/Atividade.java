@@ -53,15 +53,7 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer> {
 	private Usuario alteracaoUsuario;
 
 	@OneToMany(mappedBy = "atividade")
-	private List<AtividadeAssunto> atividadeAssuntoList;
-
-	@OneToMany(mappedBy = "atividade")
-	@Where(clause = "participacao = 'D'")
-	private List<AtividadePessoa> atividadePessoaDemandanteList;
-
-	@OneToMany(mappedBy = "atividade")
-	@Where(clause = "participacao = 'E'")
-	private List<AtividadePessoa> atividadePessoaExecutorList;
+	private List<AtividadeAssunto> assuntoList;
 
 	private String codigo;
 
@@ -79,6 +71,9 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	@Column(name = "duracao_real")
 	private Integer duracaoReal;
+
+	@Column(name = "duracao_suspensao")
+	private Integer duracaoSuspensao;
 
 	@Enumerated(EnumType.STRING)
 	private AtividadeFinalidade finalidade;
@@ -114,8 +109,19 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer> {
 	@Enumerated(EnumType.STRING)
 	private AtividadeNatureza natureza;
 
+	@OneToMany(mappedBy = "atividade")
+	private List<Ocorrencia> ocorrenciaList;
+
 	@Column(name = "percentual_conclusao")
 	private Integer percentualConclusao;
+
+	@OneToMany(mappedBy = "atividade")
+	@Where(clause = "participacao = 'D'")
+	private List<AtividadePessoa> pessoaDemandanteList;
+
+	@OneToMany(mappedBy = "atividade")
+	@Where(clause = "participacao = 'E'")
+	private List<AtividadePessoa> pessoaExecutorList;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
@@ -135,6 +141,17 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer> {
 	@Enumerated(EnumType.STRING)
 	private AtividadeSituacao situacao;
 
+	@Column(name = "situacao_data", insertable = false, updatable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+	@JsonSerialize(using = JsonSerializerData.class)
+	@JsonDeserialize(using = JsonDeserializerData.class)
+	private Calendar situacaoData;
+
+	@Lob
+	@Column(name = "situacao_motivo")
+	private String situacaoMotivo;
+
 	public Atividade() {
 		super();
 	}
@@ -151,16 +168,8 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return alteracaoUsuario;
 	}
 
-	public List<AtividadeAssunto> getAtividadeAssuntoList() {
-		return atividadeAssuntoList;
-	}
-
-	public List<AtividadePessoa> getAtividadePessoaDemandanteList() {
-		return atividadePessoaDemandanteList;
-	}
-
-	public List<AtividadePessoa> getAtividadePessoaExecutorList() {
-		return atividadePessoaExecutorList;
+	public List<AtividadeAssunto> getAssuntoList() {
+		return assuntoList;
 	}
 
 	public String getCodigo() {
@@ -181,6 +190,10 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	public Integer getDuracaoReal() {
 		return duracaoReal;
+	}
+
+	public Integer getDuracaoSuspensao() {
+		return duracaoSuspensao;
 	}
 
 	public AtividadeFinalidade getFinalidade() {
@@ -216,8 +229,20 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return natureza;
 	}
 
+	public List<Ocorrencia> getOcorrenciaList() {
+		return ocorrenciaList;
+	}
+
 	public Integer getPercentualConclusao() {
 		return percentualConclusao;
+	}
+
+	public List<AtividadePessoa> getPessoaDemandanteList() {
+		return pessoaDemandanteList;
+	}
+
+	public List<AtividadePessoa> getPessoaExecutorList() {
+		return pessoaExecutorList;
 	}
 
 	public Calendar getPrevisaoConclusao() {
@@ -240,6 +265,14 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return situacao;
 	}
 
+	public Calendar getSituacaoData() {
+		return situacaoData;
+	}
+
+	public String getSituacaoMotivo() {
+		return situacaoMotivo;
+	}
+
 	public void setAlteracaoData(Calendar alteracaoData) {
 		this.alteracaoData = alteracaoData;
 	}
@@ -248,16 +281,8 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.alteracaoUsuario = alteracaoUsuario;
 	}
 
-	public void setAtividadeAssuntoList(List<AtividadeAssunto> atividadeAssuntoList) {
-		this.atividadeAssuntoList = atividadeAssuntoList;
-	}
-
-	public void setAtividadePessoaDemandanteList(List<AtividadePessoa> atividadePessoaDemandanteList) {
-		this.atividadePessoaDemandanteList = atividadePessoaDemandanteList;
-	}
-
-	public void setAtividadePessoaExecutorList(List<AtividadePessoa> atividadePessoaExecutorList) {
-		this.atividadePessoaExecutorList = atividadePessoaExecutorList;
+	public void setAssuntoList(List<AtividadeAssunto> assuntoList) {
+		this.assuntoList = assuntoList;
 	}
 
 	public void setCodigo(String codigo) {
@@ -278,6 +303,10 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	public void setDuracaoReal(Integer duracaoReal) {
 		this.duracaoReal = duracaoReal;
+	}
+
+	public void setDuracaoSuspensao(Integer duracaoSuspensao) {
+		this.duracaoSuspensao = duracaoSuspensao;
 	}
 
 	public void setFinalidade(AtividadeFinalidade finalidade) {
@@ -313,8 +342,20 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.natureza = natureza;
 	}
 
+	public void setOcorrenciaList(List<Ocorrencia> ocorrenciaList) {
+		this.ocorrenciaList = ocorrenciaList;
+	}
+
 	public void setPercentualConclusao(Integer percentualConclusao) {
 		this.percentualConclusao = percentualConclusao;
+	}
+
+	public void setPessoaDemandanteList(List<AtividadePessoa> pessoaDemandanteList) {
+		this.pessoaDemandanteList = pessoaDemandanteList;
+	}
+
+	public void setPessoaExecutorList(List<AtividadePessoa> pessoaExecutorList) {
+		this.pessoaExecutorList = pessoaExecutorList;
 	}
 
 	public void setPrevisaoConclusao(Calendar previsaoConclusao) {
@@ -335,6 +376,14 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	public void setSituacao(AtividadeSituacao situacao) {
 		this.situacao = situacao;
+	}
+
+	public void setSituacaoData(Calendar situacaoData) {
+		this.situacaoData = situacaoData;
+	}
+
+	public void setSituacaoMotivo(String situacaoMotivo) {
+		this.situacaoMotivo = situacaoMotivo;
 	}
 
 }

@@ -2,7 +2,6 @@ package br.gov.df.emater.aterwebsrv.modelo.atividade;
 
 import java.util.Calendar;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -23,8 +22,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.AtividadePrioridade;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.AtividadeSituacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerMilisegundos;
@@ -40,8 +37,8 @@ public class Ocorrencia extends EntidadeBase implements _ChavePrimaria<Integer> 
 	@JoinColumn(name = "atividade_id")
 	private Atividade atividade;
 
-	@Column(name = "duracao_suspencao")
-	private Integer duracaoSuspencao;
+	@Enumerated(EnumType.STRING)
+	private Confirmacao automatico;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -49,24 +46,6 @@ public class Ocorrencia extends EntidadeBase implements _ChavePrimaria<Integer> 
 
 	@Enumerated(EnumType.STRING)
 	private Confirmacao incidente;
-
-	@Column(name = "inicio_suspensao")
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
-	@JsonSerialize(using = JsonSerializerMilisegundos.class)
-	@JsonDeserialize(using = JsonDeserializerMilisegundos.class)
-	private Calendar inicioSuspensao;
-
-	@Column(name = "motivo_suspensao")
-	@Lob
-	private String motivoSuspensao;
-
-	@Column(name = "percentual_conclusao")
-	private Integer percentualConclusao;
-
-	@Enumerated(EnumType.STRING)
-	@Column(name = "prioridade")
-	private AtividadePrioridade prioridade;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
@@ -76,17 +55,6 @@ public class Ocorrencia extends EntidadeBase implements _ChavePrimaria<Integer> 
 
 	@Lob
 	private String relato;
-
-	@Enumerated(EnumType.STRING)
-	@Column(name = "situacao")
-	private AtividadeSituacao situacao;
-
-	@Column(name = "termino_suspensao")
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
-	@JsonSerialize(using = JsonSerializerMilisegundos.class)
-	@JsonDeserialize(using = JsonDeserializerMilisegundos.class)
-	private Calendar terminoSuspensao;
 
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")
@@ -104,8 +72,8 @@ public class Ocorrencia extends EntidadeBase implements _ChavePrimaria<Integer> 
 		return atividade;
 	}
 
-	public Integer getDuracaoSuspencao() {
-		return duracaoSuspencao;
+	public Confirmacao getAutomatico() {
+		return automatico;
 	}
 
 	public Integer getId() {
@@ -116,36 +84,12 @@ public class Ocorrencia extends EntidadeBase implements _ChavePrimaria<Integer> 
 		return incidente;
 	}
 
-	public Calendar getInicioSuspensao() {
-		return inicioSuspensao;
-	}
-
-	public String getMotivoSuspensao() {
-		return motivoSuspensao;
-	}
-
-	public Integer getPercentualConclusao() {
-		return percentualConclusao;
-	}
-
-	public AtividadePrioridade getPrioridade() {
-		return prioridade;
-	}
-
 	public Calendar getRegistro() {
 		return registro;
 	}
 
 	public String getRelato() {
 		return relato;
-	}
-
-	public AtividadeSituacao getSituacao() {
-		return situacao;
-	}
-
-	public Calendar getTerminoSuspensao() {
-		return terminoSuspensao;
 	}
 
 	public Usuario getUsuario() {
@@ -156,8 +100,8 @@ public class Ocorrencia extends EntidadeBase implements _ChavePrimaria<Integer> 
 		this.atividade = atividade;
 	}
 
-	public void setDuracaoSuspencao(Integer duracaoSuspencao) {
-		this.duracaoSuspencao = duracaoSuspencao;
+	public void setAutomatico(Confirmacao automatico) {
+		this.automatico = automatico;
 	}
 
 	public void setId(Integer id) {
@@ -168,36 +112,12 @@ public class Ocorrencia extends EntidadeBase implements _ChavePrimaria<Integer> 
 		this.incidente = incidente;
 	}
 
-	public void setInicioSuspensao(Calendar inicioSuspensao) {
-		this.inicioSuspensao = inicioSuspensao;
-	}
-
-	public void setMotivoSuspensao(String motivoSuspensao) {
-		this.motivoSuspensao = motivoSuspensao;
-	}
-
-	public void setPercentualConclusao(Integer percentualConclusao) {
-		this.percentualConclusao = percentualConclusao;
-	}
-
-	public void setPrioridade(AtividadePrioridade prioridade) {
-		this.prioridade = prioridade;
-	}
-
 	public void setRegistro(Calendar registro) {
 		this.registro = registro;
 	}
 
 	public void setRelato(String relato) {
 		this.relato = relato;
-	}
-
-	public void setSituacao(AtividadeSituacao situacao) {
-		this.situacao = situacao;
-	}
-
-	public void setTerminoSuspensao(Calendar terminoSuspensao) {
-		this.terminoSuspensao = terminoSuspensao;
 	}
 
 	public void setUsuario(Usuario usuario) {

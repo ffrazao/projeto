@@ -158,6 +158,28 @@ angular.module(pNmModulo).config(['$stateProvider', '$urlRouterProvider', 'toast
 
   }]);
 
+angular.module(pNmModulo).filter('filtrarInseridos', function() {
+    return function(item, listaApoio, campo, campoLista) {
+        var j, valor;
+        item = angular.fromJson(item);
+        listaApoio = angular.fromJson(listaApoio);
+
+        for (var i in listaApoio) {
+            valor = angular.fromJson(listaApoio[i]);
+            for (j in campoLista.split(".")) {
+                if (!valor[campoLista.split(".")[j]]) {
+                    return false;
+                }
+                valor = angular.fromJson(valor[campoLista.split(".")[j]]);
+            }
+            if (item[campo] === valor) {
+                return true;
+            }
+        }
+        return false;
+    };
+});
+
 angular.module(pNmModulo).directive('ngValorMin', function () {
     return {
         restrict: 'A',
@@ -172,7 +194,7 @@ angular.module(pNmModulo).directive('ngValorMin', function () {
             });
             var minValidator = function (value) {
                 var min = scope.$eval(attr.ngValorMin) || 0;
-                if (!isEmpty(value) && value < min) {
+                if (isEmpty(value) || value < min) {
                     ctrl.$setValidity('ngValorMin', false);
                     return undefined;
                 } else {
