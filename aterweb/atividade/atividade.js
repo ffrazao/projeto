@@ -1,5 +1,6 @@
 /* jslint evil: true, browser: true, plusplus: true, loopfunc: true */
 /* global criarEstadosPadrao, removerCampo */ 
+/* jshint esnext: true */
 
 (function(pNmModulo, pNmController, pNmFormulario, pUrlModulo) {
 

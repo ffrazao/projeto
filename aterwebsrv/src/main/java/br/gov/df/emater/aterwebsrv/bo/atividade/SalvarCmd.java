@@ -20,6 +20,7 @@ import br.gov.df.emater.aterwebsrv.modelo.atividade.Atividade;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.AtividadeAssunto;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.AtividadePessoa;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.Ocorrencia;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.AtividadeFinalidade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.AtividadePessoaParticipacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
@@ -78,6 +79,17 @@ public class SalvarCmd extends _Comando {
 		
 		if (result.getCodigo() == null) {
 			throw new BoException("Não foi identificado o código da atividade!");
+		}
+		
+		// atualizar valores
+		if (AtividadeFinalidade.O.equals(result.getFinalidade()) && result.getPessoaDemandanteList() != null) {
+			result.setPublicoReal(result.getPessoaDemandanteList().size());
+			if (result.getPublicoReal() > result.getPublicoEstimado()) {
+				result.setPublicoEstimado(result.getPublicoReal());
+			}
+		} else {
+			result.setPublicoReal(null);
+			result.setPublicoEstimado(null);
 		}
 
 		dao.save(result);

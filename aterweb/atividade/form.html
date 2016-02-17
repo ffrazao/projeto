@@ -73,7 +73,9 @@
                             <div class="radio" ng-repeat="item in cadastro.apoio.atividadePrioridadeList track by item.codigo">
                                 <label for="prioridade-{{$index}}">
                                     <input type="radio" name="prioridade" id="prioridade-{{$index}}" ng-model="cadastro.registro.prioridade" ng-value="item.codigo" required="true" ng-disabled="true">
-                                    {{item.descricao}}
+                                    <span class="label" ng-class="{'label-default' : item.codigo === 'N', 'label-info' : item.codigo === 'B', 'label-danger' : item.codigo === 'A'}">
+                                        {{item.descricao}}
+                                    </span>
                                 </label>
                             </div>
 
@@ -86,7 +88,11 @@
                     <div class="col-md-2" title="Situação">
                         <div class="form-group">
                             <label class="control-label" for="situacao">Situação</label>
-                            <select id="situacao" name="situacao" class="form-control" ng-model="cadastro.registro.situacao" ng-options="item.codigo as item.descricao for item in cadastro.apoio.atividadeSituacaoList" required="true" ng-disabled="true">
+
+                            <div class="form-control" ng-if="cadastro.registro.situacao === 'B' || cadastro.registro.situacao === 'X'">
+                                {{UtilSrv.indiceDePorCampo(cadastro.apoio.atividadeSituacaoList, cadastro.registro.situacao, 'codigo').descricao}}
+                            </div>
+                            <select id="situacao" name="situacao" class="form-control" ng-model="cadastro.registro.situacao" ng-options="item.codigo as item.descricao disable when item.codigo === 'B' for item in cadastro.apoio.atividadeSituacaoList | filter: ((!cadastro.registro.id && {inicial : true}) || (cadastro.registro.id !== null && {})) | orderBy: 'ordem'" required="true" ng-disabled="false" ng-if="cadastro.registro.situacao !== 'B' && cadastro.registro.situacao !== 'X'">
                             </select>
 
                             <label class="control-label" for="situacao" ng-show="cadastro.registro.situacaoData">Desde</label>

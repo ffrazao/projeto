@@ -209,3 +209,8 @@ tr.angular-ui-tree-empty {
 .texto-branco {
   color: white;
 }
+
+.texto-tachado {
+  text-decoration: line-through;
+  color: #D3D3D3;
+}
