@@ -38,6 +38,12 @@ public class Assunto extends EntidadeBase implements _ChavePrimaria<Integer> {
 		setNome(nome);
 	}
 
+	public Assunto(Integer id, String nome, String finalidade) {
+		this.setId(id);
+		this.setNome(nome);
+		this.setFinalidade(finalidade);
+	}
+
 	public String getFinalidade() {
 		return finalidade;
 	}
@@ -60,6 +66,10 @@ public class Assunto extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public Assunto infoBasica() {
+		return new Assunto(getId(), getNome(), getFinalidade());
 	}
 
 }

@@ -69,6 +69,10 @@ public class SalvarCmd extends _Comando {
 		if (result.getId() == null) {
 			result.setInclusaoUsuario(getUsuario(contexto.getUsuario().getName()));
 			result.setCodigo(gerarCodigoAtividade());
+		} else {
+			String username = result.getInclusaoUsuario().getUsername();
+			result.setInclusaoUsuario(null);
+			result.setInclusaoUsuario(getUsuario(username));
 		}
 		result.setAlteracaoUsuario(getUsuario(contexto.getUsuario().getName()));
 		
@@ -101,7 +105,7 @@ public class SalvarCmd extends _Comando {
 			atividadePessoaDao.save(ativPess);
 		}
 		if (responsavel == null) {
-			throw new BoException("Demandante Responsável não foi identificado");
+			//throw new BoException("Demandante Responsável não foi identificado");
 		}
 
 		responsavel = null;
@@ -113,7 +117,7 @@ public class SalvarCmd extends _Comando {
 				executorList.add(ativPess.getPessoa().getId());
 			}
 			ativPess.setAtividade(result);
-			ativPess.setParticipacao(AtividadePessoaParticipacao.D);
+			ativPess.setParticipacao(AtividadePessoaParticipacao.E);
 			criticaAtividadePessoa(ativPess);
 
 			if (Confirmacao.S.equals(ativPess.getResponsavel())) {
@@ -122,7 +126,7 @@ public class SalvarCmd extends _Comando {
 			atividadePessoaDao.save(ativPess);
 		}
 		if (responsavel == null) {
-			throw new BoException("Executor Responsável não foi identificado");
+			//throw new BoException("Executor Responsável não foi identificado");
 		}
 
 		if (demandanteList.containsAll(executorList)) {

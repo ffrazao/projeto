@@ -28,9 +28,9 @@ public class FormularioDaoImpl implements FormularioDaoCustom {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Object> filtrar(FormularioCadFiltroDto filtro) {
+	public List<Object[]> filtrar(FormularioCadFiltroDto filtro) {
 		// objetos de trabalho
-		List<Object> result = null;
+		List<Object[]> result = null;
 		List<Object> params = new ArrayList<Object>();
 		StringBuilder sql, sqlTemp;
 
@@ -100,7 +100,7 @@ public class FormularioDaoImpl implements FormularioDaoCustom {
 		sql.append("order by f.nome, f.codigo").append("\n");
 
 		// criar a query
-		TypedQuery<Object> query = em.createQuery(sql.toString(), Object.class);
+		TypedQuery<Object[]> query = em.createQuery(sql.toString(), Object[].class);
 
 		// inserir os parametros
 		for (int i = 1; i <= params.size(); i++) {

@@ -60,6 +60,9 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 	private Integer id;
 
 	@Transient
+	private UnidadeOrganizacional lotacaoAtual;
+
+	@Transient
 	private String modulo;
 
 	@Transient
@@ -75,9 +78,6 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 	@ManyToOne
 	@JoinColumn(name = "unidade_organizacional_id")
 	private UnidadeOrganizacional unidadeOrganizacional;
-	
-	@Transient
-	private UnidadeOrganizacional lotacaoAtual;
 
 	@Column(name = "nome_usuario")
 	@NotEmpty
@@ -94,6 +94,11 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 
 	public Usuario(String name) {
 		setUsername(name);
+	}
+
+	public Usuario(String name, Pessoa pessoa) {
+		this(name);
+		setPessoa(pessoa);
 	}
 
 	@Override
@@ -174,7 +179,7 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 	}
 
 	public Usuario infoBasica() {
-		return new Usuario(this.username);
+		return new Usuario(this.username, this.pessoa.infoBasica());
 	}
 
 	@Override

@@ -10,108 +10,94 @@
         <table class="table table-hover table-striped" ng-init="cadastro.apoio.escondeDetalhe = true">
             <thead>
                 <tr>
-                    <th>
+                    <th rowspan="4">
                         <frz-seletor ng-model="navegador"></frz-seletor>
                     </th>
-                    <th width="30">
+                    <th width="30" rowspan="4">
                         #
                     </th>
-                    <th>Ano</th>
-                    <th>Bem</th>
-                    <th>Classificacao</th>
-                    <th>Unidade Organizacional</th>
+                    <th rowspan="4">Código da Atividade</th>
+                    <th>Método</th>
+                    <th>Formato</th>
+                    <th>Finalidade</th>
+                    <th>Natureza</th>
+                    <th>Prioridade</th>
+                    <th>Situação</th>
+                    <th>% Conclusão</th>
+                </tr>
+                <tr>
+                    <th>Início</th>
+                    <th>Previsão Conclusão</th>
+                    <th>Conclusão</th>
+                    <th>Duração Prevista</th>
+                    <th>Duração Real</th>
+                    <th colspan="2">Duração Suspensão</th>
+                </tr> 
+                <tr>
+                    <th colspan="2">Assunto</th>
+                    <th colspan="2">Demandante(s)</th>
+                    <th colspan="3">Executor(es)</th>
+                </tr> 
+                <tr>
+                    <th colspan="7">Detalhamento</th>
                 </tr> 
             </thead>
             <tbody>
-                <tr ng-repeat-start="item in navegador.dados | orderBy: '4' | orderBy: '3' | orderBy: '2' | orderBy: '-1' | pagina: navegador.paginaAtual : navegador.tamanhoPagina | limitTo: navegador.tamanhoPagina" ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)"  title="Cadastrado por: {{item[PRODUCAO_INCLUSAO_NOME]}} em {{item[PRODUCAO_INCLUSAO_DATA] | date: 'dd/MM/yyyy'}}, alterado por: {{item[PRODUCAO_ALTERACAO_NOME]}} em {{item[PRODUCAO_ALTERACAO_DATA] | date: 'dd/MM/yyyy'}}">
-                    <td width="30px" rowspan="2">
+                <tr ng-repeat-start="item in navegador.dados | pagina: navegador.paginaAtual : navegador.tamanhoPagina | limitTo: navegador.tamanhoPagina" ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)"  title="Cadastrado por: {{item[CABEC.CABEC.ATIV_INCLUSAO_USUARIO]}} em {{item[CABEC.ATIV_INCLUSAO_DATA] | date: 'dd/MM/yyyy'}}, alterado por: {{item[CABEC.ATIV_ALTERACAO_USUARIO]}} em {{item[CABEC.ATIV_ALTERACAO_DATA] | date: 'dd/MM/yyyy'}}">
+                    <td width="30px" rowspan="4">
                         <input type="radio" ng-show="navegador.selecao.tipo === 'U'" ng-model="navegador.selecao.item" ng-value="item"/>
                         <input type="checkbox" ng-show="navegador.selecao.tipo === 'M'" checklist-model="navegador.selecao.items" checklist-value="item" ng-click="crudMataClick(scp, $event);"/>
                     </td>
-                    <td rowspan="2">
+                    <td rowspan="4">
                         {{$index + 1 + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)}}
                     </td>
-                    <td>
-                        {{item[PRODUCAO_ANO]}}
+                    <td class="codigoAtividade" rowspan="4" title="Código da Atividade">{{item[CABEC.ATIV_CODIGO]}}</td>
+                    <td title="Método">{{item[CABEC.ATIV_METODO_NOME]}}</td>
+                    <td title="Formato">{{UtilSrv.indiceDePorCampo(cadastro.apoio.atividadeFormatoList, item[CABEC.ATIV_FORMATO], 'codigo').descricao}}</td>
+                    <td title="Finalidade">{{UtilSrv.indiceDePorCampo(cadastro.apoio.atividadeFinalidadeList, item[CABEC.ATIV_FINALIDADE], 'codigo').descricao}}</td>
+                    <td title="Natureza">{{UtilSrv.indiceDePorCampo(cadastro.apoio.atividadeNaturezaList, item[CABEC.ATIV_NATUREZA], 'codigo').descricao}}</td>
+                    <td title="Prioridade">{{UtilSrv.indiceDePorCampo(cadastro.apoio.atividadePrioridadeList, item[CABEC.ATIV_PRIORIDADE], 'codigo').descricao}}</td>
+                    <td title="Situação">{{UtilSrv.indiceDePorCampo(cadastro.apoio.atividadeSituacaoList, item[CABEC.ATIV_SITUACAO], 'codigo').descricao}}<br><small ng-show="item[CABEC.ATIV_SITUACAO_DATA]">desde {{item[CABEC.ATIV_SITUACAO_DATA] | date: "dd/MM/yyyy"}}</small></td>
+                    <td title="% Conclusão">
+                        <div class="form-control" id="percentualConclusao" name="percentualConclusao" 
+                            data-ng-class="{'texto-branco': item[CABEC.ATIV_PERCENTUAL_CONCLUSAO] > 0,'': item[CABEC.ATIV_PERCENTUAL_CONCLUSAO]<1, 'label-warning': item[CABEC.ATIV_PERCENTUAL_CONCLUSAO]>=1 && item[CABEC.ATIV_PERCENTUAL_CONCLUSAO]<3, 'label-info': item[CABEC.ATIV_PERCENTUAL_CONCLUSAO]>=3 && item[CABEC.ATIV_PERCENTUAL_CONCLUSAO]<5, 'label-success': item[CABEC.ATIV_PERCENTUAL_CONCLUSAO]>=5}">
+                            <uib-rating ng-model="item[CABEC.ATIV_PERCENTUAL_CONCLUSAO]" min="0" max="5" on-hover="hoveringOver(value)" on-leave="overStar = null" readonly="true"></uib-rating>
+                            <span class="label" data-ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}" data-ng-show="overStar && !isReadonly">{{percent}}%</span>
+                            <span class="pull-right">{{item[CABEC.ATIV_PERCENTUAL_CONCLUSAO] ? item[CABEC.ATIV_PERCENTUAL_CONCLUSAO] * 20: 0}}%<span class="glyphicon glyphicon-trash" data-ng-click="item[CABEC.ATIV_PERCENTUAL_CONCLUSAO] = 0" data-ng-hide="cadastro.registro.id"></span></span>
+                        </div>
                     </td>
-                    <td>{{item[PRODUCAO_BEM_NOME]}}</td>
-                    <td>{{item[PRODUCAO_BEM_CLASSIFICACAO]}}</td>
-                    <td>{{item[PRODUCAO_UNID_ORG_NOME]}}</td>
                 </tr>
-                <tr ng-repeat-end ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)"  title="Cadastrado por: {{item[PRODUCAO_INCLUSAO_NOME]}} em {{item[PRODUCAO_INCLUSAO_DATA] | date: 'dd/MM/yyyy'}}, alterado por: {{item[PRODUCAO_ALTERACAO_NOME]}} em {{item[PRODUCAO_ALTERACAO_DATA] | date: 'dd/MM/yyyy'}}">
-                    <td colspan="4">
-                        <table class="table table-hover table-striped table-condensed" style="font-size: 12px;">
-                            <thead>
-                                <tr>
-                                    <th colspan="{{item[PRODUCAO_FORMA_LIST][0][FORMA_COMPOSICAO_LIST].length}}"><span ng-if="cadastro.apoio.escondeDetalhe">Forma de Producao</span></th>
-                                    <th rowspan="2">Situacao</th>
-                                    <th>A</th>
-                                    <th>B</th>
-                                    <th>C</th>
-                                    <th>Volume</th>
-                                    <th rowspan="2">Valor Unitário</th>
-                                    <th rowspan="2">Valor Total</th>
-                                    <th rowspan="2">Quantidade de Produtores</th>
-                                </tr> 
-                                <tr>
-                                    <th ng-repeat="composicao in item[PRODUCAO_FORMA_LIST][0][FORMA_COMPOSICAO_LIST]">
-                                        <span ng-if="cadastro.apoio.escondeDetalhe">{{composicao[COMPOSICAO_FORMA_PRODUCAO_VALOR_ITEM_NOME]}}</span>
-                                    </th>
-                                    <th><small ng-if="item[PRODUCAO_NOME_ITEM_A]">({{item[PRODUCAO_NOME_ITEM_A]}})</small></th>
-                                    <th><small ng-if="item[PRODUCAO_NOME_ITEM_B]">({{item[PRODUCAO_NOME_ITEM_B]}})</small></th>
-                                    <th><small ng-if="item[PRODUCAO_NOME_ITEM_C]">({{item[PRODUCAO_NOME_ITEM_C]}})</small></th>
-                                    <th><small ng-if="item[PRODUCAO_FORMULA]">({{item[PRODUCAO_FORMULA]}})</small></th>
-                                </tr> 
-                            </thead>
-                            <tbody ng-if="cadastro.apoio.escondeDetalhe">
-                                <tr ng-repeat-start="forma in item[PRODUCAO_FORMA_LIST] | limitTo: item[PRODUCAO_FORMA_LIST].length - 3" title="Cadastrado por: {{forma[FORMA_INCLUSAO_NOME]}} em {{forma[FORMA_INCLUSAO_DATA] | date: 'dd/MM/yyyy'}}, alterado por: {{forma[FORMA_ALTERACAO_NOME]}} em {{forma[FORMA_ALTERACAO_DATA] | date: 'dd/MM/yyyy'}}">
-                                    <td rowspan="3" ng-repeat="composicao in forma[FORMA_COMPOSICAO_LIST]">
-                                        {{composicao[COMPOSICAO_FORMA_PRODUCAO_VALOR_NOME]}}
-                                    </td>
-                                    <td>Estimada</td>
-                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_A] | number: globalFracaoHectares}}</td>
-                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_B] | number: globalFracaoHectares}}</td>
-                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_C] | number: globalFracaoHectares}}</td>
-                                    <td class="text-right">{{forma[FORMA_VOLUME] | number: globalFracaoHectares}}</td>
-                                    <td class="text-right">{{forma[FORMA_VLR_UNIT] | currency}}</td>
-                                    <td class="text-right">{{forma[FORMA_VLR_TOTAL] | currency}}</td>
-                                    <td class="text-right">{{forma[FORMA_QTD_PRODUTORES]}}</td>
-                                </tr>
-                                <tr title="Cadastrado por: {{forma[FORMA_INCLUSAO_NOME]}} em {{forma[FORMA_INCLUSAO_DATA] | date: 'dd/MM/yyyy'}}, alterado por: {{forma[FORMA_ALTERACAO_NOME]}} em {{forma[FORMA_ALTERACAO_DATA] | date: 'dd/MM/yyyy'}}">
-                                    <td>Calculada</td>
-                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_A + 14] | number: globalFracaoHectares}}</td>
-                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_B + 14] | number: globalFracaoHectares}}</td>
-                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_C + 14] | number: globalFracaoHectares}}</td>
-                                    <td class="text-right">{{forma[FORMA_VOLUME + 14] | number: globalFracaoHectares}}</td>
-                                    <td class="text-right">{{forma[FORMA_VLR_UNIT + 14] | currency}}</td>
-                                    <td class="text-right">{{forma[FORMA_VLR_TOTAL + 14] | currency}}</td>
-                                    <td class="text-right">{{forma[FORMA_QTD_PRODUTORES + 14]}}</td>
-                                </tr>
-                                <tr ng-repeat-end title="Cadastrado por: {{forma[FORMA_INCLUSAO_NOME]}} em {{forma[FORMA_INCLUSAO_DATA] | date: 'dd/MM/yyyy'}}, alterado por: {{forma[FORMA_ALTERACAO_NOME]}} em {{forma[FORMA_ALTERACAO_DATA] | date: 'dd/MM/yyyy'}}">
-                                    <td>Confirmada</td>
-                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_A + 28] | number: globalFracaoHectares}}</td>
-                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_B + 28] | number: globalFracaoHectares}}</td>
-                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_C + 28] | number: globalFracaoHectares}}</td>
-                                    <td class="text-right">{{forma[FORMA_VOLUME + 28] | number: globalFracaoHectares}}</td>
-                                    <td class="text-right">{{forma[FORMA_VLR_UNIT + 28] | currency}}</td>
-                                    <td class="text-right">{{forma[FORMA_VLR_TOTAL + 28] | currency}}</td>
-                                    <td class="text-right">{{forma[FORMA_QTD_PRODUTORES + 28] | number: 0}}</td>
-                                </tr>
-                            </tbody>
-                            <tfoot>
-                                <tr ng-repeat="forma in item[PRODUCAO_FORMA_LIST] | limitTo: -3">
-                                    <td class="text-right" colspan="{{item[PRODUCAO_FORMA_LIST][0][FORMA_COMPOSICAO_LIST].length}}">Total</td>
-                                    <td>{{forma[FORMA_NOME_CALCULO]}}</td>
-                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_A] | number: globalFracaoHectares}}</td>
-                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_B] | number: globalFracaoHectares}}</td>
-                                    <td class="text-right">{{forma[FORMA_VALOR_ITEM_C] | number: globalFracaoHectares}}</td>
-                                    <td class="text-right">{{forma[FORMA_VOLUME] | number: globalFracaoHectares}}</td>
-                                    <td class="text-right">{{forma[FORMA_VLR_UNIT] | currency}}</td>
-                                    <td class="text-right">{{forma[FORMA_VLR_TOTAL] | currency}}</td>
-                                    <td class="text-right">{{forma[FORMA_QTD_PRODUTORES] | number: 0}}</td>
-                                </tr>
-                            </tfoot>
-                        </table>
+                <tr>
+                    <td title="Início">{{item[CABEC.ATIV_INICIO] | date:'dd/MM/yyyy'}}</td>
+                    <td title="Previsão Conclusão">{{item[CABEC.ATIV_PREVISAO_CONCLUSAO] | date:'dd/MM/yyyy'}}</td>
+                    <td title="Conclusão">{{item[CABEC.ATIV_CONCLUSAO] | date:'dd/MM/yyyy'}}</td>
+                    <td title="Duração Estimada">{{item[CABEC.ATIV_DURACAO_ESTIMADA]}}</td>
+                    <td title="Duração Real">{{item[CABEC.ATIV_DURACAO_REAL]}}</td>
+                    <td title="Duração Suspensão" colspan="2">{{item[CABEC.ATIV_DURACAO_SUSPENSAO]}}</td>
+                </tr>
+                <tr>
+                    <td colspan="2" title="Assunto">
+                        <ul>
+                            <li ng-repeat="l in item[CABEC.ATIV_ASSUNTO_LIST[0]]">{{l[CABEC.ATIV_ASSUNTO_LIST[1].ATIV_ASSUNTO_ASSUNTO_NOME]}}</li>
+                            <li ng-if="item[CABEC.ATIV_ASSUNTO_LIST[0]].length > 10"><a>...</a></li>
+                        </ul>
+                    </td>
+                    <td colspan="2" title="Demandante(s)">
+                        <ul>
+                            <li ng-repeat="l in item[CABEC.DEMAND_LIST[0]]"><a ng-click="modalVerPessoa(l[CABEC.DEMAND_LIST[1].ATIV_PESS_PESSOA_ID])">{{l[CABEC.DEMAND_LIST[1].ATIV_PESS_PESSOA_NOME]}}</a></li>
+                            <li ng-if="item[CABEC.DEMAND_LIST[0]].length > 10"><a>...</a></li>
+                        </ul>
+                    </td>
+                    <td colspan="3" title="Executor(es)">
+                        <ul>
+                            <li ng-repeat="l in item[CABEC.EXECUT_LIST[0]]"><a ng-click="modalVerPessoa(l[CABEC.EXECUT_LIST[1].ATIV_PESS_PESSOA_ID])">{{l[CABEC.EXECUT_LIST[1].ATIV_PESS_PESSOA_NOME]}}</a></li>
+                            <li ng-if="item[CABEC.EXECUT_LIST[0]].length > 10"><a>...</a></li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr ng-repeat-end>
+                    <td colspan="7" title="Detalhamento">
+                        {{item[CABEC.ATIV_DETALHAMENTO]}}
                     </td>
                 </tr>
             </tbody>
@@ -123,5 +109,3 @@
         </table>
     </div>
 </div>
-<label class="control-label" ng-if="navegador.selecao.tipo === 'U' && navegador.selecao.item">Produtores ({{navegador.selecao.item[PRODUCAO_BEM_NOME]}}) ({{navegador.selecao.item[PRODUCAO_UNID_ORG_NOME]}})</label>
-<ng-include src="'atividade/sub-produtores.html'" ng-controller="ProdutoresCtrl" ng-if="navegador.selecao.tipo === 'U' && navegador.selecao.item"></ng-include>

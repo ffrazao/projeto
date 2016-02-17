@@ -47,7 +47,8 @@
                             {{$index + 1 + ((atividadeAssuntoNvg.paginaAtual-1) * atividadeAssuntoNvg.tamanhoPagina)}}
                         </td>
                         <td>
-                            <select class="form-control input-sm" id="assunto" name="assunto{{$index}}" ng-model="reg.assunto.id" ng-required="true">
+                            <span ng-if="cadastro.registro.id">{{reg.assunto.nome}}</span>
+                            <select class="form-control input-sm" id="assunto" name="assunto{{$index}}" ng-model="reg.assunto.id" ng-required="true"  ng-if="!reg.id">
                                 <option ng-repeat="item in cadastro.apoio.assuntoList | filter: {finalidade: cadastro.registro.finalidade} | orderBy: 'nome'" 
                                     ng-value="{{item.id}}" 
                                     ng-selected="item.id === reg.assunto.id"
@@ -61,8 +62,8 @@
                             </div>
                         </td>
                         <td>
-                            <textarea class="form-control input-sm" id="descricao{{$index}}" name="descricao{{$index}}" ng-model="reg.descricao"></textarea>
-                            <div class="label label-danger" ng-show="navegador.submetido && assuntoListFrm.descricao{{$index}}.$error.required">
+                            <textarea class="form-control input-sm" id="observacao{{$index}}" name="observacao{{$index}}" ng-model="reg.observacao"></textarea>
+                            <div class="label label-danger" ng-show="navegador.submetido && assuntoListFrm.observacao{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
