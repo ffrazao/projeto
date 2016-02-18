@@ -210,7 +210,11 @@ tr.angular-ui-tree-empty {
   color: white;
 }
 
-.texto-tachado {
+.atividade-cancelada {
   text-decoration: line-through;
   color: #D3D3D3;
+}
+
+.atividade-nao-iniciada {
+  font-weight: bold;
 }

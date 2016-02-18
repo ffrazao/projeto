@@ -44,7 +44,7 @@
             </thead>
             <tbody>
                 <tr ng-repeat-start="item in navegador.dados | pagina: navegador.paginaAtual : navegador.tamanhoPagina | limitTo: navegador.tamanhoPagina" ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)" title="Cadastrado por: {{item[CABEC.CABEC.ATIV_INCLUSAO_USUARIO]}} em {{item[CABEC.ATIV_INCLUSAO_DATA] | date: 'dd/MM/yyyy'}}, alterado por: {{item[CABEC.ATIV_ALTERACAO_USUARIO]}} em {{item[CABEC.ATIV_ALTERACAO_DATA] | date: 'dd/MM/yyyy'}}"
-                    ng-class="{'texto-tachado' : item[CABEC.ATIV_SITUACAO] === 'X'}">
+                    ng-class="classeAtividade(item[CABEC.ATIV_SITUACAO])">
                     <td width="30px" rowspan="4">
                         <input type="radio" ng-show="navegador.selecao.tipo === 'U'" ng-model="navegador.selecao.item" ng-value="item"/>
                         <input type="checkbox" ng-show="navegador.selecao.tipo === 'M'" checklist-model="navegador.selecao.items" checklist-value="item" ng-click="crudMataClick(scp, $event);"/>
@@ -72,7 +72,7 @@
                         </div>
                     </td>
                 </tr>
-                <tr ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)" ng-class="{'texto-tachado' : item[CABEC.ATIV_SITUACAO] === 'X'}">
+                <tr ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)" ng-class="classeAtividade(item[CABEC.ATIV_SITUACAO])">
                     <td title="Início">{{item[CABEC.ATIV_INICIO] | date:'dd/MM/yyyy'}}</td>
                     <td title="Previsão Conclusão">{{item[CABEC.ATIV_PREVISAO_CONCLUSAO] | date:'dd/MM/yyyy'}}</td>
                     <td title="Conclusão">{{item[CABEC.ATIV_CONCLUSAO] | date:'dd/MM/yyyy'}}</td>
@@ -80,7 +80,7 @@
                     <td title="Duração Real">{{item[CABEC.ATIV_DURACAO_REAL]}}</td>
                     <td title="Duração Suspensão" colspan="2">{{item[CABEC.ATIV_DURACAO_SUSPENSAO]}}</td>
                 </tr>
-                <tr ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)" ng-class="{'texto-tachado' : item[CABEC.ATIV_SITUACAO] === 'X'}">
+                <tr ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)" ng-class="classeAtividade(item[CABEC.ATIV_SITUACAO])">
                     <td colspan="2" title="Assunto">
                         <ul>
                             <li ng-repeat="l in item[CABEC.ATIV_ASSUNTO_LIST[0]] | orderBy: [CABEC.ATIV_ASSUNTO_LIST[1].ATIV_ASSUNTO_ASSUNTO_NOME.toString()]">{{l[CABEC.ATIV_ASSUNTO_LIST[1].ATIV_ASSUNTO_ASSUNTO_NOME]}}</li>
@@ -100,7 +100,7 @@
                         </ul>
                     </td>
                 </tr>
-                <tr ng-repeat-end ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)" ng-class="{'texto-tachado' : item[CABEC.ATIV_SITUACAO] === 'X'}">
+                <tr ng-repeat-end ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)" ng-class="classeAtividade(item[CABEC.ATIV_SITUACAO])">
                     <td colspan="7" title="Detalhamento">
                         {{item[CABEC.ATIV_DETALHAMENTO]}}
                     </td>

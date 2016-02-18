@@ -157,6 +157,10 @@
                 $scope.percent = 100 * (value / $scope.max);
             };
 
+            $scope.classeAtividade = function(situacao) {
+                return {'atividade-cancelada' : situacao === 'X', 'atividade-nao-iniciada' : situacao === 'N'};
+            };
+
             // fim ações especiais
 
             // inicio trabalho tab

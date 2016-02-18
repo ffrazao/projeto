@@ -161,6 +161,17 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.voltar = function() {};
     // fim das operaçoes atribuidas ao navagador
 
+    $scope.onAtivoMudar = function(item) {
+        if (item.ativo === 'S') {
+            item.termino = null;
+        } else if (item.ativo === 'N') {
+            if (!item.termino) {
+                item.termino = new Date();
+            }
+        }
+        console.log();
+    }
+
 } // fim função
 ]);
 

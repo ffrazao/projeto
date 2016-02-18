@@ -86,7 +86,7 @@
                         <td>
                             <div class="checkbox">
                                 <label for="ativo{{$index}}">
-                                    <input type="checkbox" id="ativo" name="ativo{{$index}}" ng-model="reg.ativo" ng-true-value="'S'" ng-false-value="'N'">
+                                    <input type="checkbox" id="ativo" name="ativo{{$index}}" ng-model="reg.ativo" ng-true-value="'S'" ng-false-value="'N'" ng-change="onAtivoMudar(reg)">
                                 </label>
                             </div>
                             <div class="label label-danger" ng-show="navegador.submetido && atividadePessoaListFrm.ativo{{$index}}.$error.required">
