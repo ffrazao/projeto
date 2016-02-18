@@ -1,5 +1,6 @@
 package br.gov.df.emater.aterwebsrv.bo.indice_producao;
 
+import java.util.List;
 import java.util.Map;
 
 import org.hibernate.exception.ConstraintViolationException;
@@ -66,7 +67,7 @@ public class SalvarCmd extends _Comando {
 			}
 			throw e;
 		}
-
+		
 		// proceder a exclusao dos registros
 		for (ProducaoForma producaoForma : result.getProducaoFormaList()) {
 			if (producaoForma.getProducaoFormaComposicaoList() != null) {
@@ -100,7 +101,9 @@ public class SalvarCmd extends _Comando {
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
-			producaoForma.setValorTotal(producaoForma.getVolume().multiply(producaoForma.getValorUnitario(), UtilitarioNumero.BIG_DECIMAL_PRECISAO));
+			if (producaoForma.getVolume() != null) {
+				producaoForma.setValorTotal(producaoForma.getVolume().multiply(producaoForma.getValorUnitario(), UtilitarioNumero.BIG_DECIMAL_PRECISAO));
+			}
 			
 			producaoFormaDao.save(producaoForma);
 

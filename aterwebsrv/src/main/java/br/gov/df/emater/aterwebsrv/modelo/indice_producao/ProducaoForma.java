@@ -1,6 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.indice_producao;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -95,6 +96,17 @@ public class ProducaoForma extends EntidadeBase implements _ChavePrimaria<Intege
 
 	public ProducaoForma() {
 		super();
+	}
+
+	public ProducaoForma(ProducaoForma producaoForma) {
+		if (producaoForma.getProducaoFormaComposicaoList() != null) {
+			for (ProducaoFormaComposicao pfc : producaoForma.getProducaoFormaComposicaoList()) {
+				if (this.producaoFormaComposicaoList == null) {
+					this.producaoFormaComposicaoList = new ArrayList<ProducaoFormaComposicao>();					
+				}
+				this.producaoFormaComposicaoList.add(new ProducaoFormaComposicao(pfc));
+			}
+		}
 	}
 
 	public Calendar getAlteracaoData() {

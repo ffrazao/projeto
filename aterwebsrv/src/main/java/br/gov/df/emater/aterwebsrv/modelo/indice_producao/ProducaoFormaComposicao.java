@@ -31,6 +31,19 @@ public class ProducaoFormaComposicao extends EntidadeBase implements _ChavePrima
 	@JoinColumn(name = "producao_forma_id")
 	private ProducaoForma producaoForma;
 
+	public ProducaoFormaComposicao() {
+
+	}
+
+	public ProducaoFormaComposicao(Integer id) {
+		super(id);
+	}
+
+	public ProducaoFormaComposicao(ProducaoFormaComposicao producaoFormaComposicao) {
+		this.formaProducaoValor = producaoFormaComposicao.getFormaProducaoValor();
+		this.ordem = producaoFormaComposicao.getOrdem();
+	}
+
 	public FormaProducaoValor getFormaProducaoValor() {
 		return formaProducaoValor;
 	}

@@ -1,5 +1,6 @@
 package br.gov.df.emater.aterwebsrv.modelo.indice_producao;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -88,6 +89,25 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	public Producao(Integer id) {
 		super(id);
+	}
+
+	public Producao(Producao producao) {
+		this.ano = producao.getAno();
+		this.bem = producao.getBem();
+		this.propriedadeRural = producao.getPropriedadeRural();
+		this.publicoAlvo = producao.getPublicoAlvo();
+		this.unidadeOrganizacional = producao.getUnidadeOrganizacional();
+		
+		if (producao.getProducaoFormaList() != null) {
+			
+			for (ProducaoForma producaoForma: producao.getProducaoFormaList()) {
+				ProducaoForma pf = new ProducaoForma(producaoForma);
+				if (this.producaoFormaList == null) {					
+					this.producaoFormaList = new ArrayList<ProducaoForma>();
+				}
+				this.producaoFormaList.add(pf);
+			}
+		}
 	}
 
 	public Calendar getAlteracaoData() {

@@ -48,6 +48,9 @@ public enum FormulaProduto {
 		if (producaoForma.getItemCValor() != null) {
 			variaveis.add("C");
 		}
+		if (variaveis.size() == 0) {
+			return null;
+		}
 		ExecutorService exec = Executors.newFixedThreadPool(1);
 		Expression e = new ExpressionBuilder(this.descricao).variables(new HashSet<String>(variaveis)).build();
 		if (producaoForma.getItemAValor() != null) {
