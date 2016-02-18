@@ -44,7 +44,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="reg in cadastro.registro.diagnosticoList | filter: {cadastroAcao: '!E'}">
+                            <tr ng-repeat="reg in cadastro.registro.diagnosticoList">
                                 <td>
                                     <input type="radio" ng-show="pessoaDiagnosticoCaptacaoNvg.selecao.tipo === 'U'" ng-model="pessoaDiagnosticoCaptacaoNvg.selecao.item" ng-value="reg"/>
                                 </td>
@@ -71,6 +71,7 @@
             </div>
         </div>
     </div>
+    /{{pessoaDiagnosticoCaptacaoNvg.selecao.item}}/
     <div class="row" ng-show="pessoaDiagnosticoCaptacaoNvg.selecao.item">
         <div class="col-md-12">
             <label class="control-label">Coletas</label>

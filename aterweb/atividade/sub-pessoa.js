@@ -169,8 +169,7 @@ angular.module(pNmModulo).controller(pNmController,
                 item.termino = new Date();
             }
         }
-        console.log();
-    }
+    };
 
 } // fim função
 ]);
