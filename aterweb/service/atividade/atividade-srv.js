@@ -1,3 +1,5 @@
+/* global moment */
+
 (function(pNmModulo, pNmFactory, pNmController) {
 
 'use strict';
@@ -49,6 +51,10 @@ angular.module(pNmModulo).factory(pNmFactory,
                 } else {
                     toastr.error('Não foi possível identificar a sua lotação', 'Erro ao carregar os dados');
                 }
+                scp.cadastro.filtro.inicio = new Date();
+                scp.cadastro.filtro.inicio.setMonth(scp.cadastro.filtro.inicio.getMonth() - 6);
+                scp.cadastro.filtro.inicio.setDate(1);
+                scp.cadastro.filtro.termino = new Date();
 
             },
             filtrar : function(filtro) {

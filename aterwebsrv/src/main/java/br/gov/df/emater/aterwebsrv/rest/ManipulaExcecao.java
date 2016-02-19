@@ -17,7 +17,13 @@ public class ManipulaExcecao {
 	public Resposta handleAllException(HttpServletRequest req, Exception ex) {
 //		Locale locale = LocaleContextHolder.getLocale();
 //		String mensagem = messageSource.getMessage("error.no.smartphone.id", null, locale);
-
+		
+//		Resposta resposta = null;
+//		if (ex instanceof TransactionSystemException && ex.getCause() instanceof RollbackException) {
+//			ex.printStackTrace();
+//		} else {
+//			resposta = new Resposta(ex);
+//		}
 		Resposta resposta = new Resposta(ex);
 		return resposta;
 	}

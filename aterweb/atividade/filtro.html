@@ -3,6 +3,7 @@
     <div class="panel-body">
         <form class="form-horizontal" name="frm.filtro" novalidate>
             <fieldset>
+                /{{cadastro.filtro}}/
                 <legend>Dados Básicos</legend>
                 <div class="form-group" title="Código da Atividade">
                     <label class="col-md-4 control-label" for="codigo">
@@ -100,7 +101,7 @@
                     </label>
                     <div class="col-md-8">
                         <label class="checkbox-inline" for="categoria-{{$index}}" ng-repeat="item in cadastro.apoio.publicoAlvoCategoriaList">
-                            <input type="checkbox" name="categoria" id="categoria-{{$index}}" checklist-model="cadastro.filtro.publicoAlvoCategoria" checklist-value="item.codigo">
+                            <input type="checkbox" name="categoria" id="categoria-{{$index}}" checklist-model="cadastro.filtro.categoria" checklist-value="item.codigo">
                             {{item.descricao}}
                         </label>
 
@@ -132,7 +133,7 @@
                     </label>
                     <div class="col-md-8">
                         <label class="checkbox-inline" for="pessoaGeracao-{{$index}}" ng-repeat="item in cadastro.apoio.pessoaGeracaoList">
-                            <input type="checkbox" name="pessoaGeracao" id="pessoaGeracao-{{$index}}" checklist-model="cadastro.filtro.pessoaGeracao" checklist-value="item.codigo">
+                            <input type="checkbox" name="pessoaGeracao" id="pessoaGeracao-{{$index}}" checklist-model="cadastro.filtro.geracao" checklist-value="item.codigo">
                             {{item.descricao}}
                         </label>
 

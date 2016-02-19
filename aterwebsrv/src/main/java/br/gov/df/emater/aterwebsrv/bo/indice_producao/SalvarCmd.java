@@ -1,6 +1,5 @@
 package br.gov.df.emater.aterwebsrv.bo.indice_producao;
 
-import java.util.List;
 import java.util.Map;
 
 import org.hibernate.exception.ConstraintViolationException;

@@ -1,3 +1,4 @@
+/* global moment */
 /* jslint loopfunc: true */
 
 (function(pNmModulo, pNmController, pNmFormulario) {
