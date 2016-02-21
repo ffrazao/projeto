@@ -13,6 +13,7 @@
         "template": "<script src=\"<%= filename %>\"></script>"
       },
       "less": {
+        "async": true,
         "relativeToModule": true,
         "file": "<%= module %>.less",
         "marker": "/* Add Component LESS Above */",
@@ -39,6 +40,18 @@
       {
         "name": "formulario",
         "file": "formulario\\formulario.js"
+      },
+      {
+        "name": "atividade",
+        "file": "atividade\\atividade.js"
+      },
+      {
+        "name": "formulario",
+        "file": "formulario\\formulario.js"
+      },
+      {
+        "name": "indice-producao",
+        "file": "indice-producao\\indice-producao.js"
       },
     ]
   }

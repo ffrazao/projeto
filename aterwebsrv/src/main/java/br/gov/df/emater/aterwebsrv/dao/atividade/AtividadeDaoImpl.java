@@ -8,8 +8,13 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGeracao;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoCategoria;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoSegmento;
 import br.gov.df.emater.aterwebsrv.modelo.dto.AtividadeCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.FiltroDto;
 
@@ -24,11 +29,11 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 		// objetos de trabalho
 		List<Object[]> result = null;
 		List<Object> params = new ArrayList<Object>();
-		StringBuilder sql, sqlTemp;
+		StringBuilder sql, sqlTemp, sqlFiltro, sqlCodigo;
 
 		// construção do sql
 		sql = new StringBuilder();
-		sql.append("select a.id").append("\n"); // ATIV_ID
+		sql.append("select distinct a.id").append("\n"); // ATIV_ID
 		sql.append("     , a.codigo").append("\n"); // ATIV_CODIGO
 		sql.append("     , a.formato").append("\n"); // ATIV_FORMATO
 		sql.append("     , a.finalidade").append("\n"); // ATIV_FINALIDADE
@@ -55,11 +60,18 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 		sql.append("     , a.alteracaoUsuario.pessoa.nome").append("\n"); // ATIV_ALTERACAO_USUARIO_PESSOA_NOME
 		sql.append("     , a.alteracaoData").append("\n"); // ATIV_ALTERACAO_DATA
 		sql.append("from Atividade a").append("\n");
-		sql.append("join a.assuntoList.assunto ass").append("\n");
+		sql.append("join a.assuntoList ass").append("\n");
+		sql.append("join a.pessoaExecutorList exec").append("\n");
+		sql.append("join a.pessoaDemandanteList deman").append("\n");
+		sql.append("join Treat(deman.pessoa as PessoaFisica) pf").append("\n");
+
 		sql.append("where 1 = 1").append("\n");
 		
+		sqlCodigo = new StringBuilder();
+		sqlFiltro = new StringBuilder();
+		
 		if (!StringUtils.isEmpty(filtro.getCodigo())) {
-			sql.append("and (").append("\n");
+			sqlCodigo.append("(").append("\n");
 			sqlTemp = new StringBuilder();
 			for (String codigo : filtro.getCodigo().split(FiltroDto.SEPARADOR_CAMPO)) {
 				if (sqlTemp.length() > 0) {
@@ -68,26 +80,94 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 				params.add(String.format("%s", codigo.toUpperCase().trim()));
 				sqlTemp.append("a.codigo = ?").append(params.size());
 			}
-			sql.append(sqlTemp);
-			sql.append(" )").append("\n");
+			sqlCodigo.append(sqlTemp);
+			sqlCodigo.append(")").append("\n");
 		}
-		
 		if (filtro.getInicio() != null) {
 			params.add(filtro.getInicio());
-			sql.append("and a.inicio >= ?").append(params.size()).append("\n");
+			sqlFiltro.append("and a.inicio >= ?").append(params.size()).append("\n");
 		}
 		if (filtro.getTermino() != null) {
 			params.add(filtro.getTermino());
-			sql.append("and a.inicio <= ?").append(params.size()).append("\n");
+			sqlFiltro.append("and a.inicio <= ?").append(params.size()).append("\n");
 		}
 		if (filtro.getMetodo() != null) {
 			params.add(filtro.getMetodo());
-			sql.append("and a.metodo = ?").append(params.size()).append("\n");
+			sqlFiltro.append("and a.metodo = ?").append(params.size()).append("\n");
 		}
 		if (filtro.getAssunto() != null) {
 			params.add(filtro.getAssunto());
-			sql.append("and ass.assunto = ?").append(params.size()).append("\n");			
+			sqlFiltro.append("and ass.assunto = ?").append(params.size()).append("\n");			
 		}
+		if (!StringUtils.isEmpty(filtro.getDemandante())) {
+			sqlFiltro.append("and (").append("\n");
+			sqlTemp = new StringBuilder();
+			for (String nome : filtro.getDemandante().split(FiltroDto.SEPARADOR_CAMPO)) {
+				if (sqlTemp.length() > 0) {
+					sqlTemp.append(" or ");
+				}
+				params.add(String.format("%%%s%%", nome.trim()));
+				sqlTemp.append(" (deman.pessoa.nome like ?").append(params.size());
+				params.add(String.format("%%%s%%", nome.trim()));
+				sqlTemp.append(" or deman.pessoa.apelidoSigla like ?").append(params.size()).append(")").append("\n");
+			}
+			sqlFiltro.append(sqlTemp);
+			sqlFiltro.append(" )").append("\n");
+		}
+		if (!StringUtils.isEmpty(filtro.getExecutor())) {
+			sqlFiltro.append("and (").append("\n");
+			sqlTemp = new StringBuilder();
+			for (String nome : filtro.getExecutor().split(FiltroDto.SEPARADOR_CAMPO)) {
+				if (sqlTemp.length() > 0) {
+					sqlTemp.append(" or ");
+				}
+				params.add(String.format("%%%s%%", nome.trim()));
+				sqlTemp.append(" (exec.pessoa.nome like ?").append(params.size());
+				params.add(String.format("%%%s%%", nome.trim()));
+				sqlTemp.append(" or exec.pessoa.apelidoSigla like ?").append(params.size()).append(")").append("\n");
+			}
+			sqlFiltro.append(sqlTemp);
+			sqlFiltro.append(" )").append("\n");
+		}
+		
+		// filtro de beneficiario
+		boolean benef = false;
+		if (!CollectionUtils.isEmpty(filtro.getSegmento()) && (PublicoAlvoSegmento.values().length != (filtro.getSegmento().size()))) {
+			benef = true;
+			params.add(filtro.getSegmento());
+			sqlFiltro.append("and deman.pessoa.publicoAlvo.segmento in ?").append(params.size()).append("\n");
+		}
+		if (!CollectionUtils.isEmpty(filtro.getCategoria()) && (PublicoAlvoCategoria.values().length != (filtro.getCategoria().size()))) {
+			benef = true;
+			params.add(filtro.getCategoria());
+			sqlFiltro.append("and deman.pessoa.publicoAlvo.categoria in ?").append(params.size()).append("\n");
+		}
+		if (!CollectionUtils.isEmpty(filtro.getGenero()) && (PessoaGenero.values().length != (filtro.getGenero().size()))) {
+			benef = true;
+			params.add(filtro.getGenero().iterator().next());
+			sqlFiltro.append("and pf.genero = ?").append(params.size()).append("\n");
+		}
+		if (!CollectionUtils.isEmpty(filtro.getGeracao()) && (PessoaGeracao.values().length != (filtro.getGeracao().size()))) {
+			benef = true;
+			sqlFiltro.append("and (").append("\n");
+			sqlTemp = new StringBuilder();
+			for (PessoaGeracao pg : filtro.getGeracao()) {
+				if (sqlTemp.length() > 0) {
+					sqlTemp.append(" or ");
+				}
+				params.add(pg.getIdadeInicio());
+				sqlTemp.append("TIMESTAMPDIFF(YEAR, pf.nascimento, CURDATE()) between ?").append(params.size());
+				params.add(pg.getIdadeFim());
+				sqlTemp.append(" and ?").append(params.size()).append("\n");
+			}
+			sqlFiltro.append(sqlTemp).append("	)").append("\n");
+		}
+		
+		if (benef) {
+			sqlFiltro.append("and deman.pessoa.publicoAlvoConfirmacao = 'S'").append("\n");
+		}
+
+
 /*
 		
 		
@@ -184,14 +264,23 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 		
 	*/	
 		
-		
-		
+		// este é o codigo que garante que o filtro por codigo é independente dos demais filtros
+		if (sqlCodigo.length() > 0) {
+			if (sqlFiltro.length() > 0) {
+				sql.append("and (").append(sqlCodigo).append(" or (1 = 1 ").append(sqlFiltro).append("))\n");
+			} else {
+				sql.append("and (").append(sqlCodigo).append(")\n");
+			}
+		} else if (sqlFiltro.length() > 0) {
+			sql.append("and (1 = 1 ").append(sqlFiltro).append(")\n");
+		}
 		
 		sql.append("order by a.inicio").append("\n");
 		sql.append("       , a.metodo.nome").append("\n");
 
 		// criar a query
 		TypedQuery<Object[]> query = em.createQuery(sql.toString(), Object[].class);
+//		TypedQuery<Object[]> query = em.createQuery("from AtividadePessoa p join Treat(p.pessoa as PessoaFisica) pes where pes.cpf != '000'", Object[].class);
 
 		// inserir os parametros
 		for (int i = 1; i <= params.size(); i++) {

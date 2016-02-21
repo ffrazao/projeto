@@ -189,8 +189,8 @@
             scope: {
                 ngModel: '=',
                 dados: '=',
-                selecao: '=',
-                funcaoRequerido: '=',
+                selecao: '=?',
+                funcaoRequerido: '=?',
                 onAbrir: '&',
             },
             controller: 'FrzTabelaCtrl',

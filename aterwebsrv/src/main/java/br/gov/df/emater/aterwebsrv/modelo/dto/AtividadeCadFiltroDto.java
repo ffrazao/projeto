@@ -18,6 +18,7 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGeracao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoCategoria;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoSegmento;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
@@ -53,6 +54,8 @@ public class AtividadeCadFiltroDto extends FiltroDtoCustom {
 	private Metodo metodo;
 
 	private Set<Confirmacao> organizacao;
+
+	private Set<PublicoAlvoSegmento> segmento;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
@@ -110,6 +113,10 @@ public class AtividadeCadFiltroDto extends FiltroDtoCustom {
 		return organizacao;
 	}
 
+	public Set<PublicoAlvoSegmento> getSegmento() {
+		return segmento;
+	}
+
 	public Calendar getTermino() {
 		return termino;
 	}
@@ -164,6 +171,10 @@ public class AtividadeCadFiltroDto extends FiltroDtoCustom {
 
 	public void setOrganizacao(Set<Confirmacao> organizacao) {
 		this.organizacao = organizacao;
+	}
+
+	public void setSegmento(Set<PublicoAlvoSegmento> segmento) {
+		this.segmento = segmento;
 	}
 
 	public void setTermino(Calendar termino) {

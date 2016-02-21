@@ -49,6 +49,7 @@
                     </label>
                     <div class="col-md-6">
                         <select class="form-control" id="metodo" name="metodo" ng-model="cadastro.filtro.metodo" ng-options="item as item.nome for item in cadastro.apoio.metodoList track by item.id">
+                            <option value="">-- Ignorar --</option>
                         </select>
                         <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.metodo.$error.required">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -62,6 +63,7 @@
                     </label>
                     <div class="col-md-6">
                         <select class="form-control" id="assunto" name="assunto" ng-model="cadastro.filtro.assunto" ng-options="item as item.nome for item in cadastro.apoio.assuntoList track by item.id">
+                            <option value="">-- Ignorar --</option>
                         </select>
 
                         <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.assunto.$error.required">
@@ -95,6 +97,19 @@
                     </div>
                 </div>
                 <legend>Beneficiários</legend>
+                <div class="form-group" title="Segmento">
+                    <label class="col-md-4 control-label" for="segmento">Segmento</label>
+                    <div class="col-md-8">
+                        <label class="checkbox-inline" for="segmento-{{$index}}" ng-repeat="item in cadastro.apoio.publicoAlvoSegmentoList">
+                            <input type="checkbox" name="segmento" id="segmento-{{$index}}" checklist-model="cadastro.filtro.segmento" checklist-value="item.codigo">
+                            {{item.descricao}}
+                        </label>
+                    </div>
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.segmento.$error.required">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        Campo Obrigatório
+                    </div>
+                </div>
                 <div class="form-group" title="Categoria">
                     <label class="col-md-4 control-label" for="categoria">
                         Categoria
