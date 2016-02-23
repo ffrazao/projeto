@@ -12,6 +12,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import br.gov.df.emater.aterwebsrv.modelo.ater.Comunidade;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.Assunto;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.Metodo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
@@ -19,6 +20,7 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGeracao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoCategoria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoSegmento;
+import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
@@ -33,7 +35,7 @@ public class AtividadeCadFiltroDto extends FiltroDtoCustom {
 
 	private String codigo;
 
-	private List<Integer> comunidade;
+	private List<Comunidade> comunidadeList;
 
 	private String demandante;
 
@@ -63,7 +65,7 @@ public class AtividadeCadFiltroDto extends FiltroDtoCustom {
 	@JsonDeserialize(using = JsonDeserializerData.class)
 	private Calendar termino;
 
-	private List<Integer> unidadeOrganizacional;
+	private List<UnidadeOrganizacional> unidadeOrganizacionalList;
 
 	public Assunto getAssunto() {
 		return assunto;
@@ -77,8 +79,8 @@ public class AtividadeCadFiltroDto extends FiltroDtoCustom {
 		return codigo;
 	}
 
-	public List<Integer> getComunidade() {
-		return comunidade;
+	public List<Comunidade> getComunidadeList() {
+		return comunidadeList;
 	}
 
 	public String getDemandante() {
@@ -121,8 +123,8 @@ public class AtividadeCadFiltroDto extends FiltroDtoCustom {
 		return termino;
 	}
 
-	public List<Integer> getUnidadeOrganizacional() {
-		return unidadeOrganizacional;
+	public List<UnidadeOrganizacional> getUnidadeOrganizacionalList() {
+		return unidadeOrganizacionalList;
 	}
 
 	public void setAssunto(Assunto assunto) {
@@ -137,8 +139,8 @@ public class AtividadeCadFiltroDto extends FiltroDtoCustom {
 		this.codigo = codigo;
 	}
 
-	public void setComunidade(List<Integer> comunidade) {
-		this.comunidade = comunidade;
+	public void setComunidadeList(List<Comunidade> comunidadeList) {
+		this.comunidadeList = comunidadeList;
 	}
 
 	public void setDemandante(String demandante) {
@@ -181,8 +183,8 @@ public class AtividadeCadFiltroDto extends FiltroDtoCustom {
 		this.termino = termino;
 	}
 
-	public void setUnidadeOrganizacional(List<Integer> unidadeOrganizacional) {
-		this.unidadeOrganizacional = unidadeOrganizacional;
+	public void setUnidadeOrganizacionalList(List<UnidadeOrganizacional> unidadeOrganizacionalList) {
+		this.unidadeOrganizacionalList = unidadeOrganizacionalList;
 	}
 
 }

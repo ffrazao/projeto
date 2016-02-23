@@ -189,9 +189,9 @@ angular.module(pNmModulo).controller(pNmController,
             },
         },
         {
-            'nome': 'RegistroIPA',
-            'include': 'propriedade-rural/tab-ipa.html',
-            'visivel': true,
+            'nome': 'Índice de Produção',
+            'include': 'propriedade-rural/tab-indice-producao.html',
+            'visivel': false,
         },
         {
             'nome': 'Arquivos',
@@ -215,86 +215,56 @@ angular.module(pNmModulo).controller(pNmController,
     // Inicio Trabalho com uso do solo
     // Fim Trabalho com uso do solo
 
-    // inicio diagnostico
-    $scope.cadastro.registro.diagnostico =
-    [ { data: '19/02/1970', nome: 'Coleta X', 
-        situacao: { codigo: '1', descricao: 'Em Aberto'}, 
-        versao: { codigo:'1', descricao: '1.01'},
-        responsavel: {codigo: '154', descricao: 'Fulano de Tal'},
-        formaUtilizacao: {codigo: '2', descricao: 'Lazer'},
-        fontePrincipal: {codigo: '3', descricao: 'Canal'}, fonteVazao: 54, fonteDomestico : {codigo: '3', descricao:'Poço'},
-        maoObraContratada: 4, maoObraTemporaria: 23, maoObraFamiliar: 4, moraPropriedade :12, moraFamilia : 5,
-        solo :[ {nome:'Culturas Perenes',      area: 120, unitario: 250, mapa : { center: { latitude: -15.732687616157767, longitude: -47.90378594955473 }, zoom: 15 } },
-                {nome:'Culturas Temporárias',  area: 13,  unitario: 250, mapa : { center: { latitude: -15.732687616157767, longitude: -47.90378594955473 }, zoom: 15 } },
-                {nome:'Pastagens',             area: 32,  unitario: 250, mapa : { center: { latitude: -15.732687616157767, longitude: -47.90378594955473 }, zoom: 15 }, 
-                     detalhe:{arquivo: 'tab-diagnostico-solo-pastagem-modal.html', descricao: 'Detalahemento da Pastagem', observacao: '', total : 0,
-                              dados: [ {nome:'Área de Canavial',             area: 12.00}, {nome:'Área de Capineira',          area: 5.00},
-                                       {nome:'Área para Silagem',            area:  0.00}, {nome:'Área para Feno',             area: 1.20},
-                                       {nome:'Área de Pastagem Natural',     area:  3.30}, {nome:'Área de Pastagem Artifical', area: 5.00},
-                                       {nome:'Área de Pastagem Rotacionada', area:  0.00}, {nome:'Área  ILP/ILPF',             area: 0.00}
-                                     ]
-                             } 
-                },
-                {nome:'Reserva Legal',         area: 54,  unitario: 250, mapa : { center: { latitude: -15.732687616157767, longitude: -47.90378594955473 }, zoom: 15 } },
-                {nome:'Preservação Permanete', area: 88,  unitario: 250, mapa : { center: { latitude: -15.732687616157767, longitude: -47.90378594955473 }, zoom: 15 } },
-                {nome:'Áreas Irrigadas',       area: 134, unitario: 250, mapa : { center: { latitude: -15.732687616157767, longitude: -47.90378594955473 }, zoom: 15 }, 
-                     detalhe:{arquivo: 'tab-diagnostico-solo-irrigada-modal.html', descricao: 'Detalahamento da Irrigação', observacao: '2332', total : 0, tamanho:1000,
-                              dados:[ {nome:'Aspersão Convencinal',  area: 12.00}, {nome:'Auto-propelido', area: 5.00},
-                                      {nome:'Pivô Central',          area:  0.00}, {nome:'Gotejamento',    area: 1.20},
-                                      {nome:'Micro-aspersão',        area:  3.30}, {nome:'Superfície',     area: 5.00},
-                                      {nome:'Outros',                area:  0.00}
-                                   ]
-                             } 
-                },
-                {nome:'Outras',                area: 12,  unitario: 250, mapa : { center: { latitude: -15.732687616157767, longitude: -47.90378594955473 }, zoom: 15 } },
-              ], //solo
-        benfeitoria: [ {nome:'Aspersão Convencinal', descricao:'Casa Principal',     unidade:'m²', area: 12.00, valor:123.87, dtAtul:'19/02/1970' }, 
-                       {nome:'Outros',               descricao:'Galpão de Trabalho', unidade:'m²', area:  0.00, valor:458.56, dtAtul:'19/02/1980' }
-                     ],
-      }, //diagnostico1
-      { data: '26/03/2015', nome: 'Coleta Y', 
-        situacao: { codigo: '2', descricao: 'Fechado'}, 
-        versao: { codigo:'2', descricao: '1.02'},
-        responsavel: {codigo: '222', descricao: 'Beltrano de Tal'},
-        formaUtilizacao: {codigo: '1', descricao: 'Lazer'},
-        fontePrincipal: {codigo: '1', descricao: 'Canal'}, fonteVazao: 333, fonteDomestico : {codigo: '3', descricao:'Poço'},
-        maoObraContratada: 4, maoObraTemporaria: 23, maoObraFamiliar: 4, moraPropriedade :12, moraFamilia : 5,
-        solo :[ {nome:'Culturas Perenes',      area: 22.11, unitario: 250, mapa : { center: { latitude: -15.732687616157767, longitude: -47.90378594955473 }, zoom: 15 } },
-                {nome:'Culturas Temporárias',  area: 33.55, unitario: 250, mapa : { center: { latitude: -15.732687616157767, longitude: -47.90378594955473 }, zoom: 15 } },
-                {nome:'Pastagens',             area: 44.66, unitario: 250, mapa : { center: { latitude: -15.732687616157767, longitude: -47.90378594955473 }, zoom: 15 }, 
-                     detalhe:{arquivo: 'tab-diagnostico-solo-pastagem-modal.html', descricao: 'Detalahemento da Pastagem', observacao: '', total : 0,
-                              dados: [ {nome:'Área de Canavial',             area: 33.00}, {nome:'Área de Capineira',          area: 5.55},
-                                       {nome:'Área para Silagem',            area:  9.00}, {nome:'Área para Feno',             area: 9.26},
-                                       {nome:'Área de Pastagem Natural',     area:  7.30}, {nome:'Área de Pastagem Artifical', area: 7.88},
-                                       {nome:'Área de Pastagem Rotacionada', area:  9.00}, {nome:'Área  ILP/ILPF',             area: 1.55}
-                                     ]
-                             } 
-                },
-                {nome:'Reserva Legal',         area: 33.33,  unitario: 250, mapa : { center: { latitude: -15.732687616157767, longitude: -47.90378594955473 }, zoom: 15 } },
-                {nome:'Preservação Permanete', area: 12.44,  unitario: 250, mapa : { center: { latitude: -15.732687616157767, longitude: -47.90378594955473 }, zoom: 15 } },
-                {nome:'Áreas Irrigadas',       area: 233.44, unitario: 250, mapa : { center: { latitude: -15.732687616157767, longitude: -47.90378594955473 }, zoom: 15 }, 
-                     detalhe:{arquivo: 'tab-diagnostico-solo-irrigada-modal.html', descricao: 'Detalahamento da Irrigação', observacao: '2332', total : 0, tamanho:1000,
-                              dados:[ {nome:'Aspersão Convencinal',  area: 12.00}, {nome:'Auto-propelido', area: 5.00},
-                                      {nome:'Pivô Central',          area:  0.00}, {nome:'Gotejamento',    area: 1.20},
-                                      {nome:'Micro-aspersão',        area:  3.30}, {nome:'Superfície',     area: 5.00},
-                                      {nome:'Outros',                area:  0.00}
-                                   ]
-                             } 
-                },
-                {nome:'Outras',                area: 12,  unitario: 250, mapa : { center: { latitude: -15.732687616157767, longitude: -47.90378594955473 }, zoom: 15 } },
-              ], //solo2
-        benfeitoria: [ {nome:'Aspersão Convencinal', descricao:'Casa Principal',     unidade:'m²', area: 12.00, valor:123.87, dtAtul:'19/02/1970' }, 
-                       {nome:'Outros',               descricao:'Galpão de Trabalho', unidade:'m²', area:  5.00, valor:458.56, dtAtul:'19/02/1922' },
-                       {nome:'Outros',               descricao:'Paiol',              unidade:'m²', area: 54.00, valor:355.89, dtAtul:'19/02/1977' }
-                     ],
-       }, //diagnostico2
-    ];
- // fim diagnostico
+    $scope.toggleChildren = function (scope) {
+        scope.toggle();
+    };
+    $scope.visible = function (item) {
+        return !($scope.cadastro.apoio.localFiltro && 
+            $scope.cadastro.apoio.localFiltro.length > 0 && 
+            item.nome.trim().toLowerCase().latinize().indexOf($scope.cadastro.apoio.localFiltro.trim().toLowerCase().latinize()) === -1);
+    };
 
 
+    $scope.confirmarFiltrarAntes = function(filtro) {
+        filtro.empresaList = [];
+        filtro.unidadeOrganizacionalList = [];
+        filtro.comunidadeList = [];
+        var i, j, k;
+        for (i in $scope.cadastro.apoio.localList) {
+            // filtrar as empressas
+            if ($scope.cadastro.apoio.localList[i].selecionado) {
+                filtro.empresaList.push({id: $scope.cadastro.apoio.localList[i].id, '@class': 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica'});
+            } else {
+                for (j in $scope.cadastro.apoio.localList[i].unidadeList) {
+                    // filtrar as unidades organizacionais
+                    if ($scope.cadastro.apoio.localList[i].unidadeList[j].selecionado) {
+                        filtro.unidadeOrganizacionalList.push({id: $scope.cadastro.apoio.localList[i].unidadeList[j].id});
+                    } else {
+                        for (k in $scope.cadastro.apoio.localList[i].unidadeList[j].comunidadeList) {
+                            // filtrar as unidades organizacionais
+                            if ($scope.cadastro.apoio.localList[i].unidadeList[j].comunidadeList[k].selecionado) {
+                                filtro.comunidadeList.push({id: $scope.cadastro.apoio.localList[i].unidadeList[j].comunidadeList[k].id});
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if ($scope.cadastro.apoio.unidadeOrganizacionalSomenteLeitura && !$scope.cadastro.filtro.unidadeOrganizacionalList.length && !$scope.cadastro.filtro.comunidadeList.length) {
+            toastr.error('Informe pelo menos uma comunidade', 'Erro ao filtrar');
+            throw 'Informe pelo menos uma comunidade';
+        }
+    };
 
     //Trabalho com mapas
     $scope.map = { center: { latitude: -15.732687616157767, longitude: -47.90378594955473 }, zoom: 15 };
+
+    // inicio dos watches
+    $scope.$watch('cadastro.registro.comunidade.id', function(newValue, oldValue) {
+        $scope.tabs[2].visivel = angular.isObject($scope.cadastro.registro.comunidade) && $scope.cadastro.registro.comunidade.id > 0;
+    });
+    // fim dos watches
+
 
 }]);
 

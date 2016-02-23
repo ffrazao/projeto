@@ -164,13 +164,45 @@
                             }
                         }
                     }
-                }
+                }                
                 if ($scope.cadastro.apoio.unidadeOrganizacionalSomenteLeitura && !$scope.cadastro.filtro.unidadeOrganizacionalList.length && !$scope.cadastro.filtro.comunidadeList.length) {
                     toastr.error('Informe pelo menos uma comunidade', 'Erro ao filtrar');
                     throw 'Informe pelo menos uma comunidade';
                 }
-            };
 
+                var captarBemClassificacaoList = function(lista, resultado) {
+                    if (lista) {
+                        for (var i in lista) {
+                            if (lista[i][4] === true) {
+                                resultado.push({id: lista[i][0]});
+                            } else {
+                                captarBemClassificacaoList(lista[i][3], resultado);
+                            }
+                        }
+                    }
+                };
+                filtro.bemClassificacaoList = [];
+                captarBemClassificacaoList($scope.cadastro.apoio.bemClassificacaoList, filtro.bemClassificacaoList);
+
+                var captarFormaProducaoValorList = function(lista, resultado) {
+                    if (lista) {
+                        var i, j;
+                        for (i in lista) {
+                            captarFormaProducaoValorList(lista[i][3], resultado);
+                            if (lista[i][2]) {
+                                for (j in lista[i][2]) {
+                                    if (lista[i][2][j][3] && lista[i][2][j][3] !== null) {
+                                        resultado.push({id : lista[i][2][j][3]});
+                                        lista[i][2][j][3] = null;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                };
+                filtro.formaProducaoValorList = [];
+                captarFormaProducaoValorList($scope.cadastro.apoio.bemClassificacaoList, filtro.formaProducaoValorList);
+            };
 
 
             // fim das operaçoes atribuidas ao navagador
@@ -293,9 +325,9 @@
                 var carregarClassificacao = function(a, r) {
                     if (r) {
                         a.push(r.nome);
-                    }
-                    if (r.bemClassificacao) {
-                        carregarClassificacao(a, r.bemClassificacao);
+                        if (r.bemClassificacao) {
+                            carregarClassificacao(a, r.bemClassificacao);
+                        }
                     }
                 };
                 var montarClassificacao = function(a) {

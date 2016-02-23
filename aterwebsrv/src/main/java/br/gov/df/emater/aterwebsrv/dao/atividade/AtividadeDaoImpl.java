@@ -163,6 +163,28 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 			sqlFiltro.append(sqlTemp).append("	)").append("\n");
 		}
 		
+		// pesquisar por localizacao
+		if (!CollectionUtils.isEmpty(filtro.getEmpresaList()) || !CollectionUtils.isEmpty(filtro.getUnidadeOrganizacionalList()) || !CollectionUtils.isEmpty(filtro.getComunidadeList())) {
+			benef = true;
+			sql.append("and deman.pessoa in (select publ.pessoa").append("\n");
+			sql.append("                     from PublicoAlvo publ").append("\n");
+			sql.append("                     join publ.publicoAlvoPropriedadeRuralList parr").append("\n");
+			sql.append("                     where 1 = 1").append("\n");
+			if (!CollectionUtils.isEmpty(filtro.getEmpresaList())) {
+				params.add(filtro.getEmpresaList());
+				sql.append("and parr.comunidade.unidadeOrganizacional.pessoaJuridica in ?").append(params.size()).append("\n");
+			}
+			if (!CollectionUtils.isEmpty(filtro.getUnidadeOrganizacionalList())) {
+				params.add(filtro.getUnidadeOrganizacionalList());
+				sql.append("and parr.comunidade.unidadeOrganizacional in ?").append(params.size()).append("\n");
+			}
+			if (!CollectionUtils.isEmpty(filtro.getComunidadeList())) {
+				params.add(filtro.getComunidadeList());
+				sql.append("and parr.comunidade in ?").append(params.size()).append("\n");
+			}
+			sql.append("                     )").append("\n");
+		}
+		
 		if (benef) {
 			sqlFiltro.append("and deman.pessoa.publicoAlvoConfirmacao = 'S'").append("\n");
 		}
@@ -280,7 +302,6 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 
 		// criar a query
 		TypedQuery<Object[]> query = em.createQuery(sql.toString(), Object[].class);
-//		TypedQuery<Object[]> query = em.createQuery("from AtividadePessoa p join Treat(p.pessoa as PessoaFisica) pes where pes.cpf != '000'", Object[].class);
 
 		// inserir os parametros
 		for (int i = 1; i <= params.size(); i++) {

@@ -2,7 +2,7 @@
     <div class="panel-heading"><h4>{{nomeFormulario}}</h4></div>
     <div class="panel-body">
         <form name="frm.formulario" novalidate>
-            <fieldset > <!-- ng-disabled="['INCLUINDO', 'EDITANDO'].indexOf(navegador.estadoAtual()) < 0">> -->
+            <fieldset ng-disabled="['INCLUINDO', 'EDITANDO'].indexOf(navegador.estadoAtual()) < 0">
                 <div class="row">
                     <div class="col-md-8" title="Tipo de Registro">
                         <div class="form-group">

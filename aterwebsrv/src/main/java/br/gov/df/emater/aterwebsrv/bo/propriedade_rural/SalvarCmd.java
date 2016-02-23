@@ -9,9 +9,12 @@ import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.ater.PropriedadeRuralDao;
+import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoDao;
+import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoPropriedadeRuralDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.EnderecoDao;
 import br.gov.df.emater.aterwebsrv.modelo.ater.BaciaHidrografica;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
+import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Endereco;
 
@@ -23,6 +26,12 @@ public class SalvarCmd extends _Comando {
 
 	@Autowired
 	private PropriedadeRuralDao dao;
+	
+	@Autowired
+	private PublicoAlvoPropriedadeRuralDao publicoAlvoPropriedadeRuralDao;
+	
+	@Autowired
+	private PublicoAlvoDao publicoAlvoDao;
 	
 	@Autowired
 	private EnderecoDao enderecoDao;
@@ -38,7 +47,7 @@ public class SalvarCmd extends _Comando {
 		}
 		result.setUsuarioAlteracao(getUsuario(contexto.getUsuario().getName()));
 		result.setAlteracaoData(Calendar.getInstance());
-		
+
 		if (result.getEndereco() == null) {
 			throw new BoException("O campo Endereço é obrigatório");
 		}
@@ -49,6 +58,12 @@ public class SalvarCmd extends _Comando {
 		result.setBaciaHidrografica(new BaciaHidrografica(1));
 
 		dao.save(result);
+		
+		for (PublicoAlvoPropriedadeRural papr: result.getPublicoAlvoPropriedadeRuralList()) {
+			papr.setPropriedadeRural(result);
+			papr.setPublicoAlvo(publicoAlvoDao.findOneByPessoa(papr.getPublicoAlvo().getPessoa()));
+			publicoAlvoPropriedadeRuralDao.save(papr);
+		}
 
 		dao.flush();
 

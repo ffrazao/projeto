@@ -1,5 +1,6 @@
 package br.gov.df.emater.aterwebsrv.modelo.ater;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Calendar;
 
@@ -74,6 +75,14 @@ public class PublicoAlvoPropriedadeRural extends EntidadeBase implements _ChaveP
 	@Column(name = "tipo_vinculo")
 	@Enumerated(EnumType.STRING)
 	private PropriedadeRuralVinculoTipo vinculo;
+
+	public PublicoAlvoPropriedadeRural() {
+		super();
+	}
+
+	public PublicoAlvoPropriedadeRural(Serializable id) {
+		super(id);
+	}
 
 	public BigDecimal getArea() {
 		return area;

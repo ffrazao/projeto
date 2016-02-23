@@ -2,7 +2,8 @@
     <div class="panel-heading"><h4>{{nomeFormulario}}</h4></div>
     <div class="panel-body">
         <form name="frm.formulario" novalidate>
-            <fieldset > <!-- ng-disabled="['INCLUINDO', 'EDITANDO'].indexOf(navegador.estadoAtual()) < 0">> -->
+            /{{cadastro.registro}}/
+            <fieldset ng-disabled="['INCLUINDO', 'EDITANDO'].indexOf(navegador.estadoAtual()) < 0">
                 <div class="row">
                     <div class="col-md-12" title="Nome da Propriedade">
                         <div class="form-group">
@@ -25,7 +26,7 @@
                     </div>
                 </div>
                 <uib-tabset>
-                    <uib-tab ng-repeat="tab in tabs | filter: {'visivel': true}" select="tab.selecao()">
+                    <uib-tab ng-repeat="tab in tabs" select="tab.selecao()" ng-if="tab.visivel">
                         <uib-tab-heading>
                             {{$index + 1}} {{tab.nome}} <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                         </uib-tab-heading>

@@ -14,7 +14,6 @@
     <div class="form-group col-md-4">
         <label class="control-label">Comunidade</label>
         <select class="form-control" id="comunidade" name="comunidade" ng-model="cadastro.registro.comunidade.id" ng-options="item.id as item.nome for item in cadastro.apoio.comunidadeList" required="true">
-            <option value="">-- Não informado --</option>
         </select>
         <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.comunidade.$error.required">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>

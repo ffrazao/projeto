@@ -59,10 +59,12 @@ angular.module(pNmModulo).controller(pNmController,
                     publicoAlvo: {
                         pessoa: {
                             id: resultado.selecao.item[0], 
-                            nome: resultado.selecao.item[1]
+                            nome: resultado.selecao.item[1],
+                            pessoaTipo: resultado.selecao.item[3],
                         },
                     },
                 };
+                $scope.preparaClassePessoa(reg.publicoAlvo.pessoa);
                 if (!$scope.cadastro.registro.publicoAlvoPropriedadeRuralList) {
                     $scope.cadastro.registro.publicoAlvoPropriedadeRuralList = [];
                     $scope.publicoAlvoPropriedadeRuralNvg.setDados($scope.cadastro.registro.publicoAlvoPropriedadeRuralList);
@@ -72,12 +74,14 @@ angular.module(pNmModulo).controller(pNmController,
                 for (var i in resultado.selecao.items) {
                     reg = {
                         publicoAlvo: {
-                            pessoa:  {
+                            pessoa: {
                                 id: resultado.selecao.items[i][0], 
                                 nome: resultado.selecao.items[i][1],
+                                pessoaTipo: resultado.selecao.items[i][3],
                             },
                         },
                     };
+                    $scope.preparaClassePessoa(reg.publicoAlvo.pessoa);
                     if (!$scope.cadastro.registro.publicoAlvoPropriedadeRuralList) {
                         $scope.cadastro.registro.publicoAlvoPropriedadeRuralList = [];
                         $scope.publicoAlvoPropriedadeRuralNvg.setDados($scope.cadastro.registro.publicoAlvoPropriedadeRuralList);

@@ -7,16 +7,21 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import br.gov.df.emater.aterwebsrv.modelo.dto.IndiceProducaoCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
 
 public class ProducaoDaoImpl implements ProducaoDaoCustom {
 
 	@PersistenceContext
 	private EntityManager em;
+
+	@Autowired
+	private BemClassificacaoDao bemClassificacaoDao;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -36,7 +41,9 @@ public class ProducaoDaoImpl implements ProducaoDaoCustom {
 		sql = new StringBuilder();
 		sql.append("select distinct p").append("\n");
 		sql.append("from Producao p").append("\n");
-		sql.append("join p.unidadeOrganizacional.comunidadeList comun").append("\n");		
+		sql.append("join p.unidadeOrganizacional.comunidadeList comun").append("\n");
+		sql.append("join p.producaoFormaList pfl").append("\n");
+		sql.append("join pfl.producaoFormaComposicaoList composicao").append("\n");
 		if (filtro.getId() != null) {
 			params.add(filtro.getId());
 			sql.append("where p.id = ?").append(params.size()).append("\n");
@@ -61,6 +68,21 @@ public class ProducaoDaoImpl implements ProducaoDaoCustom {
 			params.add(filtro.getComunidadeList());
 			sql.append("and comun in ?").append(params.size()).append("\n");
 		}
+		if (!CollectionUtils.isEmpty(filtro.getBemList())) {
+			params.add(filtro.getBemList());
+			sql.append("and p.bem in ?").append(params.size()).append("\n");
+		}
+		if (!CollectionUtils.isEmpty(filtro.getBemClassificacaoList())) {
+			List<BemClassificacao> bemClassificacaoList = new ArrayList<BemClassificacao>();
+			captarBemClassificacaoList(filtro.getBemClassificacaoList(), bemClassificacaoList);
+			params.add(bemClassificacaoList);
+			sql.append("and p.bem.bemClassificacao in ?").append(params.size()).append("\n");
+		}
+		if (!CollectionUtils.isEmpty(filtro.getFormaProducaoValorList())) {
+			params.add(filtro.getFormaProducaoValorList());
+			sql.append("and composicao.formaProducaoValor in ?").append(params.size()).append("\n");
+		}
+		
 		sql.append("order by p.ano").append("\n");
 
 		// criar a query
@@ -81,6 +103,16 @@ public class ProducaoDaoImpl implements ProducaoDaoCustom {
 
 		// retornar
 		return result;
+	}
+
+	private void captarBemClassificacaoList(List<BemClassificacao> origem, List<BemClassificacao> destino) {
+		if (origem != null) {
+			for (BemClassificacao bcOrigem : origem) {
+				BemClassificacao bemClassificacao = bemClassificacaoDao.findOne(bcOrigem.getId());
+				captarBemClassificacaoList(bemClassificacao.getBemClassificacaoList(), destino);
+				destino.add(new BemClassificacao(bemClassificacao.getId()));
+			}
+		}
 	}
 
 }

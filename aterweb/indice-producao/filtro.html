@@ -18,7 +18,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- Multiple Checkboxes (inline) -->
+                <!-- Multiple Checkboxes (inline)
                 <div class="form-group" title="A coleta foi confirmada?">
                     <label class="col-md-4 control-label" for="confirmado">
                         Coleta confirmada
@@ -33,7 +33,7 @@
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
-                </div>
+                </div> -->
                 <!-- Multiple Checkboxes (inline) -->
                 <div class="form-group" title="Classificação do Bem de Produção/ Forma de Produção">
                     <label class="col-md-4 control-label" for="bemClassificacao">
@@ -94,18 +94,18 @@
                             </div>
                         </div>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.unidadeOrganizacionalComunidade.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.tree-root.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
                 </div>
                 <!-- Tag-input-->
                 <div class="form-group" title="Bens de Produção">
-                    <label class="col-md-4 control-label" for="ano">
+                    <label class="col-md-4 control-label" for="bemList">
                         Bens de Produção
                     </label>
                     <div class="col-md-7">
-                        <tags-input id="bem" name="bem" ng-model="cadastro.filtro.bem" display-property="nome" placeholder="Digite o nome do Bem de Produção" 
+                        <tags-input id="bemList" name="bemList" ng-model="cadastro.filtro.bemList" display-property="nome" placeholder="Digite o nome do Bem de Produção" 
                             template="tag-template" add-from-autocomplete-only="true">
                             <auto-complete source="getTagBem($query)" min-length="0" load-on-empty="false"
                             template="autocomplete-template"></auto-complete>
@@ -128,11 +128,11 @@
                                 </div>
                             </div>
                         </script>
-                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.bem.$error.leftoverText">
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.bemList.$error.leftoverText">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             Valor Inválido!
                         </div>
-                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.ano.$error.required">
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.bemList.$error.required">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             Campo Obrigatório
                         </div>
@@ -202,8 +202,9 @@
                         Campo Obrigatório
                     </div>
                 </div>
+                <!--
                 <legend>Quantitativos</legend>
-                <!-- Select input-->
+                <!-- Select input --
                 <div class="form-group" title="Volume de Produção">
                     <label class="col-md-4 control-label" for="volumeIni">
                         Volume de produção entre 
@@ -247,7 +248,7 @@
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
-                </div>
+                </div>-->
             </fieldset>
         </form>
     </div>

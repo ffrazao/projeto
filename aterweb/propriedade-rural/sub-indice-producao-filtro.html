@@ -1,0 +1,128 @@
+<div class="panel panel-default">
+    <div class="panel-heading"><h4>{{nomeFormulario}}</h4></div>
+    <div class="panel-body">
+        <form class="form-horizontal" name="frm.filtro" novalidate>
+            <fieldset>
+                <legend>Dados Básicos</legend>
+                <!-- Select input-->
+                <div class="form-group" title="Ano da Produção">
+                    <label class="col-md-4 control-label" for="ano">
+                        Ano da Produção
+                    </label>
+                    <div class="col-md-2">
+                        <select id="ano" name="ano" class="form-control" ng-model="cadastro.filtro.ano" ng-options="item as item for item in cadastro.apoio.anoList track by item" required="true">
+                        </select>
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.ano.$error.required">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Campo Obrigatório
+                        </div>
+                    </div>
+                </div>
+                <!-- Multiple Checkboxes (inline) -->
+                <div class="form-group" title="Classificação do Bem de Produção/ Forma de Produção">
+                    <label class="col-md-4 control-label" for="bemClassificacao">
+                        Classificação / Forma de Produção
+                    </label>
+                    <div class="col-md-7">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="cadastro.apoio.bemClassificacaoFiltro" placeholder="Filtrar por Classificação">
+                            <span class="input-group-btn">
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-default" ng-click="cadastro.apoio.bemClassificacaoFiltro = ''">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </button>
+                                </div>
+                            </span>
+                        </div>
+                        <div class="row" style="height: 200px; overflow: scroll;">
+                            <script type="text/ng-template" id="nodes_renderer.html">
+                                <div ui-tree-handle>
+                                    <a class="btn btn-primary btn-xs Tooltip" nodrag ng-click="toggleChildren(this)" title="Expandir/Recolher" ng-show="node[3].length">
+                                        <span class="glyphicon glyphicon-chevron-right" ng-show="collapsed"></span>
+                                        <span class="glyphicon glyphicon-chevron-down" ng-show="!collapsed"></span>
+                                    </a>
+                                    <label>
+                                        <input type="checkbox" ng-model="node[4]" ng-true-value="true" ng-false-value="false">
+                                        {{node[1]}}
+                                    </label>
+                                    <table width="100%" ng-show="node[2].length">
+                                        <tr>
+                                            <td colspan="2">&nbsp;</td>
+                                            <td style="color: gray"><small>Forma de Produção</small></td>
+                                        </tr>
+                                        <tr ng-repeat="forma in node[2]">
+                                            <td width="30%" style="text-align: right">
+                                                <small>{{forma[1]}}</small>
+                                            </td>
+                                            <td width="5%">
+                                                &nbsp;
+                                            </td>
+                                            <td>
+                                                <select ng-model="forma[3]" ng-options="opcao[0] as opcao[1] for opcao in forma[2] track by opcao[0]">
+                                                    <option value="">-- Selecione --</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <ol ui-tree-nodes="" ng-model="node[3]" ng-class="{hidden: collapsed}">
+                                    <li ng-repeat="node in node[3]" ui-tree-node ng-include="'nodes_renderer.html'" ng-show="visivel(cadastro.apoio.bemClassificacaoFiltro, node[1], !node[3].length)">
+                                    </li>
+                                </ol>
+                            </script>
+                            <div ui-tree drag-enabled="false">
+                                <ol ui-tree-nodes="" ng-model="cadastro.apoio.bemClassificacaoList" id="tree-root" ng-class="{hidden: collapsed}">
+                                    <li ng-repeat="node in cadastro.apoio.bemClassificacaoList" ui-tree-node ng-include="'nodes_renderer.html'">
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.tree-root.$error.required">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        Campo Obrigatório
+                    </div>
+                </div>
+                <!-- Tag-input-->
+                <div class="form-group" title="Bens de Produção">
+                    <label class="col-md-4 control-label" for="bemList">
+                        Bens de Produção
+                    </label>
+                    <div class="col-md-7">
+                        <tags-input id="bemList" name="bemList" ng-model="cadastro.filtro.bemList" display-property="nome" placeholder="Digite o nome do Bem de Produção" 
+                            template="tag-template" add-from-autocomplete-only="true">
+                            <auto-complete source="getTagBem($query)" min-length="0" load-on-empty="false"
+                            template="autocomplete-template"></auto-complete>
+                        </tags-input>
+                        <script type="text/ng-template" id="tag-template" >
+                            <div class="tag-template">
+                                <div class="right-panel">
+                                    <span>{{$getDisplayText()}}</span>
+                                    <small style="font-size: 70%;color: yellow">({{data.classificacao}})</small>
+                                    <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
+                                </div>
+                            </div>
+                        </script>
+                        <script type="text/ng-template" id="autocomplete-template">
+                            <div class="autocomplete-template">
+                                <div class="right-panel">
+                                    <span>{{$getDisplayText()}}</span>
+                                    <small style="font-size: 70%">({{data.classificacao}})</small>
+                                    <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
+                                </div>
+                            </div>
+                        </script>
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.bemList.$error.leftoverText">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Valor Inválido!
+                        </div>
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.bemList.$error.required">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Campo Obrigatório
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
