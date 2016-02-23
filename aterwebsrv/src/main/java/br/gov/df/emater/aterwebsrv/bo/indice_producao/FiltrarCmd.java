@@ -11,6 +11,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
@@ -18,6 +19,8 @@ import br.gov.df.emater.aterwebsrv.dao.ferramenta.UtilDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoDao;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioNumero;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
+import br.gov.df.emater.aterwebsrv.modelo.ater.Comunidade;
+import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.ItemNomeResultado;
 import br.gov.df.emater.aterwebsrv.modelo.dto.IndiceProducaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ItemNome;
@@ -88,10 +91,25 @@ public class FiltrarCmd extends _Comando {
 
 					// contabilizar os produtores da producao
 					List<Producao> produtorProducaoList = dao.findByAnoAndBemAndPropriedadeRuralComunidadeUnidadeOrganizacional(producao.getAno(), producao.getBem(), producao.getUnidadeOrganizacional());
+					// TODO utilizar o filtro na producao dos produtores
+					
 					if (produtorProducaoList != null) {
 
 						// looping pelos produtores cadastrados
 						for (Producao produtorProducao : produtorProducaoList) {
+							if (!CollectionUtils.isEmpty(filtro.getComunidadeList())) {
+								boolean continuar = false;
+								for (Comunidade comunidade: filtro.getComunidadeList()) {
+									if (comunidade.getId().equals(produtorProducao.getPropriedadeRural().getComunidade().getId())) {
+										continuar = true;
+										break;
+									}
+								}
+								if (!continuar) {
+									continue;
+								}
+							}
+
 							if (produtorProducao.getProducaoFormaList() != null) {
 								ProducaoCalculo calculoProdutorEsperada = new ProducaoCalculo(bemClassificacaoList, "Estimada");
 								ProducaoCalculo calculoProdutorConfirmada = new ProducaoCalculo(bemClassificacaoList, "Confirmada");

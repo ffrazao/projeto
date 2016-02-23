@@ -8,6 +8,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import br.gov.df.emater.aterwebsrv.modelo.dto.IndiceProducaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
@@ -33,8 +34,9 @@ public class ProducaoDaoImpl implements ProducaoDaoCustom {
 
 		// construção do sql
 		sql = new StringBuilder();
-		sql.append("select p").append("\n");
+		sql.append("select distinct p").append("\n");
 		sql.append("from Producao p").append("\n");
+		sql.append("join p.unidadeOrganizacional.comunidadeList comun").append("\n");		
 		if (filtro.getId() != null) {
 			params.add(filtro.getId());
 			sql.append("where p.id = ?").append(params.size()).append("\n");
@@ -46,6 +48,18 @@ public class ProducaoDaoImpl implements ProducaoDaoCustom {
 				sql.append("and p.ano = ?").append(params.size()).append("\n");
 			}
 			// TODO implementar o restante do filtro
+		}
+		if (!CollectionUtils.isEmpty(filtro.getEmpresaList())) {
+			params.add(filtro.getEmpresaList());
+			sql.append("and p.unidadeOrganizacional.pessoaJuridica in ?").append(params.size()).append("\n");
+		}
+		if (!CollectionUtils.isEmpty(filtro.getUnidadeOrganizacionalList())) {
+			params.add(filtro.getUnidadeOrganizacionalList());
+			sql.append("and p.unidadeOrganizacional in ?").append(params.size()).append("\n");
+		}
+		if (!CollectionUtils.isEmpty(filtro.getComunidadeList())) {
+			params.add(filtro.getComunidadeList());
+			sql.append("and comun in ?").append(params.size()).append("\n");
 		}
 		sql.append("order by p.ano").append("\n");
 

@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.funcional;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -8,11 +10,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
+import br.gov.df.emater.aterwebsrv.modelo.ater.Comunidade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.UnidadeOrganizacionalClassificacao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 
@@ -24,6 +28,9 @@ public class UnidadeOrganizacional extends EntidadeBase implements _ChavePrimari
 
 	@Enumerated(EnumType.STRING)
 	private UnidadeOrganizacionalClassificacao classificacao;
+	
+	@OneToMany(mappedBy = "unidadeOrganizacional")
+	private List<Comunidade> comunidadeList;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -50,6 +57,10 @@ public class UnidadeOrganizacional extends EntidadeBase implements _ChavePrimari
 		return classificacao;
 	}
 
+	public List<Comunidade> getComunidadeList() {
+		return comunidadeList;
+	}
+
 	@Override
 	public Integer getId() {
 		return id;
@@ -74,6 +85,10 @@ public class UnidadeOrganizacional extends EntidadeBase implements _ChavePrimari
 
 	public void setClassificacao(UnidadeOrganizacionalClassificacao classificacao) {
 		this.classificacao = classificacao;
+	}
+
+	public void setComunidadeList(List<Comunidade> comunidadeList) {
+		this.comunidadeList = comunidadeList;
 	}
 
 	@Override
