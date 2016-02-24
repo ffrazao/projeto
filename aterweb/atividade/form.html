@@ -92,7 +92,7 @@
                             <div class="form-control" ng-if="cadastro.registro.situacao === 'B' || cadastro.registro.situacao === 'X'">
                                 {{UtilSrv.indiceDePorCampo(cadastro.apoio.atividadeSituacaoList, cadastro.registro.situacao, 'codigo').descricao}}
                             </div>
-                            <select id="situacao" name="situacao" class="form-control" ng-model="cadastro.registro.situacao" ng-options="item.codigo as item.descricao disable when item.codigo === 'B' for item in cadastro.apoio.atividadeSituacaoList | filter: ((!cadastro.registro.id && {inicial : true}) || (cadastro.registro.id !== null && {})) | orderBy: 'ordem'" required="true" ng-disabled="false" ng-if="cadastro.registro.situacao !== 'B' && cadastro.registro.situacao !== 'X'">
+                            <select id="situacao" name="situacao" class="form-control" ng-model="cadastro.registro.situacao" ng-options="item.codigo as item.descricao disable when item.codigo === 'B' for item in cadastro.apoio.atividadeSituacaoList | filter: ((!cadastro.registro.id && {inicial : true}) || (cadastro.registro.id !== null && {})) | orderBy: 'ordem'" required="true" ng-disabled="true" ng-if="cadastro.registro.situacao !== 'B' && cadastro.registro.situacao !== 'X'">
                             </select>
 
                             <label class="control-label" for="situacao" ng-show="cadastro.registro.situacaoData">Desde</label>
@@ -241,7 +241,7 @@
                         <div class="form-group">
                             <label class="control-label" for="previsaoConclusao">Previsão Conclusão</label>
                             
-                            <input class="form-control" type="text" id="previsaoConclusao" name="previsaoConclusao" ng-model="cadastro.registro.previsaoConclusao" ng-required="!cadastro.registro.duracaoEstimada" ui-date-mask></input>
+                            <input class="form-control" type="text" id="previsaoConclusao" name="previsaoConclusao" ng-model="cadastro.registro.inicio" ng-required="!cadastro.registro.duracaoEstimada" ui-date-mask></input>
                             
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.previsaoConclusao.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -274,7 +274,7 @@
                         <div class="form-group">
                             <label class="control-label" for="conclusao">Conclusão</label>
                             
-                            <input class="form-control" type="text" id="conclusao" name="conclusao" ng-model="cadastro.registro.conclusao" ui-date-mask></input>
+                            <input class="form-control" type="text" id="conclusao" name="conclusao" ng-model="cadastro.registro.inicio" ui-date-mask></input>
                             
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.conclusao.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>

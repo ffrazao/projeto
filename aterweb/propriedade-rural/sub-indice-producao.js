@@ -393,7 +393,7 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.confirmarFiltrar = function() {};
     $scope.confirmarIncluir = function() {};
     $scope.filtrar = function() {
-        var item = {};
+        var item = {nome:'teste'};
         mensagemSrv.confirmacao(true, "propriedade-rural/sub-indice-producao-filtro.html", null, item, null, jaCadastrado).then(function (conteudo) {
 
         });
