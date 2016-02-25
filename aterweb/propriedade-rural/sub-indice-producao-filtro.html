@@ -1,8 +1,8 @@
 <div class="panel panel-default">
-    <div class="panel-heading"><h4>{{nomeFormulario}}</h4></div>
+    <div class="panel-heading"><h4>Filtrar Produção</h4></div>
     <div class="panel-body">
         <form class="form-horizontal" name="frm.filtro" novalidate>
-            <fieldset>
+            <fieldsets>
                 <legend>Dados Básicos</legend>
                 <!-- Select input-->
                 <div class="form-group" title="Ano da Produção">
@@ -10,7 +10,7 @@
                         Ano da Produção
                     </label>
                     <div class="col-md-2">
-                        <select id="ano" name="ano" class="form-control" ng-model="cadastro.filtro.ano" ng-options="item as item for item in cadastro.apoio.anoList track by item" required="true">
+                        <select id="ano" name="ano" class="form-control" ng-model="conteudo.cadastro.filtro.ano" ng-options="item as item for item in conteudo.cadastro.apoio.anoList track by item" required="true">
                         </select>
                         <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.ano.$error.required">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -25,10 +25,10 @@
                     </label>
                     <div class="col-md-7">
                         <div class="input-group">
-                            <input type="text" class="form-control" ng-model="cadastro.apoio.bemClassificacaoFiltro" placeholder="Filtrar por Classificação">
+                            <input type="text" class="form-control" ng-model="conteudo.cadastro.apoio.bemClassificacaoFiltro" placeholder="Filtrar por Classificação">
                             <span class="input-group-btn">
                                 <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-default" ng-click="cadastro.apoio.bemClassificacaoFiltro = ''">
+                                    <button type="button" class="btn btn-default" ng-click="conteudo.cadastro.apoio.bemClassificacaoFiltro = ''">
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </button>
                                 </div>
@@ -37,7 +37,7 @@
                         <div class="row" style="height: 200px; overflow: scroll;">
                             <script type="text/ng-template" id="nodes_renderer.html">
                                 <div ui-tree-handle>
-                                    <a class="btn btn-primary btn-xs Tooltip" nodrag ng-click="toggleChildren(this)" title="Expandir/Recolher" ng-show="node[3].length">
+                                    <a class="btn btn-primary btn-xs Tooltip" nodrag ng-click="conteudo.toggleChildren(this)" title="Expandir/Recolher" ng-show="node[3].length">
                                         <span class="glyphicon glyphicon-chevron-right" ng-show="collapsed"></span>
                                         <span class="glyphicon glyphicon-chevron-down" ng-show="!collapsed"></span>
                                     </a>
@@ -66,13 +66,13 @@
                                     </table>
                                 </div>
                                 <ol ui-tree-nodes="" ng-model="node[3]" ng-class="{hidden: collapsed}">
-                                    <li ng-repeat="node in node[3]" ui-tree-node ng-include="'nodes_renderer.html'" ng-show="visivel(cadastro.apoio.bemClassificacaoFiltro, node[1], !node[3].length)">
+                                    <li ng-repeat="node in node[3]" ui-tree-node ng-include="'nodes_renderer.html'" ng-show="conteudo.visivel(conteudo.cadastro.apoio.bemClassificacaoFiltro, node[1], !node[3].length)">
                                     </li>
                                 </ol>
                             </script>
                             <div ui-tree drag-enabled="false">
-                                <ol ui-tree-nodes="" ng-model="cadastro.apoio.bemClassificacaoList" id="tree-root" ng-class="{hidden: collapsed}">
-                                    <li ng-repeat="node in cadastro.apoio.bemClassificacaoList" ui-tree-node ng-include="'nodes_renderer.html'">
+                                <ol ui-tree-nodes="" ng-model="conteudo.cadastro.apoio.bemClassificacaoList" id="tree-root" ng-class="{hidden: collapsed}">
+                                    <li ng-repeat="node in conteudo.cadastro.apoio.bemClassificacaoList" ui-tree-node ng-include="'nodes_renderer.html'">
                                     </li>
                                 </ol>
                             </div>
@@ -89,9 +89,9 @@
                         Bens de Produção
                     </label>
                     <div class="col-md-7">
-                        <tags-input id="bemList" name="bemList" ng-model="cadastro.filtro.bemList" display-property="nome" placeholder="Digite o nome do Bem de Produção" 
+                        <tags-input id="bemList" name="bemList" ng-model="conteudo.cadastro.filtro.bemList" display-property="nome" placeholder="Digite o nome do Bem de Produção" 
                             template="tag-template" add-from-autocomplete-only="true">
-                            <auto-complete source="getTagBem($query)" min-length="0" load-on-empty="false"
+                            <auto-complete source="conteudo.getTagBem($query)" min-length="0" load-on-empty="false"
                             template="autocomplete-template"></auto-complete>
                         </tags-input>
                         <script type="text/ng-template" id="tag-template" >

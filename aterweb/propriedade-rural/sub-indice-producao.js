@@ -1,378 +1,66 @@
-/* global StringMask:false, removerCampo */
 
 (function(pNmModulo, pNmController, pNmFormulario) {
 
 'use strict';
 
 angular.module(pNmModulo).controller(pNmController,
-    ['$scope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv', 'mensagemSrv',
-    function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv) {
+    ['$scope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv', 'mensagemSrv', 'BemClassificacaoSrv', 'IndiceProducaoSrv',
+    function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv, BemClassificacaoSrv, IndiceProducaoSrv) {
 
     // inicializacao
     var init = function() {
-        if (!angular.isObject($scope.cadastro.registro.producaoFormaList)) {
-            $scope.cadastro.registro.producaoFormaList = [];
+        if (!angular.isObject($scope.cadastro.registro.indiceProducaoList)) {
+            $scope.cadastro.registro.indiceProducaoList = [];
         }
-        $scope.producaoFormaNvg = new FrzNavegadorParams($scope.cadastro.registro.producaoFormaList, 4);
+        $scope.indiceProducaoNvg = new FrzNavegadorParams($scope.cadastro.registro.indiceProducaoList, 4);
     };
     if (!$uibModalInstance) { init(); }
 
     // inicio rotinas de apoio
-    var pegaComposicaoId = function (formaProducao) {
-        if (formaProducao === null) {
-            return null;
-        }
-        var result = [];
-        for (var i in formaProducao.producaoFormaComposicaoList) {
-            result.push(formaProducao.producaoFormaComposicaoList[i].formaProducaoValor.id);
-        }
-        // ordenar
-        result.sort(function (a, b) {
-            return a - b;
-        });
-        return result;
-    };
-    var jaCadastrado = function(conteudo) {
-        var composicao = pegaComposicaoId(conteudo);
-        var j, igual;
-        for (j in $scope.cadastro.registro.producaoFormaList) {
-            igual = angular.equals(composicao, pegaComposicaoId($scope.cadastro.registro.producaoFormaList[j]));
-            if (igual) {
-                if (conteudo.id !== $scope.cadastro.registro.producaoFormaList[j].id) {
-                    toastr.error('Registro já cadastrado');
-                    return false;
-                } else {
-                    return true;
-                }
-            }
-        }
-        return true;
-    };
-    var editarItem = function (destino, item, selecaoId) {
 
-        var composicao = $scope.cadastro.apoio.producaoForma.composicao;
-
-        var i, j;
-
-        var form = 
-            '<div class="modal-body">' +
-            '    <div class="container-fluid">' +
-            '        <div class="row">' +
-            '            <div class="col-md-3 text-right">' +
-            '                <label class="form-label">Tipo de Registro</label>' +
-            '            </div>' +
-            '            <div class="col-md-7">' +
-            '                <div class="form-control">' +
-            '                   Estimativa de produção de um' + ($scope.cadastro.apoio.producaoUnidadeOrganizacional ? 'a Unidade Organizacional' : ' Produtor') +
-            '                </div>' +
-            '            </div>' +
-            '        </div>' +
-            '        <div class="row">' +
-            '            <div class="col-md-3 text-right">' +
-            '                <label class="form-label">Ano</label>' +
-            '            </div>' +
-            '            <div class="col-md-3">' +
-            '                <div class="form-control">' +
-            '                   ' + $scope.cadastro.registro.ano +
-            '                </div>' +
-            '            </div>' +
-            '        </div>' +
-            '        <div class="row">' +
-            '            <div class="col-md-3 text-right">' +
-            '                <label class="form-label">Classificação</label>' +
-            '            </div>' +
-            '            <div class="col-md-9">' +
-            '                <div class="form-control">' +
-            '                   ' + $scope.cadastro.apoio.producaoForma.bemClassificacao +
-            '                </div>' +
-            '            </div>' +
-            '        </div>' +
-            '        <div class="row">' +
-            '            <div class="col-md-3 text-right">' +
-            '                <label class="form-label">Bem de Produção</label>' +
-            '            </div>' +
-            '            <div class="col-md-9">' +
-            '                <div class="form-control">' +
-            '                   ' + $scope.cadastro.registro.bem.nome +
-            '                </div>' +
-            '            </div>' +
-            '        </div>';
-        if ($scope.cadastro.registro.unidadeOrganizacional) {
-            form +=
-            '        <div class="row">' +
-            '            <div class="col-md-3 text-right">' +
-            '                <label class="form-label">Unidade Organizacional</label>' +
-            '            </div>' +
-            '            <div class="col-md-9">' +
-            '                <div class="form-control">' +
-            '                   ' + $scope.cadastro.registro.unidadeOrganizacional.nome +
-            '                </div>' +
-            '            </div>' +
-            '        </div>';
-        } else {
-            form +=
-            '        <div class="row">' +
-            '            <div class="col-md-3 text-right">' +
-            '                <label class="form-label">Unidade Organizacional</label>' +
-            '            </div>' +
-            '            <div class="col-md-9">' +
-            '                <div class="form-control">' +
-            '                   ' + $scope.cadastro.apoio.unidadeOrganizacional.nome +
-            '                </div>' +
-            '            </div>' +
-            '        </div>' +
-            '        <div class="row">' +
-            '            <div class="col-md-3 text-right">' +
-            '                <label class="form-label">Produtor</label>' +
-            '            </div>' +
-            '            <div class="col-md-9">' +
-            '                <div class="form-control">' +
-            '                   <a ng-click="modalVerPessoa(' + $scope.cadastro.registro.publicoAlvo.pessoa.id + ')">' + $scope.cadastro.registro.publicoAlvo.pessoa.nome + '</a>' +
-            '                </div>' +
-            '            </div>' +
-            '        </div>' +
-            '        <div class="row">' +
-            '            <div class="col-md-3 text-right">' +
-            '                <label class="form-label">PropriedadeRural</label>' +
-            '            </div>' +
-            '            <div class="col-md-9">' +
-            '                <div class="form-control">' +
-            '                   <a ng-click="modalVerPropriedadeRural(' + $scope.cadastro.registro.propriedadeRural.id + ')">' + $scope.cadastro.registro.propriedadeRural.nome + '</a>' +
-            '                </div>' +
-            '            </div>' +
-            '        </div>';
-        }
-
-        for (i in composicao) {
-            form +=
-            '        <div class="row">' +
-            '            <div class="col-md-3 text-right">' +
-            '                <label class="form-label">' + composicao[i][1] + '</label>' +
-            '            </div>' +
-            '            <div class="col-md-9">' +
-            '                <select class="form-control" id="composicao' + i + '" name="composicao' + i + '" ng-options="item as item.nome for item in ['; 
-
-            for (j in composicao[i][2]) {
-                if (j > 0) {
-                    form += ',';
-                }
-                form += '{id:' + composicao[i][2][j][0] + ', nome:\'' + composicao[i][2][j][1] + '\'}';
-            }
-
-            form +=
-            '] track by item.id"' +
-            '                    ng-model="conteudo.producaoFormaComposicaoList[' + i + '].formaProducaoValor" ng-required="true">' +
-            '                </select>' +
-            '                <div class="label label-danger" ng-show="confirmacaoFrm.composicao' + i + '.$error.required">' +
-            '                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' +
-            '                     Campo Obrigatório' +
-            '                </div>' +
-            '            </div>' +
-            '        </div>';
-        }
-        if ($scope.cadastro.apoio.producaoForma.itemANome) {
-            form +=
-                '        <div class="row">' +
-                '            <div class="col-md-3 text-right">' +
-                '                <label class="form-label">' + $scope.cadastro.apoio.producaoForma.itemANome + '</label>' +
-                '            </div>' +
-                '            <div class="col-md-3">' +
-                '                <input class="form-control text-right" id="itemAValor" name="itemAValor" ng-model="conteudo.itemAValor" ng-required="true" ui-number-mask="5">' +
-                '                <div class="label label-danger" ng-show="confirmacaoFrm.itemAValor.$error.required">' +
-                '                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' +
-                '                     Campo Obrigatório' +
-                '                </div>' +
-                '            </div>' +
-                '        </div>';
-        }
-        if ($scope.cadastro.apoio.producaoForma.itemBNome) {
-            form +=
-                '        <div class="row">' +
-                '            <div class="col-md-3 text-right">' +
-                '                <label class="form-label">' + $scope.cadastro.apoio.producaoForma.itemBNome + '</label>' +
-                '            </div>' +
-                '            <div class="col-md-3">' +
-                '                <input class="form-control text-right" id="itemBValor" name="itemBValor" ng-model="conteudo.itemBValor" ng-required="true" ui-number-mask="5">' +
-                '                <div class="label label-danger" ng-show="confirmacaoFrm.itemBValor.$error.required">' +
-                '                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' +
-                '                     Campo Obrigatório' +
-                '                </div>' +
-                '            </div>' +
-                '        </div>';
-        }
-        if ($scope.cadastro.apoio.producaoForma.itemCNome) {
-            form +=
-                '        <div class="row">' +
-                '            <div class="col-md-3 text-right">' +
-                '                <label class="form-label">' + $scope.cadastro.apoio.producaoForma.itemCNome + '</label>' +
-                '            </div>' +
-                '            <div class="col-md-3">' +
-                '                <input class="form-control  text-right" id="itemCValor" name="itemCValor" ng-model="conteudo.itemCValor" ng-required="true" ui-number-mask="5">' +
-                '                <div class="label label-danger" ng-show="confirmacaoFrm.itemCValor.$error.required">' +
-                '                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' +
-                '                     Campo Obrigatório' +
-                '                </div>' +
-                '            </div>' +
-                '        </div>';
-        }
-        form +=
-            '        <div class="row">' +
-            '            <div class="col-md-3 text-right">' +
-            '                <label class="form-label">Volume</label>' +
-            '            </div>' +
-            '            <div class="col-md-3">' +
-            '                <div class="form-control text-right">' +
-            '                   {{conteudo.formula(\"' + $scope.cadastro.apoio.producaoForma.formula + '\", conteudo.itemAValor, conteudo.itemBValor, conteudo.itemCValor) | number: 5}}' +
-            '                </div>' +
-            '            </div>' +
-            '            <div class="col-md-3">' +
-            '                <div class="form-control">' +
-            '                   ' + $scope.cadastro.apoio.producaoForma.unidadeMedida + 
-            '                </div>' +
-            '            </div>' +
-            '        </div>' +
-            '        <div class="row">' +
-            '            <div class="col-md-3 text-right">' +
-            '                <label class="form-label">Valor Unitário</label>' +
-            '            </div>' +
-            '            <div class="col-md-3">' +
-            '                <input class="form-control text-right" id="valorUnitario" name="valorUnitario" ng-model="conteudo.valorUnitario" ng-required="true" ui-money-mask="2">' +
-            '                <div class="label label-danger" ng-show="confirmacaoFrm.valorUnitario.$error.required">' +
-            '                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' +
-            '                     Campo Obrigatório' +
-            '                </div>' +
-            '            </div>' +
-            '        </div>' +
-            '        <div class="row">' +
-            '            <div class="col-md-3 text-right">' +
-            '                <label class="form-label">Valor Total</label>' +
-            '            </div>' +
-            '            <div class="col-md-3">' +
-            '                <div class="form-control text-right">' +
-            '                   {{conteudo.formula(\"' + $scope.cadastro.apoio.producaoForma.formula + '\", conteudo.itemAValor, conteudo.itemBValor, conteudo.itemCValor) * conteudo.valorUnitario | currency}}' +
-            '                </div>' +
-            '            </div>' +
-            '        </div>';
-        if ($scope.cadastro.apoio.producaoUnidadeOrganizacional) {
-            form +=
-            '        <div class="row">' +
-            '            <div class="col-md-3 text-right">' +
-            '                <label class="form-label">Quantidade de Produtores</label>' +
-            '            </div>' +
-            '            <div class="col-md-3">' +
-            '                <input class="form-control text-right" id="quantidadeProdutores" name="quantidadeProdutores" ng-model="conteudo.quantidadeProdutores" ng-required="true" ui-number-mask="0">' +
-            '                <div class="label label-danger" ng-show="confirmacaoFrm.quantidadeProdutores.$error.required">' +
-            '                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' +
-            '                     Campo Obrigatório' +
-            '                </div>' +
-            '            </div>' +
-            '        </div>';
-        }
-        form +=
-            '    </div>' +
-            '</div>';
-
-        item.formula = $scope.formula;
-        if (!item.producaoFormaComposicaoList) {
-            item.producaoFormaComposicaoList = [];
-        }
-
-        mensagemSrv.confirmacao(false, form, null, item, null, jaCadastrado).then(function (conteudo) {
-            // processar o retorno positivo da modal
-            delete conteudo['formula'];
-            if (destino) {
-                if (!conteudo['cadastroAcao'] || (conteudo['cadastroAcao'] && conteudo['cadastroAcao'] !== 'I')) {
-                    conteudo['cadastroAcao'] = 'A';
-                }
-                destino = angular.copy(conteudo,destino);
-                if (selecaoId) {
-                    $scope.producaoFormaNvg.selecao.items[selecaoId] = destino;
-                }
-            } else {
-                conteudo['cadastroAcao'] = 'I';
-                if (!$scope.cadastro.registro.producaoFormaList) {
-                    $scope.cadastro.registro.producaoFormaList = [];
-                    $scope.producaoFormaNvg.setDados($scope.cadastro.registro.producaoFormaList);
-                }
-                var composicao = pegaComposicaoId(conteudo);
-                var j, igual;
-                for (j in $scope.cadastro.registro.producaoFormaList) {
-                    igual = angular.equals(composicao, pegaComposicaoId($scope.cadastro.registro.producaoFormaList[j]));
-                    if (igual) {
-                        $scope.cadastro.registro.producaoFormaList[j] = angular.copy(conteudo);
-                        toastr.warning('Um registro recentemente incluido, porém ainda não salvo, foi atualizado');
-                        return;
-                    }
-                }
-                $scope.cadastro.registro.producaoFormaList.push(conteudo);
-            }
-        }, function () {
-            // processar o retorno negativo da modal
-            //$log.info('Modal dismissed at: ' + new Date());
-        });
-    };
     // fim rotinas de apoio
 
     // inicio das operaçoes atribuidas ao navagador
     $scope.abrir = function() {
-        $scope.producaoFormaNvg.mudarEstado('ESPECIAL');
-        $scope.producaoFormaNvg.estados()['ESPECIAL'].botoes.push('filtro');
-        $scope.producaoFormaNvg.botao('filtro').exibir = function() {return true;};
+        $scope.indiceProducaoNvg.mudarEstado('ESPECIAL');
+        $scope.indiceProducaoNvg.estados()['ESPECIAL'].botoes.push('filtro');
+        $scope.indiceProducaoNvg.botao('filtro').exibir = function() {return true;};
     };
 
     $scope.incluir = function() {
         var item = {};
-        mensagemSrv.confirmacao(true, "indice-producao/form.html", null, item, null, jaCadastrado).then(function (conteudo) {
+        mensagemSrv.confirmacao(true, "indice-producao/form.html", null, item, null, null).then(function (conteudo) {
 
         });
-
-//        var item = {};
-//        editarItem(null, item);
     };
     $scope.editar = function() {
-        var item = null;
-        var i, j;
-        if ($scope.producaoFormaNvg.selecao.tipo === 'U' && $scope.producaoFormaNvg.selecao.item) {
-            item = angular.copy($scope.producaoFormaNvg.selecao.item);
-            editarItem($scope.producaoFormaNvg.selecao.item, item);
-        } else if ($scope.producaoFormaNvg.selecao.items && $scope.producaoFormaNvg.selecao.items.length) {
-            for (i in $scope.producaoFormaNvg.selecao.items) {
-                for (j in $scope.cadastro.registro.producaoFormaList) {
-                    if (angular.equals($scope.producaoFormaNvg.selecao.items[i], $scope.cadastro.registro.producaoFormaList[j])) {
-                        item = angular.copy($scope.cadastro.registro.producaoFormaList[j]);
-                        editarItem($scope.cadastro.registro.producaoFormaList[j], item, i);
-                        break;
-                    }
-                }
-            }
-        }
     };
     $scope.excluir = function() {
         mensagemSrv.confirmacao(false, 'Confirme a exclusão').then(function (conteudo) {
             var i, j;
-            if ($scope.producaoFormaNvg.selecao.tipo === 'U' && $scope.producaoFormaNvg.selecao.item) {
-                for (j = $scope.cadastro.registro.producaoFormaList.length -1; j >= 0; j--) {
-                    if (angular.equals($scope.cadastro.registro.producaoFormaList[j], $scope.producaoFormaNvg.selecao.item)) {
+            if ($scope.indiceProducaoNvg.selecao.tipo === 'U' && $scope.indiceProducaoNvg.selecao.item) {
+                for (j = $scope.cadastro.registro.indiceProducaoList.length -1; j >= 0; j--) {
+                    if (angular.equals($scope.cadastro.registro.indiceProducaoList[j], $scope.indiceProducaoNvg.selecao.item)) {
                         $scope.marcarParaExclusao($scope, 'producaoFormaList', j);
-                        //$scope.cadastro.registro.producaoFormaList.splice(j, 1);
-                        //$scope.cadastro.registro.producaoFormaList[j].cadastroAcao = 'E';
+                        //$scope.cadastro.registro.indiceProducaoList.splice(j, 1);
+                        //$scope.cadastro.registro.indiceProducaoList[j].cadastroAcao = 'E';
                     }
                 }
-                $scope.producaoFormaNvg.selecao.item = null;
-                $scope.producaoFormaNvg.selecao.selecionado = false;
-            } else if ($scope.producaoFormaNvg.selecao.items && $scope.producaoFormaNvg.selecao.items.length) {
-                for (j = $scope.cadastro.registro.producaoFormaList.length-1; j >= 0; j--) {
-                    for (i in $scope.producaoFormaNvg.selecao.items) {
-                        if (angular.equals($scope.cadastro.registro.producaoFormaList[j], $scope.producaoFormaNvg.selecao.items[i])) {
+                $scope.indiceProducaoNvg.selecao.item = null;
+                $scope.indiceProducaoNvg.selecao.selecionado = false;
+            } else if ($scope.indiceProducaoNvg.selecao.items && $scope.indiceProducaoNvg.selecao.items.length) {
+                for (j = $scope.cadastro.registro.indiceProducaoList.length-1; j >= 0; j--) {
+                    for (i in $scope.indiceProducaoNvg.selecao.items) {
+                        if (angular.equals($scope.cadastro.registro.indiceProducaoList[j], $scope.indiceProducaoNvg.selecao.items[i])) {
                             $scope.marcarParaExclusao($scope, 'producaoFormaList', j);
-                            //$scope.cadastro.registro.producaoFormaList.splice(j, 1);
-                            //$scope.cadastro.registro.producaoFormaList[j].cadastroAcao = 'E';
+                            //$scope.cadastro.registro.indiceProducaoList.splice(j, 1);
+                            //$scope.cadastro.registro.indiceProducaoList[j].cadastroAcao = 'E';
                             break;
                         }
                     }
                 }
-                for (i = $scope.producaoFormaNvg.selecao.items.length -1; i >= 0; i--) {
-                    $scope.producaoFormaNvg.selecao.items.splice(i, 1);
+                for (i = $scope.indiceProducaoNvg.selecao.items.length -1; i >= 0; i--) {
+                    $scope.indiceProducaoNvg.selecao.items.splice(i, 1);
                 }
             }
         }, function () {
@@ -393,10 +81,125 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.confirmarFiltrar = function() {};
     $scope.confirmarIncluir = function() {};
     $scope.filtrar = function() {
-        var item = {nome:'teste'};
-        mensagemSrv.confirmacao(true, "propriedade-rural/sub-indice-producao-filtro.html", null, item, null, jaCadastrado).then(function (conteudo) {
+        var item = {
+            cadastro: {
+                registro: {}, 
+                filtro: {}, 
+                lista: [], 
+                original: {}, 
+                apoio: [],
+            }
+        };
 
+        item.cadastro.apoio.ano = new Date().getFullYear();
+        item.cadastro.filtro.ano = item.cadastro.apoio.ano;
+        for (var ano = item.cadastro.filtro.ano + 1; ano > item.cadastro.filtro.ano - 20; ano--) {
+            if (!item.cadastro.apoio.anoList) {
+                item.cadastro.apoio.anoList = [];
+            }
+            item.cadastro.apoio.anoList.push(ano);
+        }
+        var identificaPai = function(lista, pai) {
+            for (var i in lista) {
+                lista[i][lista[i].length] = pai;
+                if (lista[i][3] && lista[i][3].length) {
+                    identificaPai(lista[i][3], lista[i]);
+                }
+            }
+        };
+        BemClassificacaoSrv.filtrar({}).success(function(resposta) {
+            item.cadastro.apoio.bemClassificacaoList = resposta.resultado;
+            identificaPai(item.cadastro.apoio.bemClassificacaoList, null);
+            //console.log(scp.cadastro.apoio.bemClassificacaoList);
         });
+
+        item.toggleChildren = function (scope) {
+            scope.toggle();
+        };
+        item.visivel = function (filtro, no, folha) {
+            if (!folha) {
+                return true;
+            }
+            return !(filtro && 
+                filtro.length > 0 && 
+                no.trim().toLowerCase().latinize().indexOf(filtro.trim().toLowerCase().latinize()) === -1);
+        };
+        item.getTagBem = function($query) {
+            var carregarClassificacao = function(a, r) {
+                if (r) {
+                    a.push(r.nome);
+                    if (r.bemClassificacao) {
+                        carregarClassificacao(a, r.bemClassificacao);
+                    }
+                }
+            };
+            var montarClassificacao = function(a) {
+                var result = null;
+                for (var i = a.length -1; i>=0; i--) {
+                    if (result != null) {
+                        result += '/';
+                    } else {
+                        result = '';
+                    }
+                    result += a[i];
+                }
+                return result;
+            };
+            return IndiceProducaoSrv.tagBem($query).then(function(response) { 
+                var retorno = {data: []};
+                var classificacao;
+                for (var i in response.data.resultado) {
+                    classificacao = [];
+                    carregarClassificacao(classificacao, response.data.resultado[i][2]);
+                    retorno.data.push({id: response.data.resultado[i][0], nome: response.data.resultado[i][1], classificacao: montarClassificacao(classificacao)});
+                }
+                return retorno;
+            });
+        };
+
+        mensagemSrv.confirmacao(true, "propriedade-rural/sub-indice-producao-filtro.html", null, item, null, null).then(function (conteudo) {
+            var captarBemClassificacaoList = function(lista, resultado) {
+                if (lista) {
+                    for (var i in lista) {
+                        if (lista[i][4] === true) {
+                            resultado.push({id: lista[i][0]});
+                        } else {
+                            captarBemClassificacaoList(lista[i][3], resultado);
+                        }
+                    }
+                }
+            };
+            conteudo.cadastro.filtro.bemClassificacaoList = [];
+            captarBemClassificacaoList(conteudo.cadastro.apoio.bemClassificacaoList, conteudo.cadastro.filtro.bemClassificacaoList);
+
+            var captarFormaProducaoValorList = function(lista, resultado) {
+                if (lista) {
+                    var i, j;
+                    for (i in lista) {
+                        captarFormaProducaoValorList(lista[i][3], resultado);
+                        if (lista[i][2]) {
+                            for (j in lista[i][2]) {
+                                if (lista[i][2][j][3] && lista[i][2][j][3] !== null) {
+                                    resultado.push({id : lista[i][2][j][3]});
+                                    lista[i][2][j][3] = null;
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            conteudo.cadastro.filtro.formaProducaoValorList = [];
+            captarFormaProducaoValorList(conteudo.cadastro.apoio.bemClassificacaoList, conteudo.cadastro.filtro.formaProducaoValorList);
+            IndiceProducaoSrv.filtrar(conteudo.cadastro.filtro).success(function(resposta) {
+                if (resposta.mensagem === 'OK') {
+                    $scope.cadastro.registro.indiceProducaoList = resposta.resultado;
+                    init();
+                }
+            }).error(function(erro){
+                toastr.error(erro, 'Erro ao filtrar');
+            });
+        });
+
     };
     $scope.folhearAnterior = function() {};
     $scope.folhearPrimeiro = function() {};

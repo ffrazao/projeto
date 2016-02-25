@@ -191,7 +191,7 @@ angular.module(pNmModulo).controller(pNmController,
         {
             'nome': 'Índice de Produção',
             'include': 'propriedade-rural/tab-indice-producao.html',
-            'visivel': false,
+            'visivel': true,
         },
         {
             'nome': 'Arquivos',
@@ -261,7 +261,7 @@ angular.module(pNmModulo).controller(pNmController,
 
     // inicio dos watches
     $scope.$watch('cadastro.registro.comunidade.id', function(newValue, oldValue) {
-        $scope.tabs[2].visivel = angular.isObject($scope.cadastro.registro.comunidade) && $scope.cadastro.registro.comunidade.id > 0;
+        //$scope.tabs[2].visivel = angular.isObject($scope.cadastro.registro.comunidade) && $scope.cadastro.registro.comunidade.id > 0;
     });
     // fim dos watches
 

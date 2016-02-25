@@ -1,8 +1,8 @@
-<div class="panel panel-default" ng-class="{'ng-invalid': producaoFormaFrm.producaoFormaList.$error.ngValorMin}">
+<div class="panel panel-default" ng-class="{'ng-invalid': indiceProducaoFrm.indiceProducaoList.$error.ngValorMin}">
     <div class="panel-heading container-fluid">
         <frz-navegador
-            ng-model="producaoFormaNvg" exibe-nome-botao="false"
-            dados="cadastro.registro.producaoFormaList"
+            ng-model="indiceProducaoNvg" exibe-nome-botao="false"
+            dados="cadastro.registro.indiceProducaoList"
             acoes-especiais="acoesEspeciais"
             on-abrir = "abrir()"
             on-agir = "agir()"
@@ -21,19 +21,19 @@
             >
         </frz-navegador>
     </div>
-    <div class="painel-body"  ng-hide="cadastro.registro.producaoFormaList.length">
+    <div class="painel-body"  ng-hide="cadastro.registro.indiceProducaoList.length">
         <div class="alert alert-warning" style="margin: 0px;" role="alert">
             <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
             Nenhum registro localizado!
         </div>
     </div>
-    <div class="table-responsive" ng-show="cadastro.registro.producaoFormaList.length > 0">
-        <ng-form name="producaoFormaFrm">
+    <div class="table-responsive" ng-show="cadastro.registro.indiceProducaoList.length > 0">
+        <ng-form name="indiceProducaoFrm">
             <table class="table table-striped">
                 <thead>
                     <tr>
                         <th rowspan="2">
-                            <frz-seletor ng-model="producaoFormaNvg"></frz-seletor>
+                            <frz-seletor ng-model="indiceProducaoNvg"></frz-seletor>
                         </th>
                         <th width="30" rowspan="2">
                             #
@@ -58,32 +58,32 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="produtor in cadastro.registro.producaoFormaList | orderBy: 'nome' | pagina: producaoFormaNvg.paginaAtual : producaoFormaNvg.tamanhoPagina | limitTo: producaoFormaNvg.tamanhoPagina" ng-click="producaoFormaNvg.folhaAtual = $index + ((producaoFormaNvg.paginaAtual-1) * producaoFormaNvg.tamanhoPagina)">
+                    <tr ng-repeat="produtor in cadastro.registro.indiceProducaoList | orderBy: 'nome' | pagina: indiceProducaoNvg.paginaAtual : indiceProducaoNvg.tamanhoPagina | limitTo: indiceProducaoNvg.tamanhoPagina" ng-click="indiceProducaoNvg.folhaAtual = $index + ((indiceProducaoNvg.paginaAtual-1) * indiceProducaoNvg.tamanhoPagina)">
                         <td width="30px">
-                            <input type="radio" ng-show="producaoFormaNvg.selecao.tipo === 'U'" ng-model="producaoFormaNvg.selecao.item" ng-value="produtor"/>
-                            <input type="checkbox" ng-show="producaoFormaNvg.selecao.tipo === 'M'" checklist-model="producaoFormaNvg.selecao.items" checklist-value="produtor" ng-click="crudMataClick(scp, $event);"/>
+                            <input type="radio" ng-show="indiceProducaoNvg.selecao.tipo === 'U'" ng-model="indiceProducaoNvg.selecao.item" ng-value="produtor"/>
+                            <input type="checkbox" ng-show="indiceProducaoNvg.selecao.tipo === 'M'" checklist-model="indiceProducaoNvg.selecao.items" checklist-value="produtor" ng-click="crudMataClick(scp, $event);"/>
                         </td>
                         <td>
-                            {{$index + 1 + ((producaoFormaNvg.paginaAtual-1) * producaoFormaNvg.tamanhoPagina)}}
+                            {{$index + 1 + ((indiceProducaoNvg.paginaAtual-1) * indiceProducaoNvg.tamanhoPagina)}}
                         </td>
                         <td ng-repeat="forma in produtor.producaoFormaComposicaoList" ng-if="cadastro.apoio.producaoForma.composicao.length">{{UtilSrv.indiceDePorCampo(cadastro.apoio.producaoForma.composicao[$index][2], forma.formaProducaoValor.id, '0')[1]}}</td>
                         <td ng-if="cadastro.apoio.producaoForma.itemANome">
                             <input class="form-control input-sm text-right" id="itemAValor" name="itemAValor" ng-model="produtor.itemAValor" ng-required="true" ui-number-mask="5" style="min-width: 75px;">
-                            <div class="label label-danger" ng-show="navegador.submetido && producaoFormaFrm.itemAValor.$error.required">
+                            <div class="label label-danger" ng-show="navegador.submetido && indiceProducaoFrm.itemAValor.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
                         </td>
                         <td ng-if="cadastro.apoio.producaoForma.itemBNome">
                             <input class="form-control input-sm text-right" id="itemBValor" name="itemBValor" ng-model="produtor.itemBValor" ng-required="true" ui-number-mask="5" style="min-width: 75px;">
-                            <div class="label label-danger" ng-show="navegador.submetido && producaoFormaFrm.itemBValor.$error.required">
+                            <div class="label label-danger" ng-show="navegador.submetido && indiceProducaoFrm.itemBValor.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
                         </td>
                         <td ng-if="cadastro.apoio.producaoForma.itemCNome">
                             <input class="form-control input-sm text-right" id="itemCValor" name="itemCValor" ng-model="produtor.itemCValor" ng-required="true" ui-number-mask="5" style="min-width: 75px;">
-                            <div class="label label-danger" ng-show="navegador.submetido && producaoFormaFrm.itemCValor.$error.required">
+                            <div class="label label-danger" ng-show="navegador.submetido && indiceProducaoFrm.itemCValor.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
@@ -92,7 +92,7 @@
                         <td>{{cadastro.apoio.producaoForma.unidadeMedida}}</td>
                         <td>
                             <input class="form-control input-sm text-right" id="valorUnitario" name="valorUnitario" ng-model="produtor.valorUnitario" ng-required="true" ui-money-mask="2" style="min-width: 75px;">
-                            <div class="label label-danger" ng-show="navegador.submetido && producaoFormaFrm.valorUnitario.$error.required">
+                            <div class="label label-danger" ng-show="navegador.submetido && indiceProducaoFrm.valorUnitario.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
@@ -100,7 +100,7 @@
                         <td>{{formula(cadastro.apoio.producaoForma.formula, produtor.itemAValor, produtor.itemBValor, produtor.itemCValor) * produtor.valorUnitario | currency }}</td>
                         <td ng-if="cadastro.apoio.producaoUnidadeOrganizacional">
                             <input class="form-control input-sm text-right" id="quantidadeProdutores" name="quantidadeProdutores" ng-model="produtor.quantidadeProdutores" ng-required="true" ui-number-mask="0" style="min-width: 75px;">
-                            <div class="label label-danger" ng-show="navegador.submetido && producaoFormaFrm.quantidadeProdutores.$error.required">
+                            <div class="label label-danger" ng-show="navegador.submetido && indiceProducaoFrm.quantidadeProdutores.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
@@ -116,7 +116,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div class="label label-danger" ng-show="navegador.submetido && producaoFormaFrm.dataConfirmacao.$error.date">
+                            <div class="label label-danger" ng-show="navegador.submetido && indiceProducaoFrm.dataConfirmacao.$error.date">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Data inválida!
                             </div>
@@ -126,13 +126,13 @@
                 <tfoot>
                 </tfoot>
             </table>
-            <input type="hidden" id="producaoFormaList" name="producaoFormaList" ng-model="cadastro.registro.producaoFormaList.length" ng-valor-min="0">
+            <input type="hidden" id="indiceProducaoList" name="indiceProducaoList" ng-model="cadastro.registro.indiceProducaoList.length" ng-valor-min="0">
 
         </ng-form>
     </div>
     <div class="panel-footer">
     </div>
-    <div class="label label-danger" ng-show="navegador.submetido && producaoFormaFrm.producaoFormaList.$error.ngValorMin">
+    <div class="label label-danger" ng-show="navegador.submetido && indiceProducaoFrm.indiceProducaoList.$error.ngValorMin">
         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
         Campo Obrigatório
     </div>
