@@ -2,7 +2,7 @@
     <div class="panel-heading"><h4>{{nomeFormulario}}</h4></div>
     <div class="panel-body">
         <form name="frm.formulario" novalidate>
-            <fieldset ng-disabled="['INCLUINDO', 'EDITANDO'].indexOf(navegador.estadoAtual()) < 0">
+            <fieldset ng-disabled="(modalCadastro !== true) && ['INCLUINDO', 'EDITANDO'].indexOf(navegador.estadoAtual()) < 0">
                 <div class="row">
                     <div class="col-md-8" title="Tipo de Registro">
                         <div class="form-group">
@@ -92,10 +92,12 @@
                     <div class="col-md-6" title="Unidade Organizacional">
                         <div class="form-group">
                             <label class="control-label" for="unidadeOrganizacional" ng-click="cadastro.apoio.producaoUnidadeOrganizacional = !cadastro.apoio.producaoUnidadeOrganizacional">Unidade Organizacional</label>
-                            <div class="form-control" ng-if="!cadastro.apoio.producaoUnidadeOrganizacional">
+                            <div class="form-control" ng-if="!cadastro.apoio.producaoUnidadeOrganizacional && !modalCadastro">
                                 {{cadastro.apoio.unidadeOrganizacional.nome}}
                             </div>
-                            <select id="unidadeOrganizacional" name="unidadeOrganizacional" class="form-control" ng-model="cadastro.registro.unidadeOrganizacional" ng-options="item as item.nome for item in cadastro.apoio.unidadeOrganizacionalList | orderBy:'nome' track by item.id" required="true" ng-if="cadastro.apoio.producaoUnidadeOrganizacional">
+                            <select id="unidadeOrganizacional" name="unidadeOrganizacional" class="form-control" ng-model="cadastro.registro.unidadeOrganizacional" ng-options="item as item.nome for item in cadastro.apoio.unidadeOrganizacionalList | orderBy:'nome' track by item.id" required="true" ng-if="cadastro.apoio.producaoUnidadeOrganizacional && !modalCadastro">
+                            </select>
+                            <select id="unidadeOrganizacional" name="unidadeOrganizacional" class="form-control" ng-model="cadastro.apoio.unidadeOrganizacional" ng-options="item as item.nome for item in cadastro.apoio.unidadeOrganizacionalList | orderBy:'nome' track by item.id" required="true" ng-if="modalCadastro" ng-disabled="cadastro.registro.propriedadeRural.id || cadastro.registro.publicoAlvo.id">
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.unidadeOrganizacional.$error.required" ng-if="cadastro.apoio.producaoUnidadeOrganizacional">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -104,7 +106,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row" ng-show="cadastro.apoio.bemClassificacao && !cadastro.apoio.producaoUnidadeOrganizacional" ng-if="cadastro.apoio.porProdutor">
+                <div class="row" ng-show="(cadastro.apoio.bemClassificacao && !cadastro.apoio.producaoUnidadeOrganizacional) || (modalCadastro && cadastro.apoio.unidadeOrganizacional.id)" ng-if="cadastro.apoio.porProdutor">
                     <div class="col-md-6" title="Produtor" ng-if="!cadastro.apoio.producaoUnidadeOrganizacional">
                         <div class="form-group">
                             <label class="control-label" for="publicoAlvo" ng-click="cadastro.apoio.producaoUnidadeOrganizacional = !cadastro.apoio.producaoUnidadeOrganizacional">Produtor</label>
@@ -112,7 +114,7 @@
                                 <input id="publicoAlvo" name="publicoAlvo" class="form-control" placeholder="" type="text" required ng-model="cadastro.registro.publicoAlvo.pessoa.nome" readonly>
                                 <span class="input-group-btn">
                                     <div class="btn-group" role="group">
-                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ng-disabled="cadastro.registro.producaoFormaList.length > 0">
                                             <span class="glyphicon glyphicon-menu-hamburger"></span>
                                         </button>
                                         <ul class="dropdown-menu">
@@ -131,7 +133,7 @@
                     <div class="col-md-6" title="Propriedade Rural" ng-if="!cadastro.apoio.producaoUnidadeOrganizacional">
                         <div class="form-group">
                             <label class="control-label" for="propriedadeRural">Propriedade Rural</label>
-                            <select id="propriedadeRural" name="propriedadeRural" class="form-control" ng-model="cadastro.registro.propriedadeRural" ng-options="item as item.nome for item in cadastro.apoio.propriedadeRuralList | orderBy:'nome' track by item.id" required="true">
+                            <select id="propriedadeRural" name="propriedadeRural" class="form-control" ng-model="cadastro.registro.propriedadeRural" ng-options="item as item.nome for item in cadastro.apoio.propriedadeRuralList | orderBy:'nome' track by item.id" required="true" ng-disabled="cadastro.registro.producaoFormaList.length > 0">
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.propriedadeRural.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -140,7 +142,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row" ng-show="cadastro.apoio.bemClassificacao && !cadastro.apoio.producaoUnidadeOrganizacional" ng-if="cadastro.apoio.porPropriedadeRural">
+                <div class="row" ng-show="(cadastro.apoio.bemClassificacao && !cadastro.apoio.producaoUnidadeOrganizacional) || (modalCadastro && cadastro.apoio.unidadeOrganizacional.id)" ng-if="cadastro.apoio.porPropriedadeRural">
                     <div class="col-md-6" title="Propriedade Rural" ng-if="!cadastro.apoio.producaoUnidadeOrganizacional">
                         <div class="form-group">
                             <label class="control-label" for="propriedadeRural">Propriedade Rural</label>
@@ -148,7 +150,7 @@
                                 <input id="propriedadeRural" name="propriedadeRural" class="form-control" placeholder="" type="text" required ng-model="cadastro.registro.propriedadeRural.nome" readonly>
                                 <span class="input-group-btn">
                                     <div class="btn-group" role="group">
-                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ng-disabled="cadastro.registro.producaoFormaList.length > 0">
                                             <span class="glyphicon glyphicon-menu-hamburger"></span>
                                         </button>
                                         <ul class="dropdown-menu">
@@ -167,7 +169,7 @@
                     <div class="col-md-6" title="Produtor" ng-if="!cadastro.apoio.producaoUnidadeOrganizacional">
                         <div class="form-group">
                             <label class="control-label" for="publicoAlvo" ng-click="cadastro.apoio.producaoUnidadeOrganizacional = !cadastro.apoio.producaoUnidadeOrganizacional">Produtor</label>
-                            <select id="publicoAlvo" name="publicoAlvo" class="form-control" ng-model="cadastro.registro.publicoAlvo" ng-options="item as item.pessoa.nome for item in cadastro.apoio.publicoAlvoList | orderBy:'pessoa.nome' track by item.id" required="true">
+                            <select id="publicoAlvo" name="publicoAlvo" class="form-control" ng-model="cadastro.registro.publicoAlvo" ng-options="item as item.pessoa.nome for item in cadastro.apoio.publicoAlvoList | orderBy:'pessoa.nome' track by item.id" required="true" ng-disabled="cadastro.registro.producaoFormaList.length > 0">
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.publicoAlvo.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>

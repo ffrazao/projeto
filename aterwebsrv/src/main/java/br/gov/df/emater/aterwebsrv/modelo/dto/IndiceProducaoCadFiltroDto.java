@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import br.gov.df.emater.aterwebsrv.modelo.ater.Comunidade;
+import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Bem;
@@ -18,7 +19,7 @@ public class IndiceProducaoCadFiltroDto extends FiltroDtoCustom {
 	private Integer ano;
 	
 	private List<BemClassificacao> bemClassificacaoList;
-
+	
 	private List<Bem> bemList;
 
 	private List<Comunidade> comunidadeList;
@@ -31,20 +32,22 @@ public class IndiceProducaoCadFiltroDto extends FiltroDtoCustom {
 
 	private Integer id;
 
+	private PropriedadeRural propriedadeRural;
+
 	private List<UnidadeOrganizacional> unidadeOrganizacionalList;
-	
+
 	public IndiceProducaoCadFiltroDto() {
 
 	}
-	
+
 	public Integer getAno() {
 		return ano;
 	}
-
+	
 	public List<BemClassificacao> getBemClassificacaoList() {
 		return bemClassificacaoList;
 	}
-
+	
 	public List<Bem> getBemList() {
 		return bemList;
 	}
@@ -67,6 +70,10 @@ public class IndiceProducaoCadFiltroDto extends FiltroDtoCustom {
 
 	public Integer getId() {
 		return id;
+	}
+
+	public PropriedadeRural getPropriedadeRural() {
+		return propriedadeRural;
 	}
 
 	public List<UnidadeOrganizacional> getUnidadeOrganizacionalList() {
@@ -103,6 +110,10 @@ public class IndiceProducaoCadFiltroDto extends FiltroDtoCustom {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public void setPropriedadeRural(PropriedadeRural propriedadeRural) {
+		this.propriedadeRural = propriedadeRural;
 	}
 
 	public void setUnidadeOrganizacionalList(List<UnidadeOrganizacional> unidadeOrganizacionalList) {

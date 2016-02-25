@@ -41,20 +41,31 @@ public class ProducaoDaoImpl implements ProducaoDaoCustom {
 		sql = new StringBuilder();
 		sql.append("select distinct p").append("\n");
 		sql.append("from Producao p").append("\n");
-		sql.append("join p.unidadeOrganizacional.comunidadeList comun").append("\n");
-		sql.append("join p.producaoFormaList pfl").append("\n");
-		sql.append("join pfl.producaoFormaComposicaoList composicao").append("\n");
+
+		if (!CollectionUtils.isEmpty(filtro.getComunidadeList())) {
+			sql.append("join p.unidadeOrganizacional.comunidadeList comun").append("\n");
+		}
+		if (!CollectionUtils.isEmpty(filtro.getFormaProducaoValorList())) {
+			sql.append("join p.producaoFormaList pfl").append("\n");
+			sql.append("join pfl.producaoFormaComposicaoList composicao").append("\n");
+		}
+
 		if (filtro.getId() != null) {
+			// filtrar producao especifica
 			params.add(filtro.getId());
 			sql.append("where p.id = ?").append(params.size()).append("\n");
+		} else if (filtro.getPropriedadeRural() != null && filtro.getPropriedadeRural().getId() != null) {
+			// filtrar producao por propriedade rural
+			params.add(filtro.getPropriedadeRural());
+			sql.append("where p.propriedadeRural = ?").append(params.size()).append("\n");
 		} else {
+			// filtrar producao por unidade organizacional
 			sql.append("where p.propriedadeRural is null").append("\n");
 			sql.append("and   p.publicoAlvo is null").append("\n");
-			if (filtro.getAno() != null) {
-				params.add(filtro.getAno());
-				sql.append("and p.ano = ?").append(params.size()).append("\n");
-			}
-			// TODO implementar o restante do filtro
+		}
+		if (filtro.getAno() != null) {
+			params.add(filtro.getAno());
+			sql.append("and p.ano = ?").append(params.size()).append("\n");
 		}
 		if (!CollectionUtils.isEmpty(filtro.getEmpresaList())) {
 			params.add(filtro.getEmpresaList());
@@ -82,8 +93,13 @@ public class ProducaoDaoImpl implements ProducaoDaoCustom {
 			params.add(filtro.getFormaProducaoValorList());
 			sql.append("and composicao.formaProducaoValor in ?").append(params.size()).append("\n");
 		}
-		
-		sql.append("order by p.ano").append("\n");
+
+		sql.append("order by p.ano, p.bem.bemClassificacao.nome, p.bem.nome").append("\n");
+		if (filtro.getPropriedadeRural() != null && filtro.getPropriedadeRural().getId() != null) {
+			sql.append("   , p.propriedadeRural.nome, p.publicoAlvo.pessoa.nome").append("\n");
+		} else {
+			sql.append("   , p.unidadeOrganizacional.nome").append("\n");
+		}
 
 		// criar a query
 		TypedQuery<Producao> query = em.createQuery(sql.toString(), Producao.class);
@@ -94,7 +110,7 @@ public class ProducaoDaoImpl implements ProducaoDaoCustom {
 		}
 
 		// definir a pagina a ser consultada
-		if (filtro.getId() == null) {
+		if (filtro.getId() == null && (filtro.getPropriedadeRural() == null || filtro.getPropriedadeRural().getId() == null)) {
 			filtro.configuraPaginacao(query);
 		}
 

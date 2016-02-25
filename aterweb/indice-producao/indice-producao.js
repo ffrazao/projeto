@@ -13,12 +13,12 @@
             TokenStorage) {
 
             // inicializacao
-            $scope.crudInit($scope, $state, null, pNmFormulario, IndiceProducaoSrv);
+            $scope.crudInit($scope, $state, modalCadastro, pNmFormulario, IndiceProducaoSrv);
 
             $scope.produtoresNvg = new FrzNavegadorParams([]);
 
             // código para verificar se o modal está ou não ativo
-            $scope.verificaEstado($uibModalInstance, $scope, 'filtro', modalCadastro, pNmFormulario);
+            $scope.verificaEstado($uibModalInstance, $scope, modalCadastro ? modalCadastro.apoio.estadoInicial : 'filtro', modalCadastro, pNmFormulario);
             // inicio: atividades do Modal
             $scope.modalOk = function() {
                 // Retorno da modal
@@ -81,7 +81,9 @@
                 if (t && t.lotacaoAtual) {
                     objeto.unidadeOrganizacional = t.lotacaoAtual;
                 }
-                $scope.cadastro.apoio.producaoUnidadeOrganizacional = true;
+                if (isUndefOrNull($scope.cadastro.apoio.producaoUnidadeOrganizacional)) {
+                    $scope.cadastro.apoio.producaoUnidadeOrganizacional = true;
+                }
                 delete $scope.cadastro.apoio.unidadeOrganizacional;
                 delete $scope.cadastro.apoio.porProdutor;
             };
@@ -630,6 +632,12 @@
                 }
             });
             // fim dos watches
+
+            // quebra galho para funcionar a inclusao externa
+            if (modalCadastro) {
+                $rootScope.abrir($scope);
+                $scope.modalCadastro = true;
+            }
         }
     ]);
 })('indiceProducao', 'IndiceProducaoCtrl', 'Cadastro de Índices de Produção', 'indice-producao');

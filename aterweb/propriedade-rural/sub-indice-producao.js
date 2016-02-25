@@ -4,8 +4,8 @@
 'use strict';
 
 angular.module(pNmModulo).controller(pNmController,
-    ['$scope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv', 'mensagemSrv', 'BemClassificacaoSrv', 'IndiceProducaoSrv',
-    function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv, BemClassificacaoSrv, IndiceProducaoSrv) {
+    ['$scope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv', 'mensagemSrv', 'BemClassificacaoSrv', 'IndiceProducaoSrv', '$log',
+    function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv, BemClassificacaoSrv, IndiceProducaoSrv, $log) {
 
     // inicializacao
     var init = function() {
@@ -25,15 +25,119 @@ angular.module(pNmModulo).controller(pNmController,
         $scope.indiceProducaoNvg.mudarEstado('ESPECIAL');
         $scope.indiceProducaoNvg.estados()['ESPECIAL'].botoes.push('filtro');
         $scope.indiceProducaoNvg.botao('filtro').exibir = function() {return true;};
+        $scope.indiceProducaoNvg.botao('primeiro').exibir = function() {return false;};
+        $scope.indiceProducaoNvg.botao('anterior').exibir = function() {return false;};
+        $scope.indiceProducaoNvg.botao('tamanhoPagina').exibir = function() {return false;};
+        $scope.indiceProducaoNvg.botao('proximo').exibir = function() {return false;};
+        $scope.indiceProducaoNvg.botao('ultimo').exibir = function() {return false;};
+    };
+    var pegaComposicaoId = function (formaProducao) {
+        if (formaProducao === null) {
+            return null;
+        }
+        var result = [];
+        for (var i in formaProducao.producaoFormaComposicaoList) {
+            result.push(formaProducao.producaoFormaComposicaoList[i].formaProducaoValor.id);
+        }
+        // ordenar
+        result.sort(function (a, b) {
+            return a - b;
+        });
+        return result;
+    };
+    var jaCadastrado = function(conteudo) {
+        var composicao = pegaComposicaoId(conteudo);
+        var j, igual;
+        for (j in $scope.cadastro.registro.producaoFormaList) {
+            igual = angular.equals(composicao, pegaComposicaoId($scope.cadastro.registro.producaoFormaList[j]));
+            if (igual) {
+                if (conteudo.id !== $scope.cadastro.registro.producaoFormaList[j].id) {
+                    toastr.error('Registro já cadastrado');
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        }
+        return true;
+    };
+    var editarItem = function (destino, item, selecaoId) {
+
+        // abrir a modal
+        var modalInstance = $uibModal.open({
+            animation: true,
+            template: '<ng-include src=\"\'indice-producao/indice-producao-form-modal.html\'\"></ng-include>',
+            controller: 'IndiceProducaoCtrl',
+            size: 'lg',
+            resolve: {
+                modalCadastro: function () {
+                    var cad = $scope.cadastroBase();
+                    cad.apoio.producaoUnidadeOrganizacional = false;
+                    cad.apoio.estadoInicial = 'form';
+
+                    //cad.apoio.unidadeOrganizacional = {id: $scope.navegador.selecao.item[$scope.PRODUCAO_UNID_ORG_ID], nome: $scope.navegador.selecao.item[$scope.PRODUCAO_UNID_ORG_NOME], sigla: $scope.navegador.selecao.item[$scope.PRODUCAO_UNID_ORG_SIGLA]};
+                    cad.apoio.porPropriedadeRural = true;
+
+                    return cad;
+                }
+            }
+        });
+        // processar retorno da modal
+        modalInstance.result.then(function (resultado) {
+            // processar o retorno positivo da modal
+            var pessoa = null;
+            if (resultado.selecao.tipo === 'U') {
+                pessoa = {
+                    id: resultado.selecao.item[0], 
+                    nome: resultado.selecao.item[1], 
+                    pessoaTipo: resultado.selecao.item[3],
+                };
+                $scope.preparaClassePessoa(pessoa);
+                $scope.cadastro.registro.publicoAlvo = 
+                    {
+                        id: resultado.selecao.item[10], 
+                        pessoa: pessoa,
+                    };
+            } else {
+                pessoa = {
+                    id: resultado.selecao.items[0][0], 
+                    nome: resultado.selecao.items[0][1], 
+                    pessoaTipo: resultado.selecao.items[0][3],
+                };
+                $scope.preparaClassePessoa(pessoa);
+                $scope.cadastro.registro.publicoAlvo = 
+                    {
+                        id: resultado.selecao.items[0][10], 
+                        pessoa: pessoa,
+                    };
+            }
+        }, function () {
+            // processar o retorno negativo da modal
+            $log.info('Modal dismissed at: ' + new Date());
+        });
     };
 
     $scope.incluir = function() {
         var item = {};
-        mensagemSrv.confirmacao(true, "indice-producao/form.html", null, item, null, null).then(function (conteudo) {
-
-        });
+        editarItem(null, item);
     };
     $scope.editar = function() {
+        var item = null;
+        var i, j;
+        if ($scope.producaoFormaNvg.selecao.tipo === 'U' && $scope.producaoFormaNvg.selecao.item) {
+            item = angular.copy($scope.producaoFormaNvg.selecao.item);
+            editarItem($scope.producaoFormaNvg.selecao.item, item);
+        } else if ($scope.producaoFormaNvg.selecao.items && $scope.producaoFormaNvg.selecao.items.length) {
+            for (i in $scope.producaoFormaNvg.selecao.items) {
+                for (j in $scope.cadastro.registro.producaoFormaList) {
+                    if (angular.equals($scope.producaoFormaNvg.selecao.items[i], $scope.cadastro.registro.producaoFormaList[j])) {
+                        item = angular.copy($scope.cadastro.registro.producaoFormaList[j]);
+                        editarItem($scope.cadastro.registro.producaoFormaList[j], item, i);
+                        break;
+                    }
+                }
+            }
+        }
     };
     $scope.excluir = function() {
         mensagemSrv.confirmacao(false, 'Confirme a exclusão').then(function (conteudo) {
@@ -190,7 +294,12 @@ angular.module(pNmModulo).controller(pNmController,
             };
             conteudo.cadastro.filtro.formaProducaoValorList = [];
             captarFormaProducaoValorList(conteudo.cadastro.apoio.bemClassificacaoList, conteudo.cadastro.filtro.formaProducaoValorList);
-            IndiceProducaoSrv.filtrar(conteudo.cadastro.filtro).success(function(resposta) {
+
+            conteudo.cadastro.filtro.propriedadeRural = {id: $scope.cadastro.registro.id};
+            conteudo.cadastro.filtro.propriedadeRural = {id: 3};
+
+
+            IndiceProducaoSrv.filtrarProducaoPorPropriedadeRural(conteudo.cadastro.filtro).success(function(resposta) {
                 if (resposta.mensagem === 'OK') {
                     $scope.cadastro.registro.indiceProducaoList = resposta.resultado;
                     init();
@@ -219,6 +328,52 @@ angular.module(pNmModulo).controller(pNmController,
     // inicio dos watches
 
     // fim dos watches
+
+    $scope.PRODUCAO_ID = 0;
+    $scope.PRODUCAO_ANO = 1;
+    $scope.PRODUCAO_BEM_ID = 2;
+    $scope.PRODUCAO_BEM_NOME = 3;
+    $scope.PRODUCAO_BEM_CLASSIFICACAO = 4;
+    $scope.PRODUCAO_UNIDADE_MEDIDA = 5;
+    $scope.PRODUCAO_FORMULA = 6;
+    $scope.PRODUCAO_NOME_ITEM_A = 7;
+    $scope.PRODUCAO_NOME_ITEM_B = 8;
+    $scope.PRODUCAO_NOME_ITEM_C = 9;
+    $scope.PRODUCAO_UNID_ORG_ID = 10;
+    $scope.PRODUCAO_UNID_ORG_NOME = 11;
+    $scope.PRODUCAO_UNID_ORG_SIGLA = 12;
+    $scope.PRODUCAO_PUBLICO_ALVO_ID = 13;
+    $scope.PRODUCAO_PUBLICO_ALVO_NOME = 14;
+    $scope.PRODUCAO_PROPRIEDADE_RURAL_ID = 15;
+    $scope.PRODUCAO_PROPRIEDADE_RURAL_NOME = 16;
+    $scope.PRODUCAO_COMUNIDADE_ID = 17;
+    $scope.PRODUCAO_COMUNIDADE_NOME = 18;
+    $scope.PRODUCAO_FORMA_LIST = 19;
+        $scope.FORMA_COMPOSICAO_LIST = 0;
+            $scope.COMPOSICAO_FORMA_PRODUCAO_VALOR_ID = 0;
+            $scope.COMPOSICAO_FORMA_PRODUCAO_VALOR_ITEM_NOME = 1;
+            $scope.COMPOSICAO_FORMA_PRODUCAO_VALOR_NOME = 2;
+            $scope.COMPOSICAO_ORDEM = 3;
+        $scope.FORMA_VALOR_ITEM_A = 1;
+        $scope.FORMA_VALOR_ITEM_B = 2;
+        $scope.FORMA_VALOR_ITEM_C = 3;
+        $scope.FORMA_VOLUME = 4;
+        $scope.FORMA_VLR_UNIT = 5;
+        $scope.FORMA_VLR_TOTAL = 6;
+        $scope.FORMA_QTD_PRODUTORES = 7;
+        $scope.FORMA_DATA_CONFIRMACAO = 8;
+        $scope.FORMA_INCLUSAO_NOME = 9;
+        $scope.FORMA_INCLUSAO_DATA = 10;
+        $scope.FORMA_ALTERACAO_NOME = 11;
+        $scope.FORMA_ALTERACAO_DATA = 12;
+        $scope.FORMA_NOME_CALCULO = 13;
+
+    $scope.PRODUCAO_INCLUSAO_NOME = 20;
+    $scope.PRODUCAO_INCLUSAO_DATA = 21;
+    $scope.PRODUCAO_ALTERACAO_NOME = 22;
+    $scope.PRODUCAO_ALTERACAO_DATA = 23;
+    $scope.PRODUCAO_PRODUTOR_LIST = 24;
+
 
 } // fim função
 ]);

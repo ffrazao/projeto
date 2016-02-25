@@ -60,6 +60,16 @@ public class IndiceProducaoRest {
 		}
 	}
 
+	@RequestMapping(value = "/filtro-producao-propriedade-rural", method = RequestMethod.POST)
+	@Transactional(readOnly = true)
+	public Resposta filtroProducaoPropriedadeRural(@RequestBody IndiceProducaoCadFiltroDto filtro, Principal usuario) {
+		try {
+			return new Resposta(facadeBo.indiceProducaoFiltroProducaoPropriedadeRural(usuario, filtro).getResposta());
+		} catch (Exception e) {
+			return new Resposta(e);
+		}
+	}
+
 	@RequestMapping(value = "/incluir", method = RequestMethod.POST)
 	@Transactional
 	public Resposta incluir(@RequestBody Producao producao, Principal usuario) {

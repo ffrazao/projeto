@@ -21,8 +21,8 @@ import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoForma;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoFormaComposicao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.UnidadeMedida;
 
-@Service("IndiceProducaoFiltrarCmd")
-public class FiltrarCmd extends _Comando {
+@Service("IndiceProducaoFiltrarProducaoPropriedadeRuralCmd")
+public class FiltrarProducaoPropriedadeRuralCmd extends _Comando {
 
 	@Autowired
 	private ProducaoDao dao;
@@ -39,119 +39,82 @@ public class FiltrarCmd extends _Comando {
 		producaoList = (List<Producao>) dao.filtrar(filtro);
 
 		if (producaoList != null) {
-			// fetch no resultado
-			if (filtro.getId() != null) {
-				if (producaoList != null && producaoList.size() == 1) {
-					// producaoList = new ArrayList<Producao>();
-					// result.add(fetchProdutor(result.get(0)));
-				}
-			} else {
-
-				// contabilizar a producao
-				for (Producao producao : producaoList) {
-					List<Object> resultProdutor = null;
-
-					Map<String, Object> bemClassificacaoList = utilDao.ipaBemClassificacaoDetalhes(producao.getBem().getBemClassificacao());
-
-					ProducaoCalculo calculoProducaoTotal = new ProducaoCalculo(bemClassificacaoList, "Estimada");
-					ProducaoCalculo calculoProducaoProdutoresEsperada = new ProducaoCalculo(bemClassificacaoList, "Calculada");
-					ProducaoCalculo calculoProducaoProdutoresConfirmada = new ProducaoCalculo(bemClassificacaoList, "Confirmada");
-
-					// contabilizar os produtores da producao
-					List<Producao> produtorProducaoList = dao.findByAnoAndBemAndPropriedadeRuralComunidadeUnidadeOrganizacional(producao.getAno(), producao.getBem(), producao.getUnidadeOrganizacional());
-					// TODO utilizar o filtro na producao dos produtores
-					
-					if (produtorProducaoList != null) {
-
-						// looping pelos produtores cadastrados
-						for (Producao produtorProducao : produtorProducaoList) {
-							if (!CollectionUtils.isEmpty(filtro.getComunidadeList())) {
-								boolean continuar = false;
-								for (Comunidade comunidade: filtro.getComunidadeList()) {
-									if (comunidade.getId().equals(produtorProducao.getPropriedadeRural().getComunidade().getId())) {
-										continuar = true;
-										break;
-									}
-								}
-								if (!continuar) {
-									continue;
-								}
-							}
-
-							if (produtorProducao.getProducaoFormaList() != null) {
-								ProducaoCalculo calculoProdutorEsperada = new ProducaoCalculo(bemClassificacaoList, "Estimada");
-								ProducaoCalculo calculoProdutorConfirmada = new ProducaoCalculo(bemClassificacaoList, "Confirmada");
-								for (ProducaoForma producaoForma : produtorProducao.getProducaoFormaList()) {									
-									String composicao = ProducaoCalculo.getComposicao(producaoForma);
-									Integer publicoAlvoId = produtorProducao.getPublicoAlvo().getId();
-									
-									// verificar se há filtro pela forma de producao
-									if (!CollectionUtils.isEmpty(filtro.getFormaProducaoValorList())) {
-										boolean continuar = false;
-										fora: for (FormaProducaoValor formaProducaoValor: filtro.getFormaProducaoValorList()) {
-											for (String comp: composicao.split(",")) {
-												if (Integer.valueOf(comp.trim()).equals(formaProducaoValor.getId())) {
-													continuar = true;
-													break fora;
-												}
-											}
-										}
-										if (!continuar) {
-											continue;
-										}
-									}									
-
-									// acumular os totais do produtor
-									calculoProducaoProdutoresEsperada.acumulaItem(composicao, producaoForma, publicoAlvoId, false);
-									calculoProducaoProdutoresConfirmada.acumulaItem(composicao, producaoForma, publicoAlvoId, true);
-
-									// acumular os totais da producao
-									calculoProdutorEsperada.acumulaItem("", producaoForma, publicoAlvoId, false);
-									calculoProdutorConfirmada.acumulaItem("", producaoForma, publicoAlvoId, true);
-								}
-								if (resultProdutor == null) {
-									resultProdutor = new ArrayList<Object>();
-								}
-								resultProdutor.add(fetch(filtro, produtorProducao, calculoProdutorEsperada, calculoProdutorConfirmada));
-							}
-						}
-					}
-
-					// calcular a produção estimada informada
-					for (ProducaoForma producaoForma : producao.getProducaoFormaList()) {
-						String composicao = ProducaoCalculo.getComposicao(producaoForma);
-						// verificar se há filtro pela forma de producao
-						if (!CollectionUtils.isEmpty(filtro.getFormaProducaoValorList())) {
-							boolean continuar = false;
-							fora: for (FormaProducaoValor formaProducaoValor: filtro.getFormaProducaoValorList()) {
-								for (String comp: composicao.split(",")) {
-									if (Integer.valueOf(comp.trim()).equals(formaProducaoValor.getId())) {
-										continuar = true;
-										break fora;
-									}
-								}
-							}
-							if (!continuar) {
-								continue;
-							}
-						}
-						calculoProducaoTotal.acumulaItem("", producaoForma, null, false);
-					}
-
-					calculoProducaoProdutoresEsperada.totalizar();
-
-					calculoProducaoProdutoresConfirmada.totalizar();
-
-					if (result == null) {
-						result = new ArrayList<Object>();
-					}
-					result.add(fetch(filtro, producao, calculoProducaoProdutoresEsperada, calculoProducaoProdutoresConfirmada, calculoProducaoTotal, resultProdutor));
-				}
-			}
+			// contabilizar a producao
+			result = processaProducao(filtro, producaoList);
 		}
 
 		contexto.setResposta(result);
 		return false;
+	}
+
+	private List<Object> processaProducao(IndiceProducaoCadFiltroDto filtro, List<Producao> lista) {
+		List<Object> result = null;
+		
+		Map<String, Object> bemClassificacaoList = null;
+		ProducaoCalculo calculoProducaoProdutoresEsperada = null;
+		ProducaoCalculo calculoProducaoProdutoresConfirmada = null;
+
+		Integer bemId = null;
+
+		for (Producao produtorProducao : lista) {
+			if (bemId != produtorProducao.getBem().getId()) {
+				bemClassificacaoList = utilDao.ipaBemClassificacaoDetalhes(produtorProducao.getBem().getBemClassificacao());
+				calculoProducaoProdutoresEsperada = new ProducaoCalculo(bemClassificacaoList, "Calculada");
+				calculoProducaoProdutoresConfirmada = new ProducaoCalculo(bemClassificacaoList, "Confirmada");
+				bemId = produtorProducao.getBem().getId();
+			}
+			if (!CollectionUtils.isEmpty(filtro.getComunidadeList())) {
+				boolean continuar = false;
+				for (Comunidade comunidade : filtro.getComunidadeList()) {
+					if (comunidade.getId().equals(produtorProducao.getPropriedadeRural().getComunidade().getId())) {
+						continuar = true;
+						break;
+					}
+				}
+				if (!continuar) {
+					continue;
+				}
+			}
+
+			if (produtorProducao.getProducaoFormaList() != null) {
+				ProducaoCalculo calculoProdutorEsperada = new ProducaoCalculo(bemClassificacaoList, "Estimada");
+				ProducaoCalculo calculoProdutorConfirmada = new ProducaoCalculo(bemClassificacaoList, "Confirmada");
+				for (ProducaoForma producaoForma : produtorProducao.getProducaoFormaList()) {
+					String composicao = ProducaoCalculo.getComposicao(producaoForma);
+					Integer publicoAlvoId = produtorProducao.getPublicoAlvo().getId();
+
+					// verificar se há filtro pela forma de
+					// producao
+					if (!CollectionUtils.isEmpty(filtro.getFormaProducaoValorList())) {
+						boolean continuar = false;
+						fora: for (FormaProducaoValor formaProducaoValor : filtro.getFormaProducaoValorList()) {
+							for (String comp : composicao.split(",")) {
+								if (Integer.valueOf(comp.trim()).equals(formaProducaoValor.getId())) {
+									continuar = true;
+									break fora;
+								}
+							}
+						}
+						if (!continuar) {
+							continue;
+						}
+					}
+
+					// acumular os totais do produtor
+					calculoProducaoProdutoresEsperada.acumulaItem(composicao, producaoForma, publicoAlvoId, false);
+					calculoProducaoProdutoresConfirmada.acumulaItem(composicao, producaoForma, publicoAlvoId, true);
+
+					// acumular os totais da producao
+					calculoProdutorEsperada.acumulaItem("", producaoForma, publicoAlvoId, false);
+					calculoProdutorConfirmada.acumulaItem("", producaoForma, publicoAlvoId, true);
+				}
+				if (result == null) {
+					result = new ArrayList<Object>();
+				}
+				result.add(fetch(filtro, produtorProducao, calculoProdutorEsperada, calculoProdutorConfirmada));
+			}
+		}
+		return result;
 	}
 
 	private List<Object> fetch(IndiceProducaoCadFiltroDto filtro, Producao producao, ProducaoCalculo calculoProducaoEsperada, ProducaoCalculo calculoProducaoConfirmada) {
@@ -250,12 +213,12 @@ public class FiltrarCmd extends _Comando {
 			for (ProducaoForma producaoForma : producaoFormaList) {
 				registro = fetchProducaoForma(producaoForma);
 				String composicao = ProducaoCalculo.getComposicao(producaoForma);
-				
+
 				// verificar se há filtro pela forma de producao
 				if (!CollectionUtils.isEmpty(filtro.getFormaProducaoValorList())) {
 					boolean continuar = false;
-					fora: for (FormaProducaoValor formaProducaoValor: filtro.getFormaProducaoValorList()) {
-						for (String comp: composicao.split(",")) {
+					fora: for (FormaProducaoValor formaProducaoValor : filtro.getFormaProducaoValorList()) {
+						for (String comp : composicao.split(",")) {
 							if (Integer.valueOf(comp.trim()).equals(formaProducaoValor.getId())) {
 								continuar = true;
 								break fora;

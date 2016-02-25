@@ -97,7 +97,7 @@ angular.module(pNmModulo).controller(pNmController,
             '                </div>' +
             '            </div>' +
             '        </div>';
-        if ($scope.cadastro.registro.unidadeOrganizacional) {
+        if ($scope.cadastro.registro.unidadeOrganizacional && $scope.cadastro.registro.unidadeOrganizacional.id && !$scope.modalCadastro) {
             form +=
             '        <div class="row">' +
             '            <div class="col-md-3 text-right">' +

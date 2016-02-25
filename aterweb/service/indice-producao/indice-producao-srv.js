@@ -90,6 +90,10 @@ angular.module(pNmModulo).factory(pNmFactory,
             filtrarPropriedadeRuralPorPublicoAlvo : function (filtro) {
                 return PropriedadeRuralSrv.filtrar(filtro);
             },
+            filtrarProducaoPorPropriedadeRural : function (filtro) {
+                SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
+                return $http.post(this.endereco + '/filtro-producao-propriedade-rural', filtro);
+            },
         };
         return IndiceProducaoSrv;
     }
