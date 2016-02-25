@@ -1,0 +1,15 @@
+
+==> Pais, UF, Municipio, Cidade,
+    UnidadeOrganizacional, Comunidade
+ 
+
+==> Assentamentos ASSOB e ASBRA, vao pra dentro do respectivo escritório marcado na comunidade se é ou não assentamento
+
+==> As seguintes comuninidades estão repetidas tanto no banco do ASBRA e no ASPIP
+    . Assentamento Colônia 1 e Assentamento Colônia 
+    Retirei restrição da unique nome+cidade, 
+    Verificar na COPER
+    
+==> Carga geral de todos os beneficiarios cadastrados, a correção de possívis inconsistências se dará aopós a carga
+
+

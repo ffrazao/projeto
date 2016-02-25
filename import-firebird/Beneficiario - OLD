@@ -1,0 +1,134 @@
+/*						
+
+				//cadastro básico nome e cpf
+				mysql = "call sisater.sp_cargaPessoa( "+STR( Integer.toString(id)  )+", \""+STR(rs.getString("BFNOME"))+"\", "+dat+", \""+STR(rs.getString("BFAPELIDO"))+"\", \""+
+												  	    STR(rs.getString("BFCPF"))+"\", \""+STR(rs.getString("BFGENERO"))+"\" "+" )";
+
+				System.out.println( mysql.toString() + " ; " );
+				PreparedStatement psMy = my.prepareStatement(mysql.toString()); psMy.execute() ;
+				
+				
+				// vincula produtor à comunidade
+				mysql = "call sisater.sp_cargaVincula( "+STR( Integer.toString(id)  )+", \""+esc.getAterwrbid(i)+"\", \""+ Integer.toString(com)  +"\" "+" )";
+				System.out.println( mysql.toString() + " ; " );
+				PreparedStatement psMy0 = my.prepareStatement(mysql.toString()); psMy0.execute() ;
+
+				
+				
+				// Cadastra documentos
+				mysql = "call sisater.sp_cargaDocumentos( "+STR( Integer.toString(id)  )+", \""+STR(rs.getString("BFINSCEST"))+"\", \""+ 
+						                                    STR(rs.getString("BFIDENR"))+"\", \""+STR(rs.getString("BFIDEORG")) +"\", \""+ STR(rs.getString("BFIDEEXP"))+"\", \""+
+						                                    STR(rs.getString("BFDAPNR")) +"\", \""+ STR(rs.getString("BFDAPOBS"))+"\", \""+
+						                                    STR(rs.getString("BFNIS"))+"\", \""+STR(rs.getString("BFCARTEIRADT")) +"\" "+
+						                            " )";
+				System.out.println( mysql.toString() + " ; " );
+				PreparedStatement psMy2 = my.prepareStatement(mysql.toString()); psMy2.execute() ;
+
+				// Cadastra Classificacao
+				mysql = "call sisater.sp_cargaClassificacao( "+ STR( Integer.toString(id)  )+", \""+STR(rs.getString("STATUS"))+"\", \""+
+                                                                STR(rs.getString("BFCATEGORIA"))+"\", \""+STR(rs.getString("BFORGANIZA"))+"\", \""+STR(rs.getString("BFSEGMENTO")) +"\", \""+
+				                                                STR(rs.getString("BFENTID"))+"\", \""+STR(rs.getString("BFUTILIZA"))+"\", \""+ 
+                                                                STR(rs.getString("BFPROFISSAO"))+"\", \""+STR(rs.getString("BFINS")) +"\", \""+STR(rs.getString("BFCIVIL")) +"\", \""+
+							                                    STR(rs.getString("SETOR"))+"\", \""+STR(rs.getString("SETOR2")) +"\" "+
+						                               " )";
+				System.out.println( mysql.toString() + " ; " );
+				PreparedStatement psMy3 = my.prepareStatement(mysql.toString()); psMy3.execute() ;
+				
+				// Cadastra Beneficios sociais
+				mysql = "call sisater.sp_cargaBeneficio( "+ STR( Integer.toString(id)  )+", \""+ 
+                                                            STR(rs.getString("BENEFSOC1"))+"\", \""+STR(rs.getString("BENEFSOC2")) +"\", \""+
+							                                STR(rs.getString("BENEFSOC3"))+"\", \""+STR(rs.getString("BENEFSOC4")) +"\", \""+
+							                                STR(rs.getString("PEATEPA"))+"\", \""+STR(rs.getString("PEINCRA")) +"\", \""+ 
+							                                STR(rs.getString("PEBSM"))+"\", \""+STR(rs.getString("PESUSTENTABILIDADE")) +"\", \""+ 
+							                                STR(rs.getString("BFCOMPRAS")) +"\" "+
+						                         " )";
+				System.out.println( mysql.toString() + " ; " );				
+				PreparedStatement psMy4 = my.prepareStatement(mysql.toString()); psMy4.execute() ;
+				
+				// Cadastra Endereco
+				end = STR(rs.getString("BFENDERECO1"));
+				if( end!=null && end.trim().length()>0 ){
+					mysql = "call sisater.sp_cargaEndereco( "+ Integer.toString(id) +", 1, \""+ end +"\", \""+STR(rs.getString("BFCEP1")) +"\" )";
+					System.out.println( mysql.toString() + " ; " );				
+					PreparedStatement psMy5 = my.prepareStatement(mysql.toString()); psMy5.execute() ;
+				}
+				end = STR(rs.getString("BFENDERECO2"));
+				if( end!=null && end.trim().length()>0 ){
+					mysql = "call sisater.sp_cargaEndereco( "+ Integer.toString(id) +", 3, \""+ end +"\", \""+STR(rs.getString("BFCEP2")) +"\" )";
+					System.out.println( mysql.toString() + " ; " );				
+					PreparedStatement psMy6 = my.prepareStatement(mysql.toString()); psMy6.execute() ;
+				}
+
+
+				// Cadastra Telefone
+				end = STR(rs.getString("BFTELEF"));
+				if( end!=null && end.trim().length()>0 ){
+					mysql = "call sisater.sp_cargaTelefone( "+ Integer.toString(id) +", \"C\", \""+ end +"\"  )";
+					System.out.println( mysql.toString() + " ; " );				
+					PreparedStatement psMy7 = my.prepareStatement(mysql.toString()); psMy7.execute() ;
+				}
+				end = STR(rs.getString("BFCELULAR"));
+				if( end!=null && end.trim().length()>0 ){
+					mysql = "call sisater.sp_cargaTelefone( "+ Integer.toString(id) +", \"M\", \""+ end +"\"  )";
+					System.out.println( mysql.toString() + " ; " );				
+					PreparedStatement psMy8 = my.prepareStatement(mysql.toString()); psMy8.execute() ;
+				}
+				
+				// Cadastra email
+				end = STR(rs.getString("BFEMAIL"));
+				if( end!=null && end.trim().length()>0 ){
+					mysql = "call sisater.sp_cargaEmail( "+ Integer.toString(id) +", \"P\", \""+ end +"\"  )";
+					System.out.println( mysql.toString() + " ; " );				
+					PreparedStatement psMy9 = my.prepareStatement(mysql.toString()); psMy9.execute() ;
+				}
+				
+				// Cadastra Pais
+				mae = STR(rs.getString("BFMAE")); pai = STR(rs.getString("BFPAI")); 
+				if( ( pai!=null && pai.trim().length()>0 ) || ( mae!=null && mae.trim().length()>0 ) ){
+					mysql = "call sisater.sp_cargaPessoaPais( "+ Integer.toString(id) +", \""+ mae +"\", \""+ pai +"\"  )";
+					System.out.println( mysql.toString() + " ; " );				
+					PreparedStatement psMy01 = my.prepareStatement(mysql.toString()); psMy01.execute() ;
+				}
+				
+
+				idconj = Integer.parseInt(rs.getString("IDBEN"))+2000000000;
+				
+				if( STR(rs.getString("BFCONJUGENOM")) !="" ){
+					// Cadastra Classificacao
+					mysql = "call sisater.sp_cargaConjuge( "+ STR( Integer.toString(id)  )+", "+STR( Integer.toString(idconj)  )+", "+
+					                                          esc.getAterwrbid(i)+", "+ Integer.toString(com)  +", \""+STR(rs.getString("STATUS"))+"\", \""+
+											                  STR(rs.getString("BFCATEGORIA"))+"\", \""+STR(rs.getString("BFORGANIZA"))+"\", \""+STR(rs.getString("BFSEGMENTO")) +"\", \""+
+											                  STR(rs.getString("BFCONJUGENOM"))+"\", \""+STR(rs.getString("BFCONJDTNASC"))+"\", \""+STR(rs.getString("BFCONJAPELIDO")) +"\", \""+
+											                  STR(rs.getString("BFCONJUGECPF"))+"\", \""+STR(rs.getString("BFCONJUGEINR"))+"\", \""+STR(rs.getString("BFCONJUGEIOG")) +"\", \""+STR(rs.getString("BFCONJUGEIEX")) +"\", \""+
+					                                          STR(rs.getString("BFCONJGENERO"))+"\", \""+STR(rs.getString("BFCONJUGEMAE"))+"\", \""+STR(rs.getString("BFPROFISSAO"))+"\", \""+STR(rs.getString("BFINS"))  +"\" "+
+							                               " )";
+					System.out.println( mysql.toString() + " ; " );				
+					PreparedStatement psMy10 = my.prepareStatement(mysql.toString()); psMy10.execute() ;
+				}
+				
+				// Dados Financeiros
+				if( ( STRFloat(rs.getString("BFFONT1R")) != "0.0" )  || ( STRFloat(rs.getString("BFFONT2R")) != "0.0" ) ||
+				    ( STRFloat(rs.getString("BFFONT3R")) != "0.0" )  || ( STRFloat(rs.getString("BFFONTTOTR")) != "0.0" ) ||
+				    ( STRFloat(rs.getString("BFPCTER")) != "0.0" )   || 
+				    ( STRFloat(rs.getString("BFPCBEN")) != "0.0" )   ||
+				    ( STRFloat(rs.getString("BFPCEQP")) != "0.0" )   || ( STRFloat(rs.getString("BFPCSEM")) != "0.0" ) ||
+				    ( STRFloat(rs.getString("BFPCOUT")) != "0.0" )   || ( STRFloat(rs.getString("BFPCTOT")) != "0.0" ) ||
+				    ( STRFloat(rs.getString("BFEMPPERM")) != "0.0" ) || ( STRFloat(rs.getString("BFEMPEVEN")) != "0.0" ) ||
+				    ( STRFloat(rs.getString("BFEMPSALARIO")) != "0.0" ) ){
+				
+					mysql = "call sisater.sp_cargaFinanceiro( "+    STR( Integer.toString(id) )+", \""+ 
+																	STRFloat(rs.getString("BFFONT1R"))+"\", \""+STRFloat(rs.getString("BFFONT2R")) +"\", \""+
+																	STRFloat(rs.getString("BFFONT3R"))+"\", \""+STRFloat(rs.getString("BFFONTTOTR")) +"\", \""+
+																	STRFloat(rs.getString("BFPCTER"))+"\", \""+STRFloat(rs.getString("BFPCBEN")) +"\", \""+
+																	STRFloat(rs.getString("BFPCEQP"))+"\", \""+STRFloat(rs.getString("BFPCSEM")) +"\", \""+
+																	STRFloat(rs.getString("BFPCOUT"))+"\", \""+STRFloat(rs.getString("BFPCDIV")) +"\", \""+
+																	STRFloat(rs.getString("BFPCTOT"))+"\", \""+
+																	STRFloat(rs.getString("BFEMPPERM"))+"\", \""+STRFloat(rs.getString("BFEMPEVEN")) +"\", \""+
+																	STRFloat(rs.getString("BFEMPSALARIO")) +"\" "+
+	                        " )";
+					System.out.println( mysql.toString() + " ; " );				
+					PreparedStatement psMy11 = my.prepareStatement(mysql.toString()); psMy11.execute() ;
+				}
+				
+				
+				/*
