@@ -1,5 +1,5 @@
 /* jslint evil: true, browser: true, plusplus: true, loopfunc: true */
-/* global criarEstadosPadrao, removerCampo */ 
+/* global criarEstadosPadrao, removerCampo, isUndefOrNull */ 
 
 (function(pNmModulo, pNmController, pNmFormulario, pUrlModulo) {
     'use strict';
