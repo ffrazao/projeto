@@ -66,7 +66,7 @@ angular.module(pNmModulo).controller(pNmController,
         // abrir a modal
         var modalInstance = $uibModal.open({
             animation: true,
-            template: '<ng-include src=\"\'indice-producao/indice-producao-form-modal.html\'\"></ng-include>',
+            template: '<ng-include src=\"\'indice-producao/indice-producao-propriedade-form-modal.html\'\"></ng-include>',
             controller: 'IndiceProducaoCtrl',
             size: 'lg',
             resolve: {

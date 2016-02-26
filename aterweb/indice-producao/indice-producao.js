@@ -24,6 +24,15 @@
                 // Retorno da modal
                 $uibModalInstance.close({cadastro: angular.copy($scope.cadastro), selecao: angular.copy($scope.navegador.selecao)});
             };
+            $scope.modalSalvarOk = function() {
+                // Retorno da modal
+                if (!$scope.cadastro.registro.id) {
+                    $scope.confirmarIncluir($scope);
+                } else {
+                    $scope.confirmarEditar($scope);
+                }
+                //$uibModalInstance.close({cadastro: angular.copy($scope.cadastro), selecao: angular.copy($scope.navegador.selecao)});
+            };
             $scope.modalCancelar = function() {
                 // Cancelar a modal
                 $uibModalInstance.dismiss('cancel');

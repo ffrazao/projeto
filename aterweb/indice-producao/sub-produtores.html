@@ -41,7 +41,7 @@
                         <th>Produtor</th>
                         <th>Propriedade</th>
                         <th>Comunidade</th>
-                        <th>Ação</th>
+                        <th><span class="sr-only">Ação</span></th>
                     </tr> 
                 </thead>
                 <tbody>
@@ -59,7 +59,7 @@
                         </td>
                         <td><a ng-click="modalVerPropriedadeRural(item[PRODUCAO_PROPRIEDADE_RURAL_ID])">{{item[PRODUCAO_PROPRIEDADE_RURAL_NOME]}}</a></td>
                         <td>{{item[PRODUCAO_COMUNIDADE_NOME]}}</td>
-                        <td><button class="btn btn-primary btn-sm">Confirmar</button></td>
+                        <td><button class="btn btn-primary btn-sm sr-only">Confirmar</button></td>
                     </tr>
                     <tr ng-repeat-end  title="Cadastrado por: {{item[PRODUCAO_INCLUSAO_NOME]}} em {{item[PRODUCAO_INCLUSAO_DATA] | date: 'dd/MM/yyyy'}}, alterado por: {{item[PRODUCAO_ALTERACAO_NOME]}} em {{item[PRODUCAO_ALTERACAO_DATA] | date: 'dd/MM/yyyy'}}">
                         <td colspan="4">
