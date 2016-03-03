@@ -74,6 +74,9 @@ angular.module(pNmModulo).controller(pNmController,
                     var cad = $scope.cadastroBase();
                     cad.apoio.producaoUnidadeOrganizacional = false;
                     cad.apoio.estadoInicial = 'form';
+                    cad.apoio.unidadeOrganizacional = $scope.cadastro.registro.comunidade.unidadeOrganizacional;
+//                    cad.registro.propriedadeRural = $scope.cadastro.registro;
+                    cad.registro.propriedadeRural = {'id': $scope.cadastro.registro.id, 'nome': $scope.cadastro.registro.nome};
 
                     //cad.apoio.unidadeOrganizacional = {id: $scope.navegador.selecao.item[$scope.PRODUCAO_UNID_ORG_ID], nome: $scope.navegador.selecao.item[$scope.PRODUCAO_UNID_ORG_NOME], sigla: $scope.navegador.selecao.item[$scope.PRODUCAO_UNID_ORG_SIGLA]};
                     cad.apoio.porPropriedadeRural = true;
@@ -118,8 +121,7 @@ angular.module(pNmModulo).controller(pNmController,
     };
 
     $scope.incluir = function() {
-        var item = {};
-        editarItem(null, item);
+        editarItem();
     };
     $scope.editar = function() {
         var item = null;
@@ -296,7 +298,7 @@ angular.module(pNmModulo).controller(pNmController,
             captarFormaProducaoValorList(conteudo.cadastro.apoio.bemClassificacaoList, conteudo.cadastro.filtro.formaProducaoValorList);
 
             conteudo.cadastro.filtro.propriedadeRural = {id: $scope.cadastro.registro.id};
-            conteudo.cadastro.filtro.propriedadeRural = {id: 3};
+            conteudo.cadastro.apoio.unidadeOrganizacional = $scope.cadastro.registro.comunidade.unidadeOrganizacional;
 
 
             IndiceProducaoSrv.filtrarProducaoPorPropriedadeRural(conteudo.cadastro.filtro).success(function(resposta) {

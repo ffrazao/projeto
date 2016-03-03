@@ -485,6 +485,11 @@ angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 
         if (!scp.confirmar(scp)) {
             return;
         }
+
+        if (scp.confirmarIncluirAntes) {
+            scp.confirmarIncluirAntes(scp.cadastro);
+        }
+
         scp.servico.incluir(scp.cadastro.registro).success(function (resposta) {
             if (resposta.mensagem && resposta.mensagem === 'OK') {
                 scp.navegador.voltar(scp);
@@ -513,6 +518,11 @@ angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 
         if (!scp.confirmar(scp)) {
             return;
         }
+
+        if (scp.confirmarEditarAntes) {
+            scp.confirmarEditarAntes(scp.cadastro);
+        }
+
         // inserir os registros marcados para exclusao
         var registro = $rootScope.pegarRegistroMarcadoExclusao(scp);
 

@@ -13,7 +13,7 @@
     </div>
     <div class="form-group col-md-4">
         <label class="control-label">Comunidade</label>
-        <select class="form-control" id="comunidade" name="comunidade" ng-model="cadastro.registro.comunidade.id" ng-options="item.id as item.nome for item in cadastro.apoio.comunidadeList" required="true">
+        <select class="form-control" id="comunidade" name="comunidade" ng-model="cadastro.registro.comunidade" ng-options="item as item.nome for item in cadastro.apoio.comunidadeList track by item.id" required="true">
         </select>
         <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.comunidade.$error.required">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -41,24 +41,36 @@
     </div>
     <div class="form-group col-md-6">
         <label class="control-label">Mapa</label>
-        /{{maps}}/
-        <div id="map_canvas">
+        <div id="map_canvas" ng-controller="MapaCtrl">
+            /{{markers}}/
+
+            <script type="text/ng-template" id="marcarPontoPrincipal.tpl.html">
+                <button class="btn btn-primary btn-sm" ng-class="{'btn-warning': marcarPontoPrincipal}" ng-click="marcarPontoPrincipalClk()" ng-hide="markers.length || marcarArea">
+                    <span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span> Marcar o Ponto Principal {{marcarArea}}
+                </button>
+            </script>
+
+            <script type="text/ng-template" id="marcarArea.tpl.html">
+                <button class="btn btn-primary btn-sm" ng-class="{'btn-warning': marcarArea}" ng-click="marcarAreaClk()">
+                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Marcar a Área
+                </button>
+            </script>
+
             <ui-gmap-google-map 
                 center="map.center" 
                 zoom="map.zoom" 
                 draggable="true" 
                 options="options" 
                 bounds="map.bounds">
-                <ui-gmap-drawing-manager 
-                    options="drawingManagerOptions" 
-                    control="drawingManagerControl">
-                </ui-gmap-drawing-manager>
-                <ui-gmap-markers models="markers" coords="'self'" modelsbyref="false"/>
+
+                <ui-gmap-map-control template="marcarPontoPrincipal.tpl.html" position="top-right" index="-1" controller="MapaCtrl"></ui-gmap-map-control>
+                <ui-gmap-map-control template="marcarArea.tpl.html" position="top-right" index="-2" controller="MapaCtrl"></ui-gmap-map-control>
+
+                <ui-gmap-markers models="markers" coords="'self'" modelsbyref="false" dorebuildall="true">
+                    <ui-gmap-windows></ui-gmap-windows>
+                </ui-gmap-markers>
+
             </ui-gmap-google-map>
-            <div style="display:block;z-index:100;position:absolute;bottom:30px;left:3px;width:380px;height:38px;background:white;">
-                <label>Show drawing manager (via options)? <input type="checkbox" ng-model="drawingManagerOptions.drawingControl"/></label><br/>
-                <label>Allow marker and circle drawing modes (via control)? <input type="checkbox" ng-model="markersAndCircleFlag"/></label>
-            </div>
         </div>
     </div>
     <div class="form-group col-md-3">

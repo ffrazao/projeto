@@ -91,13 +91,15 @@
                     </div>
                     <div class="col-md-6" title="Unidade Organizacional">
                         <div class="form-group">
-                            <label class="control-label" for="unidadeOrganizacional" ng-click="cadastro.apoio.producaoUnidadeOrganizacional = !cadastro.apoio.producaoUnidadeOrganizacional">Unidade Organizacional</label>
+                            <label class="control-label" for="unidadeOrganizacional">Unidade Organizacional</label>
                             <div class="form-control" ng-if="!cadastro.apoio.producaoUnidadeOrganizacional && !modalCadastro">
                                 {{cadastro.apoio.unidadeOrganizacional.nome}}
                             </div>
                             <select id="unidadeOrganizacional" name="unidadeOrganizacional" class="form-control" ng-model="cadastro.registro.unidadeOrganizacional" ng-options="item as item.nome for item in cadastro.apoio.unidadeOrganizacionalList | orderBy:'nome' track by item.id" required="true" ng-if="cadastro.apoio.producaoUnidadeOrganizacional && !modalCadastro">
+                                <option value="">primeiro</option>
                             </select>
                             <select id="unidadeOrganizacional" name="unidadeOrganizacional" class="form-control" ng-model="cadastro.apoio.unidadeOrganizacional" ng-options="item as item.nome for item in cadastro.apoio.unidadeOrganizacionalList | orderBy:'nome' track by item.id" required="true" ng-if="modalCadastro" ng-disabled="cadastro.registro.propriedadeRural.id || cadastro.registro.publicoAlvo.id">
+                                <option value="">segundo</option>
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.unidadeOrganizacional.$error.required" ng-if="cadastro.apoio.producaoUnidadeOrganizacional">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -106,7 +108,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row" ng-show="(cadastro.apoio.bemClassificacao && !cadastro.apoio.producaoUnidadeOrganizacional) || (modalCadastro && cadastro.apoio.unidadeOrganizacional.id)" ng-if="cadastro.apoio.porProdutor">
+                <div class="row" ng-show="(cadastro.apoio.bemClassificacao && !cadastro.apoio.producaoUnidadeOrganizacional) || (modalCadastro && cadastro.apoio.bemClassificacao && cadastro.apoio.unidadeOrganizacional.id)" ng-if="cadastro.apoio.porProdutor">
                     <div class="col-md-6" title="Produtor" ng-if="!cadastro.apoio.producaoUnidadeOrganizacional">
                         <div class="form-group">
                             <label class="control-label" for="publicoAlvo" ng-click="cadastro.apoio.producaoUnidadeOrganizacional = !cadastro.apoio.producaoUnidadeOrganizacional">Produtor</label>
@@ -142,7 +144,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row" ng-show="(cadastro.apoio.bemClassificacao && !cadastro.apoio.producaoUnidadeOrganizacional) || (modalCadastro && cadastro.apoio.unidadeOrganizacional.id)" ng-if="cadastro.apoio.porPropriedadeRural">
+                <div class="row" ng-show="(cadastro.apoio.bemClassificacao && !cadastro.apoio.producaoUnidadeOrganizacional) || (modalCadastro && cadastro.apoio.bemClassificacao && cadastro.apoio.unidadeOrganizacional.id)" ng-if="cadastro.apoio.porPropriedadeRural">
                     <div class="col-md-6" title="Propriedade Rural" ng-if="!cadastro.apoio.producaoUnidadeOrganizacional">
                         <div class="form-group">
                             <label class="control-label" for="propriedadeRural">Propriedade Rural</label>

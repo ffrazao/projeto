@@ -14,9 +14,9 @@ angular.module(pNmModulo).config(['$stateProvider', function($stateProvider) {
 
 angular.module(pNmModulo).controller(pNmController,
     ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance',
-    'modalCadastro', 'UtilSrv', 'mensagemSrv', 'PropriedadeRuralSrv', 'EnderecoSrv', 'uiGmapGoogleMapApi', 
+    'modalCadastro', 'UtilSrv', 'mensagemSrv', 'PropriedadeRuralSrv', 'EnderecoSrv',
     function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance,
-        modalCadastro, UtilSrv, mensagemSrv, PropriedadeRuralSrv, EnderecoSrv, uiGmapGoogleMapApi) {
+        modalCadastro, UtilSrv, mensagemSrv, PropriedadeRuralSrv, EnderecoSrv) {
 
         // inicializacao
         $scope.crudInit($scope, $state, null, pNmFormulario, PropriedadeRuralSrv);
@@ -224,6 +224,22 @@ angular.module(pNmModulo).controller(pNmController,
             item.nome.trim().toLowerCase().latinize().indexOf($scope.cadastro.apoio.localFiltro.trim().toLowerCase().latinize()) === -1);
     };
 
+    var confirmarSalvarAntes  = function (cadastro) {
+        var i;
+        if (cadastro.registro.arquivoList) {
+            for (i in cadastro.registro.arquivoList) {
+                console.log(cadastro.registro.arquivoList[i].arquivo.dataUpload);
+            }
+        }
+    };
+
+    $scope.confirmarIncluirAntes = function (cadastro) {
+        confirmarSalvarAntes(cadastro);
+    };
+
+    $scope.confirmarEditarAntes = function (cadastro) {
+        confirmarSalvarAntes(cadastro);
+    };
 
     $scope.confirmarFiltrarAntes = function(filtro) {
         filtro.empresaList = [];
@@ -257,76 +273,43 @@ angular.module(pNmModulo).controller(pNmController,
     };
 
     // inicio dos watches
-    $scope.$watch('cadastro.registro.comunidade.id', function(newValue, oldValue) {
-        //$scope.tabs[2].visivel = angular.isObject($scope.cadastro.registro.comunidade) && $scope.cadastro.registro.comunidade.id > 0;
+    $scope.$watch('cadastro.registro.id + cadastro.registro.comunidade.id', function(newValue, oldValue) {
+        $scope.tabs[1].visivel = $scope.cadastro.registro.id > 0;
+        $scope.tabs[2].visivel = $scope.cadastro.registro.id > 0 && angular.isObject($scope.cadastro.registro.comunidade) && $scope.cadastro.registro.comunidade.id > 0;
     });
     // fim dos watches
 
+}]);
+
+angular.module(pNmModulo).controller('MapaCtrl',
+    ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance',
+    'modalCadastro', 'UtilSrv', 'mensagemSrv', 'PropriedadeRuralSrv', 'EnderecoSrv', 'uiGmapGoogleMapApi', 'uiGmapIsReady',
+    function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance,
+        modalCadastro, UtilSrv, mensagemSrv, PropriedadeRuralSrv, EnderecoSrv, uiGmapGoogleMapApi, uiGmapIsReady) {
+
+    /*var marker1 = {id: 1, latitude: -15.7399298, longitude: -47.940};
+    var marker2 = {id: 2, latitude: -15.7399298, longitude: -47.945};
+    var marker3 = {id: 3, latitude: -15.7399298, longitude: -47.946};*/
+    $scope.markers = [];
+    /*$scope.markers[0] = marker1;
+    $scope.markers[1] = marker2;
+    $scope.markers[2] = marker3;*/
+
+    $scope.map = {
+        center: {
+            latitude: -15.732687616157767,
+            longitude: -47.90378594955473
+        },
+        zoom: 15
+    };
+    $scope.options = {
+        scrollwheel: true
+    };
+
     uiGmapGoogleMapApi.then(function(maps) {
         //Trabalho com mapas
-        $scope.maps = maps;
-        $scope.map = {
-            center: {
-                latitude: -15.732687616157767,
-                longitude: -47.90378594955473
-            },
-            zoom: 15
-        };
 
-        var marker1 = {id: 1, latitude: -15.7699298, longitude: -47.40};
-        var marker2 = {id: 2, latitude: -15.7699298, longitude: -47.45};
-        var marker3 = {id: 3, latitude: -15.7699298, longitude: -47.46};
-        $scope.markers = [];
-        $scope.markers[0] = marker1;
-        $scope.markers[1] = marker2;
-        $scope.markers[2] = marker3;
-
-
-        $scope.options = {
-            scrollwheel: false
-        };
-        $scope.drawingManagerOptions = {
-//            drawingMode: maps.drawing.OverlayType.MARKER,
-            drawingMode: null,
-            drawingControl: true,
-            drawingControlOptions: {
-                position: maps.ControlPosition.TOP_CENTER,
-                drawingModes: [
-                    maps.drawing.OverlayType.MARKER,
-                    //maps.drawing.OverlayType.CIRCLE,
-                    maps.drawing.OverlayType.POLYGON,
-                    //maps.drawing.OverlayType.POLYLINE,
-                    //maps.drawing.OverlayType.RECTANGLE
-                ]
-            },
-            circleOptions: {
-                fillColor: '#ffff00',
-                fillOpacity: 1,
-                strokeWeight: 5,
-                clickable: false,
-                editable: true,
-                zIndex: 1
-            },
-            markerOptions: {
-                draggable: true,
-            },
-        };
-
-        $scope.markersAndCircleFlag = true;
-        $scope.drawingManagerControl = {};
-        $scope.$watch('markersAndCircleFlag', function() {
-            if (!$scope.drawingManagerControl.getDrawingManager) {
-                return;
-            }
-            var controlOptions = angular.copy($scope.drawingManagerOptions);
-            if (!$scope.markersAndCircleFlag) {
-                controlOptions.drawingControlOptions.drawingModes.shift();
-                controlOptions.drawingControlOptions.drawingModes.shift();
-            }
-            $scope.drawingManagerControl.getDrawingManager().setOptions(controlOptions);
-        });
-
-        google.maps.event.addListener($scope.map, 'click', function(event) {
+/*        google.maps.event.addListener($scope.map, 'click', function(event) {
             placeMarker(event.latLng);
         });
 
@@ -340,9 +323,65 @@ angular.module(pNmModulo).controller(pNmController,
                 '<br>Longitude: ' + location.lng()
             });
             infowindow.open($scope.map,marker);
-        }
+        }*/
+
+        uiGmapIsReady.promise(1).then(function(instances) {
+
+
+            instances.forEach(function(inst) {
+                maps.event.addListener(inst.map, 'click', function(event) {
+
+                    if (!$scope.marcarPontoPrincipal) {
+                        return;
+                    }
+
+                    var marker = new maps.Marker({
+                        position: event.latLng,
+                        map: inst.map,
+                        id: $scope.markers.length,
+                        draggable: true,
+                    });
+
+                    marker.addListener("dblclick", function() {
+                        for (var i in $scope.markers) {
+                            if ($scope.markers[i].id === marker.id) {
+                                $scope.markers.splice(i, 1);
+                            }
+                        }
+                        marker.setMap(null);
+                        $scope.$apply(function () {
+                            $scope.marcarPontoPrincipal = false;
+                        });
+                    });
+
+                    $scope.$apply(function () {
+                        $scope.markers.push({
+                            id: marker.id, 
+                            latitude: event.latLng.lat(), 
+                            longitude: event.latLng.lng(),
+                        });
+
+                        $scope.marcarPontoPrincipal = false;
+                    });
+
+                });
+            });
+        });
+
     });
 
+    $scope.marcarPontoPrincipal = false;
+    $scope.marcarPontoPrincipalClk = function () {
+        $scope.marcarPontoPrincipal = !$scope.marcarPontoPrincipal;
+        $scope.marcarArea = false;
+    };
+    $scope.marcarArea = false;
+    $scope.marcarAreaClk = function () {
+        $scope.marcarArea = !$scope.marcarArea;
+        $scope.marcarPontoPrincipal = false;
+    };
+
 }]);
+
 
 })('propriedadeRural', 'PropriedadeRuralCtrl', 'Cadastro de Propriedades Rurais', 'propriedade-rural');

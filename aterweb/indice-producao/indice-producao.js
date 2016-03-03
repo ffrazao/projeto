@@ -85,6 +85,14 @@
                 ];
                 $rootScope.abrir(scp);
             };
+            $scope.incluir = function(scp, modelo) {
+                if (scp.cadastro.apoio.porProdutor === true || scp.cadastro.apoio.porPropriedadeRural === true) {
+                    $rootScope.incluir(scp, $scope.cadastro.registro);
+                } else {
+                    $rootScope.incluir(scp, modelo);
+                }
+            };
+
             $scope.incluirDepois = function (objeto) {
                 var t = TokenStorage.token();
                 if (t && t.lotacaoAtual) {
@@ -93,8 +101,8 @@
                 if (isUndefOrNull($scope.cadastro.apoio.producaoUnidadeOrganizacional)) {
                     $scope.cadastro.apoio.producaoUnidadeOrganizacional = true;
                 }
-                delete $scope.cadastro.apoio.unidadeOrganizacional;
-                delete $scope.cadastro.apoio.porProdutor;
+                // delete $scope.cadastro.apoio.unidadeOrganizacional;
+                // delete $scope.cadastro.apoio.porProdutor;
             };
             $scope.confirmarIncluir = function(scp) {
                 if (!scp.confirmar(scp)) {
@@ -102,6 +110,10 @@
                 }
                 var reg = angular.copy(scp.cadastro.registro);
                 removerCampo(reg, ['@jsonId', 'formula', 'bemClassificacao']);
+
+                if (scp.cadastro.registro.publicoAlvo && scp.cadastro.registro.publicoAlvo.pessoa) {
+                    $scope.preparaClassePessoa(scp.cadastro.registro.publicoAlvo.pessoa);
+                }
 
                 // preparar composicao da forma de producao
                 scp.servico.incluir(reg).success(function (resposta) {
@@ -576,70 +588,52 @@
             });
 
             $scope.$watch('cadastro.registro.publicoAlvo.id', function(novo) {
-                if (!$scope.cadastro.apoio.unidadeOrganizacional) {
-                    return;
-                }
-                PropriedadeRuralSrv.filtrarPorPublicoAlvoUnidadeOrganizacionalComunidade({
-                    unidadeOrganizacionalList: [{id: $scope.cadastro.apoio.unidadeOrganizacional.id}],
-                    publicoAlvoList: [{id: $scope.cadastro.registro.publicoAlvo.id}],
-                }).success(function (resposta) {
-                    if (resposta && resposta.mensagem === "OK") {
-                        $scope.cadastro.apoio.propriedadeRuralList = [];
-                        for (var i in resposta.resultado) {
-                            $scope.cadastro.apoio.propriedadeRuralList.push({id: resposta.resultado[i][0], nome: resposta.resultado[i][1]});
-                        }                        
-                        if ($scope.cadastro.apoio.propriedadeRuralList.length === 1) {
-                            $scope.cadastro.registro.propriedadeRural = $scope.cadastro.apoio.propriedadeRuralList[0];
+
+                if ($scope.cadastro.apoio.porProdutor === true && $scope.cadastro.apoio.unidadeOrganizacional && $scope.cadastro.apoio.unidadeOrganizacional.id &&
+                    $scope.cadastro.registro.publicoAlvo && $scope.cadastro.registro.publicoAlvo.id) {
+
+                    PropriedadeRuralSrv.filtrarPorPublicoAlvoUnidadeOrganizacionalComunidade({
+                        unidadeOrganizacionalList: [{id: $scope.cadastro.apoio.unidadeOrganizacional.id}],
+                        publicoAlvoList: [{id: $scope.cadastro.registro.publicoAlvo.id}],
+                    }).success(function (resposta) {
+                        if (resposta && resposta.mensagem === "OK") {
+                            $scope.cadastro.apoio.propriedadeRuralList = [];
+                            for (var i in resposta.resultado) {
+                                $scope.cadastro.apoio.propriedadeRuralList.push({id: resposta.resultado[i][0], nome: resposta.resultado[i][1]});
+                            }
+                            if ($scope.cadastro.apoio.propriedadeRuralList.length === 1) {
+                                $scope.cadastro.registro.propriedadeRural = $scope.cadastro.apoio.propriedadeRuralList[0];
+                            }
                         }
-                    }
-                });
+                    });
+
+                }
             });
 
             $scope.$watch('cadastro.registro.propriedadeRural.id', function(novo) {
-                if (!$scope.cadastro.apoio.unidadeOrganizacional) {
-                    return;
-                }
-                PropriedadeRuralSrv.filtrarPorPublicoAlvoUnidadeOrganizacionalComunidade({
-                    unidadeOrganizacionalList: [{id: $scope.cadastro.apoio.unidadeOrganizacional.id}],
-                    propriedadeRuralList: [{id: $scope.cadastro.registro.propriedadeRural.id}],
-                }).success(function (resposta) {
-                    if (resposta && resposta.mensagem === "OK") {
-                        $scope.cadastro.apoio.publicoAlvoList = [];
-                        for (var i in resposta.resultado) {
-                            var pessoa = {id: resposta.resultado[i][0], pessoa: {nome: resposta.resultado[i][1], pessoaTipo: resposta.resultado[i][2]}};
-                            $scope.preparaClassePessoa(pessoa);
-                            $scope.cadastro.apoio.publicoAlvoList.push(pessoa);
-                        }                        
-                        if ($scope.cadastro.apoio.publicoAlvoList.length === 1) {
-                            $scope.cadastro.registro.publicoAlvo = $scope.cadastro.apoio.publicoAlvoList[0];
-                        }
-                    }
-                });
-            });
 
-            $scope.$watch('cadastro.apoio.unidadeOrganizacional.id', function(novo) {
-                //console.log($scope.cadastro.apoio.unidadeOrganizacional);
-                if (novo) {
-                    UtilSrv.dominio({ent: [
-                           'UnidadeOrganizacionalComunidade',
-                        ], 
-                        npk: 'unidadeOrganizacional.id', 
-                        vpk: novo, 
-                        fetchs: 'comunidade'}).success(function(resposta) {
+                if ($scope.cadastro.apoio.porPropriedadeRural === true && $scope.cadastro.apoio.unidadeOrganizacional && $scope.cadastro.apoio.unidadeOrganizacional.id &&
+                    $scope.cadastro.registro.propriedadeRural && $scope.cadastro.registro.propriedadeRural.id) {
+
+                    PropriedadeRuralSrv.filtrarPorPublicoAlvoUnidadeOrganizacionalComunidade({
+                        unidadeOrganizacionalList: [{id: $scope.cadastro.apoio.unidadeOrganizacional.id}],
+                        propriedadeRuralList: [{id: $scope.cadastro.registro.propriedadeRural.id}],
+                    }).success(function (resposta) {
                         if (resposta && resposta.mensagem === "OK") {
-                            if (!$scope.cadastro.apoio.comunidadeList) {
-                                $scope.cadastro.apoio.comunidadeList = [];
-                            } else {
-                                $scope.cadastro.apoio.comunidadeList.length = 0;
+                            $scope.cadastro.apoio.publicoAlvoList = [];
+                            for (var i in resposta.resultado) {
+                                var pessoa = {id: resposta.resultado[i][0], pessoa: {nome: resposta.resultado[i][1], pessoaTipo: resposta.resultado[i][2]}};
+                                $scope.preparaClassePessoa(pessoa);
+                                $scope.cadastro.apoio.publicoAlvoList.push(pessoa);
+                            }                        
+                            if ($scope.cadastro.apoio.publicoAlvoList.length === 1) {
+                                $scope.cadastro.registro.publicoAlvo = $scope.cadastro.apoio.publicoAlvoList[0];
                             }
-                            for (var i in resposta.resultado[0]) {
-                                $scope.cadastro.apoio.comunidadeList.push(resposta.resultado[0][i].comunidade);
-                            }
-                            removerCampo($scope.cadastro.apoio.comunidadeList, ['unidadeOrganizacional']);
                         }
                     });
                 }
             });
+
             // fim dos watches
 
             // quebra galho para funcionar a inclusao externa

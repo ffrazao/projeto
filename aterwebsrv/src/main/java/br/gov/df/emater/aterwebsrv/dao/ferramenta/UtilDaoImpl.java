@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FormulaProduto;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ItemNome;
@@ -43,6 +44,7 @@ public class UtilDaoImpl implements UtilDao {
 	 *            definição da ordem dos dados
 	 * @return a relação das entidades em formato JSon
 	 */
+	@SuppressWarnings("rawtypes")
 	@Override
 	public List<?> getDominio(String entidade, String nomeChavePrimaria, String valorChavePrimaria, String order) {
 		if (logger.isTraceEnabled()) {
@@ -73,6 +75,16 @@ public class UtilDaoImpl implements UtilDao {
 		}
 
 		List<?> result = query.getResultList();
+
+		if (result != null && result.get(0) != null) {
+			if (result.get(0) instanceof InfoBasica) {
+				List<Object> newResult = new ArrayList<Object>();
+				for (Object info : result) {
+					newResult.add(((InfoBasica) info).infoBasica());
+				}
+				result = newResult;
+			}
+		}
 
 		return result;
 	}

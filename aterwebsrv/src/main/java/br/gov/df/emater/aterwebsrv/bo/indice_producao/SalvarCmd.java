@@ -52,6 +52,14 @@ public class SalvarCmd extends _Comando {
 		}
 		result.setAlteracaoUsuario(getUsuario(contexto.getUsuario().getName()));
 		result.setBem(bemDao.findOne(result.getBem().getId()));
+		
+		if (result.getPublicoAlvo() != null && result.getPropriedadeRural() != null) {
+			result.setUnidadeOrganizacional(null);
+		} else if (result.getUnidadeOrganizacional() != null) {
+			result.setPublicoAlvo(null); 
+			result.setPropriedadeRural(null);
+		}
+		
 		try {
 			dao.save(result);
 		} catch (DataIntegrityViolationException e) {

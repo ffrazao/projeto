@@ -22,8 +22,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
-import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerMilisegundos;
-import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerMilisegundos;
+import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerDataHora;
+import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerDataHora;
 
 @Entity
 @Table(name = "arquivo", schema = EntidadeBase.PESSOA_SCHEMA)
@@ -34,8 +34,8 @@ public class Arquivo extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
-	@JsonSerialize(using = JsonSerializerMilisegundos.class)
-	@JsonDeserialize(using = JsonDeserializerMilisegundos.class)
+	@JsonSerialize(using = JsonSerializerDataHora.class)
+	@JsonDeserialize(using = JsonDeserializerDataHora.class)
 	@Column(name = "data_upload")
 	private Calendar dataUpload;
 

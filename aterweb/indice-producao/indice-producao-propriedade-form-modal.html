@@ -5,8 +5,7 @@
     <ng-include src="'indice-producao/form.html'"></ng-include>
 </div>
 <div class="modal-footer">
-	/{{frm.formulario.$error}}/
     <button class="btn btn-default" ng-click="incluir(scp)">Novo</button>
-    <button class="btn btn-primary" ng-click="modalSalvarOk()" ng-show="!frm.formulario.$error">Salvar</button>
+    <button class="btn btn-primary" ng-click="modalSalvarOk()" ng-hide="frm.formulario.$invalid">Salvar</button>
     <button class="btn btn-warning" ng-click="modalCancelar()">Fechar</button>
 </div>

@@ -163,6 +163,10 @@ public class SalvarCmd extends _Comando {
 					}
 				}
 			}
+			result.setPublicoAlvo(publicoAlvo);
+			//dao.flush();
+			//publicoAlvoDao.flush();
+			//publicoAlvoPropriedadeRuralDao.flush();
 		}
 
 		// salvar enderecos

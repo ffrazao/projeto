@@ -8,14 +8,18 @@ import org.springframework.stereotype.Service;
 import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
+import br.gov.df.emater.aterwebsrv.dao.ater.PropriedadeRuralArquivoDao;
 import br.gov.df.emater.aterwebsrv.dao.ater.PropriedadeRuralDao;
-import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoDao;
 import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoPropriedadeRuralDao;
+import br.gov.df.emater.aterwebsrv.dao.pessoa.ArquivoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.EnderecoDao;
 import br.gov.df.emater.aterwebsrv.modelo.ater.BaciaHidrografica;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
+import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRuralArquivo;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.CadastroAcao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.Arquivo;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Endereco;
 
 @Service("PropriedadeRuralSalvarCmd")
@@ -31,7 +35,10 @@ public class SalvarCmd extends _Comando {
 	private PublicoAlvoPropriedadeRuralDao publicoAlvoPropriedadeRuralDao;
 	
 	@Autowired
-	private PublicoAlvoDao publicoAlvoDao;
+	private PropriedadeRuralArquivoDao propriedadeRuralArquivoDao;
+	
+	@Autowired
+	private ArquivoDao arquivoDao;
 	
 	@Autowired
 	private EnderecoDao enderecoDao;
@@ -59,12 +66,46 @@ public class SalvarCmd extends _Comando {
 
 		dao.save(result);
 		
-		for (PublicoAlvoPropriedadeRural papr: result.getPublicoAlvoPropriedadeRuralList()) {
-			papr.setPropriedadeRural(result);
-			papr.setPublicoAlvo(publicoAlvoDao.findOneByPessoa(papr.getPublicoAlvo().getPessoa()));
-			publicoAlvoPropriedadeRuralDao.save(papr);
+		if (result.getPublicoAlvoPropriedadeRuralList() != null) {
+			for (PublicoAlvoPropriedadeRural papr: result.getPublicoAlvoPropriedadeRuralList()) {
+				papr.setPropriedadeRural(result);
+				//papr.setPublicoAlvo(publicoAlvoDao.findOneByPessoa(papr.getPublicoAlvo().getPessoa()));
+				publicoAlvoPropriedadeRuralDao.save(papr);
+			}
 		}
 
+		if (result.getArquivoList() != null) {
+			// tratar a exclusao de registros
+			for (PropriedadeRuralArquivo pessoaArquivo : result.getArquivoList()) {
+				if (CadastroAcao.E.equals(pessoaArquivo.getCadastroAcao())) {
+					propriedadeRuralArquivoDao.delete(pessoaArquivo);
+				}
+			}
+			// tratar a insersao de registros
+			for (PropriedadeRuralArquivo propriedadeRuralArquivo : result.getArquivoList()) {
+				if (!CadastroAcao.E.equals(propriedadeRuralArquivo.getCadastroAcao())) {
+					Arquivo arquivo = propriedadeRuralArquivo.getArquivo();
+					arquivo = arquivoDao.findByMd5(arquivo.getMd5());
+					if (arquivo != null) {
+						arquivo.setMd5(propriedadeRuralArquivo.getArquivo().getMd5());
+						arquivo.setNomeOriginal(propriedadeRuralArquivo.getArquivo().getNomeOriginal());
+						arquivo.setDataUpload(propriedadeRuralArquivo.getArquivo().getDataUpload());
+						arquivo.setExtensao(propriedadeRuralArquivo.getArquivo().getExtensao());
+						arquivo.setTamanho(propriedadeRuralArquivo.getArquivo().getTamanho());
+						arquivo.setTipo(propriedadeRuralArquivo.getArquivo().getTipo());
+					}
+					arquivo = arquivoDao.save(arquivo);
+					propriedadeRuralArquivo.setArquivo(arquivo);
+					propriedadeRuralArquivo.setPropriedadeRural(result);
+					
+					PropriedadeRuralArquivo propriedadeRuralArquivoSalvo = propriedadeRuralArquivoDao.findOneByPropriedadeRuralAndArquivo(result, arquivo);
+					if (propriedadeRuralArquivoSalvo != null) {
+						propriedadeRuralArquivo.setId(propriedadeRuralArquivoSalvo.getId());
+					}
+					propriedadeRuralArquivoDao.save(propriedadeRuralArquivo);
+				}
+			}
+		}
 		dao.flush();
 
 		contexto.setResposta(result.getId());

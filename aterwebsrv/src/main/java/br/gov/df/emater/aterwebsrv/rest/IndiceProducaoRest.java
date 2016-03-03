@@ -76,11 +76,11 @@ public class IndiceProducaoRest {
 		return salvar(producao, usuario);
 	}
 
-	@RequestMapping(value = "/novo", method = RequestMethod.GET)
+	@RequestMapping(value = "/novo", method = RequestMethod.POST)
 	@Transactional(readOnly = true)
-	public Resposta novo(@RequestParam(value = "id", required = false) Integer id, Principal usuario) {
+	public Resposta novo(@RequestBody Producao producao, Principal usuario) {
 		try {
-			return new Resposta(facadeBo.indiceProducaoNovo(usuario, id == null ? null : new Producao(id)).getResposta());
+			return new Resposta(facadeBo.indiceProducaoNovo(usuario, producao).getResposta());
 		} catch (Exception e) {
 			return new Resposta(e);
 		}

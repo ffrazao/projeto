@@ -18,6 +18,7 @@ import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.ater.Comunidade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.UnidadeOrganizacionalClassificacao;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 
 @Entity
@@ -47,10 +48,14 @@ public class UnidadeOrganizacional extends EntidadeBase implements _ChavePrimari
 	public UnidadeOrganizacional() {
 	}
 
-	public UnidadeOrganizacional(Integer id, String nome, String sigla) {
+	public UnidadeOrganizacional(Integer id, String nome, String sigla, PessoaJuridica pessoaJuridica) {
 		setId(id);
 		setNome(nome);
 		setSigla(sigla);
+		if (pessoaJuridica != null) {
+			Pessoa pessoa = pessoaJuridica.infoBasica();
+			setPessoaJuridica(pessoaJuridica == null ? null: (PessoaJuridica) pessoa);
+		}
 	}
 
 	public UnidadeOrganizacionalClassificacao getClassificacao() {
@@ -80,7 +85,7 @@ public class UnidadeOrganizacional extends EntidadeBase implements _ChavePrimari
 
 	@Override
 	public UnidadeOrganizacional infoBasica() {
-		return new UnidadeOrganizacional(this.id, this.nome, this.sigla);
+		return new UnidadeOrganizacional(this.id, this.nome, this.sigla, this.pessoaJuridica);
 	}
 
 	public void setClassificacao(UnidadeOrganizacionalClassificacao classificacao) {

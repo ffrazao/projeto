@@ -110,6 +110,7 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	@Enumerated(EnumType.STRING)
 	private PessoaTipo pessoaTipo;
 
+	
 	@OneToOne(mappedBy = "pessoa", fetch = FetchType.LAZY)
 	private PublicoAlvo publicoAlvo;
 
