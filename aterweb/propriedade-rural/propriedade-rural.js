@@ -14,9 +14,9 @@ angular.module(pNmModulo).config(['$stateProvider', function($stateProvider) {
 
 angular.module(pNmModulo).controller(pNmController,
     ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance',
-    'modalCadastro', 'UtilSrv', 'mensagemSrv', 'PropriedadeRuralSrv', 'EnderecoSrv',
+    'modalCadastro', 'UtilSrv', 'mensagemSrv', 'PropriedadeRuralSrv', 'EnderecoSrv', 'uiGmapGoogleMapApi', 
     function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance,
-        modalCadastro, UtilSrv, mensagemSrv, PropriedadeRuralSrv, EnderecoSrv) {
+        modalCadastro, UtilSrv, mensagemSrv, PropriedadeRuralSrv, EnderecoSrv, uiGmapGoogleMapApi) {
 
         // inicializacao
         $scope.crudInit($scope, $state, null, pNmFormulario, PropriedadeRuralSrv);
@@ -256,15 +256,92 @@ angular.module(pNmModulo).controller(pNmController,
         }
     };
 
-    //Trabalho com mapas
-    $scope.map = { center: { latitude: -15.732687616157767, longitude: -47.90378594955473 }, zoom: 15 };
-
     // inicio dos watches
     $scope.$watch('cadastro.registro.comunidade.id', function(newValue, oldValue) {
         //$scope.tabs[2].visivel = angular.isObject($scope.cadastro.registro.comunidade) && $scope.cadastro.registro.comunidade.id > 0;
     });
     // fim dos watches
 
+    uiGmapGoogleMapApi.then(function(maps) {
+        //Trabalho com mapas
+        $scope.maps = maps;
+        $scope.map = {
+            center: {
+                latitude: -15.732687616157767,
+                longitude: -47.90378594955473
+            },
+            zoom: 15
+        };
+
+        var marker1 = {id: 1, latitude: -15.7699298, longitude: -47.40};
+        var marker2 = {id: 2, latitude: -15.7699298, longitude: -47.45};
+        var marker3 = {id: 3, latitude: -15.7699298, longitude: -47.46};
+        $scope.markers = [];
+        $scope.markers[0] = marker1;
+        $scope.markers[1] = marker2;
+        $scope.markers[2] = marker3;
+
+
+        $scope.options = {
+            scrollwheel: false
+        };
+        $scope.drawingManagerOptions = {
+//            drawingMode: maps.drawing.OverlayType.MARKER,
+            drawingMode: null,
+            drawingControl: true,
+            drawingControlOptions: {
+                position: maps.ControlPosition.TOP_CENTER,
+                drawingModes: [
+                    maps.drawing.OverlayType.MARKER,
+                    //maps.drawing.OverlayType.CIRCLE,
+                    maps.drawing.OverlayType.POLYGON,
+                    //maps.drawing.OverlayType.POLYLINE,
+                    //maps.drawing.OverlayType.RECTANGLE
+                ]
+            },
+            circleOptions: {
+                fillColor: '#ffff00',
+                fillOpacity: 1,
+                strokeWeight: 5,
+                clickable: false,
+                editable: true,
+                zIndex: 1
+            },
+            markerOptions: {
+                draggable: true,
+            },
+        };
+
+        $scope.markersAndCircleFlag = true;
+        $scope.drawingManagerControl = {};
+        $scope.$watch('markersAndCircleFlag', function() {
+            if (!$scope.drawingManagerControl.getDrawingManager) {
+                return;
+            }
+            var controlOptions = angular.copy($scope.drawingManagerOptions);
+            if (!$scope.markersAndCircleFlag) {
+                controlOptions.drawingControlOptions.drawingModes.shift();
+                controlOptions.drawingControlOptions.drawingModes.shift();
+            }
+            $scope.drawingManagerControl.getDrawingManager().setOptions(controlOptions);
+        });
+
+        google.maps.event.addListener($scope.map, 'click', function(event) {
+            placeMarker(event.latLng);
+        });
+
+        function placeMarker(location) {
+            var marker = new google.maps.Marker({
+                position: location,
+                map: $scope.map,
+            });
+            var infowindow = new google.maps.InfoWindow({
+                content: 'Latitude: ' + location.lat() +
+                '<br>Longitude: ' + location.lng()
+            });
+            infowindow.open($scope.map,marker);
+        }
+    });
 
 }]);
 

@@ -41,7 +41,25 @@
     </div>
     <div class="form-group col-md-6">
         <label class="control-label">Mapa</label>
-        <ui-gmap-google-map center='map.center' zoom='map.zoom'></ui-gmap-google-map>
+        /{{maps}}/
+        <div id="map_canvas">
+            <ui-gmap-google-map 
+                center="map.center" 
+                zoom="map.zoom" 
+                draggable="true" 
+                options="options" 
+                bounds="map.bounds">
+                <ui-gmap-drawing-manager 
+                    options="drawingManagerOptions" 
+                    control="drawingManagerControl">
+                </ui-gmap-drawing-manager>
+                <ui-gmap-markers models="markers" coords="'self'" modelsbyref="false"/>
+            </ui-gmap-google-map>
+            <div style="display:block;z-index:100;position:absolute;bottom:30px;left:3px;width:380px;height:38px;background:white;">
+                <label>Show drawing manager (via options)? <input type="checkbox" ng-model="drawingManagerOptions.drawingControl"/></label><br/>
+                <label>Allow marker and circle drawing modes (via control)? <input type="checkbox" ng-model="markersAndCircleFlag"/></label>
+            </div>
+        </div>
     </div>
     <div class="form-group col-md-3">
         <label class="control-label">Roteiro de Acesso</label>
