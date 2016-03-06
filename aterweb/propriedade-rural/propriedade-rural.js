@@ -365,18 +365,6 @@ function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log
             draw: function() {},
         }, $scope.map);
 
-        $scope.drawingManagerOptions = {
-            drawingMode: google.maps.drawing.OverlayType.MARKER,
-            drawingControl: true,
-            drawingControlOptions: {
-                position: google.maps.ControlPosition.TOP_CENTER,
-                drawingModes: [
-                    google.maps.drawing.OverlayType.MARKER,
-                    google.maps.drawing.OverlayType.POLYGON,
-                ]
-            },
-        };
-
         var clear = function() {
             if ($scope.map.polys) {
                 $scope.map.polys.forEach(function(p) {
@@ -403,13 +391,13 @@ function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log
 
 //            $scope.drawingManagerControl = angular.extend({}, new maps.drawing.DrawingManager(), $scope.drawingManagerControl);
             $scope.drawingManagerControl = new maps.drawing.DrawingManager({
-                drawingMode: google.maps.drawing.OverlayType.MARKER,
+                drawingMode: maps.drawing.OverlayType.MARKER,
                 drawingControl: true,
                 drawingControlOptions: {
-                    position: google.maps.ControlPosition.TOP_CENTER,
+                    position: maps.ControlPosition.TOP_CENTER,
                     drawingModes: [
-                        google.maps.drawing.OverlayType.MARKER,
-                        google.maps.drawing.OverlayType.POLYGON,
+                        maps.drawing.OverlayType.MARKER,
+                        maps.drawing.OverlayType.POLYGON,
                     ]
                 }
             });
@@ -434,7 +422,7 @@ function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log
                 });
             });
 
-            var coords = [
+            /*var coords = [
                 {lat: $scope.map.center.lat() -0.001, lng: $scope.map.center.lng() -0.001},
                 {lat: $scope.map.center.lat() -0.001, lng: $scope.map.center.lng() +0.001},
                 {lat: $scope.map.center.lat() +0.001, lng: $scope.map.center.lng() +0.001},
@@ -488,7 +476,7 @@ function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log
                     });
                     $scope.marcarPontoPrincipal = false;
                 });
-            });
+            });*/
         }
     });
 }]);
