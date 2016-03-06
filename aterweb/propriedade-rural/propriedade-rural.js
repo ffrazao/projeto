@@ -279,97 +279,6 @@ angular.module(pNmModulo).controller(pNmController,
     });
     // fim dos watches
 
-}]);
-
-angular.module(pNmModulo).controller('MapaCtrl',
-    ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance',
-    'modalCadastro', 'UtilSrv', 'mensagemSrv', 'PropriedadeRuralSrv', 'EnderecoSrv', 'uiGmapGoogleMapApi', 'uiGmapIsReady',
-    function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance,
-        modalCadastro, UtilSrv, mensagemSrv, PropriedadeRuralSrv, EnderecoSrv, uiGmapGoogleMapApi, uiGmapIsReady) {
-
-    /*var marker1 = {id: 1, latitude: -15.7399298, longitude: -47.940};
-    var marker2 = {id: 2, latitude: -15.7399298, longitude: -47.945};
-    var marker3 = {id: 3, latitude: -15.7399298, longitude: -47.946};*/
-    $scope.markers = [];
-    /*$scope.markers[0] = marker1;
-    $scope.markers[1] = marker2;
-    $scope.markers[2] = marker3;*/
-
-    $scope.map = {
-        center: {
-            latitude: -15.732687616157767,
-            longitude: -47.90378594955473
-        },
-        zoom: 15
-    };
-    $scope.options = {
-        scrollwheel: true
-    };
-
-    uiGmapGoogleMapApi.then(function(maps) {
-        //Trabalho com mapas
-
-/*        google.maps.event.addListener($scope.map, 'click', function(event) {
-            placeMarker(event.latLng);
-        });
-
-        function placeMarker(location) {
-            var marker = new google.maps.Marker({
-                position: location,
-                map: $scope.map,
-            });
-            var infowindow = new google.maps.InfoWindow({
-                content: 'Latitude: ' + location.lat() +
-                '<br>Longitude: ' + location.lng()
-            });
-            infowindow.open($scope.map,marker);
-        }*/
-
-        uiGmapIsReady.promise(1).then(function(instances) {
-
-
-            instances.forEach(function(inst) {
-                maps.event.addListener(inst.map, 'click', function(event) {
-
-                    if (!$scope.marcarPontoPrincipal) {
-                        return;
-                    }
-
-                    var marker = new maps.Marker({
-                        position: event.latLng,
-                        map: inst.map,
-                        id: $scope.markers.length,
-                        draggable: true,
-                    });
-
-                    marker.addListener("dblclick", function() {
-                        for (var i in $scope.markers) {
-                            if ($scope.markers[i].id === marker.id) {
-                                $scope.markers.splice(i, 1);
-                            }
-                        }
-                        marker.setMap(null);
-                        $scope.$apply(function () {
-                            $scope.marcarPontoPrincipal = false;
-                        });
-                    });
-
-                    $scope.$apply(function () {
-                        $scope.markers.push({
-                            id: marker.id, 
-                            latitude: event.latLng.lat(), 
-                            longitude: event.latLng.lng(),
-                        });
-
-                        $scope.marcarPontoPrincipal = false;
-                    });
-
-                });
-            });
-        });
-
-    });
-
     $scope.marcarPontoPrincipal = false;
     $scope.marcarPontoPrincipalClk = function () {
         $scope.marcarPontoPrincipal = !$scope.marcarPontoPrincipal;
@@ -381,7 +290,208 @@ angular.module(pNmModulo).controller('MapaCtrl',
         $scope.marcarPontoPrincipal = false;
     };
 
+
 }]);
 
+// inicio: Trabalho com mapas
+angular.module(pNmModulo).factory('Channel', function() {
+    return function () {
+        var callbacks = [];
+        this.add = function (cb) {
+            callbacks.push(cb);
+        };
+        this.invoke = function () {
+            callbacks.forEach(function (cb) {
+                cb();
+            });
+        };
+        return this;
+    };
+})
+.service('drawChannel',['Channel',function(Channel) {
+    return new Channel();
+}])
+.service('clearChannel',['Channel',function(Channel) {
+    return new Channel();
+}])
+.controller('mapWidgetCtrl', ['$scope', 'drawChannel','clearChannel', function ($scope, drawChannel, clearChannel) {
+    $scope.drawWidget = {
+        controlText: 'Área',
+        glyphicon: 'glyphicon-edit',
+        controlClick: function () {
+            drawChannel.invoke();
+        }
+    };
+    $scope.clearWidget = {
+        controlText: 'Limpar Área',
+        glyphicon: 'glyphicon-remove-circle',
+        controlClick: function () {
+            clearChannel.invoke();
+        }
+    };
+}])
+.run(['$templateCache','uiGmapLogger', function ($templateCache,Logger) {
+    Logger.doLog = true;
+    $templateCache.put('marcarPontoPrincipal.tpl.html', '<button class="btn btn-primary btn-sm sr-only" ng-class="{\'btn-warning\': marcarPontoPrincipal}" ng-click="marcarPontoPrincipalClk()" ng-hide="map.markers.length || marcarArea"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Entrada Principal</button>');
+    $templateCache.put('draw.tpl.html', '<button class="btn btn-sm btn-primary sr-only" ng-click="drawWidget.controlClick()"><span class="glyphicon {{drawWidget.glyphicon}}" aria-hidden="true"></span>{{drawWidget.controlText}}</button>');
+    $templateCache.put('clear.tpl.html', '<button class="btn btn-sm btn-primary" ng-click="clearWidget.controlClick()"><span class="glyphicon {{clearWidget.glyphicon}}" aria-hidden="true"></span>{{clearWidget.controlText}}</button>');
+}]);
+
+angular.module(pNmModulo).controller('MapaCtrl',
+    ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance',
+    'modalCadastro', 'UtilSrv', 'mensagemSrv', 'PropriedadeRuralSrv', 'EnderecoSrv', 'uiGmapGoogleMapApi', 'uiGmapIsReady',
+    'drawChannel','clearChannel',
+function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance,
+    modalCadastro, UtilSrv, mensagemSrv, PropriedadeRuralSrv, EnderecoSrv, uiGmapGoogleMapApi, uiGmapIsReady,
+    drawChannel, clearChannel) {
+
+    uiGmapGoogleMapApi.then(function(maps) {
+        $scope.map = angular.extend({}, {
+            center: {
+                latitude: -15.732687616157767,
+                longitude: -47.90378594955473,
+            },
+            pan: true,
+            zoom: 15,
+            refresh: false,
+            options: {
+                disableDefaultUI: false,
+                scrollwheel: true,
+            },
+            events: {},
+            bounds: {},
+            markers: [],
+            polys: [],
+            draw: function() {},
+        }, $scope.map);
+
+        $scope.drawingManagerOptions = {
+            drawingMode: google.maps.drawing.OverlayType.MARKER,
+            drawingControl: true,
+            drawingControlOptions: {
+                position: google.maps.ControlPosition.TOP_CENTER,
+                drawingModes: [
+                    google.maps.drawing.OverlayType.MARKER,
+                    google.maps.drawing.OverlayType.POLYGON,
+                ]
+            },
+        };
+
+        var clear = function() {
+            if ($scope.map.polys) {
+                $scope.map.polys.forEach(function(p) {
+                    p.setMap(null);
+                });
+            }
+            $scope.map.polys = [];
+            if ($scope.map.markers) {
+                $scope.map.markers.forEach(function(p) {
+                    p.setMap(null);
+                });
+            }
+            $scope.map.markers = [];
+        };
+        var draw = function() {
+            $scope.map.draw();//should be defined by now
+        };
+        //add beginDraw as a subscriber to be invoked by the channel, allows controller to controller coms
+        drawChannel.add(draw);
+        clearChannel.add(clear);
+
+        // esta verificacao garante que a instancia do mapa esta construida e pode ser usada
+        if ($scope.map.data) {
+
+//            $scope.drawingManagerControl = angular.extend({}, new maps.drawing.DrawingManager(), $scope.drawingManagerControl);
+            $scope.drawingManagerControl = new maps.drawing.DrawingManager({
+                drawingMode: google.maps.drawing.OverlayType.MARKER,
+                drawingControl: true,
+                drawingControlOptions: {
+                    position: google.maps.ControlPosition.TOP_CENTER,
+                    drawingModes: [
+                        google.maps.drawing.OverlayType.MARKER,
+                        google.maps.drawing.OverlayType.POLYGON,
+                    ]
+                }
+            });
+            $scope.drawingManagerControl.setMap($scope.map.data.map);
+
+            uiGmapIsReady.promise().then(function(intances) {
+                maps.event.addListener($scope.drawingManagerControl, 'polygoncomplete', function(polygon) {
+                    polygon.setDraggable(true);
+                    polygon.setEditable(true);
+
+                    $scope.map.polys.push(polygon);
+                });
+                maps.event.addListener($scope.drawingManagerControl, 'markercomplete', function(marker) {
+                    marker.setDraggable(true);
+
+                    if ($scope.map.markers.length >= 1) {
+                        marker.setMap(null);
+                        toastr.error('Só é possível marcar o ponto principal de acesso à propriedade rural', 'Erro de Marcação');
+                    } else {
+                        $scope.map.markers.push(marker);
+                    }
+                });
+            });
+
+            var coords = [
+                {lat: $scope.map.center.lat() -0.001, lng: $scope.map.center.lng() -0.001},
+                {lat: $scope.map.center.lat() -0.001, lng: $scope.map.center.lng() +0.001},
+                {lat: $scope.map.center.lat() +0.001, lng: $scope.map.center.lng() +0.001},
+                {lat: $scope.map.center.lat() +0.001, lng: $scope.map.center.lng() -0.001},
+                {lat: $scope.map.center.lat() -0.001, lng: $scope.map.center.lng() -0.001},
+            ];
+            $scope.map.polys.push(new maps.Polygon({
+                    map: $scope.map.data.map,
+                    visible: true, 
+                    editable: true, 
+                    draggable: true, 
+                    geodesic: false, 
+                    stroke: { 
+                        weight: 3,
+                        color: '#6060FB',
+                    }, 
+                    path: coords,
+                }
+            ));
+
+            maps.event.addListener($scope.map.data.map, 'click', function(event) {
+
+                if (!$scope.marcarPontoPrincipal) {
+                    return;
+                }
+
+                var marker = new maps.Marker({
+                    position: event.latLng,
+                    map: $scope.map.data.map,
+                    id: $scope.map.markers.length,
+                    draggable: true,
+                });
+
+                marker.addListener("dblclick", function() {
+                    for (var i in $scope.map.markers) {
+                        if ($scope.map.markers[i].id === marker.id) {
+                            $scope.map.markers.splice(i, 1);
+                        }
+                    }
+                    marker.setMap(null);
+                    $scope.$apply(function () {
+                        $scope.marcarPontoPrincipal = false;
+                    });
+                });
+
+                $scope.$apply(function () {
+                    $scope.map.markers.push({
+                        id: marker.id, 
+                        latitude: event.latLng.lat(), 
+                        longitude: event.latLng.lng(),
+                    });
+                    $scope.marcarPontoPrincipal = false;
+                });
+            });
+        }
+    });
+}]);
+// fim: Trabalho com mapas
 
 })('propriedadeRural', 'PropriedadeRuralCtrl', 'Cadastro de Propriedades Rurais', 'propriedade-rural');

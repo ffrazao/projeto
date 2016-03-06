@@ -42,33 +42,27 @@
     <div class="form-group col-md-6">
         <label class="control-label">Mapa</label>
         <div id="map_canvas" ng-controller="MapaCtrl">
-            /{{markers}}/
-
-            <script type="text/ng-template" id="marcarPontoPrincipal.tpl.html">
-                <button class="btn btn-primary btn-sm" ng-class="{'btn-warning': marcarPontoPrincipal}" ng-click="marcarPontoPrincipalClk()" ng-hide="markers.length || marcarArea">
-                    <span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span> Marcar o Ponto Principal {{marcarArea}}
-                </button>
-            </script>
-
-            <script type="text/ng-template" id="marcarArea.tpl.html">
-                <button class="btn btn-primary btn-sm" ng-class="{'btn-warning': marcarArea}" ng-click="marcarAreaClk()">
-                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Marcar a Área
-                </button>
-            </script>
 
             <ui-gmap-google-map 
-                center="map.center" 
-                zoom="map.zoom" 
-                draggable="true" 
-                options="options" 
+                id="map"
+                center="map.center"
+                pan="map.pan"
+                zoom="map.zoom"
+                draggable="true"
+                refresh="map.refresh"
+                options="map.options"
+                events="map.events"
                 bounds="map.bounds">
 
                 <ui-gmap-map-control template="marcarPontoPrincipal.tpl.html" position="top-right" index="-1" controller="MapaCtrl"></ui-gmap-map-control>
-                <ui-gmap-map-control template="marcarArea.tpl.html" position="top-right" index="-2" controller="MapaCtrl"></ui-gmap-map-control>
+                <ui-gmap-map-control template="draw.tpl.html" position="top-right" index="-2" controller="mapWidgetCtrl"></ui-gmap-map-control>
+                <ui-gmap-map-control template="clear.tpl.html" position="top-right" index="-3" controller="mapWidgetCtrl"></ui-gmap-map-control>
 
-                <ui-gmap-markers models="markers" coords="'self'" modelsbyref="false" dorebuildall="true">
+                <ui-gmap-markers models="map.markers" coords="'self'" modelsbyref="false" dorebuildall="true">
                     <ui-gmap-windows></ui-gmap-windows>
                 </ui-gmap-markers>
+
+                <ui-gmap-free-draw-polygons polygons="map.polys" draw="map.draw" ></ui-gmap-free-draw-polygons>
 
             </ui-gmap-google-map>
         </div>
