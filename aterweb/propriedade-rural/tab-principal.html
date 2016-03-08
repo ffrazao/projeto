@@ -41,7 +41,7 @@
     </div>
     <div class="form-group col-md-6">
         <label class="control-label">Mapa</label>
-        <div id="map_canvas" ng-controller="MapaCtrl">
+        <div id="map_canvas">
 
             <ui-gmap-google-map 
                 id="map"
@@ -53,16 +53,6 @@
                 options="map.options"
                 events="map.events"
                 bounds="map.bounds">
-
-                <ui-gmap-map-control template="marcarPontoPrincipal.tpl.html" position="top-right" index="-1" controller="MapaCtrl"></ui-gmap-map-control>
-                <ui-gmap-map-control template="draw.tpl.html" position="top-right" index="-2" controller="mapWidgetCtrl"></ui-gmap-map-control>
-                <ui-gmap-map-control template="clear.tpl.html" position="top-right" index="-3" controller="mapWidgetCtrl"></ui-gmap-map-control>
-
-                <ui-gmap-markers models="map.markers" coords="'self'" modelsbyref="false" dorebuildall="true">
-                    <ui-gmap-windows></ui-gmap-windows>
-                </ui-gmap-markers>
-
-                <ui-gmap-free-draw-polygons polygons="map.polys" draw="map.draw" ></ui-gmap-free-draw-polygons>
 
             </ui-gmap-google-map>
         </div>
