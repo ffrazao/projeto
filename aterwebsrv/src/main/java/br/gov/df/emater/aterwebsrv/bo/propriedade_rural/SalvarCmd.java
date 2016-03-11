@@ -19,6 +19,7 @@ import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRuralArquivo;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.CadastroAcao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.Area;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Arquivo;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Endereco;
 
@@ -60,6 +61,9 @@ public class SalvarCmd extends _Comando {
 		}
 		Endereco endereco = result.getEndereco();
 		endereco.setPropriedadeRuralConfirmacao(Confirmacao.S);
+		for (Area area: endereco.getAreaList()) {
+			area.setEndereco(endereco);
+		}
 		enderecoDao.save(endereco);
 		
 		result.setBaciaHidrografica(new BaciaHidrografica(1));

@@ -279,6 +279,33 @@ angular.module(pNmModulo).controller(pNmController,
     // fim dos watches
 
     // inicio: mapa
+    $scope.incluirDepois = function (registro) {
+        $scope.map.markers.push({id: $scope.map.markers.length, latitude: registro.endereco.latitude, longitude: registro.endereco.longitude});
+        registro.endereco.areaList.forEach(function(area) {
+            var poly = {id: $scope.map.polys.length, path: []};
+            area.poligono.points.forEach(function(p) {
+                poly.path.push({id: poly.path.length, latitude: p.x, longitude: p.y});
+            });
+            $scope.map.polys.push(poly);
+        });
+    };
+    $scope.confirmarIncluirAntes = function (cadastro) {
+        cadastro.registro.endereco.latitude = $scope.map.markers[0].latitude;
+        cadastro.registro.endereco.longitude = $scope.map.markers[0].longitude;
+
+        cadastro.registro.endereco.areaList = [];
+
+        $scope.map.polys.forEach(function(poly) {
+            var area = {nome: 'teste', poligono: {points: []}};
+            poly.path.forEach(function(p) {
+                area.poligono.points.push({x: p.latitude, y: p.longitude});
+            });
+            cadastro.registro.endereco.areaList.push({area: area});
+        });
+
+        cadastro.registro.endereco.logradouro = "teste";
+    };
+
     $scope.map = angular.extend({}, {
             center: {
                 latitude: -15.732687616157767,

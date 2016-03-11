@@ -1,8 +1,11 @@
 package br.gov.df.emater.aterwebsrv.modelo.pessoa;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.search.annotations.Field;
@@ -40,6 +44,33 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonFormatarBigDecimal;
 public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
+
+	public static String FORMATA(Endereco endereco) {
+		if (endereco == null) {
+			return null;
+		}
+		String[] linha = null;
+		linha = new String[3];
+		linha[0] = (UtilitarioString.collectionToString(Arrays.asList(endereco.getLogradouro(), endereco.getComplemento(), endereco.getNumero())));
+		linha[1] = (endereco.getBairro());
+		String cidade = null;
+		String municipio = null;
+		String estado = null;
+		if (endereco.getCidade() != null) {
+			cidade = endereco.getCidade().getNome();
+			if (endereco.getCidade().getMunicipio() != null) {
+				municipio = endereco.getCidade().getMunicipio().getNome();
+				if (endereco.getCidade().getMunicipio().getEstado() != null) {
+					estado = endereco.getCidade().getMunicipio().getEstado().getSigla();
+				}
+			}
+		}
+		linha[2] = (UtilitarioString.collectionToString(Arrays.asList(UtilitarioString.formataCep(endereco.getCep()), cidade, municipio, estado)));
+		return (UtilitarioString.collectionToString(Arrays.asList(linha), "\n"));
+	}
+
+	@OneToMany(mappedBy = "endereco", cascade = CascadeType.ALL)
+	private List<Area> areaList;
 
 	// @Max(value = 250, message = "Muito extenso")
 	private String bairro;
@@ -112,8 +143,12 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 	public Endereco() {
 	}
 
+	public Endereco(Serializable id) {
+		super(id);
+	}
+
 	public Endereco(String bairro, String cep, Cidade cidade, String codigoIbge, String complemento, String enderecoSisater, Estado estado, Integer id, BigDecimal latitude, String logradouro, BigDecimal longitude, Municipio municipio, String nomePropriedadeRuralOuEstabelecimento,
-			String numero, Pais pais, Confirmacao propriedadeRuralConfirmacao, String roteiroAcessoOuEnderecoInternacional) {
+			String numero, Pais pais, Confirmacao propriedadeRuralConfirmacao, String roteiroAcessoOuEnderecoInternacional, List<Area> areaList) {
 		super();
 		this.bairro = bairro;
 		this.cep = cep;
@@ -132,6 +167,11 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.pais = pais;
 		this.propriedadeRuralConfirmacao = propriedadeRuralConfirmacao;
 		this.roteiroAcessoOuEnderecoInternacional = roteiroAcessoOuEnderecoInternacional;
+		this.areaList = areaList;
+	}
+
+	public List<Area> getAreaList() {
+		return areaList;
 	}
 
 	public String getBairro() {
@@ -205,7 +245,11 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	public Endereco infoBasica() {
 		return new Endereco(this.bairro, this.cep, this.cidade == null ? null : this.cidade.infoBasica(), this.codigoIbge, this.complemento, this.enderecoSisater, this.estado == null ? null : this.estado.infoBasica(), this.id, this.latitude, this.logradouro, this.longitude,
-				this.municipio == null ? null : this.municipio.infoBasica(), this.nomePropriedadeRuralOuEstabelecimento, this.numero, this.pais == null ? null : this.pais.infoBasica(), this.propriedadeRuralConfirmacao, this.roteiroAcessoOuEnderecoInternacional);
+				this.municipio == null ? null : this.municipio.infoBasica(), this.nomePropriedadeRuralOuEstabelecimento, this.numero, this.pais == null ? null : this.pais.infoBasica(), this.propriedadeRuralConfirmacao, this.roteiroAcessoOuEnderecoInternacional, this.areaList);
+	}
+
+	public void setAreaList(List<Area> areaList) {
+		this.areaList = areaList;
 	}
 
 	public void setBairro(String bairro) {
@@ -275,30 +319,6 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	public void setRoteiroAcessoOuEnderecoInternacional(String roteiroAcessoOuEnderecoInternacional) {
 		this.roteiroAcessoOuEnderecoInternacional = roteiroAcessoOuEnderecoInternacional;
-	}
-
-	public static String FORMATA(Endereco endereco) {
-		if (endereco == null) {
-			return null;
-		}
-		String[] linha = null;
-		linha = new String[3];
-		linha[0] = (UtilitarioString.collectionToString(Arrays.asList(endereco.getLogradouro(), endereco.getComplemento(), endereco.getNumero())));
-		linha[1] = (endereco.getBairro());
-		String cidade = null;
-		String municipio = null;
-		String estado = null;
-		if (endereco.getCidade() != null) {
-			cidade = endereco.getCidade().getNome();
-			if (endereco.getCidade().getMunicipio() != null) {
-				municipio = endereco.getCidade().getMunicipio().getNome();
-				if (endereco.getCidade().getMunicipio().getEstado() != null) {
-					estado = endereco.getCidade().getMunicipio().getEstado().getSigla();
-				}
-			}
-		}
-		linha[2] = (UtilitarioString.collectionToString(Arrays.asList(UtilitarioString.formataCep(endereco.getCep()), cidade, municipio, estado)));
-		return (UtilitarioString.collectionToString(Arrays.asList(linha), "\n"));
 	}
 
 }
