@@ -152,7 +152,7 @@ angular.module(pNmModulo).config(['$stateProvider', '$urlRouterProvider', 'toast
     });
 
     uiGmapGoogleMapApiProvider.configure({
-        //    key: 'your api key',
+        key: 'AIzaSyBDb9apXz3uMJq1RD2HjUqtUfIxSW4GIlE',
         v: '3.24', //defaults to latest 3.X anyhow
         libraries: 'weather,geometry,visualization,drawing'
     });

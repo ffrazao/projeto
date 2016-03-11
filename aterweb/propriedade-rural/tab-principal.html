@@ -41,21 +41,38 @@
     </div>
     <div class="form-group col-md-6">
         <label class="control-label">Mapa</label>
-        <div id="map_canvas">
+        <ui-gmap-google-map 
+            id="map"
+            control="map"
+            center="map.center"
+            pan="map.pan"
+            zoom="map.zoom"
+            refresh="map.refresh"
+            options="map.options"
+            events="map.events"
+            bounds="map.bounds"
+            draggable="true">
 
-            <ui-gmap-google-map 
-                id="map"
-                center="map.center"
-                pan="map.pan"
-                zoom="map.zoom"
-                draggable="true"
-                refresh="map.refresh"
-                options="map.options"
-                events="map.events"
-                bounds="map.bounds">
+            <ui-gmap-drawing-manager 
+                options="drawingManagerOptions"
+                control="drawingManagerControl"
+                events="drawingManagerOptions.events">
+            </ui-gmap-drawing-manager>
 
-            </ui-gmap-google-map>
-        </div>
+            <ui-gmap-markers 
+                models="map.markers" 
+                coords="marker.coords" 
+                options="marker.opcoes"
+                events="marker.eventos">
+            </ui-gmap-markers>
+
+            <ui-gmap-polygons 
+                models="map.polys" 
+                path="poly.path" 
+                events="poly.eventos">
+            </ui-gmap-polygons>
+
+        </ui-gmap-google-map>
     </div>
     <div class="form-group col-md-3">
         <label class="control-label">Roteiro de Acesso</label>

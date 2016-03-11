@@ -1,4 +1,4 @@
-/* global criarEstadosPadrao */
+/* global criarEstadosPadrao, isUndefOrNull */
 
 (function(pNmModulo, pNmController, pNmFormulario, pUrlModulo) {
 
@@ -14,9 +14,9 @@ angular.module(pNmModulo).config(['$stateProvider', function($stateProvider) {
 
 angular.module(pNmModulo).controller(pNmController,
     ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance',
-    'modalCadastro', 'UtilSrv', 'mensagemSrv', 'PropriedadeRuralSrv', 'EnderecoSrv', 'uiGmapGoogleMapApi', 'uiGmapIsReady', '$timeout',
+    'modalCadastro', 'UtilSrv', 'mensagemSrv', 'PropriedadeRuralSrv', 'EnderecoSrv', 'uiGmapGoogleMapApi', 'uiGmapIsReady',
     function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, 
-        modalCadastro, UtilSrv, mensagemSrv, PropriedadeRuralSrv, EnderecoSrv, uiGmapGoogleMapApi, uiGmapIsReady, $timeout) {
+        modalCadastro, UtilSrv, mensagemSrv, PropriedadeRuralSrv, EnderecoSrv, uiGmapGoogleMapApi, uiGmapIsReady) {
 
         // inicializacao
         $scope.crudInit($scope, $state, null, pNmFormulario, PropriedadeRuralSrv);
@@ -125,7 +125,6 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.mapaModalAbrir = function (tipo, mapa) {
         // abrir a modal
         $scope.map = mapa; 
-        console.log(mapa);
         var template = '<div class="modal-header">' +
                        '<h3 class="modal-title">Mapa de '+tipo+'</h3>' +
                        '</div>' +
@@ -279,125 +278,148 @@ angular.module(pNmModulo).controller(pNmController,
     });
     // fim dos watches
 
-    // inicio: mapa 
+    // inicio: mapa
     $scope.map = angular.extend({}, {
-        center: {
-            latitude: -15.732687616157767,
-            longitude: -47.90378594955473,
+            center: {
+                latitude: -15.732687616157767,
+                longitude: -47.90378594955473,
+            },
+            pan: true,
+            zoom: 15,
+            refresh: true,
+            options: {
+                disableDefaultUI: false,
+                scrollwheel: true,
+            },
+            events: {},
+            bounds: {},
+            markers: [
+                // {
+                //     id: 3,
+                //     latitude: -15.732687616157767,
+                //     longitude: -47.90378594955473,
+                // }
+            ],
+            polys: [
+                // {
+                //     id: 433,
+                //     path: [
+                //         {latitude: -15.732687616157767, longitude: -47.90378594955473},
+                //         {latitude: -15.7, longitude: -47.90378594955473},
+                //         {latitude: -15.732687616157767, longitude: -47.9},
+                //         {latitude: -15.732687616157767, longitude: -47.90378594955473},
+                //     ],
+                // }
+            ],
+            draw: function() {},
+        }, $scope.map);
+
+    $scope.elementoId = angular.extend(0, 0, $scope.elementoId);
+
+    $scope.drawingManagerControl = angular.extend({}, {}, $scope.drawingManagerControl);
+
+    $scope.marker = {
+        coords : 'self',
+        opcoes : {
+            draggable : true,
         },
-        pan: true,
-        zoom: 15,
-        refresh: false,
-        options: {
-            disableDefaultUI: false,
-            scrollwheel: true,
+        eventos : {
+            click: function(a,b,c,d,e) {
+                a.setDraggable(true);
+            }
         },
-        events: {},
-        bounds: {},
-        markers: [],
-        polys: [],
-        draw: function() {},
-    }, $scope.map);
+    };
+
+    $scope.poly = {
+        path : 'path',
+        eventos :{
+            click: function(a,b,c,d,e) {
+                a.setDraggable(true);
+                a.setEditable(true);
+            }
+        }
+    };
+
+    $scope.limpaElementos = function(array, mapa, forcar) {
+        for (var i = (array.length - 1); i >= 0; i--) {
+            if ((forcar) || 
+                (!isUndefOrNull(array[i].uiGmap_id) && array[i].uiGmap_id !== mapa.uiGmap_id) ||
+                (array[i].getMap && (array[i].getMap() === null || array[i].getMap().uiGmap_id !== mapa.uiGmap_id))) {
+                array[i].setMap(null);
+                array.splice(i, 1);
+            }
+        }
+    };
 
     uiGmapGoogleMapApi.then(function(maps) {
-
-        // esta verificacao garante que a instancia do mapa esta construida e pode ser usada
-        uiGmapIsReady.promise().then(function(intances) {
-            var m = intances[0].map;
-            // $scope.drawingManagerControl = angular.extend({}, new maps.drawing.DrawingManager(), $scope.drawingManagerControl);
-
-            var drawingManagerControl = new maps.drawing.DrawingManager({
-                drawingMode: maps.drawing.OverlayType.MARKER,
-                drawingControl: true,
-                drawingControlOptions: {
-                    position: maps.ControlPosition.TOP_CENTER,
-                    drawingModes: [
-                        maps.drawing.OverlayType.MARKER,
-                        maps.drawing.OverlayType.POLYGON,
-                    ]
-                }
+        var infoCreate = function(elemento) {
+            var result = new maps.InfoWindow({
+                content: 'ptz',
             });
-            drawingManagerControl.setMap(m);
-            maps.event.addListener(drawingManagerControl, 'polygoncomplete', function(polygon) {
-                criarPoly(polygon);
-            });
-            maps.event.addListener(drawingManagerControl, 'markercomplete', function(marker) {
-                criarMarker(marker);
-            });
+            console.log(elemento);
+            return result;
+        };
 
-            var criarPoly = function(polygon) {
-                prepararItem(polygon);
+        $scope.drawingManagerOptions = {
+            drawingMode: maps.drawing.OverlayType.MARKER,
+            drawingControl: true,
+            drawingControlOptions: {
+                position: maps.ControlPosition.TOP_CENTER,
+                drawingModes: [
+                    maps.drawing.OverlayType.MARKER,
+                    maps.drawing.OverlayType.POLYGON,
+                ]
+            },
+            events: {
+                markercomplete: function(gObject, eventName, model, marker) {
+                    $scope.limpaElementos($scope.map.markers, marker[0].getMap());
 
-                polygon.setEditable(true);
+                    marker[0]['id'] = ++$scope.elementoId;
 
-                $scope.$apply(function() {
-                    $scope.map.polys.push(polygon);
-                });
-            };
-
-            var criarMarker = function(marker) {
-                prepararItem(marker);
-
-                $scope.$apply(function() {
                     if ($scope.map.markers.length >= 1) {
-                        marker.setMap(null);
-                        toastr.error('Só é possível marcar o ponto principal de acesso à propriedade rural', 'Erro de Marcação');
-                    } else {
-                        $scope.map.markers.push(marker);
+                        toastr.error('Só é possível marcar o ponto principal da Propriedade Rural', 'Erro de Marcação');
+                        marker[0].setMap(null);
+                        return;
                     }
-                });
-            };
-
-            var criarInfoWindow = function(item) {
-                var contentString = 
-                    '<div id="content">'+
-                    '   <script></script>'+
-                    '   <button class="btn btn-danger btn-xs">Excluir</button>'+
-                    '</div>';
-
-                var result = new maps.InfoWindow({
-                    content: contentString,
-                });
-
-                maps.event.addListener(result, 'domready', function(a, b, c, d) {
-                    console.log(result);
-                    $scope.$apply(function() {
-                        mensagemSrv.confirmacao(false, 'Confirma a exclusão do elemento?').then(function (conteudo) {
-                            item.setMap(null);
-                            var i = 0;
-                            for (i = $scope.map.markers.length-1; i >= 0; i--) {
-                                if ($scope.map.markers[i].getMap() === null) {
-                                    $scope.map.markers.splice(i, 1);
-                                }
-                            }
-                            for (i = $scope.map.polys.length-1; i >= 0; i--) {
-                                if ($scope.map.polys[i].getMap() === null) {
-                                    $scope.map.polys.splice(i, 1);
-                                }
-                            }
-                        });
+                    marker[0].setDraggable(true);
+                    var info = infoCreate(marker[0]);
+                    marker[0].addListener('click', function() {
+                        info.setPosition(marker[0].getPosition());
+                        info.setContent('ptz!' + marker[0].id);
+                        info.open(marker[0].getMap(), marker[0]);
+                        marker[0].map.panTo(marker[0].getPosition());
                     });
-                });
+                    marker[0].setMap(null);
+                    $scope.map.markers.push({id: marker[0]['id'], latitude: marker[0].getPosition().lat(), longitude: marker[0].getPosition().lng(), });
+                },
+                polygoncomplete: function(gObject, eventName, model, polygon) {
+                    $scope.limpaElementos($scope.map.polys, polygon[0].getMap());
 
-                return result;
-            };
+                    polygon[0]['id'] = ++$scope.elementoId;
 
-            var prepararItem = function (item) {
-                item.setDraggable(true);
-                item.setMap(m);
+                    polygon[0].setDraggable(true);
+                    polygon[0].setEditable(true);
+                    var info = infoCreate(polygon[0]);
+                    polygon[0].addListener('click', function() {
+                        var bounds = new maps.LatLngBounds();
+                        polygon[0].getPath().forEach(function(element,index){bounds.extend(element);});
+                        info.setPosition(bounds.getCenter());
+                        info.setContent('ptz!' + polygon[0].id);
+                        info.open(polygon[0].getMap(), polygon[0]);
+                        polygon[0].map.panTo(bounds.getCenter());
+                    });
+                    var path = [];
 
-                var infowindow = criarInfoWindow(item);
-
-                item.addListener('click', function() {
-                    infowindow.open(m, item);
-                });
-            };
-
-        });
+                    polygon[0].getPath().forEach(function(element,index) {
+                        path.push({latitude: element.lat(), longitude: element.lng()});
+                    });
+                    polygon[0].setMap(null);
+                    $scope.map.polys.push({id: polygon[0]['id'], path: path});
+                },
+            },
+        };
     });
-
     // fim: mapa 
 }]);
-// fim: Trabalho com mapas
 
 })('propriedadeRural', 'PropriedadeRuralCtrl', 'Cadastro de Propriedades Rurais', 'propriedade-rural');
