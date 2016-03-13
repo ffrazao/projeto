@@ -164,6 +164,11 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.propriedadeRuralConfirmacao = propriedadeRuralConfirmacao;
 		this.roteiroAcessoOuEnderecoInternacional = roteiroAcessoOuEnderecoInternacional;
 		this.areaList = areaList;
+		if (this.areaList != null) {
+			for (Area area: this.areaList) {
+				area.setEndereco(null);
+			}
+		}
 	}
 
 	public List<Area> getAreaList() {

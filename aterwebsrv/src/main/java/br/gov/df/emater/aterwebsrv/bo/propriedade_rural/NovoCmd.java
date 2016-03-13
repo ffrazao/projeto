@@ -1,11 +1,11 @@
 package br.gov.df.emater.aterwebsrv.bo.propriedade_rural;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.io.WKTReader;
 
@@ -27,10 +27,11 @@ public class NovoCmd extends _Comando {
 		
 		Endereco endereco = new Endereco();
 		
-		endereco.setLatitude(new BigDecimal("-15.732687616157767"));
-		endereco.setLongitude(new BigDecimal("-47.90378594955473"));
-		
 		WKTReader wktReader = new WKTReader();
+		endereco.setEntradaPrincipal((Point) wktReader.read("POINT (-15.732687616157767 -47.90378594955473)"));
+		// endereco.setLatitude(new BigDecimal("-15.732687616157767"));
+		// endereco.setLongitude(new BigDecimal("-47.90378594955473"));
+		
 		Polygon geom = (Polygon) wktReader.read("POLYGON((-15.732687616157767 -47.90378594955473, -15.7 -47.90378594955473, -15.732687616157767 -47.9, -15.732687616157767 -47.90378594955473))");
 		
 		Area area = new Area();

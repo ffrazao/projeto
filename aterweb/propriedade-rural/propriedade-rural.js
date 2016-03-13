@@ -279,8 +279,19 @@ angular.module(pNmModulo).controller(pNmController,
     // fim dos watches
 
     // inicio: mapa
+    $scope.visualizarDepois = function(registro) {
+        return $scope.incluirDepois(registro);
+    };
     $scope.incluirDepois = function (registro) {
-        $scope.map.markers.push({id: $scope.map.markers.length, latitude: registro.endereco.latitude, longitude: registro.endereco.longitude});
+        $scope.map.markers = [];
+        $scope.map.polys = [];
+
+        $scope.map.markers.push({id: $scope.map.markers.length, latitude: registro.endereco.entradaPrincipal.coordinates[0], longitude: registro.endereco.entradaPrincipal.coordinates[1]});
+
+        if ($scope.map.getGMap) {
+            $scope.map.getGMap().panTo(new $scope.map.maps.LatLng($scope.map.markers[0].latitude, $scope.map.markers[0].longitude));
+        }
+
         registro.endereco.areaList.forEach(function(area) {
             var poly = {id: $scope.map.polys.length, path: []};
             area.poligono.coordinates.forEach(function(coordinate) {
@@ -291,9 +302,11 @@ angular.module(pNmModulo).controller(pNmController,
             $scope.map.polys.push(poly);
         });
     };
+    $scope.confirmarEditarAntes = function (cadastro) {
+        return $scope.confirmarIncluirAntes(cadastro);
+    };
     $scope.confirmarIncluirAntes = function (cadastro) {
-        cadastro.registro.endereco.latitude = $scope.map.markers[0].latitude;
-        cadastro.registro.endereco.longitude = $scope.map.markers[0].longitude;
+        cadastro.registro.endereco.entradaPrincipal = {type: 'Point', coordinates: [$scope.map.markers[0].latitude, $scope.map.markers[0].longitude]};
 
         cadastro.registro.endereco.areaList = [];
 
@@ -303,11 +316,18 @@ angular.module(pNmModulo).controller(pNmController,
             poly.path.forEach(function(p) {
                 coord.push([p.latitude, p.longitude]);
             });
+            if (coord.length && (coord[0][0] !== coord[coord.length-1][0] || coord[0][1] !== coord[coord.length-1][1])) {
+                coord.push([coord[0][0], coord[0][1]]);
+            }
             area.poligono.coordinates.push(coord);
             cadastro.registro.endereco.areaList.push(area);
         });
 
         cadastro.registro.endereco.logradouro = "teste";
+    };
+
+    $scope.exibe = function(item) {
+        console.log(item);
     };
 
     $scope.map = angular.extend({}, {
@@ -390,6 +410,8 @@ angular.module(pNmModulo).controller(pNmController,
             console.log(elemento);
             return result;
         };
+
+        $scope.map.maps = maps;
 
         $scope.drawingManagerOptions = {
             drawingMode: maps.drawing.OverlayType.MARKER,
