@@ -4,9 +4,10 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.data.geo.Point;
-import org.springframework.data.geo.Polygon;
 import org.springframework.stereotype.Service;
+
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.io.WKTReader;
 
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
@@ -29,13 +30,11 @@ public class NovoCmd extends _Comando {
 		endereco.setLatitude(new BigDecimal("-15.732687616157767"));
 		endereco.setLongitude(new BigDecimal("-47.90378594955473"));
 		
-        Point pa = new Point(-15.732687616157767d, -47.90378594955473d);
-        Point pb = new Point(-15.7d, -47.90378594955473d);
-        Point pc = new Point(-15.732687616157767d, -47.9d);
-        Point pd = new Point(-15.732687616157767d, -47.90378594955473d);		
-		Polygon p = new Polygon(pa, pb, pc, pd);
+		WKTReader wktReader = new WKTReader();
+		Polygon geom = (Polygon) wktReader.read("POLYGON((-15.732687616157767 -47.90378594955473, -15.7 -47.90378594955473, -15.732687616157767 -47.9, -15.732687616157767 -47.90378594955473))");
+		
 		Area area = new Area();
-		area.setPoligono(p);
+		area.setPoligono(geom);
 		List<Area> areaList = new ArrayList<Area>();
 		areaList.add(area);
 		endereco.setAreaList(areaList);

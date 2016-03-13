@@ -11,10 +11,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.springframework.data.geo.Polygon;
+import org.hibernate.annotations.Type;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.vividsolutions.jts.geom.Polygon;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
+import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerGeometry;
+import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerGeometry;
 
 /**
  * The persistent class for the area database table.
@@ -36,6 +42,9 @@ public class Area extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private String nome;
 
+	@Type(type = "org.hibernate.spatial.GeometryType")
+	@JsonDeserialize(using = JsonDeserializerGeometry.class)
+	@JsonSerialize(using = JsonSerializerGeometry.class)
 	private Polygon poligono;
 
 	private BigDecimal tamanho;

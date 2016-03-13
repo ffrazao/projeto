@@ -283,8 +283,10 @@ angular.module(pNmModulo).controller(pNmController,
         $scope.map.markers.push({id: $scope.map.markers.length, latitude: registro.endereco.latitude, longitude: registro.endereco.longitude});
         registro.endereco.areaList.forEach(function(area) {
             var poly = {id: $scope.map.polys.length, path: []};
-            area.poligono.points.forEach(function(p) {
-                poly.path.push({id: poly.path.length, latitude: p.x, longitude: p.y});
+            area.poligono.coordinates.forEach(function(coordinate) {
+                coordinate.forEach(function (c) {
+                    poly.path.push({id: poly.path.length, latitude: c[0], longitude: c[1]});
+                });
             });
             $scope.map.polys.push(poly);
         });
@@ -296,11 +298,13 @@ angular.module(pNmModulo).controller(pNmController,
         cadastro.registro.endereco.areaList = [];
 
         $scope.map.polys.forEach(function(poly) {
-            var area = {nome: 'teste', poligono: {points: []}};
+            var area = {nome: 'teste', poligono: {type: 'Polygon', coordinates: []}};
+            var coord = [];
             poly.path.forEach(function(p) {
-                area.poligono.points.push({x: p.latitude, y: p.longitude});
+                coord.push([p.latitude, p.longitude]);
             });
-            cadastro.registro.endereco.areaList.push({area: area});
+            area.poligono.coordinates.push(coord);
+            cadastro.registro.endereco.areaList.push(area);
         });
 
         cadastro.registro.endereco.logradouro = "teste";

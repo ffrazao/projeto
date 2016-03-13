@@ -1,7 +1,6 @@
 package br.gov.df.emater.aterwebsrv.modelo.pessoa;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,21 +17,23 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Store;
 import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.format.annotation.NumberFormat;
-import org.springframework.format.annotation.NumberFormat.Style;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.vividsolutions.jts.geom.Point;
 
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
-import br.gov.df.emater.aterwebsrv.rest.json.JsonFormatarBigDecimal;
+import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerGeometry;
+import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerGeometry;
 
 /**
  * The persistent class for the endereco database table.
@@ -94,6 +95,12 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 	// @Max(value = 500, message = "Muito extenso")
 	private String enderecoSisater;
 
+	@Column(name = "entrada_principal")
+	@Type(type = "org.hibernate.spatial.GeometryType")
+	@JsonDeserialize(using = JsonDeserializerGeometry.class)
+	@JsonSerialize(using = JsonSerializerGeometry.class)
+	private Point entradaPrincipal;
+
 	@ManyToOne
 	@JoinColumn(name = "estado_id")
 	private Estado estado;
@@ -102,20 +109,10 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
-	@Column(name = "latitude")
-	@NumberFormat(style = Style.NUMBER)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal latitude;
-
 	@NotBlank
 	@Field(index = Index.YES, store = Store.YES)
 	// @Max(value = 250, message = "Muito extenso")
 	private String logradouro;
-
-	@Column(name = "longitude")
-	@NumberFormat(style = Style.NUMBER)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal longitude;
 
 	@ManyToOne
 	@JoinColumn(name = "municipio_id")
@@ -147,8 +144,8 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 		super(id);
 	}
 
-	public Endereco(String bairro, String cep, Cidade cidade, String codigoIbge, String complemento, String enderecoSisater, Estado estado, Integer id, BigDecimal latitude, String logradouro, BigDecimal longitude, Municipio municipio, String nomePropriedadeRuralOuEstabelecimento,
-			String numero, Pais pais, Confirmacao propriedadeRuralConfirmacao, String roteiroAcessoOuEnderecoInternacional, List<Area> areaList) {
+	public Endereco(String bairro, String cep, Cidade cidade, String codigoIbge, String complemento, String enderecoSisater, Estado estado, Integer id, Point entradaPrincipal, String logradouro, Municipio municipio, String nomePropriedadeRuralOuEstabelecimento, String numero,
+			Pais pais, Confirmacao propriedadeRuralConfirmacao, String roteiroAcessoOuEnderecoInternacional, List<Area> areaList) {
 		super();
 		this.bairro = bairro;
 		this.cep = cep;
@@ -158,9 +155,8 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.enderecoSisater = enderecoSisater;
 		this.estado = estado;
 		this.id = id;
-		this.latitude = latitude;
+		this.entradaPrincipal = entradaPrincipal;
 		this.logradouro = logradouro;
-		this.longitude = longitude;
 		this.municipio = municipio;
 		this.nomePropriedadeRuralOuEstabelecimento = nomePropriedadeRuralOuEstabelecimento;
 		this.numero = numero;
@@ -198,6 +194,10 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return enderecoSisater;
 	}
 
+	public Point getEntradaPrincipal() {
+		return entradaPrincipal;
+	}
+
 	public Estado getEstado() {
 		return estado;
 	}
@@ -207,16 +207,8 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return id;
 	}
 
-	public BigDecimal getLatitude() {
-		return latitude;
-	}
-
 	public String getLogradouro() {
 		return logradouro;
-	}
-
-	public BigDecimal getLongitude() {
-		return longitude;
 	}
 
 	public Municipio getMunicipio() {
@@ -244,7 +236,7 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 	}
 
 	public Endereco infoBasica() {
-		return new Endereco(this.bairro, this.cep, this.cidade == null ? null : this.cidade.infoBasica(), this.codigoIbge, this.complemento, this.enderecoSisater, this.estado == null ? null : this.estado.infoBasica(), this.id, this.latitude, this.logradouro, this.longitude,
+		return new Endereco(this.bairro, this.cep, this.cidade == null ? null : this.cidade.infoBasica(), this.codigoIbge, this.complemento, this.enderecoSisater, this.estado == null ? null : this.estado.infoBasica(), this.id, this.entradaPrincipal, this.logradouro,
 				this.municipio == null ? null : this.municipio.infoBasica(), this.nomePropriedadeRuralOuEstabelecimento, this.numero, this.pais == null ? null : this.pais.infoBasica(), this.propriedadeRuralConfirmacao, this.roteiroAcessoOuEnderecoInternacional, this.areaList);
 	}
 
@@ -276,6 +268,10 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.enderecoSisater = enderecoSisater;
 	}
 
+	public void setEntradaPrincipal(Point entradaPrincipal) {
+		this.entradaPrincipal = entradaPrincipal;
+	}
+
 	public void setEstado(Estado estado) {
 		this.estado = estado;
 	}
@@ -285,16 +281,8 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.id = id;
 	}
 
-	public void setLatitude(BigDecimal latitude) {
-		this.latitude = latitude;
-	}
-
 	public void setLogradouro(String logradouro) {
 		this.logradouro = logradouro;
-	}
-
-	public void setLongitude(BigDecimal longitude) {
-		this.longitude = longitude;
 	}
 
 	public void setMunicipio(Municipio municipio) {
