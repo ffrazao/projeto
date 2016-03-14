@@ -288,8 +288,8 @@ angular.module(pNmModulo).controller(pNmController,
 
         $scope.map.markers.push({id: $scope.map.markers.length, latitude: registro.endereco.entradaPrincipal.coordinates[0], longitude: registro.endereco.entradaPrincipal.coordinates[1]});
 
-        if ($scope.map.getGMap) {
-            $scope.map.getGMap().panTo(new $scope.map.maps.LatLng($scope.map.markers[0].latitude, $scope.map.markers[0].longitude));
+        if ($scope.map.controle.getGMap) {
+            $scope.map.controle.getGMap().panTo(new $scope.map.maps.LatLng($scope.map.markers[0].latitude, $scope.map.markers[0].longitude));
         }
 
         registro.endereco.areaList.forEach(function(area) {
@@ -326,70 +326,7 @@ angular.module(pNmModulo).controller(pNmController,
         cadastro.registro.endereco.logradouro = "teste";
     };
 
-    $scope.exibe = function(item) {
-        console.log(item);
-    };
-
-    $scope.map = angular.extend({}, {
-            center: {
-                latitude: -15.732687616157767,
-                longitude: -47.90378594955473,
-            },
-            pan: true,
-            zoom: 15,
-            refresh: true,
-            options: {
-                disableDefaultUI: false,
-                scrollwheel: true,
-            },
-            events: {},
-            bounds: {},
-            markers: [
-                // {
-                //     id: 3,
-                //     latitude: -15.732687616157767,
-                //     longitude: -47.90378594955473,
-                // }
-            ],
-            polys: [
-                // {
-                //     id: 433,
-                //     path: [
-                //         {latitude: -15.732687616157767, longitude: -47.90378594955473},
-                //         {latitude: -15.7, longitude: -47.90378594955473},
-                //         {latitude: -15.732687616157767, longitude: -47.9},
-                //         {latitude: -15.732687616157767, longitude: -47.90378594955473},
-                //     ],
-                // }
-            ],
-            draw: function() {},
-        }, $scope.map);
-
     $scope.elementoId = angular.extend(0, 0, $scope.elementoId);
-
-    $scope.drawingManagerControl = angular.extend({}, {}, $scope.drawingManagerControl);
-
-    $scope.marker = {
-        coords : 'self',
-        opcoes : {
-            draggable : true,
-        },
-        eventos : {
-            click: function(a,b,c,d,e) {
-                a.setDraggable(true);
-            }
-        },
-    };
-
-    $scope.poly = {
-        path : 'path',
-        eventos :{
-            click: function(a,b,c,d,e) {
-                a.setDraggable(true);
-                a.setEditable(true);
-            }
-        }
-    };
 
     $scope.limpaElementos = function(array, mapa, forcar) {
         for (var i = (array.length - 1); i >= 0; i--) {
@@ -403,27 +340,35 @@ angular.module(pNmModulo).controller(pNmController,
     };
 
     uiGmapGoogleMapApi.then(function(maps) {
-        var infoCreate = function(elemento) {
-            var result = new maps.InfoWindow({
-                content: 'ptz',
-            });
-            console.log(elemento);
-            return result;
-        };
 
-        $scope.map.maps = maps;
+        $scope.map = angular.extend({}, {
+            bounds: {},
+            center: { latitude: -15.732687616157767, longitude: -47.90378594955473, },
+            controle: {},
+            events: {},
+            maps: maps,
+            markers: [],
+            options: { disableDefaultUI: false, scrollwheel: true, },
+            pan: true,
+            polys: [],
+            refresh: true,
+            zoom: 15,
+        }, $scope.map);
 
-        $scope.drawingManagerOptions = {
-            drawingMode: maps.drawing.OverlayType.MARKER,
-            drawingControl: true,
-            drawingControlOptions: {
-                position: maps.ControlPosition.TOP_CENTER,
-                drawingModes: [
-                    maps.drawing.OverlayType.MARKER,
-                    maps.drawing.OverlayType.POLYGON,
-                ]
-            },
-            events: {
+        $scope.drawingManager = angular.extend({}, {
+            controle: {}, 
+            opcoes: {
+                drawingMode: maps.drawing.OverlayType.MARKER,
+                drawingControl: true,
+                drawingControlOptions: {
+                    position: maps.ControlPosition.TOP_CENTER,
+                    drawingModes: [
+                        maps.drawing.OverlayType.MARKER,
+                        maps.drawing.OverlayType.POLYGON,
+                    ]
+                }
+            }, 
+            eventos: {
                 markercomplete: function(gObject, eventName, model, marker) {
                     $scope.limpaElementos($scope.map.markers, marker[0].getMap());
 
@@ -469,8 +414,44 @@ angular.module(pNmModulo).controller(pNmController,
                     polygon[0].setMap(null);
                     $scope.map.polys.push({id: polygon[0]['id'], path: path});
                 },
+            }
+        }, $scope.drawingManager);
+
+        $scope.marker = {
+            controle: {},
+            coords : 'self',
+            opcoes : {
+                draggable : true,
+            },
+            eventos : {
+                click: function(a,b,c,d,e) {
+                    a.setDraggable(true);
+                }
             },
         };
+
+        $scope.poly = {
+            controle: {},
+            path : 'path',
+            eventos :{
+                click: function(a,b,c,d,e) {
+                    a.setDraggable(true);
+                    a.setEditable(true);
+                }
+            }
+        };
+
+        var infoCreate = function(elemento) {
+            var result = new maps.InfoWindow({
+                content: 'ptz',
+            });
+            console.log(elemento);
+            return result;
+        };
+
+        uiGmapIsReady.promise().then(function() {
+            console.log($scope.map);
+        });
     });
     // fim: mapa 
 }]);

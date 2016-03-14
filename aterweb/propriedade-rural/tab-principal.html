@@ -43,7 +43,7 @@
         <label class="control-label">Mapa</label>
         <ui-gmap-google-map 
             id="map"
-            control="map"
+            control="map.controle"
             center="map.center"
             pan="map.pan"
             zoom="map.zoom"
@@ -54,23 +54,22 @@
             draggable="true">
 
             <ui-gmap-drawing-manager 
-                options="drawingManagerOptions"
-                control="drawingManagerControl"
-                events="drawingManagerOptions.events">
+                options="drawingManager.opcoes"
+                control="drawingManager.controle"
+                events="drawingManager.eventos">
             </ui-gmap-drawing-manager>
 
             <ui-gmap-markers 
                 models="map.markers" 
+                control="marker.controle"
                 coords="marker.coords" 
                 options="marker.opcoes"
                 events="marker.eventos">
-                <ui-gmap-window>
-                    <button ng-click="exibe(model)" show="true">Olá</button>
-                </ui-gmap-window>
             </ui-gmap-markers>
 
             <ui-gmap-polygons 
                 models="map.polys" 
+                control="poly.controle"
                 path="poly.path" 
                 events="poly.eventos">
             </ui-gmap-polygons>
