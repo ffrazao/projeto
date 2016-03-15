@@ -31,13 +31,13 @@ public class UtilitarioData {
 		return instance;
 	}
 
-	public static void main(String[] args) throws ParseException {
-		Calendar data = UtilitarioData.getInstance().formataData("01/04/2014");
-		System.out.println(UtilitarioData.getInstance().formataData(data));
-
-		Calendar dataHora = UtilitarioData.getInstance().formataDataHora("01/04/2014 23:09:22");
-		System.out.println(UtilitarioData.getInstance().formataDataHora(dataHora));
-	}
+//	public static void main(string[] args) throws parseexception {
+//		calendar data = utilitariodata.getinstance().formatadata("01/04/2014");
+//		system.out.println(utilitariodata.getinstance().formatadata(data));
+//
+//		calendar datahora = utilitariodata.getinstance().formatadatahora("01/04/2014 23:09:22");
+//		system.out.println(utilitariodata.getinstance().formatadatahora(datahora));
+//	}
 
 	private UtilitarioData() {
 	}

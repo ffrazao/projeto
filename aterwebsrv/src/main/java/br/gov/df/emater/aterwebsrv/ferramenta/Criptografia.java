@@ -29,19 +29,19 @@ public final class Criptografia {
 		return DigestUtils.md5DigestAsHex(bytes).toLowerCase();
 	}
 	
-	public static void main(String[] args) {
-		// 20141103_070304.jpg
-//		Pattern p = Pattern.compile("/^\\d{8}\\_\\d{6}\\.jpg$/");
-		Pattern p = Pattern.compile("\\d{8}\\_\\d{6}");
-		String arqs = Arrays.toString(new File("I:\\fotos\\2015\\camera").list());
-		Matcher m = p.matcher(arqs);
-		
-		List<String> result = new ArrayList<String>();
-		while (m.find()) {
-			result.add(m.group());
-		}
-		System.out.println(result);
-	}
+//	public static void main(String[] args) {
+//		// 20141103_070304.jpg
+////		Pattern p = Pattern.compile("/^\\d{8}\\_\\d{6}\\.jpg$/");
+//		Pattern p = Pattern.compile("\\d{8}\\_\\d{6}");
+//		String arqs = Arrays.toString(new File("I:\\fotos\\2015\\camera").list());
+//		Matcher m = p.matcher(arqs);
+//		
+//		List<String> result = new ArrayList<String>();
+//		while (m.find()) {
+//			result.add(m.group());
+//		}
+//		System.out.println(result);
+//	}
 	
 
 }
