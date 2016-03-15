@@ -40,7 +40,7 @@ public class VisualizarCmd extends _Comando {
 		if (result.getPublicoAlvoPropriedadeRuralList() != null) {
 			List<PublicoAlvoPropriedadeRural> paprList = new ArrayList<PublicoAlvoPropriedadeRural>();
 			for (PublicoAlvoPropriedadeRural papr : result.getPublicoAlvoPropriedadeRuralList()) {
-				PublicoAlvoPropriedadeRural p = new PublicoAlvoPropriedadeRural(result.getId());
+				PublicoAlvoPropriedadeRural p = new PublicoAlvoPropriedadeRural(papr.getId());
 				p.setArea(papr.getArea());
 				p.setComunidade(papr.getComunidade().infoBasica());
 				p.setInicio(papr.getInicio());

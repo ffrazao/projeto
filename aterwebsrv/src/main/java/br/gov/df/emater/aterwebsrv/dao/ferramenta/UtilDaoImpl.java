@@ -76,7 +76,7 @@ public class UtilDaoImpl implements UtilDao {
 
 		List<?> result = query.getResultList();
 
-		if (result != null && result.get(0) != null) {
+		if (result != null && result.size() > 0 && result.get(0) != null) {
 			if (result.get(0) instanceof InfoBasica) {
 				List<Object> newResult = new ArrayList<Object>();
 				for (Object info : result) {

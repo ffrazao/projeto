@@ -130,14 +130,17 @@ public class SalvarCmd extends _Comando {
 		result.setUsuarioAlteracao(getUsuario(contexto.getUsuario().getName()));
 		result.setAlteracaoData(Calendar.getInstance());
 
-		dao.save(result);
-
 		// publico alvo
 		if (Confirmacao.S.equals(result.getPublicoAlvoConfirmacao())) {
 			PublicoAlvo publicoAlvo = result.getPublicoAlvo();
-			if (publicoAlvo == null) {
-				publicoAlvo = new PublicoAlvo();
+
+			if (publicoAlvo.getId() == null) {
+				PublicoAlvo salvo = publicoAlvoDao.findOneByPessoa(result);
+				if (salvo != null) {
+					publicoAlvo.setId(salvo.getId());
+				}
 			}
+
 			publicoAlvo.setPessoa(result);
 			publicoAlvoDao.save(publicoAlvo);
 
@@ -164,10 +167,11 @@ public class SalvarCmd extends _Comando {
 				}
 			}
 			result.setPublicoAlvo(publicoAlvo);
-			//dao.flush();
-			//publicoAlvoDao.flush();
-			//publicoAlvoPropriedadeRuralDao.flush();
+		} else {
+			result.setPublicoAlvo(null);
 		}
+
+		dao.save(result);
 
 		// salvar enderecos
 		if (result.getEnderecoList() != null) {
@@ -344,19 +348,22 @@ public class SalvarCmd extends _Comando {
 
 		// salvar os formularios de diagnostico
 		if (result.getDiagnosticoList() != null) {
-//			for (List<Object> formulario : (List<List<Object>>) result.getDiagnosticoList()) {
-//				LinkedHashMap<Object, Object> f = (LinkedHashMap<Object, Object>) formulario.get(9);
-//				List<LinkedHashMap<Object, Object>> c = (List<LinkedHashMap<Object, Object>>) f.get("coletaList");
-//				if (c != null) {
-//					for (LinkedHashMap<Object, Object> r : c) {
-//						Coleta coleta = criarColeta(r);
-//						coleta.setPessoa(result);
-//						coleta.setPropriedadeRural(null);
-//						coleta.setUsuario(getUsuario(contexto.getUsuario().getName()));
-//						coletaDao.save(coleta);
-//					}
-//				}
-//			}
+			// for (List<Object> formulario : (List<List<Object>>)
+			// result.getDiagnosticoList()) {
+			// LinkedHashMap<Object, Object> f = (LinkedHashMap<Object, Object>)
+			// formulario.get(9);
+			// List<LinkedHashMap<Object, Object>> c =
+			// (List<LinkedHashMap<Object, Object>>) f.get("coletaList");
+			// if (c != null) {
+			// for (LinkedHashMap<Object, Object> r : c) {
+			// Coleta coleta = criarColeta(r);
+			// coleta.setPessoa(result);
+			// coleta.setPropriedadeRural(null);
+			// coleta.setUsuario(getUsuario(contexto.getUsuario().getName()));
+			// coletaDao.save(coleta);
+			// }
+			// }
+			// }
 		}
 
 		dao.flush();

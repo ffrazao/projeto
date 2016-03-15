@@ -286,21 +286,24 @@ angular.module(pNmModulo).controller(pNmController,
         $scope.map.markers = [];
         $scope.map.polys = [];
 
-        $scope.map.markers.push({id: $scope.map.markers.length, latitude: registro.endereco.entradaPrincipal.coordinates[0], longitude: registro.endereco.entradaPrincipal.coordinates[1]});
-
-        if ($scope.map.controle.getGMap) {
-            $scope.map.controle.getGMap().panTo(new $scope.map.maps.LatLng($scope.map.markers[0].latitude, $scope.map.markers[0].longitude));
+        if (registro.endereco.entradaPrincipal) {
+            $scope.map.markers.push({id: $scope.map.markers.length, latitude: registro.endereco.entradaPrincipal.coordinates[0], longitude: registro.endereco.entradaPrincipal.coordinates[1]});
+            if ($scope.map.controle.getGMap) {
+                $scope.map.controle.getGMap().panTo(new $scope.map.maps.LatLng($scope.map.markers[0].latitude, $scope.map.markers[0].longitude));
+            }
         }
 
-        registro.endereco.areaList.forEach(function(area) {
-            var poly = {id: $scope.map.polys.length, path: []};
-            area.poligono.coordinates.forEach(function(coordinate) {
-                coordinate.forEach(function (c) {
-                    poly.path.push({id: poly.path.length, latitude: c[0], longitude: c[1]});
+        if (registro.endereco.areaList) {        
+            registro.endereco.areaList.forEach(function(area) {
+                var poly = {id: $scope.map.polys.length, path: []};
+                area.poligono.coordinates.forEach(function(coordinate) {
+                    coordinate.forEach(function (c) {
+                        poly.path.push({id: poly.path.length, latitude: c[0], longitude: c[1]});
+                    });
                 });
+                $scope.map.polys.push(poly);
             });
-            $scope.map.polys.push(poly);
-        });
+        }
     };
     $scope.confirmarEditarAntes = function (cadastro) {
         return $scope.confirmarIncluirAntes(cadastro);

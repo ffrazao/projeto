@@ -54,16 +54,16 @@ angular.module(pNmModulo).controller(pNmController,
         modalInstance.result.then(function (resultado) {
             // processar o retorno positivo da modal
             var reg = null;
-            if (resultado.tipo === 'U') {
-                reg = {propriedadeRural: {id: resultado.item[0], nome: resultado.item[1], comunidade: {nome: resultado.item[3]}}};
+            if (resultado.selecao.tipo === 'U') {
+                reg = {propriedadeRural: {id: resultado.selecao.item[0], nome: resultado.selecao.item[1], comunidade: {nome: resultado.selecao.item[3]}}};
                 if (!$scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList) {
                     $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList = [];
                     $scope.publicoAlvoPropriedadeRuralNvg.setDados($scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList);
                 }
                 $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList.push(reg);
             } else {
-                for (var i in resultado.items) {
-                    reg = {propriedadeRural: {id: resultado.items[i][0], nome: resultado.items[i][1], comunidade: {nome: resultado.items[i][3]}}};
+                for (var i in resultado.selecao.items) {
+                    reg = {propriedadeRural: {id: resultado.selecao.items[i][0], nome: resultado.selecao.items[i][1], comunidade: {nome: resultado.selecao.items[i][3]}}};
                     if (!$scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList) {
                         $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList = [];
                         $scope.publicoAlvoPropriedadeRuralNvg.setDados($scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList);
@@ -75,30 +75,6 @@ angular.module(pNmModulo).controller(pNmController,
         }, function () {
             // processar o retorno negativo da modal
             
-        });
-    };
-
-    $scope.modalVerPropriedadeRural = function (id) {
-        // abrir a modal
-        var modalInstance = $uibModal.open({
-            animation: true,
-            template: '<ng-include src=\"\'propriedade-rural/propriedade-rural-form-modal.html\'\"></ng-include>',
-            controller: 'PropriedadeRuralCtrl',
-            size: 'lg',
-            resolve: {
-                modalCadastro: function () {
-                    var cadastro = {registro: {id: id}, filtro: {}, lista: [], original: {}, apoio: [],};
-                    return cadastro;
-                }
-            }
-        });
-        // processar retorno da modal
-        modalInstance.result.then(function (cadastroModificado) {
-            // processar o retorno positivo da modal
-
-        }, function () {
-            // processar o retorno negativo da modal
-            $log.info('Modal dismissed at: ' + new Date());
         });
     };
     // fim rotinas de apoio
