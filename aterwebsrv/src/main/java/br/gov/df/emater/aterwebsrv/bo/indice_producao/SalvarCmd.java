@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
-
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.ferramenta.UtilDao;
@@ -65,12 +63,7 @@ public class SalvarCmd extends _Comando {
 		} catch (DataIntegrityViolationException e) {
 			if (e.getCause() instanceof ConstraintViolationException) {
 				ConstraintViolationException c = (ConstraintViolationException) e.getCause();
-				if (c.getCause() instanceof MySQLIntegrityConstraintViolationException) {
-					MySQLIntegrityConstraintViolationException m = (MySQLIntegrityConstraintViolationException) c.getCause();
-					if (m.getMessage().indexOf("Duplicate entry") >= 0) {
-						throw new RuntimeException("Registro já cadastrado", e);
-					}
-				}
+				throw new RuntimeException("Registro já cadastrado", c);
 			}
 			throw e;
 		}

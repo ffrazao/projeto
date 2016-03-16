@@ -6,7 +6,7 @@
 	<groupId>br.gov.df.emater</groupId>
 	<artifactId>aterwebsrv</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<name>ATER web</name>
 	<description>Serviços do ATER web</description>
@@ -39,7 +39,6 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<scope>runtime</scope>
 		</dependency>
 
 		<dependency>
