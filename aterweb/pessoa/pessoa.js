@@ -95,18 +95,6 @@
                     executaIncluir();
                 }
             };
-            $scope.paisPadrao = function(id) {
-                if (!id) {
-                    return;
-                }
-                var pais = UtilSrv.indiceDePorCampo($scope.cadastro.apoio.paisList, id, 'id');
-                if (pais) {
-                    return pais.padrao;
-                } else {
-                    //toastr.warning('Não poi possível identificar o valor padrão!', 'Atenção!');
-                    return null;
-                }
-            };
             $scope.confirmarIncluir = function(scp) {
                 $scope.preparaClassePessoa($scope.cadastro.registro);
                 $rootScope.confirmarIncluir(scp);
@@ -239,12 +227,20 @@
             $scope.$watch('cadastro.registro.nascimento', function(newValue, oldValue) {
                 $scope.cadastro.registro.idade = null;
                 $scope.cadastro.registro.geracao = null;
+                $scope.cadastro.apoio.geracao = null;
                 var nascimento = null;
+                if (!newValue) {
+                    return;
+                }
+                // captar a data de nascimento
                 if(newValue instanceof Date) {
                     nascimento = newValue;
                 } else {
-                    if (newValue === oldValue || newValue === undefined || newValue.length !== 10) {return;}
-                    var partes = newValue.split('/');
+                    // converter caso necessario
+                    if (newValue.length < 10) {
+                        return;
+                    }
+                    var partes = newValue.substr(0, 10).split('/');
                     nascimento = new Date(partes[2],partes[1]-1,partes[0]);
                 }
                 var hoje = new Date();
@@ -271,14 +267,14 @@
                 }
             });
             $scope.$watch('cadastro.registro.nascimentoPais.id', function(newValue, oldValue) {
-                if (newValue && newValue > 0) {
+                if (newValue) {
                     UtilSrv.dominioLista($scope.cadastro.apoio.nascimentoEstadoList, {ent:['Estado'], npk: ['pais.id'], vpk: [newValue]});
                 } else {
                     $scope.cadastro.apoio.nascimentoEstadoList = [];
                 }
             });
             $scope.$watch('cadastro.registro.nascimentoEstado.id', function(newValue, oldValue) {
-                if (newValue && newValue > 0) {
+                if (newValue) {
                     UtilSrv.dominioLista($scope.cadastro.apoio.nascimentoMunicipioList, {ent:['Municipio'], npk: ['estado.id'], vpk: [newValue]});
                 } else {
                     $scope.cadastro.apoio.nascimentoMunicipioList = [];
@@ -286,13 +282,19 @@
             });
             $scope.$watch('cadastro.registro.nascimentoPais.id + cadastro.registro.naturalizado', function(newValue, oldValue) {
                 $scope.cadastro.registro.nacionalidade = null;
+                $scope.cadastro.apoio.nacionalidade = null;
                 if (!($scope.cadastro.registro.nascimentoPais && $scope.cadastro.registro.nascimentoPais.id)) {
+                    $scope.cadastro.registro.naturalizado = null;
+                    $scope.cadastro.registro.nascimentoEstado = null;
+                    $scope.cadastro.registro.nascimentoMunicipio = null;
                     return;
                 }
-                if ($scope.cadastro.registro.nascimentoPais.id === 1) {
+                if ($scope.cadastro.registro.nascimentoPais && $scope.cadastro.registro.nascimentoPais.padrao === 'S') {
                     $scope.cadastro.registro.nacionalidade = 'BN'; 
                     $scope.cadastro.registro.naturalizado = false;
                 } else {
+                    $scope.cadastro.registro.nascimentoEstado = null;
+                    $scope.cadastro.registro.nascimentoMunicipio = null;
                     $scope.cadastro.registro.nacionalidade = $scope.cadastro.registro.naturalizado ? 'NA' : 'ES';
                 }
                 if ($scope.cadastro.registro.nacionalidade) {
@@ -302,7 +304,25 @@
             $scope.$watch('cadastro.registro.publicoAlvoConfirmacao', function() {
                 $scope.tabVisivelPublicoAlvo($scope.cadastro.registro.publicoAlvoConfirmacao === 'S');
             });
-           
+            $scope.$watch('cadastro.registro.nome', function(newValue, oldValue) {
+                if (newValue && newValue.length && (!$scope.cadastro.registro.apelidoSigla || !$scope.cadastro.registro.apelidoSigla.length)) {
+                    var partes = newValue.split(' ');
+                    $scope.cadastro.registro.apelidoSigla = partes[0];
+                }
+            });
+            $scope.$watch('cadastro.registro.publicoAlvo.categoria', function(newValue, oldValue) {
+                if (newValue && newValue.length) {
+                    var categoria = UtilSrv.indiceDePorCampo($scope.cadastro.apoio.publicoAlvoCategoriaList, newValue, 'codigo');
+                    $scope.cadastro.apoio.publicoAlvoSegmentoList = [];
+                    $scope.cadastro.apoio.publicoAlvoSegmentoListOriginal.forEach(function(segmento) {
+                        if (categoria.publicoAlvoSegmentoList.indexOf(segmento.codigo) >= 0) {
+                            $scope.cadastro.apoio.publicoAlvoSegmentoList.push(segmento);
+                        }
+                    });
+                }
+            });
+
+
             // fim dos watches
 
             $scope.selecionaFotoPerfil = function() {

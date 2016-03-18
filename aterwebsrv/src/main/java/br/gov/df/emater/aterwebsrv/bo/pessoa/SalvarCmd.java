@@ -4,6 +4,8 @@ import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -18,6 +20,9 @@ import br.gov.df.emater.aterwebsrv.dao.formulario.ColetaDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.ArquivoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.EmailDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.EnderecoDao;
+import br.gov.df.emater.aterwebsrv.dao.pessoa.EstadoDao;
+import br.gov.df.emater.aterwebsrv.dao.pessoa.MunicipioDao;
+import br.gov.df.emater.aterwebsrv.dao.pessoa.PaisDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaArquivoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaEmailDao;
@@ -39,10 +44,13 @@ import br.gov.df.emater.aterwebsrv.modelo.formulario.FormularioVersao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Arquivo;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Email;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Endereco;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.Estado;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.Municipio;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaArquivo;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaEmail;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaEndereco;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaGrupoSocial;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaRelacionamento;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaTelefone;
@@ -110,7 +118,19 @@ public class SalvarCmd extends _Comando {
 	@Autowired
 	private ColetaDao coletaDao;
 
+	@Autowired
+	private EntityManager em;
+
 	private RelacionamentoTipo relacionamentoTipo;
+	
+	@Autowired
+	private PaisDao paisDao;
+
+	@Autowired
+	private EstadoDao estadoDao;
+
+	@Autowired
+	private MunicipioDao municipioDao;
 
 	@Autowired
 	private PessoaGrupoSocialDao pessoaGrupoSocialDao;
@@ -129,19 +149,52 @@ public class SalvarCmd extends _Comando {
 		}
 		result.setUsuarioAlteracao(getUsuario(contexto.getUsuario().getName()));
 		result.setAlteracaoData(Calendar.getInstance());
+		
+		// ajustar os dados de nascimento da pessoa
+		if (result instanceof PessoaFisica) {
+			PessoaFisica pf = (PessoaFisica) result;
+			
+			if (pf.getNascimentoPais() != null && pf.getNascimentoPais().getId() != null) {
+				pf.setNascimentoPais(paisDao.findOne(pf.getNascimentoPais().getId()));
+			} else {
+				pf.setNascimentoPais(null);
+			}
+			if (pf.getNascimentoPais() != null && pf.getNascimentoEstado() != null && pf.getNascimentoEstado().getId() != null) {
+				Estado estado = estadoDao.findOne(pf.getNascimentoEstado().getId());
+				if (estado.getPais().getId() != pf.getNascimentoPais().getId()) {
+					pf.setNascimentoEstado(null);
+				} else {
+					pf.setNascimentoEstado(estado);
+				}
+			} else {
+				pf.setNascimentoEstado(null);
+			}
+			if (pf.getNascimentoEstado() != null && pf.getNascimentoMunicipio() != null && pf.getNascimentoMunicipio().getId() != null) {
+				Municipio municipio = municipioDao.findOne(pf.getNascimentoMunicipio().getId());
+				if (municipio.getEstado().getId() != pf.getNascimentoEstado().getId()) {
+					pf.setNascimentoMunicipio(null);
+				} else {
+					pf.setNascimentoMunicipio(municipio);
+				}
+			} else {
+				pf.setNascimentoMunicipio(null);
+			}
+		}
+
+		dao.save(result);
+
+		PublicoAlvo publicoAlvo = result.getPublicoAlvo();
+		result.setPublicoAlvo(null);
 
 		// publico alvo
 		if (Confirmacao.S.equals(result.getPublicoAlvoConfirmacao())) {
-			PublicoAlvo publicoAlvo = result.getPublicoAlvo();
-
+			publicoAlvo.setPessoa(result);
 			if (publicoAlvo.getId() == null) {
-				PublicoAlvo salvo = publicoAlvoDao.findOneByPessoa(result);
+				PublicoAlvo salvo = (PublicoAlvo) publicoAlvoDao.findOneByPessoa(publicoAlvo.getPessoa());
 				if (salvo != null) {
 					publicoAlvo.setId(salvo.getId());
 				}
 			}
-
-			publicoAlvo.setPessoa(result);
 			publicoAlvoDao.save(publicoAlvo);
 
 			// salvar as propriedades vinculadas ao publico alvo
@@ -167,11 +220,8 @@ public class SalvarCmd extends _Comando {
 				}
 			}
 			result.setPublicoAlvo(publicoAlvo);
-		} else {
-			result.setPublicoAlvo(null);
 		}
 
-		dao.save(result);
 
 		// salvar enderecos
 		if (result.getEnderecoList() != null) {

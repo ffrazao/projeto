@@ -1,14 +1,5 @@
 <div class="row">
     <div class="form-group col-md-3">
-        <label class="control-label">Segmento</label>
-        <select class="form-control" id="segmento" name="segmento" ng-model="cadastro.registro.publicoAlvo.segmento" ng-options="item.codigo as item.descricao for item in cadastro.apoio.publicoAlvoSegmentoList" ng-required="cadastro.registro.publicoAlvoConfirmacao === 'S'">
-        </select>
-        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.segmento.$error.required">
-            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-            Campo Obrigatório
-        </div>
-    </div>
-    <div class="form-group col-md-3">
         <label class="control-label">Categoria</label>
         <select class="form-control" id="categoria" name="categoria" ng-model="cadastro.registro.publicoAlvo.categoria" ng-options="item.codigo as item.descricao for item in cadastro.apoio.publicoAlvoCategoriaList" ng-required="cadastro.registro.publicoAlvoConfirmacao === 'S'">
         </select>
@@ -18,8 +9,21 @@
         </div>
     </div>
     <div class="form-group col-md-3">
+        <label class="control-label">Segmento</label>
+        <select class="form-control" id="segmento" name="segmento" ng-model="cadastro.registro.publicoAlvo.segmento" ng-options="item.codigo as item.descricao for item in cadastro.apoio.publicoAlvoSegmentoList" ng-required="cadastro.registro.publicoAlvoConfirmacao === 'S'">
+        </select>
+        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.segmento.$error.required">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Campo Obrigatório
+        </div>
+    </div>
+    <div class="form-group col-md-3">
         <label class="control-label">Geração</label>
-        <input class="form-control" type="text" ng-model="cadastro.apoio.geracao" readonly="true" />
+        <input class="form-control" id="geracao" name="geracao" type="text" ng-model="cadastro.apoio.geracao" readonly="true" ng-required="true"/>
+        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.geracao.$error.required">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Campo Obrigatório
+        </div>
     </div>
     <div class="form-group col-md-3">
         <label class="control-label">Tradição</label>
@@ -29,28 +33,32 @@
     </div>
 </div>
 <div class="row">
-    <div class="form-group col-md-2">
-        <label class="control-label">Qtd. ATER no ano</label>
-        <input class="form-control" type="text" readonly="true" />
-    </div>
-    <div class="form-group col-md-2">
-        <label class="control-label">IPA AG</label>
-        <input class="form-control" type="text" readonly="true" />
-    </div>
-    <div class="form-group col-md-2">
-        <label class="control-label">IPA AN</label>
-        <input class="form-control" type="text" readonly="true" />
-    </div>
-    <div class="form-group col-md-2">
-        <label class="control-label">IPA NA</label>
-        <input class="form-control" type="text" readonly="true" />
-    </div>
-    <div class="form-group col-md-2">
-        <label class="control-label">IPA FL</label>
-        <input class="form-control" type="text" readonly="true" />
-    </div>
-    <div class="form-group col-md-2">
-        <button class="form-control button" type="button" readonly="true">Consultar</button>
+    <div class="form-group col-md-8">
+        <label class="control-label">DAP - Declaração de Aptidão ao PRONAF</label>
+        <div class="row">
+            <div class="col-md-3">
+                <label class="control-label">Situação</label>
+                <select class="form-control" ng-model="cadastro.registro.dapSituacao" ng-options="item.codigo as item.descricao for item in cadastro.apoio.confirmacaoDapList">
+                    <option value="">-- Não informado --</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="control-label">Registro</label>
+                <input class="form-control" type="text" ng-model="cadastro.registro.dapRegistro"/>
+            </div>
+            <div class="col-md-3">
+                <label class="control-label">Dt. Validade</label>
+                <input class="form-control" type="text" id="dapValidade" name="dapValidade" ng-model="cadastro.registro.dapValidade" ui-date-mask/>
+                <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.dapValidade.$error.date">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    Valor Inválido!
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label class="control-label">Observação</label>
+                <input class="form-control" type="text" ng-model="cadastro.registro.dapObservacao"/>
+            </div>
+        </div>
     </div>
 </div>
 <div class="row">
@@ -84,5 +92,30 @@
     <div class="form-group col-md-12">
         <label class="control-label">Propriedades Vinculadas</label>
         <ng-include src="'pessoa/sub-publico-alvo-propriedade-rural.html'" ng-controller="PublicoAlvoPropriedadeRuralCtrl" />
+    </div>
+</div>
+<div class="row">
+    <div class="form-group col-md-2">
+        <label class="control-label">Qtd. ATER no ano</label>
+        <input class="form-control" type="text" readonly="true" />
+    </div>
+    <div class="form-group col-md-2">
+        <label class="control-label">IPA AG</label>
+        <input class="form-control" type="text" readonly="true" />
+    </div>
+    <div class="form-group col-md-2">
+        <label class="control-label">IPA AN</label>
+        <input class="form-control" type="text" readonly="true" />
+    </div>
+    <div class="form-group col-md-2">
+        <label class="control-label">IPA NA</label>
+        <input class="form-control" type="text" readonly="true" />
+    </div>
+    <div class="form-group col-md-2">
+        <label class="control-label">IPA FL</label>
+        <input class="form-control" type="text" readonly="true" />
+    </div>
+    <div class="form-group col-md-2">
+        <button class="form-control button" type="button" readonly="true">Consultar</button>
     </div>
 </div>

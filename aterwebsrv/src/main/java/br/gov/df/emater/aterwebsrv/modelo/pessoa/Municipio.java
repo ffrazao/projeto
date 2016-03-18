@@ -54,9 +54,11 @@ public class Municipio extends EntidadeBase implements _ChavePrimaria<Integer>, 
 		this.setNome(nome);
 	}
 
-	public Municipio(Integer id, String nome, String sigla) {
+	public Municipio(Integer id, String nome, String sigla, Confirmacao padrao, Confirmacao capital) {
 		this(id, nome);
 		this.setSigla(sigla);
+		this.setPadrao(padrao);
+		this.setCapital(capital);
 	}
 
 	public Confirmacao getCapital() {
@@ -90,7 +92,7 @@ public class Municipio extends EntidadeBase implements _ChavePrimaria<Integer>, 
 
 	@Override
 	public Municipio infoBasica() {
-		return new Municipio(this.id, this.nome, this.sigla);
+		return new Municipio(this.id, this.nome, this.sigla, this.padrao, this.capital);
 	}
 
 	public void setCapital(Confirmacao capital) {

@@ -54,9 +54,11 @@ public class Estado extends EntidadeBase implements _ChavePrimaria<Integer>, Inf
 		this.setNome(nome);
 	}
 
-	public Estado(Integer id, String nome, String sigla) {
+	public Estado(Integer id, String nome, String sigla, Confirmacao padrao, Confirmacao capital) {
 		this(id, nome);
 		this.setSigla(sigla);
+		this.setPadrao(padrao);
+		this.setCapital(capital);
 	}
 
 	public Confirmacao getCapital() {
@@ -90,7 +92,7 @@ public class Estado extends EntidadeBase implements _ChavePrimaria<Integer>, Inf
 
 	@Override
 	public Estado infoBasica() {
-		return new Estado(this.id, this.nome, this.sigla);
+		return new Estado(this.id, this.nome, this.sigla, this.padrao, this.capital);
 	}
 
 	public void setCapital(Confirmacao capital) {

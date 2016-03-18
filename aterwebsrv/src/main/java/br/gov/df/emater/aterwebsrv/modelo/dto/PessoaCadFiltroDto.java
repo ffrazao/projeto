@@ -30,7 +30,7 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 
 	private List<GrupoSocial> grupoSocialList;
 
-	private String nome;
+	private Set<TagDto> nomes;
 
 	private Set<PessoaGenero> pessoaGenero;
 
@@ -96,8 +96,8 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 		return grupoSocialList;
 	}
 
-	public String getNome() {
-		return nome;
+	public Set<TagDto> getNomes() {
+		return nomes;
 	}
 
 	public Set<PessoaGenero> getPessoaGenero() {
@@ -208,8 +208,8 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 		this.grupoSocialList = grupoSocialList;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setNomes(Set<TagDto> nomes) {
+		this.nomes = nomes;
 	}
 
 	public void setPessoaGenero(Set<PessoaGenero> pessoaGenero) {

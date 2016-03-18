@@ -12,8 +12,8 @@
                         <span ng-hide="cadastro.filtro.tipoPessoa.length === 1 && cadastro.filtro.tipoPessoa.indexOf('PJ') >= 0">Nome/Apelido</span>
                     </label>
                     <div class="col-md-6">
-                        <input id="nome" name="nome" type="text" placeholder="" class="form-control input-md" ng-model="cadastro.filtro.nome">
-                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.nome.$error.required">
+                        <tags-input id="nomes" name="nomes" ng-model="cadastro.filtro.nomes" placeholder="Digite o nome, ou parte dele, e tecle enter" replace-spaces-with-dashes="false"></tags-input>
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.nomes.$error.required">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             Campo Obrigatório
                         </div>

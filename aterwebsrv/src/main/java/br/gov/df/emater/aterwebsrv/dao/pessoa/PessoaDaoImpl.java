@@ -18,8 +18,8 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaTipo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoCategoria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoSegmento;
-import br.gov.df.emater.aterwebsrv.modelo.dto.FiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.PessoaCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.modelo.dto.TagDto;
 
 public class PessoaDaoImpl implements PessoaDaoCustom {
 
@@ -61,16 +61,17 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 		if (filtrarPublicoAlvo(filtro)) {
 			sql.append("and   p.publicoAlvoConfirmacao = 'S'").append("\n");
 		}
-		if (!StringUtils.isEmpty(filtro.getNome())) {
+		if (!CollectionUtils.isEmpty(filtro.getNomes())) {
 			sql.append("and (").append("\n");
 			sqlTemp = new StringBuilder();
-			for (String nome : filtro.getNome().split(FiltroDto.SEPARADOR_CAMPO)) {
+			for (TagDto nome : filtro.getNomes()) {
 				if (sqlTemp.length() > 0) {
 					sqlTemp.append(" or ");
 				}
-				params.add(String.format("%%%s%%", nome.trim()));
+				String n = nome.getText().replaceAll("\\s", "%"); 
+				params.add(String.format("%%%s%%", n));
 				sqlTemp.append(" (p.nome like ?").append(params.size());
-				params.add(String.format("%%%s%%", nome.trim()));
+				params.add(String.format("%%%s%%", n));
 				sqlTemp.append(" or p.apelidoSigla like ?").append(params.size()).append(")").append("\n");
 			}
 			sql.append(sqlTemp);

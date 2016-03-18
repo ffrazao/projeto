@@ -83,6 +83,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                         }
 
                         removerCampo(scp.cadastro.apoio.comunidadeList, ['@jsonId', 'unidadeOrganizacional']);
+                        scp.cadastro.apoio.publicoAlvoSegmentoListOriginal = angular.copy(scp.cadastro.apoio.publicoAlvoSegmentoList);
                     }
                 });
                 var t = TokenStorage.token();
