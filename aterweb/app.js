@@ -1,4 +1,4 @@
-/* global moment */
+/* global moment, isUndefOrNull */
 /* jslint loopfunc: true */
 
 (function(pNmModulo, pNmController, pNmFormulario) {
@@ -238,8 +238,8 @@ angular.module(pNmModulo).directive('ngValorMax', function () {
     };
 });
 
-angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 'toastr', 'UtilSrv', '$stateParams',
-  function($rootScope, $uibModal, FrzNavegadorParams, toastr, UtilSrv, $stateParams) {
+angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 'toastr', 'UtilSrv', '$stateParams', '$timeout',
+  function($rootScope, $uibModal, FrzNavegadorParams, toastr, UtilSrv, $stateParams, $timeout) {
     $rootScope.servicoUrl = "https://localhost:8443";
     $rootScope.authenticated = false;
     $rootScope.token = null;
@@ -288,6 +288,18 @@ angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 
     };
     $rootScope.hoje = function() {
         return new Date();
+    };
+    $rootScope.executarOuPostergar = function(condicao, funcao, parametros, delay, postergarAgora) {
+        if (postergarAgora) {
+            return $timeout($rootScope.executarOuPostergar, delay || 5000, true, condicao, funcao, parametros, delay, false);
+        } else {
+            var cond = condicao();
+            if (!isUndefOrNull(cond) && cond) {
+                return funcao(parametros);
+            } else {
+                return $rootScope.executarOuPostergar(condicao, funcao, parametros, delay, true);
+            }
+        }
     };
     // fim funcoes de apoio
 

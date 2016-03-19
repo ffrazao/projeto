@@ -40,7 +40,7 @@ public class NovoCmd extends _Comando {
 		areaList.add(area);
 		endereco.setAreaList(areaList);
 		
-		result.setEndereco(endereco);
+		//result.setEndereco(endereco);
 
 		contexto.setResposta(result);
 

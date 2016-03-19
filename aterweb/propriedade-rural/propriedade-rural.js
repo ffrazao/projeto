@@ -283,32 +283,45 @@ angular.module(pNmModulo).controller(pNmController,
         return $scope.incluirDepois(registro);
     };
     $scope.incluirDepois = function (registro) {
-        $scope.map.markers = [];
-        $scope.map.polys = [];
+        $scope.executarOuPostergar(function() {
+            return $scope.map;
+        }, function(registro) {
+            $scope.map.markers = [];
+            $scope.map.polys = [];
 
-        if (registro.endereco.entradaPrincipal) {
-            $scope.map.markers.push({id: $scope.map.markers.length, latitude: registro.endereco.entradaPrincipal.coordinates[0], longitude: registro.endereco.entradaPrincipal.coordinates[1]});
-            if ($scope.map.controle.getGMap) {
-                $scope.map.controle.getGMap().panTo(new $scope.map.maps.LatLng($scope.map.markers[0].latitude, $scope.map.markers[0].longitude));
+            if (!registro || !registro.endereco) {
+                return;
             }
-        }
 
-        if (registro.endereco.areaList) {        
-            registro.endereco.areaList.forEach(function(area) {
-                var poly = {id: $scope.map.polys.length, path: []};
-                area.poligono.coordinates.forEach(function(coordinate) {
-                    coordinate.forEach(function (c) {
-                        poly.path.push({id: poly.path.length, latitude: c[0], longitude: c[1]});
+            if (registro.endereco.entradaPrincipal) {
+                $scope.map.markers.push({id: $scope.map.markers.length, latitude: registro.endereco.entradaPrincipal.coordinates[0], longitude: registro.endereco.entradaPrincipal.coordinates[1]});
+                // centralizar o ponto
+                $scope.executarOuPostergar(function(){return $scope.map.controle.getGMap;}, function(pos) {
+                    $scope.map.controle.getGMap().panTo(pos);
+                    $scope.map.controle.getGMap().setZoom(15);
+                }, {lat: $scope.map.markers[0].latitude, lng: $scope.map.markers[0].longitude}, 4000, true);
+            }
+
+            if (registro.endereco.areaList) {        
+                registro.endereco.areaList.forEach(function(area) {
+                    var poly = {id: $scope.map.polys.length, path: []};
+                    area.poligono.coordinates.forEach(function(coordinate) {
+                        coordinate.forEach(function (c) {
+                            poly.path.push({id: poly.path.length, latitude: c[0], longitude: c[1]});
+                        });
                     });
+                    $scope.map.polys.push(poly);
                 });
-                $scope.map.polys.push(poly);
-            });
-        }
+            }
+        }, registro, 500);
     };
     $scope.confirmarEditarAntes = function (cadastro) {
         return $scope.confirmarIncluirAntes(cadastro);
     };
     $scope.confirmarIncluirAntes = function (cadastro) {
+        if (!cadastro.registro.endereco) {
+            cadastro.registro.endereco = {};
+        }
         cadastro.registro.endereco.entradaPrincipal = {type: 'Point', coordinates: [$scope.map.markers[0].latitude, $scope.map.markers[0].longitude]};
 
         cadastro.registro.endereco.areaList = [];
@@ -342,13 +355,25 @@ angular.module(pNmModulo).controller(pNmController,
         }
     };
 
+    $scope.clicarMarker = function(instancia, evento, objeto) {
+        console.log(instancia, evento, objeto);
+    };
+
     uiGmapGoogleMapApi.then(function(maps) {
 
         $scope.map = angular.extend({}, {
             bounds: {},
             center: { latitude: -15.732687616157767, longitude: -47.90378594955473, },
             controle: {},
-            events: {},
+            events: {
+                /*tilesloaded: function (map) {
+                    $scope.$apply(function () {
+                        $log.info('this is the map instance', map);
+                        $scope.map.instancia = map;
+                    });
+                }*/
+            },
+            //instancia: null,
             maps: maps,
             markers: [],
             options: { disableDefaultUI: false, scrollwheel: true, },
@@ -453,7 +478,7 @@ angular.module(pNmModulo).controller(pNmController,
         };
 
         uiGmapIsReady.promise().then(function() {
-            console.log($scope.map);
+            //console.log($scope.map);
         });
     });
     // fim: mapa 
