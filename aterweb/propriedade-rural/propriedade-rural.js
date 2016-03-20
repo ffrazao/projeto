@@ -508,7 +508,7 @@ angular.module(pNmModulo).controller('MapaCtrl',
         ponteControllerSrv.getScp().removeElemento();
     };
     $scope.selecionado = function() {
-        if (!ponteControllerSrv.getScp()) {
+        if (!ponteControllerSrv.getScp() || !ponteControllerSrv.getScp().map) {
             return null;
         } else {
             return ponteControllerSrv.getScp().map.selecionado;
