@@ -54,7 +54,7 @@ public class Comunidade extends EntidadeBase implements _ChavePrimaria<Integer>,
 	public Comunidade(Integer id, String nome, UnidadeOrganizacional unidadeOrganizacional) {
 		setId(id);
 		setNome(nome);
-		setUnidadeOrganizacional(unidadeOrganizacional == null ? null : unidadeOrganizacional.infoBasica());
+		setUnidadeOrganizacional(unidadeOrganizacional);
 	}
 
 	public Cidade getCidade() {
@@ -83,7 +83,7 @@ public class Comunidade extends EntidadeBase implements _ChavePrimaria<Integer>,
 
 	@Override
 	public Comunidade infoBasica() {
-		return new Comunidade(this.getId(), this.getNome(), this.unidadeOrganizacional);
+		return new Comunidade(this.getId(), this.getNome(), this.unidadeOrganizacional == null ? null : this.unidadeOrganizacional.infoBasica());
 	}
 
 	public void setCidade(Cidade cidade) {

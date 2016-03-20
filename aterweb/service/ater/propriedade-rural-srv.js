@@ -13,6 +13,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                 UtilSrv.dominio({ent: [
                    'UnidadeOrganizacional',
                    'Comunidade',
+                   'ComunidadeBaciaHidrografica',
                    'SituacaoFundiaria',
                    'AreaUtil',
                    'SistemaProducao',
@@ -20,13 +21,17 @@ angular.module(pNmModulo).factory(pNmFactory,
                    'PropriedadeRuralVinculoTipo',
                 ]}).success(function(resposta) {
                     if (resposta && resposta.resultado) {
-                        scp.cadastro.apoio.unidadeOrganizacionalList = resposta.resultado[0];
-                        scp.cadastro.apoio.comunidadeList = resposta.resultado[1];
-                        scp.cadastro.apoio.situacaoFundiariaList = resposta.resultado[2];
-                        scp.cadastro.apoio.areaUtilList = resposta.resultado[3];
-                        scp.cadastro.apoio.sistemaProducaoList = resposta.resultado[4];
-                        scp.cadastro.apoio.confirmacaoList = resposta.resultado[5];
-                        scp.cadastro.apoio.propriedadeRuralVinculoTipoList = resposta.resultado[6];
+                        var i = 0;
+                        scp.cadastro.apoio.unidadeOrganizacionalList = resposta.resultado[i++];
+                        scp.cadastro.apoio.comunidadeList = resposta.resultado[i++];
+                        scp.cadastro.apoio.comunidadeBaciaHidrograficaList = resposta.resultado[i++];
+                        scp.cadastro.apoio.situacaoFundiariaList = resposta.resultado[i++];
+                        scp.cadastro.apoio.areaUtilList = resposta.resultado[i++];
+                        scp.cadastro.apoio.sistemaProducaoList = resposta.resultado[i++];
+                        scp.cadastro.apoio.confirmacaoList = resposta.resultado[i++];
+                        scp.cadastro.apoio.propriedadeRuralVinculoTipoList = resposta.resultado[i++];
+
+                        scp.cadastro.apoio.baciaHidrograficaList = [];
                     }
                 });
                 var t = TokenStorage.token();

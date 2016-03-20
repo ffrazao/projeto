@@ -12,11 +12,26 @@ angular.module(pNmModulo).config(['$stateProvider', function($stateProvider) {
 
 }]);
 
+angular.module(pNmModulo).factory('ponteControllerSrv', [function () {
+    var factory = {
+        scp: null,
+        getScp: function() {
+            return this.scp;
+        },
+        setScp: function(scp) {
+            this.scp = scp;
+        },
+    }; 
+    return factory;
+}]);
+
 angular.module(pNmModulo).controller(pNmController,
     ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance',
     'modalCadastro', 'UtilSrv', 'mensagemSrv', 'PropriedadeRuralSrv', 'EnderecoSrv', 'uiGmapGoogleMapApi', 'uiGmapIsReady',
+    'ponteControllerSrv', 
     function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, 
-        modalCadastro, UtilSrv, mensagemSrv, PropriedadeRuralSrv, EnderecoSrv, uiGmapGoogleMapApi, uiGmapIsReady) {
+        modalCadastro, UtilSrv, mensagemSrv, PropriedadeRuralSrv, EnderecoSrv, uiGmapGoogleMapApi, uiGmapIsReady,
+        ponteControllerSrv) {
 
         // inicializacao
         $scope.crudInit($scope, $state, null, pNmFormulario, PropriedadeRuralSrv);
@@ -276,9 +291,22 @@ angular.module(pNmModulo).controller(pNmController,
         $scope.tabs[1].visivel = $scope.cadastro.registro.id > 0;
         $scope.tabs[2].visivel = $scope.cadastro.registro.id > 0 && angular.isObject($scope.cadastro.registro.comunidade) && $scope.cadastro.registro.comunidade.id > 0;
     });
+    $scope.$watch('cadastro.registro.comunidade', function(newValue, oldValue) {
+        if (newValue && newValue.id) {
+            $scope.cadastro.apoio.baciaHidrograficaList = [];
+            $scope.cadastro.apoio.comunidadeBaciaHidrograficaList.forEach(function(item) {
+                if (newValue.id === item.comunidade.id) {
+                    $scope.cadastro.apoio.baciaHidrograficaList.push(item.baciaHidrografica);
+                }
+            });
+        }
+    });
+
     // fim dos watches
 
     // inicio: mapa
+    $scope.elementoId = angular.extend(0, 0, $scope.elementoId);
+
     $scope.visualizarDepois = function(registro) {
         return $scope.incluirDepois(registro);
     };
@@ -294,7 +322,7 @@ angular.module(pNmModulo).controller(pNmController,
             }
 
             if (registro.endereco.entradaPrincipal) {
-                $scope.map.markers.push({id: $scope.map.markers.length, latitude: registro.endereco.entradaPrincipal.coordinates[0], longitude: registro.endereco.entradaPrincipal.coordinates[1]});
+                $scope.map.markers.push({"elementoId": ++$scope.elementoId, "latitude": registro.endereco.entradaPrincipal.coordinates[0], "longitude": registro.endereco.entradaPrincipal.coordinates[1]});
                 // centralizar o ponto
                 $scope.executarOuPostergar(function(){return $scope.map.controle.getGMap;}, function(pos) {
                     $scope.map.controle.getGMap().panTo(pos);
@@ -304,10 +332,10 @@ angular.module(pNmModulo).controller(pNmController,
 
             if (registro.endereco.areaList) {        
                 registro.endereco.areaList.forEach(function(area) {
-                    var poly = {id: $scope.map.polys.length, path: []};
+                    var poly = {"elementoId": ++$scope.elementoId, "path": [], "id": area.id, "nome": area.nome};
                     area.poligono.coordinates.forEach(function(coordinate) {
                         coordinate.forEach(function (c) {
-                            poly.path.push({id: poly.path.length, latitude: c[0], longitude: c[1]});
+                            poly.path.push({latitude: c[0], longitude: c[1]});
                         });
                     });
                     $scope.map.polys.push(poly);
@@ -322,58 +350,42 @@ angular.module(pNmModulo).controller(pNmController,
         if (!cadastro.registro.endereco) {
             cadastro.registro.endereco = {};
         }
-        cadastro.registro.endereco.entradaPrincipal = {type: 'Point', coordinates: [$scope.map.markers[0].latitude, $scope.map.markers[0].longitude]};
+        if ($scope.map.markers && $scope.map.markers.length) {
+            cadastro.registro.endereco.entradaPrincipal = {type: 'Point', coordinates: [$scope.map.markers[0].latitude, $scope.map.markers[0].longitude]};
+        } else {
+            cadastro.registro.endereco.entradaPrincipal = null;
+        }
 
-        cadastro.registro.endereco.areaList = [];
+        if ($scope.map.polys && $scope.map.polys.length) {
+            cadastro.registro.endereco.areaList = [];
 
-        $scope.map.polys.forEach(function(poly) {
-            var area = {nome: 'teste', poligono: {type: 'Polygon', coordinates: []}};
-            var coord = [];
-            poly.path.forEach(function(p) {
-                coord.push([p.latitude, p.longitude]);
+            $scope.map.polys.forEach(function(poly) {
+                var area = {"id": poly.id, "nome": poly.nome, "poligono": {type: 'Polygon', coordinates: []}};
+                var coord = [];
+                poly.path.forEach(function(p) {
+                    coord.push([p.latitude, p.longitude]);
+                });
+                // ajustar o ultimo ponto se necessario
+                if (coord.length && (coord[0][0] !== coord[coord.length-1][0] || coord[0][1] !== coord[coord.length-1][1])) {
+                    coord.push([coord[0][0], coord[0][1]]);
+                }
+                area.poligono.coordinates.push(coord);
+                cadastro.registro.endereco.areaList.push(area);
             });
-            if (coord.length && (coord[0][0] !== coord[coord.length-1][0] || coord[0][1] !== coord[coord.length-1][1])) {
-                coord.push([coord[0][0], coord[0][1]]);
-            }
-            area.poligono.coordinates.push(coord);
-            cadastro.registro.endereco.areaList.push(area);
-        });
+        } else {
+            cadastro.registro.endereco.areaList = null;
+        }
 
         cadastro.registro.endereco.logradouro = "teste";
-    };
-
-    $scope.elementoId = angular.extend(0, 0, $scope.elementoId);
-
-    $scope.limpaElementos = function(array, mapa, forcar) {
-        for (var i = (array.length - 1); i >= 0; i--) {
-            if ((forcar) || 
-                (!isUndefOrNull(array[i].uiGmap_id) && array[i].uiGmap_id !== mapa.uiGmap_id) ||
-                (array[i].getMap && (array[i].getMap() === null || array[i].getMap().uiGmap_id !== mapa.uiGmap_id))) {
-                array[i].setMap(null);
-                array.splice(i, 1);
-            }
-        }
-    };
-
-    $scope.clicarMarker = function(instancia, evento, objeto) {
-        console.log(instancia, evento, objeto);
     };
 
     uiGmapGoogleMapApi.then(function(maps) {
 
         $scope.map = angular.extend({}, {
             bounds: {},
-            center: { latitude: -15.732687616157767, longitude: -47.90378594955473, },
+            center: {latitude: -15.732687616157767, longitude: -47.90378594955473,},
             controle: {},
-            events: {
-                /*tilesloaded: function (map) {
-                    $scope.$apply(function () {
-                        $log.info('this is the map instance', map);
-                        $scope.map.instancia = map;
-                    });
-                }*/
-            },
-            //instancia: null,
+            events: {},
             maps: maps,
             markers: [],
             options: { disableDefaultUI: false, scrollwheel: true, },
@@ -386,7 +398,6 @@ angular.module(pNmModulo).controller(pNmController,
         $scope.drawingManager = angular.extend({}, {
             controle: {}, 
             opcoes: {
-                drawingMode: maps.drawing.OverlayType.MARKER,
                 drawingControl: true,
                 drawingControlOptions: {
                     position: maps.ControlPosition.TOP_CENTER,
@@ -398,49 +409,22 @@ angular.module(pNmModulo).controller(pNmController,
             }, 
             eventos: {
                 markercomplete: function(gObject, eventName, model, marker) {
-                    $scope.limpaElementos($scope.map.markers, marker[0].getMap());
-
-                    marker[0]['id'] = ++$scope.elementoId;
+                    marker[0].setMap(null);
 
                     if ($scope.map.markers.length >= 1) {
                         toastr.error('Só é possível marcar o ponto principal da Propriedade Rural', 'Erro de Marcação');
-                        marker[0].setMap(null);
                         return;
                     }
-                    marker[0].setDraggable(true);
-                    var info = infoCreate(marker[0]);
-                    marker[0].addListener('click', function() {
-                        info.setPosition(marker[0].getPosition());
-                        info.setContent('ptz!' + marker[0].id);
-                        info.open(marker[0].getMap(), marker[0]);
-                        marker[0].map.panTo(marker[0].getPosition());
-                    });
-                    marker[0].setMap(null);
-                    $scope.map.markers.push({id: marker[0]['id'], latitude: marker[0].getPosition().lat(), longitude: marker[0].getPosition().lng(), });
+                    $scope.map.markers.push({"elementoId": ++$scope.elementoId, "latitude": marker[0].getPosition().lat(), "longitude": marker[0].getPosition().lng(), });
                 },
                 polygoncomplete: function(gObject, eventName, model, polygon) {
-                    $scope.limpaElementos($scope.map.polys, polygon[0].getMap());
-
-                    polygon[0]['id'] = ++$scope.elementoId;
-
-                    polygon[0].setDraggable(true);
-                    polygon[0].setEditable(true);
-                    var info = infoCreate(polygon[0]);
-                    polygon[0].addListener('click', function() {
-                        var bounds = new maps.LatLngBounds();
-                        polygon[0].getPath().forEach(function(element,index){bounds.extend(element);});
-                        info.setPosition(bounds.getCenter());
-                        info.setContent('ptz!' + polygon[0].id);
-                        info.open(polygon[0].getMap(), polygon[0]);
-                        polygon[0].map.panTo(bounds.getCenter());
-                    });
-                    var path = [];
-
-                    polygon[0].getPath().forEach(function(element,index) {
-                        path.push({latitude: element.lat(), longitude: element.lng()});
-                    });
                     polygon[0].setMap(null);
-                    $scope.map.polys.push({id: polygon[0]['id'], path: path});
+
+                    var path = [];
+                    polygon[0].getPath().forEach(function(element,index) {
+                        path.push({"latitude": element.lat(), "longitude": element.lng()});
+                    });
+                    $scope.map.polys.push({"elementoId": ++$scope.elementoId, "path": path});
                 },
             }
         }, $scope.drawingManager);
@@ -453,8 +437,10 @@ angular.module(pNmModulo).controller(pNmController,
             },
             eventos : {
                 click: function(a,b,c,d,e) {
-                    a.setDraggable(true);
-                }
+                    $scope.$apply(function() {
+                        $scope.map.selecionado = c;
+                    });
+                },
             },
         };
 
@@ -465,23 +451,70 @@ angular.module(pNmModulo).controller(pNmController,
                 click: function(a,b,c,d,e) {
                     a.setDraggable(true);
                     a.setEditable(true);
+                    $scope.$apply(function() {
+                        $scope.map.selecionado = c;
+                    });
+                },
+            },
+        };
+
+    });
+
+    $scope.searchbox = {
+        template: "searchBox.tpl.html",
+        eventos: {
+            places_changed: function (searchBox) {
+                var place = searchBox.getPlaces();
+                if (!place || place === 'undefined' || place.length === 0) {
+                    console.log('no place data :(');
+                    return;
+                }
+
+                $scope.map.zoom = 15;
+                $scope.map.center = {
+                    "latitude": place[0].geometry.location.lat(),
+                    "longitude": place[0].geometry.location.lng(),
+                };
+            }
+        }
+    };
+
+    $scope.removeElemento = function() {
+        var i;
+        bloco: {
+            for (i = $scope.map.markers.length-1; i >= 0; i--) {
+                if ($scope.map.markers[i].elementoId === $scope.map.selecionado.elementoId) {
+                    $scope.map.markers.splice(i, 1);
+                    break bloco;
                 }
             }
-        };
-
-        var infoCreate = function(elemento) {
-            var result = new maps.InfoWindow({
-                content: 'ptz',
-            });
-            console.log(elemento);
-            return result;
-        };
-
-        uiGmapIsReady.promise().then(function() {
-            //console.log($scope.map);
-        });
-    });
+            for (i = $scope.map.polys.length-1; i >= 0; i--) {
+                if ($scope.map.polys[i].elementoId === $scope.map.selecionado.elementoId) {
+                    $scope.map.polys.splice(i, 1);
+                    break bloco;
+                }
+            }
+        }
+        $scope.map.selecionado = null;
+    };
+    ponteControllerSrv.setScp($scope);
     // fim: mapa 
 }]);
+
+angular.module(pNmModulo).controller('MapaCtrl',
+    ['$scope', 'ponteControllerSrv', 
+    function($scope, ponteControllerSrv) {
+    $scope.removeElemento = function() {
+        ponteControllerSrv.getScp().removeElemento();
+    };
+    $scope.selecionado = function() {
+        if (!ponteControllerSrv.getScp()) {
+            return null;
+        } else {
+            return ponteControllerSrv.getScp().map.selecionado;
+        }
+    };
+}]);
+
 
 })('propriedadeRural', 'PropriedadeRuralCtrl', 'Cadastro de Propriedades Rurais', 'propriedade-rural');

@@ -67,7 +67,7 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 
 	@Column(name = "apelido_sigla")
 	@Field(index = Index.YES, store = Store.YES)
-	private String apelidoSigla;
+	protected String apelidoSigla;
 
 	@OneToMany(mappedBy = "pessoa")
 	private List<PessoaArquivo> arquivoList;
@@ -89,7 +89,7 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
+	protected Integer id;
 
 	@Column(name = "inclusao_data")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -100,7 +100,7 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 
 	@NotBlank
 	@Field(index = Index.YES, store = Store.YES)
-	private String nome;
+	protected String nome;
 
 	@Lob
 	@Field(index = Index.YES, store = Store.YES)

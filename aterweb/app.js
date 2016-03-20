@@ -154,7 +154,7 @@ angular.module(pNmModulo).config(['$stateProvider', '$urlRouterProvider', 'toast
     uiGmapGoogleMapApiProvider.configure({
         key: 'AIzaSyBDb9apXz3uMJq1RD2HjUqtUfIxSW4GIlE',
         v: '3.24', //defaults to latest 3.X anyhow
-        libraries: 'weather,geometry,visualization,drawing'
+        libraries: 'weather,geometry,visualization,drawing,places'
     });
 
   }]);
@@ -220,9 +220,17 @@ angular.module(pNmModulo).directive('ngValorMax', function () {
             }
             scope.$watch(attr.ngValorMax, function () {
                 ctrl.$setViewValue(ctrl.$viewValue);
+                maxValidator(ctrl.$viewValue);
             });
             var maxValidator = function (value) {
                 var max = scope.$eval(attr.ngValorMax) || Infinity;
+                // if (typeof value === 'string' || value instanceof String) {
+                //     value = 
+                // }
+
+                if (_.isString(value)) {
+                    value = parseFloat(value);
+                }
                 if (!isEmpty(value) && value > max) {
                     ctrl.$setValidity('ngValorMax', false);
                     return undefined;

@@ -11,9 +11,9 @@ import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.ater.PropriedadeRuralArquivoDao;
 import br.gov.df.emater.aterwebsrv.dao.ater.PropriedadeRuralDao;
 import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoPropriedadeRuralDao;
+import br.gov.df.emater.aterwebsrv.dao.pessoa.AreaDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.ArquivoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.EnderecoDao;
-import br.gov.df.emater.aterwebsrv.modelo.ater.BaciaHidrografica;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRuralArquivo;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
@@ -26,23 +26,26 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Endereco;
 @Service("PropriedadeRuralSalvarCmd")
 public class SalvarCmd extends _Comando {
 
-	public SalvarCmd() {
-	}
+	@Autowired
+	private AreaDao areaDao;
+
+	@Autowired
+	private ArquivoDao arquivoDao;
 
 	@Autowired
 	private PropriedadeRuralDao dao;
-	
-	@Autowired
-	private PublicoAlvoPropriedadeRuralDao publicoAlvoPropriedadeRuralDao;
-	
-	@Autowired
-	private PropriedadeRuralArquivoDao propriedadeRuralArquivoDao;
-	
-	@Autowired
-	private ArquivoDao arquivoDao;
-	
+
 	@Autowired
 	private EnderecoDao enderecoDao;
+
+	@Autowired
+	private PropriedadeRuralArquivoDao propriedadeRuralArquivoDao;
+
+	@Autowired
+	private PublicoAlvoPropriedadeRuralDao publicoAlvoPropriedadeRuralDao;
+
+	public SalvarCmd() {
+	}
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
@@ -61,13 +64,34 @@ public class SalvarCmd extends _Comando {
 		}
 		Endereco endereco = result.getEndereco();
 		endereco.setPropriedadeRuralConfirmacao(Confirmacao.S);
-		for (Area area: endereco.getAreaList()) {
-			area.setEndereco(endereco);
+		
+		if (result.getEndereco().getId() != null) {			
+			Endereco enderecoSalvo = enderecoDao.findOne(result.getEndereco().getId());
+			if (enderecoSalvo != null && enderecoSalvo.getAreaList() != null) {
+				for (Area areaSalvo: enderecoSalvo.getAreaList()) {
+					boolean encontrou = false;
+					if (endereco.getAreaList() != null) {
+						for (Area area: endereco.getAreaList()) {
+							if (area.getId().equals(areaSalvo.getId())) {
+								encontrou = true;
+								break;
+							}
+						}
+					}
+					if (!encontrou) {
+						areaDao.delete(areaSalvo);
+					}
+				}
+			}
+		}
+
+		if (endereco.getAreaList() != null) {
+			for (Area area: endereco.getAreaList()) {
+				area.setEndereco(endereco);
+			}
 		}
 		enderecoDao.save(endereco);
 		
-		result.setBaciaHidrografica(new BaciaHidrografica(1));
-
 		dao.save(result);
 		
 		if (result.getPublicoAlvoPropriedadeRuralList() != null) {

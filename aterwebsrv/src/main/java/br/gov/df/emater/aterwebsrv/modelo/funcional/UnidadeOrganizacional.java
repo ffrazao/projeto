@@ -18,7 +18,6 @@ import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.ater.Comunidade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.UnidadeOrganizacionalClassificacao;
-import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 
 @Entity
@@ -29,7 +28,7 @@ public class UnidadeOrganizacional extends EntidadeBase implements _ChavePrimari
 
 	@Enumerated(EnumType.STRING)
 	private UnidadeOrganizacionalClassificacao classificacao;
-	
+
 	@OneToMany(mappedBy = "unidadeOrganizacional")
 	private List<Comunidade> comunidadeList;
 
@@ -52,10 +51,7 @@ public class UnidadeOrganizacional extends EntidadeBase implements _ChavePrimari
 		setId(id);
 		setNome(nome);
 		setSigla(sigla);
-		if (pessoaJuridica != null) {
-			Pessoa pessoa = pessoaJuridica.infoBasica();
-			setPessoaJuridica(pessoaJuridica == null ? null: (PessoaJuridica) pessoa);
-		}
+		setPessoaJuridica(pessoaJuridica);
 	}
 
 	public UnidadeOrganizacionalClassificacao getClassificacao() {
@@ -85,7 +81,7 @@ public class UnidadeOrganizacional extends EntidadeBase implements _ChavePrimari
 
 	@Override
 	public UnidadeOrganizacional infoBasica() {
-		return new UnidadeOrganizacional(this.id, this.nome, this.sigla, this.pessoaJuridica);
+		return new UnidadeOrganizacional(this.id, this.nome, this.sigla, this.pessoaJuridica == null ? null : (PessoaJuridica) pessoaJuridica.infoBasica());
 	}
 
 	public void setClassificacao(UnidadeOrganizacionalClassificacao classificacao) {

@@ -13,7 +13,7 @@
     </div>
     <div class="form-group col-md-4">
         <label class="control-label">Comunidade</label>
-        <select class="form-control" id="comunidade" name="comunidade" ng-model="cadastro.registro.comunidade" ng-options="item as item.nome for item in cadastro.apoio.comunidadeList track by item.id" required="true">
+        <select class="form-control" id="comunidade" name="comunidade" ng-model="cadastro.registro.comunidade" ng-options="item as item.nome group by item.unidadeOrganizacional.nome for item in cadastro.apoio.comunidadeList | orderBy: ['unidadeOrganizacional.nome', 'nome'] track by item.id" required="true">
         </select>
         <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.comunidade.$error.required">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -22,8 +22,9 @@
     </div>
     <div class="form-group col-md-4">
         <label class="control-label">Bacia Hidrográfica</label>
-        <input class="form-control input-md" id="baciaHidrografica" name="baciaHidrografica" ng-readonly="true" ng-model="cadastro.registro.baciaHidrografica.nome">
-        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.comunidade.$error.required">
+        <select class="form-control" id="baciaHidrografica" name="baciaHidrografica" ng-model="cadastro.registro.baciaHidrografica" ng-options="item as item.nome for item in cadastro.apoio.baciaHidrograficaList | orderBy: ['nome'] track by item.id" required="true">
+        </select>
+        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.baciaHidrografica.$error.required">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             Campo Obrigatório
         </div>
@@ -40,7 +41,13 @@
         </div>
     </div>
     <div class="form-group col-md-6">
-        <label class="control-label">Mapa</label>
+        <label class="control-label">Mapa {{map.selecionado.length}}</label>
+        <script type="text/ng-template" id="control.tpl.html">
+            <button class="btn btn-sm btn-danger" ng-click="removeElemento()" ng-show="selecionado()">Excluir</button>
+        </script>
+        <script type="text/ng-template" id="searchBox.tpl.html">
+            <input type="text" ng-model="enderecoPesquisa" placeholder="Procurar" ng-dblclick="enderecoPesquisa = ''"/>
+        </script>
         <ui-gmap-google-map 
             id="map"
             control="map.controle"
@@ -59,22 +66,26 @@
                 events="drawingManager.eventos">
             </ui-gmap-drawing-manager>
 
-            <ui-gmap-markers 
+            <ui-gmap-markers
+                idkey="'elementoId'" 
                 models="map.markers" 
-                control="marker.controle"
+                control="marker.controle" 
                 coords="marker.coords" 
-                options="marker.opcoes"
-                events="marker.eventos"
-                click="clicarMarker">
+                options="marker.opcoes" 
+                events="marker.eventos">
             </ui-gmap-markers>
 
             <ui-gmap-polygons 
+                idkey="'elementoId'" 
                 models="map.polys" 
-                control="poly.controle"
+                control="poly.controle" 
                 path="poly.path" 
                 events="poly.eventos">
             </ui-gmap-polygons>
 
+            <ui-gmap-map-control template="control.tpl.html" position="bottom-center" index="-1" controller="MapaCtrl"></ui-gmap-map-control>
+
+            <ui-gmap-search-box template="searchbox.template" events="searchbox.eventos" position="'TOP_RIGHT'">Digite</ui-gmap-search-box>
         </ui-gmap-google-map>
     </div>
     <div class="form-group col-md-3">
@@ -84,13 +95,6 @@
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             Campo Obrigatório
         </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="form-group col-md-12">
-        <label class="control-label">Beneficiários Vinculados</label>
-        <ng-include src="'propriedade-rural/sub-propriedade-rural-publico-alvo.html'" ng-controller="PropriedadeRuralPublicoAlvoCtrl" />
     </div>
 </div>
 
@@ -160,5 +164,12 @@
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             Campo Obrigatório
         </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="form-group col-md-12">
+        <label class="control-label">Beneficiários Vinculados</label>
+        <ng-include src="'propriedade-rural/sub-propriedade-rural-publico-alvo.html'" ng-controller="PropriedadeRuralPublicoAlvoCtrl" />
     </div>
 </div>

@@ -61,10 +61,14 @@
                             </div>
                         </td>
                         <td>
-                            <input type="text" class="form-control input-sm" id="area" name="area{{$index}}" ng-model="reg.area" ng-required="['PR', 'PA'].indexOf(reg.vinculo) >= 0"  ui-number-mask="globalFracaoHectares">
+                            <input type="text" class="form-control input-sm" id="area" name="area{{$index}}" ng-model="reg.area" ng-required="['PR', 'PA'].indexOf(reg.vinculo) >= 0" ui-number-mask="globalFracaoHectares" ng-valor-max="cadastro.registro.areaTotal">
                             <div class="label label-danger" ng-show="navegador.submetido && publicoAlvoPropriedadeRuralListFrm.area{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
+                            </div>
+                            <div class="label label-danger" ng-show="navegador.submetido && publicoAlvoPropriedadeRuralListFrm.area{{$index}}.$error.ngValorMax">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Valor máximo ultrapassado!
                             </div>
                         </td>
                         <td>
