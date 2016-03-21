@@ -516,5 +516,10 @@ angular.module(pNmModulo).controller('MapaCtrl',
     };
 }]);
 
+angular.module(pNmModulo).run(['$templateCache','uiGmapLogger', function ($templateCache,Logger) {
+    Logger.doLog = true;
+    $templateCache.put('control.tpl.html', '<button class=\"btn btn-sm btn-danger\" ng-click=\"removeElemento()\" ng-show=\"selecionado()\">Excluir</button>');
+    $templateCache.put('searchBox.tpl.html', '<input type=\"text\" ng-model=\"enderecoPesquisa\" placeholder=\"Procurar\" ng-dblclick=\"enderecoPesquisa = \'\'\"/>');
+}]);
 
 })('propriedadeRural', 'PropriedadeRuralCtrl', 'Cadastro de Propriedades Rurais', 'propriedade-rural');
