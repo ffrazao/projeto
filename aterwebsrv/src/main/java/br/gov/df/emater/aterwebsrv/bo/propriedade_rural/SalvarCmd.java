@@ -10,6 +10,7 @@ import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.ater.PropriedadeRuralArquivoDao;
 import br.gov.df.emater.aterwebsrv.dao.ater.PropriedadeRuralDao;
+import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoDao;
 import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoPropriedadeRuralDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.AreaDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.ArquivoDao;
@@ -43,6 +44,9 @@ public class SalvarCmd extends _Comando {
 
 	@Autowired
 	private PublicoAlvoPropriedadeRuralDao publicoAlvoPropriedadeRuralDao;
+
+	@Autowired
+	private PublicoAlvoDao publicoAlvoDao;
 
 	public SalvarCmd() {
 	}
@@ -97,7 +101,7 @@ public class SalvarCmd extends _Comando {
 		if (result.getPublicoAlvoPropriedadeRuralList() != null) {
 			for (PublicoAlvoPropriedadeRural papr: result.getPublicoAlvoPropriedadeRuralList()) {
 				papr.setPropriedadeRural(result);
-				//papr.setPublicoAlvo(publicoAlvoDao.findOneByPessoa(papr.getPublicoAlvo().getPessoa()));
+				papr.setPublicoAlvo(publicoAlvoDao.findOneByPessoa(papr.getPublicoAlvo().getPessoa()));
 				publicoAlvoPropriedadeRuralDao.save(papr);
 			}
 		}

@@ -67,6 +67,16 @@ public class PessoaRest {
 		}
 	}
 
+	@RequestMapping(value = "/buscar-cep", method = RequestMethod.GET)
+	@Transactional(readOnly = true)
+	public Resposta buscaCep(@RequestParam("cep") String cep, Principal usuario) {
+		try {
+			return new Resposta(facadeBo.pessoaBuscarCep(usuario, cep).getResposta());
+		} catch (Exception e) {
+			return new Resposta(e);
+		}
+	}
+
 	@Transactional
 	public Resposta salvar(@RequestBody Pessoa pessoa, Principal usuario) {
 		try {

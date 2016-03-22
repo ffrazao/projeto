@@ -16,4 +16,6 @@ public interface EstadoDao extends JpaRepository<Estado, Integer> {
 
 	List<Estado> findByCapitalAndPais(Confirmacao padrao, Pais pais);
 
+	Estado findOneByPaisAndSigla(Pais pais, String sigla);
+
 }

@@ -74,7 +74,7 @@ angular.module(pNmModulo).controller(pNmController,
     // fim: atividades do Modal
 
     var editarItem = function (destino, item) {
-        mensagemSrv.confirmacao(false, '<frz-endereco conteudo="conteudo"/>', null, item.endereco, null, null).then(function (conteudo) {
+        mensagemSrv.confirmacao(false, '<frz-endereco conteudo="conteudo"/>', null, item, null, null).then(function (conteudo) {
             // processar o retorno positivo da modal
             $scope.cadastro.registro.endereco = angular.copy(conteudo);
 
@@ -94,7 +94,6 @@ angular.module(pNmModulo).controller(pNmController,
         });
     };
 
-
     // inicio: identificacao 
     $scope.identificacaoModalOk = function () {
         // Retorno da modal
@@ -112,12 +111,13 @@ angular.module(pNmModulo).controller(pNmController,
     };
     $scope.identificacaoModalAbrir = function (size) {
         // abrir a modal
-         
-        EnderecoSrv.novo().success(function (resposta) {
-            var item = {endereco: resposta.resultado};
-            editarItem(null, item);
-        });
-
+        if (!$scope.cadastro.registro.endereco) {
+            EnderecoSrv.novo().success(function (resposta) {
+                editarItem(null, resposta.resultado);
+            });
+        } else {
+            editarItem(null, angular.copy($scope.cadastro.registro.endereco));
+        }
     };
     // fim: identificacao
 
@@ -238,23 +238,6 @@ angular.module(pNmModulo).controller(pNmController,
             item.nome.trim().toLowerCase().latinize().indexOf($scope.cadastro.apoio.localFiltro.trim().toLowerCase().latinize()) === -1);
     };
 
-    var confirmarSalvarAntes  = function (cadastro) {
-        var i;
-        if (cadastro.registro.arquivoList) {
-            for (i in cadastro.registro.arquivoList) {
-                console.log(cadastro.registro.arquivoList[i].arquivo.dataUpload);
-            }
-        }
-    };
-
-    $scope.confirmarIncluirAntes = function (cadastro) {
-        confirmarSalvarAntes(cadastro);
-    };
-
-    $scope.confirmarEditarAntes = function (cadastro) {
-        confirmarSalvarAntes(cadastro);
-    };
-
     $scope.confirmarFiltrarAntes = function(filtro) {
         filtro.empresaList = [];
         filtro.unidadeOrganizacionalList = [];
@@ -300,6 +283,48 @@ angular.module(pNmModulo).controller(pNmController,
                 }
             });
         }
+    });
+    $scope.$watch('cadastro.registro.endereco', function(newValue, oldValue) {
+        $scope.cadastro.apoio.enderecoResumo = '';
+        var e = $scope.cadastro.registro.endereco;
+        if (!e) {
+            return "";
+        }
+        var linhas = ['', '', ''];
+        if (e.logradouro) {
+            linhas[0] += e.logradouro
+        }
+        if (e.complemento) {
+            linhas[0] += (linhas[0].length ? ', ' : '') + e.complemento
+        }
+        if (e.numero) {
+            linhas[0] += (linhas[0].length ? ', ' : '') + 'numero ' + e.numero
+        }
+        if (e.cidade) {
+            linhas[1] += e.cidade.nome;
+        }
+        if (e.bairro) {
+            linhas[1] += (linhas[1].length ? ', ' : '') + e.bairro;
+        }
+        if (e.cep) {
+            linhas[2] += e.cep;
+        }
+        if (e.municipio) {
+            linhas[2] += (linhas[2].length ? ' ' : '') + e.municipio.nome;
+        }
+        if (e.estado) {
+            linhas[2] += (linhas[2].length ? ' ' : '') + e.estado.sigla;
+        }
+        var result = '';
+        linhas.forEach(function(linha) {
+            if (linha.length) {
+                if (result.length) {
+                    result += '\n';
+                }
+                result += linha;
+            }
+        });
+        $scope.cadastro.apoio.enderecoResumo =  result;
     });
 
     // fim dos watches
@@ -357,6 +382,9 @@ angular.module(pNmModulo).controller(pNmController,
         }
 
         if ($scope.map.polys && $scope.map.polys.length) {
+            if (!cadastro.registro.endereco.entradaPrincipal) {
+                throw "Favor informar a entrada principal da propriedade rural no mapa";
+            }
             cadastro.registro.endereco.areaList = [];
 
             $scope.map.polys.forEach(function(poly) {
@@ -375,8 +403,6 @@ angular.module(pNmModulo).controller(pNmController,
         } else {
             cadastro.registro.endereco.areaList = null;
         }
-
-        cadastro.registro.endereco.logradouro = "teste";
     };
 
     uiGmapGoogleMapApi.then(function(maps) {
@@ -411,6 +437,11 @@ angular.module(pNmModulo).controller(pNmController,
                 markercomplete: function(gObject, eventName, model, marker) {
                     marker[0].setMap(null);
 
+                    if (['INCLUINDO', 'EDITANDO'].indexOf($scope.navegador.estadoAtual()) < 0) {
+                        toastr.error('Primeiro ative a inclusão ou edição de registros', 'Erro ao marcar');
+                        return;
+                    }
+
                     if ($scope.map.markers.length >= 1) {
                         toastr.error('Só é possível marcar o ponto principal da Propriedade Rural', 'Erro de Marcação');
                         return;
@@ -419,6 +450,11 @@ angular.module(pNmModulo).controller(pNmController,
                 },
                 polygoncomplete: function(gObject, eventName, model, polygon) {
                     polygon[0].setMap(null);
+
+                    if (['INCLUINDO', 'EDITANDO'].indexOf($scope.navegador.estadoAtual()) < 0) {
+                        toastr.error('Primeiro ative a inclusão ou edição de registros', 'Erro ao marcar');
+                        return;
+                    }
 
                     var path = [];
                     polygon[0].getPath().forEach(function(element,index) {
@@ -438,6 +474,10 @@ angular.module(pNmModulo).controller(pNmController,
             eventos : {
                 click: function(a,b,c,d,e) {
                     $scope.$apply(function() {
+                        if (['INCLUINDO', 'EDITANDO'].indexOf($scope.navegador.estadoAtual()) < 0) {
+                            toastr.error('Primeiro ative a inclusão ou edição de registros', 'Erro ao marcar');
+                            return;
+                        }
                         $scope.map.selecionado = c;
                     });
                 },
@@ -449,9 +489,13 @@ angular.module(pNmModulo).controller(pNmController,
             path : 'path',
             eventos :{
                 click: function(a,b,c,d,e) {
-                    a.setDraggable(true);
-                    a.setEditable(true);
                     $scope.$apply(function() {
+                        if (['INCLUINDO', 'EDITANDO'].indexOf($scope.navegador.estadoAtual()) < 0) {
+                            toastr.error('Primeiro ative a inclusão ou edição de registros', 'Erro ao marcar');
+                            return;
+                        }
+                        a.setDraggable(true);
+                        a.setEditable(true);
                         $scope.map.selecionado = c;
                     });
                 },
@@ -480,6 +524,11 @@ angular.module(pNmModulo).controller(pNmController,
     };
 
     $scope.removeElemento = function() {
+        if (['INCLUINDO', 'EDITANDO'].indexOf($scope.navegador.estadoAtual()) < 0) {
+            toastr.error('Primeiro ative a inclusão ou edição de registros', 'Erro ao marcar');
+            return;
+        }
+
         var i;
         bloco: {
             for (i = $scope.map.markers.length-1; i >= 0; i--) {

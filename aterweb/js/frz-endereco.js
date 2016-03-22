@@ -9,14 +9,15 @@
      * @date 14/02/2015
      * @modify 14/02/2015
      */
-    angular.module("frz.endereco", ['uiGmapgoogle-maps']).directive('frzEndereco', ['$http', 'toastr', '$rootScope', '$q', 'UtilSrv', 'uiGmapGoogleMapApi',
-        function($http, toastr, $rootScope, $q, UtilSrv, uiGmapGoogleMap, uiGmapMarkers, uiGmapGoogleMapApi) {
+    angular.module('frz.endereco', ['uiGmapgoogle-maps']).directive('frzEndereco', ['$http', 'toastr', '$rootScope', '$q', 'UtilSrv', 'uiGmapGoogleMapApi', 
+        'PessoaSrv',
+        function($http, toastr, $rootScope, $q, UtilSrv, uiGmapGoogleMap, uiGmapMarkers, uiGmapGoogleMapApi, PessoaSrv) {
 
             return {
                 restrict : 'E',
                 templateUrl : 'js/frz-endereco.html',
                 scope : {
-                    conteudo : "="
+                    conteudo : '='
                 },
                 replace : true,
                 transclude : true,
@@ -24,23 +25,23 @@
 
                     scope.apoio = {estadoList:[], municipioList: [], cidadeList: []};
 
-                    UtilSrv.dominio({ent: ['Estado'], npk: 'pais.id', vpk: 1}).success(function(resposta) {
+                    UtilSrv.dominio({ent: ['Estado'], npk: 'pais.id', vpk: scope.conteudo.pais.id}).success(function(resposta) {
                         if (resposta && resposta.resultado) {
                             scope.apoio.estadoList = resposta.resultado[0];
                         }
                     });
 
-                    scope.$watch('conteudo.estado.id', function(newValue, oldValue) {
-                        if (newValue && newValue > 0) {
-                            UtilSrv.dominioLista(scope.apoio.municipioList, {ent:['Municipio'], npk: ['estado.id'], vpk: [newValue]});
+                    scope.$watch('conteudo.estado', function(newValue, oldValue) {
+                        if (newValue && newValue.id) {
+                            UtilSrv.dominioLista(scope.apoio.municipioList, {ent:['Municipio'], npk: ['estado.id'], vpk: [newValue.id]});
                         } else {
                             scope.apoio.municipioList = [];
                         }
                     });
 
-                    scope.$watch('conteudo.municipio.id', function(newValue, oldValue) {
-                        if (newValue && newValue > 0) {
-                            UtilSrv.dominioLista(scope.apoio.cidadeList, {ent:['Cidade'], npk: ['municipio.id'], vpk: [newValue]});
+                    scope.$watch('conteudo.municipio', function(newValue, oldValue) {
+                        if (newValue && newValue.id) {
+                            UtilSrv.dominioLista(scope.apoio.cidadeList, {ent:['Cidade'], npk: ['municipio.id'], vpk: [newValue.id]});
                         } else {
                             scope.apoio.cidadeList = [];
                         }
@@ -121,65 +122,34 @@
                       },
                     ];
 
-                    // scope.ponto = new google.maps.Marker(
-                    //   {
-                    //     position: new google.maps.LatLng(-15.732687616157767, -47.90378594955473),
-                    //     title: "Meu ponto personalizado! :-D",
-                    //     map: scope.map
-                    //   }
-                    // );
-
-
                     // ativar o atualizador de endereço
-
-                    /*scope.buscaCep = function() {
-                    scope.conteudo.pessoaGrupoCidadeVi.pessoaGrupoMunicipioVi.pessoaGrupoEstadoVi.pessoaGrupoPaisVi.id = scope.brasil;
-                    //$rootScope.emProcessamento(true);
-                    if (!isUndefOrNull(scope.conteudo) && !isUndefOrNull(scope.conteudo.cep) && scope.conteudo.cep.length === 8) {
-                    $http.get("/aterweb/pessoa-cad/buscarCep/", {"params": {"cep": scope.conteudo.cep}})
-                    .success(function(data, status, headers, config) {
-                    if (!data.executou) {
-                    toastr.error("CEP {0} não localizado!".format(scope.conteudo.cep), data.mensagem);
-                    console.log(data);
-                    } else {
-                    scope.conteudo.codigoIbge = data.resultado.ibge;
-                    scope.conteudo.pessoaGrupoCidadeVi.pessoaGrupoMunicipioVi.pessoaGrupoEstadoVi.id = data.resultado.uf;
-                    scope.conteudo.pessoaGrupoCidadeVi.pessoaGrupoMunicipioVi.id = data.resultado.localidade;
-                    scope.conteudo.pessoaGrupoCidadeVi.id = null;
-                    scope.conteudo.bairro = data.resultado.bairro;
-                    scope.conteudo.propriedadeRural.pessoaGrupoComunidadeVi.id = null;
-                    scope.conteudo.propriedadeRural.pessoaGrupoBaciaHidrograficaVi.id = null;
-                    scope.conteudo.logradouro = data.resultado.logradouro;
-                    scope.conteudo.complemento = null;
-                    scope.conteudo.numero = null;
-                    toastr.info("CEP localizado", "O CEP {0} foi localizado!".format(scope.conteudo.cep));
-                    }
-                    //$rootScope.emProcessamento(false);
-                    }).error(function(data) {
-                    toastr.error("Erro ao acessar o serviço de busca de CEP", data.mensagem);
-                    console.log(data);
-                    //$rootScope.emProcessamento(false);
-                    }, true);
-                    } else {
-                    toastr.error("CEP", "Informações incompletas!");
-                    //$rootScope.emProcessamento(false);
-                    }
-                    };*/
-
-                    // scope.map = {
-                    //  center : {
-                    //      latitude : -15.732805,
-                    //      longitude : -47.903791
-                    //  },
-                    //  zoom : 10
-                    // };
-
-                    // uiGmapGoogleMapApi.then(function(maps) {
-                    //  console.log(maps);
-                    //    });
-
-
-
+                    scope.buscarCep = function(cep) {
+                        if (!isUndefOrNull(cep) && cep.length === 8) {
+                            $http.get($rootScope.servicoUrl + '/pessoa' + '/buscar-cep', {params: {'cep': cep}}).success(
+                            function(data, status, headers, config) {
+                                if (!data.resultado || !data.mensagem || data.mensagem !== 'OK') {
+                                    toastr.error('CEP {0} não localizado!'.format(scope.conteudo.cep), 'Erro');
+                                    console.log(data);
+                                } else {
+                                    scope.conteudo.codigoIbge = data.resultado.codigoIbge;
+                                    scope.conteudo.pais = data.resultado.pais;
+                                    scope.conteudo.estado = data.resultado.estado;
+                                    scope.conteudo.municipio = data.resultado.municipio;
+                                    scope.conteudo.cidade = data.resultado.cidade;
+                                    scope.conteudo.bairro = data.resultado.bairro;
+                                    scope.conteudo.logradouro = data.resultado.logradouro;
+                                    scope.conteudo.complemento = data.resultado.complemento;
+                                    scope.conteudo.numero = null;
+                                    toastr.info('O CEP {0} foi localizado!'.format(scope.conteudo.cep), 'Sucesso');
+                                }
+                            }).error(
+                            function(data) {
+                                toastr.error(data.mensagem, 'Erro ao acessar o serviço de busca de CEP');
+                            }, true);
+                        } else {
+                            toastr.error('Informações incompletas!', 'CEP');
+                        }
+                    };
                 },
             };
         }

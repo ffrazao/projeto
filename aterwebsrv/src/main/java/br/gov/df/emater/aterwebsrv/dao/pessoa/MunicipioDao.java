@@ -16,4 +16,6 @@ public interface MunicipioDao extends JpaRepository<Municipio, Integer> {
 
 	List<Municipio> findByCapitalAndEstado(Confirmacao padrao, Estado estado);
 
+	List<Municipio> findByEstadoAndNomeLike(Estado estado, String nome);
+
 }

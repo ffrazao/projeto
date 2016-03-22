@@ -199,6 +199,11 @@ public class FacadeBo implements BeanFactoryAware {
 	}
 
 	@Transactional(readOnly = true)
+	public _Contexto pessoaBuscarCep(Principal usuario, String cep) throws Exception {
+		return this._executar(usuario, "PessoaBuscarCepCmd", cep);
+	}
+
+	@Transactional(readOnly = true)
 	public _Contexto pessoaNovo(Principal usuario, PessoaTipo pessoaTipo) throws Exception {
 		return this._executar(usuario, "PessoaNovoCh", pessoaTipo);
 	}

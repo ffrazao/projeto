@@ -131,6 +131,9 @@ angular.module(pNmModulo).factory(pNmFactory,
             formularioFiltrarComColeta : function(filtro) {
                 return FormularioSrv.filtrarComColeta(filtro);
             },
+            buscarCep : function(cep) {
+                return $http.get(this.endereco + '/buscar-cep', {params: {'cep': cep}});
+            },
         };
         return PessoaSrv;
     }
