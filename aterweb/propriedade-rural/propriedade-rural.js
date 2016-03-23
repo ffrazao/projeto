@@ -292,13 +292,13 @@ angular.module(pNmModulo).controller(pNmController,
         }
         var linhas = ['', '', ''];
         if (e.logradouro) {
-            linhas[0] += e.logradouro
+            linhas[0] += e.logradouro;
         }
         if (e.complemento) {
-            linhas[0] += (linhas[0].length ? ', ' : '') + e.complemento
+            linhas[0] += (linhas[0].length ? ', ' : '') + e.complemento;
         }
         if (e.numero) {
-            linhas[0] += (linhas[0].length ? ', ' : '') + 'numero ' + e.numero
+            linhas[0] += (linhas[0].length ? ', ' : '') + 'numero ' + e.numero;
         }
         if (e.cidade) {
             linhas[1] += e.cidade.nome;
