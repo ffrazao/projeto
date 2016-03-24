@@ -90,25 +90,21 @@ public class VisualizarCmd extends _Comando {
 		if (result.getRelacionamentoList() != null) {
 			for (PessoaRelacionamento relacionador : result.getRelacionamentoList()) {
 				Relacionamento relacionamento = relacionador.getRelacionamento();
-				Pessoa relacionado = null;
+				Pessoa pessoaRelacionado = null;
 				Integer idRelacionamento = null;
 				RelacionamentoFuncao relacionadoFuncao = null;
-				for (PessoaRelacionamento relacionados : relacionamento.getPessoaRelacionamentoList()) {
-					if (!relacionados.getPessoa().getId().equals(result.getId())) {
-						if (relacionados.getPessoa() instanceof PessoaFisica) {
-							relacionado = new PessoaFisica(relacionados.getPessoa().getId(), relacionados.getPessoa().getNome(), relacionados.getPessoa().getApelidoSigla(), ((PessoaFisica) relacionados.getPessoa()).getCpf(), ((PessoaFisica) relacionados.getPessoa()).getGenero());
-						} else if (relacionados.getPessoa() instanceof PessoaJuridica) {
-							relacionado = new PessoaJuridica(relacionados.getPessoa().getId(), relacionados.getPessoa().getNome(), relacionados.getPessoa().getApelidoSigla(), ((PessoaJuridica) relacionados.getPessoa()).getCnpj());
-						}
-						idRelacionamento = relacionados.getId();
-						relacionadoFuncao = relacionados.getRelacionamentoFuncao().infoBasica();
+				for (PessoaRelacionamento relacionado : relacionamento.getPessoaRelacionamentoList()) {
+					if (!relacionado.getPessoa().getId().equals(result.getId())) {
+						pessoaRelacionado = relacionado.getPessoa().infoBasica();
+						idRelacionamento = relacionado.getId();
+						relacionadoFuncao = relacionado.getRelacionamentoFuncao().infoBasica();
 						break;
 					}
 				}
 				relacionador.setId(idRelacionamento);
 				relacionador.setRelacionamento(relacionador.getRelacionamento().infoBasica());
 				relacionador.setRelacionamentoFuncao(relacionadoFuncao);
-				relacionador.setPessoa(relacionado);
+				relacionador.setPessoa(pessoaRelacionado);
 			}
 		}
 		result.getTelefoneList().size();

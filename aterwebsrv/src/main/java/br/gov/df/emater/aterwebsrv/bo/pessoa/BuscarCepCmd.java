@@ -16,7 +16,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
-import br.gov.df.emater.aterwebsrv.dao.pessoa.CidadeDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.EstadoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.MunicipioDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PaisDao;
@@ -27,7 +26,7 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Municipio;
 
 @Service("PessoaBuscarCepCmd")
 public class BuscarCepCmd extends _Comando {
-	
+
 	@Autowired
 	private PaisDao paisDao;
 
@@ -38,7 +37,7 @@ public class BuscarCepCmd extends _Comando {
 	private MunicipioDao municipioDao;
 
 	private ObjectMapper objectMapper;
-	
+
 	private ObjectMapper getObjectMapper() {
 		if (objectMapper == null) {
 			synchronized (BuscarCepCmd.class) {
@@ -57,19 +56,19 @@ public class BuscarCepCmd extends _Comando {
 	public boolean executar(_Contexto contexto) throws Exception {
 		String cep = (String) contexto.getRequisicao();
 		Map<String, Object> mapaEndereco = null;
-		contexto.setResposta(null);				
-		
+		contexto.setResposta(null);
+
 		URLConnection con = new URL(String.format("http://viacep.com.br/ws/%s/json/", UtilitarioString.soNumero(cep.trim()))).openConnection();
-		try (InputStream in = con.getInputStream()) {			
+		try (InputStream in = con.getInputStream()) {
 			String encoding = con.getContentEncoding();
 			encoding = encoding == null ? "UTF-8" : encoding;
-			
+
 			String resposta = IOUtils.toString(in, encoding);
-			
+
 			if (resposta != null) {
 				mapaEndereco = getObjectMapper().readValue(resposta, Map.class);
 			}
-			
+
 			if (mapaEndereco.get("erro") == null || !(boolean) mapaEndereco.get("erro")) {
 				Endereco result = new Endereco();
 				result.setPais(paisDao.findByPadrao(Confirmacao.S).get(0).infoBasica());
@@ -84,9 +83,9 @@ public class BuscarCepCmd extends _Comando {
 				result.setComplemento((String) mapaEndereco.get("complemento"));
 				result.setBairro((String) mapaEndereco.get("bairro"));
 				result.setCodigoIbge((String) mapaEndereco.get("ibge"));
-				contexto.setResposta(result);				
+				contexto.setResposta(result);
 			}
-			
+
 			return false;
 		}
 	}

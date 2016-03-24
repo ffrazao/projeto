@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.ConfirmacaoOpcional;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.RelacionamentoParticipacao;
 
 /**
@@ -21,6 +21,10 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.RelacionamentoParticipacao;
 public class RelacionamentoConfiguracaoVi extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
+
+	@Column(name = "config_temporario")
+	@Enumerated(EnumType.STRING)
+	private ConfirmacaoOpcional configTemporario;
 
 	@Id
 	@Column(name = "config_id")
@@ -70,14 +74,13 @@ public class RelacionamentoConfiguracaoVi extends EntidadeBase implements _Chave
 	@Column(name = "tipo_relacionamento_tipo_id")
 	private Integer tipoRelacionamentoTipoId;
 
-	@Column(name = "tipo_temporario")
-	@Enumerated(EnumType.STRING)
-	private Confirmacao tipoTemporario;
-
 	public RelacionamentoConfiguracaoVi() {
 	}
 
-	@Override
+	public ConfirmacaoOpcional getConfigTemporario() {
+		return configTemporario;
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -96,6 +99,10 @@ public class RelacionamentoConfiguracaoVi extends EntidadeBase implements _Chave
 
 	public String getRelacionadoNomeSeMasculino() {
 		return relacionadoNomeSeMasculino;
+	}
+
+	public RelacionamentoParticipacao getRelacionadoParticipacao() {
+		return relacionadoParticipacao;
 	}
 
 	public Integer getRelacionadorId() {
@@ -134,7 +141,10 @@ public class RelacionamentoConfiguracaoVi extends EntidadeBase implements _Chave
 		return tipoRelacionamentoTipoId;
 	}
 
-	@Override
+	public void setConfigTemporario(ConfirmacaoOpcional configTemporario) {
+		this.configTemporario = configTemporario;
+	}
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
@@ -153,6 +163,10 @@ public class RelacionamentoConfiguracaoVi extends EntidadeBase implements _Chave
 
 	public void setRelacionadoNomeSeMasculino(String relacionadoNomeSeMasculino) {
 		this.relacionadoNomeSeMasculino = relacionadoNomeSeMasculino;
+	}
+
+	public void setRelacionadoParticipacao(RelacionamentoParticipacao relacionadoParticipacao) {
+		this.relacionadoParticipacao = relacionadoParticipacao;
 	}
 
 	public void setRelacionadorId(Integer relacionadorId) {

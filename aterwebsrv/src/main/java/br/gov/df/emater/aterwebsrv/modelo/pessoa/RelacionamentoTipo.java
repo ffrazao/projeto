@@ -1,8 +1,6 @@
 package br.gov.df.emater.aterwebsrv.modelo.pessoa;
 
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,7 +9,6 @@ import javax.persistence.Table;
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.ConfirmacaoOpcional;
 
 /**
  * The persistent class for the relacionamento_tipo database table.
@@ -35,16 +32,12 @@ public class RelacionamentoTipo extends EntidadeBase implements _ChavePrimaria<I
 
 	private String nome;
 
-	@Enumerated(EnumType.STRING)
-	private ConfirmacaoOpcional temporario;
-
 	public RelacionamentoTipo() {
 	}
 
-	public RelacionamentoTipo(Integer id, String nome, ConfirmacaoOpcional temporario) {
+	public RelacionamentoTipo(Integer id, String nome) {
 		setId(id);
 		setNome(nome);
-		setTemporario(temporario);
 	}
 
 	public String getCodigo() {
@@ -60,10 +53,6 @@ public class RelacionamentoTipo extends EntidadeBase implements _ChavePrimaria<I
 		return nome;
 	}
 
-	public ConfirmacaoOpcional getTemporario() {
-		return temporario;
-	}
-
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}
@@ -77,11 +66,7 @@ public class RelacionamentoTipo extends EntidadeBase implements _ChavePrimaria<I
 		this.nome = nome;
 	}
 
-	public void setTemporario(ConfirmacaoOpcional temporario) {
-		this.temporario = temporario;
-	}
-	
 	public RelacionamentoTipo infoBasica() {
-		return new RelacionamentoTipo(getId(), getNome(), getTemporario());
+		return new RelacionamentoTipo(getId(), getNome());
 	}
 }

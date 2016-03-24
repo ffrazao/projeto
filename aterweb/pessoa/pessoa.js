@@ -137,6 +137,14 @@
                     throw 'Informe pelo menos uma comunidade';
                 }
             };
+            $scope.visualizarDepois = function(registro) {
+                if (registro && registro.relacionamentoList) {
+                    registro.relacionamentoList.forEach(function(relacionamento) {
+                        relacionamento.relacionamentoFuncao = UtilSrv.indiceDePorCampo($scope.cadastro.apoio.relacionamentoFuncaoList, relacionamento.relacionamentoFuncao.id, 'id');
+                    });
+                }
+            };
+
 
             $scope.UtilSrv = UtilSrv;
 
@@ -330,24 +338,25 @@
                     return;
                 }
                 var conf = 
-                    '<div class="form-group">' + 
-                    '    <label class="col-md-4 control-label" for="nomeArquivo">Foto do Perfil</label>' + 
+                    '<div class="form-group">' +
                     '    <div class="row">' +
-                    '       <div class="col-md-8">' +
-                    '           <frz-arquivo ng-model="conteudo.nomeArquivo" tipo="PERFIL"></frz-arquivo>' +
-                    '           <input type="hidden" id="nomeArquivo" name="nomeArquivo" ng-model="conteudo.nomeArquivo"/>' +
-                    '           <div class="label label-danger" ng-show="confirmacaoFrm.nomeArquivo.$error.required">' + 
-                    '               <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' + 
-                    '               Campo Obrigatório' + 
-                    '           </div>' + 
-                    '       </div>' + 
+                    '       <div class="col-md-12">' +
+                    '           <label class="control-label text-center" for="nomeArquivo">Foto do Perfil</label>' +
+                    '       </div>' +
+                    '    </div>' +
+                    '    <div class="row">' +
+                    '        <frz-arquivo ng-model="conteudo.nomeArquivo" tipo="PERFIL"></frz-arquivo>' +
                     '    </div>' + 
                     '</div>';
                 mensagemSrv.confirmacao(false, conf, null, {
                     nomeArquivo: $scope.cadastro.registro.fotoPerfil
                 }).then(function(conteudo) {
                     // processar o retorno positivo da modal
-                    $scope.cadastro.registro.fotoPerfil = conteudo.nomeArquivo;
+                    if (!conteudo.nomeArquivo) {
+                        toastr.error('Nenhum arquivo selecionado', 'Erro ao captar Imagem');
+                    } else {
+                        $scope.cadastro.registro.fotoPerfil = conteudo.nomeArquivo;
+                    }
                 }, function() {
                     // processar o retorno negativo da modal
                     //$log.info('Modal dismissed at: ' + new Date());

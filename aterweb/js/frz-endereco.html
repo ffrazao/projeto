@@ -1,8 +1,8 @@
 <ng-form name="enderecoFrm">
     <div>
         <ul class="nav nav-tabs" ng-init="aba = 'E'">
-            <li role="presentation" class="active"><a ng-click="aba ='E'">Endereco</a></li>
-            <li role="presentation" ng-show="false"><a ng-click="aba = 'M'">Mapa</a></li>
+            <li role="presentation" class="active"><a ng-click="aba ='E'">Endereço</a></li>
+            <!--<li role="presentation" ng-show="false"><a ng-click="aba = 'M'">Mapa</a></li>-->
         </ul>
         <div class="container-fluid" ng-show="aba === 'E'">
             <div class="row">
@@ -84,8 +84,7 @@
                 </div>
             </div>
         </div>
-        <div class="container-fluid" ng-show="aba === 'M'">
-            /{{markerList}}/
+        <!-- <div class="container-fluid" ng-show="aba === 'M'">
             <div style="height: 100%; width: 100%;">
                 <div id="map_canvas">
                     <ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true" options="options" bounds="map.bounds">
@@ -100,7 +99,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     <!--
     <div class="row sr-only">
         <div class="col-sm-6">

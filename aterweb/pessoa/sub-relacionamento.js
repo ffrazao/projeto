@@ -52,7 +52,7 @@ angular.module(pNmModulo).controller(pNmController,
             // processar o retorno positivo da modal
             var reg = null;
             if (resultado.selecao.tipo === 'U') {
-                reg = {pessoa: {id: resultado.selecao.item[0], nome: resultado.selecao.item[1], pessoaTipo: resultado.selecao.item[3], genero: resultado.selecao.item[11]}};
+                reg = {pessoa: {id: resultado.selecao.item[0], nome: resultado.selecao.item[1], pessoaTipo: resultado.selecao.item[3], genero: resultado.selecao.item[9]}};
                 if (reg.pessoa.pessoaTipo === 'PF') {
                     reg.pessoa['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica';
                 } else if (reg.pessoa.pessoaTipo === 'PJ') {
@@ -64,7 +64,7 @@ angular.module(pNmModulo).controller(pNmController,
                 $scope.cadastro.registro.relacionamentoList.push(reg);
             } else {
                 for (var i in resultado.selecao.items) {
-                    reg = {pessoa: {id: resultado.selecao.items[i][0], nome: resultado.selecao.items[i][1], pessoaTipo: resultado.selecao.items[i][3], genero: resultado.selecao.items[i][11]}};
+                    reg = {pessoa: {id: resultado.selecao.items[i][0], nome: resultado.selecao.items[i][1], pessoaTipo: resultado.selecao.items[i][3], genero: resultado.selecao.items[i][9]}};
                     if (reg.pessoa.pessoaTipo === 'PF') {
                         reg.pessoa['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica';
                     } else if (reg.pessoa.pessoaTipo === 'PJ') {
@@ -81,30 +81,6 @@ angular.module(pNmModulo).controller(pNmController,
         }, function () {
             // processar o retorno negativo da modal
             
-        });
-    };
-
-    $scope.modalVerRelacionado = function (id) {
-        // abrir a modal
-        var modalInstance = $uibModal.open({
-            animation: true,
-            template: '<ng-include src=\"\'pessoa/pessoa-form-modal.html\'\"></ng-include>',
-            controller: 'PessoaCtrl',
-            size: 'lg',
-            resolve: {
-                modalCadastro: function () {
-                    var cadastro = {registro: {id: id}, filtro: {}, lista: [], original: {}, apoio: [],};
-                    return cadastro;
-                }
-            }
-        });
-        // processar retorno da modal
-        modalInstance.result.then(function (cadastroModificado) {
-            // processar o retorno positivo da modal
-
-        }, function () {
-            // processar o retorno negativo da modal
-            $log.info('Modal dismissed at: ' + new Date());
         });
     };
     // fim rotinas de apoio
@@ -190,6 +166,25 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.visualizar = function() {};
     $scope.voltar = function() {};
     // fim das operaçoes atribuidas ao navagador
+
+    // inicio dos watches
+    $scope.$watch(function($scope) {
+        if (!$scope.cadastro.registro.relacionamentoList) {
+            return undefined;
+        }
+        return $scope.cadastro.registro.relacionamentoList.map(function(obj) {
+            if (!obj || !obj.relacionamento) {
+                return undefined;
+            } else {
+                return obj.relacionamento.relacionamentoTipo;
+            }
+        });
+    }, function(newValue, oldValue) {
+        console.log(newValue, oldValue);
+        // TODO ajustar as funcoes do relacionamento
+    }, true);
+    // fim dos watches
+
 
 } // fim função
 ]);

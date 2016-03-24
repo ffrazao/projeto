@@ -1,10 +1,78 @@
 <div>
+    <div class="container" ng-if="tipo === 'ARQUIVOS'">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="btn btn-info" ngf-select="upload($files)" ngf-multiple="true" ng-model="files">
+                    Selecione Arquivos
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="drop-box" ngf-select="upload($files)" ngf-drop ng-model="files" ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true">
+                Arraste Arquivos Aqui
+            </div>
+            <div ngf-no-file-drop>
+                File Drag/Drop is not supported for this browser
+            </div>
+        </div>
+        <div class="row">
+            Arquivos selecionados, total({{ngModel.length}}):
+            <ul>
+                <li ng-repeat="f in files" style="font:smaller">{{f.name}} {{f.$error}} {{f.$errorParam}}</li>
+            </ul>
+            Log:
+            <pre>
+                {{log}}
+            </pre>
+        </div>
+    </div>
+
+    <div class="container" ng-if="tipo === 'PERFIL'">
+        <div class="row">
+            <div class="col-md-8">
+                <button class="btn btn-info" ngf-select ng-model="picFile" accept="image/*">
+                    Selecione uma imagem
+                </button>
+                <div ngf-drop ng-model="picFile" ngf-pattern="image/*" class="cropArea center-block">
+                    <img-crop class="center-block" image="picFile | ngfDataUrl" result-image="croppedDataUrl" ng-init="croppedDataUrl=''">
+                    </img-crop>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <ng-form name="dadosFrm">
+                    <label class="label-control">Foto Recortada</label>
+                    <img class="displayed center-block" ng-src="{{croppedDataUrl}}">
+                    <button class="btn btn-warning" ng-click="upload(croppedDataUrl)" ng-show="picFile">Enviar</button>
+                    <input type="hidden" id="nomeArquivo" name="nomeArquivo" ng-model="ngModel" required="true">
+                    <div class="label label-danger" ng-show="dadosFrm.nomeArquivo.$error.required">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        O Envio da Imagem é Obrigatório!
+                    </div>
+                </ng-form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <span class="progress" ng-show="progress >= 0">
+                    <div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
+                </span>
+            </div>
+            <div class="col-md-6">
+                <span ng-show="result">Upload Sucesso</span>
+            </div>
+        </div>    
+        <div class="row">
+            <div class="col-md-12">
+                <span class="err" ng-show="errorMsg">{{errorMsg}}</span>
+            </div>
+        </div>    
+    </div>
     <style type="text/css">
         .cropArea {
             background: #E4E4E4;
             overflow: hidden;
-            width:500px;
-            height:350px;
+            width:400px;
+            height:250px;
         }
         form .progress {
             line-height: 15px;
@@ -40,78 +108,11 @@
         .dragover {
             border: 5px dashed blue;
         }
+
+        .displayed {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
     </style>
-
-    <div class="container" ng-if="tipo === 'ARQUIVOS'">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="btn btn-info" ngf-select="upload($files)" ngf-multiple="true" ng-model="files">
-                    Selecione Arquivos
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="drop-box" ngf-select="upload($files)" ngf-drop ng-model="files" ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true">
-                Arraste Arquivos Aqui
-            </div>
-            <div ngf-no-file-drop>
-                File Drag/Drop is not supported for this browser
-            </div>
-        </div>
-        <div class="row">
-            Arquivos selecionados, total({{ngModel.length}}):
-            <ul>
-                <li ng-repeat="f in files" style="font:smaller">{{f.name}} {{f.$error}} {{f.$errorParam}}</li>
-            </ul>
-            Log:
-            <pre>
-                {{log}}
-            </pre>
-        </div>
-    </div>
-
-    <div class="container" ng-if="tipo === 'PERFIL'">
-        <div class="row">
-            <div class="col-md-6">
-                <button class="btn btn-info" ngf-select ng-model="picFile" accept="image/*">
-                    Selecione uma imagem
-                </button>
-            </div>
-        </div>
-        <div class="row">
-            <table>
-                <tr>
-                    <td>
-                        <div ngf-drop ng-model="picFile" ngf-pattern="image/*" class="cropArea">
-                            <img-crop image="picFile  | ngfDataUrl" result-image="croppedDataUrl" ng-init="croppedDataUrl=''">
-                            </img-crop>
-                        </div>
-                    </td>
-                    <td>
-                        <div>
-                            <img ng-src="{{croppedDataUrl}}" />
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>    
-        <div class="row">
-            <div class="col-md-4">
-                <button class="btn" ng-click="upload(croppedDataUrl)">Enviar</button> 
-            </div>
-            <div class="col-md-4">
-                <span class="progress" ng-show="progress >= 0">
-                    <div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
-                </span>
-            </div>
-            <div class="col-md-4">
-                <span ng-show="result">Upload Sucesso</span>
-            </div>
-        </div>    
-        <div class="row">
-            <div class="col-md-12">
-                <span class="err" ng-show="errorMsg">{{errorMsg}}</span>
-            </div>
-        </div>    
-    </div>
 </div>

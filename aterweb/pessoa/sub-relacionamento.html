@@ -34,7 +34,10 @@
                         <th><frz-seletor ng-model="pessoaRelacionamentoNvg" dados="cadastro.registro.relacionamentoList"></frz-seletor></th>
                         <th>#</th>
                         <th>Nome</th>
+                        <th>Tipo</th>
                         <th>Relacionamento</th>
+                        <th>Início</th>
+                        <th>Término</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -45,20 +48,52 @@
                         </td>
                         <td>
                             {{$index + 1 + ((pessoaRelacionamentoNvg.paginaAtual-1) * pessoaRelacionamentoNvg.tamanhoPagina)}}
+                            /{{reg}}/
                         </td>
-                        <td><a ng-click="modalVerRelacionado(reg.pessoa.id)">{{reg.pessoa.nome}}</a></td>
+                        <td><a ng-click="modalVerPessoa(reg.pessoa.id)">{{reg.pessoa.nome}}</a></td>
                         <td>
-                            <select class="form-control input-sm" id="relacionamentoFuncao" name="relacionamentoFuncao{{$index}}" ng-model="reg.relacionamentoFuncao.id" 
-                                ng-options="item.id as item.nomeSeFeminino for item in scp.cadastro.apoio.relacionamentoFuncaoList" ng-required="true"
+                            <select class="form-control input-sm" id="relacionamentoTipo" name="relacionamentoTipo{{$index}}" ng-model="reg.relacionamento.relacionamentoTipo" 
+                                ng-options="item as item.nome for item in scp.cadastro.apoio.relacionamentoTipoList | orderBy: ['nome'] track by item.id" ng-required="true">
+                            </select>
+                            <div class="label label-danger" ng-show="navegador.submetido && relacionamentoListFrm.relacionamentoTipo{{$index}}.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                        <td>
+                            <select class="form-control input-sm" id="relacionamentoFuncao" name="relacionamentoFuncao{{$index}}" ng-model="reg.relacionamentoFuncao" 
+                                ng-options="item as item.nomeSeFeminino group by item.tipoNome for item in scp.cadastro.apoio.relacionamentoFuncaoList | orderBy: ['tipoNome', 'nomeSeFeminino'] track by item.id" ng-required="true"
                                 ng-if="reg.pessoa.genero === 'F'">
                             </select>
-                            <select class="form-control input-sm" id="relacionamentoFuncao" name="relacionamentoFuncao{{$index}}" ng-model="reg.relacionamentoFuncao.id" 
-                                ng-options="item.id as item.nomeSeMasculino for item in scp.cadastro.apoio.relacionamentoFuncaoList" ng-required="true"
+                            <select class="form-control input-sm" id="relacionamentoFuncao" name="relacionamentoFuncao{{$index}}" ng-model="reg.relacionamentoFuncao" 
+                                ng-options="item as item.nomeSeMasculino group by item.tipoNome for item in scp.cadastro.apoio.relacionamentoFuncaoList | orderBy: ['tipoNome', 'nomeSeMasculino'] track by item.id" ng-required="true"
                                 ng-if="reg.pessoa.genero !== 'F'">
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && relacionamentoListFrm.relacionamentoFuncao{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
+                            </div>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control input-sm" id="inicio" name="inicio{{$index}}" ng-model="reg.inicio" ui-date-mask ng-show="['S', 'O'].indexOf(reg.relacionamentoFuncao.configTemporario) >= 0">
+                            <div class="label label-danger" ng-show="navegador.submetido && relacionamentoListFrm.inicio{{$index}}.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                            <div class="label label-danger" ng-show="navegador.submetido && relacionamentoListFrm.inicio{{$index}}.$error.date">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Data inválida!
+                            </div>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control input-sm" id="termino" name="termino{{$index}}" ng-model="reg.termino" ui-date-mask ng-show="['S', 'O'].indexOf(reg.relacionamentoFuncao.configTemporario) >= 0">
+                            <div class="label label-danger" ng-show="navegador.submetido && relacionamentoListFrm.termino{{$index}}.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                            <div class="label label-danger" ng-show="navegador.submetido && relacionamentoListFrm.termino{{$index}}.$error.date">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Data inválida!
                             </div>
                         </td>
                     </tr>

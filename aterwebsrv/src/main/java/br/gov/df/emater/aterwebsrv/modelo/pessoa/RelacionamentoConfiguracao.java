@@ -13,6 +13,7 @@ import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.ConfirmacaoOpcional;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.RelacionamentoParticipacao;
 
 /**
@@ -49,6 +50,9 @@ public class RelacionamentoConfiguracao extends EntidadeBase implements _ChavePr
 	@JoinColumn(name = "relacionamento_tipo_id")
 	private RelacionamentoTipo relacionamentoTipo;
 
+	@Enumerated(EnumType.STRING)
+	private ConfirmacaoOpcional temporario;
+
 	public RelacionamentoConfiguracao() {
 	}
 
@@ -77,6 +81,10 @@ public class RelacionamentoConfiguracao extends EntidadeBase implements _ChavePr
 		return relacionamentoTipo;
 	}
 
+	public ConfirmacaoOpcional getTemporario() {
+		return temporario;
+	}
+
 	@Override
 	public void setId(Integer id) {
 		this.id = id;
@@ -100,6 +108,10 @@ public class RelacionamentoConfiguracao extends EntidadeBase implements _ChavePr
 
 	public void setRelacionamentoTipo(RelacionamentoTipo relacionamentoTipo) {
 		this.relacionamentoTipo = relacionamentoTipo;
+	}
+
+	public void setTemporario(ConfirmacaoOpcional temporario) {
+		this.temporario = temporario;
 	}
 
 }
