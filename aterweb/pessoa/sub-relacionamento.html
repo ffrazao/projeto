@@ -53,7 +53,7 @@
                         <td><a ng-click="modalVerPessoa(reg.pessoa.id)">{{reg.pessoa.nome}}</a></td>
                         <td>
                             <select class="form-control input-sm" id="relacionamentoTipo" name="relacionamentoTipo{{$index}}" ng-model="reg.relacionamento.relacionamentoTipo" 
-                                ng-options="item as item.nome for item in scp.cadastro.apoio.relacionamentoTipoList | orderBy: ['nome'] track by item.id" ng-required="true">
+                                ng-options="item as item.nome for item in item.apoio.relacionamentoTipoList | orderBy: ['nome'] track by item.id" ng-required="true">
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && relacionamentoListFrm.relacionamentoTipo{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -62,11 +62,11 @@
                         </td>
                         <td>
                             <select class="form-control input-sm" id="relacionamentoFuncao" name="relacionamentoFuncao{{$index}}" ng-model="reg.relacionamentoFuncao" 
-                                ng-options="item as item.nomeSeFeminino group by item.tipoNome for item in scp.cadastro.apoio.relacionamentoFuncaoList | orderBy: ['tipoNome', 'nomeSeFeminino'] track by item.id" ng-required="true"
+                                ng-options="item as item.nomeSeFeminino for item in item.apoio.relacionamentoFuncaoList | orderBy: ['nomeSeFeminino'] track by item.id" ng-required="true"
                                 ng-if="reg.pessoa.genero === 'F'">
                             </select>
                             <select class="form-control input-sm" id="relacionamentoFuncao" name="relacionamentoFuncao{{$index}}" ng-model="reg.relacionamentoFuncao" 
-                                ng-options="item as item.nomeSeMasculino group by item.tipoNome for item in scp.cadastro.apoio.relacionamentoFuncaoList | orderBy: ['tipoNome', 'nomeSeMasculino'] track by item.id" ng-required="true"
+                                ng-options="item as item.nomeSeMasculino for item in item.apoio.relacionamentoFuncaoList | orderBy: ['nomeSeMasculino'] track by item.id" ng-required="true"
                                 ng-if="reg.pessoa.genero !== 'F'">
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && relacionamentoListFrm.relacionamentoFuncao{{$index}}.$error.required">

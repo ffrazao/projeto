@@ -168,23 +168,55 @@ angular.module(pNmModulo).controller(pNmController,
     // fim das operaçoes atribuidas ao navagador
 
     // inicio dos watches
-    $scope.$watch(function($scope) {
-        if (!$scope.cadastro.registro.relacionamentoList) {
-            return undefined;
+/*    $scope.$watch(function($scope) {
+        if (!$scope.cadastro.registro.relacionamentoList || !$scope.cadastro.registro.relacionamentoList.length) {
+            return null;
         }
         return $scope.cadastro.registro.relacionamentoList.map(function(obj) {
             if (!obj || !obj.relacionamento) {
                 return undefined;
-            } else {
-                return obj.relacionamento.relacionamentoTipo;
             }
+            return {obj: obj, relacionamentoTipo: obj.relacionamento.relacionamentoTipo};
         });
     }, function(newValue, oldValue) {
-        console.log(newValue, oldValue);
         // TODO ajustar as funcoes do relacionamento
-    }, true);
-    // fim dos watches
+        if (!newValue) {
+            return;
+        }
+        newValue.apoio = {relacionamentoTipoList: [], relacionamentoFuncaoList: []};
+        if (!$scope.cadastro.registro.pessoaTipo || !newValue.pessoa) {
+            return;
+        }
+        var relacionamentoTipo = null;
+        $scope.cadastro.apoio.relacionamentoConfiguracaoViList.forEach(function(item) {
+            if (relacionamentoTipo !== item.tipoId) {
+                relacionamentoTipo = item.tipoId;
+                if (
+                    item.tipoRelacionador.indexOf($scope.cadastro.registro.pessoaTipo) >= 0 &&
+                    item.tipoRelacionado.indexOf(newValue.pessoa.pessoaTipo) >= 0
+                    ) {
+                    newValue.apoio.relacionamentoTipoList.push({id: item.tipoId, nome: item.tipoNome});
+                }
+            }
+        });
+        if (newValue.relacionamento && newValue.relacionamento.relacionamentoTipo) {
+            $scope.cadastro.apoio.relacionamentoConfiguracaoViList.forEach(function(item) {
+                if (newValue.relacionamento.relacionamentoTipo === item.tipoId) {
+                    if (
+                        item.relacionadorRelacionador.indexOf($scope.cadastro.registro.pessoaTipo) >= 0 &&
+                        item.relacionadorRelacionado.indexOf(newValue.pessoa.pessoaTipo) >= 0 &&
 
+                        item.relacionadoRelacionador.indexOf($scope.cadastro.registro.pessoaTipo) >= 0 &&
+                        item.relacionadoRelacionado.indexOf(newValue.pessoa.pessoaTipo) >= 0
+                        ) {
+                        newValue.apoio.relacionamentoFuncaoList.push({id: item.id, nomeSeFeminino: item.nomeSeFeminino, nomeSeMasculino: item.nomeSeMasculino, configTemporario: item.configTemporario});
+                    }
+                }
+            });
+        }
+        console.log(newValue.apoio);
+    }, true);*/
+    // fim dos watches
 
 } // fim função
 ]);

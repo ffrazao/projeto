@@ -46,6 +46,12 @@ public class RelacionamentoConfiguracaoVi extends EntidadeBase implements _Chave
 	@Enumerated(EnumType.STRING)
 	private RelacionamentoParticipacao relacionadoParticipacao;
 
+	@Column(name = "relacionado_relacionado")
+	private String relacionadoRelacionado;
+
+	@Column(name = "relacionado_relacionador")
+	private String relacionadoRelacionador;
+
 	@Column(name = "relacionador_id")
 	private Integer relacionadorId;
 
@@ -62,6 +68,12 @@ public class RelacionamentoConfiguracaoVi extends EntidadeBase implements _Chave
 	@Enumerated(EnumType.STRING)
 	private RelacionamentoParticipacao relacionadorParticipacao;
 
+	@Column(name = "relacionador_relacionado")
+	private String relacionadorRelacionado;
+
+	@Column(name = "relacionador_relacionador")
+	private String relacionadorRelacionador;
+
 	@Column(name = "tipo_codigo")
 	private String tipoCodigo;
 
@@ -70,6 +82,12 @@ public class RelacionamentoConfiguracaoVi extends EntidadeBase implements _Chave
 
 	@Column(name = "tipo_nome")
 	private String tipoNome;
+
+	@Column(name = "tipo_relacionado")
+	private String tipoRelacionado;
+
+	@Column(name = "tipo_relacionador")
+	private String tipoRelacionador;
 
 	@Column(name = "tipo_relacionamento_tipo_id")
 	private Integer tipoRelacionamentoTipoId;
@@ -105,6 +123,14 @@ public class RelacionamentoConfiguracaoVi extends EntidadeBase implements _Chave
 		return relacionadoParticipacao;
 	}
 
+	public String getRelacionadoRelacionado() {
+		return relacionadoRelacionado;
+	}
+
+	public String getRelacionadoRelacionador() {
+		return relacionadoRelacionador;
+	}
+
 	public Integer getRelacionadorId() {
 		return relacionadorId;
 	}
@@ -125,6 +151,14 @@ public class RelacionamentoConfiguracaoVi extends EntidadeBase implements _Chave
 		return relacionadorParticipacao;
 	}
 
+	public String getRelacionadorRelacionado() {
+		return relacionadorRelacionado;
+	}
+
+	public String getRelacionadorRelacionador() {
+		return relacionadorRelacionador;
+	}
+
 	public String getTipoCodigo() {
 		return tipoCodigo;
 	}
@@ -135,6 +169,14 @@ public class RelacionamentoConfiguracaoVi extends EntidadeBase implements _Chave
 
 	public String getTipoNome() {
 		return tipoNome;
+	}
+
+	public String getTipoRelacionado() {
+		return tipoRelacionado;
+	}
+
+	public String getTipoRelacionador() {
+		return tipoRelacionador;
 	}
 
 	public Integer getTipoRelacionamentoTipoId() {
@@ -169,6 +211,14 @@ public class RelacionamentoConfiguracaoVi extends EntidadeBase implements _Chave
 		this.relacionadoParticipacao = relacionadoParticipacao;
 	}
 
+	public void setRelacionadoRelacionado(String relacionadoRelacionado) {
+		this.relacionadoRelacionado = relacionadoRelacionado;
+	}
+
+	public void setRelacionadoRelacionador(String relacionadoRelacionador) {
+		this.relacionadoRelacionador = relacionadoRelacionador;
+	}
+
 	public void setRelacionadorId(Integer relacionadorId) {
 		this.relacionadorId = relacionadorId;
 	}
@@ -189,6 +239,14 @@ public class RelacionamentoConfiguracaoVi extends EntidadeBase implements _Chave
 		this.relacionadorParticipacao = relacionadorParticipacao;
 	}
 
+	public void setRelacionadorRelacionado(String relacionadorRelacionado) {
+		this.relacionadorRelacionado = relacionadorRelacionado;
+	}
+
+	public void setRelacionadorRelacionador(String relacionadorRelacionador) {
+		this.relacionadorRelacionador = relacionadorRelacionador;
+	}
+
 	public void setTipoCodigo(String tipoCodigo) {
 		this.tipoCodigo = tipoCodigo;
 	}
@@ -199,6 +257,14 @@ public class RelacionamentoConfiguracaoVi extends EntidadeBase implements _Chave
 
 	public void setTipoNome(String tipoNome) {
 		this.tipoNome = tipoNome;
+	}
+
+	public void setTipoRelacionado(String tipoRelacionado) {
+		this.tipoRelacionado = tipoRelacionado;
+	}
+
+	public void setTipoRelacionador(String tipoRelacionador) {
+		this.tipoRelacionador = tipoRelacionador;
 	}
 
 	public void setTipoRelacionamentoTipoId(Integer tipoRelacionamentoTipoId) {

@@ -36,8 +36,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                    'TelefoneTipo',
                    'RelacionamentoConfiguracaoVi',
                    'PropriedadeRuralVinculoTipo',
-                   'Situacao',
-                   'RelacionamentoTipo'
+                   'Situacao'
                 ]}).success(function(resposta) {
                     if (resposta && resposta.resultado) {
                         scp.cadastro.apoio.pessoaTipoList = resposta.resultado[0];
@@ -73,10 +72,9 @@ angular.module(pNmModulo).factory(pNmFactory,
                         }
                         scp.cadastro.apoio.meioContatoFinalidadeList.push({'codigo': codigo, 'descricao': descricao});
                         scp.cadastro.apoio.telefoneTipoList = resposta.resultado[20];
-                        scp.cadastro.apoio.relacionamentoFuncaoList = resposta.resultado[21];
+                        scp.cadastro.apoio.relacionamentoConfiguracaoViList = resposta.resultado[21];
                         scp.cadastro.apoio.propriedadeRuralVinculoTipoList = resposta.resultado[22];
                         scp.cadastro.apoio.situacaoList = resposta.resultado[23];
-                        scp.cadastro.apoio.relacionamentoTipoList = resposta.resultado[24];
 
                         scp.cadastro.apoio.tradicaoList = [];
                         var anoAtual = new Date().getFullYear();
@@ -88,7 +86,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                         scp.cadastro.apoio.publicoAlvoSegmentoListOriginal = angular.copy(scp.cadastro.apoio.publicoAlvoSegmentoList);
 
                         // preparar a lista de tipo de relacionamento
-                        scp.cadastro.apoio.relacionamentoFuncaoList.forEach(function(item) {
+                        scp.cadastro.apoio.relacionamentoConfiguracaoViList.forEach(function(item) {
                           item.id = item.relacionadoId;
                           item.nomeSeFeminino = item.relacionadoNomeSeFeminino;
                           item.nomeSeMasculino = item.relacionadoNomeSeMasculino;
