@@ -31,6 +31,9 @@ public class RelacionamentoFuncao extends EntidadeBase implements _ChavePrimaria
 	@Column(name = "nome_se_masculino")
 	private String nomeSeMasculino;
 
+	@Column(name = "pessoa_tipo")
+	private String pessoaTipo;
+
 	public RelacionamentoFuncao() {
 	}
 
