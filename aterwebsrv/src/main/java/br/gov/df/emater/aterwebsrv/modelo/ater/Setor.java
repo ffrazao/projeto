@@ -6,11 +6,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Index;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.Store;
-
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 
@@ -20,7 +15,7 @@ import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
  */
 @Entity
 @Table(name = "setor", schema = EntidadeBase.ATER_SCHEMA)
-@Indexed
+// @Indexed
 public class Setor extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
@@ -29,7 +24,7 @@ public class Setor extends EntidadeBase implements _ChavePrimaria<Integer> {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
-	@Field(index = Index.YES, store = Store.YES)
+	// @Field(index = Index.YES, store = Store.YES)
 	private String nome;
 
 	public Setor() {

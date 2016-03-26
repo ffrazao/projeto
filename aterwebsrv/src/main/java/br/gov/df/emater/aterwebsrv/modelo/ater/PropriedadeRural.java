@@ -21,11 +21,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Index;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.IndexedEmbedded;
-import org.hibernate.search.annotations.Store;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
@@ -51,7 +46,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
  */
 @Entity
 @Table(name = "propriedade_rural", schema = EntidadeBase.ATER_SCHEMA)
-@Indexed
+// @Indexed
 public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<PropriedadeRural> {
 
 	private static final long serialVersionUID = 1L;
@@ -93,7 +88,7 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 	private BigDecimal areaTotal;
 
 	@OneToMany(mappedBy = "propriedadeRural")
-	@IndexedEmbedded
+	// @IndexedEmbedded
 	private List<PropriedadeRuralArquivo> arquivoList;
 
 	@ManyToOne
@@ -106,7 +101,7 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 	private BigDecimal benfeitoria;
 
 	@OneToMany(mappedBy = "propriedadeRural")
-	@IndexedEmbedded
+	// @IndexedEmbedded
 	private List<Benfeitoria> benfeitoriaList;
 
 	@Column(name = "cartorio_data_registro")
@@ -174,19 +169,19 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 	private String nome;
 
 	@Column(name = "numero_registro")
-	@Field(index = Index.YES, store = Store.YES)
+	// @Field(index = Index.YES, store = Store.YES)
 	private String numeroRegistro;
 
 	@Lob
-	@Field(index = Index.YES, store = Store.YES)
+	// @Field(index = Index.YES, store = Store.YES)
 	private String observacoes;
 
-	@Field(index = Index.YES, store = Store.YES)
+	// @Field(index = Index.YES, store = Store.YES)
 	@Enumerated(EnumType.STRING)
 	private Confirmacao outorga;
 
 	@Column(name = "outorga_numero")
-	@Field(index = Index.YES, store = Store.YES)
+	// @Field(index = Index.YES, store = Store.YES)
 	private String outorgaNumero;
 
 	@Column(name = "outorga_validade")
@@ -225,7 +220,7 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 
 	@Lob
 	@Column(name = "roteiro_acesso")
-	@Field(index = Index.YES, store = Store.YES)
+	// @Field(index = Index.YES, store = Store.YES)
 	private String roteiroAcesso;
 
 	@ManyToOne

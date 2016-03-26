@@ -11,18 +11,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Index;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.Store;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonFormatarBigDecimal;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * The persistent class for the benfeitoria database table.
@@ -30,15 +26,15 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
  */
 @Entity
 @Table(name = "benfeitoria", schema = EntidadeBase.ATER_SCHEMA)
-@Indexed
+//@Indexed
 public class Benfeitoria extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
 
-	@Field(index = Index.YES, store = Store.YES)
+//	@Field(index = Index.YES, store = Store.YES)
 	private String caracteristica;
 
-	@Field(index = Index.YES, store = Store.YES)
+//	@Field(index = Index.YES, store = Store.YES)
 	private String especificacao;
 
 	@Id

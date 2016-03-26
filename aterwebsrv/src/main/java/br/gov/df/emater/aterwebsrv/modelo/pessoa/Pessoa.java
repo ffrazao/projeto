@@ -24,9 +24,6 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Index;
-import org.hibernate.search.annotations.Store;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -66,7 +63,7 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	private Calendar alteracaoData;
 
 	@Column(name = "apelido_sigla")
-	@Field(index = Index.YES, store = Store.YES)
+	// @Field(index = Index.YES, store = Store.YES)
 	protected String apelidoSigla;
 
 	@OneToMany(mappedBy = "pessoa")
@@ -99,18 +96,17 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	private Calendar inclusaoData;
 
 	@NotBlank
-	@Field(index = Index.YES, store = Store.YES)
+	// @Field(index = Index.YES, store = Store.YES)
 	protected String nome;
 
 	@Lob
-	@Field(index = Index.YES, store = Store.YES)
+	// @Field(index = Index.YES, store = Store.YES)
 	private String observacoes;
 
 	@Column(name = "pessoa_tipo")
 	@Enumerated(EnumType.STRING)
 	private PessoaTipo pessoaTipo;
 
-	
 	@OneToOne(mappedBy = "pessoa", fetch = FetchType.LAZY)
 	private PublicoAlvo publicoAlvo;
 

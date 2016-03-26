@@ -19,10 +19,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Index;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.Store;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -41,7 +37,7 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
  */
 @Entity
 @Table(name = "usuario", schema = EntidadeBase.SISTEMA_SCHEMA)
-@Indexed
+// @Indexed
 public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, UserDetails, InfoBasica<Usuario> {
 
 	private static final long serialVersionUID = 1L;
@@ -81,7 +77,7 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 
 	@Column(name = "nome_usuario")
 	@NotEmpty
-	@Field(index = Index.YES, store = Store.YES)
+	// @Field(index = Index.YES, store = Store.YES)
 	private String username;
 
 	@Enumerated(EnumType.STRING)

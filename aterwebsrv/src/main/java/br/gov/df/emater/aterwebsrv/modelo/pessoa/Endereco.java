@@ -18,10 +18,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Index;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.Store;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -41,7 +37,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerGeometry;
  */
 @Entity
 @Table(name = "endereco", schema = EntidadeBase.PESSOA_SCHEMA)
-@Indexed
+// @Indexed
 public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
@@ -76,7 +72,7 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 	// @Max(value = 250, message = "Muito extenso")
 	private String bairro;
 
-	@Field(index = Index.YES, store = Store.YES)
+	// @Field(index = Index.YES, store = Store.YES)
 	// @Max(value = 10, message = "Muito extenso")
 	private String cep;
 
@@ -110,7 +106,7 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 	private Integer id;
 
 	@NotBlank
-	@Field(index = Index.YES, store = Store.YES)
+	// @Field(index = Index.YES, store = Store.YES)
 	// @Max(value = 250, message = "Muito extenso")
 	private String logradouro;
 
@@ -165,7 +161,7 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.roteiroAcessoOuEnderecoInternacional = roteiroAcessoOuEnderecoInternacional;
 		this.areaList = areaList;
 		if (this.areaList != null) {
-			for (Area area: this.areaList) {
+			for (Area area : this.areaList) {
 				area.setEndereco(null);
 			}
 		}

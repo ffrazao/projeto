@@ -16,10 +16,6 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Index;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.Store;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -47,13 +43,13 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 @Entity
 @Table(name = "pessoa_fisica", schema = EntidadeBase.PESSOA_SCHEMA)
 @PrimaryKeyJoinColumn(name = "id")
-@Indexed
+// @Indexed
 public class PessoaFisica extends Pessoa {
 
 	private static final long serialVersionUID = 1L;
 
 	@Column(name = "cam_numero")
-	@Field(index = Index.YES, store = Store.YES)
+	// @Field(index = Index.YES, store = Store.YES)
 	private String camNumero;
 
 	@Column(name = "cam_orgao")
@@ -61,22 +57,22 @@ public class PessoaFisica extends Pessoa {
 	private CamOrgao camOrgao;
 
 	@Column(name = "cam_serie")
-	@Field(index = Index.YES, store = Store.YES)
+	// @Field(index = Index.YES, store = Store.YES)
 	private String camSerie;
 
 	@Column(name = "cam_unidade_militar")
 	private String camUnidadeMilitar;
 
 	@Column(name = "certidao_casamento_cartorio")
-	@Field(index = Index.YES, store = Store.YES)
+	// @Field(index = Index.YES, store = Store.YES)
 	private String certidaoCasamentoCartorio;
 
 	@Column(name = "certidao_casamento_folha")
-	@Field(index = Index.YES, store = Store.YES)
+	// @Field(index = Index.YES, store = Store.YES)
 	private String certidaoCasamentoFolha;
 
 	@Column(name = "certidao_casamento_livro")
-	@Field(index = Index.YES, store = Store.YES)
+	// @Field(index = Index.YES, store = Store.YES)
 	private String certidaoCasamentoLivro;
 
 	@Column(name = "certidao_casamento_regime")
@@ -88,7 +84,7 @@ public class PessoaFisica extends Pessoa {
 	private CnhCategoria cnhCategoria;
 
 	@Column(name = "cnh_numero")
-	@Field(index = Index.YES, store = Store.YES)
+	// @Field(index = Index.YES, store = Store.YES)
 	private String cnhNumero;
 
 	@Column(name = "cnh_primeira_habilitacao")
@@ -105,15 +101,15 @@ public class PessoaFisica extends Pessoa {
 	@JsonDeserialize(using = JsonDeserializerData.class)
 	private Calendar cnhValidade;
 
-	@Field(index = Index.YES, store = Store.YES)
+	// @Field(index = Index.YES, store = Store.YES)
 	private String cpf;
 
 	@Column(name = "ctps_numero")
-	@Field(index = Index.YES, store = Store.YES)
+	// @Field(index = Index.YES, store = Store.YES)
 	private String ctpsNumero;
 
 	@Column(name = "ctps_serie")
-	@Field(index = Index.YES, store = Store.YES)
+	// @Field(index = Index.YES, store = Store.YES)
 	private String ctpsSerie;
 
 	@Column(name = "dap_observacao")
@@ -121,7 +117,7 @@ public class PessoaFisica extends Pessoa {
 	private String dapObservacao;
 
 	@Column(name = "dap_registro")
-	@Field(index = Index.YES, store = Store.YES)
+	// @Field(index = Index.YES, store = Store.YES)
 	private String dapRegistro;
 
 	@Column(name = "dap_situacao")
@@ -174,7 +170,7 @@ public class PessoaFisica extends Pessoa {
 	private Pais nascimentoPais;
 
 	@Column(name = "nis_numero")
-	@Field(index = Index.YES, store = Store.YES)
+	// @Field(index = Index.YES, store = Store.YES)
 	private String nisNumero;
 
 	@ManyToOne
@@ -189,22 +185,22 @@ public class PessoaFisica extends Pessoa {
 	private Calendar rgDataEmissao;
 
 	@Column(name = "rg_numero")
-	@Field(index = Index.YES, store = Store.YES)
+	// @Field(index = Index.YES, store = Store.YES)
 	private String rgNumero;
 
 	@Column(name = "rg_orgao_emissor")
 	private String rgOrgaoEmissor;
 
 	@Column(name = "titulo_numero")
-	@Field(index = Index.YES, store = Store.YES)
+	// @Field(index = Index.YES, store = Store.YES)
 	private String tituloNumero;
 
 	@Column(name = "titulo_secao")
-	@Field(index = Index.YES, store = Store.YES)
+	// @Field(index = Index.YES, store = Store.YES)
 	private String tituloSecao;
 
 	@Column(name = "titulo_zona")
-	@Field(index = Index.YES, store = Store.YES)
+	// @Field(index = Index.YES, store = Store.YES)
 	private String tituloZona;
 
 	public PessoaFisica() {
@@ -397,19 +393,19 @@ public class PessoaFisica extends Pessoa {
 	}
 
 	public PessoaFisica infoBasica() {
-//		if (this.getNascimentoMunicipio() != null) {
-//			this.setNascimentoMunicipio(this.getNascimentoMunicipio().infoBasica());
-//		}
-//		if (this.getNascimentoEstado() != null) {
-//			this.setNascimentoEstado(this.getNascimentoEstado().infoBasica());
-//		}
-//		if (this.getNascimentoPais() != null) {
-//			this.setNascimentoPais(this.getNascimentoPais().infoBasica());
-//		}
-//		if (this.getProfissao() != null) {
-//			this.setProfissao(this.getProfissao().infoBasica());
-//		}
-		
+		// if (this.getNascimentoMunicipio() != null) {
+		// this.setNascimentoMunicipio(this.getNascimentoMunicipio().infoBasica());
+		// }
+		// if (this.getNascimentoEstado() != null) {
+		// this.setNascimentoEstado(this.getNascimentoEstado().infoBasica());
+		// }
+		// if (this.getNascimentoPais() != null) {
+		// this.setNascimentoPais(this.getNascimentoPais().infoBasica());
+		// }
+		// if (this.getProfissao() != null) {
+		// this.setProfissao(this.getProfissao().infoBasica());
+		// }
+
 		return new PessoaFisica(this.getId(), this.getNome(), this.getApelidoSigla(), this.getGenero(), this.getCpf());
 	}
 
@@ -560,6 +556,5 @@ public class PessoaFisica extends Pessoa {
 	public void setTituloZona(String tituloZona) {
 		this.tituloZona = tituloZona;
 	}
-	
 
 }

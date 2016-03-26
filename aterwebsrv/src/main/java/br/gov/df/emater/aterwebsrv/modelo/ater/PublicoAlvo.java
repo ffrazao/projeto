@@ -19,11 +19,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Index;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.IndexedEmbedded;
-import org.hibernate.search.annotations.Store;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
@@ -47,7 +42,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
  */
 @Entity
 @Table(name = "publico_alvo", schema = EntidadeBase.ATER_SCHEMA)
-@Indexed
+// @Indexed
 public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<PublicoAlvo> {
 
 	private static final long serialVersionUID = 1L;
@@ -79,7 +74,7 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 	private Calendar carteiraProdutorExpiracao;
 
 	@Column(name = "carteira_produtor_numero")
-	@Field(index = Index.YES, store = Store.YES)
+	// @Field(index = Index.YES, store = Store.YES)
 	private String carteiraProdutorNumero;
 
 	@Enumerated(EnumType.STRING)
@@ -101,7 +96,7 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 	private String compraInstitucPnae;
 
 	@Column(name = "dap_numero")
-	@Field(index = Index.YES, store = Store.YES)
+	// @Field(index = Index.YES, store = Store.YES)
 	private String dapNumero;
 
 	@Column(name = "dap_observacao")
@@ -173,7 +168,7 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 	@OneToMany(mappedBy = "publicoAlvo")
 	private List<PublicoAlvoPropriedadeRural> publicoAlvoPropriedadeRuralList;
 
-	@IndexedEmbedded
+	// @IndexedEmbedded
 	@OneToMany(mappedBy = "publicoAlvo")
 	private List<PublicoAlvoSetor> publicoAlvoSetorList;
 

@@ -11,10 +11,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Index;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.Store;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -27,7 +23,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerDataHora;
 
 @Entity
 @Table(name = "arquivo", schema = EntidadeBase.PESSOA_SCHEMA)
-@Indexed
+// @Indexed
 public class Arquivo extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
@@ -45,10 +41,10 @@ public class Arquivo extends EntidadeBase implements _ChavePrimaria<Integer> {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
-	@Field(index = Index.YES, store = Store.YES)
+	// @Field(index = Index.YES, store = Store.YES)
 	private String md5;
 
-	@Field(index = Index.YES, store = Store.YES)
+	// @Field(index = Index.YES, store = Store.YES)
 	@Column(name = "nome_original")
 	private String nomeOriginal;
 
