@@ -22,13 +22,14 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 
 @Entity
 @Table(schema = EntidadeBase.FORMULARIO_SCHEMA)
-public class FormularioVersao extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class FormularioVersao extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<FormularioVersao> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -62,6 +63,13 @@ public class FormularioVersao extends EntidadeBase implements _ChavePrimaria<Int
 		super(id);
 	}
 
+	public FormularioVersao(Serializable id, Formulario formulario, Integer versao, Calendar inicio) {
+		this(id);
+		setFormulario(formulario == null ? null : formulario.infoBasica());
+		setVersao(versao);
+		setInicio(inicio);
+	}
+
 	public List<Coleta> getColetaList() {
 		return coletaList;
 	}
@@ -85,6 +93,10 @@ public class FormularioVersao extends EntidadeBase implements _ChavePrimaria<Int
 
 	public Integer getVersao() {
 		return versao;
+	}
+
+	public FormularioVersao infoBasica() {
+		return new FormularioVersao(this.id, this.formulario, this.versao, this.inicio);
 	}
 
 	public void setColetaList(List<Coleta> coletaList) {

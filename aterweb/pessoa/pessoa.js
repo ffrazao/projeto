@@ -138,9 +138,9 @@
                 }
             };
             $scope.visualizarDepois = function(registro) {
-                if (registro && registro.relacionamentoList) {
+                if (registro && registro.relacionamentoList && $scope.cadastro.apoio.relacionamentoConfiguracaoViList) {
                     registro.relacionamentoList.forEach(function(relacionamento) {
-                        relacionamento.relacionamentoFuncao = UtilSrv.indiceDePorCampo($scope.cadastro.apoio.relacionamentoFuncaoList, relacionamento.relacionamentoFuncao.id, 'id');
+                        relacionamento.relacionamentoFuncao = UtilSrv.indiceDePorCampo($scope.cadastro.apoio.relacionamentoConfiguracaoViList, relacionamento.relacionamentoFuncao.id, 'id');
                     });
                 }
             };

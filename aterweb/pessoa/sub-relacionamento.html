@@ -48,34 +48,19 @@
                         </td>
                         <td>
                             {{$index + 1 + ((pessoaRelacionamentoNvg.paginaAtual-1) * pessoaRelacionamentoNvg.tamanhoPagina)}}
-                            /{{reg}}/
-                        </td>
-                        <td><a ng-click="modalVerPessoa(reg.pessoa.id)">{{reg.pessoa.nome}}</a></td>
-                        <td>
-                            <select class="form-control input-sm" id="relacionamentoTipo" name="relacionamentoTipo{{$index}}" ng-model="reg.relacionamento.relacionamentoTipo" 
-                                ng-options="item as item.nome for item in item.apoio.relacionamentoTipoList | orderBy: ['nome'] track by item.id" ng-required="true">
-                            </select>
-                            <div class="label label-danger" ng-show="navegador.submetido && relacionamentoListFrm.relacionamentoTipo{{$index}}.$error.required">
-                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                                Campo Obrigatório
-                            </div>
                         </td>
                         <td>
-                            <select class="form-control input-sm" id="relacionamentoFuncao" name="relacionamentoFuncao{{$index}}" ng-model="reg.relacionamentoFuncao" 
-                                ng-options="item as item.nomeSeFeminino for item in item.apoio.relacionamentoFuncaoList | orderBy: ['nomeSeFeminino'] track by item.id" ng-required="true"
-                                ng-if="reg.pessoa.genero === 'F'">
-                            </select>
-                            <select class="form-control input-sm" id="relacionamentoFuncao" name="relacionamentoFuncao{{$index}}" ng-model="reg.relacionamentoFuncao" 
-                                ng-options="item as item.nomeSeMasculino for item in item.apoio.relacionamentoFuncaoList | orderBy: ['nomeSeMasculino'] track by item.id" ng-required="true"
-                                ng-if="reg.pessoa.genero !== 'F'">
-                            </select>
-                            <div class="label label-danger" ng-show="navegador.submetido && relacionamentoListFrm.relacionamentoFuncao{{$index}}.$error.required">
-                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                                Campo Obrigatório
-                            </div>
+                            <a ng-click="modalVerPessoa(reg.pessoa.id)">{{reg.pessoa.nome}}</a>
                         </td>
                         <td>
-                            <input type="text" class="form-control input-sm" id="inicio" name="inicio{{$index}}" ng-model="reg.inicio" ui-date-mask ng-show="['S', 'O'].indexOf(reg.relacionamentoFuncao.configTemporario) >= 0">
+                            {{reg.relacionamento.relacionamentoTipo.nome}}
+                        </td>
+                        <td>
+                            <span ng-if="reg.pessoa.genero === 'F'">{{reg.relacionamentoFuncao.nomeSeFeminino}}</span>
+                            <span ng-if="reg.pessoa.genero !== 'F'">{{reg.relacionamentoFuncao.nomeSeMasculino}}</span>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control input-sm" id="inicio" name="inicio{{$index}}" ng-model="reg.relacionamento.inicio" ui-date-mask ng-show="['S', 'O'].indexOf(reg.relacionamentoFuncao.configTemporario) >= 0">
                             <div class="label label-danger" ng-show="navegador.submetido && relacionamentoListFrm.inicio{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
@@ -86,7 +71,7 @@
                             </div>
                         </td>
                         <td>
-                            <input type="text" class="form-control input-sm" id="termino" name="termino{{$index}}" ng-model="reg.termino" ui-date-mask ng-show="['S', 'O'].indexOf(reg.relacionamentoFuncao.configTemporario) >= 0">
+                            <input type="text" class="form-control input-sm" id="termino" name="termino{{$index}}" ng-model="reg.relacionamento.termino" ui-date-mask ng-show="['S', 'O'].indexOf(reg.relacionamentoFuncao.configTemporario) >= 0">
                             <div class="label label-danger" ng-show="navegador.submetido && relacionamentoListFrm.termino{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório

@@ -1,5 +1,6 @@
 package br.gov.df.emater.aterwebsrv.modelo.formulario;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 import javax.persistence.Column;
@@ -24,6 +25,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
@@ -34,9 +36,33 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 
 @Entity
 @Table(schema = EntidadeBase.FORMULARIO_SCHEMA)
-public class Coleta extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class Coleta extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<Coleta> {
 
 	private static final long serialVersionUID = 1L;
+
+	public Coleta() {
+
+	}
+
+	public Coleta(Serializable id) {
+		super(id);
+	}
+
+	public Coleta(Integer id, FormularioVersao formularioVersao, Usuario usuario, Calendar dataColeta, Confirmacao finalizada, Pessoa pessoa, PropriedadeRural propriedadeRural, Object valor, String valorString) {
+		this(id);
+		setFormularioVersao(formularioVersao == null ? null : new FormularioVersao(formularioVersao.getId()));
+		setUsuario(usuario == null ? null : usuario.infoBasica());
+		setDataColeta(dataColeta);
+		setFinalizada(finalizada);
+		setPessoa(pessoa == null ? null : pessoa.infoBasica());
+		setPropriedadeRural(propriedadeRural == null ? null : propriedadeRural.infoBasica());
+		setValor(valor);
+		setValorString(valorString);
+	}
+
+	public Coleta infoBasica() {
+		return new Coleta(this.getId(), this.getFormularioVersao(), this.getUsuario(), this.getDataColeta(), this.getFinalizada(), this.getPessoa(), this.getPropriedadeRural(), this.getValor(), this.getValorString());
+	}
 
 	@Column(name = "data_coleta")
 	@Temporal(TemporalType.TIMESTAMP)

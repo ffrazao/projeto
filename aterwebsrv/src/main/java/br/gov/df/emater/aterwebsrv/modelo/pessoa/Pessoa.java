@@ -105,7 +105,7 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 
 	@Column(name = "pessoa_tipo")
 	@Enumerated(EnumType.STRING)
-	private PessoaTipo pessoaTipo;
+	protected PessoaTipo pessoaTipo;
 
 	@OneToOne(mappedBy = "pessoa", fetch = FetchType.LAZY)
 	private PublicoAlvo publicoAlvo;
@@ -147,8 +147,9 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		super(id);
 	}
 
-	public Pessoa(Integer id, String nome, String apelidoSigla) {
+	public Pessoa(Integer id, PessoaTipo pessoaTipo, String nome, String apelidoSigla) {
 		this(id);
+		setPessoaTipo(pessoaTipo);
 		setNome(nome);
 		setApelidoSigla(apelidoSigla);
 	}

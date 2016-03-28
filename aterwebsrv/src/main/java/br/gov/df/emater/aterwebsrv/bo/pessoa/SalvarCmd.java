@@ -320,6 +320,8 @@ public class SalvarCmd extends _Comando {
 						salvo.getPessoaRelacionamentoList().size();
 						relacionamento.setPessoaRelacionamentoList(salvo.getPessoaRelacionamentoList());
 					}
+					relacionamento.setInicio(pessoaRelacionamento.getRelacionamento().getInicio());
+					relacionamento.setTermino(pessoaRelacionamento.getRelacionamento().getTermino());
 					relacionamento = relacionamentoDao.saveAndFlush(relacionamento);
 
 					pessoaRelacionamento.setRelacionamento(relacionamento);

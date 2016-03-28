@@ -212,19 +212,10 @@ public class PessoaFisica extends Pessoa {
 		setPessoaTipo(PessoaTipo.PF);
 	}
 
-	public PessoaFisica(Integer id, String nome, String apelidoSigla, String cpf, PessoaGenero genero) {
-		super(id, nome, apelidoSigla);
-		setPessoaTipo(PessoaTipo.PF);
-		setCpf(cpf);
-		setGenero(genero);
-	}
-
-	public PessoaFisica(Integer id, String nome, String apelidoSigla, PessoaGenero genero, String cpf) {
-		setId(id);
-		setNome(nome);
+	public PessoaFisica(Integer id, PessoaTipo pessoaTipo, String nome, String apelidoSigla, PessoaGenero genero, String cpf) {
+		super(id, pessoaTipo, nome, apelidoSigla);
 		setGenero(genero);
 		setCpf(cpf);
-		setApelidoSigla(apelidoSigla);
 	}
 
 	public String getCamNumero() {
@@ -393,20 +384,7 @@ public class PessoaFisica extends Pessoa {
 	}
 
 	public PessoaFisica infoBasica() {
-		// if (this.getNascimentoMunicipio() != null) {
-		// this.setNascimentoMunicipio(this.getNascimentoMunicipio().infoBasica());
-		// }
-		// if (this.getNascimentoEstado() != null) {
-		// this.setNascimentoEstado(this.getNascimentoEstado().infoBasica());
-		// }
-		// if (this.getNascimentoPais() != null) {
-		// this.setNascimentoPais(this.getNascimentoPais().infoBasica());
-		// }
-		// if (this.getProfissao() != null) {
-		// this.setProfissao(this.getProfissao().infoBasica());
-		// }
-
-		return new PessoaFisica(this.getId(), this.getNome(), this.getApelidoSigla(), this.getGenero(), this.getCpf());
+		return new PessoaFisica(this.getId(), this.getPessoaTipo(), this.getNome(), this.getApelidoSigla(), this.getGenero(), this.getCpf());
 	}
 
 	public void setCamNumero(String camNumero) {

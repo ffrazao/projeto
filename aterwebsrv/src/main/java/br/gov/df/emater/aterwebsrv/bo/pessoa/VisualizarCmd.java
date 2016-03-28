@@ -17,14 +17,19 @@ import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaDao;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.FormularioDestino;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Situacao;
 import br.gov.df.emater.aterwebsrv.modelo.dto.FormularioCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.Formulario;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaArquivo;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaEmail;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaEndereco;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaGrupoSocial;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaRelacionamento;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaTelefone;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Relacionamento;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoFuncao;
 
@@ -78,15 +83,27 @@ public class VisualizarCmd extends _Comando {
 		}
 
 		// fetch nas tabelas de apoio
-		result.getArquivoList().size();
-		result.getEmailList().size();
+		if (result.getArquivoList() != null) {
+			for (PessoaArquivo pessoaArquivo : result.getArquivoList()) {
+				pessoaArquivo.setPessoa(null);
+			}
+		}
+		if (result.getEmailList() != null) {
+			for (PessoaEmail pessoaEmail : result.getEmailList()) {
+				pessoaEmail.setPessoa(null);
+			}
+		}
 		if (result.getEnderecoList() != null) {
 			for (PessoaEndereco pessoaEndereco : result.getEnderecoList()) {
 				pessoaEndereco.setEndereco(pessoaEndereco.getEndereco().infoBasica());
+				pessoaEndereco.setPessoa(null);
 			}
 		}
-		result.getGrupoSocialList().size();
-
+		if (result.getGrupoSocialList() != null) {
+			for (PessoaGrupoSocial pessoaGrupoSocial : result.getGrupoSocialList()) {
+				pessoaGrupoSocial.setPessoa(null);
+			}
+		}
 		if (result.getRelacionamentoList() != null) {
 			for (PessoaRelacionamento relacionador : result.getRelacionamentoList()) {
 				Relacionamento relacionamento = relacionador.getRelacionamento();
@@ -107,7 +124,11 @@ public class VisualizarCmd extends _Comando {
 				relacionador.setPessoa(pessoaRelacionado);
 			}
 		}
-		result.getTelefoneList().size();
+		if (result.getTelefoneList() != null) {
+			for (PessoaTelefone pessoaTelefone : result.getTelefoneList()) {
+				pessoaTelefone.setPessoa(null);
+			}
+		}
 
 		if (result.getUsuarioInclusao() != null) {
 			result.setUsuarioInclusao(result.getUsuarioInclusao().infoBasica());
@@ -121,7 +142,9 @@ public class VisualizarCmd extends _Comando {
 		if (formularioResposta.getResposta() != null) {
 			List<Formulario> lista = new ArrayList<Formulario>();
 			for (Object[] diagnostico : (List<Object[]>) formularioResposta.getResposta()) {
-				lista.add(new Formulario((Integer) diagnostico[0], (String) diagnostico[1], (String) diagnostico[2], (Situacao) diagnostico[3], (Calendar) diagnostico[4], (Calendar) diagnostico[5]));
+				if (FormularioDestino.PE.equals(diagnostico[6]) || (Confirmacao.S.equals(result.getPublicoAlvoConfirmacao()) && FormularioDestino.PA.equals(diagnostico[6]))) {					
+					lista.add(new Formulario((Integer) diagnostico[0], (String) diagnostico[1], (String) diagnostico[2], (Situacao) diagnostico[3], (Calendar) diagnostico[4], (Calendar) diagnostico[5]));
+				}
 			}
 			result.setDiagnosticoList(lista);
 		}

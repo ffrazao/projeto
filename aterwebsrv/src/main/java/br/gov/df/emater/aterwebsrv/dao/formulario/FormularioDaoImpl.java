@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +37,15 @@ public class FormularioDaoImpl implements FormularioDaoCustom {
 
 		// construção do sql
 		sql = new StringBuilder();
-		sql.append("select distinct f.id, f.nome, f.codigo, f.situacao, f.inicio, f.termino, f.destino, f.subformulario").append("\n");
+		sql.append("select distinct").append("\n");
+		sql.append("       f.id").append("\n");
+		sql.append("     , f.nome").append("\n");
+		sql.append("     , f.codigo").append("\n");
+		sql.append("     , f.situacao").append("\n");
+		sql.append("     , f.inicio").append("\n");
+		sql.append("     , f.termino").append("\n");
+		sql.append("     , f.destino").append("\n");
+		sql.append("     , f.subformulario").append("\n");
 		sql.append("from Formulario f").append("\n");
 		if (filtro.getVersao() != null) {
 			sql.append("join f.formularioVersaoList fvl").append("\n");
@@ -117,6 +126,7 @@ public class FormularioDaoImpl implements FormularioDaoCustom {
 		return result;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<FormularioVersao> filtrarComColeta(FormularioColetaCadFiltroDto filtro) {
 		if (filtro.getDestino() == null) {
@@ -135,42 +145,38 @@ public class FormularioDaoImpl implements FormularioDaoCustom {
 		// construção do sql
 		sql = new StringBuilder();
 		sqlTemp = new StringBuilder();
-		sql.append("select fv").append("\n");
-		sql.append("from FormularioVersao fv").append("\n");
+		sql.append("select fv.*").append("\n");
+		sql.append("from formulario.formulario_versao fv").append("\n");
 		if (enviaColetas) {
-			sql.append("left join fv.coletaList c").append("\n");
-		}
-		sql.append("where fv.inicio < now()").append("\n");
-		params.add(filtro.getFormularioId());
-		sql.append("and fv.formulario.id = ?").append(params.size()).append("\n");
-		if (enviaColetas) {
+			sql.append("left join formulario.coleta c on c.formulario_versao_id = fv.id").append("\n");
+
 			if (filtro.getPessoa() != null && filtro.getPessoa().getId() != null) {
 				if (sqlTemp.length() > 0) {
 					sqlTemp.append("and ");
 				}
 				params.add(filtro.getPessoa());
-				sqlTemp.append("c.pessoa = ?").append(params.size()).append("\n");
+				sqlTemp.append("c.pessoa_id = ?").append(params.size()).append("\n");
 			}
 			if (filtro.getPropriedadeRural() != null && filtro.getPropriedadeRural().getId() != null) {
 				if (sqlTemp.length() > 0) {
 					sqlTemp.append("and ");
 				}
 				params.add(filtro.getPropriedadeRural());
-				sqlTemp.append("c.propriedadeRural = ?").append(params.size()).append("\n");
+				sqlTemp.append("c.propriedade_rural_id = ?").append(params.size()).append("\n");
 			}
 			if (filtro.getInicio() != null) {
 				if (sqlTemp.length() > 0) {
 					sqlTemp.append("and ");
 				}
 				params.add(filtro.getInicio());
-				sqlTemp.append("c.dataColeta >= ?").append(params.size()).append("\n");
+				sqlTemp.append("c.data_coleta >= ?").append(params.size()).append("\n");
 			}
 			if (filtro.getTermino() != null) {
 				if (sqlTemp.length() > 0) {
 					sqlTemp.append("and ");
 				}
 				params.add(filtro.getTermino());
-				sqlTemp.append("c.dataColeta <= ?").append(params.size()).append("\n");
+				sqlTemp.append("c.data_coleta <= ?").append(params.size()).append("\n");
 			}
 			if (!CollectionUtils.isEmpty(filtro.getCompletada()) && (Confirmacao.values().length != (filtro.getCompletada().size()))) {
 				if (sqlTemp.length() > 0) {
@@ -179,17 +185,20 @@ public class FormularioDaoImpl implements FormularioDaoCustom {
 				params.add(filtro.getCompletada());
 				sqlTemp.append("c.finalizado in ?").append(params.size()).append("\n");
 			}
+			if (sqlTemp.length() > 0) {
+				sql.append("and ((c.id = null) or (").append(sqlTemp.toString()).append("))\n");
+			}
 		}
-		if (sqlTemp.length() > 0) {
-			sql.append("and ((c = null) or (").append(sqlTemp.toString()).append("))\n");
-		}
+		sql.append("where fv.inicio < now()").append("\n");
+		params.add(filtro.getFormularioId());
+		sql.append("and fv.formulario_id = ?").append(params.size()).append("\n");
 		sql.append("order by fv.versao desc").append("\n");
 		if (enviaColetas) {
-			sql.append("       , c.dataColeta desc").append("\n");
+			sql.append("       , c.data_coleta desc").append("\n");
 		}
 
 		// criar a query
-		TypedQuery<FormularioVersao> query = em.createQuery(sql.toString(), FormularioVersao.class);
+		Query query = em.createNativeQuery(sql.toString(), FormularioVersao.class);
 
 		// inserir os parametros
 		for (int i = 1; i <= params.size(); i++) {
@@ -200,27 +209,24 @@ public class FormularioDaoImpl implements FormularioDaoCustom {
 		filtro.configuraPaginacao(query);
 
 		// executar a consulta
-		result = query.getResultList();
+		result = (List<FormularioVersao>) query.getResultList();
 
-		for (FormularioVersao fv : result) {
-			fv.setFormulario(null);
-			fv.setFormularioVersaoElementoList(null);
-			if (!enviaColetas) {
-				fv.setColetaList(null);
-			} else {
-				for (Coleta coleta : fv.getColetaList()) {
-					coleta.setFormularioVersao(null);
-					if (coleta.getUsuario() != null) {
-						coleta.setUsuario(coleta.getUsuario().infoBasica());
+		if (result != null && result.size() > 0) {
+			List<FormularioVersao> formularioVersaoList = new ArrayList<FormularioVersao>();
+			for (FormularioVersao formularioVersao : result) {
+				FormularioVersao fv = formularioVersao.infoBasica();
+				if (!enviaColetas) {
+					fv.setColetaList(null);
+				} else {
+					List<Coleta> coletaList = new ArrayList<Coleta>();
+					for (Coleta coleta : formularioVersao.getColetaList()) {
+						coletaList.add(coleta.infoBasica());
 					}
-					if (coleta.getPessoa() != null) {
-						coleta.setPessoa(coleta.getPessoa().infoBasica());
-					}
-					if (coleta.getPropriedadeRural() != null) {
-						coleta.setPropriedadeRural(coleta.getPropriedadeRural().infoBasica());
-					}
+					fv.setColetaList(coletaList);
 				}
+				formularioVersaoList.add(fv);
 			}
+			result = formularioVersaoList;
 		}
 
 		// retornar

@@ -1,5 +1,6 @@
 package br.gov.df.emater.aterwebsrv.modelo.formulario;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FormularioDestino;
@@ -29,7 +31,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 
 @Entity
 @Table(schema = EntidadeBase.FORMULARIO_SCHEMA)
-public class Formulario extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class Formulario extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<Formulario> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -78,6 +80,10 @@ public class Formulario extends EntidadeBase implements _ChavePrimaria<Integer> 
 		this.setTermino(termino);
 	}
 
+	public Formulario(Serializable id) {
+		super(id);
+	}
+
 	public String getCodigo() {
 		return codigo;
 	}
@@ -113,6 +119,10 @@ public class Formulario extends EntidadeBase implements _ChavePrimaria<Integer> 
 
 	public Calendar getTermino() {
 		return termino;
+	}
+
+	public Formulario infoBasica() {
+		return new Formulario(this.getId(), this.getNome(), this.getCodigo(), this.getSituacao(), this.getInicio(), this.getTermino());
 	}
 
 	public void setCodigo(String codigo) {

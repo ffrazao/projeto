@@ -3,8 +3,8 @@
 'use strict';
 
 angular.module(pNmModulo).controller(pNmController,
-    ['$scope', '$uibModalInstance', 'conteudo', 'funcaoOk', 'funcaoCancelar',
-    function($scope, $uibModalInstance, conteudo, funcaoOk, funcaoCancelar) {
+    ['$scope', '$uibModalInstance', 'conteudo', 'funcaoOk', 'funcaoCancelar', 'funcaoIncializar',
+    function($scope, $uibModalInstance, conteudo, funcaoOk, funcaoCancelar, funcaoIncializar) {
         $scope.conteudo = conteudo;
         $scope.modalOk = function () {
             // Retorno da modal
@@ -20,13 +20,16 @@ angular.module(pNmModulo).controller(pNmController,
             }
             $uibModalInstance.dismiss('cancel');
         };
+        if (funcaoIncializar) {
+            funcaoIncializar($scope);
+        }
     }
 ]);
 
 angular.module(pNmModulo).factory(pNmFactory,
   ['$uibModal',
     function($uibModal) {
-        var formModal =  function (tipo, url, mensagem, titulo, conteudo, tamanho, funcaoOk, funcaoCancelar) {
+        var formModal =  function (tipo, url, mensagem, titulo, conteudo, tamanho, funcaoOk, funcaoCancelar, funcaoIncializar) {
             var botaoCancelar = null;
             if ('alerta' === tipo) {
                 if (!titulo){titulo = 'Atenção!'; }
@@ -38,7 +41,7 @@ angular.module(pNmModulo).factory(pNmFactory,
             var nomeForm = tipo + 'Frm';
             var modalInstance = $uibModal.open({
                       animation: true,
-                      controller: 'MensagemCtrl',
+                      controller: pNmController,
                       size : (tamanho ? tamanho : 'lg' ),
                       template:
                       '<div class="modal-header">' +
@@ -64,17 +67,20 @@ angular.module(pNmModulo).factory(pNmFactory,
                           funcaoCancelar: function(){
                             return funcaoCancelar;
                           },
+                          funcaoIncializar: function(){
+                            return funcaoIncializar;
+                          }
                       },
                 });
                 return modalInstance.result;
         };
 
         var mensagemSrv = {
-            alerta : function (url, mensagem, titulo, conteudo, tamanho, funcaoOk, funcaoCancelar) {
-                return formModal('alerta', url, mensagem, titulo, conteudo, tamanho, funcaoOk, funcaoCancelar);
+            alerta : function (url, mensagem, titulo, conteudo, tamanho, funcaoOk, funcaoCancelar, funcaoIncializar) {
+                return formModal('alerta', url, mensagem, titulo, conteudo, tamanho, funcaoOk, funcaoCancelar, funcaoIncializar);
             },
-            confirmacao: function (url, mensagem, titulo, conteudo, tamanho, funcaoOk, funcaoCancelar) {
-                return formModal('confirmacao', url, mensagem, titulo, conteudo, tamanho, funcaoOk, funcaoCancelar);
+            confirmacao: function (url, mensagem, titulo, conteudo, tamanho, funcaoOk, funcaoCancelar, funcaoIncializar) {
+                return formModal('confirmacao', url, mensagem, titulo, conteudo, tamanho, funcaoOk, funcaoCancelar, funcaoIncializar);
             },
         };
         return mensagemSrv;

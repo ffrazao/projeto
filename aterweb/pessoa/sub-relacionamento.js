@@ -19,16 +19,6 @@ angular.module(pNmModulo).controller(pNmController,
 
     // inicio rotinas de apoio
     var jaCadastrado = function(conteudo) {
-        for (var j in $scope.cadastro.registro.relacionamentoList) {
-            if (angular.equals($scope.cadastro.registro.relacionamentoList[j].relacionamento.endereco, conteudo.relacionamento.endereco)) {
-                if ($scope.cadastro.registro.relacionamentoList[j].cadastroAcao === 'E') {
-                    return true;
-                } else {
-                    toastr.error('Registro já cadastrado');
-                    return false;
-                }
-            }
-        }
         return true;
     };
     var editarItem = function (destino, item) {
@@ -53,28 +43,13 @@ angular.module(pNmModulo).controller(pNmController,
             var reg = null;
             if (resultado.selecao.tipo === 'U') {
                 reg = {pessoa: {id: resultado.selecao.item[0], nome: resultado.selecao.item[1], pessoaTipo: resultado.selecao.item[3], genero: resultado.selecao.item[9]}};
-                if (reg.pessoa.pessoaTipo === 'PF') {
-                    reg.pessoa['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica';
-                } else if (reg.pessoa.pessoaTipo === 'PJ') {
-                    reg.pessoa['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica';
-                }
-                if (!$scope.cadastro.registro.relacionamentoList) {
-                    $scope.cadastro.registro.relacionamentoList = [];
-                }
-                $scope.cadastro.registro.relacionamentoList.push(reg);
+                $scope.preparaClassePessoa(reg.pessoa);
+                captaRelacionamento(reg);
             } else {
                 for (var i in resultado.selecao.items) {
                     reg = {pessoa: {id: resultado.selecao.items[i][0], nome: resultado.selecao.items[i][1], pessoaTipo: resultado.selecao.items[i][3], genero: resultado.selecao.items[i][9]}};
-                    if (reg.pessoa.pessoaTipo === 'PF') {
-                        reg.pessoa['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica';
-                    } else if (reg.pessoa.pessoaTipo === 'PJ') {
-                        reg.pessoa['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica';
-                    }
-                    if (!$scope.cadastro.registro.relacionamentoList) {
-                        $scope.cadastro.registro.relacionamentoList = [];
-                        $scope.pessoaRelacionamentoNvg.setDados($scope.cadastro.registro.relacionamentoList);
-                    }
-                    $scope.cadastro.registro.relacionamentoList.push(reg);
+                    $scope.preparaClassePessoa(reg.pessoa);
+                    captaRelacionamento(reg);
                 }
             }
             toastr.info('Operação realizada!', 'Informação');
@@ -83,6 +58,124 @@ angular.module(pNmModulo).controller(pNmController,
             
         });
     };
+
+    var captaRelacionamento = function(reg) {
+
+        var form = 
+            '<div class="modal-body">' +
+            '    <div class="container-fluid">' +
+            '        <div class="row">' +
+            '            <div class="col-md-3 text-right">' +
+            '                <label class="form-label">Relacionador</label>' +
+            '            </div>' +
+            '            <div class="col-md-7">' +
+            '                <div class="form-control">' +
+            '                   {{conteudo.relacionador.nome}}' +
+            '                </div>' +
+            '            </div>' +
+            '        </div>' +
+            '        <div class="row">' +
+            '            <div class="col-md-3 text-right">' +
+            '                <label class="form-label">Relacionado</label>' +
+            '            </div>' +
+            '            <div class="col-md-7">' +
+            '                <div class="form-control">' +
+            '                   {{conteudo.relacionado.nome}}' +
+            '                </div>' +
+            '            </div>' +
+            '        </div>' +
+            '        <div class="row">' +
+            '            <div class="col-md-3 text-right">' +
+            '                <label class="form-label">Tipo de Relacionamento</label>' +
+            '            </div>' +
+            '            <div class="col-md-7">' +
+            '                <select class="form-control" id="relacionamentoTipo" name="relacionamentoTipo"' +
+            '                    ng-model="conteudo.relacionamento.relacionamentoTipo"' +
+            '                    ng-options="item as item.nome for item in apoio.relacionamentoTipoList | orderBy : [\'nome\'] track by item.id"' +
+            '                    ng-required="true">' +
+            '                </select>' +
+            '                <div class="label label-danger" ng-show="confirmacaoFrm.relacionamentoTipo.$error.required">' +
+            '                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' +
+            '                     Campo Obrigatório' +
+            '                </div>' +
+            '            </div>' +
+            '        </div>' +
+            '        <div class="row">' +
+            '            <div class="col-md-3 text-right">' +
+            '                <label class="form-label">Função no Relacionamento</label>' +
+            '            </div>' +
+            '            <div class="col-md-7">' +
+            '                <select class="form-control" id="relacionamentoFuncao" name="relacionamentoFuncao"' +
+            '                    ng-model="conteudo.relacionamentoFuncao"' +
+            '                    ng-options="item as item.nomeSeFeminino for item in apoio.relacionamentoFuncaoList | orderBy : [\'nome\'] track by item.id"' +
+            '                    ng-required="true"' +
+            '                    ng-if="conteudo.relacionado.genero === \'F\'">' +
+            '                </select>' +
+            '                <select class="form-control" id="relacionamentoFuncao" name="relacionamentoFuncao"' +
+            '                    ng-model="conteudo.relacionamentoFuncao"' +
+            '                    ng-options="item as item.nomeSeMasculino for item in apoio.relacionamentoFuncaoList | orderBy : [\'nome\'] track by item.id"' +
+            '                    ng-required="true"' +
+            '                    ng-if="conteudo.relacionado.genero !== \'F\'">' +
+            '                </select>' +
+            '                <div class="label label-danger" ng-show="confirmacaoFrm.relacionamentoFuncao.$error.required">' +
+            '                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' +
+            '                     Campo Obrigatório' +
+            '                </div>' +
+            '            </div>' +
+            '        </div>' +
+            '    </div>' +
+            '</div>';
+
+        var item = {relacionador: $scope.cadastro.registro, relacionado: reg.pessoa};
+
+        var iniciar = function(scp) {
+            scp.apoio = {relacionamentoTipoList: [], relacionamentoFuncaoList: []};
+
+            var relacionamentoTipo = null;
+            $scope.cadastro.apoio.relacionamentoConfiguracaoViList.forEach(function(item) {
+                if (relacionamentoTipo !== item.tipoId) {
+                    relacionamentoTipo = item.tipoId;
+                    if (
+                        item.tipoRelacionador.indexOf($scope.cadastro.registro.pessoaTipo) >= 0 &&
+                        item.tipoRelacionado.indexOf(reg.pessoa.pessoaTipo) >= 0
+                        ) {
+                        scp.apoio.relacionamentoTipoList.push({id: item.tipoId, nome: item.tipoNome});
+                    }
+                }
+            });
+
+            scp.$watch('conteudo.relacionamento.relacionamentoTipo', function(newValue, oldValue) {
+                scp.apoio.relacionamentoFuncaoList = [];
+
+                if (newValue) {
+                    $scope.cadastro.apoio.relacionamentoConfiguracaoViList.forEach(function(item) {
+                        if (newValue.id === item.tipoId) {
+                            if (
+                                item.relacionadorPessoaTipo.indexOf($scope.cadastro.registro.pessoaTipo) >= 0 &&
+                                item.relacionadoPessoaTipo.indexOf(reg.pessoa.pessoaTipo) >= 0
+                                ) {
+                                scp.apoio.relacionamentoFuncaoList.push(item);
+                            }
+                        }
+                    });
+                }
+
+            });
+        };
+
+        mensagemSrv.confirmacao(false, form, null, item, null, jaCadastrado, null, iniciar).then(function (conteudo) {
+            // processar o retorno positivo da modal
+            if (!$scope.cadastro.registro.relacionamentoList) {
+                $scope.cadastro.registro.relacionamentoList = [];
+                $scope.pessoaRelacionamentoNvg = new FrzNavegadorParams($scope.cadastro.registro.relacionamentoList, 4);
+            }
+            $scope.cadastro.registro.relacionamentoList.push({"pessoa": conteudo.relacionado, "relacionamento": {"@class" : "br.gov.df.emater.aterwebsrv.modelo.pessoa.Relacionamento", "relacionamentoTipo": conteudo.relacionamento.relacionamentoTipo}, "relacionamentoFuncao": conteudo.relacionamentoFuncao});
+        }, function () {
+            // processar o retorno negativo da modal
+            //$log.info('Modal dismissed at: ' + new Date());
+        });
+    };
+
     // fim rotinas de apoio
 
     // inicio das operaçoes atribuidas ao navagador
