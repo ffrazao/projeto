@@ -157,6 +157,21 @@
         <input type="hidden" id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" ng-model="dados[item.codigo]">
     </script>
 
+    <script type="text/ng-template" id="campo_objeto_exibe_string">
+        <div class="input-group">
+            <input class="form-control input-md" aria-label="..." id="f_{{ngModel.codigo}}_p_{{$index}}" name="f_{{ngModel.codigo}}_p_{{$index}}" type="text" placeholder="{{item.placeholder}}" value="{{item.exibirString(dados[item.codigo])}}" ng-required="item.funcaoRequerido()" title="{{item.pop}}" ng-readonly="item.somenteLeitura === 'S'" ng-trim="true">
+            <div class="input-group-btn">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ações <span class="caret"></span></button>
+                <ul class="dropdown-menu dropdown-menu-right">
+                    <li><a ng-if="item.ver" ng-click="item.ver(dados, item.codigo)">Ver</a></li>
+                    <li><a ng-if="item.selecionar" ng-click="item.selecionar(dados, item.codigo)">Selecionar</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a ng-if="item.limpar" ng-click="item.limpar(dados, item.codigo)">Limpar</a></li>
+                </ul>
+            </div>
+        </div>
+    </script>
+
     <fieldset>
         <div ng-repeat="item in ngModel.opcao" ng-switch on="item.tipo">
             <legend ng-switch-when="nome">{{item.nome}}</legend>

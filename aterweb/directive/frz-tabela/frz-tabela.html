@@ -46,6 +46,7 @@
                     </td>
                     <td ng-repeat="opcao in ngModel.opcao | filter: {escondeLista: '!S'}" ng-switch on="opcao.tipo">
                         <span ng-switch-when="objeto" ng-bind-html="opcao.funcaoExibir(reg[opcao.codigo])"></span>
+                        <span ng-switch-when="objeto_exibe_string">{{opcao.exibirString(reg[opcao.codigo])}}</span>
                         <span ng-switch-when="resumo">{{opcao.valor}}</span>
                         <span ng-switch-when="escolha_unica">{{verUnico(reg[opcao.codigo], opcao)}}</span>
                         <span ng-switch-when="escolha_multipla">{{verMultiplo(reg[opcao.codigo], opcao)}}</span>

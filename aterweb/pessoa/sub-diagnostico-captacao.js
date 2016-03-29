@@ -62,8 +62,21 @@ angular.module(pNmModulo).controller(pNmController,
             {
                 nome: 'Usuario',
                 codigo: 'usuario',
-                tipo: 'string',
+                tipo: 'objeto_exibe_string',
                 somenteLeitura: 'S',
+                exibirString: function(usuario) {
+                    return usuario != null && usuario.pessoa != null ? usuario.pessoa.nome : "";
+                },
+                ver: function(lista, item) {
+                    console.log(lista, item);
+                },
+                selecionar: function(lista, item) {
+                    console.log(lista, item);
+                },
+                limpar: function(lista, item) {
+                    console.log(lista, item);
+                    lista[item] = null;
+                },
             },
             {
                 nome: 'Formulário',
