@@ -460,7 +460,10 @@ angular.module(pNmModulo).controller(pNmController,
                     polygon[0].getPath().forEach(function(element,index) {
                         path.push({"latitude": element.lat(), "longitude": element.lng()});
                     });
-                    $scope.map.polys.push({"elementoId": ++$scope.elementoId, "path": path});
+
+                    if (path.length > 2) {
+                        $scope.map.polys.push({"elementoId": ++$scope.elementoId, "path": path});
+                    }
                 },
             }
         }, $scope.drawingManager);

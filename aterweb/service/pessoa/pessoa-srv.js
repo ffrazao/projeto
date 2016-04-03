@@ -82,7 +82,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                             scp.cadastro.apoio.tradicaoList.push(ano);
                         }
 
-                        removerCampo(scp.cadastro.apoio.comunidadeList, ['@jsonId', 'unidadeOrganizacional']);
+                        removerCampo(scp.cadastro.apoio.comunidadeList, ['@jsonId']);
                         scp.cadastro.apoio.publicoAlvoSegmentoListOriginal = angular.copy(scp.cadastro.apoio.publicoAlvoSegmentoList);
 
                         // preparar a lista de tipo de relacionamento
@@ -94,7 +94,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                     }
                 });
                 var t = TokenStorage.token();
-                if (t && t.lotacaoAtual && t.lotacaoAtual && t.lotacaoAtual.pessoaJuridica) {
+                if (t && t.lotacaoAtual && t.lotacaoAtual.pessoaJuridica) {
                     scp.cadastro.apoio.localList = [];
                     var fltr = null;
                     if (scp.cadastro.apoio.unidadeOrganizacionalSomenteLeitura) {
@@ -114,9 +114,9 @@ angular.module(pNmModulo).factory(pNmFactory,
             executarFiltro : function() {
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
             },
-            novo : function(pessoaTipo) {
+            novo : function(pessoa) {
                 SegurancaSrv.acesso(this.funcionalidade, 'INCLUIR');
-                return $http.get(this.endereco + '/novo', {params: {modelo: pessoaTipo}});
+                return $http.post(this.endereco + '/novo', pessoa);
             },
             incluir : function(pessoa) {
                 SegurancaSrv.acesso(this.funcionalidade, 'INCLUIR');
@@ -140,6 +140,12 @@ angular.module(pNmModulo).factory(pNmFactory,
             },
             buscarCep : function(cep) {
                 return $http.get(this.endereco + '/buscar-cep', {params: {'cep': cep}});
+            },
+            carteiraProdutorVerificar : function (filtro) {
+                return $http.post(this.endereco + '/carteira-produtor-verificar', filtro);
+            },
+            carteiraProdutorRel : function (filtro) {
+                return $http.post(this.endereco + '/carteira-produtor-rel', filtro);
             },
         };
         return PessoaSrv;

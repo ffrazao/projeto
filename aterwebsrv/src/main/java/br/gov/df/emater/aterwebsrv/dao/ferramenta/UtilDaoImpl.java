@@ -12,11 +12,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
-import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
+import br.gov.df.emater.aterwebsrv.dao.DaoException;
 import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FormulaProduto;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacao;
@@ -96,7 +95,6 @@ public class UtilDaoImpl implements UtilDao {
 	 *            nome da Enumeração a ser chamada
 	 */
 	@Override
-	@Transactional(readOnly = true)
 	public List<Map<String, Object>> getEnumeracao(String enumeracao) throws Exception {
 		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
 		Class<?> c = null;
@@ -110,7 +108,7 @@ public class UtilDaoImpl implements UtilDao {
 			}
 		}
 		if (!c.isEnum()) {
-			throw new ServiceException(String.format("%s não é uma enumeração válida!", enumeracao));
+			throw new DaoException(String.format("%s não é uma enumeração válida!", enumeracao));
 		}
 		boolean emOrdem = false;
 		for (Field campo : c.getDeclaredFields()) {

@@ -31,17 +31,7 @@ import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module.Feature;
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = { "br.gov.df.emater.aterwebsrv" })
-public class _RestConfig extends WebMvcConfigurerAdapter /*
-															 * WebMvcAutoConfiguration
-															 * DelegatingWebMvcConfiguration
-															 */ {
-
-	// @Override
-	// public void
-	// configureDefaultServletHandling(DefaultServletHandlerConfigurer
-	// configurer) {
-	// configurer.enable();
-	// }
+public class _RestConfig extends WebMvcConfigurerAdapter {
 
 	@Override
 	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
@@ -62,9 +52,9 @@ public class _RestConfig extends WebMvcConfigurerAdapter /*
 		hibernate4Module.configure(Feature.USE_TRANSIENT_ANNOTATION, false);
 		mapper.registerModule(hibernate4Module);
 		converter.setObjectMapper(mapper);
-		
+
 		converters.add(converter);
-		
+
 		super.configureMessageConverters(converters);
 	}
 
@@ -80,31 +70,6 @@ public class _RestConfig extends WebMvcConfigurerAdapter /*
 		registrationBean.setFilter(characterEncodingFilter);
 		return registrationBean;
 	}
-
-	// @Bean
-	// public ContentNegotiatingViewResolver contentViewResolver() throws
-	// Exception {
-	// ContentNegotiationManagerFactoryBean contentNegotiationManager = new
-	// ContentNegotiationManagerFactoryBean();
-	// contentNegotiationManager.addMediaType("json",
-	// MediaType.APPLICATION_JSON);
-	//
-	// InternalResourceViewResolver viewResolver = new
-	// InternalResourceViewResolver();
-	// viewResolver.setPrefix("/WEB-INF/jsp/");
-	// viewResolver.setSuffix(".jsp");
-	//
-	// MappingJackson2JsonView defaultView = new MappingJackson2JsonView();
-	// defaultView.setExtractValueFromSingleKeyModel(true);
-	//
-	// ContentNegotiatingViewResolver contentViewResolver = new
-	// ContentNegotiatingViewResolver();
-	// contentViewResolver.setContentNegotiationManager(contentNegotiationManager.getObject());
-	// contentViewResolver.setViewResolvers(Arrays.<ViewResolver>
-	// asList(viewResolver));
-	// contentViewResolver.setDefaultViews(Arrays.<View> asList(defaultView));
-	// return contentViewResolver;
-	// }
 
 	private Connector initiateHttpConnector() {
 		// inicio redirecionamento http para https
@@ -134,7 +99,7 @@ public class _RestConfig extends WebMvcConfigurerAdapter /*
 		};
 
 		tomcat.addAdditionalTomcatConnectors(initiateHttpConnector());
-		
+
 		// fim redirecionamento http para https
 		return tomcat;
 	}
@@ -145,14 +110,10 @@ public class _RestConfig extends WebMvcConfigurerAdapter /*
 		CommonsMultipartResolver result = new CommonsMultipartResolver();
 		return result;
 	}
-	
-	
-	@Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/resources/**")
-                .addResourceLocations("/resources/");
-    }
 
-	// TODO Habilitar o log4j
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+	}
 
 }

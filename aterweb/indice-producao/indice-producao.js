@@ -89,7 +89,7 @@
                 if (scp.cadastro.apoio.porProdutor === true || scp.cadastro.apoio.porPropriedadeRural === true) {
                     $rootScope.incluir(scp, $scope.cadastro.registro);
                 } else {
-                    $rootScope.incluir(scp, modelo);
+                    $rootScope.incluir(scp, modelo ? modelo : {});
                 }
             };
 
@@ -233,51 +233,55 @@
             // inicio ações especiais
 
             // nomes dos campos para listagem
-            $scope.PRODUCAO_ID = 0;
-            $scope.PRODUCAO_ANO = 1;
-            $scope.PRODUCAO_BEM_ID = 2;
-            $scope.PRODUCAO_BEM_NOME = 3;
-            $scope.PRODUCAO_BEM_CLASSIFICACAO = 4;
-            $scope.PRODUCAO_UNIDADE_MEDIDA = 5;
-            $scope.PRODUCAO_FORMULA = 6;
-            $scope.PRODUCAO_NOME_ITEM_A = 7;
-            $scope.PRODUCAO_NOME_ITEM_B = 8;
-            $scope.PRODUCAO_NOME_ITEM_C = 9;
-            $scope.PRODUCAO_UNID_ORG_ID = 10;
-            $scope.PRODUCAO_UNID_ORG_NOME = 11;
-            $scope.PRODUCAO_UNID_ORG_SIGLA = 12;
-            $scope.PRODUCAO_PUBLICO_ALVO_ID = 13;
-            $scope.PRODUCAO_PUBLICO_ALVO_NOME = 14;
-            $scope.PRODUCAO_PROPRIEDADE_RURAL_ID = 15;
-            $scope.PRODUCAO_PROPRIEDADE_RURAL_NOME = 16;
-            $scope.PRODUCAO_COMUNIDADE_ID = 17;
-            $scope.PRODUCAO_COMUNIDADE_NOME = 18;
-            $scope.PRODUCAO_FORMA_LIST = 19;
-                $scope.FORMA_COMPOSICAO_LIST = 0;
-                    $scope.COMPOSICAO_FORMA_PRODUCAO_VALOR_ID = 0;
-                    $scope.COMPOSICAO_FORMA_PRODUCAO_VALOR_ITEM_NOME = 1;
-                    $scope.COMPOSICAO_FORMA_PRODUCAO_VALOR_NOME = 2;
-                    $scope.COMPOSICAO_ORDEM = 3;
-                $scope.FORMA_VALOR_ITEM_A = 1;
-                $scope.FORMA_VALOR_ITEM_B = 2;
-                $scope.FORMA_VALOR_ITEM_C = 3;
-                $scope.FORMA_VOLUME = 4;
-                $scope.FORMA_VLR_UNIT = 5;
-                $scope.FORMA_VLR_TOTAL = 6;
-                $scope.FORMA_QTD_PRODUTORES = 7;
-                $scope.FORMA_DATA_CONFIRMACAO = 8;
-                $scope.FORMA_INCLUSAO_NOME = 9;
-                $scope.FORMA_INCLUSAO_DATA = 10;
-                $scope.FORMA_ALTERACAO_NOME = 11;
-                $scope.FORMA_ALTERACAO_DATA = 12;
-                $scope.FORMA_NOME_CALCULO = 13;
+            var idx = [];
 
-            $scope.PRODUCAO_INCLUSAO_NOME = 20;
-            $scope.PRODUCAO_INCLUSAO_DATA = 21;
-            $scope.PRODUCAO_ALTERACAO_NOME = 22;
-            $scope.PRODUCAO_ALTERACAO_DATA = 23;
-            $scope.PRODUCAO_PRODUTOR_LIST = 24;
-
+            idx[0]=0;
+            $scope.PRODUCAO_ID = idx[0]++;
+            $scope.PRODUCAO_ANO = idx[0]++;
+            $scope.PRODUCAO_BEM_ID = idx[0]++;
+            $scope.PRODUCAO_BEM_NOME = idx[0]++;
+            $scope.PRODUCAO_BEM_CLASSIFICACAO = idx[0]++;
+            $scope.PRODUCAO_UNIDADE_MEDIDA = idx[0]++;
+            $scope.PRODUCAO_FORMULA = idx[0]++;
+            $scope.PRODUCAO_NOME_ITEM_A = idx[0]++;
+            $scope.PRODUCAO_NOME_ITEM_B = idx[0]++;
+            $scope.PRODUCAO_NOME_ITEM_C = idx[0]++;
+            $scope.PRODUCAO_UNID_ORG_ID = idx[0]++;
+            $scope.PRODUCAO_UNID_ORG_NOME = idx[0]++;
+            $scope.PRODUCAO_UNID_ORG_SIGLA = idx[0]++;
+            $scope.PRODUCAO_PUBLICO_ALVO_ID = idx[0]++;
+            $scope.PRODUCAO_PUBLICO_ALVO_PESSOA_ID = idx[0]++;
+            $scope.PRODUCAO_PUBLICO_ALVO_NOME = idx[0]++;
+            $scope.PRODUCAO_PROPRIEDADE_RURAL_ID = idx[0]++;
+            $scope.PRODUCAO_PROPRIEDADE_RURAL_NOME = idx[0]++;
+            $scope.PRODUCAO_COMUNIDADE_ID = idx[0]++;
+            $scope.PRODUCAO_COMUNIDADE_NOME = idx[0]++;
+            $scope.PRODUCAO_FORMA_LIST = idx[0]++;
+                idx[1]=0;
+                $scope.FORMA_COMPOSICAO_LIST = idx[1]++;
+                    idx[2]=0;
+                    $scope.COMPOSICAO_FORMA_PRODUCAO_VALOR_ID = idx[2]++;
+                    $scope.COMPOSICAO_FORMA_PRODUCAO_VALOR_ITEM_NOME = idx[2]++;
+                    $scope.COMPOSICAO_FORMA_PRODUCAO_VALOR_NOME = idx[2]++;
+                    $scope.COMPOSICAO_ORDEM = idx[2]++;
+                $scope.FORMA_VALOR_ITEM_A = idx[1]++;
+                $scope.FORMA_VALOR_ITEM_B = idx[1]++;
+                $scope.FORMA_VALOR_ITEM_C = idx[1]++;
+                $scope.FORMA_VOLUME = idx[1]++;
+                $scope.FORMA_VLR_UNIT = idx[1]++;
+                $scope.FORMA_VLR_TOTAL = idx[1]++;
+                $scope.FORMA_QTD_PRODUTORES = idx[1]++;
+                $scope.FORMA_DATA_CONFIRMACAO = idx[1]++;
+                $scope.FORMA_INCLUSAO_NOME = idx[1]++;
+                $scope.FORMA_INCLUSAO_DATA = idx[1]++;
+                $scope.FORMA_ALTERACAO_NOME = idx[1]++;
+                $scope.FORMA_ALTERACAO_DATA = idx[1]++;
+                $scope.FORMA_NOME_CALCULO = idx[1]++;
+            $scope.PRODUCAO_INCLUSAO_NOME = idx[0]++;
+            $scope.PRODUCAO_INCLUSAO_DATA = idx[0]++;
+            $scope.PRODUCAO_ALTERACAO_NOME = idx[0]++;
+            $scope.PRODUCAO_ALTERACAO_DATA = idx[0]++;
+            $scope.PRODUCAO_PRODUTOR_LIST = idx[0]++;
 
             $scope.resultado = function(item, array, campo) {
                 if (!item) {

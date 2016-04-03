@@ -533,7 +533,7 @@ angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 
                 toastr.info('Operação realizada!', 'Informação');
                     
             } else {
-                toastr.error(resposta ? resposta.mensagem : resposta, 'Erro ao incluir');
+                toastr.error(resposta && resposta.mensagem ? resposta.mensagem : resposta, 'Erro ao incluir');
             }
         }).error(function (erro) {
             toastr.error(erro, 'Erro ao incluir');
@@ -566,7 +566,7 @@ angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 
                 $rootScope.limparRegistroMarcadoExclusao(scp);
                 toastr.info('Operação realizada!', 'Informação');
             } else {
-                toastr.error(resposta ? resposta.mensagem : resposta, 'Erro ao editar');
+                toastr.error(resposta && resposta.mensagem ? resposta.mensagem : resposta, 'Erro ao editar');
             }
         }).error(function (erro) {
             toastr.error(erro, 'Erro ao editar');
@@ -584,7 +584,7 @@ angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 
                             scp.crudVaiPara(scp, scp.stt, 'lista');
                             toastr.info('Operação realizada!', 'Informação');
                         } else {
-                            toastr.error(resposta ? resposta.mensagem : resposta, 'Erro ao excluir');
+                            toastr.error(resposta && resposta.mensagem ? resposta.mensagem : resposta, 'Erro ao excluir');
                         }
                     });
                 } else {
@@ -613,7 +613,7 @@ angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 
                             }
                             toastr.info('Operação realizada!', 'Informação');
                         } else {
-                            toastr.error(resposta ? resposta.mensagem : resposta, 'Erro ao excluir');
+                            toastr.error(resposta && resposta.mensagem ? resposta.mensagem : resposta, 'Erro ao excluir');
                         }
                     });
                 } else {
@@ -641,7 +641,7 @@ angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 
                             scp.navegador.selecao.item = null;
                             toastr.info('Operação realizada!', 'Informação');
                         } else {
-                            toastr.error(resposta ? resposta.mensagem : resposta, 'Erro ao excluir');
+                            toastr.error(resposta && resposta.mensagem ? resposta.mensagem : resposta, 'Erro ao excluir');
                         }
                     });
                 } else {
@@ -656,7 +656,7 @@ angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 
                                 scp.navegador.dados.splice(UtilSrv.indiceDe(scp.navegador.dados, scp.navegador.selecao.items[item]), 1);
                                 toastr.info('Operação realizada!', 'Informação');
                             } else {
-                                toastr.error(resposta ? resposta.mensagem : resposta, 'Erro ao excluir');
+                                toastr.error(resposta && resposta.mensagem ? resposta.mensagem : resposta, 'Erro ao excluir');
                             }
                         });
                     } else {
@@ -702,7 +702,7 @@ angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 
 
         if (scp.servico && scp.servico.filtrar) {
             scp.servico.filtrar(scp.cadastro.filtro).success(function(resposta) {
-                if (resposta && resposta.mensagem === 'OK') {
+                if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {
                     if (!resposta.resultado || !resposta.resultado.length) {
                         if (scp.cadastro.filtro.temMaisRegistros) {
                             toastr.warning('Última pagina!', 'Atenção!');
@@ -739,6 +739,8 @@ angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 
                     if (scp.confirmarFiltrarDepois) {
                         scp.confirmarFiltrarDepois();
                     }
+                } else {
+                    toastr.error(resposta && resposta.mensagem ? resposta.mensagem : resposta, 'Erro ao filtrar');
                 }
             }).error(function(erro){
                 toastr.error(erro, 'Erro ao filtrar');
@@ -785,16 +787,21 @@ angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 
             return;
         }
         scp.servico.novo(modelo).success(function(resposta) {
-            scp.navegador.mudarEstado('INCLUINDO');
-            scp.crudVaiPara(scp, scp.stt, 'form');
-            if (scp.incluirDepois) {
-                scp.incluirDepois(resposta.resultado);
+            if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {
+                scp.navegador.mudarEstado('INCLUINDO');
+                scp.crudVaiPara(scp, scp.stt, 'form');
+                if (scp.incluirDepois) {
+                    scp.incluirDepois(resposta.resultado);
+                }
+                scp.cadastro.original = resposta.resultado;
+                scp.cadastro.registro = angular.copy(scp.cadastro.original);
+                scp.navegador.submetido = false;
+                        
+            } else {
+                toastr.error(resposta && resposta.mensagem ? resposta.mensagem : resposta, 'Erro ao incluir');
             }
-            scp.cadastro.original = resposta.resultado;
-            scp.cadastro.registro = angular.copy(scp.cadastro.original);
-            scp.navegador.submetido = false;
         }).error(function(erro){
-            toastr.error(erro, 'Erro ao inserir');
+            toastr.error(erro, 'Erro ao incluir');
         });
     };
     $rootScope.informacao = function(scp) {};
@@ -848,8 +855,8 @@ angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 
                     scp.cadastro.registro = angular.copy(scp.cadastro.original);
                     scp.crudVerRegistro(scp);
                 } else {
-                    toastr.error(resposta ? resposta.mensagem : resposta, 'Erro ao visualizar');
-                }
+                    toastr.error(resposta && resposta.mensagem ? resposta.mensagem : resposta, 'Erro ao visualizar');
+                }                
             }).error(function(erro){
                 toastr.error(erro, 'Erro ao visualizar');
             });

@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PropriedadeRuralVinculoTipo;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
@@ -33,7 +34,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 
 @Entity
 @Table(name = "publico_alvo_propriedade_rural", schema = EntidadeBase.ATER_SCHEMA)
-public class PublicoAlvoPropriedadeRural extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class PublicoAlvoPropriedadeRural extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<PublicoAlvoPropriedadeRural> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -147,6 +148,24 @@ public class PublicoAlvoPropriedadeRural extends EntidadeBase implements _ChaveP
 	}
 
 	public void setVinculo(PropriedadeRuralVinculoTipo vinculo) {
+		this.vinculo = vinculo;
+	}
+
+	@Override
+	public PublicoAlvoPropriedadeRural infoBasica() {
+		return new PublicoAlvoPropriedadeRural(this.getId(), this.getArea(), this.getComunidade() == null ? null : this.getComunidade().infoBasica(), this.getInicio(), this.getPropriedadeRural() == null ? null : this.getPropriedadeRural().infoBasica(),
+				this.getPublicoAlvo() == null ? null : this.getPublicoAlvo().infoBasica(), this.getTermino(), this.getVinculo());
+	}
+
+	public PublicoAlvoPropriedadeRural(Integer id, BigDecimal area, Comunidade comunidade, Calendar inicio, PropriedadeRural propriedadeRural, PublicoAlvo publicoAlvo, Calendar termino, PropriedadeRuralVinculoTipo vinculo) {
+		super();
+		this.area = area;
+		this.comunidade = comunidade;
+		this.id = id;
+		this.inicio = inicio;
+		this.propriedadeRural = propriedadeRural;
+		this.publicoAlvo = publicoAlvo;
+		this.termino = termino;
 		this.vinculo = vinculo;
 	}
 

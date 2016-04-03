@@ -55,7 +55,7 @@ angular.module(pNmModulo).controller(pNmController,
             // processar o retorno positivo da modal
             var reg = null;
             if (resultado.selecao.tipo === 'U') {
-                reg = {propriedadeRural: {id: resultado.selecao.item[0], nome: resultado.selecao.item[1], comunidade: {nome: resultado.selecao.item[3]}}};
+                reg = {propriedadeRural: {id: resultado.selecao.item[0], nome: resultado.selecao.item[1], areaTotal: resultado.selecao.item[5], comunidade: {nome: resultado.selecao.item[3]}}};
                 if (!$scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList) {
                     $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList = [];
                     $scope.publicoAlvoPropriedadeRuralNvg.setDados($scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList);
@@ -63,7 +63,7 @@ angular.module(pNmModulo).controller(pNmController,
                 $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList.push(reg);
             } else {
                 for (var i in resultado.selecao.items) {
-                    reg = {propriedadeRural: {id: resultado.selecao.items[i][0], nome: resultado.selecao.items[i][1], comunidade: {nome: resultado.selecao.items[i][3]}}};
+                    reg = {propriedadeRural: {id: resultado.selecao.items[i][0], nome: resultado.selecao.items[i][1], areaTotal: resultado.selecao.item[i][5], comunidade: {nome: resultado.selecao.items[i][3]}}};
                     if (!$scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList) {
                         $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList = [];
                         $scope.publicoAlvoPropriedadeRuralNvg.setDados($scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList);

@@ -3,7 +3,6 @@ package br.gov.df.emater.aterwebsrv.rest;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,23 +22,13 @@ public class UnidadeOrganizacionalRest {
 	}
 
 	@RequestMapping(value = "/filtro-executar", method = RequestMethod.POST)
-	@Transactional(readOnly = true)
-	public Resposta filtroExecutar(@RequestBody UnidadeOrganizacionalCadFiltroDto filtro, Principal usuario) {
-		try {
-			return new Resposta(facadeBo.unidadeOrganizacionalFiltroExecutar(usuario, filtro).getResposta());
-		} catch (Exception e) {
-			return new Resposta(e);
-		}
+	public Resposta filtroExecutar(@RequestBody UnidadeOrganizacionalCadFiltroDto filtro, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.unidadeOrganizacionalFiltroExecutar(usuario, filtro).getResposta());
 	}
 
 	@RequestMapping(value = "/lista", method = RequestMethod.POST)
-	@Transactional(readOnly = true)
-	public Resposta lista(@RequestBody UnidadeOrganizacionalCadFiltroDto filtro, Principal usuario) {
-		try {
-			return new Resposta(facadeBo.unidadeOrganizacionalFiltroExecutar(usuario, filtro).getResposta());
-		} catch (Exception e) {
-			return new Resposta(e);
-		}
+	public Resposta lista(@RequestBody UnidadeOrganizacionalCadFiltroDto filtro, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.unidadeOrganizacionalFiltroExecutar(usuario, filtro).getResposta());
 	}
 
 }

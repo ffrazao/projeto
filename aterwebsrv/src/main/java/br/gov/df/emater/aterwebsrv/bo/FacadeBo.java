@@ -16,10 +16,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.Atividade;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaTipo;
 import br.gov.df.emater.aterwebsrv.modelo.dto.AtividadeCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.BemClassificacaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.BemProducaoCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.modelo.dto.CarteiraProdutorRelFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.ComunidadeListaDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.FormularioCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.FormularioColetaCadFiltroDto;
@@ -38,12 +38,10 @@ public class FacadeBo implements BeanFactoryAware {
 
 	private BeanFactory beanFactory;
 
-	@Transactional
 	private _Contexto _executar(Principal usuario, String comandoNome) throws Exception {
 		return this._executar(usuario, comandoNome, null);
 	}
 
-	@Transactional
 	private _Contexto _executar(Principal usuario, String comandoNome, Object requisicao) throws Exception {
 		_Contexto result = new _Contexto(usuario, comandoNome, requisicao);
 		this._getComando(comandoNome).execute(result);
@@ -174,6 +172,11 @@ public class FacadeBo implements BeanFactoryAware {
 	}
 
 	@Transactional(readOnly = true)
+	public _Contexto indiceProducaoFiltroProducaoPropriedadeRural(Principal usuario, IndiceProducaoCadFiltroDto filtro) throws Exception {
+		return this._executar(usuario, "IndiceProducaoFiltrarProducaoPropriedadeRuralCmd", filtro);
+	}
+
+	@Transactional(readOnly = true)
 	public _Contexto indiceProducaoNovo(Principal usuario, Producao producao) throws Exception {
 		return this._executar(usuario, "IndiceProducaoNovoCh", producao);
 	}
@@ -189,6 +192,11 @@ public class FacadeBo implements BeanFactoryAware {
 	}
 
 	@Transactional(readOnly = true)
+	public _Contexto pessoaBuscarCep(Principal usuario, String cep) throws Exception {
+		return this._executar(usuario, "PessoaBuscarCepCmd", cep);
+	}
+
+	@Transactional(readOnly = true)
 	public _Contexto pessoaFiltroExecutar(Principal usuario, PessoaCadFiltroDto filtro) throws Exception {
 		return this._executar(usuario, "PessoaFiltroExecutarCh", filtro);
 	}
@@ -199,18 +207,23 @@ public class FacadeBo implements BeanFactoryAware {
 	}
 
 	@Transactional(readOnly = true)
-	public _Contexto pessoaBuscarCep(Principal usuario, String cep) throws Exception {
-		return this._executar(usuario, "PessoaBuscarCepCmd", cep);
-	}
-
-	@Transactional(readOnly = true)
-	public _Contexto pessoaNovo(Principal usuario, PessoaTipo pessoaTipo) throws Exception {
-		return this._executar(usuario, "PessoaNovoCh", pessoaTipo);
+	public _Contexto pessoaNovo(Principal usuario, Pessoa pessoa) throws Exception {
+		return this._executar(usuario, "PessoaNovoCh", pessoa);
 	}
 
 	@Transactional
 	public _Contexto pessoaSalvar(Principal usuario, Pessoa pessoa) throws Exception {
 		return this._executar(usuario, "PessoaSalvarCh", pessoa);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto pessoaCarteiraProdutorVerificar(Principal usuario, CarteiraProdutorRelFiltroDto filtro) throws Exception {
+		return this._executar(usuario, "PessoaCarteiraProdutorVerificarCmd", filtro);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto pessoaCarteiraProdutorRel(Principal usuario, CarteiraProdutorRelFiltroDto filtro) throws Exception {
+		return this._executar(usuario, "PessoaCarteiraProdutorRelCmd", filtro);
 	}
 
 	@Transactional(readOnly = true)
@@ -272,11 +285,6 @@ public class FacadeBo implements BeanFactoryAware {
 		requisicao.put("tipo", tipo);
 
 		return this._executar(usuario, "UtilArquivoCh", requisicao);
-	}
-
-	@Transactional(readOnly = true)
-	public _Contexto indiceProducaoFiltroProducaoPropriedadeRural(Principal usuario, IndiceProducaoCadFiltroDto filtro) throws Exception {
-		return this._executar(usuario, "IndiceProducaoFiltrarProducaoPropriedadeRuralCmd", filtro);
 	}
 
 }

@@ -12,7 +12,7 @@ import br.gov.df.emater.aterwebsrv.modelo.dto.PessoaCadFiltroDto;
 
 @Service("PessoaFiltrarCmd")
 public class FiltrarCmd extends _Comando {
-	
+
 	@Autowired
 	private PessoaDao pessoaDao;
 

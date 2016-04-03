@@ -96,10 +96,8 @@
                                 {{cadastro.apoio.unidadeOrganizacional.nome}}
                             </div>
                             <select id="unidadeOrganizacional" name="unidadeOrganizacional" class="form-control" ng-model="cadastro.registro.unidadeOrganizacional" ng-options="item as item.nome for item in cadastro.apoio.unidadeOrganizacionalList | orderBy:'nome' track by item.id" required="true" ng-if="cadastro.apoio.producaoUnidadeOrganizacional && !modalCadastro">
-                                <option value="">primeiro</option>
                             </select>
                             <select id="unidadeOrganizacional" name="unidadeOrganizacional" class="form-control" ng-model="cadastro.apoio.unidadeOrganizacional" ng-options="item as item.nome for item in cadastro.apoio.unidadeOrganizacionalList | orderBy:'nome' track by item.id" required="true" ng-if="modalCadastro" ng-disabled="cadastro.registro.propriedadeRural.id || cadastro.registro.publicoAlvo.id">
-                                <option value="">segundo</option>
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.unidadeOrganizacional.$error.required" ng-if="cadastro.apoio.producaoUnidadeOrganizacional">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>

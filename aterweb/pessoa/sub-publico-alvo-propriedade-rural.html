@@ -35,8 +35,9 @@
                         <th>#</th>
                         <th>Comunidade</th>
                         <th>Nome da Propriedade</th>
+                        <th>Área Total da Propriedade (ha)</th>
                         <th>Exploração</th>
-                        <th>Área (ha)</th>
+                        <th>Área Explorada (ha)</th>
                         <th>Início</th>
                         <th>Término</th>
                         <th>Mapa</th>
@@ -52,9 +53,22 @@
                             {{$index + 1 + ((publicoAlvoPropriedadeRuralNvg.paginaAtual-1) * publicoAlvoPropriedadeRuralNvg.tamanhoPagina)}}
                         </td>
                         <td>{{reg.comunidade.nome}}</td>
-                        <td><a ng-click="modalVerPropriedadeRural(reg.propriedadeRural.id)">{{reg.propriedadeRural.nome}}</a></td>
                         <td>
-                            <select class="form-control input-sm" id="vinculo" name="vinculo{{$index}}" ng-model="reg.vinculo" ng-options="item.codigo as item.descricao for item in scp.cadastro.apoio.propriedadeRuralVinculoTipoList" ng-required="reg.propriedadeRural" ng-show="reg.propriedadeRural">
+                            <a ng-click="modalVerPropriedadeRural(reg.propriedadeRural.id)">{{reg.propriedadeRural.nome}}</a>
+                            <div class="label label-danger" ng-show="!reg.propriedadeRural.id">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Não informada
+                            </div>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control input-sm" ng-model="reg.propriedadeRural.areaTotal" ng-required="reg.propriedadeRural.id" id="areaTotal" name="areaTotal{{$index}}" ui-number-mask="globalFracaoHectares" ng-disabled="true" ng-show="reg.propriedadeRural.id"></input>
+                            <div class="label label-danger" ng-show="navegador.submetido && publicoAlvoPropriedadeRuralListFrm.areaTotal{{$index}}.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                        <td>
+                            <select class="form-control input-sm" id="vinculo" name="vinculo{{$index}}" ng-model="reg.vinculo" ng-options="item.codigo as item.descricao for item in scp.cadastro.apoio.propriedadeRuralVinculoTipoList" ng-required="reg.propriedadeRural" ng-disabled="!reg.propriedadeRural">
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && publicoAlvoPropriedadeRuralListFrm.vinculo{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -62,10 +76,14 @@
                             </div>
                         </td>
                         <td>
-                            <input type="text" class="form-control input-sm" id="area" name="area{{$index}}" ng-model="reg.area" ng-required="reg.propriedadeRural && ['PR', 'PA'].indexOf(reg.vinculo) >= 0" ng-show="reg.propriedadeRural" ui-number-mask="globalFracaoHectares">
+                            <input type="text" class="form-control input-sm" id="area" name="area{{$index}}" ng-model="reg.area" ng-required="reg.propriedadeRural && ['PR', 'PA'].indexOf(reg.vinculo) >= 0" ng-show="reg.propriedadeRural" ui-number-mask="globalFracaoHectares" ng-valor-max="reg.propriedadeRural.areaTotal">
                             <div class="label label-danger" ng-show="navegador.submetido && publicoAlvoPropriedadeRuralListFrm.area{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
+                            </div>
+                            <div class="label label-danger" ng-show="navegador.submetido && publicoAlvoPropriedadeRuralListFrm.area{{$index}}.$error.ngValorMax">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Valor máximo ultrapassado!
                             </div>
                         </td>
                         <td>

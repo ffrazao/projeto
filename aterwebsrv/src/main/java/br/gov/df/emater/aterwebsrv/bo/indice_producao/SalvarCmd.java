@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.ferramenta.UtilDao;
@@ -50,24 +51,24 @@ public class SalvarCmd extends _Comando {
 		}
 		result.setAlteracaoUsuario(getUsuario(contexto.getUsuario().getName()));
 		result.setBem(bemDao.findOne(result.getBem().getId()));
-		
+
 		if (result.getPublicoAlvo() != null && result.getPropriedadeRural() != null) {
 			result.setUnidadeOrganizacional(null);
 		} else if (result.getUnidadeOrganizacional() != null) {
-			result.setPublicoAlvo(null); 
+			result.setPublicoAlvo(null);
 			result.setPropriedadeRural(null);
 		}
-		
+
 		try {
 			dao.save(result);
 		} catch (DataIntegrityViolationException e) {
 			if (e.getCause() instanceof ConstraintViolationException) {
 				ConstraintViolationException c = (ConstraintViolationException) e.getCause();
-				throw new RuntimeException("Registro já cadastrado", c);
+				throw new BoException("Registro já cadastrado", c);
 			}
 			throw e;
 		}
-		
+
 		// proceder a exclusao dos registros
 		for (ProducaoForma producaoForma : result.getProducaoFormaList()) {
 			if (producaoForma.getProducaoFormaComposicaoList() != null) {
@@ -81,7 +82,7 @@ public class SalvarCmd extends _Comando {
 				producaoFormaDao.delete(producaoForma.getId());
 			}
 		}
-		
+
 		Map<String, Object> bemClassificacaoDetalhe = utilDao.ipaBemClassificacaoDetalhes(result.getBem().getBemClassificacao());
 
 		// salvar demais itens
@@ -95,16 +96,16 @@ public class SalvarCmd extends _Comando {
 				producaoForma.setInclusaoUsuario(getUsuario(contexto.getUsuario().getName()));
 			}
 			producaoForma.setAlteracaoUsuario(getUsuario(contexto.getUsuario().getName()));
-			
+
 			try {
 				producaoForma.setVolume(((FormulaProduto) bemClassificacaoDetalhe.get("formulaProduto")).volume(producaoForma));
 			} catch (Exception e) {
-				throw new RuntimeException(e);
+				throw new BoException(e);
 			}
 			if (producaoForma.getVolume() != null) {
 				producaoForma.setValorTotal(producaoForma.getVolume().multiply(producaoForma.getValorUnitario(), UtilitarioNumero.BIG_DECIMAL_PRECISAO));
 			}
-			
+
 			producaoFormaDao.save(producaoForma);
 
 			Integer ordem = 0;

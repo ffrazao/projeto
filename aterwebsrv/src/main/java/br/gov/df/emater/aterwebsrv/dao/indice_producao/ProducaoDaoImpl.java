@@ -8,7 +8,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import br.gov.df.emater.aterwebsrv.modelo.dto.IndiceProducaoCadFiltroDto;
@@ -24,7 +23,6 @@ public class ProducaoDaoImpl implements ProducaoDaoCustom {
 	private BemClassificacaoDao bemClassificacaoDao;
 
 	@Override
-	@Transactional(readOnly = true)
 	public List<Producao> filtrar(IndiceProducaoCadFiltroDto filtro) {
 		// ATENCAO: quando o parametro id do filtro estiver preenchido significa
 		// que este método vai coletar uma producao especifica, ou seja, é

@@ -3,7 +3,6 @@ package br.gov.df.emater.aterwebsrv.rest;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,84 +24,47 @@ public class IndiceProducaoRest {
 	}
 
 	@RequestMapping(value = "/editar", method = RequestMethod.POST)
-	@Transactional
-	public Resposta editar(@RequestBody Producao producao, Principal usuario) {
+	public Resposta editar(@RequestBody Producao producao, Principal usuario) throws Exception {
 		return salvar(producao, usuario);
 	}
 
 	@RequestMapping(value = "/excluir", method = RequestMethod.POST)
-	@Transactional
-	public Resposta excluir(@RequestBody Producao producao, Principal usuario) {
-		try {
-			return new Resposta(facadeBo.indiceProducaoExcluir(usuario, producao).getResposta());
-		} catch (Exception e) {
-			return new Resposta(e);
-		}
+	public Resposta excluir(@RequestBody Producao producao, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.indiceProducaoExcluir(usuario, producao).getResposta());
 	}
 
 	@RequestMapping(value = "/filtro-executar", method = RequestMethod.POST)
-	@Transactional(readOnly = true)
-	public Resposta filtroExecutar(@RequestBody IndiceProducaoCadFiltroDto filtro, Principal usuario) {
-		try {
-			return new Resposta(facadeBo.indiceProducaoFiltroExecutar(usuario, filtro).getResposta());
-		} catch (Exception e) {
-			return new Resposta(e);
-		}
+	public Resposta filtroExecutar(@RequestBody IndiceProducaoCadFiltroDto filtro, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.indiceProducaoFiltroExecutar(usuario, filtro).getResposta());
 	}
 
 	@RequestMapping("/filtro-novo")
-	@Transactional(readOnly = true)
-	public Resposta filtroNovo(Principal usuario) {
-		try {
-			return new Resposta(facadeBo.indiceProducaoFiltroNovo(usuario).values());
-		} catch (Exception e) {
-			return new Resposta(e);
-		}
+	public Resposta filtroNovo(Principal usuario) throws Exception {
+		return new Resposta(facadeBo.indiceProducaoFiltroNovo(usuario).values());
 	}
 
 	@RequestMapping(value = "/filtro-producao-propriedade-rural", method = RequestMethod.POST)
-	@Transactional(readOnly = true)
-	public Resposta filtroProducaoPropriedadeRural(@RequestBody IndiceProducaoCadFiltroDto filtro, Principal usuario) {
-		try {
-			return new Resposta(facadeBo.indiceProducaoFiltroProducaoPropriedadeRural(usuario, filtro).getResposta());
-		} catch (Exception e) {
-			return new Resposta(e);
-		}
+	public Resposta filtroProducaoPropriedadeRural(@RequestBody IndiceProducaoCadFiltroDto filtro, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.indiceProducaoFiltroProducaoPropriedadeRural(usuario, filtro).getResposta());
 	}
 
 	@RequestMapping(value = "/incluir", method = RequestMethod.POST)
-	@Transactional
-	public Resposta incluir(@RequestBody Producao producao, Principal usuario) {
+	public Resposta incluir(@RequestBody Producao producao, Principal usuario) throws Exception {
 		return salvar(producao, usuario);
 	}
 
 	@RequestMapping(value = "/novo", method = RequestMethod.POST)
-	@Transactional(readOnly = true)
-	public Resposta novo(@RequestBody Producao producao, Principal usuario) {
-		try {
-			return new Resposta(facadeBo.indiceProducaoNovo(usuario, producao).getResposta());
-		} catch (Exception e) {
-			return new Resposta(e);
-		}
+	public Resposta novo(@RequestBody Producao producao, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.indiceProducaoNovo(usuario, producao).getResposta());
 	}
 
-	@Transactional
-	public Resposta salvar(@RequestBody Producao producao, Principal usuario) {
-		try {
-			return new Resposta(facadeBo.indiceProducaoSalvar(usuario, producao).getResposta());
-		} catch (Exception e) {
-			return new Resposta(e);
-		}
+	public Resposta salvar(@RequestBody Producao producao, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.indiceProducaoSalvar(usuario, producao).getResposta());
 	}
 
 	@RequestMapping(value = "/visualizar", method = RequestMethod.GET)
-	@Transactional(readOnly = true)
-	public Resposta visualizar(@RequestParam Integer id, Principal usuario) {
-		try {
-			return new Resposta(facadeBo.indiceProducaoVisualizar(usuario, id).getResposta());
-		} catch (Exception e) {
-			return new Resposta(e);
-		}
+	public Resposta visualizar(@RequestParam Integer id, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.indiceProducaoVisualizar(usuario, id).getResposta());
 	}
 
 }

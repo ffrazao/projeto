@@ -8,11 +8,10 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import br.gov.df.emater.aterwebsrv.bo.BoException;
+import br.gov.df.emater.aterwebsrv.dao.DaoException;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FormularioDestino;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Situacao;
@@ -28,7 +27,6 @@ public class FormularioDaoImpl implements FormularioDaoCustom {
 	private EntityManager em;
 
 	@Override
-	@Transactional(readOnly = true)
 	public List<Object[]> filtrar(FormularioCadFiltroDto filtro) {
 		// objetos de trabalho
 		List<Object[]> result = null;
@@ -128,9 +126,9 @@ public class FormularioDaoImpl implements FormularioDaoCustom {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<FormularioVersao> filtrarComColeta(FormularioColetaCadFiltroDto filtro) {
+	public List<FormularioVersao> filtrarComColeta(FormularioColetaCadFiltroDto filtro) throws Exception {
 		if (filtro.getDestino() == null) {
-			throw new BoException("Dados incompletos!");
+			throw new DaoException("Dados incompletos!");
 		}
 		boolean enviaColetas = false;
 		if ((filtro.getPessoa() != null && filtro.getPessoa().getId() != null) || (filtro.getPropriedadeRural() != null && filtro.getPropriedadeRural().getId() != null)) {

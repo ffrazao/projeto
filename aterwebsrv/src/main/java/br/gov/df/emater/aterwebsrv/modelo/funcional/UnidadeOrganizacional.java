@@ -1,5 +1,6 @@
 package br.gov.df.emater.aterwebsrv.modelo.funcional;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -47,11 +48,16 @@ public class UnidadeOrganizacional extends EntidadeBase implements _ChavePrimari
 	public UnidadeOrganizacional() {
 	}
 
-	public UnidadeOrganizacional(Integer id, String nome, String sigla, PessoaJuridica pessoaJuridica) {
-		setId(id);
+	public UnidadeOrganizacional(Serializable id, String nome, String sigla, PessoaJuridica pessoaJuridica, UnidadeOrganizacionalClassificacao classificacao) {
+		this(id);
 		setNome(nome);
 		setSigla(sigla);
 		setPessoaJuridica(pessoaJuridica);
+		setClassificacao(classificacao);
+	}
+
+	public UnidadeOrganizacional(Serializable id) {
+		super(id);
 	}
 
 	public UnidadeOrganizacionalClassificacao getClassificacao() {
@@ -81,7 +87,7 @@ public class UnidadeOrganizacional extends EntidadeBase implements _ChavePrimari
 
 	@Override
 	public UnidadeOrganizacional infoBasica() {
-		return new UnidadeOrganizacional(this.id, this.nome, this.sigla, this.pessoaJuridica == null ? null : (PessoaJuridica) pessoaJuridica.infoBasica());
+		return new UnidadeOrganizacional(this.id, this.nome, this.sigla, this.pessoaJuridica == null ? null : (PessoaJuridica) pessoaJuridica.infoBasica(), this.classificacao);
 	}
 
 	public void setClassificacao(UnidadeOrganizacionalClassificacao classificacao) {

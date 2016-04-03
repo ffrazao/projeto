@@ -7,7 +7,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -27,7 +26,6 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 	private EntityManager em;
 
 	@Override
-	@Transactional(readOnly = true)
 	public List<Object[]> filtrar(PessoaCadFiltroDto filtro) {
 		// objetos de trabalho
 		List<Object[]> result = null;

@@ -15,7 +15,7 @@ public class Resposta implements Serializable {
 	public Resposta() {
 	}
 
-	public Resposta(Exception resultado) {
+	public Resposta(Throwable resultado) {
 		this.resultado = resultado;
 		this.mensagem = resultado.getMessage();
 	}

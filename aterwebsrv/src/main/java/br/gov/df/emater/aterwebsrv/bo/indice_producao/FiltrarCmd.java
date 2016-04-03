@@ -178,6 +178,7 @@ public class FiltrarCmd extends _Comando {
 		result.add(producao.getUnidadeOrganizacional() == null ? null : producao.getUnidadeOrganizacional().getSigla()); // PRODUCAO_UNID_ORG_SIGLA
 
 		result.add(producao.getPublicoAlvo() == null ? null : producao.getPublicoAlvo().getId()); // PRODUCAO_PUBLICO_ALVO_ID
+		result.add(producao.getPublicoAlvo() == null ? null : producao.getPublicoAlvo().getPessoa().getId()); // PRODUCAO_PUBLICO_ALVO_PESSOA_ID
 		result.add(producao.getPublicoAlvo() == null ? null : producao.getPublicoAlvo().getPessoa().getNome()); // PRODUCAO_PUBLICO_ALVO_NOME
 
 		result.add(producao.getPropriedadeRural() == null ? null : producao.getPropriedadeRural().getId()); // PRODUCAO_PROPRIEDADE_RURAL_ID

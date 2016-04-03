@@ -371,10 +371,11 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 		setId(id);
 	}
 
-	public PropriedadeRural(Integer id, String nome, Comunidade comunidade) {
+	public PropriedadeRural(Integer id, String nome, Comunidade comunidade, BigDecimal areaTotal) {
 		setId(id);
 		setNome(nome);
 		setComunidade(comunidade);
+		setAreaTotal(areaTotal);
 	}
 
 	@Override
@@ -998,7 +999,7 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 
 	@Override
 	public PropriedadeRural infoBasica() {
-		return new PropriedadeRural(getId(), getNome(), getComunidade() != null ? getComunidade().infoBasica() : null);
+		return new PropriedadeRural(getId(), getNome(), getComunidade() != null ? getComunidade().infoBasica() : null, getAreaTotal());
 	}
 
 }

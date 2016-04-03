@@ -63,68 +63,23 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Telefone;
 @Service("PessoaSalvarCmd")
 public class SalvarCmd extends _Comando {
 
-	public SalvarCmd() {
-	}
-
-	private RelacionamentoTipo getRelacionamentoTipo() {
-		if (this.relacionamentoTipo == null) {
-			this.relacionamentoTipo = relacionamentoTipoDao.findByCodigo(RelacionamentoTipo.Codigo.FAMILIAR.toString());
-		}
-		return relacionamentoTipo;
-	}
-
-	@Autowired
-	private RelacionamentoConfiguracaoViDao relacionamentoConfiguracaoViDao;
-
-	@Autowired
-	private PessoaDao dao;
-
-	@Autowired
-	private PublicoAlvoDao publicoAlvoDao;
-
-	@Autowired
-	private RelacionamentoTipoDao relacionamentoTipoDao;
-
-	@Autowired
-	private EnderecoDao enderecoDao;
-
-	@Autowired
-	private PessoaEnderecoDao pessoaEnderecoDao;
-
-	@Autowired
-	private TelefoneDao telefoneDao;
-
-	@Autowired
-	private PessoaTelefoneDao pessoaTelefoneDao;
-
-	@Autowired
-	private EmailDao emailDao;
-
 	@Autowired
 	private ArquivoDao arquivoDao;
-
-	@Autowired
-	private PessoaArquivoDao pessoaArquivoDao;
-
-	@Autowired
-	private PessoaEmailDao pessoaEmailDao;
-
-	@Autowired
-	private PessoaRelacionamentoDao pessoaRelacionamentoDao;
-
-	@Autowired
-	private RelacionamentoDao relacionamentoDao;
 
 	@Autowired
 	private ColetaDao coletaDao;
 
 	@Autowired
+	private PessoaDao dao;
+
+	@Autowired
 	private EntityManager em;
 
-	private RelacionamentoTipo relacionamentoTipo;
-	
 	@Autowired
-	private PaisDao paisDao;
+	private EmailDao emailDao;
+
+	@Autowired
+	private EnderecoDao enderecoDao;
 
 	@Autowired
 	private EstadoDao estadoDao;
@@ -133,10 +88,69 @@ public class SalvarCmd extends _Comando {
 	private MunicipioDao municipioDao;
 
 	@Autowired
+	private PaisDao paisDao;
+
+	@Autowired
+	private PessoaArquivoDao pessoaArquivoDao;
+
+	@Autowired
+	private PessoaEmailDao pessoaEmailDao;
+
+	@Autowired
+	private PessoaEnderecoDao pessoaEnderecoDao;
+
+	@Autowired
 	private PessoaGrupoSocialDao pessoaGrupoSocialDao;
 
 	@Autowired
+	private PessoaRelacionamentoDao pessoaRelacionamentoDao;
+
+	@Autowired
+	private PessoaTelefoneDao pessoaTelefoneDao;
+
+	@Autowired
+	private PublicoAlvoDao publicoAlvoDao;
+
+	@Autowired
 	private PublicoAlvoPropriedadeRuralDao publicoAlvoPropriedadeRuralDao;
+
+	@Autowired
+	private RelacionamentoConfiguracaoViDao relacionamentoConfiguracaoViDao;
+
+	@Autowired
+	private RelacionamentoDao relacionamentoDao;
+
+	private RelacionamentoTipo relacionamentoTipo;
+
+	@Autowired
+	private RelacionamentoTipoDao relacionamentoTipoDao;
+
+	@Autowired
+	private TelefoneDao telefoneDao;
+
+	public SalvarCmd() {
+	}
+
+	@SuppressWarnings("unchecked")
+	private Coleta criarColeta(LinkedHashMap<Object, Object> r) throws Exception {
+		Coleta result = null;
+		try {
+			result = new Coleta();
+			result.setId((Integer) r.get("id"));
+			result.setDataColeta((Calendar) UtilitarioData.getInstance().stringParaData(r.get("dataColeta")));
+			result.setFinalizada(r.get("finalizada") != null ? Confirmacao.valueOf((String) r.get("finalizada")) : null);
+			result.setFormularioVersao(new FormularioVersao(((Integer) ((LinkedHashMap<Object, Object>) r.get("formularioVersao")).get("id"))));
+
+			if (r.get("valor") != null) {
+				ObjectMapper om = new ObjectMapper();
+				String json = om.writeValueAsString(r.get("valor"));
+				result.setValorString(json);
+			}
+		} catch (Exception e) {
+			throw e;
+		}
+		return result;
+	}
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
@@ -149,11 +163,11 @@ public class SalvarCmd extends _Comando {
 		}
 		result.setUsuarioAlteracao(getUsuario(contexto.getUsuario().getName()));
 		result.setAlteracaoData(Calendar.getInstance());
-		
+
 		// ajustar os dados de nascimento da pessoa
 		if (result instanceof PessoaFisica) {
 			PessoaFisica pf = (PessoaFisica) result;
-			
+
 			if (pf.getNascimentoPais() != null && pf.getNascimentoPais().getId() != null) {
 				pf.setNascimentoPais(paisDao.findOne(pf.getNascimentoPais().getId()));
 			} else {
@@ -221,7 +235,6 @@ public class SalvarCmd extends _Comando {
 			}
 			result.setPublicoAlvo(publicoAlvo);
 		}
-
 
 		// salvar enderecos
 		if (result.getEnderecoList() != null) {
@@ -424,25 +437,11 @@ public class SalvarCmd extends _Comando {
 		return false;
 	}
 
-	@SuppressWarnings("unchecked")
-	private Coleta criarColeta(LinkedHashMap<Object, Object> r) throws Exception {
-		Coleta result = null;
-		try {
-			result = new Coleta();
-			result.setId((Integer) r.get("id"));
-			result.setDataColeta((Calendar) UtilitarioData.getInstance().stringParaData(r.get("dataColeta")));
-			result.setFinalizada(r.get("finalizada") != null ? Confirmacao.valueOf((String) r.get("finalizada")) : null);
-			result.setFormularioVersao(new FormularioVersao(((Integer) ((LinkedHashMap<Object, Object>) r.get("formularioVersao")).get("id"))));
-
-			if (r.get("valor") != null) {
-				ObjectMapper om = new ObjectMapper();
-				String json = om.writeValueAsString(r.get("valor"));
-				result.setValorString(json);
-			}
-		} catch (Exception e) {
-			throw e;
+	private RelacionamentoTipo getRelacionamentoTipo() {
+		if (this.relacionamentoTipo == null) {
+			this.relacionamentoTipo = relacionamentoTipoDao.findByCodigo(RelacionamentoTipo.Codigo.FAMILIAR.toString());
 		}
-		return result;
+		return relacionamentoTipo;
 	}
 
 }

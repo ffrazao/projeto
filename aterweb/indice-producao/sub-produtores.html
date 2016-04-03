@@ -55,9 +55,9 @@
                             {{$index + 1 + ((produtoresNvg.paginaAtual-1) * produtoresNvg.tamanhoPagina)}}
                         </td>
                         <td>
-                            <a ng-click="modalVerPessoa(item[PRODUCAO_PUBLICO_ALVO_ID])">{{item[PRODUCAO_PUBLICO_ALVO_NOME]}}</a>
+                            <a ng-click="modalVerPessoa(item[PRODUCAO_PUBLICO_ALVO_PESSOA_ID])">{{item[PRODUCAO_PUBLICO_ALVO_NOME]}}</a>
                         </td>
-                        <td><a ng-click="modalVerPropriedadeRural(item[PRODUCAO_PROPRIEDADE_RURAL_ID])">{{item[PRODUCAO_PROPRIEDADE_RURAL_NOME]}}</a></td>
+                        <td><a ng-click="modalVerPropriedadeRural(item[PRODUCAO_PROPRIEDADE_RURAL_ID])">/{{item[PRODUCAO_PROPRIEDADE_RURAL_ID]}}/{{item[PRODUCAO_PROPRIEDADE_RURAL_NOME]}}</a></td>
                         <td>{{item[PRODUCAO_COMUNIDADE_NOME]}}</td>
                         <td><button class="btn btn-primary btn-sm sr-only">Confirmar</button></td>
                     </tr>

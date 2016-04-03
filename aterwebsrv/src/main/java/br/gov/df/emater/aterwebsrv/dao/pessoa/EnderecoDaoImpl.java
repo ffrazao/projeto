@@ -7,7 +7,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Endereco;
@@ -18,7 +17,6 @@ public class EnderecoDaoImpl implements EnderecoDaoCustom {
 	private EntityManager em;
 
 	@Override
-	@Transactional(readOnly = true)
 	public List<Endereco> procurar(Endereco filtro) {
 		// objetos de trabalho
 		List<Endereco> result = null;

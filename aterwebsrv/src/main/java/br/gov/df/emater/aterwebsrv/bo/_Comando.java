@@ -23,4 +23,8 @@ public abstract class _Comando implements Command {
 		return usuarioDao.findByUsername(userName);
 	}
 
+	public UsuarioDao getUsuarioDao() {
+		return usuarioDao;
+	}
+
 }

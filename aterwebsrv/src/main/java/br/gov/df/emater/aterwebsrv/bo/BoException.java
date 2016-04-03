@@ -1,6 +1,6 @@
 package br.gov.df.emater.aterwebsrv.bo;
 
-public class BoException extends RuntimeException {
+public class BoException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 

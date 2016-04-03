@@ -250,7 +250,7 @@ angular.module(pNmModulo).controller(pNmController,
 
     };
     $scope.incluir = function() {
-        $rootScope.incluir($scope, $scope.navegador.selecao.item[$scope.PRODUCAO_ID]);
+        $rootScope.incluir($scope, {id: $scope.navegador.selecao.item[$scope.PRODUCAO_ID]});
     };
     $scope.incluirDepois = function(registro) {
         $scope.cadastro.apoio.bemClassificacao = $scope.encontraBemClassificacao(registro.bem.bemClassificacao.id);

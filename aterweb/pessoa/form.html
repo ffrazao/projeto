@@ -68,13 +68,26 @@
                                     Número inválido!
                                 </div>
                             </div>
+                            <div class="form-group col-md-5">
+                               <label class="control-label">Cadastro Especial</label>
+                               <div class="form-control">
+                                   <label class="checkbox-inline" for="publicoAlvoConfirmacao">
+                                       <input type="checkbox" name="publicoAlvoConfirmacao" id="publicoAlvoConfirmacao" ng-model="cadastro.registro.publicoAlvoConfirmacao" ng-true-value="'S'" ng-false-value="'N'">
+                                       Beneficiário
+                                   </label>
+                                   <label class="checkbox-inline" for="colaborador" ng-show="false">
+                                       <input type="checkbox" name="colaborador" id="colaborador" ng-model="cadastro.registro.colaborador" ng-click="tabVisivelColaborador(cadastro.registro.colaborador);">
+                                       Colaborador
+                                   </label>
+                               </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <uib-tabset>
-                    <uib-tab ng-repeat="tab in tabs | filter: {'visivel': true}" select="tab.selecao()">
+                <uib-tabset active="tabAtiva">
+                    <uib-tab ng-repeat="tab in tabs | filter: {'visivel': true}" select="tab.selecao()" index="tab.indice">
                         <uib-tab-heading>
-                            {{$index + 1}} {{tab.nome}} <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                            {{$index + 1}} {{tab.nome}}<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                         </uib-tab-heading>
                         <ng-include src="tab.include"/>
                     </uib-tab>

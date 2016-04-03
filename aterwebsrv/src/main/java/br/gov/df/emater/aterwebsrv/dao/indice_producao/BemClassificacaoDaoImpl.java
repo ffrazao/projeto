@@ -7,7 +7,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import br.gov.df.emater.aterwebsrv.modelo.dto.BemClassificacaoCadFiltroDto;
@@ -22,7 +21,6 @@ public class BemClassificacaoDaoImpl implements BemClassificacaoDaoCustom {
 	private EntityManager em;
 
 	@Override
-	@Transactional(readOnly = true)
 	public List<Object> filtrar(BemClassificacaoCadFiltroDto filtro) {
 		// objetos de trabalho
 		List<Object> result = null;

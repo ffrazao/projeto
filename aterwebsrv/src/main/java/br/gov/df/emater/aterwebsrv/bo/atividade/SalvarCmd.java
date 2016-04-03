@@ -45,7 +45,7 @@ public class SalvarCmd extends _Comando {
 	public SalvarCmd() {
 	}
 
-	private void criticaAtividadePessoa(AtividadePessoa pessoa) {
+	private void criticaAtividadePessoa(AtividadePessoa pessoa) throws BoException {
 
 		if (pessoa.getInicio() == null) {
 			pessoa.setInicio(Calendar.getInstance());
@@ -76,11 +76,11 @@ public class SalvarCmd extends _Comando {
 			result.setInclusaoUsuario(getUsuario(username));
 		}
 		result.setAlteracaoUsuario(getUsuario(contexto.getUsuario().getName()));
-		
+
 		if (result.getCodigo() == null) {
 			throw new BoException("Não foi identificado o código da atividade!");
 		}
-		
+
 		// atualizar valores
 		if (AtividadeFinalidade.O.equals(result.getFinalidade()) && result.getPessoaDemandanteList() != null) {
 			result.setPublicoReal(result.getPessoaDemandanteList().size());
@@ -117,7 +117,8 @@ public class SalvarCmd extends _Comando {
 			atividadePessoaDao.save(ativPess);
 		}
 		if (responsavel == null) {
-			//throw new BoException("Demandante Responsável não foi identificado");
+			// throw new BoException("Demandante Responsável não foi
+			// identificado");
 		}
 
 		responsavel = null;
@@ -138,7 +139,8 @@ public class SalvarCmd extends _Comando {
 			atividadePessoaDao.save(ativPess);
 		}
 		if (responsavel == null) {
-			//throw new BoException("Executor Responsável não foi identificado");
+			// throw new BoException("Executor Responsável não foi
+			// identificado");
 		}
 
 		if (demandanteList.containsAll(executorList)) {
