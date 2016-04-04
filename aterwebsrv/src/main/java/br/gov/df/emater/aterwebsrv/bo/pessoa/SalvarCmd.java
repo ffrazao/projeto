@@ -194,6 +194,11 @@ public class SalvarCmd extends _Comando {
 				pf.setNascimentoMunicipio(null);
 			}
 		}
+		
+		// gravar o perfil
+		if (result.getPerfilArquivo() != null) {
+			result.setPerfilArquivo(arquivoDao.findByMd5(result.getPerfilArquivo().getMd5()));
+		}
 
 		dao.save(result);
 

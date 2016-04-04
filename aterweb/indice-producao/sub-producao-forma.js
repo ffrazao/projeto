@@ -110,17 +110,20 @@ angular.module(pNmModulo).controller(pNmController,
             '            </div>' +
             '        </div>';
         } else {
+            if ($scope.cadastro.apoio.unidadeOrganizacional) {
+                form +=
+                '        <div class="row">' +
+                '            <div class="col-md-3 text-right">' +
+                '                <label class="form-label">Unidade Organizacional</label>' +
+                '            </div>' +
+                '            <div class="col-md-9">' +
+                '                <div class="form-control">' +
+                '                   ' + $scope.cadastro.apoio.unidadeOrganizacional.nome +
+                '                </div>' +
+                '            </div>' +
+                '        </div>';
+            }
             form +=
-            '        <div class="row">' +
-            '            <div class="col-md-3 text-right">' +
-            '                <label class="form-label">Unidade Organizacional</label>' +
-            '            </div>' +
-            '            <div class="col-md-9">' +
-            '                <div class="form-control">' +
-            '                   ' + $scope.cadastro.apoio.unidadeOrganizacional.nome +
-            '                </div>' +
-            '            </div>' +
-            '        </div>' +
             '        <div class="row">' +
             '            <div class="col-md-3 text-right">' +
             '                <label class="form-label">Produtor</label>' +

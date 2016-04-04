@@ -25,7 +25,7 @@ public class FiltrarPorPublicoAlvoPropriedadeRuralComunidadeCmd extends _Comando
 		List<Object> result = null;
 		List<PublicoAlvoPropriedadeRural> list = null;
 		if (!CollectionUtils.isEmpty(filtro.getPublicoAlvoList())) {
-			list = dao.findByPublicoAlvoInAndComunidadeUnidadeOrganizacionalInAndPropriedadeRuralIdIsNotNull(filtro.getPublicoAlvoList(), filtro.getUnidadeOrganizacionalList());
+			list = dao.findByPublicoAlvoInAndPropriedadeRuralIdIsNotNull(filtro.getPublicoAlvoList());
 		} else {
 			list = dao.findByPropriedadeRuralInAndComunidadeUnidadeOrganizacionalInAndPublicoAlvoIdIsNotNull(filtro.getPropriedadeRuralList(), filtro.getUnidadeOrganizacionalList());
 		}

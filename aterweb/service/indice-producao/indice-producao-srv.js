@@ -94,6 +94,10 @@ angular.module(pNmModulo).factory(pNmFactory,
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
                 return $http.post(this.endereco + '/filtro-producao-propriedade-rural', filtro);
             },
+            filtrarProducaoPorPublicoAlvo : function (filtro) {
+                SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
+                return $http.post(this.endereco + '/filtro-producao-publico-alvo', filtro);
+            },
         };
         return IndiceProducaoSrv;
     }

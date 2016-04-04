@@ -38,6 +38,7 @@
                         <th width="30">
                             #
                         </th>
+                        <th>Ano</th>
                         <th>Bem</th>
                         <th>Classificacao</th>
                         <th>Produtor</th>
@@ -54,6 +55,7 @@
                         <td rowspan="2">
                             {{$index + 1 + ((indiceProducaoNvg.paginaAtual-1) * indiceProducaoNvg.tamanhoPagina)}}
                         </td>
+                        <td>{{item[PRODUCAO_ANO]}}</td>
                         <td>{{item[PRODUCAO_BEM_NOME]}}</td>
                         <td>{{item[PRODUCAO_BEM_CLASSIFICACAO]}}</td>
                         <td>

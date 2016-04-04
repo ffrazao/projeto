@@ -22,6 +22,7 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.PropriedadeRuralSituacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PropriedadeRuralVinculoTipo;
 import br.gov.df.emater.aterwebsrv.modelo.dto.CarteiraProdutorRelFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica;
 
 @Service("PessoaCarteiraProdutorVerificarCmd")
 public class CarteiraProdutorVerificarCmd extends _Comando {
@@ -62,6 +63,14 @@ public class CarteiraProdutorVerificarCmd extends _Comando {
 				}
 				if (Confirmacao.N.equals(pessoa.getPublicoAlvoConfirmacao())) {
 					acumulaItem(pessoaReg, "erroList", "Não é beneficiário!");
+				}
+				if (pessoa.getPerfilArquivo() == null || pessoa.getPerfilArquivo().getConteudo() == null) {
+					acumulaItem(pessoaReg, "erroList", "Foto do beneficiário não cadastrada!");
+				}
+				if (!(pessoa instanceof PessoaFisica)) {
+					acumulaItem(pessoaReg, "erroList", "Carteira disponível somente a pessoas físicas!");
+				} else if (((PessoaFisica) pessoa).getCpf() == null || ((PessoaFisica) pessoa).getNisNumero() == null)  {
+					acumulaItem(pessoaReg, "erroList", "Documentos (CPF, NIS) não informados!");
 				}
 				if (pessoa.getPublicoAlvo() == null) {
 					acumulaItem(pessoaReg, "erroList", "Cadastro de Beneficiário incompleto!");

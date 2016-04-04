@@ -70,6 +70,8 @@ public class VisualizarCmd extends _Comando {
 		}
 		result.setUsuarioInclusao(result.getUsuarioInclusao().infoBasica());
 		result.setUsuarioAlteracao(result.getUsuarioAlteracao().infoBasica());
+		
+		result.setPerfilArquivo(result.getPerfilArquivo() == null ? null : result.getPerfilArquivo().infoBasica());
 
 		if (Confirmacao.S.equals(result.getPublicoAlvoConfirmacao())) {
 			PublicoAlvo publicoAlvo = result.getPublicoAlvo();
@@ -86,6 +88,7 @@ public class VisualizarCmd extends _Comando {
 		if (result.getArquivoList() != null) {
 			for (PessoaArquivo pessoaArquivo : result.getArquivoList()) {
 				pessoaArquivo.setPessoa(null);
+				pessoaArquivo.setArquivo(pessoaArquivo.getArquivo() == null? null : pessoaArquivo.getArquivo().infoBasica());
 			}
 		}
 		if (result.getEmailList() != null) {

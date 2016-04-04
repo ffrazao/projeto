@@ -56,6 +56,10 @@ public class ProducaoDaoImpl implements ProducaoDaoCustom {
 			// filtrar producao por propriedade rural
 			params.add(filtro.getPropriedadeRural());
 			sql.append("where p.propriedadeRural = ?").append(params.size()).append("\n");
+		} else if (filtro.getPublicoAlvo() != null && filtro.getPublicoAlvo().getId() != null) {
+			// filtrar producao por publicoalvo
+			params.add(filtro.getPublicoAlvo());
+			sql.append("where p.publicoAlvo = ?").append(params.size()).append("\n");
 		} else {
 			// filtrar producao por unidade organizacional
 			sql.append("where p.propriedadeRural is null").append("\n");
@@ -93,7 +97,7 @@ public class ProducaoDaoImpl implements ProducaoDaoCustom {
 		}
 
 		sql.append("order by p.ano, p.bem.bemClassificacao.nome, p.bem.nome").append("\n");
-		if (filtro.getPropriedadeRural() != null && filtro.getPropriedadeRural().getId() != null) {
+		if ((filtro.getPropriedadeRural() != null && filtro.getPropriedadeRural().getId() != null) || (filtro.getPublicoAlvo() != null && filtro.getPublicoAlvo().getId() != null)) {
 			sql.append("   , p.propriedadeRural.nome, p.publicoAlvo.pessoa.nome").append("\n");
 		} else {
 			sql.append("   , p.unidadeOrganizacional.nome").append("\n");
@@ -108,7 +112,11 @@ public class ProducaoDaoImpl implements ProducaoDaoCustom {
 		}
 
 		// definir a pagina a ser consultada
-		if (filtro.getId() == null && (filtro.getPropriedadeRural() == null || filtro.getPropriedadeRural().getId() == null)) {
+		if (filtro.getId() == null && 
+				(filtro.getPropriedadeRural() == null || 
+				filtro.getPropriedadeRural().getId() == null) && 
+				(filtro.getPublicoAlvo() == null || 
+				filtro.getPublicoAlvo().getId() == null)) {
 			filtro.configuraPaginacao(query);
 		}
 

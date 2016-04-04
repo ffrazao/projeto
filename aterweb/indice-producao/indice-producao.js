@@ -593,11 +593,10 @@
 
             $scope.$watch('cadastro.registro.publicoAlvo.id', function(novo) {
 
-                if ($scope.cadastro.apoio.porProdutor === true && $scope.cadastro.apoio.unidadeOrganizacional && $scope.cadastro.apoio.unidadeOrganizacional.id &&
+                if ($scope.cadastro.apoio.porProdutor === true &&
                     $scope.cadastro.registro.publicoAlvo && $scope.cadastro.registro.publicoAlvo.id) {
 
                     PropriedadeRuralSrv.filtrarPorPublicoAlvoUnidadeOrganizacionalComunidade({
-                        unidadeOrganizacionalList: [{id: $scope.cadastro.apoio.unidadeOrganizacional.id}],
                         publicoAlvoList: [{id: $scope.cadastro.registro.publicoAlvo.id}],
                     }).success(function (resposta) {
                         if (resposta && resposta.mensagem === "OK") {

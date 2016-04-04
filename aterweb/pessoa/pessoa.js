@@ -255,7 +255,6 @@
                     }
                 }
                 PessoaSrv.carteiraProdutorVerificar({pessoaIdList: pessoaIdList, publicoAlvoPropriedadeRuralIdList: publicoAlvoPropriedadeRuralIdList}).success(function(resposta) {
-                    console.log(resposta);
                     var conf = 
                         '<div class="form-group">' +
                         '    <div class="table-responsive">' +
@@ -364,7 +363,6 @@
                     });
 
                 });
-                console.log(pessoaIdList, publicoAlvoPropriedadeRuralIdList);
             };
 
             $scope.abrir = function(scp) {
@@ -614,13 +612,13 @@
                     '    </div>' + 
                     '</div>';
                 mensagemSrv.confirmacao(false, conf, null, {
-                    nomeArquivo: $scope.cadastro.registro.fotoPerfil
+                    'nomeArquivo': $scope.cadastro.registro.perfilArquivo ? $scope.cadastro.registro.perfilArquivo.localDiretorioWeb : null,
                 }).then(function(conteudo) {
                     // processar o retorno positivo da modal
                     if (!conteudo.nomeArquivo) {
                         toastr.error('Nenhum arquivo selecionado', 'Erro ao captar Imagem');
                     } else {
-                        $scope.cadastro.registro.fotoPerfil = conteudo.nomeArquivo;
+                        $scope.cadastro.registro.perfilArquivo = {md5: conteudo.nomeArquivo.md5, localDiretorioWeb: conteudo.nomeArquivo.nomeArquivo};
                     }
                 }, function() {
                     // processar o retorno negativo da modal

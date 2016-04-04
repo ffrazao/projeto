@@ -277,11 +277,13 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.$watch('cadastro.registro.comunidade', function(newValue, oldValue) {
         if (newValue && newValue.id) {
             $scope.cadastro.apoio.baciaHidrograficaList = [];
-            $scope.cadastro.apoio.comunidadeBaciaHidrograficaList.forEach(function(item) {
-                if (newValue.id === item.comunidade.id) {
-                    $scope.cadastro.apoio.baciaHidrograficaList.push(item.baciaHidrografica);
-                }
-            });
+            if ($scope.cadastro.apoio.comunidadeBaciaHidrograficaList) {            
+                $scope.cadastro.apoio.comunidadeBaciaHidrograficaList.forEach(function(item) {
+                    if (newValue.id === item.comunidade.id) {
+                        $scope.cadastro.apoio.baciaHidrograficaList.push(item.baciaHidrografica);
+                    }
+                });
+            }
         }
     });
     $scope.$watch('cadastro.registro.endereco', function(newValue, oldValue) {

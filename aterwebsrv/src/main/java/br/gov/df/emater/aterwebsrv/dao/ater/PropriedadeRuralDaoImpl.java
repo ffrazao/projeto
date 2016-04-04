@@ -171,7 +171,7 @@ public class PropriedadeRuralDaoImpl implements PropriedadeRuralDaoCustom {
 			}
 			PublicoAlvoPropriedadeRural papr = (PublicoAlvoPropriedadeRural) l[c];
 			if (papr != null) {
-				((List<Object[]>) reg[c]).add(new Object[] {papr.getPublicoAlvo().getPessoa().getNome(), papr.getPublicoAlvo().getId()});
+				((List<Object[]>) reg[c]).add(new Object[] {papr.getPublicoAlvo().getPessoa().getNome(), papr.getPublicoAlvo().getId(), papr.getPublicoAlvo().getPessoa().getId()});
 			}
 		}
 		if (reg != null) {

@@ -36,14 +36,8 @@ public class PessoaJuridica extends Pessoa {
 		setPessoaTipo(PessoaTipo.PJ);
 	}
 
-	public PessoaJuridica(Integer id, String nome, String apelidoSigla, String cnpj) {
-		super(id, PessoaTipo.PJ, nome, apelidoSigla);
-		setCnpj(cnpj);
-	}
-
-	public PessoaJuridica(Integer id, String nome, String cnpj) {
-		setId(id);
-		setNome(nome);
+	public PessoaJuridica(Integer id, String nome, String apelidoSigla, Arquivo perfilArquivo, String cnpj) {
+		super(id, PessoaTipo.PJ, nome, apelidoSigla, perfilArquivo);
 		setCnpj(cnpj);
 	}
 
@@ -65,7 +59,7 @@ public class PessoaJuridica extends Pessoa {
 
 	@Override
 	public Pessoa infoBasica() {
-		return new PessoaJuridica(this.id, this.nome, this.apelidoSigla, this.cnpj);
+		return new PessoaJuridica(this.getId(), this.getNome(), this.getApelidoSigla(), this.getPerfilArquivo() == null ? null : this.getPerfilArquivo().infoBasica(), this.getCnpj());
 	}
 
 }

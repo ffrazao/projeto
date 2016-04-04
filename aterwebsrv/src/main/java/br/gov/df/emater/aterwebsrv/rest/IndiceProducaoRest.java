@@ -48,6 +48,11 @@ public class IndiceProducaoRest {
 		return new Resposta(facadeBo.indiceProducaoFiltroProducaoPropriedadeRural(usuario, filtro).getResposta());
 	}
 
+	@RequestMapping(value = "/filtro-producao-publico-alvo", method = RequestMethod.POST)
+	public Resposta filtroProducaoPublicoAlvo(@RequestBody IndiceProducaoCadFiltroDto filtro, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.indiceProducaoFiltroProducaoPublicoAlvo(usuario, filtro).getResposta());
+	}
+
 	@RequestMapping(value = "/incluir", method = RequestMethod.POST)
 	public Resposta incluir(@RequestBody Producao producao, Principal usuario) throws Exception {
 		return salvar(producao, usuario);

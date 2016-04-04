@@ -13,7 +13,7 @@
     </div>
     <div class="form-group col-md-4">
         <label class="control-label">Comunidade</label>
-        <select class="form-control" id="comunidade" name="comunidade" ng-model="cadastro.registro.comunidade" ng-options="item as item.nome group by item.unidadeOrganizacional.nome for item in cadastro.apoio.comunidadeList | orderBy: ['unidadeOrganizacional.nome', 'nome'] track by item.id" required="true">
+        <select class="form-control" id="comunidade" name="comunidade" ng-model="cadastro.registro.comunidade" ng-options="item as item.nome group by item.unidadeOrganizacional.nome for item in cadastro.apoio.comunidadeList | orderBy: ['unidadeOrganizacional.nome', 'nome'] track by item.id" ng-required="true">
         </select>
         <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.comunidade.$error.required">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -22,7 +22,7 @@
     </div>
     <div class="form-group col-md-4">
         <label class="control-label">Bacia Hidrográfica</label>
-        <select class="form-control" id="baciaHidrografica" name="baciaHidrografica" ng-model="cadastro.registro.baciaHidrografica" ng-options="item as item.nome for item in cadastro.apoio.baciaHidrograficaList | orderBy: ['nome'] track by item.id" required="true">
+        <select class="form-control" id="baciaHidrografica" name="baciaHidrografica" ng-model="cadastro.registro.baciaHidrografica" ng-options="item as item.nome for item in cadastro.apoio.baciaHidrograficaList | orderBy: ['nome'] track by item.id" ng-required="true">
         </select>
         <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.baciaHidrografica.$error.required">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>

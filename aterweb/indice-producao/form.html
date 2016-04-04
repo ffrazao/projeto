@@ -91,13 +91,13 @@
                     </div>
                     <div class="col-md-6" title="Unidade Organizacional">
                         <div class="form-group">
-                            <label class="control-label" for="unidadeOrganizacional">Unidade Organizacional</label>
+                            <label class="control-label" for="unidadeOrganizacional" ng-if="!cadastro.apoio.porProdutor">Unidade Organizacional</label>
                             <div class="form-control" ng-if="!cadastro.apoio.producaoUnidadeOrganizacional && !modalCadastro">
                                 {{cadastro.apoio.unidadeOrganizacional.nome}}
                             </div>
                             <select id="unidadeOrganizacional" name="unidadeOrganizacional" class="form-control" ng-model="cadastro.registro.unidadeOrganizacional" ng-options="item as item.nome for item in cadastro.apoio.unidadeOrganizacionalList | orderBy:'nome' track by item.id" required="true" ng-if="cadastro.apoio.producaoUnidadeOrganizacional && !modalCadastro">
                             </select>
-                            <select id="unidadeOrganizacional" name="unidadeOrganizacional" class="form-control" ng-model="cadastro.apoio.unidadeOrganizacional" ng-options="item as item.nome for item in cadastro.apoio.unidadeOrganizacionalList | orderBy:'nome' track by item.id" required="true" ng-if="modalCadastro" ng-disabled="cadastro.registro.propriedadeRural.id || cadastro.registro.publicoAlvo.id">
+                            <select id="unidadeOrganizacional" name="unidadeOrganizacional" class="form-control" ng-model="cadastro.apoio.unidadeOrganizacional" ng-options="item as item.nome for item in cadastro.apoio.unidadeOrganizacionalList | orderBy:'nome' track by item.id" required="true" ng-if="modalCadastro && !cadastro.apoio.porProdutor" ng-disabled="cadastro.registro.propriedadeRural.id">
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.unidadeOrganizacional.$error.required" ng-if="cadastro.apoio.producaoUnidadeOrganizacional">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>

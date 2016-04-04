@@ -41,12 +41,13 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 		sql.append("     , p.cpf").append("\n");
 		sql.append("     , p.cnpj").append("\n");
 		sql.append("     , p.publicoAlvoConfirmacao").append("\n");
-		sql.append("     , p.fotoPerfil").append("\n");
+		sql.append("     , perfil.localDiretorioWeb").append("\n");
 		sql.append("     , p.nascimento").append("\n");
 		sql.append("     , p.genero").append("\n");
 		sql.append("     , alvo.id").append("\n");
 		sql.append("from Pessoa p").append("\n");
 		sql.append("left join p.publicoAlvo alvo").append("\n");
+		sql.append("left join p.perfilArquivo perfil").append("\n");
 		if (filtrarPublicoAlvo(filtro)) {
 			if (filtro.getPublicoAlvoSetor() != null) {
 				sql.append("left join alvo.publicoAlvoSetorList paSetor").append("\n");

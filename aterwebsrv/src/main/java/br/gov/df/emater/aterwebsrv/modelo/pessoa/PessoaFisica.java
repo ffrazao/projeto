@@ -212,8 +212,8 @@ public class PessoaFisica extends Pessoa {
 		setPessoaTipo(PessoaTipo.PF);
 	}
 
-	public PessoaFisica(Integer id, PessoaTipo pessoaTipo, String nome, String apelidoSigla, PessoaGenero genero, String cpf) {
-		super(id, pessoaTipo, nome, apelidoSigla);
+	public PessoaFisica(Integer id, String nome, String apelidoSigla, Arquivo perfilArquivo, PessoaGenero genero, String cpf) {
+		super(id, PessoaTipo.PF, nome, apelidoSigla, perfilArquivo);
 		setGenero(genero);
 		setCpf(cpf);
 	}
@@ -384,7 +384,7 @@ public class PessoaFisica extends Pessoa {
 	}
 
 	public PessoaFisica infoBasica() {
-		return new PessoaFisica(this.getId(), this.getPessoaTipo(), this.getNome(), this.getApelidoSigla(), this.getGenero(), this.getCpf());
+		return new PessoaFisica(this.getId(), this.getNome(), this.getApelidoSigla(), this.getPerfilArquivo() == null ? null : this.getPerfilArquivo().infoBasica(), this.getGenero(), this.getCpf());
 	}
 
 	public void setCamNumero(String camNumero) {

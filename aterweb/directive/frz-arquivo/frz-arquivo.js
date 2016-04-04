@@ -41,7 +41,12 @@
                         scope.ngModel = "";
                         UtilSrv.uploadImagem(dataUrl).then(
                             function (response) {
-                                $timeout(function () {scope.ngModel = response.data.resultado.arquivo;});
+                                $timeout(function () {
+                                    scope.ngModel = {
+                                        'md5': response.data.resultado.md5, 
+                                        'nomeArquivo': response.data.resultado.arquivo,
+                                    };
+                                });
                             }, 
                             function (response) {
                                 if (response.status > 0) {

@@ -1,11 +1,13 @@
 package br.gov.df.emater.aterwebsrv.bo.util;
 
 import java.io.File;
+import java.util.Calendar;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,22 +15,26 @@ import org.springframework.web.multipart.MultipartFile;
 import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
+import br.gov.df.emater.aterwebsrv.dao.pessoa.ArquivoDao;
 import br.gov.df.emater.aterwebsrv.ferramenta.Criptografia;
 import br.gov.df.emater.aterwebsrv.modelo.dto.ArquivoDto;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.Arquivo;
 
 @Service("UtilArquivoCmd")
 public class ArquivoCmd extends _Comando {
 
-	private static final String DIRETORIO_PERFIL = File.separator + "resources" + File.separator + "perfil";
+	private static final String DIRETORIO_PERFIL = File.separator.concat("resources").concat(File.separator).concat("perfil");
 
-	private static final String DIRETORIO_UPLOAD = File.separator + "resources" + File.separator + "upload";
+	private static final String DIRETORIO_UPLOAD = File.separator.concat("resources").concat(File.separator).concat("upload");
+
+	@Autowired
+	private ArquivoDao arquivoDao;
 
 	@Override
 	@SuppressWarnings({ "unchecked" })
 	public boolean executar(_Contexto context) throws Exception {
-		
+		// recuperar parametros
 		Map<String, Object> requisicao = (Map<String, Object>) context.getRequisicao();
-		
 		MultipartFile file = (MultipartFile) requisicao.get("arquivo");
 		HttpServletRequest request = (HttpServletRequest) requisicao.get("request");
 		String tipo = (String) requisicao.get("tipo");
@@ -43,7 +49,7 @@ public class ArquivoCmd extends _Comando {
 		} else if ("arquivos".equals(tipo)) {
 			diretorio = DIRETORIO_UPLOAD;
 		}
-		File uploadDiretorio = new File(request.getServletContext().getRealPath("/") + diretorio);
+		File uploadDiretorio = new File(request.getServletContext().getRealPath("/").concat(diretorio));
 
 		if (!uploadDiretorio.exists()) {
 			uploadDiretorio.mkdirs();
@@ -65,11 +71,28 @@ public class ArquivoCmd extends _Comando {
 			extensao = ".png";
 		}
 		md5 = Criptografia.MD5_FILE(file.getBytes());
-		nome = md5 + extensao;
-		File arquivo = new File(uploadDiretorio.getPath() + File.separator + nome);
-		file.transferTo(arquivo);
-		
-		context.setResposta(new ArquivoDto(diretorio + File.separator + nome, md5, extensao));
+		nome = md5.concat(extensao);
+		File fileName = new File(uploadDiretorio.getPath().concat(File.separator).concat(nome));
+
+		// gravar no banco de dados
+		Arquivo arquivo = arquivoDao.findByMd5(md5);
+		if (arquivo == null) {
+			arquivo = new Arquivo();
+		}
+		arquivo.setDataUpload(Calendar.getInstance());
+		arquivo.setExtensao(extensao);
+		arquivo.setMd5(md5);
+		arquivo.setNomeOriginal(file.getOriginalFilename());
+		arquivo.setTamanho(file.getBytes().length);
+		arquivo.setTipo(tipo);
+		arquivo.setLocalDiretorioWeb(diretorio.concat(File.separator).concat(nome));
+		arquivo.setConteudo(file.getBytes());
+		arquivoDao.save(arquivo);
+
+		// gravar no diretorio de upload
+		file.transferTo(fileName);
+
+		context.setResposta(new ArquivoDto(arquivo.getLocalDiretorioWeb(), arquivo.getMd5(), arquivo.getExtensao()));
 
 		return false;
 	}

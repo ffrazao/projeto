@@ -78,9 +78,6 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	@OneToMany(mappedBy = "pessoa")
 	private List<PessoaEndereco> enderecoList;
 
-	@Column(name = "foto_perfil")
-	private String fotoPerfil;
-
 	@OneToMany(mappedBy = "pessoa")
 	private List<PessoaGrupoSocial> grupoSocialList;
 
@@ -102,6 +99,10 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	@Lob
 	// @Field(index = Index.YES, store = Store.YES)
 	private String observacoes;
+
+	@ManyToOne
+	@JoinColumn(name = "perfil_arquivo_id")
+	private Arquivo perfilArquivo;
 
 	@Column(name = "pessoa_tipo")
 	@Enumerated(EnumType.STRING)
@@ -147,11 +148,12 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		super(id);
 	}
 
-	public Pessoa(Integer id, PessoaTipo pessoaTipo, String nome, String apelidoSigla) {
+	public Pessoa(Integer id, PessoaTipo pessoaTipo, String nome, String apelidoSigla, Arquivo perfilArquivo) {
 		this(id);
 		setPessoaTipo(pessoaTipo);
 		setNome(nome);
 		setApelidoSigla(apelidoSigla);
+		setPerfilArquivo(perfilArquivo);
 	}
 
 	public Calendar getAlteracaoData() {
@@ -178,10 +180,6 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		return enderecoList;
 	}
 
-	public String getFotoPerfil() {
-		return this.fotoPerfil;
-	}
-
 	public List<PessoaGrupoSocial> getGrupoSocialList() {
 		return grupoSocialList;
 	}
@@ -201,6 +199,10 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 
 	public String getObservacoes() {
 		return observacoes;
+	}
+
+	public Arquivo getPerfilArquivo() {
+		return perfilArquivo;
 	}
 
 	public PessoaTipo getPessoaTipo() {
@@ -263,10 +265,6 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		this.enderecoList = enderecoList;
 	}
 
-	public void setFotoPerfil(String fotoPerfil) {
-		this.fotoPerfil = fotoPerfil;
-	}
-
 	public void setGrupoSocialList(List<PessoaGrupoSocial> grupoSocialList) {
 		this.grupoSocialList = grupoSocialList;
 	}
@@ -286,6 +284,10 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 
 	public void setObservacoes(String observacoes) {
 		this.observacoes = observacoes;
+	}
+
+	public void setPerfilArquivo(Arquivo perfilArquivo) {
+		this.perfilArquivo = perfilArquivo;
 	}
 
 	public void setPessoaTipo(PessoaTipo pessoaTipo) {

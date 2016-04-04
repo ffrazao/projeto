@@ -177,6 +177,11 @@ public class FacadeBo implements BeanFactoryAware {
 	}
 
 	@Transactional(readOnly = true)
+	public _Contexto indiceProducaoFiltroProducaoPublicoAlvo(Principal usuario, IndiceProducaoCadFiltroDto filtro) throws Exception {
+		return this._executar(usuario, "IndiceProducaoFiltrarProducaoPublicoAlvoCmd", filtro);
+	}
+
+	@Transactional(readOnly = true)
 	public _Contexto indiceProducaoNovo(Principal usuario, Producao producao) throws Exception {
 		return this._executar(usuario, "IndiceProducaoNovoCh", producao);
 	}
