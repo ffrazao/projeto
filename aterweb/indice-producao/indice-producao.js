@@ -8,9 +8,7 @@
         criarEstadosPadrao($stateProvider, pNmModulo, pNmController, pUrlModulo);
     }]);
     angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'IndiceProducaoSrv', 'PropriedadeRuralSrv',
-        'TokenStorage',
-        function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, IndiceProducaoSrv,  PropriedadeRuralSrv,
-            TokenStorage) {
+        function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, IndiceProducaoSrv,  PropriedadeRuralSrv) {
 
             // inicializacao
             $scope.crudInit($scope, $state, modalCadastro, pNmFormulario, IndiceProducaoSrv);
@@ -94,7 +92,7 @@
             };
 
             $scope.incluirDepois = function (objeto) {
-                var t = TokenStorage.token();
+                var t = $scope.token;
                 if (t && t.lotacaoAtual) {
                     objeto.unidadeOrganizacional = t.lotacaoAtual;
                 }

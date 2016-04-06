@@ -64,6 +64,7 @@ public final class TokenHandler {
 
 	public String createTokenForUser(Usuario user) {
 		byte[] userBytes = toJSON(user);
+		System.out.println(new String(userBytes));
 		byte[] hash = createHmac(userBytes);
 		final StringBuilder sb = new StringBuilder(170);
 		sb.append(toBase64(userBytes));

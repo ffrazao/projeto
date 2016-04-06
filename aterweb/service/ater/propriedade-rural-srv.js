@@ -3,8 +3,8 @@
 'use strict';
 
 angular.module(pNmModulo).factory(pNmFactory,
-  ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams', 'FormularioSrv', 'TokenStorage', 'ComunidadeSrv',
-    function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams, FormularioSrv, TokenStorage, ComunidadeSrv) {
+  ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams', 'FormularioSrv', 'ComunidadeSrv',
+    function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams, FormularioSrv, ComunidadeSrv) {
         var PropriedadeRuralSrv = {
             funcionalidade: 'PROPRIEDADE_RURAL',
             endereco: $rootScope.servicoUrl + '/propriedade-rural',
@@ -34,18 +34,20 @@ angular.module(pNmModulo).factory(pNmFactory,
                         scp.cadastro.apoio.baciaHidrograficaList = [];
                     }
                 });
-                var t = TokenStorage.token();
-                if (t && t.lotacaoAtual && t.lotacaoAtual && t.lotacaoAtual.pessoaJuridica) {
-                    scp.cadastro.apoio.localList = [];
-                    var fltr = null;
-                    if (scp.cadastro.apoio.unidadeOrganizacionalSomenteLeitura) {
-                        fltr = {unidadeOrganizacionalList: scp.cadastro.filtro.unidadeOrganizacionalList};
+                if ($rootScope.isAuthenticated()) {
+                    var t = $rootScope.token;
+                    if (t && t.lotacaoAtual && t.lotacaoAtual && t.lotacaoAtual.pessoaJuridica) {
+                        scp.cadastro.apoio.localList = [];
+                        var fltr = null;
+                        if (scp.cadastro.apoio.unidadeOrganizacionalSomenteLeitura) {
+                            fltr = {unidadeOrganizacionalList: scp.cadastro.filtro.unidadeOrganizacionalList};
+                        } else {
+                            fltr = {pessoaJuridicaList: [angular.fromJson(t.lotacaoAtual.pessoaJuridica.id)]};
+                        }
+                        ComunidadeSrv.lista(fltr, scp.cadastro.apoio.localList, t);
                     } else {
-                        fltr = {pessoaJuridicaList: [angular.fromJson(t.lotacaoAtual.pessoaJuridica.id)]};
+                        toastr.error('Não foi possível identificar a sua lotação', 'Erro ao carregar os dados');
                     }
-                    ComunidadeSrv.lista(fltr, scp.cadastro.apoio.localList, t);
-                } else {
-                    toastr.error('Não foi possível identificar a sua lotação', 'Erro ao carregar os dados');
                 }
             },
             filtrar : function(filtro) {

@@ -23,6 +23,9 @@ angular.module(pNmModulo).factory('modalCadastro', function () {
 // inicio: modulo de autenticação
 angular.module(pNmModulo).factory('TokenStorage', function($cookieStore) {
     var storageKey = 'auth_token';
+    var extrairToken = function(t) {
+        return t && t.length ? angular.fromJson(decodeURIComponent(escape(atob(t.split('.')[0])))) : null;
+    };
     if (localStorage) {
         return {
             store : function(token) {
@@ -35,8 +38,7 @@ angular.module(pNmModulo).factory('TokenStorage', function($cookieStore) {
                 return localStorage.removeItem(storageKey);
             },
             token: function() {
-                var t = this.retrieve();
-                return t ? angular.fromJson(atob(t.split('.')[0])) : null;
+                return extrairToken(this.retrieve());
             },
         };      
     } else {
@@ -51,8 +53,7 @@ angular.module(pNmModulo).factory('TokenStorage', function($cookieStore) {
                 return $cookieStore.remove(storageKey);
             },
             token: function() {
-                var t = this.retrieve();
-                return t ? angular.fromJson(atob(t.split('.')[0])) : null;
+                return extrairToken(this.retrieve());
             },
         };      
     }
@@ -246,11 +247,16 @@ angular.module(pNmModulo).directive('ngValorMax', function () {
     };
 });
 
-angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 'toastr', 'UtilSrv', '$stateParams', '$timeout',
-  function($rootScope, $uibModal, FrzNavegadorParams, toastr, UtilSrv, $stateParams, $timeout) {
+angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 'toastr', 'UtilSrv', '$stateParams', '$timeout', 'TokenStorage',
+  function($rootScope, $uibModal, FrzNavegadorParams, toastr, UtilSrv, $stateParams, $timeout, TokenStorage) {
     $rootScope.servicoUrl = "https://localhost:8443";
-    $rootScope.authenticated = false;
     $rootScope.token = null;
+    $rootScope.isAuthenticated = function (username) {
+        if (!$rootScope.token) {
+            $rootScope.token = TokenStorage.token();
+        }
+        return ($rootScope.token !== null && $rootScope.token.username !== null && $rootScope.token.username.length > 0) && ((!username) || (username && username === $rootScope.token.username));
+    };
     $rootScope.globalLocalizacao = "pt-br";
     $rootScope.globalFracaoHectares = "3";
     $rootScope.globalFracaoSem = "0";
@@ -903,13 +909,11 @@ angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 
 
 angular.module(pNmModulo).controller('AuthCtrl', ['$scope', '$rootScope', '$http', 'TokenStorage', 'mensagemSrv', '$uibModal', '$uibModalInstance', '$state', 
     function ($scope, $rootScope, $http, TokenStorage, mensagemSrv, $uibModal, $uibModalInstance, $state) {
-    $rootScope.authenticated = false;
     $rootScope.token = null; // For display purposes only
     
     $scope.executarLogout = function () {
         // Just clear the local storage
         TokenStorage.clear();   
-        $rootScope.authenticated = false;
         $rootScope.token = null;
         $state.go('p.bem-vindo');
     };

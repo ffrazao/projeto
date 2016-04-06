@@ -71,12 +71,45 @@
     angular.module(pNmModulo, ['ui.bootstrap', 'ui.utils', 'ui.router', 'ngAnimate', 'frz.navegador', 'frz.form', 'ngSanitize']);
     angular.module(pNmModulo).constant('CABEC', CABEC);
     angular.module(pNmModulo).config(['$stateProvider', function($stateProvider) {
-        criarEstadosPadrao($stateProvider, pNmModulo, pNmController, pUrlModulo);
+
+        $stateProvider.state('p.' + pNmModulo, {
+            abstract: true,
+            controller: pNmController,
+            templateUrl: pUrlModulo + '/' + pUrlModulo + '.html',
+            url: '/' + pUrlModulo + '/:opcao',
+        });
+        $stateProvider.state('p.atividade.filtro', {
+            templateUrl: pUrlModulo + '/filtro.html',
+            url: '',
+        });
+        $stateProvider.state('p.atividade.lista', {
+            templateUrl: pUrlModulo + '/lista.html',
+            url: '/lista',
+        });
+        $stateProvider.state('p.atividade.form', {
+            templateUrl: pUrlModulo + '/form.html',
+            url: '/form/:id',
+        });
+
     }]);
+
     angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'AtividadeSrv',
-        'TokenStorage', 'CABEC',
+        'CABEC',
         function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, AtividadeSrv,
-            TokenStorage, CABEC) {
+            CABEC) {
+
+            if (!$state.params.opcao || !$state.params.opcao.length || ['executar', 'demandar'].indexOf($state.params.opcao) < 0) {
+                $state.go('p.atividade.filtro', {opcao: 'executar'}, {location: true});
+                return;
+            } else {
+                $scope.opcao = $state.params.opcao;
+            }
+
+            if ($scope.opcao === 'demandar') {
+                pNmFormulario = 'Demanda de Atividades';
+            } else {
+                pNmFormulario = 'Execução de Atividades';
+            }
 
             $scope.CABEC = CABEC;
 

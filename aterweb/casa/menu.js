@@ -2,18 +2,13 @@
 
 'use strict';
 
-  angular.module(pNmModulo).controller(pNmController, ['$scope', '$rootScope', 'TokenStorage', '$http', function ($scope, $rootScope, TokenStorage, $http) {
+  angular.module(pNmModulo).controller(pNmController, ['$scope', '$rootScope', '$http', function ($scope, $rootScope, $http) {
 
     $scope.init = function () {
         $http.get($scope.servicoUrl + '/api/users/current').success(function (user) {
-            if(user && user.username && user.username !== 'anonymousUser'){
+            if (user && user.username && user.username !== 'anonymousUser') {
                 // For display purposes only
-                var token = TokenStorage.retrieve();
-                if (token) {
-                    $rootScope.authenticated = true;
-                    $rootScope.token = JSON.parse(atob(token.split('.')[0]));
-                    //console.log(JSON.parse(atob(token.split('.')[0])));
-                    //console.log(atob(token.split('.')[1]));
+                if ($rootScope.isAuthenticated(user.username)) {
                     return;
                 }
             }
@@ -23,153 +18,159 @@
 
     // este menu sera carregado pelo login do usuario
     var initTree = function() {
-        $scope.tree =
-            [
-                {
-                    name: 'Dashboard',
-                    funcionalidade: 'DASHBOARD',
-                    visivel: true,
-                },
-                {
-                    name: 'Cadastro',
-                    visivel: false,
-                    subtree: [
-                        {
-                            name: 'Pessoa',
-                            link: 'p.pessoa.filtro',
-                            funcionalidade: 'PESSOA',
-                            visivel: false,
+        $scope.tree = [
+            {
+                name: 'Dashboard',
+                funcionalidade: 'DASHBOARD',
+                visivel: true,
+            },
+            {
+                name: 'Cadastro',
+                visivel: false,
+                subtree: [
+                    {
+                        name: 'Pessoa',
+                        link: 'p.pessoa.filtro',
+                        funcionalidade: 'PESSOA',
+                        visivel: false,
+                        },
+                    {
+                        name: 'Grupo Social',
+                        link: 'p.grupoSocial.filtro',
+                        funcionalidade: 'GRUPO_SOCIAL',
+                        visivel: false,
+                    },
+                    {
+                        name: 'Propriedade Rural',
+                        link: 'p.propriedadeRural.filtro',
+                        funcionalidade: 'PROPRIEDADE_RURAL',
+                        visivel: false,
+                    },
+                    {
+                        name: 'Contratos & Convênios',
+                        link: 'p.contrato.filtro',
+                        funcionalidade: 'CONTRATO',
+                        visivel: false,
+                    },
+                    {
+                        name: 'Formulários',
+                        link: 'p.formulario.filtro',
+                        funcionalidade: 'FORMULARIO',
+                        visivel: false,
+                    },
+                ]
+            },
+            {
+                name: 'Atividade',
+                link: '#',
+                visivel: false,
+                subtree: [
+                    {
+                        name: 'Planejar',
+                        link: '#',
+                        funcionalidade: 'PLANEJAR',
+                        visivel: false,
+                    },
+                    {
+                        name: 'Executar',
+                        link: 'p.atividade.filtro({opcao: "executar"})',
+                        funcionalidade: 'ATIVIDADE',
+                        visivel: false,
+                    },
+                    {
+                        name: 'Demandar',
+                        link: 'p.atividade.filtro({opcao: "demandar"})',
+                        funcionalidade: 'ATIVIDADE',
+                        visivel: false,
+                    },
+                    {
+                        name: 'Agenda',
+                        link: 'login',
+                        funcionalidade: 'AGENDA',
+                        visivel: false,
+                    }
+                ]
+            },
+            {
+                name: 'Diagnóstico',
+                link: '#',
+                visivel: false,
+                subtree: [
+                    {
+                        name: 'Índices de Produção',
+                        link: 'p.indiceProducao.filtro',
+                        funcionalidade: 'INDICE_PRODUCAO',
+                        visivel: false,
+                    },
+                    {
+                        name: 'Índices Sociais',
+                        link: 'p.modeloCadastro.filtro',
+                        funcionalidade: 'IDCR',
+                        visivel: false,
+                    },
+                    {
+                        name: 'Enquete',
+                        link: 'login',
+                        visivel: false,
+                        subtree: [
+                            {
+                                name: 'Configuração',
+                                link: '#',
+                                funcionalidade: 'ENQUETE_CONFIGURACAO',
+                                visivel: false,
                             },
-                        {
-                            name: 'Grupo Social',
-                            link: 'p.grupoSocial.filtro',
-                            funcionalidade: 'GRUPO_SOCIAL',
-                            visivel: false,
-                        },
-                        {
-                            name: 'Propriedade Rural',
-                            link: 'p.propriedadeRural.filtro',
-                            funcionalidade: 'PROPRIEDADE_RURAL',
-                            visivel: false,
-                        },
-                        {
-                            name: 'Contratos & Convênios',
-                            link: 'p.contrato.filtro',
-                            funcionalidade: 'CONTRATO',
-                            visivel: false,
-                        },
-                        {
-                            name: 'Formulários',
-                            link: 'p.formulario.filtro',
-                            funcionalidade: 'FORMULARIO',
-                            visivel: false,
-                        },
-                    ]
-                },
-                {
-                    name: 'Atividade',
-                    link: '#',
-                    visivel: false,
-                    subtree: [
-                        {
-                            name: 'Planejar',
-                            link: '#',
-                            funcionalidade: 'PLANEJAR',
-                            visivel: false,
-                        },
-                        {
-                            name: 'Registrar',
-                            link: 'p.atividade.filtro',
-                            funcionalidade: 'ATIVIDADE',
-                            visivel: false,
-                        },
-                        {
-                            name: 'Agenda',
-                            link: 'login',
-                            funcionalidade: 'AGENDA',
-                            visivel: false,
-                        }
-                    ]
-                },
-                {
-                    name: 'Diagnóstico',
-                    link: '#',
-                    visivel: false,
-                    subtree: [
-                        {
-                            name: 'Índices de Produção',
-                            link: 'p.indiceProducao.filtro',
-                            funcionalidade: 'INDICE_PRODUCAO',
-                            visivel: false,
-                        },
-                        {
-                            name: 'Índices Sociais',
-                            link: 'p.modeloCadastro.filtro',
-                            funcionalidade: 'IDCR',
-                            visivel: false,
-                        },
-                        {
-                            name: 'Enquete',
-                            link: 'login',
-                            visivel: false,
-                            subtree: [
-                                {
-                                    name: 'Configuração',
-                                    link: '#',
-                                    funcionalidade: 'ENQUETE_CONFIGURACAO',
-                                    visivel: false,
-                                },
-                                {
-                                    name: 'Responder',
-                                    link: 'p.modeloCadastro.filtro',
-                                    subtree: [
-                                        {
-                                            name: 'Anônimo',
-                                            link: '#',
-                                            funcionalidade: 'ENQUETE_ANONIMO',
-                                            visivel: false,
-                                        },
-                                        {
-                                            name: 'Identificado',
-                                            link: 'p.modeloCadastro.filtro',
-                                            funcionalidade: 'ENQUETE_RESPONDER',
-                                            visivel: false,
-                                        },
-                                    ],
-                                },
-                            ],
-                        },
-                    ],
-                },
-                {
-                    name: 'Configuração',
-                    link: 'login',
-                    visivel: false,
-                    subtree: [
-                        {
-                            name: 'Usuário',
-                            link: 'p.usuario.filtro',
-                            funcionalidade: 'USUARIO',
-                            visivel: false,
-                        },
-                        {
-                            name: 'Perfil',
-                            link: 'p.perfil.filtro',
-                            funcionalidade: 'PERFIL',
-                            visivel: false,
-                        },
-                        {
-                            name: 'Log',
-                            link: 'p.log.filtro',
-                            funcionalidade: 'LOG',
-                            visivel: false,
-                        },
-                    ],
-                },
-            ];
+                            {
+                                name: 'Responder',
+                                link: 'p.modeloCadastro.filtro',
+                                subtree: [
+                                    {
+                                        name: 'Anônimo',
+                                        link: '#',
+                                        funcionalidade: 'ENQUETE_ANONIMO',
+                                        visivel: false,
+                                    },
+                                    {
+                                        name: 'Identificado',
+                                        link: 'p.modeloCadastro.filtro',
+                                        funcionalidade: 'ENQUETE_RESPONDER',
+                                        visivel: false,
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                name: 'Configuração',
+                link: 'login',
+                visivel: false,
+                subtree: [
+                    {
+                        name: 'Usuário',
+                        link: 'p.usuario.filtro',
+                        funcionalidade: 'USUARIO',
+                        visivel: false,
+                    },
+                    {
+                        name: 'Perfil',
+                        link: 'p.perfil.filtro',
+                        funcionalidade: 'PERFIL',
+                        visivel: false,
+                    },
+                    {
+                        name: 'Log',
+                        link: 'p.log.filtro',
+                        funcionalidade: 'LOG',
+                        visivel: false,
+                    },
+                ],
+            },
+        ];
     };
 
     var ativar = function(item, arvore, raiz) {
+        var retorno = false;
         for (var ramo in arvore) {
             if (arvore[ramo].funcionalidade === item) {
                 arvore[ramo].visivel = true;
@@ -178,7 +179,7 @@
                         raiz[r].visivel = true;
                     }
                 }
-                return true;
+                retorno = true;
             } 
             if (arvore[ramo].subtree) {
                 if (!angular.isArray(raiz)) {
@@ -186,13 +187,13 @@
                 }
                 raiz.push(arvore[ramo]);
                 if (ativar(item, arvore[ramo].subtree, raiz)) {
-                    return true;
+                    retorno = true;
                 } else {
                     raiz = [];
                 }
             }
         }
-        return false;
+        return retorno;
     };
 
     var removerInvisiveis = function (arvore) {
@@ -212,6 +213,9 @@
     };
 
     $scope.$watch('token', function (newValue) {
+        if (!$scope.tree) {
+            initTree();
+        }
         if (!newValue) {
             initTree();
         } else {

@@ -5,8 +5,8 @@
 'use strict';
 
 angular.module(pNmModulo).factory(pNmFactory,
-  ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams', 'ComunidadeSrv', 'TokenStorage',
-    function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams, ComunidadeSrv, TokenStorage) {
+  ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams', 'ComunidadeSrv',
+    function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams, ComunidadeSrv) {
         var AtividadeSrv = {
             funcionalidade: 'ATIVIDADE',
             endereco: $rootScope.servicoUrl + '/atividade',
@@ -44,12 +44,14 @@ angular.module(pNmModulo).factory(pNmFactory,
                         scp.cadastro.apoio.confirmacaoList = resposta.resultado[12];
                    }
                 });
-                var t = TokenStorage.token();
-                if (t && t.lotacaoAtual && t.lotacaoAtual && t.lotacaoAtual.pessoaJuridica) {
-                    scp.cadastro.apoio.localList = [];
-                    ComunidadeSrv.lista({pessoaJuridicaList: [angular.fromJson(t.lotacaoAtual.pessoaJuridica.id)]}, scp.cadastro.apoio.localList, t);
-                } else {
-                    toastr.error('Não foi possível identificar a sua lotação', 'Erro ao carregar os dados');
+                if ($rootScope.isAuthenticated()) {
+                    var t = $rootScope.token;
+                    if (t && t.lotacaoAtual && t.lotacaoAtual.pessoaJuridica) {
+                        scp.cadastro.apoio.localList = [];
+                        ComunidadeSrv.lista({pessoaJuridicaList: [angular.fromJson(t.lotacaoAtual.pessoaJuridica.id)]}, scp.cadastro.apoio.localList, t);
+                    } else {
+                        toastr.error('Não foi possível identificar a sua lotação', 'Erro ao carregar os dados');
+                    }
                 }
                 scp.cadastro.filtro.inicio = new Date();
                 scp.cadastro.filtro.inicio.setMonth(scp.cadastro.filtro.inicio.getMonth() - 6);

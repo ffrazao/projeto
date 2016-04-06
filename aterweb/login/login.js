@@ -53,7 +53,7 @@
             $scope.submitForm = function() {
                 if (!$scope.$parent.loginForm.$valid) {
                     $scope.submitted = true;
-                    toastr.error('Verifique os campos marcados', 'Erro');
+                    toastr.error('Verifique os campos marcados', 'Erro ao efetuar o login');
                     //$scope.mensagens.push({ tipo: 'danger', texto: 'Verifique os campos marcados' });
                     return;
                 }
@@ -65,24 +65,26 @@
                 }).
                 success(function(result, status, headers, config) {
                     $rootScope.token = null;
-                    $rootScope.authenticated = false;
                     if (status === 200) {
                         //console.log(headers('X-AUTH-TOKEN'));
-                        if (result === null) {
-                            toastr.error('Erro ao processar o login', 'Erro');
+                        if (!result || !result.length) {
+                            toastr.error('Erro ao processar o login - Resultado não recebido', 'Erro ao efetuar o login');
                         } else {
                             TokenStorage.store(result);
                             // For display purposes only
                             try {
-                                $rootScope.token = JSON.parse(atob(TokenStorage.retrieve().split('.')[0]));
-                                $rootScope.authenticated = true;
-                                $uibModalInstance.close();
+                                if ($rootScope.isAuthenticated()) {
+                                    $uibModalInstance.close();
+                                } else {
+                                    $rootScope.token = null;
+                                    toastr.error('Erro ao processar o login - token nulo', 'Erro ao efetuar o login');
+                                }
                             } catch (err) {
-                                toastr.error('Erro ao processar o login', 'Erro');
+                                toastr.error('Erro ao processar o login', 'Erro ao efetuar o login');
                             }
                         }
                     } else {
-                        toastr.error(result, 'Erro');
+                        toastr.error(result, 'Erro ao efetuar o login');
                     }
                 });
             };

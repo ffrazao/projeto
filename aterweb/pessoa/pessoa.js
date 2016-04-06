@@ -6,8 +6,8 @@
     angular.module(pNmModulo).config(['$stateProvider', function($stateProvider) {
         criarEstadosPadrao($stateProvider, pNmModulo, pNmController, pUrlModulo);
     }]);
-    angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'PessoaSrv', 'TokenStorage', '$rootScope',
-        function($scope, toastr, FrzNavegadorParams, $state, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, PessoaSrv, TokenStorage, $rootScope) {
+    angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'PessoaSrv', '$rootScope',
+        function($scope, toastr, FrzNavegadorParams, $state, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, PessoaSrv, $rootScope) {
 
             // inicializacao
             $scope.crudInit($scope, $state, modalCadastro, pNmFormulario, PessoaSrv);
@@ -74,7 +74,7 @@
                 }).then(function(conteudo) {
                     // processar o retorno positivo da modal
                     var pa = 'N';
-                    var t = TokenStorage.token();
+                    var t = $scope.token;
                     if (t && t.lotacaoAtual) {
                       if ('OP' === t.lotacaoAtual.classificacao) {
                         pa = 'S';

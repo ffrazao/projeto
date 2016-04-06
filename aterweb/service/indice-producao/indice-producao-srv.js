@@ -5,8 +5,8 @@
 'use strict';
 
 angular.module(pNmModulo).factory(pNmFactory,
-  ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams', 'mensagemSrv', 'ComunidadeSrv', 'TokenStorage', 'BemProducaoSrv', 'BemClassificacaoSrv', 'PropriedadeRuralSrv',
-    function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams, mensagemSrv, ComunidadeSrv, TokenStorage, BemProducaoSrv, BemClassificacaoSrv, PropriedadeRuralSrv) {
+  ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams', 'mensagemSrv', 'ComunidadeSrv', 'BemProducaoSrv', 'BemClassificacaoSrv', 'PropriedadeRuralSrv',
+    function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams, mensagemSrv, ComunidadeSrv, BemProducaoSrv, BemClassificacaoSrv, PropriedadeRuralSrv) {
         var IndiceProducaoSrv = {
             funcionalidade: 'INDICE_PRODUCAO',
             endereco: $rootScope.servicoUrl + '/indice-producao',
@@ -45,12 +45,14 @@ angular.module(pNmModulo).factory(pNmFactory,
                     identificaPai(scp.cadastro.apoio.bemClassificacaoList, null);
                     //console.log(scp.cadastro.apoio.bemClassificacaoList);
                 });
-                var t = TokenStorage.token();
-                if (t && t.lotacaoAtual && t.lotacaoAtual && t.lotacaoAtual.pessoaJuridica) {
-                    scp.cadastro.apoio.localList = [];
-                    ComunidadeSrv.lista({pessoaJuridicaList: [angular.fromJson(t.lotacaoAtual.pessoaJuridica.id)]}, scp.cadastro.apoio.localList, t);
-                } else {
-                    toastr.error('Não foi possível identificar a sua lotação', 'Erro ao carregar os dados');
+                if ($rootScope.isAuthenticated()) {
+                    var t = $rootScope.token;
+                    if (t && t.lotacaoAtual && t.lotacaoAtual && t.lotacaoAtual.pessoaJuridica) {
+                        scp.cadastro.apoio.localList = [];
+                        ComunidadeSrv.lista({pessoaJuridicaList: [angular.fromJson(t.lotacaoAtual.pessoaJuridica.id)]}, scp.cadastro.apoio.localList, t);
+                    } else {
+                        toastr.error('Não foi possível identificar a sua lotação', 'Erro ao carregar os dados');
+                    }
                 }
                 if (typeof scp.cadastro.apoio.producaoUnidadeOrganizacional === "undefined") {
                     scp.cadastro.apoio.producaoUnidadeOrganizacional = true;
