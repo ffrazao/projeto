@@ -32,7 +32,6 @@ import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaRelacionamentoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaTelefoneDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoConfiguracaoViDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoDao;
-import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoTipoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.TelefoneDao;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
@@ -57,7 +56,6 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaTelefone;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Relacionamento;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoConfiguracaoVi;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoFuncao;
-import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoTipo;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Telefone;
 
 @Service("PessoaSalvarCmd")
@@ -119,11 +117,6 @@ public class SalvarCmd extends _Comando {
 
 	@Autowired
 	private RelacionamentoDao relacionamentoDao;
-
-	private RelacionamentoTipo relacionamentoTipo;
-
-	@Autowired
-	private RelacionamentoTipoDao relacionamentoTipoDao;
 
 	@Autowired
 	private TelefoneDao telefoneDao;
@@ -332,7 +325,7 @@ public class SalvarCmd extends _Comando {
 
 					if (relacionamento == null || relacionamento.getId() == null) {
 						relacionamento = new Relacionamento();
-						relacionamento.setRelacionamentoTipo(getRelacionamentoTipo());
+						relacionamento.setRelacionamentoTipo(pessoaRelacionamento.getRelacionamento().getRelacionamentoTipo());
 					} else {
 						Relacionamento salvo = relacionamentoDao.findById(relacionamento.getId());
 						salvo.getPessoaRelacionamentoList().size();
@@ -345,7 +338,7 @@ public class SalvarCmd extends _Comando {
 					pessoaRelacionamento.setRelacionamento(relacionamento);
 					pessoaRelacionamentoDao.save(pessoaRelacionamento);
 
-					RelacionamentoConfiguracaoVi relacionamentoConfiguracaoVi = relacionamentoConfiguracaoViDao.findByTipoIdAndRelacionadorId(getRelacionamentoTipo().getId(), pessoaRelacionamento.getRelacionamentoFuncao().getId());
+					RelacionamentoConfiguracaoVi relacionamentoConfiguracaoVi = relacionamentoConfiguracaoViDao.findByTipoIdAndRelacionadorId(pessoaRelacionamento.getRelacionamento().getRelacionamentoTipo().getId(), pessoaRelacionamento.getRelacionamentoFuncao().getId());
 
 					// salvar o relacionador
 					PessoaRelacionamento relacionador = null;
@@ -440,13 +433,6 @@ public class SalvarCmd extends _Comando {
 
 		contexto.setResposta(result.getId());
 		return false;
-	}
-
-	private RelacionamentoTipo getRelacionamentoTipo() {
-		if (this.relacionamentoTipo == null) {
-			this.relacionamentoTipo = relacionamentoTipoDao.findByCodigo(RelacionamentoTipo.Codigo.FAMILIAR.toString());
-		}
-		return relacionamentoTipo;
 	}
 
 }

@@ -34,7 +34,7 @@
 </div>
 <div class="row">
     <div class="form-group col-md-8">
-        <label class="control-label">DAP - Declaração de Aptidão ao PRONAF</label>
+        <label class="control-label">DAP - Declaração de Aptidão ao PRONAF (<small><a href="http://smap14.mda.gov.br/extratopf/PesquisaTitular.aspx" target="_blank">Acessar Sistema de Extrato DAP</a></small>) (<small><a href="http://dap.mda.gov.br/dapweb/login/default.aspx" target="_blank">Acessar Cadastro de DAP</a></small>)</label>
         <div class="row">
             <div class="col-md-3">
                 <label class="control-label">Situação</label>
@@ -47,7 +47,7 @@
                 <input class="form-control" type="text" ng-model="cadastro.registro.dapRegistro"/>
             </div>
             <div class="col-md-3">
-                <label class="control-label">Dt. Validade</label>
+                <label class="control-label">Validade</label>
                 <input class="form-control" type="text" id="dapValidade" name="dapValidade" ng-model="cadastro.registro.dapValidade" ui-date-mask/>
                 <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.dapValidade.$error.date">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -70,7 +70,7 @@
                 <input class="form-control" type="text" id="carteiraProdutorNumero" name="carteiraProdutorNumero" ng-model="cadastro.registro.publicoAlvo.carteiraProdutorNumero"/>
             </div>
             <div class="col-md-4">
-                <label class="control-label">1ª Habilitação</label>
+                <label class="control-label">Emissão</label>
                 <input class="form-control" type="text" id="carteiraProdutorEmissao" name="carteiraProdutorEmissao" ng-model="cadastro.registro.publicoAlvo.carteiraProdutorEmissao" ui-date-mask/>
                 <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.carteiraProdutorEmissao.$error.date">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
