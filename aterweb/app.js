@@ -1,4 +1,4 @@
-/* global moment, isUndefOrNull */
+/* global moment, isUndefOrNull, escape */
 /* jslint loopfunc: true */
 
 (function(pNmModulo, pNmController, pNmFormulario) {
@@ -7,7 +7,7 @@
 
 angular.module(pNmModulo, ['ui.bootstrap', 'ui.utils', 'ui.router', 'ngSanitize', 'ngAnimate', 'toastr', 'sticky',
   'ui.mask', 'ui.utils.masks', 'ui.navbar', 'ngCookies', 'uiGmapgoogle-maps', 'ngFileUpload', 'ngTagsInput', 'ui.tree',
-  'frz.form', 'frz.tabela','frz.arquivo', 'frz.endereco', 'frz.painel.vidro', 'frz.navegador', 'casa', 'contrato', 
+  'frz.form', 'frz.tabela','frz.arquivo', 'frz.endereco', 'frz.painel.vidro', 'frz.navegador', 'casa', 'contrato', 'info',
   'pessoa', 'formulario', 'propriedadeRural' ,'atividade', 'indiceProducao',
   ]);
 
@@ -61,6 +61,9 @@ angular.module(pNmModulo).factory('TokenStorage', function($cookieStore) {
 angular.module(pNmModulo).factory('TokenAuthInterceptor', function($q, TokenStorage) {
     return {
         request: function(config) {
+            if (config.url === "info/info.html") {
+                return config;
+            }
             var authToken = TokenStorage.retrieve();
             if (authToken) {
                 config.headers['X-AUTH-TOKEN'] = authToken;
@@ -99,11 +102,12 @@ angular.module(pNmModulo).config(['$stateProvider', '$urlRouterProvider', 'toast
       url: '/',
       templateUrl: 'casa/index.html',
       controller: 'CasaCtrl',
-      resolve:{
-          mensagem: ['$stateParams', function($stateParams){
-              return $stateParams.mensagem;
-          }]
-      },
+    });
+
+    $stateProvider.state('p.erro', {
+      url: '/erro/:mensagem',
+      templateUrl: 'casa/index.html',
+      controller: 'CasaCtrl',
     });
 
     $stateProvider.state('login', {
@@ -114,8 +118,8 @@ angular.module(pNmModulo).config(['$stateProvider', '$urlRouterProvider', 'toast
 
     /* Add New States Above */
     $urlRouterProvider.otherwise(function ($injector, $location) {
-        var $state = $injector.get('$state');
-        $state.go('p.casa', {mensagem: 'Endereço não localizado!' + $location.$$absUrl}, {'location': true});
+        var state = $injector.get('$state');
+        state.go('p.erro', {mensagem: 'Endereço não localizado! ' + $location.$$absUrl}, {'location': false});
     });
 
     // configuracao do toastr
@@ -249,7 +253,7 @@ angular.module(pNmModulo).directive('ngValorMax', function () {
 
 angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 'toastr', 'UtilSrv', '$stateParams', '$timeout', 'TokenStorage',
   function($rootScope, $uibModal, FrzNavegadorParams, toastr, UtilSrv, $stateParams, $timeout, TokenStorage) {
-    $rootScope.servicoUrl = "https://localhost:8443";
+    $rootScope.servicoUrl = "https://192.168.25.7:8443";
     $rootScope.token = null;
     $rootScope.isAuthenticated = function (username) {
         if (!$rootScope.token) {
@@ -915,7 +919,7 @@ angular.module(pNmModulo).controller('AuthCtrl', ['$scope', '$rootScope', '$http
         // Just clear the local storage
         TokenStorage.clear();   
         $rootScope.token = null;
-        $state.go('p.bem-vindo');
+        $state.go('p.casa');
     };
     $scope.exibeLogin = function ()  {
         var modalInstance = $uibModal.open({

@@ -20,9 +20,30 @@
     var initTree = function() {
         $scope.tree = [
             {
-                name: 'Dashboard',
-                funcionalidade: 'DASHBOARD',
+                name: 'Info',
                 visivel: true,
+                subtree: [
+                    {
+                        name: 'Webmail',
+                        link: 'info({"nome": "Webmail", "endereco": "https://cas.gdfnet.df.gov.br"})',
+                        visivel: true,
+                    },
+                    {
+                        name: 'Internet',
+                        link: 'info({"nome": "Internet", "endereco": "http://www.emater.df.gov.br"})',
+                        visivel: true,
+                    },
+                    {
+                        name: 'Extranet',
+                        link: 'info({"nome": "Extranet", "endereco": "http://extranet.emater.df.gov.br"})',
+                        visivel: true,
+                    },
+                    {
+                        name: 'Dashboard',
+                        link: 'info({"nome": "Dashboard", "endereco": "http://extranet.emater.df.gov.br"})',
+                        visivel: true,
+                    },
+                ],
             },
             {
                 name: 'Cadastro',

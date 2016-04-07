@@ -1,4 +1,4 @@
-<div class="btn-toolbar" role="toolbar" aria-label="Barra de Ferramentas" style=".ng-valid {border: 0px;}; z-index: 1; display: block;">
+<div class="btn-toolbar" role="toolbar" aria-label="Barra de Ferramentas" style=".ng-valid {border: 0px;};">
   <div class="btn-group" role="group" ng-repeat="grupo in grupoBotoes | orderBy: 'ordem'" ng-if="!grupo.exibir || (grupo.exibir && grupo.exibir())">
     <span ng-repeat="botao in grupo.botoes | orderBy: 'ordem'" ng-switch="botao.tipo">
       <button ng-switch-default class="btn btn-sm {{botao.classe}}" title="{{botao.descricao}}" ng-click="botao.acao()" ng-show="botao.visivel && (!botao.exibir || (botao.exibir && botao.exibir()))" ng-disabled="botao.desabilitado">

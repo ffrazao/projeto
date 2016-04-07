@@ -1,17 +1,19 @@
 <div class="caixa-login de-vidro margem-superior centralizado">
-	<p class="text-center">
-		<img src="img/logo-transparente-pequeno.png"/>
-	</p>
+	<div class="form-group">
+		<div class="pull-center centralizado">
+			<img src="img/logo-transparente-pequeno.png" width="100%" />
+		</div>
+	</div>
 	<form class="form-horizontal" novalidate name="$parent.loginForm" ng-submit="submitForm()">
-		<fieldset style="margin: 15px;">
+		<fieldset>
 
 			<!-- Form Name -->
 			<legend>Login</legend>
 
 			<!-- Text input-->
 			<div class="form-group">
-				<label class="col-xs-4 control-label" for="username" title="Nome do Usuário do Sistema" accesskey="U"><u>U</u>suário *</label>  
-				<div class="col-xs-6">
+				<label class="col-sm-4 control-label" for="username" title="Nome do Usuário do Sistema" accesskey="U"><u>U</u>suário *</label>
+				<div class="col-sm-8">
 					<input id="username" name="username" type="text" placeholder="Nome do Usuário" class="form-control input-md" autofocus ng-model="cadastro.registro.username" required="true">
 					<div ng-show="($parent.loginForm.username.$dirty || submitted) && $parent.loginForm.username.$invalid">
 						<div class="label label-danger" ng-show="$parent.loginForm.username.$error.required">
@@ -24,8 +26,8 @@
 
 			<!-- Password input-->
 			<div class="form-group">
-				<label class="col-xs-4 control-label" for="password" title="Senha de Acesso ao Sistema" accesskey="S"><u>S</u>enha *</label>
-				<div class="col-xs-6">
+				<label class="col-sm-4 control-label" for="password" title="Senha de Acesso ao Sistema" accesskey="S"><u>S</u>enha *</label>
+				<div class="col-sm-8">
 					<input id="password" name="password" type="password" placeholder="Senha de Acesso" class="form-control input-md" ng-model="cadastro.registro.password" required="true">
 					<div ng-show="($parent.loginForm.password.$dirty || submitted) && $parent.loginForm.password.$invalid">
 						<div class="label label-danger" ng-show="$parent.loginForm.password.$error.required">
@@ -38,8 +40,8 @@
 
 			<!-- Select Basic -->
 			<div class="form-group sr-only">
-				<label class="col-xs-4 control-label" for="modulo" title="Módulo do Sistema" accesskey="M"><u>M</u>ódulo *</label>
-				<div class="col-xs-6">
+				<label class="col-sm-4 control-label" for="modulo" title="Módulo do Sistema" accesskey="M"><u>M</u>ódulo *</label>
+				<div class="col-sm-8">
 					<select id="modulo" name="modulo" class="form-control" ng-model="cadastro.registro.modulo" ng-options="item.codigo as item.nome for item in cadastro.apoio.moduloList">
 					</select>
 					<div ng-show="($parent.loginForm.modulo.$dirty || submitted) && $parent.loginForm.modulo.$invalid">
@@ -53,8 +55,8 @@
 
 			<!-- Multiple Checkboxes (inline) -->
 			<div class="form-group sr-only">
-				<label class="col-xs-4 control-label" for="administrador" accesskey="A"></label>
-				<div class="col-xs-6">
+				<label class="col-sm-4 control-label" for="administrador" accesskey="A"></label>
+				<div class="col-sm-8">
 					<label class="checkbox-inline" for="administrador" title="Solicitar Perfil de Administrador do Sistema">
 						<input type="checkbox" name="administrador" id="administrador" ng-true-value="'S'" ng-false-value="'N'" ng-model="cadastro.registro.administrador">
 						<u>A</u>dministrador
@@ -64,17 +66,19 @@
 
 			<!-- Button (Double) -->
 			<div class="form-group">
-				<label class="col-xs-4 control-label" for="ok"></label>
-				<div class="col-xs-8">
-					<button type="submit" id="ok" name="ok" class="btn btn-primary" accesskey="O" title="Executar a ação deste formulário"><u>O</u>K</button>
-					<button type="button" id="reiniciar" name="reiniciar" class="btn btn-warning" ng-click="reiniciar();" accesskey="R" title="Reiniciar os dados deste formulário"><u>R</u>einiciar</button>
-					<button type="button" id="cancelar" name="cancelar" class="btn btn-danger" accesskey="C" title="Cancelar a ação deste formulário" ng-click="fechar();"><u>C</u>ancelar</button>
+				<div class="col-md-12 col-sm-12 col-xs-12 text-right">
+					<button type="submit" class="btn btn-primary hidden-xs" id="ok" name="ok" accesskey="O" title="Executar a ação deste formulário"><u>O</u>K</button>
+					<button type="button" class="btn btn-warning hidden-xs" id="reiniciar" name="reiniciar" ng-click="reiniciar();" accesskey="R" title="Reiniciar os dados deste formulário"><u>R</u>einiciar</button>
+					<button type="button" class="btn btn-danger  hidden-xs" id="cancelar" name="cancelar" accesskey="C" title="Cancelar a ação deste formulário" ng-click="fechar();"><u>C</u>ancelar</button>
+
+					<button type="submit" class="btn btn-primary btn-block hidden-sm hidden-md hidden-lg" id="ok" name="ok" accesskey="O" title="Executar a ação deste formulário"><u>O</u>K</button>
+					<button type="button" class="btn btn-warning btn-block hidden-sm hidden-md hidden-lg" id="reiniciar" name="reiniciar" ng-click="reiniciar();" accesskey="R" title="Reiniciar os dados deste formulário"><u>R</u>einiciar</button>
+					<button type="button" class="btn btn-danger  btn-block hidden-sm hidden-md hidden-lg" id="cancelar" name="cancelar" accesskey="C" title="Cancelar a ação deste formulário" ng-click="fechar();"><u>C</u>ancelar</button>
 				</div>
 			</div>
 
 			<div class="form-group">
-				<label class="col-xs-4 control-label" for="esqueciMinhaSenha"></label>
-				<div class="col-xs-8">
+				<div class="col-sm-12 text-center">
 					<a id="esqueciMinhaSenha" href="" ng-click="esqueciMinhaSenha();" accesskey="E" title="Recuperar o seu acesso ao sistema"><u>E</u>squeci Minha Senha</a>
 				</div>
 			</div>

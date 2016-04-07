@@ -11,9 +11,11 @@ angular.module(pNmModulo).config(['$stateProvider', function($stateProvider) {
 }]);
 
 angular.module(pNmModulo).controller(pNmController,
-    ['$stateParams', 'toastr',
-    function($stateParams, toastr) {
-        //console.log($stateParams.mensagem);
+    ['$state', 'toastr', 
+    function($state, toastr) {
+    	if ($state.params.mensagem) {
+    		toastr.error($state.params.mensagem, 'Erro');
+    	}
 }]);
 
 })('casa', 'CasaCtrl');
