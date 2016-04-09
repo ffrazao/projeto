@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -169,7 +170,7 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 	private List<PublicoAlvoPropriedadeRural> publicoAlvoPropriedadeRuralList;
 
 	// @IndexedEmbedded
-	@OneToMany(mappedBy = "publicoAlvo")
+	@OneToMany(mappedBy = "publicoAlvo", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<PublicoAlvoSetor> publicoAlvoSetorList;
 
 	@Column(name = "renda_bruta_anual_assalariado")

@@ -4,7 +4,7 @@ import java.io.File;
 import java.sql.Connection;
 
 import br.gov.df.emater.banco.ConexaoMysql;
-import br.gov.df.emater.importa.ImportaIBGEMunicipio;
+import br.gov.df.emater.importa.ImportaComunidadeBacia;
 
 public class ImportaDadosApoioApplication {
 
@@ -16,10 +16,13 @@ public class ImportaDadosApoioApplication {
 			con = ConexaoMysql.getConnection();
 
 			// ImportaIBGEMunicipio mun = new ImportaIBGEMunicipio(con);
+			// mun.setPaisId(1);
 			// mun.pais();
-			// mun.executar(1);
+			// mun.executar();
 
 			// new ImportaIBGECNAE(con).executar();
+			
+			new ImportaComunidadeBacia(con).executar();			
 
 			con.commit();
 		} catch (Exception e) {

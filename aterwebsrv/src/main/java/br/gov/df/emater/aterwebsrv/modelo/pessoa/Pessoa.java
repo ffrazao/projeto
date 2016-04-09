@@ -92,6 +92,12 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	@JsonDeserialize(using = JsonDeserializerData.class)
 	private Calendar inclusaoData;
 
+	@Column(name = "inscricao_estadual")
+	private String inscricaoEstadual;
+
+	@Column(name = "inscricao_estadual_uf")
+	private String inscricaoEstadualUf;
+
 	@NotBlank
 	// @Field(index = Index.YES, store = Store.YES)
 	protected String nome;
@@ -193,6 +199,14 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		return inclusaoData;
 	}
 
+	public String getInscricaoEstadual() {
+		return inscricaoEstadual;
+	}
+
+	public String getInscricaoEstadualUf() {
+		return inscricaoEstadualUf;
+	}
+
 	public String getNome() {
 		return nome;
 	}
@@ -276,6 +290,14 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 
 	public void setInclusaoData(Calendar inclusaoData) {
 		this.inclusaoData = inclusaoData;
+	}
+
+	public void setInscricaoEstadual(String inscricaoEstadual) {
+		this.inscricaoEstadual = inscricaoEstadual;
+	}
+
+	public void setInscricaoEstadualUf(String inscricaoEstadualUf) {
+		this.inscricaoEstadualUf = inscricaoEstadualUf;
 	}
 
 	public void setNome(String nome) {

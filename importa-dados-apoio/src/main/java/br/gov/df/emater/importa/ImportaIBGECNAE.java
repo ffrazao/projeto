@@ -2,12 +2,10 @@ package br.gov.df.emater.importa;
 
 import java.sql.Connection;
 
-public class ImportaIBGECNAE {
-	
-	private Connection con;
+public class ImportaIBGECNAE extends Importador{
 
-	ImportaIBGECNAE(Connection con) {
-		this.con = con;
+	public ImportaIBGECNAE(Connection con) {
+		super(con);
 	}
 
 	public void executar() {

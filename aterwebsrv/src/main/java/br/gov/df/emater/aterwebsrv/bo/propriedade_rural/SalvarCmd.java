@@ -10,6 +10,7 @@ import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.ater.PropriedadeRuralArquivoDao;
 import br.gov.df.emater.aterwebsrv.dao.ater.PropriedadeRuralDao;
+import br.gov.df.emater.aterwebsrv.dao.ater.PropriedadeRuralFormaUtilizacaoEspacoRuralDao;
 import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoDao;
 import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoPropriedadeRuralDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.AreaDao;
@@ -17,6 +18,7 @@ import br.gov.df.emater.aterwebsrv.dao.pessoa.ArquivoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.EnderecoDao;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRuralArquivo;
+import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRuralFormaUtilizacaoEspacoRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.CadastroAcao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
@@ -26,6 +28,9 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Endereco;
 
 @Service("PropriedadeRuralSalvarCmd")
 public class SalvarCmd extends _Comando {
+	
+	@Autowired
+	private PropriedadeRuralFormaUtilizacaoEspacoRuralDao propriedadeRuralFormaUtilizacaoEspacoRuralDao;
 
 	@Autowired
 	private AreaDao areaDao;
@@ -95,6 +100,18 @@ public class SalvarCmd extends _Comando {
 			}
 		}
 		enderecoDao.save(endereco);
+		
+		
+		// ajustar o setor
+		if (result.getFormaUtilizacaoEspacoRuralList() != null) {
+			for (PropriedadeRuralFormaUtilizacaoEspacoRural formaUtilizacaoEspacoRural : result.getFormaUtilizacaoEspacoRuralList()) {
+				formaUtilizacaoEspacoRural.setPropriedadeRural(result);
+				PropriedadeRuralFormaUtilizacaoEspacoRural salvo = propriedadeRuralFormaUtilizacaoEspacoRuralDao.findOneByPropriedadeRuralAndFormaUtilizacaoEspacoRural(result, formaUtilizacaoEspacoRural.getFormaUtilizacaoEspacoRural());
+				if (salvo != null) {
+					formaUtilizacaoEspacoRural.setId(salvo.getId());
+				}
+			}
+		}
 		
 		dao.save(result);
 		

@@ -7,15 +7,18 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoDao;
 import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoPropriedadeRuralDao;
+import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoSetorDao;
 import br.gov.df.emater.aterwebsrv.dao.formulario.ColetaDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.ArquivoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.EmailDao;
@@ -36,6 +39,7 @@ import br.gov.df.emater.aterwebsrv.dao.pessoa.TelefoneDao;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
+import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoSetor;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.CadastroAcao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.Coleta;
@@ -60,7 +64,7 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Telefone;
 
 @Service("PessoaSalvarCmd")
 public class SalvarCmd extends _Comando {
-
+	
 	@Autowired
 	private ArquivoDao arquivoDao;
 
@@ -111,6 +115,9 @@ public class SalvarCmd extends _Comando {
 
 	@Autowired
 	private PublicoAlvoPropriedadeRuralDao publicoAlvoPropriedadeRuralDao;
+
+	@Autowired
+	private PublicoAlvoSetorDao publicoAlvoSetorDao;
 
 	@Autowired
 	private RelacionamentoConfiguracaoViDao relacionamentoConfiguracaoViDao;
@@ -205,6 +212,16 @@ public class SalvarCmd extends _Comando {
 				PublicoAlvo salvo = (PublicoAlvo) publicoAlvoDao.findOneByPessoa(publicoAlvo.getPessoa());
 				if (salvo != null) {
 					publicoAlvo.setId(salvo.getId());
+				}
+			}
+			// ajustar o setor
+			if (publicoAlvo.getPublicoAlvoSetorList() != null) {
+				for (PublicoAlvoSetor publicoAlvoSetor : publicoAlvo.getPublicoAlvoSetorList()) {
+					publicoAlvoSetor.setPublicoAlvo(publicoAlvo);
+					PublicoAlvoSetor salvo = publicoAlvoSetorDao.findOneByPublicoAlvoAndSetor(publicoAlvo, publicoAlvoSetor.getSetor());
+					if (salvo != null) {
+						publicoAlvoSetor.setId(salvo.getId());
+					}
 				}
 			}
 			publicoAlvoDao.save(publicoAlvo);
@@ -333,7 +350,7 @@ public class SalvarCmd extends _Comando {
 					}
 					relacionamento.setInicio(pessoaRelacionamento.getRelacionamento().getInicio());
 					relacionamento.setTermino(pessoaRelacionamento.getRelacionamento().getTermino());
-					relacionamento = relacionamentoDao.saveAndFlush(relacionamento);
+					relacionamento = relacionamentoDao.save(relacionamento);
 
 					pessoaRelacionamento.setRelacionamento(relacionamento);
 					pessoaRelacionamentoDao.save(pessoaRelacionamento);
@@ -384,7 +401,7 @@ public class SalvarCmd extends _Comando {
 		if (result.getArquivoList() != null) {
 			// tratar a exclusao de registros
 			for (PessoaArquivo pessoaArquivo : result.getArquivoList()) {
-				if (CadastroAcao.E.equals(pessoaArquivo.getCadastroAcao())) {
+				if (CadastroAcao.E.equals(pessoaArquivo.getCadastroAcao()) && pessoaArquivo.getId() != null) {
 					pessoaArquivoDao.delete(pessoaArquivo);
 				}
 			}
@@ -394,14 +411,13 @@ public class SalvarCmd extends _Comando {
 					Arquivo arquivo = pessoaArquivo.getArquivo();
 					arquivo = arquivoDao.findByMd5(arquivo.getMd5());
 					if (arquivo != null) {
-						arquivo.setMd5(pessoaArquivo.getArquivo().getMd5());
 						arquivo.setNomeOriginal(pessoaArquivo.getArquivo().getNomeOriginal());
 						arquivo.setDataUpload(pessoaArquivo.getArquivo().getDataUpload());
 						arquivo.setExtensao(pessoaArquivo.getArquivo().getExtensao());
 						arquivo.setTamanho(pessoaArquivo.getArquivo().getTamanho());
 						arquivo.setTipo(pessoaArquivo.getArquivo().getTipo());
 					}
-					arquivo = arquivoDao.save(pessoaArquivo.getArquivo());
+					arquivoDao.save(arquivo);
 					pessoaArquivo.setArquivo(arquivo);
 					pessoaArquivo.setPessoa(result);
 					pessoaArquivoDao.save(pessoaArquivo);
@@ -429,7 +445,15 @@ public class SalvarCmd extends _Comando {
 			// }
 		}
 
-		dao.flush();
+		try {			
+			dao.flush();
+		} catch (DataIntegrityViolationException e) {
+			if (e.getMessage().indexOf("uq_pessoa_1") >= 0) {
+				throw new BoException("Número de Inscrição Estadual já utilizado!");
+			} else {
+				throw e;
+			}
+		}
 
 		contexto.setResposta(result.getId());
 		return false;

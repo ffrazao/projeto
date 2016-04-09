@@ -16,6 +16,7 @@ import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaDao;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
+import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoSetor;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FormularioDestino;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Situacao;
@@ -80,6 +81,11 @@ public class VisualizarCmd extends _Comando {
 					publicoAlvoPropriedadeRural.setPublicoAlvo(publicoAlvoPropriedadeRural.getPublicoAlvo().infoBasica());
 					publicoAlvoPropriedadeRural.setComunidade(publicoAlvoPropriedadeRural.getComunidade().infoBasica());
 					publicoAlvoPropriedadeRural.setPropriedadeRural(publicoAlvoPropriedadeRural.getPropriedadeRural() != null ? publicoAlvoPropriedadeRural.getPropriedadeRural().infoBasica() : null);
+				}
+			}
+			if (publicoAlvo.getPublicoAlvoSetorList() != null) {
+				for (PublicoAlvoSetor publicoAlvoSetor : publicoAlvo.getPublicoAlvoSetorList()) {
+					publicoAlvoSetor.setPublicoAlvo(null);
 				}
 			}
 		}

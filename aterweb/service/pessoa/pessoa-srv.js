@@ -36,7 +36,9 @@ angular.module(pNmModulo).factory(pNmFactory,
                    'TelefoneTipo',
                    'RelacionamentoConfiguracaoVi',
                    'PropriedadeRuralVinculoTipo',
-                   'Situacao'
+                   'Situacao',
+                   'OrganizacaoTipo',
+                   'Estado'
                 ]}).success(function(resposta) {
                     if (resposta && resposta.resultado) {
                         scp.cadastro.apoio.pessoaTipoList = resposta.resultado[0];
@@ -45,7 +47,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                         scp.cadastro.apoio.pessoaSituacaoList = resposta.resultado[3];
                         scp.cadastro.apoio.publicoAlvoSegmentoList = resposta.resultado[4];
                         scp.cadastro.apoio.publicoAlvoCategoriaList = resposta.resultado[5];
-                        scp.cadastro.apoio.setorList = resposta.resultado[6];
+                        scp.cadastro.apoio.publicoAlvoSetorList = resposta.resultado[6];
                         scp.cadastro.apoio.comunidadeList = resposta.resultado[7];
                         scp.cadastro.apoio.confirmacaoList = resposta.resultado[8];
                         scp.cadastro.apoio.confirmacaoDapList = resposta.resultado[9];
@@ -75,6 +77,8 @@ angular.module(pNmModulo).factory(pNmFactory,
                         scp.cadastro.apoio.relacionamentoConfiguracaoViList = resposta.resultado[21];
                         scp.cadastro.apoio.propriedadeRuralVinculoTipoList = resposta.resultado[22];
                         scp.cadastro.apoio.situacaoList = resposta.resultado[23];
+                        scp.cadastro.apoio.organizacaoTipoList = resposta.resultado[24];
+                        scp.cadastro.apoio.estadoList = resposta.resultado[25];
 
                         scp.cadastro.apoio.tradicaoList = [];
                         var anoAtual = new Date().getFullYear();
@@ -91,6 +95,13 @@ angular.module(pNmModulo).factory(pNmFactory,
                           item.nomeSeFeminino = item.relacionadoNomeSeFeminino;
                           item.nomeSeMasculino = item.relacionadoNomeSeMasculino;
                         });
+
+                        var involucro = [];
+                        scp.cadastro.apoio.publicoAlvoSetorList.forEach(function(elemento) {
+                          delete elemento['@jsonId'];
+                          involucro.push({'setor': elemento});
+                        });
+                        scp.cadastro.apoio.publicoAlvoSetorList = involucro;
                     }
                 });
                 if ($rootScope.isAuthenticated()) {

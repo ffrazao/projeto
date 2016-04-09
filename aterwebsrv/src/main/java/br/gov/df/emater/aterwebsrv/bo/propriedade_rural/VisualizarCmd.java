@@ -13,6 +13,7 @@ import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.ater.PropriedadeRuralDao;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
+import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRuralFormaUtilizacaoEspacoRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
 
 @Service("PropriedadeRuralVisualizarCmd")
@@ -51,7 +52,13 @@ public class VisualizarCmd extends _Comando {
 			}
 			result.setPublicoAlvoPropriedadeRuralList(paprList);
 		}
-
+		
+		if (result.getFormaUtilizacaoEspacoRuralList() != null) {
+			for (PropriedadeRuralFormaUtilizacaoEspacoRural formaUtilizacaoEspacoRural : result.getFormaUtilizacaoEspacoRuralList()) {
+				formaUtilizacaoEspacoRural.setPropriedadeRural(null);
+			}
+		}
+		
 		em.detach(result);
 		contexto.setResposta(result);
 

@@ -19,6 +19,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                    'SistemaProducao',
                    'Confirmacao',
                    'PropriedadeRuralVinculoTipo',
+                   'FormaUtilizacaoEspacoRural',
                 ]}).success(function(resposta) {
                     if (resposta && resposta.resultado) {
                         var i = 0;
@@ -30,8 +31,16 @@ angular.module(pNmModulo).factory(pNmFactory,
                         scp.cadastro.apoio.sistemaProducaoList = resposta.resultado[i++];
                         scp.cadastro.apoio.confirmacaoList = resposta.resultado[i++];
                         scp.cadastro.apoio.propriedadeRuralVinculoTipoList = resposta.resultado[i++];
+                        scp.cadastro.apoio.formaUtilizacaoEspacoRuralList = resposta.resultado[i++];
 
                         scp.cadastro.apoio.baciaHidrograficaList = [];
+
+                        var involucro = [];
+                        scp.cadastro.apoio.formaUtilizacaoEspacoRuralList.forEach(function(elemento) {
+                          delete elemento['@jsonId'];
+                          involucro.push({'formaUtilizacaoEspacoRural': elemento});
+                        });
+                        scp.cadastro.apoio.formaUtilizacaoEspacoRuralList = involucro;
                     }
                 });
                 if ($rootScope.isAuthenticated()) {

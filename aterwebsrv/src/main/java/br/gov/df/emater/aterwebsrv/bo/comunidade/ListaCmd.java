@@ -1,6 +1,8 @@
 package br.gov.df.emater.aterwebsrv.bo.comunidade;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +35,11 @@ public class ListaCmd extends _Comando {
 		} else {
 			comunidadeList = dao.findByNomeLikeOrderByNomeAsc(filtro.getNomeLike());
 		}
-		for (Comunidade c: comunidadeList) {
+		for (Comunidade c : comunidadeList) {
 			PessoaJuridica pessoaJuridica = (PessoaJuridica) c.getUnidadeOrganizacional().getPessoaJuridica().infoBasica();
 			UnidadeOrganizacional unidadeOrganizacional = c.getUnidadeOrganizacional().infoBasica();
 			Comunidade comunidade = c.infoBasica();
-			
+
 			unidadeOrganizacional.setPessoaJuridica(pessoaJuridica);
 			comunidade.setUnidadeOrganizacional(unidadeOrganizacional);
 			if (result == null) {
@@ -45,6 +47,26 @@ public class ListaCmd extends _Comando {
 			}
 			result.add(comunidade);
 		}
+		// ordernar pelo nome de todas as comunidades
+		Collections.sort(result, new Comparator<Object>() {
+			@Override
+			public int compare(Object oba, Object obb) {
+				Comunidade a = (Comunidade) oba;
+				Comunidade b = (Comunidade) obb;
+				return a.getNome().compareTo(b.getNome());
+			}
+		});
+
+		// ordernar pela Unidade Organizacional das comunidades
+		Collections.sort(result, new Comparator<Object>() {
+			@Override
+			public int compare(Object oba, Object obb) {
+				Comunidade a = (Comunidade) oba;
+				Comunidade b = (Comunidade) obb;
+				return a.getUnidadeOrganizacional().getNome().compareTo(b.getUnidadeOrganizacional().getNome());
+			}
+		});
+
 		contexto.setResposta(result);
 		return false;
 	}

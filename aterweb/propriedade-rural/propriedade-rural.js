@@ -335,6 +335,14 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.elementoId = angular.extend(0, 0, $scope.elementoId);
 
     $scope.visualizarDepois = function(registro) {
+        if (registro.formaUtilizacaoEspacoRuralList) {
+            registro.formaUtilizacaoEspacoRuralList.forEach(function(elemento) {
+                delete elemento['@jsonId'];
+                delete elemento['id'];
+                delete elemento['formaUtilizacaoEspacoRural']['@jsonId'];
+            });
+        }
+
         return $scope.incluirDepois(registro);
     };
     $scope.incluirDepois = function (registro) {

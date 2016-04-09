@@ -1,7 +1,7 @@
 <div class="row">
     <div class="form-group col-md-3">
         <label class="control-label">Categoria</label>
-        <select class="form-control" id="categoria" name="categoria" ng-model="cadastro.registro.publicoAlvo.categoria" ng-options="item.codigo as item.descricao for item in cadastro.apoio.publicoAlvoCategoriaList" ng-required="cadastro.registro.publicoAlvoConfirmacao === 'S'">
+        <select class="form-control" id="categoria" name="categoria" ng-model="cadastro.registro.publicoAlvo.categoria" ng-required="cadastro.registro.publicoAlvoConfirmacao === 'S'" ng-options="item.codigo as item.descricao for item in cadastro.apoio.publicoAlvoCategoriaList | filter: {pessoaTipoList: cadastro.registro.pessoaTipo} | orderBy: 'descricao'">
         </select>
         <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.categoria.$error.required">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -10,17 +10,26 @@
     </div>
     <div class="form-group col-md-3">
         <label class="control-label">Segmento</label>
-        <select class="form-control" id="segmento" name="segmento" ng-model="cadastro.registro.publicoAlvo.segmento" ng-options="item.codigo as item.descricao for item in cadastro.apoio.publicoAlvoSegmentoList" ng-required="cadastro.registro.publicoAlvoConfirmacao === 'S'">
+        <select class="form-control" id="segmento" name="segmento" ng-model="cadastro.registro.publicoAlvo.segmento" ng-options="item.codigo as item.descricao for item in cadastro.apoio.publicoAlvoSegmentoList | orderBy: 'descricao'" ng-required="cadastro.registro.publicoAlvoConfirmacao === 'S'">
         </select>
         <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.segmento.$error.required">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             Campo Obrigatório
         </div>
     </div>
-    <div class="form-group col-md-3">
+    <div class="form-group col-md-3" ng-if="cadastro.registro.pessoaTipo==='PF'">
         <label class="control-label">Geração</label>
         <input class="form-control" id="geracao" name="geracao" type="text" ng-model="cadastro.apoio.geracao" readonly="true" ng-required="true"/>
         <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.geracao.$error.required">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Campo Obrigatório
+        </div>
+    </div>
+    <div class="form-group col-md-3" ng-if="cadastro.registro.pessoaTipo==='PJ'">
+        <label class="control-label">Organização</label>
+        <select class="form-control" id="organizacaoTipo" name="organizacaoTipo" ng-model="cadastro.registro.publicoAlvo.organizacaoTipo" ng-options="item as item.nome for item in cadastro.apoio.organizacaoTipoList | orderBy : 'nome' track by item.id" ng-required="true">
+        </select>
+        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.organizacaoTipo.$error.required">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             Campo Obrigatório
         </div>
@@ -32,7 +41,7 @@
         </select>
     </div>
 </div>
-<div class="row">
+<div class="row" ng-if="cadastro.registro.publicoAlvo.categoria === 'E' && cadastro.registro.publicoAlvo.segmento === 'F'">
     <div class="form-group col-md-8">
         <label class="control-label">DAP - Declaração de Aptidão ao PRONAF (<small><a href="http://smap14.mda.gov.br/extratopf/PesquisaTitular.aspx" target="_blank">Acessar Sistema de Extrato DAP</a></small>) (<small><a href="http://dap.mda.gov.br/dapweb/login/default.aspx" target="_blank">Acessar Cadastro de DAP</a></small>)</label>
         <div class="row">
@@ -42,44 +51,48 @@
                     <option value="">-- Não informado --</option>
                 </select>
             </div>
-            <div class="col-md-3">
-                <label class="control-label">Registro</label>
-                <input class="form-control" type="text" ng-model="cadastro.registro.dapRegistro"/>
-            </div>
-            <div class="col-md-3">
-                <label class="control-label">Validade</label>
-                <input class="form-control" type="text" id="dapValidade" name="dapValidade" ng-model="cadastro.registro.dapValidade" ui-date-mask/>
-                <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.dapValidade.$error.date">
+            <div class="col-md-3" ng-if="cadastro.registro.dapSituacao === 'S'">
+                <label class="control-label">Número de Registro</label>
+                <input class="form-control" id="dapSituacao" name="dapSituacao" type="text" ng-model="cadastro.registro.dapRegistro" ng-required="cadastro.registro.dapSituacao === 'S'"/>
+                <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.dapSituacao.$error.required">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                    Valor Inválido!
+                    Campo Obrigatório
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3" ng-if="cadastro.registro.dapSituacao === 'S'">
+                <label class="control-label">Validade</label>
+                <input class="form-control" type="text" id="dapValidade" name="dapValidade" ng-model="cadastro.registro.dapValidade" ui-date-mask ng-required="cadastro.registro.dapSituacao === 'S'"/>
+                <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.dapValidade.$error.required">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    Campo Obrigatório
+                </div>
+            </div>
+            <div class="col-md-3" ng-if="cadastro.registro.dapSituacao === 'S'">
                 <label class="control-label">Observação</label>
                 <input class="form-control" type="text" ng-model="cadastro.registro.dapObservacao"/>
             </div>
         </div>
     </div>
 </div>
-<div class="row">
+<div class="row" ng-if="cadastro.registro.pessoaTipo==='PF'">
     <div class="form-group col-md-6">
         <label class="control-label">Carteira do Produtor</label>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4 sr-only">
                 <label class="control-label">Número</label>
                 <input class="form-control" type="text" id="carteiraProdutorNumero" name="carteiraProdutorNumero" ng-model="cadastro.registro.publicoAlvo.carteiraProdutorNumero"/>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <label class="control-label">Emissão</label>
-                <input class="form-control" type="text" id="carteiraProdutorEmissao" name="carteiraProdutorEmissao" ng-model="cadastro.registro.publicoAlvo.carteiraProdutorEmissao" ui-date-mask/>
+                <input class="form-control" type="text" id="carteiraProdutorEmissao" name="carteiraProdutorEmissao" ng-model="cadastro.registro.publicoAlvo.carteiraProdutorEmissao" ui-date-mask ng-disabled="true"/>
                 <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.carteiraProdutorEmissao.$error.date">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     Valor Inválido!
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <label class="control-label">Validade</label>
-                <input class="form-control" type="text" id="carteiraProdutorExpiracao" name="carteiraProdutorExpiracao" ng-model="cadastro.registro.publicoAlvo.carteiraProdutorExpiracao" ui-date-mask/>
+                <input class="form-control" type="text" id="carteiraProdutorExpiracao" name="carteiraProdutorExpiracao" ng-model="cadastro.registro.publicoAlvo.carteiraProdutorExpiracao" ui-date-mask ng-disabled="true"/>
                 <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.carteiraProdutorExpiracao.$error.date">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     Valor Inválido!
@@ -89,7 +102,24 @@
     </div>
 </div>
 <div class="row">
-    <div class="form-group col-md-12">
+    <div class="form-group col-md-2" ng-class="{'ng-invalid': frm.formulario.publicoAlvoSetorListTotal.$error.ngValorMin}">
+        <label class="control-label">Setor</label>
+
+        <div class="pre-scrollable">
+            <div class="checkbox" ng-repeat="item in cadastro.apoio.publicoAlvoSetorList | orderBy: ['setor.nome']">
+                <label for="publicoAlvoSetorList{{$index}}">
+                    <input type="checkbox" name="publicoAlvoSetorList" id="publicoAlvoSetorList{{$index}}" checklist-model="cadastro.registro.publicoAlvo.publicoAlvoSetorList" checklist-value="item">
+                    {{item.setor.nome}}
+                </label>
+            </div>
+            <input type="hidden" id="publicoAlvoSetorListTotal" name="publicoAlvoSetorListTotal" ng-model="cadastro.registro.publicoAlvo.publicoAlvoSetorList.length" ng-valor-min="1">
+            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.publicoAlvoSetorListTotal.$error.ngValorMin">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                Campo Obrigatório
+            </div>
+        </div>
+    </div>
+    <div class="form-group col-md-10">
         <label class="control-label">Propriedades Vinculadas</label>
         <ng-include src="'pessoa/sub-publico-alvo-propriedade-rural.html'" ng-controller="PublicoAlvoPropriedadeRuralCtrl" />
     </div>

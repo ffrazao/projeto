@@ -162,9 +162,34 @@
         </div>
     </div>
 </div>
-
 <div class="row">
     <div class="form-group col-md-12">
+        <label class="control-label">Principais Atividades Produtivas</label>
+        <input class="form-control input-md" id="principaisAtividadesProdutivas" name="principaisAtividadesProdutivas" ng-model="cadastro.registro.principaisAtividadesProdutivas">
+        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.principaisAtividadesProdutivas.$error.required">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Campo Obrigatório
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="form-group col-md-2" ng-class="{'ng-invalid': frm.formulario.propriedadeRuralFormaUtilizacaoEspacoRuralListTotal.$error.ngValorMin}">
+        <label class="control-label">Forma Utilização Espaço Rural</label>
+        <p class="pre-scrollable">
+            <div class="checkbox" ng-repeat="item in cadastro.apoio.formaUtilizacaoEspacoRuralList | orderBy: ['formaUtilizacaoEspacoRural.nome']">
+                <label for="propriedadeRuralFormaUtilizacaoEspacoRuralList{{$index}}">
+                    <input type="checkbox" name="propriedadeRuralFormaUtilizacaoEspacoRuralList" id="propriedadeRuralFormaUtilizacaoEspacoRuralList{{$index}}" checklist-model="cadastro.registro.formaUtilizacaoEspacoRuralList" checklist-value="item">
+                    {{item.formaUtilizacaoEspacoRural.nome}}
+                </label>
+            </div>
+            <input type="hidden" id="propriedadeRuralFormaUtilizacaoEspacoRuralListTotal" name="propriedadeRuralFormaUtilizacaoEspacoRuralListTotal" ng-model="cadastro.registro.formaUtilizacaoEspacoRuralList.length">
+            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.propriedadeRuralFormaUtilizacaoEspacoRuralListTotal.$error.ngValorMin">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                Campo Obrigatório
+            </div>
+        </p>
+    </div>
+    <div class="form-group col-md-10">
         <label class="control-label">Beneficiários Vinculados</label>
         <ng-include src="'propriedade-rural/sub-propriedade-rural-publico-alvo.html'" ng-controller="PropriedadeRuralPublicoAlvoCtrl" />
     </div>

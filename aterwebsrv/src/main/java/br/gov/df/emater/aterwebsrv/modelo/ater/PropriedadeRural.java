@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -48,7 +49,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 @Table(name = "propriedade_rural", schema = EntidadeBase.ATER_SCHEMA)
 // @Indexed
 public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<PropriedadeRural> {
-
+	
 	private static final long serialVersionUID = 1L;
 
 	@Column(name = "alteracao_data")
@@ -140,6 +141,10 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
 	private BigDecimal fonteAguaPrincipalVazao;
 
+	// @IndexedEmbedded
+	@OneToMany(mappedBy = "propriedadeRural", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<PropriedadeRuralFormaUtilizacaoEspacoRural> formaUtilizacaoEspacoRuralList;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
@@ -214,6 +219,9 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 
 	@Column(name = "pastagem_silagem")
 	private String pastagemSilagem;
+
+	@Column(name = "principais_atividades_produtivas")
+	private String principaisAtividadesProdutivas;
 
 	@OneToMany(mappedBy = "propriedadeRural")
 	private List<PublicoAlvoPropriedadeRural> publicoAlvoPropriedadeRuralList;
@@ -483,6 +491,10 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 		return fonteAguaPrincipalVazao;
 	}
 
+	public List<PropriedadeRuralFormaUtilizacaoEspacoRural> getFormaUtilizacaoEspacoRuralList() {
+		return formaUtilizacaoEspacoRuralList;
+	}
+
 	@Override
 	public Integer getId() {
 		return id;
@@ -566,6 +578,10 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 
 	public String getPastagemSilagem() {
 		return pastagemSilagem;
+	}
+
+	public String getPrincipaisAtividadesProdutivas() {
+		return principaisAtividadesProdutivas;
 	}
 
 	public List<PublicoAlvoPropriedadeRural> getPublicoAlvoPropriedadeRuralList() {
@@ -700,6 +716,11 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 		return result;
 	}
 
+	@Override
+	public PropriedadeRural infoBasica() {
+		return new PropriedadeRural(getId(), getNome(), getComunidade() != null ? getComunidade().infoBasica() : null, getAreaTotal());
+	}
+
 	public void setAlteracaoData(Calendar alteracaoData) {
 		this.alteracaoData = alteracaoData;
 	}
@@ -788,6 +809,10 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 		this.fonteAguaPrincipalVazao = fonteAguaPrincipalVazao;
 	}
 
+	public void setFormaUtilizacaoEspacoRuralList(List<PropriedadeRuralFormaUtilizacaoEspacoRural> formaUtilizacaoEspacoRuralList) {
+		this.formaUtilizacaoEspacoRuralList = formaUtilizacaoEspacoRuralList;
+	}
+
 	@Override
 	public void setId(Integer id) {
 		this.id = id;
@@ -871,6 +896,10 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 
 	public void setPastagemSilagem(String pastagemSilagem) {
 		this.pastagemSilagem = pastagemSilagem;
+	}
+
+	public void setPrincipaisAtividadesProdutivas(String principaisAtividadesProdutivas) {
+		this.principaisAtividadesProdutivas = principaisAtividadesProdutivas;
 	}
 
 	public void setPublicoAlvoPropriedadeRuralList(List<PublicoAlvoPropriedadeRural> publicoAlvoPropriedadeRuralList) {
@@ -995,11 +1024,6 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 
 	public void setUsuarioInclusao(Usuario usuarioInclusao) {
 		this.usuarioInclusao = usuarioInclusao;
-	}
-
-	@Override
-	public PropriedadeRural infoBasica() {
-		return new PropriedadeRural(getId(), getNome(), getComunidade() != null ? getComunidade().infoBasica() : null, getAreaTotal());
 	}
 
 }

@@ -182,7 +182,7 @@
             };
             $scope.confirmarEditar = function(scp) {
                 validaRegistro(scp, 'editar');
-                validaRegistro(scp.cadastro.registro);
+                //validaRegistro(scp.cadastro.registro);
                 $scope.preparaClassePessoa($scope.cadastro.registro);
                 
             };
@@ -226,8 +226,14 @@
                         relacionamento.relacionamentoFuncao = UtilSrv.indiceDePorCampo($scope.cadastro.apoio.relacionamentoConfiguracaoViList, relacionamento.relacionamentoFuncao.id, 'id');
                     });
                 }
+                if (registro.publicoAlvo && registro.publicoAlvo.publicoAlvoSetorList) {
+                    registro.publicoAlvo.publicoAlvoSetorList.forEach(function(elemento) {
+                        delete elemento['@jsonId'];
+                        delete elemento['id'];
+                        delete elemento['setor']['@jsonId'];
+                    });
+                }
             };
-
 
             $scope.UtilSrv = UtilSrv;
 

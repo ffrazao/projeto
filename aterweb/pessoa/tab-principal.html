@@ -1,10 +1,10 @@
 <div class="row">
     <div class="form-group col-md-12">
-        <label class="control-label">Nascimento <small ng-show="cadastro.apoio.geracao">({{cadastro.apoio.geracao}})</small> <small ng-show="cadastro.apoio.nacionalidade.descricao">({{cadastro.apoio.nacionalidade.descricao}})</small></label>
+        <label class="control-label"><span ng-if="cadastro.registro.pessoaTipo==='PF'">Nascimento <small ng-show="cadastro.apoio.geracao">({{cadastro.apoio.geracao}})</small> <small ng-show="cadastro.apoio.nacionalidade.descricao">({{cadastro.apoio.nacionalidade.descricao}})</small></span><span ng-if="cadastro.registro.pessoaTipo==='PJ'">Data de Fundação</span></label>
         <div class="row">
             <div class="form-group col-md-2">
                 <label class="control-label">Data</label>
-                <input class="form-control" type="text" id="nascimento" name="nascimento" ng-model="cadastro.registro.nascimento" ui-date-mask ng-required="cadastro.registro.publicoAlvoConfirmacao === 'S'">
+                <input class="form-control" type="text" id="nascimento" name="nascimento" ng-model="cadastro.registro.nascimento" ui-date-mask ng-required="cadastro.registro.pessoaTipo==='PF' && cadastro.registro.publicoAlvoConfirmacao === 'S'">
                 <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.nascimento.$error.date">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     Valor Inválido!
@@ -14,27 +14,27 @@
                     Campo Obrigatório
                 </div>
             </div>
-            <div class="form-group col-md-1">
+            <div class="form-group col-md-1" ng-if="cadastro.registro.pessoaTipo==='PF'">
                 <label class="control-label">Idade</label>
                 <input class="form-control" type="text" readonly="true" ng-model="cadastro.registro.idade" />
             </div>
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-3" ng-if="cadastro.registro.pessoaTipo==='PF'">
                 <label class="control-label">País</label>
                 <select class="form-control" ng-model="cadastro.registro.nascimentoPais" ng-options="item as item.nome for item in cadastro.apoio.paisList | orderBy: ['-padrao','nome'] track by item.id">
                     <option value="">-- Não informado --</option>
                 </select>
             </div>
-            <div class="form-group col-md-3" ng-show="cadastro.registro.nascimentoPais.padrao === 'S'">
+            <div class="form-group col-md-3" ng-show="cadastro.registro.nascimentoPais.padrao === 'S'" ng-if="cadastro.registro.pessoaTipo==='PF'">
                 <label class="control-label">Estado</label>
                 <select class="form-control" ng-model="cadastro.registro.nascimentoEstado" ng-options="item as item.nome for item in cadastro.apoio.nascimentoEstadoList | orderBy: ['-padrao','-capital','nome'] track by item.id" ng-required="cadastro.registro.nascimentoPais.padrao === 'S'">
                 </select>
             </div>
-            <div class="form-group col-md-3" ng-show="cadastro.registro.nascimentoPais.padrao === 'S'">
+            <div class="form-group col-md-3" ng-show="cadastro.registro.nascimentoPais.padrao === 'S'" ng-if="cadastro.registro.pessoaTipo==='PF'">
                 <label class="control-label">Município</label>
                 <select class="form-control" ng-model="cadastro.registro.nascimentoMunicipio" ng-options="item as item.nome for item in cadastro.apoio.nascimentoMunicipioList | orderBy: ['-padrao','-capital','nome'] track by item.id" ng-required="cadastro.registro.nascimentoPais.padrao === 'S'">
                 </select>
             </div>
-            <div class="form-group col-md-3" ng-show="cadastro.registro.nascimentoPais.id && cadastro.registro.nascimentoPais.padrao === 'N'">
+            <div class="form-group col-md-3" ng-show="cadastro.registro.nascimentoPais.id && cadastro.registro.nascimentoPais.padrao === 'N'" ng-if="cadastro.registro.pessoaTipo==='PF'">
                 <label class="radio-inline" for="naturalizado-1">
                     <input type="checkbox" name="naturalizado" id="naturalizado-1" ng-model="cadastro.registro.naturalizado">
                     Naturalizado?
@@ -43,7 +43,7 @@
         </div>
     </div>
 </div>
-<div class="row">
+<div class="row" ng-if="cadastro.registro.pessoaTipo==='PF'">
     <div class="form-group col-md-3">
         <label class="control-label">Gênero</label>
         <div class="form-control" ng-class="{'ng-invalid': frm.formulario.genero.$invalid}">
@@ -98,7 +98,7 @@
         <ng-include src="'pessoa/sub-relacionamento.html'" ng-controller="PessoaRelacionamentoCtrl" />
     </div>
 </div>
-<div class="row">
+<div class="row" ng-if="cadastro.registro.pessoaTipo==='PF'">
     <fieldset class="form-group col-md-6">
         <label class="control-label">RG - Registro Geral</label>
         <div class="row">
@@ -125,7 +125,7 @@
         <input class="form-control" type="text" ng-model="cadastro.registro.nisNumero"/>
     </div>
 </div>
-<div class="row">
+<div class="row" ng-if="cadastro.registro.pessoaTipo==='PF'">
     <div class="form-group col-md-6" ng-show="cadastro.registro.colaborador">
         <label class="control-label">Certidão de Casamento</label>
         <div class="row">
@@ -167,7 +167,33 @@
         </div>
     </div>
 </div>
-<div class="row">
+<div class="row" ng-if="(!(cadastro.registro.pessoaTipo === 'PF' && cadastro.registro.publicoAlvoConfirmacao === 'N'))">
+    <fieldset class="form-group col-md-6">
+        <label class="control-label">Inscrição Estadual</label>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="control-label">UF</label>
+                <select class="form-control" ng-model="cadastro.registro.inscricaoEstadualUf" 
+                    ng-options="item.sigla as item.sigla for item in cadastro.apoio.estadoList | orderBy: ['-padrao','-capital','nome']">
+                    <option value="">-- Não informado --</option>
+                </select>
+            </div>
+            <div class="col-md-6" ng-if="cadastro.registro.inscricaoEstadualUf">
+                <label class="control-label">Número</label>
+                <input class="form-control" type="text" id="inscricaoEstadual" name="inscricaoEstadual" ng-model="cadastro.registro.inscricaoEstadual" ng-required="true" ui-br-ie-mask="cadastro.registro.inscricaoEstadualUf"/>
+                <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.inscricaoEstadual.$error.required">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    Campo Obrigatório
+                </div>
+                <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.inscricaoEstadual.$error.ie">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    Valor Inválido!
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</div>
+<div class="row" ng-if="cadastro.registro.pessoaTipo==='PF'">
     <div class="form-group col-md-6" ng-show="cadastro.registro.colaborador">
         <label class="control-label">CNH - Carteira Nacional de Habilitação</label>
         <div class="row">
@@ -199,7 +225,7 @@
             </div>
         </div>
     </div>
-    <div class="form-group col-md-6" ng-show="cadastro.registro.colaborador">
+    <div class="form-group col-md-6" ng-show="cadastro.registro.colaborador" ng-if="cadastro.registro.pessoaTipo==='PF'">
         <label class="control-label">CTPS - Cateira de Trabalho e Previdência Social</label>
         <div class="row">
             <div class="col-md-6">
@@ -213,7 +239,7 @@
         </div>
     </div>
 </div>
-<div class="row">
+<div class="row" ng-if="cadastro.registro.pessoaTipo==='PF'">
     <div class="form-group col-md-6" ng-show="cadastro.registro.colaborador">
         <label class="control-label">CAM - Certificado de Alistamento Militar</label>
         <div class="row">
