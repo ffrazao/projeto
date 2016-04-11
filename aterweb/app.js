@@ -255,7 +255,7 @@ angular.module(pNmModulo).directive('ngValorMax', function () {
 
 angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 'toastr', 'UtilSrv', '$stateParams', '$timeout', 'TokenStorage',
   function($rootScope, $uibModal, FrzNavegadorParams, toastr, UtilSrv, $stateParams, $timeout, TokenStorage) {
-    $rootScope.servicoUrl = "https://192.168.25.59:8443";
+    $rootScope.servicoUrl = "https://localhost:8443";
     $rootScope.token = null;
     $rootScope.isAuthenticated = function (username) {
         if (!$rootScope.token) {
