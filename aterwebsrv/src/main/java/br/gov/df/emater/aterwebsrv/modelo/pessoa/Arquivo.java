@@ -5,6 +5,8 @@ import java.util.Calendar;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,6 +28,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.ArquivoTipo;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerDataHora;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerDataHora;
 
@@ -57,8 +60,14 @@ public class Arquivo extends EntidadeBase implements _ChavePrimaria<Integer>, In
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
+	@Column(name = "local_diretorio_web")
+	private String localDiretorioWeb;
+
 	// @Field(index = Index.YES, store = Store.YES)
 	private String md5;
+
+	@Column(name = "mime_tipo")
+	private String mimeTipo;
 
 	// @Field(index = Index.YES, store = Store.YES)
 	@Column(name = "nome_original")
@@ -66,7 +75,8 @@ public class Arquivo extends EntidadeBase implements _ChavePrimaria<Integer>, In
 
 	private Integer tamanho;
 
-	private String tipo;
+	@Enumerated(EnumType.STRING)
+	private ArquivoTipo tipo;
 
 	public Arquivo() {
 	}
@@ -75,22 +85,7 @@ public class Arquivo extends EntidadeBase implements _ChavePrimaria<Integer>, In
 		super(id);
 	}
 
-	public Arquivo(String md5) {
-		setMd5(md5);
-	}
-	
-	@Column(name = "local_diretorio_web")
-	private String localDiretorioWeb;
-
-	public String getLocalDiretorioWeb() {
-		return localDiretorioWeb;
-	}
-
-	public void setLocalDiretorioWeb(String localDiretorioWeb) {
-		this.localDiretorioWeb = localDiretorioWeb;
-	}
-
-	public Arquivo(Integer id, String md5, String nomeOriginal, Calendar dataUpload, String extensao, Integer tamanho, String tipo, String localDiretorioWeb) {
+	public Arquivo(Integer id, String md5, String nomeOriginal, Calendar dataUpload, String extensao, Integer tamanho, ArquivoTipo tipo, String localDiretorioWeb) {
 		this(id);
 		this.dataUpload = dataUpload;
 		this.extensao = extensao;
@@ -99,6 +94,10 @@ public class Arquivo extends EntidadeBase implements _ChavePrimaria<Integer>, In
 		this.tamanho = tamanho;
 		this.tipo = tipo;
 		this.localDiretorioWeb = localDiretorioWeb;
+	}
+
+	public Arquivo(String md5) {
+		setMd5(md5);
 	}
 
 	public byte[] getConteudo() {
@@ -126,8 +125,16 @@ public class Arquivo extends EntidadeBase implements _ChavePrimaria<Integer>, In
 		return id;
 	}
 
+	public String getLocalDiretorioWeb() {
+		return localDiretorioWeb;
+	}
+
 	public String getMd5() {
 		return md5;
+	}
+
+	public String getMimeTipo() {
+		return mimeTipo;
 	}
 
 	public String getNomeOriginal() {
@@ -138,8 +145,13 @@ public class Arquivo extends EntidadeBase implements _ChavePrimaria<Integer>, In
 		return tamanho;
 	}
 
-	public String getTipo() {
+	public ArquivoTipo getTipo() {
 		return tipo;
+	}
+
+	@Override
+	public Arquivo infoBasica() {
+		return new Arquivo(this.getId(), this.getMd5(), this.getNomeOriginal(), this.getDataUpload(), this.getExtensao(), this.getTamanho(), this.getTipo(), this.getLocalDiretorioWeb());
 	}
 
 	public void setConteudo(byte[] conteudo) {
@@ -168,11 +180,19 @@ public class Arquivo extends EntidadeBase implements _ChavePrimaria<Integer>, In
 		this.id = id;
 	}
 
+	public void setLocalDiretorioWeb(String localDiretorioWeb) {
+		this.localDiretorioWeb = localDiretorioWeb;
+	}
+
 	public void setMd5(String md5) {
 		if (md5 != null) {
 			md5 = md5.toLowerCase();
 		}
 		this.md5 = md5;
+	}
+
+	public void setMimeTipo(String mimeTipo) {
+		this.mimeTipo = mimeTipo;
 	}
 
 	public void setNomeOriginal(String nomeOriginal) {
@@ -183,13 +203,8 @@ public class Arquivo extends EntidadeBase implements _ChavePrimaria<Integer>, In
 		this.tamanho = tamanho;
 	}
 
-	public void setTipo(String tipo) {
+	public void setTipo(ArquivoTipo tipo) {
 		this.tipo = tipo;
-	}
-
-	@Override
-	public Arquivo infoBasica() {
-		return new Arquivo(this.getId(), this.getMd5(), this.getNomeOriginal(), this.getDataUpload(), this.getExtensao(), this.getTamanho(), this.getTipo(), this.getLocalDiretorioWeb());
 	}
 
 }

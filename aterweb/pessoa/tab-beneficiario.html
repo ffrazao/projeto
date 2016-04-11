@@ -45,31 +45,34 @@
     <div class="form-group col-md-8">
         <label class="control-label">DAP - Declaração de Aptidão ao PRONAF (<small><a href="http://smap14.mda.gov.br/extratopf/PesquisaTitular.aspx" target="_blank">Acessar Sistema de Extrato DAP</a></small>) (<small><a href="http://dap.mda.gov.br/dapweb/login/default.aspx" target="_blank">Acessar Cadastro de DAP</a></small>)</label>
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label class="control-label">Situação</label>
-                <select class="form-control" ng-model="cadastro.registro.dapSituacao" ng-options="item.codigo as item.descricao for item in cadastro.apoio.confirmacaoDapList">
+                <select class="form-control" ng-model="cadastro.registro.publicoAlvo.dapSituacao" ng-options="item.codigo as item.descricao for item in cadastro.apoio.confirmacaoDapList">
                     <option value="">-- Não informado --</option>
                 </select>
             </div>
-            <div class="col-md-3" ng-if="cadastro.registro.dapSituacao === 'S'">
+            <div class="col-md-3" ng-if="cadastro.registro.publicoAlvo.dapSituacao === 'S'">
                 <label class="control-label">Número de Registro</label>
-                <input class="form-control" id="dapSituacao" name="dapSituacao" type="text" ng-model="cadastro.registro.dapRegistro" ng-required="cadastro.registro.dapSituacao === 'S'"/>
-                <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.dapSituacao.$error.required">
+                <input class="form-control" id="dapNumero" name="dapNumero" type="text" ng-model="cadastro.registro.publicoAlvo.dapNumero" ng-required="cadastro.registro.publicoAlvo.dapSituacao === 'S'"/>
+                <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.dapNumero.$error.required">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     Campo Obrigatório
                 </div>
             </div>
-            <div class="col-md-3" ng-if="cadastro.registro.dapSituacao === 'S'">
+            <div class="col-md-3" ng-if="cadastro.registro.publicoAlvo.dapSituacao === 'S'">
                 <label class="control-label">Validade</label>
-                <input class="form-control" type="text" id="dapValidade" name="dapValidade" ng-model="cadastro.registro.dapValidade" ui-date-mask ng-required="cadastro.registro.dapSituacao === 'S'"/>
+                <input class="form-control" type="text" id="dapValidade" name="dapValidade" ng-model="cadastro.registro.publicoAlvo.dapValidade" ui-date-mask ng-required="cadastro.registro.publicoAlvo.dapSituacao === 'S'"/>
                 <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.dapValidade.$error.required">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     Campo Obrigatório
                 </div>
             </div>
-            <div class="col-md-3" ng-if="cadastro.registro.dapSituacao === 'S'">
+            <div class="col-md-3" ng-if="cadastro.registro.publicoAlvo.dapSituacao === 'S'">
                 <label class="control-label">Observação</label>
-                <input class="form-control" type="text" ng-model="cadastro.registro.dapObservacao"/>
+                <input class="form-control" type="text" ng-model="cadastro.registro.publicoAlvo.dapObservacao"/>
+            </div>
+            <div class="col-md-1" ng-if="cadastro.registro.publicoAlvo.dapSituacao === 'S'">
+                <img ng-src="{{cadastro.apoio.dapImagem}}" width="40px" height="40px" />
             </div>
         </div>
     </div>

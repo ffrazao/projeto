@@ -8,11 +8,11 @@ import br.gov.df.emater.aterwebsrv.bo._Cadeia;
 import br.gov.df.emater.aterwebsrv.bo.seguranca.AutenticarUsuarioCmd;
 import br.gov.df.emater.aterwebsrv.bo.seguranca.LogCmd;
 
-@Service("UtilArquivoCh")
-public class ArquivoCh extends _Cadeia {
+@Service("UtilArquivoSubirCh")
+public class ArquivoSubirCh extends _Cadeia {
 
 	@Autowired
-	public ArquivoCh(AutenticarUsuarioCmd c1, @Qualifier("UtilArquivoCmd") ArquivoCmd c2, LogCmd c3) {
+	public ArquivoSubirCh(AutenticarUsuarioCmd c1, @Qualifier("UtilArquivoSubirCmd") ArquivoSubirCmd c2, LogCmd c3) {
 		super.addCommand(c1);
 		super.addCommand(c2);
 		super.addCommand(c3);

@@ -1,16 +1,23 @@
 package br.gov.df.emater.aterwebsrv.dao.pessoa;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.ConfirmacaoDap;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGeracao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
@@ -24,6 +31,66 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 
 	@PersistenceContext
 	private EntityManager em;
+
+	private String telefoneQryStr;
+
+	private String emailQryStr;
+
+	private String comunidadeQryStr;
+
+	private String dapQryStr;
+
+	public PessoaDaoImpl() {
+		StringBuilder sql;
+
+		// construção do sql
+		sql = new StringBuilder();
+		sql.append("select   p.finalidade").append("\n");
+		sql.append("       , p.tipo").append("\n");
+		sql.append("       , t.numero").append("\n");
+		sql.append("from     pessoa.pessoa_telefone p").append("\n");
+		sql.append("join     pessoa.telefone t").append("\n");
+		sql.append("on       p.telefone_id = t.id").append("\n");
+		sql.append("where    p.pessoa_id = ?1").append("\n");
+		sql.append("and      FIND_IN_SET('C', p.finalidade) > 0").append("\n");
+		sql.append("order by p.ordem").append("\n");
+		telefoneQryStr = sql.toString();
+
+		sql = new StringBuilder();
+		sql.append("select   p.finalidade").append("\n");
+		sql.append("       , e.endereco").append("\n");
+		sql.append("from     pessoa.pessoa_email p").append("\n");
+		sql.append("join     pessoa.email e").append("\n");
+		sql.append("on       p.email_id = e.id").append("\n");
+		sql.append("where    p.pessoa_id = ?1").append("\n");
+		sql.append("and      FIND_IN_SET('C', p.finalidade) > 0").append("\n");
+		sql.append("order by p.ordem").append("\n");
+		emailQryStr = sql.toString();
+
+		sql = new StringBuilder();
+		sql.append("select   distinct").append("\n");
+		sql.append("         p.tipo_vinculo").append("\n");
+		sql.append("       , c.nome").append("\n");
+		sql.append("from     ater.publico_alvo_propriedade_rural p ").append("\n");
+		sql.append("join     ater.comunidade c").append("\n");
+		sql.append("on       p.comunidade_id = c.id").append("\n");
+		sql.append("where    publico_alvo_id = ?1").append("\n");
+		sql.append("and      (p.inicio is null or p.inicio < now())").append("\n");
+		sql.append("and      (p.termino is null or p.termino > now())").append("\n");
+		sql.append("order by c.nome").append("\n");
+		comunidadeQryStr = sql.toString();
+
+		sql = new StringBuilder();
+		sql.append("select  pa.dap_situacao, pa.dap_validade").append("\n");
+		sql.append("from    pessoa.pessoa p").append("\n");
+		sql.append("join    ater.publico_alvo pa").append("\n");
+		sql.append("on      pa.pessoa_id = p.id").append("\n");
+		sql.append("where   p.id = ?1").append("\n");
+		sql.append("and     p.publico_alvo = 'S'").append("\n");
+		sql.append("and     pa.categoria = 'E'").append("\n");
+		sql.append("and     pa.segmento = 'F'").append("\n");
+		dapQryStr = sql.toString();
+	}
 
 	@Override
 	public List<Object[]> filtrar(PessoaCadFiltroDto filtro) {
@@ -41,7 +108,7 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 		sql.append("     , p.cpf").append("\n");
 		sql.append("     , p.cnpj").append("\n");
 		sql.append("     , p.publicoAlvoConfirmacao").append("\n");
-		sql.append("     , perfil.localDiretorioWeb").append("\n");
+		sql.append("     , perfil.md5").append("\n");
 		sql.append("     , p.nascimento").append("\n");
 		sql.append("     , p.genero").append("\n");
 		sql.append("     , alvo.id").append("\n");
@@ -67,7 +134,7 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 				if (sqlTemp.length() > 0) {
 					sqlTemp.append(" or ");
 				}
-				String n = nome.getText().replaceAll("\\s", "%"); 
+				String n = nome.getText().replaceAll("\\s", "%");
 				params.add(String.format("%%%s%%", n));
 				sqlTemp.append(" (p.nome like ?").append(params.size());
 				params.add(String.format("%%%s%%", n));
@@ -157,13 +224,77 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 		// executar a consulta
 		result = query.getResultList();
 
+		if (result != null) {
+			result = fetch(result);
+		}
+
 		// retornar
 		return result;
 	}
 
+	@SuppressWarnings("unchecked")
+	private List<Object[]> fetch(List<Object[]> lista) {
+		Query telefoneQry = em.createNativeQuery(telefoneQryStr);
+		Query emailQry = em.createNativeQuery(emailQryStr);
+		Query comunidadeQry = em.createNativeQuery(comunidadeQryStr);
+		Query dapQry = em.createNativeQuery(dapQryStr);
+		List<Object[]> result = new ArrayList<Object[]>();
+		for (Object[] linha : lista) {
+			List<Object> registro = new ArrayList<Object>(Arrays.asList(linha));
+
+			telefoneQry.setParameter(1, registro.get(0));
+			emailQry.setParameter(1, registro.get(0));
+			comunidadeQry.setParameter(1, registro.get(10));
+			dapQry.setParameter(1, registro.get(0));
+
+			registro.add(telefoneQry.getResultList());
+			registro.add(emailQry.getResultList());
+			registro.add(comunidadeQry.getResultList());
+			List<Object> dapRes = dapQry.getResultList();
+			if (dapRes == null || dapRes.size() == 0) {
+				registro.add(null);
+			} else {
+				Object[] dapResObj = (Object[]) dapRes.get(0);
+				if (dapResObj == null || dapResObj.length != 2) {
+					registro.add(null);
+				} else {
+					Character temp1 = (Character) dapResObj[0];
+					Date temp2 = (Date) dapResObj[1];
+
+					if (temp1 == null || temp2 == null) {
+						registro.add(null);
+					} else {
+						ConfirmacaoDap sit = ConfirmacaoDap.valueOf(temp1.toString());
+						Calendar valid = new GregorianCalendar();
+						valid.setTime(temp2);
+						Calendar hoje = Calendar.getInstance();
+						Calendar carencia = Calendar.getInstance();
+						carencia.roll(Calendar.MONTH, 2);
+						
+						if (ConfirmacaoDap.S.equals(sit)) {
+							if (valid.after(carencia)) {
+								registro.add("img/dap-ok.png");
+							} else if (valid.after(hoje)) {
+								registro.add("img/dap-a-vencer.png");
+							} else {
+								registro.add("img/dap-vencida.png");
+							}
+						} else {
+							registro.add(null);
+						}
+					}
+				}
+			}
+
+			result.add(registro.toArray());
+		}
+		return result;
+	}
+
 	private boolean filtrarPublicoAlvo(PessoaCadFiltroDto filtro) {
-		return (!CollectionUtils.isEmpty(filtro.getPublicoAlvoSegmento()) && (PublicoAlvoSegmento.values().length != (filtro.getPublicoAlvoSegmento().size()))) || (!CollectionUtils.isEmpty(filtro.getPublicoAlvoCategoria()) && (PublicoAlvoCategoria.values().length != (filtro.getPublicoAlvoCategoria().size())))
-				|| (filtro.getPublicoAlvoSetor() != null) || (filtro.getPublicoAlvoPropriedadeUtilizacaoEspacoRural() != null) || (!CollectionUtils.isEmpty(filtro.getEmpresaList())) || (!CollectionUtils.isEmpty(filtro.getUnidadeOrganizacionalList())) || (!CollectionUtils.isEmpty(filtro.getComunidadeList()));
+		return (!CollectionUtils.isEmpty(filtro.getPublicoAlvoSegmento()) && (PublicoAlvoSegmento.values().length != (filtro.getPublicoAlvoSegmento().size())))
+				|| (!CollectionUtils.isEmpty(filtro.getPublicoAlvoCategoria()) && (PublicoAlvoCategoria.values().length != (filtro.getPublicoAlvoCategoria().size()))) || (filtro.getPublicoAlvoSetor() != null) || (filtro.getPublicoAlvoPropriedadeUtilizacaoEspacoRural() != null)
+				|| (!CollectionUtils.isEmpty(filtro.getEmpresaList())) || (!CollectionUtils.isEmpty(filtro.getUnidadeOrganizacionalList())) || (!CollectionUtils.isEmpty(filtro.getComunidadeList()));
 	}
 
 }

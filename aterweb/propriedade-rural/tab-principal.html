@@ -175,7 +175,7 @@
 <div class="row">
     <div class="form-group col-md-2" ng-class="{'ng-invalid': frm.formulario.propriedadeRuralFormaUtilizacaoEspacoRuralListTotal.$error.ngValorMin}">
         <label class="control-label">Forma Utilização Espaço Rural</label>
-        <p class="pre-scrollable">
+        <div class="pre-scrollable">
             <div class="checkbox" ng-repeat="item in cadastro.apoio.formaUtilizacaoEspacoRuralList | orderBy: ['formaUtilizacaoEspacoRural.nome']">
                 <label for="propriedadeRuralFormaUtilizacaoEspacoRuralList{{$index}}">
                     <input type="checkbox" name="propriedadeRuralFormaUtilizacaoEspacoRuralList" id="propriedadeRuralFormaUtilizacaoEspacoRuralList{{$index}}" checklist-model="cadastro.registro.formaUtilizacaoEspacoRuralList" checklist-value="item">
@@ -187,7 +187,7 @@
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                 Campo Obrigatório
             </div>
-        </p>
+        </div>
     </div>
     <div class="form-group col-md-10">
         <label class="control-label">Beneficiários Vinculados</label>

@@ -8,7 +8,7 @@
 angular.module(pNmModulo, ['ui.bootstrap', 'ui.utils', 'ui.router', 'ngSanitize', 'ngAnimate', 'toastr', 'sticky',
   'ui.mask', 'ui.utils.masks', 'ui.navbar', 'ngCookies', 'uiGmapgoogle-maps', 'ngFileUpload', 'ngTagsInput', 'ui.tree',
   'frz.form', 'frz.tabela','frz.arquivo', 'frz.endereco', 'frz.painel.vidro', 'frz.navegador', 'casa', 'contrato', 'info',
-  'pessoa', 'formulario', 'propriedadeRural' ,'atividade', 'indiceProducao',
+  'offline', 'pessoa', 'formulario', 'propriedadeRural' ,'atividade', 'indiceProducao',
   ]);
 
 // inicio: codigo para habilitar o modal recursivo
@@ -61,6 +61,8 @@ angular.module(pNmModulo).factory('TokenStorage', function($cookieStore) {
 angular.module(pNmModulo).factory('TokenAuthInterceptor', function($q, TokenStorage) {
     return {
         request: function(config) {
+            config.headers['AddType'] = 'text/cache-manifest .appcache';
+
             if (config.url === "info/info.html") {
                 return config;
             }
@@ -253,7 +255,7 @@ angular.module(pNmModulo).directive('ngValorMax', function () {
 
 angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 'toastr', 'UtilSrv', '$stateParams', '$timeout', 'TokenStorage',
   function($rootScope, $uibModal, FrzNavegadorParams, toastr, UtilSrv, $stateParams, $timeout, TokenStorage) {
-    $rootScope.servicoUrl = "https://localhost:8443";
+    $rootScope.servicoUrl = "https://192.168.25.59:8443";
     $rootScope.token = null;
     $rootScope.isAuthenticated = function (username) {
         if (!$rootScope.token) {

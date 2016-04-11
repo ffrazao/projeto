@@ -68,7 +68,7 @@ angular.module(pNmModulo).factory(pNmFactory, ['$rootScope', '$http', 'toastr', 
                     for (var i = 0; i < files.length; i++) {
                         var file = files[i];
                         if (!file.$error) {
-                            retorno.push(Upload.upload({url: $rootScope.servicoUrl + '/arquivos', data: {file: file}}));
+                            retorno.push(Upload.upload({url: $rootScope.servicoUrl + '/arquivo-subir', data: {file: file}}));
                         }
                     }
                     return retorno;

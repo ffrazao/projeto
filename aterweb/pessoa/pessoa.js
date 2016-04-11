@@ -1,4 +1,4 @@
-/* global criarEstadosPadrao */
+/* global criarEstadosPadrao, moment */
 
 (function(pNmModulo, pNmController, pNmFormulario, pUrlModulo) {
     'use strict';
@@ -393,6 +393,12 @@
 
             // fim das operaçoes atribuidas ao navagador
             // inicio ações especiais
+            $scope.filtraFone = function (tipo) {
+                return function(registro, indice, tabela) {
+                    return tipo === registro[1];
+                };
+            };
+
             $scope.toggleChildren = function (scope) {
                 scope.toggle();
             };
@@ -598,7 +604,24 @@
                     });
                 }
             });
+            $scope.$watch('cadastro.registro.publicoAlvoConfirmacao + cadastro.registro.publicoAlvo.dapSituacao + cadastro.registro.publicoAlvo.dapValidade', function(newValue, oldValue) {
+                $scope.cadastro.apoio.dapImagem = '';
+                if ($scope.cadastro.registro.publicoAlvoConfirmacao !== 'S' || !$scope.cadastro.registro.publicoAlvo || $scope.cadastro.registro.publicoAlvo.dapSituacao !== 'S' || !$scope.cadastro.registro.publicoAlvo.dapValidade) {
+                    return;
+                }
 
+                var valid = $scope.cadastro.registro.publicoAlvo.dapValidade instanceof Date ? moment($scope.cadastro.registro.publicoAlvo.dapValidade) : moment($scope.cadastro.registro.publicoAlvo.dapValidade, 'dd/MM/yyyy HH:mm:ss');
+                var hoje = new Date();
+                var carencia = moment(hoje).add(2, 'months');
+
+                if (valid.isAfter(carencia)) {
+                    $scope.cadastro.apoio.dapImagem = "img/dap-ok.png";
+                } else if (valid.isAfter(hoje)) {
+                    $scope.cadastro.apoio.dapImagem = "img/dap-a-vencer.png";
+                } else {
+                    $scope.cadastro.apoio.dapImagem = "img/dap-vencida.png";
+                }
+            });
 
             // fim dos watches
 

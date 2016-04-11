@@ -10,36 +10,48 @@
         <table class="table table-hover table-striped">
             <thead>
                 <tr>
-                    <th>
+                    <th rowspan="2">
                         <frz-seletor ng-model="navegador"></frz-seletor>
                     </th>
-                    <th width="30">
+                    <th width="30" rowspan="2">
                         #
                     </th>
-                    <th>Foto</th>
+                    <th rowspan="2">Foto</th>
                     <th>Nome<small><i><br>apelido/ sigla</i></small></th>
                     <th>Tipo</th>
                     <th>CPF/CNPJ</th>
                     <th>Beneficiário</th>
                 </tr>
+                <tr>
+                    <th>Fone Fixo (Comercial)</th>
+                    <th>Celular (Comercial)</th>
+                    <th>E-mail (Comercial)</th>
+                    <th>Comunidade</th>
+                </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="item in navegador.dados | orderBy: 'nome' | pagina: navegador.paginaAtual : navegador.tamanhoPagina | limitTo: navegador.tamanhoPagina" ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)">
-                    <td width="30px">
+                <tr ng-repeat-start="item in navegador.dados | orderBy: 'nome' | pagina: navegador.paginaAtual : navegador.tamanhoPagina | limitTo: navegador.tamanhoPagina" ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)">
+                    <td width="30px" rowspan="2">
                         <input type="radio" ng-show="navegador.selecao.tipo === 'U'" ng-model="navegador.selecao.item" ng-value="item"/>
                         <input type="checkbox" ng-show="navegador.selecao.tipo === 'M'" checklist-model="navegador.selecao.items" checklist-value="item" ng-click="crudMataClick(scp, $event);"/>
                     </td>
-                    <td>
+                    <td rowspan="2">
                         {{$index + 1 + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)}}
                     </td>
-                    <td width="96px">
+                    <td width="96px" rowspan="2">
                         <img src="img/foto.gif" class="img-thumbnail"  ng-click="selecionaFotoPerfil()" ng-hide="item['7'].length" width="180px" height="180px" />
-                        <img ng-src="{{servicoUrl}}{{item['7']}}"  class="img-thumbnail" ng-click="selecionaFotoPerfil()" ng-show="item['7'].length" width="180px" height="180px" />
+                        <img class="img-thumbnail" ng-src="{{servicoUrl}}/arquivo-descer?arquivo={{item['7']}}" ng-if="item['7'].length" width="180px" height="180px" />
                     </td>
                     <td><a ng-click="modalVerPessoa(item[0])">{{item[1]}}<small ng-if="item[2]" alt="apelido/ sigla"><br><i>{{item[2]}}</i></small></a></td>
                     <td><span ng-show="item[3]==='PF'">Pessoa Física</span><span ng-show="item[3]==='PJ'">Pessoa Jurídica</span></td>
                     <td>{{item[4]}}{{item[5]}}</td>
-                    <td><b ng-show="item[6]==='S'">SIM</b></td>
+                    <td><b ng-show="item[6]==='S'">SIM <img ng-src="{{item[14]}}" width="40px" height="40px" ng-show="item[14]"/></b></td>
+                </tr>
+                <tr ng-repeat-end ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)">
+                    <td><small ng-repeat="t in item[11] | filter: filtraFone('FI') | limitTo: 1">{{t[2]}}</small></td>
+                    <td><small ng-repeat="t in item[11] | filter: filtraFone('CE') | limitTo: 1">{{t[2]}}</small></td>
+                    <td><small ng-repeat="t in item[12] | limitTo: 1">{{t[1]}}</small></td>
+                    <td><small ng-repeat="t in item[13] | limitTo: 1">{{t[1]}}</small></td>
                 </tr>
             </tbody>
         </table>

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.chain.Command;
 import org.springframework.beans.BeansException;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.Atividade;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.ArquivoTipo;
 import br.gov.df.emater.aterwebsrv.modelo.dto.AtividadeCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.BemClassificacaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.BemProducaoCadFiltroDto;
@@ -92,8 +94,7 @@ public class FacadeBo implements BeanFactoryAware {
 		return this._executar(usuario, "BemProducaoFiltroExecutarCh", filtro);
 	}
 
-	// Comunidade
-	// Lista
+	// Comunidade Lista
 	@Transactional(readOnly = true)
 	public _Contexto comunidadeLista(Principal usuario, ComunidadeListaDto filtro) throws Exception {
 		return this._executar(usuario, "ComunidadeListaCmd", filtro);
@@ -276,20 +277,32 @@ public class FacadeBo implements BeanFactoryAware {
 		return this._executar(usuario, "UnidadeOrganizacionalComunidadeCmd", pessoaJuridicaId);
 	}
 
-	// Unidade Organizacional
-	// Lista
+	// Unidade Organizacional Lista
 	@Transactional(readOnly = true)
 	public _Contexto unidadeOrganizacionalFiltroExecutar(Principal usuario, UnidadeOrganizacionalCadFiltroDto filtro) throws Exception {
 		return this._executar(usuario, "UnidadeOrganizacionalFiltroExecutarCh", filtro);
 	}
 
-	public _Contexto utilArquivo(Principal usuario, MultipartFile arquivo, HttpServletRequest request, String tipo) throws Exception {
+	@Transactional
+	public _Contexto utilArquivoSubir(Principal usuario, MultipartFile arquivo, HttpServletRequest request, ArquivoTipo tipo) throws Exception {
 		Map<String, Object> requisicao = new HashMap<String, Object>();
+		requisicao.put("usuario", usuario);
 		requisicao.put("arquivo", arquivo);
 		requisicao.put("request", request);
 		requisicao.put("tipo", tipo);
 
-		return this._executar(usuario, "UtilArquivoCh", requisicao);
+		return this._executar(usuario, "UtilArquivoSubirCh", requisicao);
+	}
+
+	@Transactional(readOnly = true)
+	public void utilArquivoDescer(Principal usuario, String arquivo, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		Map<String, Object> requisicao = new HashMap<String, Object>();
+		requisicao.put("usuario", usuario);
+		requisicao.put("arquivo", arquivo);
+		requisicao.put("request", request);
+		requisicao.put("response", response);
+
+		this._executar(usuario, "UtilArquivoDescerCmd", requisicao);
 	}
 
 }

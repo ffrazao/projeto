@@ -20,6 +20,43 @@
         on-ultima-pagina="ultimaPagina()"
         ></frz-navegador>
     </div>
+    <div class="table-responsive" ng-if="cadastro.registro.publicoAlvoConfirmacao === 'S' && cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList.length">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th colspan="11" class="text-center"><h4>Endereço das Propriedades Rurais Vinculadas</h4></th>
+                </tr>
+                <tr>
+                    <th>Comunidade</th>
+                    <th>Nome</th>
+                    <th>Logradouro</th>
+                    <th>Complemento</th>
+                    <th>Número</th>
+                    <th>Bairro</th>
+                    <th>CEP</th>
+                    <th>Código IBGE</th>
+                    <th>Cidade</th>
+                    <th>Municipio</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody ng-if="cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList">
+                <tr ng-repeat="reg in cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList | filter: {cadastroAcao: '!E'}">
+                    <td>{{reg.comunidade.nome}}</td>
+                    <td><a ng-click="modalVerPropriedadeRural(reg.propriedadeRural.id)">{{reg.propriedadeRural.nome}}</a></td>
+                    <td>{{reg.propriedadeRural.endereco.logradouro}}</td>
+                    <td>{{reg.propriedadeRural.endereco.complemento}}</td>
+                    <td>{{reg.propriedadeRural.endereco.numero}}</td>
+                    <td>{{reg.propriedadeRural.endereco.bairro}}</td>
+                    <td>{{reg.propriedadeRural.endereco.cep}}</td>
+                    <td>{{reg.propriedadeRural.endereco.codigoIbge}}</td>
+                    <td>{{reg.propriedadeRural.endereco.cidade.nome}}</td>
+                    <td>{{reg.propriedadeRural.endereco.municipio.nome}}</td>
+                    <td>{{reg.propriedadeRural.endereco.estado.sigla}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
     <div class="painel-body"  ng-hide="cadastro.registro.enderecoList.length">
         <div class="alert alert-warning" style="margin: 0px;" role="alert">
             <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
@@ -30,6 +67,9 @@
         <ng-form name="enderecoListFrm">
             <table class="table table-striped">
                 <thead>
+                    <tr ng-if="cadastro.registro.publicoAlvoConfirmacao === 'S' && cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList.length">
+                        <th colspan="11" class="text-center"><h4>Outros endereços de contato</h4></th>
+                    </tr>
                     <tr>
                         <th rowspan="2"><frz-seletor ng-model="pessoaEnderecoNvg" dados="cadastro.registro.enderecoList"></frz-seletor></th>
                         <th rowspan="2">#</th>

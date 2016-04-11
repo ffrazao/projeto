@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
@@ -25,7 +24,6 @@ import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.CamOrgao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.CnhCategoria;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.ConfirmacaoDap;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Escolaridade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.EstadoCivil;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;
@@ -112,24 +110,6 @@ public class PessoaFisica extends Pessoa {
 	// @Field(index = Index.YES, store = Store.YES)
 	private String ctpsSerie;
 
-	@Column(name = "dap_observacao")
-	@Lob
-	private String dapObservacao;
-
-	@Column(name = "dap_registro")
-	// @Field(index = Index.YES, store = Store.YES)
-	private String dapRegistro;
-
-	@Column(name = "dap_situacao")
-	@Enumerated(EnumType.STRING)
-	private ConfirmacaoDap dapSituacao;
-
-	@Column(name = "dap_validade")
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	@JsonSerialize(using = JsonSerializerData.class)
-	@JsonDeserialize(using = JsonDeserializerData.class)
-	private Calendar dapValidade;
 
 	@Enumerated(EnumType.STRING)
 	private Escolaridade escolaridade;
@@ -276,22 +256,6 @@ public class PessoaFisica extends Pessoa {
 
 	public String getCtpsSerie() {
 		return ctpsSerie;
-	}
-
-	public String getDapObservacao() {
-		return dapObservacao;
-	}
-
-	public String getDapRegistro() {
-		return dapRegistro;
-	}
-
-	public ConfirmacaoDap getDapSituacao() {
-		return dapSituacao;
-	}
-
-	public Calendar getDapValidade() {
-		return dapValidade;
 	}
 
 	public Escolaridade getEscolaridade() {
@@ -445,22 +409,6 @@ public class PessoaFisica extends Pessoa {
 
 	public void setCtpsSerie(String ctpsSerie) {
 		this.ctpsSerie = ctpsSerie;
-	}
-
-	public void setDapObservacao(String dapObservacao) {
-		this.dapObservacao = dapObservacao;
-	}
-
-	public void setDapRegistro(String dapRegistro) {
-		this.dapRegistro = dapRegistro;
-	}
-
-	public void setDapSituacao(ConfirmacaoDap dapSituacao) {
-		this.dapSituacao = dapSituacao;
-	}
-
-	public void setDapValidade(Calendar dapValidade) {
-		this.dapValidade = dapValidade;
 	}
 
 	public void setEscolaridade(Escolaridade escolaridade) {

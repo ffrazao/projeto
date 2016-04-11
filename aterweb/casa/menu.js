@@ -40,7 +40,7 @@
                     },
                     {
                         name: 'Dashboard',
-                        link: 'info({"nome": "Dashboard", "endereco": "http://extranet.emater.df.gov.br"})',
+                        link: 'info({"nome": "Dashboard", "endereco": "http://extranet.emater.df.gov.br/painelresultados/"})',
                         visivel: true,
                     },
                 ],

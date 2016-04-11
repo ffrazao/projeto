@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -30,6 +31,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.ConfirmacaoDap;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoCategoria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoSegmento;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
@@ -101,10 +103,19 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 	private String dapNumero;
 
 	@Column(name = "dap_observacao")
+	@Lob
 	private String dapObservacao;
 
 	@Column(name = "dap_situacao")
-	private String dapSituacao;
+	@Enumerated(EnumType.STRING)
+	private ConfirmacaoDap dapSituacao;
+
+	@Column(name = "dap_validade")
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@JsonSerialize(using = JsonSerializerData.class)
+	@JsonDeserialize(using = JsonDeserializerData.class)
+	private Calendar dapValidade;
 
 	@Column(name = "forca_trab_eventual")
 	private Integer forcaTrabEventual;
@@ -193,17 +204,6 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
 	private BigDecimal salarioMensal;
 
-	// @IndexedEmbedded
-	// @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	// @JoinTable(
-	// name = "publico_alvo_setor",
-	// catalog = EntidadeBase.ATER_SCHEMA,
-	// joinColumns = { @JoinColumn(name = "publico_alvo_id", nullable = false,
-	// updatable = false) },
-	// inverseJoinColumns = { @JoinColumn(name = "setor_id", nullable = false,
-	// updatable = false) })
-	// private List<PublicoAlvoSetor> publicoAlvoSetorList;
-
 	@Enumerated(EnumType.STRING)
 	private PublicoAlvoSegmento segmento;
 
@@ -224,6 +224,17 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 	public String getBenefSocAposentadoriaPensao() {
 		return benefSocAposentadoriaPensao;
 	}
+
+	// @IndexedEmbedded
+	// @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	// @JoinTable(
+	// name = "publico_alvo_setor",
+	// catalog = EntidadeBase.ATER_SCHEMA,
+	// joinColumns = { @JoinColumn(name = "publico_alvo_id", nullable = false,
+	// updatable = false) },
+	// inverseJoinColumns = { @JoinColumn(name = "setor_id", nullable = false,
+	// updatable = false) })
+	// private List<PublicoAlvoSetor> publicoAlvoSetorList;
 
 	public String getBenefSocCtpsAssinada() {
 		return benefSocCtpsAssinada;
@@ -281,8 +292,12 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 		return dapObservacao;
 	}
 
-	public String getDapSituacao() {
+	public ConfirmacaoDap getDapSituacao() {
 		return dapSituacao;
+	}
+
+	public Calendar getDapValidade() {
+		return dapValidade;
 	}
 
 	public Integer getForcaTrabEventual() {
@@ -378,6 +393,11 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 		return tradicao;
 	}
 
+	@Override
+	public PublicoAlvo infoBasica() {
+		return new PublicoAlvo(getId(), getPessoa().infoBasica());
+	}
+
 	public void setBenefSocAposentadoriaPensao(String benefSocAposentadoriaPensao) {
 		this.benefSocAposentadoriaPensao = benefSocAposentadoriaPensao;
 	}
@@ -438,8 +458,12 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 		this.dapObservacao = dapObservacao;
 	}
 
-	public void setDapSituacao(String dapSituacao) {
+	public void setDapSituacao(ConfirmacaoDap dapSituacao) {
 		this.dapSituacao = dapSituacao;
+	}
+
+	public void setDapValidade(Calendar dapValidade) {
+		this.dapValidade = dapValidade;
 	}
 
 	public void setForcaTrabEventual(Integer forcaTrabEventual) {
@@ -533,11 +557,6 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 
 	public void setTradicao(Integer tradicao) {
 		this.tradicao = tradicao;
-	}
-
-	@Override
-	public PublicoAlvo infoBasica() {
-		return new PublicoAlvo(getId(), getPessoa().infoBasica());
 	}
 
 }
