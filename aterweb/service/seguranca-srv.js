@@ -2,6 +2,10 @@
 
 'use strict';
 
+angular.module(pNmModulo, ['ui.bootstrap', 'ui.router', 'ngSanitize', 'ngAnimate', 'toastr', 'sticky',
+  'ui.mask', 'ui.utils.masks',
+  ]);
+
 angular.module(pNmModulo).factory(pNmFactory,
   ['$rootScope', '$http', 'toastr', '$state', '$location',
     function($rootScope, $http, toastr, $state, $location) {
@@ -27,4 +31,4 @@ angular.module(pNmModulo).factory(pNmFactory,
     /* TODO: transferir os códigos de login, logout e teste de usuario ativo pra ca */
 ]);
 
-})('principal', 'SegurancaSrv');
+})('segurancaSrv', 'SegurancaSrv');

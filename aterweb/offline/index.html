@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html ng-app="principal" class="no-js" lang="{{globalLocalizacao}}" manifest="cache.manifest" type="text/cache-manifest">
+<html ng-app="offline" class="no-js" lang="{{globalLocalizacao}}" manifest="cache.manifest" type="text/cache-manifest">
 	<head>
 		<meta charset="utf-8">
 		<title>ATER web</title>
@@ -226,7 +226,7 @@
 		</form>
 	</div>
 	
-	<script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
 	<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
 	<script src="bower_components/lodash/lodash.js"></script>
 	<script src="bower_components/underscore/underscore.js"></script>
@@ -262,84 +262,12 @@
 	<!-- Add New Bower Component JS Above -->
 	<script src="js/scr-funcao.js" data-concat="false"></script>
 	<script src="js/frz-painel-vidro.js" data-concat="false"></script>
-	<script src="js/frz-endereco.js" data-concat="false"></script>
 	<script src="js/latinise.js" data-concat="false"></script>
-	<script src="directive/frz-navegador/frz-navegador.js"></script>
-	<script src="directive/frz-arquivo/frz-arquivo.js"></script>
-	<script src="directive/frz-form/frz-form.js"></script>
-	<script src="directive/frz-tabela/frz-tabela.js"></script>
-	<!-- Main App JS -->
-	<script src="app.js"></script>
 	
 	<!-- tools -->
 	<script src="service/mensagem-srv.js"></script>
-	<script src="service/seguranca-srv.js"></script>
 	<script src="service/util-srv.js"></script>
 	<!-- offline -->
-	<script src="offline/offline.js"></script>
-	
-	<!-- info -->
-	<script src="info/info.js"></script>
-	<!-- atividade -->
-	<script src="atividade/atividade.js"></script>
-	<script src="atividade/sub-pessoa.js"></script>
-	<script src="atividade/sub-assunto.js"></script>
-	<script src="atividade/sub-ocorrencia.js"></script>
-	<script src="atividade/sub-plano-acao.js"></script>
-	<script src="service/atividade/atividade-srv.js"></script>
-	<!-- home -->
-	<script src="casa/casa.js"></script>
-	<script src="casa/menu.js"></script>
-	<!-- contrato -->
-	<script src="contrato/contrato.js"></script>
-	<script src="contrato/sub-arquivo.js"></script>
-	<!-- formulário -->
-	<script src="formulario/formulario.js"></script>
-	<script src="service/formulario/formulario-srv.js"></script>
-	<!-- indice producao -->
-	<script src="indice-producao/indice-producao.js"></script>
-	<script src="indice-producao/sub-produtores.js"></script>
-	<script src="indice-producao/sub-producao-forma.js"></script>
-	<script src="service/indice-producao/bem-classificacao-srv.js"></script>
-	<script src="service/indice-producao/bem-producao-srv.js"></script>
-	<script src="service/indice-producao/indice-producao-srv.js"></script>
-	<!-- login -->
-	<script src="login/login.js"></script>
-	<script src="login/esqueci-minha-senha.js"></script>
-	<script src="login/renove-sua-senha.js"></script>
-	
-	<!-- pessoa -->
-	<script src="pessoa/pessoa.js"></script>
-	<script src="pessoa/filtro-sub-grupo-social.js"></script>
-	<script src="pessoa/sub-arquivo.js"></script>
-	<script src="pessoa/sub-atividade.js"></script>
-	<script src="pessoa/sub-colaborador-formacao-profissional.js"></script>
-	<script src="pessoa/sub-colaborador-lotacao.js"></script>
-	<script src="pessoa/sub-diagnostico-captacao.js"></script>
-	<script src="pessoa/sub-diagnostico-resultado.js"></script>
-	<script src="pessoa/sub-email.js"></script>
-	<script src="pessoa/sub-endereco.js"></script>
-	<script src="pessoa/sub-grupo-social.js"></script>
-	<script src="pessoa/sub-lotacao.js"></script>
-	<script src="pessoa/sub-pendencia.js"></script>
-	<script src="pessoa/sub-publico-alvo-propriedade-rural.js"></script>
-	<script src="pessoa/sub-publico-alvo-indice-producao.js"></script>
-	<script src="pessoa/sub-relacionamento.js"></script>
-	<script src="pessoa/sub-telefone.js"></script>
-	<script src="service/pessoa/pessoa-srv.js"></script>
-	<script src="service/endereco/endereco-srv.js"></script>
-	
-	<!-- propriedade -->
-	<script src="propriedade-rural/propriedade-rural.js"></script>
-	<script src="propriedade-rural/sub-arquivo.js"></script>
-	<script src="propriedade-rural/sub-diagnostico-captacao.js"></script>
-	<script src="propriedade-rural/sub-diagnostico-resultado.js"></script>
-	<script src="propriedade-rural/sub-indice-producao.js"></script>
-	<script src="propriedade-rural/sub-pendencia.js"></script>
-	<script src="propriedade-rural/sub-propriedade-rural-publico-alvo.js"></script>
-	<script src="service/ater/propriedade-rural-srv.js"></script>
-	<script src="service/ater/comunidade-srv.js"></script>
-	<!-- funcional -->
-	<script src="service/funcional/unidade-organizacional-srv.js"></script>
+	<script src="offline/app.js"></script>
 </body>
 </html>

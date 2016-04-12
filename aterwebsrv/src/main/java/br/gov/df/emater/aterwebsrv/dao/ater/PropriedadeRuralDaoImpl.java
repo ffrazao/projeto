@@ -16,6 +16,7 @@ import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dto.FiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.PropriedadeRuralCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.Area;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Endereco;
 
 public class PropriedadeRuralDaoImpl implements PropriedadeRuralDaoCustom {
@@ -120,6 +121,21 @@ public class PropriedadeRuralDaoImpl implements PropriedadeRuralDaoCustom {
 			params.add(filtro.getSituacaoFundiaria());
 			sql.append("and p.situacaoFundiaria = ?").append(params.size()).append("\n");
 		}
+		
+		if (!CollectionUtils.isEmpty(filtro.getAreaList())) {
+			sqlTemp = new StringBuilder();
+			for (Area area: filtro.getAreaList()) {
+				if (sqlTemp.length() > 0) {
+					sqlTemp.append("or ").append("\n");
+				}
+				params.add(area.getPoligono());
+				sqlTemp.append("within(p.endereco.entradaPrincipal, ?").append(params.size()).append(") = true").append("\n");
+			}
+			if (sqlTemp.length() > 0) {
+				sql.append("and (").append(sqlTemp).append(")").append("\n");
+			}
+		}
+
 
 		sql.append("order by p.nome").append("\n");
 

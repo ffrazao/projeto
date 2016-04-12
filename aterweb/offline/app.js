@@ -4,7 +4,9 @@
 
     'use strict';
 
-    angular.module(pNmModulo, ['ui.bootstrap', 'ui.utils', 'ui.router', 'ngAnimate', 'frz.navegador', 'frz.form']);
+    angular.module(pNmModulo, ['ui.bootstrap', 'ui.utils', 'ui.router', 'ngSanitize', 'ngAnimate', 'toastr', 'sticky',
+        'ui.mask', 'ui.utils.masks', 'ui.navbar', 'ngCookies', 'uiGmapgoogle-maps', 'ngFileUpload', 'ngTagsInput', 'ui.tree',
+        'mensagemSrv', 'utilSrv']);
 
     angular.module(pNmModulo).config(['$stateProvider', '$sceDelegateProvider', function($stateProvider, $sceDelegateProvider) {
 
@@ -16,8 +18,18 @@
 
     }]);
 
-    angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'PessoaSrv', '$rootScope', '$http', '$sce',
-        function($scope, toastr, FrzNavegadorParams, $state, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, PessoaSrv, $rootScope, $http, $sce) {
+    angular.module(pNmModulo).factory('$uibModalInstance', function () {
+      return null;
+    });
+    angular.module(pNmModulo).factory('modalCadastro', function () {
+      return null;
+    });
+
+    angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', '$state', '$uibModal', '$log', '$uibModalInstance', 'UtilSrv', 'mensagemSrv', '$rootScope', '$http', '$sce',
+        function($scope, toastr, $state, $uibModal, $log, $uibModalInstance, UtilSrv, mensagemSrv, $rootScope, $http, $sce) {
+
+            $rootScope.globalLocalizacao = "pt-br";
+
             var keyOffline = "regOffLine";
             var salvaLista = function () {
                 localStorage.setItem(keyOffline, JSON.stringify($scope.cadastro.lista));

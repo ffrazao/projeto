@@ -7,6 +7,7 @@
 
 angular.module(pNmModulo, ['ui.bootstrap', 'ui.utils', 'ui.router', 'ngSanitize', 'ngAnimate', 'toastr', 'sticky',
   'ui.mask', 'ui.utils.masks', 'ui.navbar', 'ngCookies', 'uiGmapgoogle-maps', 'ngFileUpload', 'ngTagsInput', 'ui.tree',
+  'mensagemSrv', 'segurancaSrv', 'utilSrv',
   'frz.form', 'frz.tabela','frz.arquivo', 'frz.endereco', 'frz.painel.vidro', 'frz.navegador', 'casa', 'contrato', 'info',
   'offline', 'pessoa', 'formulario', 'propriedadeRural' ,'atividade', 'indiceProducao',
   ]);
@@ -61,7 +62,7 @@ angular.module(pNmModulo).factory('TokenStorage', function($cookieStore) {
 angular.module(pNmModulo).factory('TokenAuthInterceptor', function($q, TokenStorage) {
     return {
         request: function(config) {
-            config.headers['AddType'] = 'text/cache-manifest .appcache';
+            //config.headers['AddType'] = 'text/cache-manifest .appcache';
 
             if (config.url === "info/info.html") {
                 return config;

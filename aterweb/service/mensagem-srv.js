@@ -2,6 +2,11 @@
 
 'use strict';
 
+angular.module(pNmModulo, ['ui.bootstrap', 'ui.router', 'ngSanitize', 'ngAnimate', 'toastr', 'sticky',
+  'ui.mask', 'ui.utils.masks',
+  ]);
+
+
 angular.module(pNmModulo).controller(pNmController,
     ['$scope', '$uibModalInstance', 'conteudo', 'funcaoOk', 'funcaoCancelar', 'funcaoIncializar',
     function($scope, $uibModalInstance, conteudo, funcaoOk, funcaoCancelar, funcaoIncializar) {
@@ -87,4 +92,4 @@ angular.module(pNmModulo).factory(pNmFactory,
     }
 ]);
 
-})('principal', 'mensagemSrv', 'MensagemCtrl');
+})('mensagemSrv', 'mensagemSrv', 'MensagemCtrl');

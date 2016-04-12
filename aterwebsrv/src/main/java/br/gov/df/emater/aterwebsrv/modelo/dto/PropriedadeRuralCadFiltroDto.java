@@ -10,11 +10,14 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.AreaUtil;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.SituacaoFundiaria;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.Area;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 
 public class PropriedadeRuralCadFiltroDto extends FiltroDtoCustom {
 
 	private static final long serialVersionUID = 1L;
+
+	private List<Area> areaList;
 
 	private AreaUtil areaUtil;
 
@@ -74,6 +77,14 @@ public class PropriedadeRuralCadFiltroDto extends FiltroDtoCustom {
 
 	public List<UnidadeOrganizacional> getUnidadeOrganizacionalList() {
 		return unidadeOrganizacionalList;
+	}
+
+	public List<Area> getAreaList() {
+		return areaList;
+	}
+
+	public void setAreaList(List<Area> areaList) {
+		this.areaList = areaList;
 	}
 
 	public void setAreaUtil(AreaUtil areaUtil) {

@@ -4,6 +4,10 @@
 
 'use strict';
 
+angular.module(pNmModulo, ['ui.bootstrap', 'ui.router', 'ngSanitize', 'ngAnimate', 'toastr', 'sticky',
+  'ui.mask', 'ui.utils.masks',
+  ]);
+
 angular.module(pNmModulo).factory(pNmFactory, ['$rootScope', '$http', 'toastr', 'Upload', '$timeout',
     function($rootScope, $http, toastr, Upload, $timeout) {
         var sucessoInterno = function (ls, cb) {
@@ -79,4 +83,4 @@ angular.module(pNmModulo).factory(pNmFactory, ['$rootScope', '$http', 'toastr', 
     }
 ]);
 
-})('principal', 'UtilSrv');
+})('utilSrv', 'UtilSrv');

@@ -118,6 +118,52 @@
                         Campo Obrigatório
                     </div>
                 </div>
+
+                <div class="form-group" title="Mapa">
+                    <label class="col-md-4 control-label" for="map">Mapa</label>
+                    <div class="col-md-7">
+                        <ui-gmap-google-map 
+                            id="cadastro.apoio.filtro.map"
+                            control="cadastro.apoio.filtro.map.controle"
+                            center="cadastro.apoio.filtro.map.center"
+                            pan="cadastro.apoio.filtro.map.pan"
+                            zoom="cadastro.apoio.filtro.map.zoom"
+                            refresh="cadastro.apoio.filtro.map.refresh"
+                            options="cadastro.apoio.filtro.map.options"
+                            events="cadastro.apoio.filtro.map.events"
+                            bounds="cadastro.apoio.filtro.map.bounds"
+                            draggable="true">
+
+                            <ui-gmap-drawing-manager 
+                                options="cadastro.apoio.filtro.drawingManager.opcoes"
+                                control="cadastro.apoio.filtro.drawingManager.controle"
+                                events="cadastro.apoio.filtro.drawingManager.eventos">
+                            </ui-gmap-drawing-manager>
+
+                            <ui-gmap-markers
+                                idkey="'elementoId'" 
+                                models="cadastro.apoio.filtro.map.markers" 
+                                control="cadastro.apoio.filtro.marker.controle" 
+                                coords="cadastro.apoio.filtro.marker.coords" 
+                                options="cadastro.apoio.filtro.marker.opcoes" 
+                                events="cadastro.apoio.filtro.marker.eventos">
+                            </ui-gmap-markers>
+
+                            <ui-gmap-polygons 
+                                idkey="'elementoId'" 
+                                models="cadastro.apoio.filtro.map.polys" 
+                                control="cadastro.apoio.filtro.poly.controle" 
+                                path="cadastro.apoio.filtro.poly.path" 
+                                events="cadastro.apoio.filtro.poly.eventos">
+                            </ui-gmap-polygons>
+
+                            <ui-gmap-map-control template="filtro.control.tpl.html" position="bottom-center" index="-1" controller="MapaCtrl"></ui-gmap-map-control>
+
+                            <ui-gmap-search-box template="cadastro.apoio.filtro.searchbox.template" events="cadastro.apoio.filtro.searchbox.eventos" position="'BOTTOM_LEFT'">Digite</ui-gmap-search-box>
+                        </ui-gmap-google-map>
+                    </div>
+                </div>
+
             </fieldset>
         </form>
     </div>

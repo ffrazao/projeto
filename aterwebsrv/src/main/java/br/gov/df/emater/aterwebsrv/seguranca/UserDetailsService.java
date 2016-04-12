@@ -154,6 +154,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 		pessoaRetorno.setPessoaTipo(usuario.getPessoa().getPessoaTipo());
 		pessoaRetorno.setSituacao(usuario.getPessoa().getSituacao());
 		pessoaRetorno.setSituacaoData(usuario.getPessoa().getSituacaoData());
+		pessoaRetorno.setPerfilArquivo(usuario.getPessoa().getPerfilArquivo().infoBasica());
 
 		Usuario usuarioRetorno = new Usuario();
 		usuarioRetorno.setId(usuario.getId());

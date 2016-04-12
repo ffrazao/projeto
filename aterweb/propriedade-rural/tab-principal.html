@@ -53,43 +53,43 @@
     <div class="form-group col-md-8">
         <label class="control-label">Mapa</label>
         <ui-gmap-google-map 
-            id="map"
-            control="map.controle"
-            center="map.center"
-            pan="map.pan"
-            zoom="map.zoom"
-            refresh="map.refresh"
-            options="map.options"
-            events="map.events"
-            bounds="map.bounds"
+            id="cadastro.apoio.form.map"
+            control="cadastro.apoio.form.map.controle"
+            center="cadastro.apoio.form.map.center"
+            pan="cadastro.apoio.form.map.pan"
+            zoom="cadastro.apoio.form.map.zoom"
+            refresh="cadastro.apoio.form.map.refresh"
+            options="cadastro.apoio.form.map.options"
+            events="cadastro.apoio.form.map.events"
+            bounds="cadastro.apoio.form.map.bounds"
             draggable="true">
 
             <ui-gmap-drawing-manager 
-                options="drawingManager.opcoes"
-                control="drawingManager.controle"
-                events="drawingManager.eventos">
+                options="cadastro.apoio.form.drawingManager.opcoes"
+                control="cadastro.apoio.form.drawingManager.controle"
+                events="cadastro.apoio.form.drawingManager.eventos">
             </ui-gmap-drawing-manager>
 
             <ui-gmap-markers
                 idkey="'elementoId'" 
-                models="map.markers" 
-                control="marker.controle" 
-                coords="marker.coords" 
-                options="marker.opcoes" 
-                events="marker.eventos">
+                models="cadastro.apoio.form.map.markers" 
+                control="cadastro.apoio.form.marker.controle" 
+                coords="cadastro.apoio.form.marker.coords" 
+                options="cadastro.apoio.form.marker.opcoes" 
+                events="cadastro.apoio.form.marker.eventos">
             </ui-gmap-markers>
 
             <ui-gmap-polygons 
                 idkey="'elementoId'" 
-                models="map.polys" 
-                control="poly.controle" 
-                path="poly.path" 
-                events="poly.eventos">
+                models="cadastro.apoio.form.map.polys" 
+                control="cadastro.apoio.form.poly.controle" 
+                path="cadastro.apoio.form.poly.path" 
+                events="cadastro.apoio.form.poly.eventos">
             </ui-gmap-polygons>
 
-            <ui-gmap-map-control template="control.tpl.html" position="bottom-center" index="-1" controller="MapaCtrl"></ui-gmap-map-control>
+            <ui-gmap-map-control template="form.control.tpl.html" position="bottom-center" index="-1" controller="MapaCtrl"></ui-gmap-map-control>
 
-            <ui-gmap-search-box template="searchbox.template" events="searchbox.eventos" position="'TOP_RIGHT'">Digite</ui-gmap-search-box>
+            <ui-gmap-search-box template="cadastro.apoio.form.searchbox.template" events="cadastro.apoio.form.searchbox.eventos" position="'BOTTOM_LEFT'">Digite</ui-gmap-search-box>
         </ui-gmap-google-map>
     </div>
 </div>
