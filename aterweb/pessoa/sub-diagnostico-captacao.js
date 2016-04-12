@@ -86,9 +86,13 @@ angular.module(pNmModulo).controller(pNmController,
         ],
         funcaoIncluirAntes: function(form, dd) {
             dd.formularioVersao = {id: $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[9].id};
+            dd.usuario = $scope.token;
+            dd.dataColeta = $scope.hoje();
+            dd.finalizada = 'N';
 
             var id = $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[0];
             var versao = $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[9].versao;
+
             var f = this.opcao[4];
             if (!id || !versao) {
                 toastr.error('Não foi possível identificar o formulário', 'Identificar formulário');
@@ -96,7 +100,7 @@ angular.module(pNmModulo).controller(pNmController,
             }
             FormularioSrv.visualizar(id).success(function (resposta) {
                 if (resposta.mensagem === 'OK') {
-                    var formulario = FormularioSrv.montar($scope, resposta.resultado, versao);
+                    var formulario = FormularioSrv.montar($scope, resposta.resultado.formulario, versao);
                     f.opcao = formulario.opcao;
                 }
             });
@@ -122,7 +126,7 @@ angular.module(pNmModulo).controller(pNmController,
             }
             FormularioSrv.visualizar(id).success(function (resposta) {
                 if (resposta.mensagem === 'OK') {
-                    var formulario = FormularioSrv.montar($scope, resposta.resultado, versao);
+                    var formulario = FormularioSrv.montar($scope, resposta.resultado.formulario, versao);
                     f.opcao = formulario.opcao;
                 }
             });

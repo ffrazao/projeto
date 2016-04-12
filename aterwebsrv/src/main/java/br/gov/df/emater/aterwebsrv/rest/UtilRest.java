@@ -24,7 +24,7 @@ public class UtilRest {
 	private FacadeBo facadeBo;
 
 	@ResponseStatus(HttpStatus.OK)
-	@RequestMapping(value = "arquivo-subir", method = RequestMethod.GET)
+	@RequestMapping(value = "arquivo-subir", method = RequestMethod.POST)
 	public Resposta arquivoSubir(@RequestParam("file") MultipartFile arquivo, HttpServletRequest request, Principal usuario) throws Exception {
 		return new Resposta(facadeBo.utilArquivoSubir(usuario, arquivo, request, ArquivoTipo.A).getResposta());
 	}

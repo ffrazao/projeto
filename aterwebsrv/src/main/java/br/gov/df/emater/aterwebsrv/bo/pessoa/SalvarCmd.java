@@ -4,8 +4,6 @@ import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -73,9 +71,6 @@ public class SalvarCmd extends _Comando {
 
 	@Autowired
 	private PessoaDao dao;
-
-	@Autowired
-	private EntityManager em;
 
 	@Autowired
 	private EmailDao emailDao;
@@ -152,6 +147,7 @@ public class SalvarCmd extends _Comando {
 		return result;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		Pessoa result = (Pessoa) contexto.getRequisicao();
@@ -218,9 +214,11 @@ public class SalvarCmd extends _Comando {
 			if (publicoAlvo.getPublicoAlvoSetorList() != null) {
 				for (PublicoAlvoSetor publicoAlvoSetor : publicoAlvo.getPublicoAlvoSetorList()) {
 					publicoAlvoSetor.setPublicoAlvo(publicoAlvo);
-					PublicoAlvoSetor salvo = publicoAlvoSetorDao.findOneByPublicoAlvoAndSetor(publicoAlvo, publicoAlvoSetor.getSetor());
-					if (salvo != null) {
-						publicoAlvoSetor.setId(salvo.getId());
+					if (publicoAlvo.getId() != null) {						
+						PublicoAlvoSetor salvo = publicoAlvoSetorDao.findOneByPublicoAlvoAndSetor(publicoAlvo, publicoAlvoSetor.getSetor());
+						if (salvo != null) {
+							publicoAlvoSetor.setId(salvo.getId());
+						}
 					}
 				}
 			}
@@ -427,22 +425,19 @@ public class SalvarCmd extends _Comando {
 
 		// salvar os formularios de diagnostico
 		if (result.getDiagnosticoList() != null) {
-			// for (List<Object> formulario : (List<List<Object>>)
-			// result.getDiagnosticoList()) {
-			// LinkedHashMap<Object, Object> f = (LinkedHashMap<Object, Object>)
-			// formulario.get(9);
-			// List<LinkedHashMap<Object, Object>> c =
-			// (List<LinkedHashMap<Object, Object>>) f.get("coletaList");
-			// if (c != null) {
-			// for (LinkedHashMap<Object, Object> r : c) {
-			// Coleta coleta = criarColeta(r);
-			// coleta.setPessoa(result);
-			// coleta.setPropriedadeRural(null);
-			// coleta.setUsuario(getUsuario(contexto.getUsuario().getName()));
-			// coletaDao.save(coleta);
-			// }
-			// }
-			// }
+			for (List<Object> formulario : (List<List<Object>>) result.getDiagnosticoList()) {
+				LinkedHashMap<Object, Object> f = (LinkedHashMap<Object, Object>) formulario.get(9);
+				List<LinkedHashMap<Object, Object>> c = (List<LinkedHashMap<Object, Object>>) f.get("coletaList");
+				if (c != null) {
+					for (LinkedHashMap<Object, Object> r : c) {
+						Coleta coleta = criarColeta(r);
+						coleta.setPessoa(result);
+						coleta.setPropriedadeRural(null);
+						coleta.setUsuario(getUsuario(contexto.getUsuario().getName()));
+						coletaDao.save(coleta);
+					}
+				}
+			}
 		}
 
 		try {			

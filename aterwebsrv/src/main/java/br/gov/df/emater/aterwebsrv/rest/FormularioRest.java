@@ -70,8 +70,8 @@ public class FormularioRest {
 	}
 
 	@RequestMapping(value = "/visualizar-codigo", method = RequestMethod.GET)
-	public Resposta visualizarPorCodigo(@RequestParam String codigo, Principal usuario) throws Exception {
-		return new Resposta(facadeBo.formularioVisualizarPorCodigo(usuario, codigo).getResposta());
+	public Resposta visualizarPorCodigo(@RequestParam String codigo, @RequestParam(required=false) String posicao, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.formularioVisualizarPorCodigo(usuario, codigo, posicao).getResposta());
 	}
 
 }

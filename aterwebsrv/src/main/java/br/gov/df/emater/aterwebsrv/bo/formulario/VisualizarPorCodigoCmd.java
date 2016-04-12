@@ -1,5 +1,8 @@
 package br.gov.df.emater.aterwebsrv.bo.formulario;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,17 +18,23 @@ public class VisualizarPorCodigoCmd extends _Comando {
 	@Autowired
 	private FormularioDao dao;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
-		String codigo = (String) contexto.getRequisicao();
+		Map<String, Object> requisicao = (Map<String, Object>) contexto.getRequisicao();
+		String codigoStr = (String) requisicao.get("codigo");
+		String posicaoStr = (String) requisicao.get("posicao");
 
-		Formulario result = dao.findByCodigo(codigo);
+		Formulario codigo = dao.findByCodigo(codigoStr);
 
-		if (result == null) {
+		if (codigo == null) {
 			throw new BoException("Registro não localizado");
 		}
-
-		contexto.setRequisicao(result.getId());
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("codigo", codigo.getId());
+		result.put("posicao", posicaoStr);
+		
+		contexto.setResposta(result);
 
 		return false;
 	}

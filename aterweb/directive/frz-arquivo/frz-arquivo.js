@@ -77,7 +77,7 @@
                                         }
                                     }
 
-                                    var f, dataUpload, extensao, md5, nomeOriginal, tamanho, tipo;
+                                    var f, dataUpload, extensao, md5, nomeOriginal, tamanho, tipo, mimeTipo;
 
                                     f = config.data.file;
 
@@ -86,7 +86,8 @@
                                     md5 = data.resultado.md5;
                                     nomeOriginal = f.name;
                                     tamanho = f.size;
-                                    tipo = f.type;
+                                    mimeTipo = f.type;
+                                    tipo = 'A';
 
                                     var arquivo = {
                                         dataUpload : dataUpload,
@@ -95,6 +96,7 @@
                                         nomeOriginal : nomeOriginal,
                                         tamanho : tamanho,
                                         tipo : tipo,
+                                        mimeTipo: mimeTipo,
                                     };
                                     //data.resultado
                                     scope.ngModel.push(arquivo);

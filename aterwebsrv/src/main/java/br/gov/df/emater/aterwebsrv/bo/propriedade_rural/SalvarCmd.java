@@ -106,9 +106,11 @@ public class SalvarCmd extends _Comando {
 		if (result.getFormaUtilizacaoEspacoRuralList() != null) {
 			for (PropriedadeRuralFormaUtilizacaoEspacoRural formaUtilizacaoEspacoRural : result.getFormaUtilizacaoEspacoRuralList()) {
 				formaUtilizacaoEspacoRural.setPropriedadeRural(result);
-				PropriedadeRuralFormaUtilizacaoEspacoRural salvo = propriedadeRuralFormaUtilizacaoEspacoRuralDao.findOneByPropriedadeRuralAndFormaUtilizacaoEspacoRural(result, formaUtilizacaoEspacoRural.getFormaUtilizacaoEspacoRural());
-				if (salvo != null) {
-					formaUtilizacaoEspacoRural.setId(salvo.getId());
+				if (result.getId() != null) {
+					PropriedadeRuralFormaUtilizacaoEspacoRural salvo = propriedadeRuralFormaUtilizacaoEspacoRuralDao.findOneByPropriedadeRuralAndFormaUtilizacaoEspacoRural(result, formaUtilizacaoEspacoRural.getFormaUtilizacaoEspacoRural());
+					if (salvo != null) {
+						formaUtilizacaoEspacoRural.setId(salvo.getId());
+					}					
 				}
 			}
 		}

@@ -1,5 +1,8 @@
 package br.gov.df.emater.aterwebsrv.bo.formulario;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.persistence.EntityManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +28,26 @@ public class VisualizarCmd extends _Comando {
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
-		Integer id = (Integer) contexto.getRequisicao();
-		Formulario result = dao.findOne(id);
+		Integer id = null;
+		String posicao = null;
+		
+		if (contexto.getResposta() != null && contexto.getResposta() instanceof Map) {
+			@SuppressWarnings("unchecked")
+			Map<String, Object> requisicao = (Map<String, Object>) contexto.getResposta();
+			id = (Integer) requisicao.get("codigo");
+			posicao = (String) requisicao.get("posicao");
+		} else {			
+			id = (Integer) contexto.getRequisicao();
+		}
+		
+		Formulario formulario = dao.findOne(id);
 
-		if (result == null) {
+		if (formulario == null) {
 			throw new BoException("Registro não localizado");
 		}
 
-		if (result.getFormularioVersaoList() != null) {
-			for (FormularioVersao formularioVersao : result.getFormularioVersaoList()) {
+		if (formulario.getFormularioVersaoList() != null) {
+			for (FormularioVersao formularioVersao : formulario.getFormularioVersaoList()) {
 				if (formularioVersao.getFormularioVersaoElementoList() != null) {
 					for (FormularioVersaoElemento formularioVersaoElemento : formularioVersao.getFormularioVersaoElementoList()) {
 						Elemento elemento = formularioVersaoElemento.getElemento();
@@ -45,7 +59,12 @@ public class VisualizarCmd extends _Comando {
 			}
 		}
 
-		em.detach(result);
+		em.detach(formulario);
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("formulario", formulario);
+		result.put("posicao", posicao);
+		
 		contexto.setResposta(result);
 
 		return false;

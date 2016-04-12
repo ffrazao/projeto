@@ -52,8 +52,8 @@ angular.module(pNmModulo).factory(pNmFactory,
                 SegurancaSrv.acesso(this.funcionalidade, 'VISUALIZAR');
                 return $http.get(this.endereco + '/visualizar', {params: {'id': id}});
             },
-            visualizarPorCodigo : function(scp, codigo) {
-                return $http.get(this.endereco + '/visualizar-codigo', {params: {'codigo': codigo}});
+            visualizarPorCodigo : function(scp, codigo, posicao) {
+                return $http.get(this.endereco + '/visualizar-codigo', {params: {'codigo': codigo, 'posicao': posicao}});
             },
             editar : function(formulario) {
                 SegurancaSrv.acesso(this.funcionalidade, 'EDITAR');
@@ -72,7 +72,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                 }
                 this.visualizar(id).success(function (resposta) {
                     if (resposta.mensagem === 'OK') {
-                        var formulario = FormularioSrv.montar(scp, resposta.resultado, versao);
+                        var formulario = FormularioSrv.montar(scp, resposta.resultado.formulario, versao);
                         if (!formulario) {
                             return;
                         }
@@ -118,6 +118,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                 var objOpcao = null;
                 for (i in f.formularioVersaoList[pos].formularioVersaoElementoList) {
                     elemento = f.formularioVersaoList[pos].formularioVersaoElementoList[i].elemento;
+                    opcao.push(elemento);
                     if (elemento.opcaoString && !elemento.opcao) {
                         eval("objOpcao = " + elemento.opcaoString);
                         elemento.opcao = objOpcao;
@@ -134,16 +135,16 @@ angular.module(pNmModulo).factory(pNmFactory,
                         }
                         var subFormCodigo = elemento.opcao.formulario[0].formularioCodigo;
                         var subFormVersao = elemento.opcao.formulario[0].formularioVersao;
-                        FormularioSrv.visualizarPorCodigo(scp, subFormCodigo).success(function(resposta) {
+                        FormularioSrv.visualizarPorCodigo(scp, subFormCodigo, opcao.length-1).success(function(resposta) {
                             if (resposta.mensagem === 'OK') {
-                                var subFormulario = FormularioSrv.montar(scp, resposta.resultado, subFormVersao);
-                                elemento.opcao = subFormulario.opcao;
+                                var subFormulario = FormularioSrv.montar(scp, resposta.resultado.formulario, subFormVersao);
+                                opcao[resposta.resultado.posicao].opcao = subFormulario.opcao;
                             }
                         });
                     }
                     // TODO fazer aqui a troca do codigo do formulario pelo formulario em si
 
-                    opcao.push(elemento);
+                    //opcao.push(elemento);
                 }
                 formulario.opcao = opcao;
 

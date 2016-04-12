@@ -177,6 +177,27 @@
                 //$log.info('Modal dismissed at: ' + new Date());
             });
         };
+        $scope.verObjeto = function(form, dd) {
+            verificaDados($scope);
+            var acao = null;
+            var dados = null;
+            if (!dd) {
+                dados = {};
+                acao = 'incluir';
+            } else {
+                dados = angular.copy(dd);
+                acao = 'editar';
+            }
+            var conteudo = {formulario: form, dados: dados};
+            var conf = '<frz-form ng-model="conteudo.formulario" dados="conteudo.dados">';
+            mensagemSrv.confirmacao(false, conf, form.nome, conteudo).then(function(conteudo) {
+                // processar o retorno positivo da modal
+                angular.copy(conteudo.dados, dd);
+            }, function() {
+                // processar o retorno negativo da modal
+                //$log.info('Modal dismissed at: ' + new Date());
+            });
+        };
     }]);
 
     // diretiva da barra de navegação de dados

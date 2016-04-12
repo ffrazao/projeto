@@ -153,8 +153,11 @@ public class FacadeBo implements BeanFactoryAware {
 	}
 
 	@Transactional(readOnly = true)
-	public _Contexto formularioVisualizarPorCodigo(Principal usuario, String codigo) throws Exception {
-		return this._executar(usuario, "FormularioVisualizarPorCodigoCh", codigo);
+	public _Contexto formularioVisualizarPorCodigo(Principal usuario, String codigo, String posicao) throws Exception {
+		Map<String, Object> requisicao = new HashMap<String, Object>();
+		requisicao.put("codigo", codigo);
+		requisicao.put("posicao", posicao);
+		return this._executar(usuario, "FormularioVisualizarPorCodigoCh", requisicao);
 	}
 
 	@Transactional
