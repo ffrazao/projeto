@@ -7,7 +7,7 @@ angular.module(pNmModulo, ['ui.bootstrap', 'ui.router', 'ngSanitize', 'ngAnimate
   ]);
 
 angular.module(pNmModulo).factory(pNmFactory,
-  ['$rootScope', '$http', 'toastr', '$state', '$location',
+    ['$rootScope', '$http', 'toastr', '$state', '$location',
     function($rootScope, $http, toastr, $state, $location) {
         var SegurancaSrv = {
             acesso : function(funcionalidade, comando) {
@@ -24,6 +24,15 @@ angular.module(pNmModulo).factory(pNmFactory,
                 .error(function (erro) {
                     toastr.error(erro, 'Erro ao tentar acesso ao servidor');
                 });
+            },
+            visualizarPerfil: function(username) {
+                if (!username) {
+                    username = $rootScope.token.username;
+                }
+                return $http.get($rootScope.servicoUrl + '/api/visualizar-perfil', {params: {username: username}});
+            },
+            salvarPerfil: function(usuario) {
+                return $http.post($rootScope.servicoUrl + '/api/salvar-perfil', usuario);
             },
         };
         return SegurancaSrv;

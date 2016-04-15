@@ -8,7 +8,7 @@
 			<div class="form-group">
 				<label class="col-xs-4 control-label" for="email" title="E-mail para enviar a recuperação da senha" accesskey="E">Digite o seu <u>e</u>-mail *</label>  
 				<div class="col-xs-6">
-					<input id="email" name="email" type="email" placeholder="usuario@dominio.com.br" class="form-control input-md" required="true" autofocus ng-model="registro.email">
+					<input id="email" name="email" type="email" placeholder="usuario@dominio.com.br" class="form-control input-md" ng-required="true" autofocus ng-model="registro.email">
 					<div ng-show="($parent.esqueciMinhaSenhaForm.email.$dirty || submitted) && $parent.esqueciMinhaSenhaForm.email.$invalid">
 						<div class="label label-danger" ng-show="$parent.esqueciMinhaSenhaForm.email.$error.required">
 							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>

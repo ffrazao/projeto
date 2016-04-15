@@ -1,0 +1,76 @@
+<div class="modal-header">
+	<h3 class="modal-title">Visualizar Perfil!</h3>
+</div>
+<div class="modal-body">
+	<form class="form-horizontal" novalidate name="$parent.visualizarPerfilForm">
+		<fieldset>
+
+			<!-- Text input-->
+            <div class="form-group">
+				<label class="col-xs-4 control-label" for="perfilArquivo" title="Foto do Perfil" accesskey="F"><u>F</u>oto do perfil *</label>
+                <div>
+                    <img class="img-thumbnail" src="img/foto.png" ng-click="selecionaFotoPerfil()" ng-hide="registro.pessoa.perfilArquivo.localDiretorioWeb.length" width="180px" height="180px" />
+                    <img class="img-thumbnail" ng-src="{{servicoUrl}}/arquivo-descer?arquivo={{registro.pessoa.perfilArquivo.md5}}" ng-click="selecionaFotoPerfil()" ng-if="registro.pessoa.perfilArquivo.md5.length" width="180px" height="180px" />
+                </div>
+            </div>
+
+			<!-- Text input-->
+			<div class="form-group">
+				<label class="col-xs-4 control-label" for="username" title="Nome de usuário" accesskey="N">Digite o seu <u>n</u>ome de usuário *</label>
+				<div class="col-xs-6">
+                    <div class="input-group">
+						<input id="username" name="username" type="text" placeholder="nome de usuário" class="form-control input-md" ng-required="true" autofocus ng-model="registro.username" ng-pattern="/^[a-z]*[a-z|\.]*[a-z]*$/" ng-trim="true" ng-minlength="6" ng-maxlength="50">
+                        <span class="input-group-btn">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-default" ng-click="verificaDisponibilidadeUsername(registro.username)" ng-disabled="$parent.visualizarPerfilForm.username.$invalid">
+                                    <span class="glyphicon glyphicon-ok"></span>
+                                </button>
+                            </div>
+                        </span>
+                    </div>
+					<div ng-show="($parent.visualizarPerfilForm.username.$dirty || submitted) && $parent.visualizarPerfilForm.username.$invalid">
+						<div class="label label-danger" ng-show="$parent.visualizarPerfilForm.username.$error.required">
+							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+							Campo Obrigatório
+						</div>
+						<div class="label label-danger" ng-show="$parent.visualizarPerfilForm.username.$error.pattern">
+							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+							Insira letra(s) minúsculas não acentuados ou o caractere "." ponto.
+						</div>
+						<div class="label label-danger" ng-show="$parent.visualizarPerfilForm.username.$error.minlength">
+							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+							Poucos caracteres
+						</div>
+						<div class="label label-danger" ng-show="$parent.visualizarPerfilForm.username.$error.maxlength">
+							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+							Muitos caracteres
+						</div>
+					</div>
+					<span class="help-block">Utilize somente as letras do alfabeto, não acentuadas, ou o caractere ponto ".". Mínimo de 6 caractéres, máximo de 50 caractéres</span>
+				</div>
+			</div>
+
+			<!-- Text input-->
+			<div class="form-group">
+				<label class="col-xs-4 control-label" for="pessoaEmail" title="Nome de usuário" accesskey="E">Selecione o seu <u>e</u>mail para recuperação de senha *</label>
+				<div class="col-xs-6">
+					<select id="pessoaEmail" name="pessoaEmail" type="text" class="form-control" ng-required="true" ng-model="registro.pessoaEmail" ng-options="item as item.email.endereco for item in apoio.pessoaEmailList | orderBy: ['endereco'] track by item.id">
+					</select>
+					<div ng-show="($parent.visualizarPerfilForm.pessoaEmail.$dirty || submitted) && $parent.visualizarPerfilForm.pessoaEmail.$invalid">
+						<div class="label label-danger" ng-show="$parent.visualizarPerfilForm.pessoaEmail.$error.required">
+							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+							Campo Obrigatório
+						</div>
+					</div>
+					<span class="help-block">Selecione um e-mail para enviarmos uma nova senha, caso seja necessário.</span>
+				</div>
+			</div>
+
+		</fieldset>
+	</form>
+</div>
+<div class="modal-footer">
+	<button type="submit" id="ok" name="ok" class="btn btn-primary" accesskey="O" title="Executar a ação deste formulário" ng-click="submitForm()"><u>O</u>K</button>
+	<button type="button" id="reiniciar" name="reiniciar" class="btn btn-warning" ng-click="reiniciar();" accesskey="R" title="Reiniciar os dados deste formulário"><u>R</u>einiciar</button>
+	<button type="button" id="cancelar" name="cancelar" class="btn btn-danger" accesskey="C" title="Cancelar a ação deste formulário" ng-click="cancelar()"><u>C</u>ancelar</button>
+</div>

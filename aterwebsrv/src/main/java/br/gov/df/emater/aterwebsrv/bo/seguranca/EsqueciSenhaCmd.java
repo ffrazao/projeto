@@ -58,7 +58,7 @@ public class EsqueciSenhaCmd extends _Comando {
 
 		usuario.setPassword(Criptografia.MD5(usuario.getId() + novaSenha.toString()));
 		usuario.setUsuarioStatusConta(UsuarioStatusConta.R);
-		usuario.setExpires(expiracao.getTimeInMillis());
+		usuario.setExpires(expiracao.getTime().getTime());		
 		usuarioDao.saveAndFlush(usuario);
 		
 		Map<String, Object> requisicao = new HashMap<String, Object>();

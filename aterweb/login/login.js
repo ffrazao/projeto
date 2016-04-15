@@ -88,7 +88,11 @@
                         }
                     } else {
                         if (status === 401) {
-                            toastr.error('Usuário ou senha inválidos', 'Erro ao efetuar o login');
+                            if (result.message.indexOf('Conta expirada') >= 0) {
+                                toastr.error('Conta expirada! Solicite uma nova senha!', 'Erro ao efetuar o login');
+                            } else {
+                                toastr.error('Usuário ou senha inválidos', 'Erro ao efetuar o login');
+                            }
                         } else {
                             toastr.error(result, 'Erro ao efetuar o login');
                         }

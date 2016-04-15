@@ -384,11 +384,27 @@ angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 
         });
 
         modalInstance.result.then(function(registro) {
-            $('#usuario').focus();
+            $('#newPassword').focus();
 //            $scope.cadastro.registro.senha = angular.copy(registro.newPassword);
         }, function() {
             //$log.info('Modal dismissed at: ' + new Date());
             $rootScope.executarLogout();
+        });
+    };
+    $rootScope.visualizarPerfil = function(size) {
+        var modalInstance = $uibModal.open({
+            templateUrl: 'login/visualizar-perfil.html',
+            controller: 'VisualizarPerfilCtrl',
+            size: size,
+            resolve: {
+                registroOrig: function() {
+                    return angular.copy($rootScope.token);
+                },
+            }
+        });
+
+        modalInstance.result.then(function(registro) {
+        }, function() {
         });
     };
 

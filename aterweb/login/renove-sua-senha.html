@@ -24,7 +24,7 @@
 			<div class="form-group">
 				<label class="col-xs-4 control-label" for="password" title="Senha Atual" accesskey="N"><u>S</u>enha Atual *</label>
 				<div class="col-xs-6">
-					<input id="password" name="password" type="password" placeholder="Senha Atual" class="form-control input-md" required="true" ng-model="registro.password" ng-valor-diferente-de="registro.newPassword" autocomplete="off">
+					<input id="password" name="password" type="password" placeholder="Senha Atual" class="form-control input-md" ng-required="true" ng-model="registro.password" ng-valor-diferente-de="registro.newPassword" autocomplete="off">
 					<div ng-show="($parent.renoveSuaSenhaForm.password.$dirty || submitted) && $parent.renoveSuaSenhaForm.password.$invalid">
 						<div class="label label-danger" ng-show="$parent.renoveSuaSenhaForm.password.$error.required">
 							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -42,7 +42,7 @@
 			<div class="form-group">
 				<label class="col-xs-4 control-label" for="newPassword" title="Nova Senha de Acesso ao Sistema" accesskey="N"><u>N</u>ova Senha *</label>
 				<div class="col-xs-6">
-					<input id="newPassword" name="newPassword" type="password" placeholder="Nova Senha de Acesso" class="form-control input-md" required="true" autofocus ng-model="registro.newPassword" ng-valor-diferente-de="registro.password" ng-minlength="8" ng-maxlength="20" ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/">
+					<input id="newPassword" name="newPassword" type="password" placeholder="Nova Senha de Acesso" class="form-control input-md" ng-required="true" autofocus ng-model="registro.newPassword" ng-valor-diferente-de="registro.password" ng-minlength="8" ng-maxlength="20" ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/">
 					<div ng-show="($parent.renoveSuaSenhaForm.newPassword.$dirty || submitted) && $parent.renoveSuaSenhaForm.newPassword.$invalid">
 						<div class="label label-danger" ng-show="$parent.renoveSuaSenhaForm.newPassword.$error.required">
 							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -73,7 +73,7 @@
 			<div class="form-group">
 				<label class="col-xs-4 control-label" for="confirmNewPassword" title="Confirmar Nova Senha de Acesso ao Sistema" accesskey="N"><u>C</u>onfirmar Nova Senha *</label>
 				<div class="col-xs-6">
-					<input id="confirmNewPassword" name="confirmNewPassword" type="password" placeholder="Confirmar Nova Senha de Acesso" class="form-control input-md" required="true" ng-model="registro.confirmNewPassword" ng-mesmo-valor-que="registro.newPassword">
+					<input id="confirmNewPassword" name="confirmNewPassword" type="password" placeholder="Confirmar Nova Senha de Acesso" class="form-control input-md" ng-required="true" ng-model="registro.confirmNewPassword" ng-mesmo-valor-que="registro.newPassword">
 					<div ng-show="($parent.renoveSuaSenhaForm.confirmNewPassword.$dirty || submitted) && $parent.renoveSuaSenhaForm.confirmNewPassword.$invalid">
 						<div class="label label-danger" ng-show="$parent.renoveSuaSenhaForm.confirmNewPassword.$error.required">
 							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>

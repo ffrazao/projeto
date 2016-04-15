@@ -275,10 +275,20 @@ public class FacadeBo implements BeanFactoryAware {
 	public _Contexto segurancaEsqueciSenha(String email) throws Exception {
 		return this._executar(null, "SegurancaEsqueciSenhaCh", email);
 	}
+	
+	@Transactional(readOnly = true)
+	public _Contexto segurancaVisualizarPerfil(Principal usuario, String username) throws Exception {
+		return this._executar(usuario, "SegurancaVisualizarPerfilCmd", username);
+	}
 
 	@Transactional
 	public _Contexto segurancaRenovarSenha(Usuario usuario) throws Exception {
 		return this._executar(null, "SegurancaRenovarSenhaCmd", usuario);
+	}
+
+	@Transactional
+	public _Contexto segurancaSalvarPerfil(Principal principal, Usuario usuario) throws Exception {
+		return this._executar(principal, "SegurancaSalvarPerfilCmd", usuario);
 	}
 
 	@Override
