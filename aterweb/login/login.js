@@ -2,9 +2,9 @@
 
     'use strict';
 
-    angular.module(pNmModulo).controller(pNmController, ['$scope', '$rootScope', '$location', '$uibModal', 'toastr', '$state', '$http', 'TokenStorage', '$cookies', '$uibModalInstance',
+    angular.module(pNmModulo).controller(pNmController, ['$scope', '$rootScope', '$location', '$uibModal', 'toastr', '$state', '$http', 'TokenStorage', '$cookies', '$uibModalInstance', 'CestaDeValores',
 
-        function($scope, $rootScope, $location, $uibModal, toastr, $state, $http, TokenStorage, $cookies, $uibModalInstance) {
+        function($scope, $rootScope, $location, $uibModal, toastr, $state, $http, TokenStorage, $cookies, $uibModalInstance, CestaDeValores) {
             $scope.cadastro = $scope.cadastroBase();
 
             $scope.iniciar = function() {
@@ -57,7 +57,7 @@
                     //$scope.mensagens.push({ tipo: 'danger', texto: 'Verifique os campos marcados' });
                     return;
                 }
-                //$scope.renoveSuaSenha();
+                
                 $http.post($scope.servicoUrl + '/api/login', {
                     "username": $scope.cadastro.registro.username,
                     "password": $scope.cadastro.registro.password,
@@ -72,23 +72,29 @@
                         } else {
                             TokenStorage.store(result);
                             // For display purposes only
+                            CestaDeValores.adicionarValor('password', $scope.cadastro.registro.password);
                             try {
                                 if ($rootScope.isAuthenticated()) {
                                     $uibModalInstance.close();
                                 } else {
-                                    $rootScope.token = null;
+                                    $scope.executarLogout();
                                     toastr.error('Erro ao processar o login - token nulo', 'Erro ao efetuar o login');
                                 }
                             } catch (err) {
                                 toastr.error('Erro ao processar o login', 'Erro ao efetuar o login');
+                            } finally {
+                                CestaDeValores.removerValor('password');
                             }
                         }
                     } else {
-                        toastr.error(result, 'Erro ao efetuar o login');
+                        if (status === 401) {
+                            toastr.error('Usuário ou senha inválidos', 'Erro ao efetuar o login');
+                        } else {
+                            toastr.error(result, 'Erro ao efetuar o login');
+                        }
                     }
                 });
             };
-
 
             $scope.esqueciMinhaSenha = function(size) {
                 var modalInstance = $uibModal.open({
@@ -103,27 +109,6 @@
                     //$log.info('Modal dismissed at: ' + new Date());
                 });
             };
-
-            $scope.renoveSuaSenha = function(size) {
-                var modalInstance = $uibModal.open({
-                    templateUrl: 'login/renove-sua-senha.html',
-                    controller: 'RenoveSuaSenhaCtrl',
-                    size: size,
-                    resolve: {
-                        registro: function() {
-                            return $scope.cadastro.registro;
-                        }
-                    }
-                });
-
-                modalInstance.result.then(function(registro) {
-                    $('#usuario').focus();
-                    $scope.cadastro.registro.senha = angular.copy(registro.novaSenha);
-                }, function() {
-                    //$log.info('Modal dismissed at: ' + new Date());
-                });
-            };
-
         }
     ]);
 

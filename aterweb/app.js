@@ -84,6 +84,46 @@ angular.module(pNmModulo).factory('TokenAuthInterceptor', function($q, TokenStor
 });
 // fim: modulo de autenticação
 
+// inicio: utilitarios
+angular.module(pNmModulo).factory('CestaDeValores', function() {
+    var valores = [];
+    var cestaDeValoresSrv = {};
+    cestaDeValoresSrv.pegaIndiceValor = function(nome) {
+        for (var i = 0; i < valores.length; i++) {
+            if (valores[i].nome === nome) {
+                return i;
+            }
+        }
+        return null;
+    };
+    cestaDeValoresSrv.adicionarValor = function(nome, valor) {
+        var indice = this.pegaIndiceValor(nome);
+        var obj = {nome: nome, valor: valor};
+        if (indice !== null && indice >= 0) {
+            valores[indice] = obj;
+        } else {
+            indice = valores.length;
+            valores.push(obj);
+        }
+        return indice;
+    };
+    cestaDeValoresSrv.removerValor = function(nome) {
+        var indice = this.pegaIndiceValor(nome);
+        if (indice !== null && indice >= 0) {
+            valores.splice(indice, 1);
+        }
+    };
+    cestaDeValoresSrv.pegarValor = function(nome) {
+        var indice = this.pegaIndiceValor(nome);
+        return indice !== null && indice >= 0 ? valores[indice] : null;
+    };
+    cestaDeValoresSrv.pegarTodosItems = function() {
+        return valores;
+    };
+    return cestaDeValoresSrv;
+});
+// fim : utilitarios
+
 angular.module(pNmModulo).config(['$stateProvider', '$urlRouterProvider', 'toastrConfig', '$locationProvider',
     'uiGmapGoogleMapApiProvider', '$httpProvider',
   function($stateProvider, $urlRouterProvider, toastrConfig, $locationProvider, uiGmapGoogleMapApiProvider, $httpProvider) {
@@ -254,16 +294,104 @@ angular.module(pNmModulo).directive('ngValorMax', function () {
     };
 });
 
-angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 'toastr', 'UtilSrv', '$stateParams', '$timeout', 'TokenStorage',
-  function($rootScope, $uibModal, FrzNavegadorParams, toastr, UtilSrv, $stateParams, $timeout, TokenStorage) {
+angular.module(pNmModulo).directive('ngMesmoValorQue', function () {
+    return {
+        require: "ngModel",
+        scope: {
+            ngMesmoValorQue: '='
+        },
+        link: function(scope, element, attrs, ctrl) {
+            scope.$watch(function() {
+                var combined;
+                if (scope.ngMesmoValorQue || ctrl.$viewValue) {
+                    combined = scope.ngMesmoValorQue + '_' + ctrl.$viewValue; 
+                }                    
+                return combined;
+            }, function(value) {
+                if (value) {
+                    ctrl.$parsers.unshift(function(viewValue) {
+                        var origin = scope.ngMesmoValorQue;
+                        if (origin !== viewValue) {
+                            ctrl.$setValidity('ngMesmoValorQue', false);
+                            return undefined;
+                        } else {
+                            ctrl.$setValidity('ngMesmoValorQue', true);
+                            return viewValue;
+                        }
+                    });
+                }
+            });
+        }
+    };
+});
+
+angular.module(pNmModulo).directive('ngValorDiferenteDe', function () {
+    return {
+        require: "ngModel",
+        scope: {
+            ngValorDiferenteDe: '='
+        },
+        link: function(scope, element, attrs, ctrl) {
+            scope.$watch(function() {
+                var combined;
+                if (scope.ngValorDiferenteDe || ctrl.$viewValue) {
+                    combined = scope.ngValorDiferenteDe + '_' + ctrl.$viewValue; 
+                }                    
+                return combined;
+            }, function(value) {
+                if (value) {
+                    ctrl.$parsers.unshift(function(viewValue) {
+                        var origin = scope.ngValorDiferenteDe;
+                        if (origin === viewValue) {
+                            ctrl.$setValidity('ngValorDiferenteDe', false);
+                            return undefined;
+                        } else {
+                            ctrl.$setValidity('ngValorDiferenteDe', true);
+                            return viewValue;
+                        }
+                    });
+                }
+            });
+        }
+    };
+});
+
+angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 'toastr', 'UtilSrv', '$stateParams', '$timeout', 'TokenStorage', '$state', 'CestaDeValores',
+  function($rootScope, $uibModal, FrzNavegadorParams, toastr, UtilSrv, $stateParams, $timeout, TokenStorage, $state, CestaDeValores) {
     $rootScope.servicoUrl = "https://localhost:8443";
     $rootScope.token = null;
     $rootScope.isAuthenticated = function (username) {
         if (!$rootScope.token) {
             $rootScope.token = TokenStorage.token();
         }
+        if ($rootScope.token && $rootScope.token.usuarioStatusConta === 'R' && !$rootScope.renovandoSenha) {
+            $rootScope.renovandoSenha = true;
+            $rootScope.renoveSuaSenha();
+        }
         return ($rootScope.token !== null && $rootScope.token.username !== null && $rootScope.token.username.length > 0) && ((!username) || (username && username === $rootScope.token.username));
     };
+
+    $rootScope.renoveSuaSenha = function(size) {
+        var modalInstance = $uibModal.open({
+            templateUrl: 'login/renove-sua-senha.html',
+            controller: 'RenoveSuaSenhaCtrl',
+            size: size,
+            resolve: {
+                registroOrig: function() {
+                    return angular.copy($rootScope.token);
+                },
+            }
+        });
+
+        modalInstance.result.then(function(registro) {
+            $('#usuario').focus();
+//            $scope.cadastro.registro.senha = angular.copy(registro.newPassword);
+        }, function() {
+            //$log.info('Modal dismissed at: ' + new Date());
+            $rootScope.executarLogout();
+        });
+    };
+
     $rootScope.globalLocalizacao = "pt-br";
     $rootScope.globalFracaoHectares = "3";
     $rootScope.globalFracaoSem = "0";
@@ -322,6 +450,14 @@ angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 
             }
         }
     };
+    $rootScope.executarLogout = function () {
+        // Just clear the local storage
+        TokenStorage.clear();   
+        $rootScope.token = null;
+        delete $rootScope.renovandoSenha;
+        $state.go('p.casa');
+    };
+
     // fim funcoes de apoio
 
     // inicio funcoes crud
@@ -918,12 +1054,6 @@ angular.module(pNmModulo).controller('AuthCtrl', ['$scope', '$rootScope', '$http
     function ($scope, $rootScope, $http, TokenStorage, mensagemSrv, $uibModal, $uibModalInstance, $state) {
     $rootScope.token = null; // For display purposes only
     
-    $scope.executarLogout = function () {
-        // Just clear the local storage
-        TokenStorage.clear();   
-        $rootScope.token = null;
-        $state.go('p.casa');
-    };
     $scope.exibeLogin = function ()  {
         var modalInstance = $uibModal.open({
                   animation: true,

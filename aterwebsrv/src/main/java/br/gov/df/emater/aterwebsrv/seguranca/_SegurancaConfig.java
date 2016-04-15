@@ -38,7 +38,6 @@ public class _SegurancaConfig extends WebSecurityConfigurerAdapter {
 				// allow anonymous resource requests
 				.antMatchers("/").permitAll().antMatchers("/*").permitAll()
 				
-				.antMatchers("/bower_components/**").permitAll()
 				.antMatchers("/casa/**").permitAll()
 				.antMatchers("/contrato/**").permitAll()
 				.antMatchers("/css/**").permitAll()
@@ -46,6 +45,7 @@ public class _SegurancaConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/img/**").permitAll()
 				.antMatchers("/js/**").permitAll()
 				.antMatchers("/login/**").permitAll()
+				.antMatchers("/api/esqueci-senha/**").permitAll()
 				.antMatchers("/node_modules/**").permitAll()
 				.antMatchers("/pessoa/**").permitAll()
 				.antMatchers("/propriedade/**").permitAll()

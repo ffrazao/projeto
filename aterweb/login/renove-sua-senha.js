@@ -1,40 +1,51 @@
 (function(pNmModulo, pNmController, pNmFormulario) {
 
-  'use strict';
+'use strict';
 
 angular.module(pNmModulo).controller(pNmController,
-      ['$scope', '$uibModalInstance', 'toastr', 'registroOrig',
-    function ($scope, $uibModalInstance, toastr, registroOrig) {
-    $scope.iniciar = function() {
-    //$scope.registroOrig = {};
-    console.log("ddd", registroOrig);
-    $scope.reiniciar();
-  };
+    ['$scope', '$uibModalInstance', 'toastr', 'registroOrig', '$http', 'CestaDeValores', 
+    function ($scope, $uibModalInstance, toastr, registroOrig, $http,  CestaDeValores) {
 
-  $scope.reiniciar = function() {
-    $scope.submitted = false;
-    $scope.registro = angular.copy(registroOrig);
-    if ($scope.$parent.renoveSuaSenhaForm) {
-      $scope.$parent.renoveSuaSenhaForm.$setPristine();
-    }
-    $('#novaSenha').focus();
-  };
-  $scope.iniciar();
+        $scope.reiniciar = function() {
+            $scope.submitted = false;
+            $scope.registro = {};
+            angular.extend($scope.registro, registroOrig);
+            var pss = CestaDeValores.pegarValor('password');
+            if (pss) {
+                $scope.registro.password = pss.valor;
+                CestaDeValores.removerValor('password');
+            }
+            if ($scope.$parent.renoveSuaSenhaForm) {
+                $scope.$parent.renoveSuaSenhaForm.$setPristine();
+            }
+            $('#newPassword').focus();
+        };
 
-  // métodos de apoio
-  $scope.submitForm = function () {
-    if (!$scope.$parent.renoveSuaSenhaForm.$valid) {
-      $scope.submitted = true;
-      toastr.error('Verifique os campos marcados', 'Erro');
-      return;
+        // métodos de apoio
+        $scope.submitForm = function () {
+            if (!$scope.$parent.renoveSuaSenhaForm.$valid) {
+                $scope.submitted = true;
+                toastr.error('Verifique os campos marcados', 'Erro');
+                return;
+            }
+            $http.post($scope.servicoUrl + '/api/renovar-senha', $scope.registro).success(function (resposta) {
+                if (resposta.mensagem === 'OK') {
+                    toastr.success('Sua senha foi renovada');
+                    $uibModalInstance.close(angular.copy($scope.registro));
+                } else {
+                    toastr.error(resposta.mensagem, 'Erro ao renovar senha');
+                }
+            });
+        };
+
+        $scope.cancelar = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+        
+        if (!$scope.registro) {
+            $scope.reiniciar();
+        }
     }
-    toastr.success('Sua senha foi renovada');
-    console.log('retornando ', angular.copy($scope.registro));
-    $uibModalInstance.close(angular.copy($scope.registro));
-  };
-  $scope.cancelar = function () {
-    $uibModalInstance.dismiss('cancel');
-  };
-}]);
+]);
 
 })('principal', 'RenoveSuaSenhaCtrl', 'Renovação de Senha');

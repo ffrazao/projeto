@@ -34,6 +34,7 @@ import br.gov.df.emater.aterwebsrv.modelo.formulario.Formulario;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.FormularioVersao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
+import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 
 @Service
 public class FacadeBo implements BeanFactoryAware {
@@ -205,6 +206,16 @@ public class FacadeBo implements BeanFactoryAware {
 		return this._executar(usuario, "PessoaBuscarCepCmd", cep);
 	}
 
+	@Transactional
+	public _Contexto pessoaCarteiraProdutorRel(Principal usuario, CarteiraProdutorRelFiltroDto filtro) throws Exception {
+		return this._executar(usuario, "PessoaCarteiraProdutorRelCmd", filtro);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto pessoaCarteiraProdutorVerificar(Principal usuario, CarteiraProdutorRelFiltroDto filtro) throws Exception {
+		return this._executar(usuario, "PessoaCarteiraProdutorVerificarCmd", filtro);
+	}
+
 	@Transactional(readOnly = true)
 	public _Contexto pessoaFiltroExecutar(Principal usuario, PessoaCadFiltroDto filtro) throws Exception {
 		return this._executar(usuario, "PessoaFiltroExecutarCh", filtro);
@@ -223,16 +234,6 @@ public class FacadeBo implements BeanFactoryAware {
 	@Transactional
 	public _Contexto pessoaSalvar(Principal usuario, Pessoa pessoa) throws Exception {
 		return this._executar(usuario, "PessoaSalvarCh", pessoa);
-	}
-
-	@Transactional(readOnly = true)
-	public _Contexto pessoaCarteiraProdutorVerificar(Principal usuario, CarteiraProdutorRelFiltroDto filtro) throws Exception {
-		return this._executar(usuario, "PessoaCarteiraProdutorVerificarCmd", filtro);
-	}
-
-	@Transactional
-	public _Contexto pessoaCarteiraProdutorRel(Principal usuario, CarteiraProdutorRelFiltroDto filtro) throws Exception {
-		return this._executar(usuario, "PessoaCarteiraProdutorRelCmd", filtro);
 	}
 
 	@Transactional(readOnly = true)
@@ -270,6 +271,16 @@ public class FacadeBo implements BeanFactoryAware {
 		return this._executar(usuario, "PropriedadeRuralVisualizarCh", id);
 	}
 
+	@Transactional
+	public _Contexto segurancaEsqueciSenha(String email) throws Exception {
+		return this._executar(null, "SegurancaEsqueciSenhaCh", email);
+	}
+
+	@Transactional
+	public _Contexto segurancaRenovarSenha(Usuario usuario) throws Exception {
+		return this._executar(null, "SegurancaRenovarSenhaCmd", usuario);
+	}
+
 	@Override
 	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
 		this.beanFactory = beanFactory;
@@ -286,17 +297,6 @@ public class FacadeBo implements BeanFactoryAware {
 		return this._executar(usuario, "UnidadeOrganizacionalFiltroExecutarCh", filtro);
 	}
 
-	@Transactional
-	public _Contexto utilArquivoSubir(Principal usuario, MultipartFile arquivo, HttpServletRequest request, ArquivoTipo tipo) throws Exception {
-		Map<String, Object> requisicao = new HashMap<String, Object>();
-		requisicao.put("usuario", usuario);
-		requisicao.put("arquivo", arquivo);
-		requisicao.put("request", request);
-		requisicao.put("tipo", tipo);
-
-		return this._executar(usuario, "UtilArquivoSubirCh", requisicao);
-	}
-
 	@Transactional(readOnly = true)
 	public void utilArquivoDescer(Principal usuario, String arquivo, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Map<String, Object> requisicao = new HashMap<String, Object>();
@@ -306,6 +306,17 @@ public class FacadeBo implements BeanFactoryAware {
 		requisicao.put("response", response);
 
 		this._executar(usuario, "UtilArquivoDescerCmd", requisicao);
+	}
+
+	@Transactional
+	public _Contexto utilArquivoSubir(Principal usuario, MultipartFile arquivo, HttpServletRequest request, ArquivoTipo tipo) throws Exception {
+		Map<String, Object> requisicao = new HashMap<String, Object>();
+		requisicao.put("usuario", usuario);
+		requisicao.put("arquivo", arquivo);
+		requisicao.put("request", request);
+		requisicao.put("tipo", tipo);
+
+		return this._executar(usuario, "UtilArquivoSubirCh", requisicao);
 	}
 
 }

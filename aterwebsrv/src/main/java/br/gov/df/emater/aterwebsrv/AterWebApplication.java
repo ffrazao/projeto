@@ -19,6 +19,7 @@ public class AterWebApplication {
 //		System.out.println(Criptografia.MD5("894d"));
 //		System.out.println(Criptografia.MD5("895e"));
 //		System.out.println(Criptografia.MD5("896f"));
+//		System.out.println(Criptografia.MD5("1a"));
 		
 		SpringApplication.run(AterWebApplication.class, args);
 	}

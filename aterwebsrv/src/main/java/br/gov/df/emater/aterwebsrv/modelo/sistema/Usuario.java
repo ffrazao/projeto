@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,6 +31,7 @@ import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.UsuarioStatusConta;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaEmail;
 
 /**
  * Classe persistente dos usuarios do sistema.
@@ -47,9 +49,9 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 
 	@Column(name = "acesso_expira_em")
 	private Long expires;
-
+	
 	@Transient
-	private Map<String, Set<String>> funcionalidadeComandoList;
+	private Map<String, Set<String>> funcionalidadeComandoList;	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -70,6 +72,10 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 	@ManyToOne
 	@JoinColumn(name = "pessoa_id")
 	private Pessoa pessoa;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "pessoa_email_id")
+	private PessoaEmail pessoaEmail;
 
 	@ManyToOne
 	@JoinColumn(name = "unidade_organizacional_id")
@@ -153,6 +159,10 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 		return pessoa;
 	}
 
+	public PessoaEmail getPessoaEmail() {
+		return pessoaEmail;
+	}
+
 	public UnidadeOrganizacional getUnidadeOrganizacional() {
 		return unidadeOrganizacional;
 	}
@@ -199,7 +209,7 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 	@Override
 	@JsonIgnore
 	public boolean isEnabled() {
-		return UsuarioStatusConta.A.equals(getUsuarioStatusConta());
+		return Arrays.asList(UsuarioStatusConta.A, UsuarioStatusConta.R).contains(getUsuarioStatusConta());
 	}
 
 	public void setAuthorities(Set<UsuarioPerfil> authorities) {
@@ -237,6 +247,10 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 
 	public void setPessoa(Pessoa pessoa) {
 		this.pessoa = pessoa;
+	}
+
+	public void setPessoaEmail(PessoaEmail pessoaEmail) {
+		this.pessoaEmail = pessoaEmail;
 	}
 
 	public void setUnidadeOrganizacional(UnidadeOrganizacional unidadeOrganizacional) {

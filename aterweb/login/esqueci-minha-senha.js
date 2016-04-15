@@ -3,8 +3,8 @@
   'use strict';
 
 angular.module(pNmModulo).controller(pNmController,
-      ['$scope', '$uibModalInstance', 'toastr',
-    function ($scope, $uibModalInstance, toastr) {
+      ['$scope', '$uibModalInstance', 'toastr', '$http',
+    function ($scope, $uibModalInstance, toastr, $http) {
     $scope.iniciar = function() {
       $scope.registroOrig = {};
       $scope.reiniciar();
@@ -27,8 +27,15 @@ angular.module(pNmModulo).controller(pNmController,
       toastr.error('Verifique os campos marcados', 'Erro');
       return;
     }
-    toastr.success('Foi encaminhado um e-mail com instrucoes para recuperar seu acesso ao sistema');
-    $uibModalInstance.close();
+
+    $http.get($scope.servicoUrl + '/api/esqueci-senha', {params: {'email': $scope.registro.email}}).success(function (resposta) {
+      if (resposta.mensagem === 'OK') {
+        toastr.success('Foi encaminhado um e-mail com instrucoes para recuperar seu acesso ao sistema');
+        $uibModalInstance.close();
+      } else {
+        toastr.error(resposta.mensagem, 'Erro ao renovar senha');
+      }
+    });
   };
 
   $scope.cancelar = function () {

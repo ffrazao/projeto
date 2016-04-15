@@ -18,4 +18,6 @@ public interface UsuarioDao extends JpaRepository<Usuario, Integer> {
 
 	List<Usuario> findByUnidadeOrganizacional(UnidadeOrganizacional unidadeOrganizacional);
 
+	Usuario findByPessoaEmailEmailEndereco(String email);
+
 }
