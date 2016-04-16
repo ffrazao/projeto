@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-import java.util.Date;
+import java.util.Calendar;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -98,7 +98,7 @@ public final class TokenHandler {
 				boolean validHash = Arrays.equals(createHmac(userBytes), hash);
 				if (validHash) {
 					final Usuario user = fromJSON(userBytes);
-					if (new Date().getTime() < user.getExpires()) {
+					if (Calendar.getInstance().getTimeInMillis() < user.getExpires().getTimeInMillis()) {
 						return user;
 					} else {
 						throw new CredentialsExpiredException("Sessão expirada!");

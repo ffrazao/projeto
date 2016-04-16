@@ -17,13 +17,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
@@ -32,6 +37,8 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.UsuarioStatusConta;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaEmail;
+import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerTimestamp;
+import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerTimestamp;
 
 /**
  * Classe persistente dos usuarios do sistema.
@@ -48,7 +55,11 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 	private Set<UsuarioPerfil> authorities;
 
 	@Column(name = "acesso_expira_em")
-	private Long expires;
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+	@JsonSerialize(using = JsonSerializerTimestamp.class)
+	@JsonDeserialize(using = JsonDeserializerTimestamp.class)
+	private Calendar expires;
 	
 	@Transient
 	private Map<String, Set<String>> funcionalidadeComandoList;	
@@ -125,7 +136,7 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 		return authorities;
 	}
 
-	public Long getExpires() {
+	public Calendar getExpires() {
 		return expires;
 	}
 
@@ -203,7 +214,7 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 	@Override
 	@JsonIgnore
 	public boolean isCredentialsNonExpired() {
-		return getExpires() == null || getExpires() == 0 || Calendar.getInstance().getTimeInMillis() > getExpires();
+		return !(getExpires() == null || getExpires().getTimeInMillis() == 0 || Calendar.getInstance().getTimeInMillis() > getExpires().getTimeInMillis());
 	}
 
 	@Override
@@ -216,7 +227,7 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 		this.authorities = authorities;
 	}
 
-	public void setExpires(Long expires) {
+	public void setExpires(Calendar expires) {
 		this.expires = expires;
 	}
 

@@ -1,6 +1,9 @@
 package br.gov.df.emater.aterwebsrv.seguranca;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -32,7 +35,9 @@ public class TokenAuthenticationService {
 
 	public void addAuthentication(HttpServletResponse response, UserAuthentication authentication) throws IOException {
 		final Usuario user = authentication.getDetails();
-		user.setExpires(System.currentTimeMillis() + EXPIRES_TIME);
+		Calendar expiracao = new GregorianCalendar();
+		expiracao.setTime(new Date(System.currentTimeMillis() + EXPIRES_TIME));
+		user.setExpires(expiracao);
 		String token = tokenHandler.createTokenForUser(user);
 //		StringBuffer buf = new StringBuffer();
 //		for (int i = 0; i < 2; i++) {

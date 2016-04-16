@@ -1,45 +1,95 @@
 package br.gov.df.emater.aterwebsrv.bo.seguranca;
 
+import java.util.Calendar;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
+import br.gov.df.emater.aterwebsrv.dao.sistema.SenhaPassadaDao;
 import br.gov.df.emater.aterwebsrv.dao.sistema.UsuarioDao;
 import br.gov.df.emater.aterwebsrv.ferramenta.Criptografia;
+import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.UsuarioStatusConta;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica;
+import br.gov.df.emater.aterwebsrv.modelo.sistema.SenhaPassada;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 
 @Service("SegurancaRenovarSenhaCmd")
 public class RenovarSenhaCmd extends _Comando {
-	
+
 	@Autowired
 	private UsuarioDao usuarioDao;
+
+	@Autowired
+	private SenhaPassadaDao senhaPassadaDao;
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		Usuario usuario = (Usuario) contexto.getRequisicao();
+
+		String novaSenha = usuario.getNewPassword();
+
+		// protegendo a senha
+		for (String nome : usuario.getUsername().split("\\.")) {
+			if (novaSenha.toLowerCase().trim().indexOf(nome) >= 0) {
+				throw new BoException("Não utilize parte de seu nome de usuário como senha de acesso");
+			}
+		}
+		for (String nome : usuario.getPessoa().getNome().split(" ")) {
+			if (novaSenha.toLowerCase().trim().indexOf(nome.toLowerCase()) >= 0) {
+				throw new BoException("Não utilize parte de seu nome como senha de acesso");
+			}
+		}
+		for (String nome : usuario.getPessoa().getApelidoSigla().split(" ")) {
+			if (novaSenha.toLowerCase().trim().indexOf(nome.toLowerCase()) >= 0) {
+				throw new BoException("Não utilize parte de seu nome como senha de acesso");
+			}
+		}
+		if (UtilitarioString.temCaractereRepetido(novaSenha.toLowerCase(), 3)) {
+			throw new BoException("Não utilize caracteres muitas vezes repetido na senha de acesso");
+		}
 		
 		Usuario usuarioSalvo = usuarioDao.findByUsername(usuario.getUsername());
-		
 		if (usuarioSalvo == null) {
 			throw new BoException("Usuário não cadastrado");
 		}
+		if (usuarioSalvo.getPessoa() instanceof PessoaFisica) {
+			Calendar aniversario = ((PessoaFisica) usuarioSalvo.getPessoa()).getNascimento();
+			if (aniversario != null) {
+				String ano = Integer.toString(aniversario.get(Calendar.YEAR));
+				String ano2Dig = Integer.toString(aniversario.get(Calendar.YEAR)).substring(2, 4);
+				String mes = Integer.toString(aniversario.get(Calendar.MONTH) + 1);
+				String dia = Integer.toString(aniversario.get(Calendar.DATE));
+				if ((novaSenha.toLowerCase().trim().indexOf(ano) >= 0) || (novaSenha.toLowerCase().trim().indexOf(ano2Dig) >= 0) || (novaSenha.toLowerCase().trim().indexOf(mes) >= 0) || (novaSenha.toLowerCase().trim().indexOf(dia) >= 0)) {
+					throw new BoException("Não utilize parte de seu aniversário como senha de acesso");
+				}
+			}
+		}
+		
 		String senhaAtual = Criptografia.MD5(usuarioSalvo.getId() + usuario.getPassword());
 		if (!senhaAtual.equals(usuarioSalvo.getPassword())) {
 			throw new BoException("A senha atual é inválida!");
 		}
-		String novaSenha = Criptografia.MD5(usuarioSalvo.getId() + usuario.getNewPassword());
+		novaSenha = Criptografia.MD5(usuarioSalvo.getId() + usuario.getNewPassword());
 		if (novaSenha.equals(usuarioSalvo.getPassword())) {
 			throw new BoException("A nova senha não pode ser a mesma que a atual");
 		}
-		
+		if (senhaPassadaDao.findOneByUsuarioIdAndSenha(usuarioSalvo.getId(), novaSenha) != null) {
+			throw new BoException("Não utilize senhas passadas.");
+		}
+
 		usuarioSalvo.setUsuarioStatusConta(UsuarioStatusConta.A);
-		usuarioSalvo.setExpires(null);
+		Calendar expiracao = Calendar.getInstance();
+		expiracao.roll(Calendar.MONTH, 6);
+		usuarioSalvo.setExpires(expiracao);
 		usuarioSalvo.setPassword(novaSenha);
 		usuarioDao.save(usuarioSalvo);
-		
+
+		senhaPassadaDao.save(new SenhaPassada(usuarioSalvo, usuarioSalvo.getPassword()));
+
 		return false;
 	}
 

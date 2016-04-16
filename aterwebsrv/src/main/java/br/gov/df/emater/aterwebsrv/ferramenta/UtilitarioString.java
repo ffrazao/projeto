@@ -119,4 +119,30 @@ public class UtilitarioString {
 		return sb.substring(sb.length() - tam, sb.length());
 	}
 
+	public static boolean temCaractereRepetido(String str) {
+		// TODO Auto-generated method stub
+		return temCaractereRepetido(str, 2);
+	}
+
+	public static boolean temCaractereRepetido(String str, int vezes) {
+		if (str == null || str.length() < vezes) {
+			return false;
+		}
+		StringBuilder repete = new StringBuilder();
+		int cont = 0;
+		for (char c : str.toCharArray()) {
+			if (repete.length() > 0 && c == repete.charAt(repete.length() - 1)) {
+				cont++;
+			} else {
+				cont = 0;
+			}
+			repete.append(c);
+			if (cont + 1 == vezes) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 }

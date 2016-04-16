@@ -29,7 +29,7 @@ angular.module(pNmModulo).controller(pNmController,
     }
 
     $http.get($scope.servicoUrl + '/api/esqueci-senha', {params: {'email': $scope.registro.email}}).success(function (resposta) {
-      if (resposta.mensagem === 'OK') {
+      if (resposta && resposta.mensagem === 'OK') {
         toastr.success('Foi encaminhado um e-mail com instrucoes para recuperar seu acesso ao sistema');
         $uibModalInstance.close();
       } else {

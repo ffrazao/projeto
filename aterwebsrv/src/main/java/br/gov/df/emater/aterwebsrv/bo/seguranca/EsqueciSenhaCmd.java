@@ -30,7 +30,10 @@ public class EsqueciSenhaCmd extends _Comando {
 		Usuario usuario = usuarioDao.findByPessoaEmailEmailEndereco(email);
 		
 		if (usuario == null) {
-			throw new BoException("e-mail para renovação de senha não cadastrado");
+			throw new BoException("Este e-mail para renovação de senha não está cadastrado. Nenhum e-mail foi enviado!");
+		}
+		if (!UsuarioStatusConta.R.equals(usuario.getUsuarioStatusConta()) && !usuario.isAccountNonExpired()) {
+			throw new BoException("A conta vinculada a este e-mail está inativa. Para maiores informações, entre em contato com o administrador do sistema. Nenhum e-mail foi enviado!");
 		}
 		
 		StringBuilder novaSenha = new StringBuilder();
@@ -58,7 +61,7 @@ public class EsqueciSenhaCmd extends _Comando {
 
 		usuario.setPassword(Criptografia.MD5(usuario.getId() + novaSenha.toString()));
 		usuario.setUsuarioStatusConta(UsuarioStatusConta.R);
-		usuario.setExpires(expiracao.getTime().getTime());		
+		usuario.setExpires(expiracao);		
 		usuarioDao.saveAndFlush(usuario);
 		
 		Map<String, Object> requisicao = new HashMap<String, Object>();

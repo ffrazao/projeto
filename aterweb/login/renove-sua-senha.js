@@ -29,7 +29,7 @@ angular.module(pNmModulo).controller(pNmController,
                 return;
             }
             $http.post($scope.servicoUrl + '/api/renovar-senha', $scope.registro).success(function (resposta) {
-                if (resposta.mensagem === 'OK') {
+                if (resposta && resposta.mensagem === 'OK') {
                     toastr.success('Sua senha foi renovada');
                     $uibModalInstance.close(angular.copy($scope.registro));
                 } else {
