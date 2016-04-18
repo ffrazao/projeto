@@ -33,6 +33,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.UsuarioStatusConta;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
@@ -110,6 +111,10 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 	@NotEmpty
 	// @Field(index = Index.YES, store = Store.YES)
 	private String username;
+
+	@Column(name = "usuario_atualizou_perfil")
+	@Enumerated(EnumType.STRING)
+	protected Confirmacao usuarioAtualizouPerfil;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "situacao")
@@ -207,6 +212,10 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 	@Override
 	public String getUsername() {
 		return username;
+	}
+
+	public Confirmacao getUsuarioAtualizouPerfil() {
+		return usuarioAtualizouPerfil;
 	}
 
 	public UsuarioStatusConta getUsuarioStatusConta() {
@@ -308,6 +317,10 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public void setUsuarioAtualizouPerfil(Confirmacao usuarioAtualizouPerfil) {
+		this.usuarioAtualizouPerfil = usuarioAtualizouPerfil;
 	}
 
 	public void setUsuarioStatusConta(UsuarioStatusConta usuarioStatusConta) {

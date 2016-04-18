@@ -35,7 +35,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                 return $http.post($rootScope.servicoUrl + '/api/salvar-perfil', usuario);
             },
             descansoTela: function() {
-                return $http.get($rootScope.servicoUrl + '/api/visualizar-perfil', {params: {username: 'joaquim.barbosa'}});
+                return $http.get($rootScope.servicoUrl + '/api/visualizar-perfil');
             }
         };
         return SegurancaSrv;

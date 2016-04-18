@@ -35,6 +35,9 @@ public class UtilitarioData {
 	}
 
 	public synchronized String formataData(Calendar date) {
+		if (date == null) {
+			return null;
+		}
 		return DATE_FORMAT.format(date.getTime());
 	}
 
@@ -48,42 +51,66 @@ public class UtilitarioData {
 	}
 
 	public synchronized String formataDataHora(Calendar date) {
+		if (date == null) {
+			return null;
+		}
 		return DATE_TIME_FORMAT.format(date.getTime());
 	}
 
 	public synchronized Calendar formataDataHora(String date) throws ParseException {
+		if (date == null || date.trim().length() == 0) {
+			return null;
+		}
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(DATE_TIME_FORMAT.parse(date));
 		return calendar;
 	}
 
 	public synchronized Calendar formataDataJavascript(String date) throws ParseException {
+		if (date == null || date.trim().length() == 0) {
+			return null;
+		}
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(DATE_FORMAT_JAVASCRIPT.parse(date));
 		return calendar;
 	}
 
 	public synchronized String formataMilisegundos(Calendar date) {
+		if (date == null) {
+			return null;
+		}
 		return MILISEGUNDOS_FORMAT.format(date.getTime());
 	}
 
 	public synchronized Calendar formataMilisegundos(String date) throws ParseException {
+		if (date == null || date.trim().length() == 0) {
+			return null;
+		}
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(MILISEGUNDOS_FORMAT.parse(date));
 		return calendar;
 	}
 
 	public synchronized String formataTimestamp(Calendar date) {
+		if (date == null) {
+			return null;
+		}
 		return TIMESTAMP_FORMAT.format(date.getTime());
 	}
 
 	public synchronized Calendar formataTimestamp(String date) throws ParseException {
+		if (date == null || date.trim().length() == 0) {
+			return null;
+		}
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(TIMESTAMP_FORMAT.parse(date));
 		return calendar;
 	}
 
 	public int qtdAnosEntre(Calendar inicio, Calendar fim) {
+		if (inicio == null || fim == null) {
+			return 0;
+		}
 		Interval interval = new Interval(inicio.getTimeInMillis(), fim.getTimeInMillis());
 		Period period = interval.toPeriod();
 		return period.getYears();

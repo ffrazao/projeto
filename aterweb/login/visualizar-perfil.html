@@ -12,6 +12,13 @@
                     <img class="img-thumbnail" src="img/foto.png" ng-click="selecionaFotoPerfil()" ng-hide="registro.pessoa.perfilArquivo.localDiretorioWeb.length" width="180px" height="180px" />
                     <img class="img-thumbnail" ng-src="{{servicoUrl}}/arquivo-descer?arquivo={{registro.pessoa.perfilArquivo.md5}}" ng-click="selecionaFotoPerfil()" ng-if="registro.pessoa.perfilArquivo.md5.length" width="180px" height="180px" />
                 </div>
+                <input type="hidden" ng-model="registro.pessoa.perfilArquivo.md5" ng-required="true" id="perfilArquivo" name="perfilArquivo">
+				<div ng-show="($parent.visualizarPerfilForm.perfilArquivo.$dirty || submitted) && $parent.visualizarPerfilForm.perfilArquivo.$invalid">
+					<div class="label label-danger" ng-show="$parent.visualizarPerfilForm.perfilArquivo.$error.required">
+						<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+						Campo Obrigatório
+					</div>
+				</div>
             </div>
 
 			<!-- Text input-->
@@ -19,7 +26,7 @@
 				<label class="col-xs-4 control-label" for="username" title="Nome de usuário" accesskey="N">Digite o seu <u>n</u>ome de usuário *</label>
 				<div class="col-xs-6">
                     <div class="input-group">
-						<input id="username" name="username" type="text" placeholder="nome de usuário" class="form-control input-md" ng-required="true" autofocus ng-model="registro.username" ng-pattern="/^[a-z]*[a-z|\.]*[a-z]*$/" ng-trim="true" ng-minlength="6" ng-maxlength="50">
+						<input id="username" name="username" type="text" placeholder="nome de usuário" class="form-control input-md" ng-required="true" autofocus ng-model="registro.username" ng-pattern="/^[a-z]*[a-z|\.]*[a-z]*$/" ng-trim="true" ng-minlength="6" ng-maxlength="50" ng-disabled="registro.usuarioAtualizouPerfil === 'N'">
                         <span class="input-group-btn">
                             <div class="btn-group" role="group">
                                 <button type="button" class="btn btn-default" ng-click="verificaDisponibilidadeUsername(registro.username)" ng-disabled="$parent.visualizarPerfilForm.username.$invalid">

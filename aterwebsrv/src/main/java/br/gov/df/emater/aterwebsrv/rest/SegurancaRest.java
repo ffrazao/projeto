@@ -54,7 +54,7 @@ public class SegurancaRest {
 	}
 
 	@RequestMapping(value = "/visualizar-perfil", method = RequestMethod.GET)
-	public Resposta visualizarPerfil(@RequestParam String username, Principal principal) throws Exception {
+	public Resposta visualizarPerfil(@RequestParam(required = false) String username, Principal principal) throws Exception {
 		return new Resposta(facadeBo.segurancaVisualizarPerfil(principal, username).getResposta());
 	}
 

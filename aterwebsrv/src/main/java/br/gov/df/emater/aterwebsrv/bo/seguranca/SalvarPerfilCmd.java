@@ -9,6 +9,7 @@ import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.ArquivoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaDao;
 import br.gov.df.emater.aterwebsrv.dao.sistema.UsuarioDao;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Arquivo;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 
@@ -56,6 +57,7 @@ public class SalvarPerfilCmd extends _Comando {
 		usuarioSalvo.setUsername(usuario.getUsername());
 		usuarioSalvo.setPessoaEmail(usuario.getPessoaEmail());
 		usuarioSalvo.setInfoSobreUsuario(usuario.getInfoSobreUsuario());
+		usuarioSalvo.setUsuarioAtualizouPerfil(Confirmacao.S);
 		usuarioDao.save(usuarioSalvo);
 		
 		return false;
