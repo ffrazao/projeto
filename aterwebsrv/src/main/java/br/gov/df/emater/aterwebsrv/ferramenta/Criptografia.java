@@ -40,7 +40,6 @@ public final class Criptografia {
 		while (m.find()) {
 			result.add(m.group());
 		}
-		System.out.println(result);
 	 }
 
 }

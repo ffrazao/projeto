@@ -82,9 +82,9 @@ public class RenovarSenhaCmd extends _Comando {
 		}
 
 		usuarioSalvo.setUsuarioStatusConta(UsuarioStatusConta.A);
-		Calendar expiracao = Calendar.getInstance();
-		expiracao.roll(Calendar.MONTH, 6);
-		usuarioSalvo.setExpires(expiracao);
+		Calendar acessoExpiraEm = Calendar.getInstance();
+		acessoExpiraEm.roll(Calendar.MONTH, 6);
+		usuarioSalvo.setAcessoExpiraEm(acessoExpiraEm);
 		usuarioSalvo.setPassword(novaSenha);
 		usuarioDao.save(usuarioSalvo);
 

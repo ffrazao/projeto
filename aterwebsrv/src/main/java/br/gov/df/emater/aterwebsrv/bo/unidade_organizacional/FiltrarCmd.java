@@ -19,7 +19,6 @@ public class FiltrarCmd extends _Comando {
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
-		System.out.println("Filtrando Unidade Organizacional...");
 		UnidadeOrganizacionalCadFiltroDto filtro = (UnidadeOrganizacionalCadFiltroDto) contexto.getRequisicao();
 		List<UnidadeOrganizacional> result = null;
 		result = unidadeOrganizacionalDao.findByNomeLikeAndClassificacaoIn(filtro.getNomeLike(), filtro.getClassificacao());

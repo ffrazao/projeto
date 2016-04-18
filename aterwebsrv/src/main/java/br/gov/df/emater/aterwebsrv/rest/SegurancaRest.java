@@ -41,7 +41,6 @@ public class SegurancaRest {
 
 	@RequestMapping("/login")
 	public void login() {
-		System.out.println("Logando");
 	}
 
 	@RequestMapping(value = "/renovar-senha", method = RequestMethod.POST)

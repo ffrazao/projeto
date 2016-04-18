@@ -154,7 +154,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 		pessoaRetorno.setPessoaTipo(usuario.getPessoa().getPessoaTipo());
 		pessoaRetorno.setSituacao(usuario.getPessoa().getSituacao());
 		pessoaRetorno.setSituacaoData(usuario.getPessoa().getSituacaoData());
-		pessoaRetorno.setPerfilArquivo(usuario.getPessoa().getPerfilArquivo().infoBasica());
+		pessoaRetorno.setPerfilArquivo(usuario.getPessoa().getPerfilArquivo() != null ? usuario.getPessoa().getPerfilArquivo().infoBasica() : null);
 
 		Usuario usuarioRetorno = new Usuario();
 		usuarioRetorno.setId(usuario.getId());
@@ -165,6 +165,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 		usuarioRetorno.setPessoa(pessoaRetorno);
 		usuarioRetorno.setUsername(usuario.getUsername());
 		usuarioRetorno.setUsuarioStatusConta(usuario.getUsuarioStatusConta());
+		usuarioRetorno.setAcessoExpiraEm(usuario.getAcessoExpiraEm());
 		if (lotacaoAtual != null) {
 			PessoaJuridica pj = lotacaoAtual.getPessoaJuridica();
 			lotacaoAtual = lotacaoAtual.infoBasica();

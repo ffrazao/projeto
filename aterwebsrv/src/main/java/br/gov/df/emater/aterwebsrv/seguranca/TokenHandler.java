@@ -40,20 +40,6 @@ public final class TokenHandler {
 	private synchronized byte[] createHmac(byte[] content) {
 		return hmac.doFinal(content);
 	}
-	/*
-	 * public static void main(String[] args) { Date start = new Date(); byte[]
-	 * secret = new byte[70]; new
-	 * java.security.SecureRandom().nextBytes(secret);
-	 * 
-	 * TokenHandler tokenHandler = new TokenHandler(secret); for (int i = 0; i <
-	 * 1000; i++) { final User user = new
-	 * User(java.util.UUID.randomUUID().toString().substring(0, 8), new Date(
-	 * new Date().getTime() + 10000)); user.grantRole(UserRole.ADMIN); final
-	 * String token = tokenHandler.createTokenForUser(user); final User
-	 * parsedUser = tokenHandler.parseUserFromToken(token); if (parsedUser ==
-	 * null || parsedUser.getUsername() == null) { System.out.println("error");
-	 * } } System.out.println(System.currentTimeMillis() - start.getTime()); }
-	 */
 
 	private ObjectMapper createObjectMapper() {
 		ObjectMapper result = new ObjectMapper();
@@ -64,7 +50,6 @@ public final class TokenHandler {
 
 	public String createTokenForUser(Usuario user) {
 		byte[] userBytes = toJSON(user);
-		System.out.println(new String(userBytes));
 		byte[] hash = createHmac(userBytes);
 		final StringBuilder sb = new StringBuilder(170);
 		sb.append(toBase64(userBytes));

@@ -66,6 +66,21 @@
 				</div>
 			</div>
 
+			<!-- Text input-->
+			<div class="form-group">
+				<label class="col-xs-4 control-label" for="infoSobreUsuario" title="Informações sobre o usuário" accesskey="I"><u>I</u>nformações sobre o usuário *</label>
+				<div class="col-xs-6">
+					<textarea id="infoSobreUsuario" name="infoSobreUsuario" type="text" class="form-control" ng-model="registro.infoSobreUsuario"></textarea>
+					<div ng-show="($parent.visualizarPerfilForm.infoSobreUsuario.$dirty || submitted) && $parent.visualizarPerfilForm.infoSobreUsuario.$invalid">
+						<div class="label label-danger" ng-show="$parent.visualizarPerfilForm.infoSobreUsuario.$error.required">
+							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+							Campo Obrigatório
+						</div>
+					</div>
+					<span class="help-block">Selecione um e-mail para enviarmos uma nova senha, caso seja necessário.</span>
+				</div>
+			</div>
+
 		</fieldset>
 	</form>
 </div>

@@ -1,16 +1,17 @@
 <header class="header">
-  <ng-include src="'casa/menu.html'">
-  </ng-include>
+    <ng-include src="'casa/menu.html'">
+    </ng-include>
 </header>
 <article class="row">
-	<div class="panel panel-default">
-	    <div class="panel-heading"><h4>{{nomeFormulario}} - <a href="{{endereco}}" target="_blank">{{nome}}</a></h4></div>
-	    <div class="panel-body">
-	        <iframe ng-src="{{trustSrc(endereco)}}" width="100%" height="600px"></iframe> 
-	    </div>
-	</div>
+    <div class="panel panel-default">
+        <div class="panel-heading"><h4>{{nomeFormulario}} - <a href="{{endereco}}" target="_blank">{{nome}}</a></h4></div>
+        <div class="panel-body">
+            <iframe ng-src="{{trustSrc(endereco)}}" width="100%" height="600px"></iframe>
+<!--            <ng-include src="trustSrc(endereco)" width="100%" height="600px"></ng-include> -->
+        </div>
+    </div>
 </article>
 <footer class="footer">
-  <ng-include src="'casa/rodape.html'">
-  </ng-include>
+    <ng-include src="'casa/rodape.html'">
+    </ng-include>
 </footer>

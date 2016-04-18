@@ -1,14 +1,19 @@
 /* global moment, isUndefOrNull, escape */
 /* jslint loopfunc: true */
 
+const IDLE_TEMPO = 5;
+const TIMEOUT_TEMPO = 200;
+
 (function(pNmModulo, pNmController, pNmFormulario) {
 
 'use strict';
 
 angular.module(pNmModulo, ['ui.bootstrap', 'ui.utils', 'ui.router', 'ngSanitize', 'ngAnimate', 'toastr', 'sticky',
   'ui.mask', 'ui.utils.masks', 'ui.navbar', 'ngCookies', 'uiGmapgoogle-maps', 'ngFileUpload', 'ngTagsInput', 'ui.tree',
+  'ngIdle', 
   'mensagemSrv', 'segurancaSrv', 'utilSrv',
-  'frz.form', 'frz.tabela','frz.arquivo', 'frz.endereco', 'frz.painel.vidro', 'frz.navegador', 'casa', 'contrato', 'info',
+  'frz.form', 'frz.tabela','frz.arquivo', 'frz.endereco', 'frz.painel.vidro', 'frz.navegador', 
+  'casa', 'contrato', 'info',
   'offline', 'pessoa', 'formulario', 'propriedadeRural' ,'atividade', 'indiceProducao',
   ]);
 
@@ -125,8 +130,13 @@ angular.module(pNmModulo).factory('CestaDeValores', function() {
 // fim : utilitarios
 
 angular.module(pNmModulo).config(['$stateProvider', '$urlRouterProvider', 'toastrConfig', '$locationProvider',
-    'uiGmapGoogleMapApiProvider', '$httpProvider',
-  function($stateProvider, $urlRouterProvider, toastrConfig, $locationProvider, uiGmapGoogleMapApiProvider, $httpProvider) {
+    'uiGmapGoogleMapApiProvider', '$httpProvider', 'IdleProvider', 'KeepaliveProvider', 
+  function($stateProvider, $urlRouterProvider, toastrConfig, $locationProvider, uiGmapGoogleMapApiProvider, $httpProvider,
+        IdleProvider, KeepaliveProvider) {
+    
+    IdleProvider.idle(IDLE_TEMPO);
+    IdleProvider.timeout(TIMEOUT_TEMPO);
+    //KeepaliveProvider.interval(10);
 
     // inicio: modulo de autenticação
     // captar os dados do usuario logado
@@ -356,19 +366,37 @@ angular.module(pNmModulo).directive('ngValorDiferenteDe', function () {
     };
 });
 
-angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 'toastr', 'UtilSrv', '$stateParams', '$timeout', 'TokenStorage', '$state', 'CestaDeValores',
-  function($rootScope, $uibModal, FrzNavegadorParams, toastr, UtilSrv, $stateParams, $timeout, TokenStorage, $state, CestaDeValores) {
+angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 'toastr', 'UtilSrv', '$stateParams', '$timeout', 'TokenStorage', '$state', 'CestaDeValores', 'SegurancaSrv',
+    'Idle',
+  function($rootScope, $uibModal, FrzNavegadorParams, toastr, UtilSrv, $stateParams, $timeout, TokenStorage, $state, CestaDeValores, SegurancaSrv, 
+        Idle) {
     $rootScope.servicoUrl = "https://localhost:8443";
     $rootScope.token = null;
     $rootScope.isAuthenticated = function (username) {
         if (!$rootScope.token) {
             $rootScope.token = TokenStorage.token();
+            if ($rootScope.token && $rootScope.token.acessoExpiraEm) {
+                var expiracao = moment($rootScope.token.acessoExpiraEm, 'DD/MM/YYYY HH:mm:ss:SSS');
+                if (expiracao.isBefore(moment().add(1, 'month'))) {
+                    toastr.warning('Expira em: ' + $rootScope.token.acessoExpiraEm, 'O final da validade da sua senha de acesso está próximo, renove-a o quanto antes!');
+                }
+            }
         }
         if ($rootScope.token && $rootScope.token.usuarioStatusConta === 'R' && !$rootScope.renovandoSenha) {
             $rootScope.renovandoSenha = true;
             $rootScope.renoveSuaSenha();
         }
-        return ($rootScope.token !== null && $rootScope.token.username !== null && $rootScope.token.username.length > 0) && ((!username) || (username && username === $rootScope.token.username));
+        var authenticated = ($rootScope.token !== null && $rootScope.token.username !== null && $rootScope.token.username.length > 0) && ((!username) || (username && username === $rootScope.token.username));
+        if (authenticated) {
+            if (!Idle.running()) {
+                //Idle.watch();
+            }
+        } else {
+            if (Idle.running()) {
+                Idle.unwatch();
+            }
+        }
+        return authenticated;
     };
 
     $rootScope.renoveSuaSenha = function(size) {
@@ -625,6 +653,92 @@ angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 
                 scp.navegador.mudarEstado('INCLUINDO');
             }
         });
+    };
+
+    $rootScope.idleTempo = IDLE_TEMPO;
+    $rootScope.timeoutTempo = TIMEOUT_TEMPO;
+
+    $rootScope.$on('IdleStart', function() {
+        $rootScope.exibeDescansoTela();
+    });
+    $rootScope.$on('IdleEnd', function() {
+        $rootScope.escondeDescansoTela();
+    });
+    $rootScope.$on('IdleTimeout', function() {
+        $rootScope.escondeDescansoTela();
+        toastr.warning('Tempo esgotado', 'Sessão Encerrada!');
+        $rootScope.executarLogout();
+    });
+
+    $rootScope.exibeDescansoTela = function () {
+        SegurancaSrv.descansoTela().success(function(resposta) {
+            $rootScope.voceConheceList = [
+                {id: 1, nome: 'Joaquim Benedito Barbosa Gomes', nascimentoData: '07/10/1954', nascimentoLocal: 'Paracatu, MG', admissao: '05/03/2010', lotacao: 'Ceilândia', cargo: 'Extensionista Rural - Agrônomo', sobre: 'bla bla bla bla bla ', image: 'http://www.partidomilitar.com.br/wp-content/uploads/2013/05/Joaquim_Barbosa.jpg'},
+                {id: 2, nome: 'Camila Pitanga Manhães Sampaio', nascimentoData: '14/06/1977', nascimentoLocal: 'Rio de Janeiro, RJ', admissao: '05/03/2010', lotacao: 'Pipiripau', cargo: 'Extensionista Rural - Economista Doméstica', sobre: 'bla bla bla bla bla ', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJbIaXIqX03obbINTsaHq1nzWwGu64tPCL-BkJPju_NMJCHquv'},
+                {id: 3, nome: 'Francisco Everardo Oliveira Silva', nascimentoData: '01/05/1965', nascimentoLocal: 'Itapipoca, Ceará', admissao: '05/03/2010', lotacao: 'Gama', cargo: 'Extensionista Rural - Veterinário', sobre: 'bla bla bla bla bla ', image: 'http://www.colegioweb.com.br/wp-content/uploads/2014/10/Tiririca-Federal.jpg'},
+            ];
+            $rootScope.descansoTela = $uibModal.open({
+                controller: 'DescansoCtrl',
+                template:   
+                            '<div class="modal-header">' +
+                            '    <h3>E ai! Você conhece!</h3>' +
+                            '</div>' +
+                            '<div class="modal-body">' +
+                            '    <div class="container-fluid">' +
+                            '        <div class="row">' +
+                            '            <div class="col-xs-4">' +
+                            '               <img ng-src="{{voceConheceList[indice].image}}" class="img-responsive" style="margin:auto;" height="200px" width="200px">' +
+                            '            </div>' +
+                            '            <div class="col-xs-8">'+
+                            '               <table class="table table-bordered table-striped">' +
+                            '                   <tr>' +
+                            '                       <td>Nome</td>' +
+                            '                       <th>{{voceConheceList[indice].nome}}</th>' +
+                            '                   </tr>' +
+                            '                   <tr>' +
+                            '                       <td>Local de Nascimento</td>' +
+                            '                       <th>{{voceConheceList[indice].nascimentoLocal}}</th>' +
+                            '                   </tr>' +
+                            '                   <tr>' +
+                            '                       <td>Data de Nascimento</td>' +
+                            '                       <th>{{voceConheceList[indice].nascimentoData}}</th>' +
+                            '                   </tr>' +
+                            '                   <tr>' +
+                            '                       <td>Cargo</td>' +
+                            '                       <th>{{voceConheceList[indice].cargo}}</th>' +
+                            '                   </tr>' +
+                            '                   <tr>' +
+                            '                       <td>Admissão</td>' +
+                            '                       <th>{{voceConheceList[indice].admissao}}</th>' +
+                            '                   </tr>' +
+                            '                   <tr>' +
+                            '                       <td>Lotação</td>' +
+                            '                       <th>{{voceConheceList[indice].lotacao}}</th>' +
+                            '                   </tr>' +
+                            '                   <tr>' +
+                            '                       <td>Sobre</td>' +
+                            '                       <th>{{voceConheceList[indice].sobre}}</th>' +
+                            '                   </tr>' +
+                            '               </table>' +
+                            '            </div>' +
+                            '        </div>' +
+                            '    </div>' +
+                            '</div>' +
+                            '<div class="modal-footer" idle-countdown="countdown" ng-init="countdown=timeoutTempo">' +
+                            '    <uib-progressbar max="timeoutTempo" value="countdown" animate="true" class="progress-striped active" type="warning">{{countdown}} segundo(s) para o término dessa sessão.</uib-progressbar>' +
+                            '</div>',
+                windowClass: 'modal-warning',
+                size: 'lg',
+            });
+
+            //toastr.info(resposta);
+        });
+    };
+    $rootScope.escondeDescansoTela = function () {
+        if ($rootScope.descansoTela) {
+            $rootScope.descansoTela.close();
+        }
+        $rootScope.descansoTela = null;
     };
 
     $rootScope.abrir = function(scp) {
@@ -1065,6 +1179,17 @@ angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 
 
     // fim funcoes crud
 }]);
+
+angular.module(pNmModulo).controller('DescansoCtrl', ['$scope', '$interval',
+    function ($scope, $interval) {
+        $scope.indice = 0;
+        $interval(function() {
+            if (++$scope.indice >= $scope.voceConheceList.length) {
+                $scope.indice = 0;
+            } 
+        }, 10000);
+    }
+]);
 
 angular.module(pNmModulo).controller('AuthCtrl', ['$scope', '$rootScope', '$http', 'TokenStorage', 'mensagemSrv', '$uibModal', '$uibModalInstance', '$state', 
     function ($scope, $rootScope, $http, TokenStorage, mensagemSrv, $uibModal, $uibModalInstance, $state) {

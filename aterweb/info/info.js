@@ -26,18 +26,6 @@
             $scope.nomeFormulario = pNmFormulario;
             $scope.nome           = $state.params.nome;
             $scope.endereco       = $state.params.endereco;
-            $scope.login = function() {
-                $http.post("https://cas.gdfnet.df.gov.br/owa/", {
-                    flags:0,
-                    forcedownlevel:0,
-                    trusted:0,
-                    username:'1227412@governo',
-                    password:'.12274122006',
-                    isUtf8:1,
-                }).success(function(a,b,c,d,e) {
-                    console.log(a,b,c,d,e);
-                });
-            };
             $scope.trustSrc = function(src) {
                 return $sce.trustAsResourceUrl(src);
             };

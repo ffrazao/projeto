@@ -1,3 +1,5 @@
+/* global removerCampo */
+
 (function(pNmModulo, pNmController, pNmFormulario) {
 
 'use strict';
@@ -40,6 +42,8 @@ function ($scope, $uibModalInstance, toastr, $http, mensagemSrv, SegurancaSrv) {
           toastr.error('Verifique os campos marcados', 'Erro');
           return;
         }
+
+        removerCampo($scope.registro, ['@jsonId']);
 
         SegurancaSrv.salvarPerfil($scope.registro).success(function (resposta) {
             if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {

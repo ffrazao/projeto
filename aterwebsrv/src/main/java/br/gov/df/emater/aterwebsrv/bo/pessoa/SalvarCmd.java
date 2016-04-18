@@ -427,14 +427,16 @@ public class SalvarCmd extends _Comando {
 		if (result.getDiagnosticoList() != null) {
 			for (List<Object> formulario : (List<List<Object>>) result.getDiagnosticoList()) {
 				LinkedHashMap<Object, Object> f = (LinkedHashMap<Object, Object>) formulario.get(9);
-				List<LinkedHashMap<Object, Object>> c = (List<LinkedHashMap<Object, Object>>) f.get("coletaList");
-				if (c != null) {
-					for (LinkedHashMap<Object, Object> r : c) {
-						Coleta coleta = criarColeta(r);
-						coleta.setPessoa(result);
-						coleta.setPropriedadeRural(null);
-						coleta.setUsuario(getUsuario(contexto.getUsuario().getName()));
-						coletaDao.save(coleta);
+				if (f != null) {					
+					List<LinkedHashMap<Object, Object>> c = (List<LinkedHashMap<Object, Object>>) f.get("coletaList");
+					if (c != null) {
+						for (LinkedHashMap<Object, Object> r : c) {
+							Coleta coleta = criarColeta(r);
+							coleta.setPessoa(result);
+							coleta.setPropriedadeRural(null);
+							coleta.setUsuario(getUsuario(contexto.getUsuario().getName()));
+							coletaDao.save(coleta);
+						}
 					}
 				}
 			}

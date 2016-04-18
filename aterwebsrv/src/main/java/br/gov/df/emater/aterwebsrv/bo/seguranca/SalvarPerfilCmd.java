@@ -55,6 +55,7 @@ public class SalvarPerfilCmd extends _Comando {
 		// salvar demais dados do usuário
 		usuarioSalvo.setUsername(usuario.getUsername());
 		usuarioSalvo.setPessoaEmail(usuario.getPessoaEmail());
+		usuarioSalvo.setInfoSobreUsuario(usuario.getInfoSobreUsuario());
 		usuarioDao.save(usuarioSalvo);
 		
 		return false;

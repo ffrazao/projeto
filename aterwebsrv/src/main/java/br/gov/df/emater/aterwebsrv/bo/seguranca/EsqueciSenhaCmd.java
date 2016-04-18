@@ -32,7 +32,7 @@ public class EsqueciSenhaCmd extends _Comando {
 		if (usuario == null) {
 			throw new BoException("Este e-mail para renovação de senha não está cadastrado. Nenhum e-mail foi enviado!");
 		}
-		if (!UsuarioStatusConta.R.equals(usuario.getUsuarioStatusConta()) && !usuario.isAccountNonExpired()) {
+		if (!usuario.isEnabled()) {
 			throw new BoException("A conta vinculada a este e-mail está inativa. Para maiores informações, entre em contato com o administrador do sistema. Nenhum e-mail foi enviado!");
 		}
 		
@@ -40,8 +40,8 @@ public class EsqueciSenhaCmd extends _Comando {
 		novaSenha.append("Nova");
 		novaSenha.append(UtilitarioString.zeroEsquerda((int) (9999 * Math.random()), 4));
 
-		Calendar expiracao = Calendar.getInstance();
-		expiracao.roll(Calendar.DATE, 1);
+		Calendar acessoExpiraEm = Calendar.getInstance();
+		acessoExpiraEm.roll(Calendar.DATE, 1);
 		
 		StringBuilder texto = new StringBuilder();
 		texto.append("Você solicitou a renovação de sua senha no sistema ATER web. Para tal:").append("\n");
@@ -56,12 +56,12 @@ public class EsqueciSenhaCmd extends _Comando {
 		texto.append("Caso não tenha solicitado esta renovação de senha, por favor, ignore este e-mail.");
 		texto.append("\n");
 		texto.append("O prazo para renovação da senha termina em ");
-		texto.append(UtilitarioData.getInstance().formataDataHora(expiracao));
+		texto.append(UtilitarioData.getInstance().formataDataHora(acessoExpiraEm));
 		texto.append("\n");
 
 		usuario.setPassword(Criptografia.MD5(usuario.getId() + novaSenha.toString()));
 		usuario.setUsuarioStatusConta(UsuarioStatusConta.R);
-		usuario.setExpires(expiracao);		
+		usuario.setAcessoExpiraEm(acessoExpiraEm);		
 		usuarioDao.saveAndFlush(usuario);
 		
 		Map<String, Object> requisicao = new HashMap<String, Object>();

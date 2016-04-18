@@ -16,7 +16,6 @@ public class ColetarCmd extends _Comando {
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
-		System.out.println("Filtrando formulario...");
 		FormularioVersao formularioVersao = (FormularioVersao) contexto.getRequisicao();
 
 //		Coleta coleta = (Coleta) formularioVersao.getValor();

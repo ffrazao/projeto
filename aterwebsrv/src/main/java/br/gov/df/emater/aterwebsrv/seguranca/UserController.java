@@ -26,7 +26,6 @@ public class UserController {
 
 	@RequestMapping(value = "/api/users/current", method = RequestMethod.GET)
 	public Usuario getCurrent(Principal p) {
-		System.out.println(p);
 		final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication instanceof UserAuthentication) {
 			return ((UserAuthentication) authentication).getDetails();

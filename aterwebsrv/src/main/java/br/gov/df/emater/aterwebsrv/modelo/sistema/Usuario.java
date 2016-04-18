@@ -33,6 +33,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.UsuarioStatusConta;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
@@ -51,22 +52,32 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 
 	private static final long serialVersionUID = 1L;
 
-	@OneToMany(mappedBy = "usuario")
-	private Set<UsuarioPerfil> authorities;
-
 	@Column(name = "acesso_expira_em")
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	@JsonSerialize(using = JsonSerializerTimestamp.class)
 	@JsonDeserialize(using = JsonDeserializerTimestamp.class)
-	private Calendar expires;
-	
+	private Calendar acessoExpiraEm;
+
+	@OneToMany(mappedBy = "usuario")
+	private Set<UsuarioPerfil> authorities;
+
 	@Transient
-	private Map<String, Set<String>> funcionalidadeComandoList;	
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+	@JsonSerialize(using = JsonSerializerTimestamp.class)
+	@JsonDeserialize(using = JsonDeserializerTimestamp.class)
+	private Calendar expires;
+
+	@Transient
+	private Map<String, Set<String>> funcionalidadeComandoList;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
+
+	@Column(name = "info_sobre_usuario")
+	private String infoSobreUsuario;
 
 	@Transient
 	private UnidadeOrganizacional lotacaoAtual;
@@ -87,6 +98,9 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "pessoa_email_id")
 	private PessoaEmail pessoaEmail;
+
+	@Column(name = "tentativa_acesso_invalido")
+	private Integer tentativaAcessoInvalido;
 
 	@ManyToOne
 	@JoinColumn(name = "unidade_organizacional_id")
@@ -131,6 +145,10 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 		return true;
 	}
 
+	public Calendar getAcessoExpiraEm() {
+		return acessoExpiraEm;
+	}
+
 	@Override
 	public Set<UsuarioPerfil> getAuthorities() {
 		return authorities;
@@ -147,6 +165,10 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 	@Override
 	public Integer getId() {
 		return id;
+	}
+
+	public String getInfoSobreUsuario() {
+		return infoSobreUsuario;
 	}
 
 	public UnidadeOrganizacional getLotacaoAtual() {
@@ -172,6 +194,10 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 
 	public PessoaEmail getPessoaEmail() {
 		return pessoaEmail;
+	}
+
+	public Integer getTentativaAcessoInvalido() {
+		return tentativaAcessoInvalido;
 	}
 
 	public UnidadeOrganizacional getUnidadeOrganizacional() {
@@ -214,13 +240,17 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 	@Override
 	@JsonIgnore
 	public boolean isCredentialsNonExpired() {
-		return !(getExpires() == null || getExpires().getTimeInMillis() == 0 || Calendar.getInstance().getTimeInMillis() > getExpires().getTimeInMillis());
+		return (getAcessoExpiraEm() == null || getAcessoExpiraEm().after(Calendar.getInstance()));
 	}
 
 	@Override
 	@JsonIgnore
 	public boolean isEnabled() {
-		return Arrays.asList(UsuarioStatusConta.A, UsuarioStatusConta.R).contains(getUsuarioStatusConta());
+		return Arrays.asList(UsuarioStatusConta.A, UsuarioStatusConta.R).contains(getUsuarioStatusConta()) || PessoaSituacao.A.equals(getPessoa().getSituacao());
+	}
+
+	public void setAcessoExpiraEm(Calendar acessoExpiraEm) {
+		this.acessoExpiraEm = acessoExpiraEm;
 	}
 
 	public void setAuthorities(Set<UsuarioPerfil> authorities) {
@@ -238,6 +268,10 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 	@Override
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public void setInfoSobreUsuario(String infoSobreUsuario) {
+		this.infoSobreUsuario = infoSobreUsuario;
 	}
 
 	public void setLotacaoAtual(UnidadeOrganizacional lotacaoAtual) {
@@ -262,6 +296,10 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 
 	public void setPessoaEmail(PessoaEmail pessoaEmail) {
 		this.pessoaEmail = pessoaEmail;
+	}
+
+	public void setTentativaAcessoInvalido(Integer tentativaAcessoInvalido) {
+		this.tentativaAcessoInvalido = tentativaAcessoInvalido;
 	}
 
 	public void setUnidadeOrganizacional(UnidadeOrganizacional unidadeOrganizacional) {

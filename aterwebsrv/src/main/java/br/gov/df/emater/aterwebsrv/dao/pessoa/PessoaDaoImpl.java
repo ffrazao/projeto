@@ -1,7 +1,6 @@
 package br.gov.df.emater.aterwebsrv.dao.pessoa;
 
 import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;

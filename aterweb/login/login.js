@@ -2,9 +2,9 @@
 
     'use strict';
 
-    angular.module(pNmModulo).controller(pNmController, ['$scope', '$rootScope', '$location', '$uibModal', 'toastr', '$state', '$http', 'TokenStorage', '$cookies', '$uibModalInstance', 'CestaDeValores',
+    angular.module(pNmModulo).controller(pNmController, ['$scope', '$location', '$uibModal', 'toastr', '$state', '$http', 'TokenStorage', '$cookies', '$uibModalInstance', 'CestaDeValores',
 
-        function($scope, $rootScope, $location, $uibModal, toastr, $state, $http, TokenStorage, $cookies, $uibModalInstance, CestaDeValores) {
+        function($scope, $location, $uibModal, toastr, $state, $http, TokenStorage, $cookies, $uibModalInstance, CestaDeValores) {
             $scope.cadastro = $scope.cadastroBase();
 
             $scope.iniciar = function() {
@@ -64,38 +64,31 @@
                     "modulo": $scope.cadastro.registro.modulo
                 }).
                 success(function(result, status, headers, config) {
-                    $rootScope.token = null;
+                    $scope.token = null;
+                    if (result === null) {
+                        $scope.executarLogout();
+                        toastr.error('Sem resposta do servidor, tente mais tarde', 'Erro ao efetuar o login');
+                        $uibModalInstance.close();
+                        return;
+                    }
                     if (status === 200) {
-                        //console.log(headers('X-AUTH-TOKEN'));
-                        if (!result || !result.length) {
-                            toastr.error('Erro ao processar o login - Resultado não recebido', 'Erro ao efetuar o login');
-                        } else {
-                            TokenStorage.store(result);
-                            // For display purposes only
-                            CestaDeValores.adicionarValor('password', $scope.cadastro.registro.password);
-                            try {
-                                if ($rootScope.isAuthenticated()) {
-                                    $uibModalInstance.close();
-                                } else {
-                                    $scope.executarLogout();
-                                    toastr.error('Erro ao processar o login - token nulo', 'Erro ao efetuar o login');
-                                }
-                            } catch (err) {
-                                toastr.error('Erro ao processar o login', 'Erro ao efetuar o login');
-                            } finally {
-                                CestaDeValores.removerValor('password');
+                        TokenStorage.store(result);
+                        // For display purposes only
+                        CestaDeValores.adicionarValor('password', $scope.cadastro.registro.password);
+                        try {
+                            if ($scope.isAuthenticated()) {
+                                $uibModalInstance.close();
+                            } else {
+                                $scope.executarLogout();
+                                toastr.error('Erro ao processar o login - token nulo', 'Erro ao efetuar o login');
                             }
+                        } catch (err) {
+                            toastr.error('Erro ao processar o login ' + err, 'Erro ao efetuar o login');
+                        } finally {
+                            CestaDeValores.removerValor('password');
                         }
                     } else {
-                        if (status === 401) {
-                            if (result.message.indexOf('Conta expirada') >= 0) {
-                                toastr.error('Conta expirada! Solicite uma nova senha!', 'Erro ao efetuar o login');
-                            } else {
-                                toastr.error('Usuário ou senha inválidos', 'Erro ao efetuar o login');
-                            }
-                        } else {
-                            toastr.error(result, 'Erro ao efetuar o login');
-                        }
+                        toastr.error(result.message, 'Erro ao efetuar o login');
                     }
                 });
             };

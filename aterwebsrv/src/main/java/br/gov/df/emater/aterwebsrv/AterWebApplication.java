@@ -6,21 +6,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import br.gov.df.emater.aterwebsrv.ferramenta.Criptografia;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 
 @SpringBootApplication
 public class AterWebApplication {
 
-	public static void main(String[] args) throws Exception {
-		
-//		System.out.println(Criptografia.MD5("892b"));
-//		System.out.println(Criptografia.MD5("893c"));
-//		System.out.println(Criptografia.MD5("894d"));
-//		System.out.println(Criptografia.MD5("895e"));
-//		System.out.println(Criptografia.MD5("896f"));
+	public static void main(String[] args) throws Exception {		
 //		System.out.println(Criptografia.MD5("1a"));
-		
 		SpringApplication.run(AterWebApplication.class, args);
 	}
 

@@ -10,7 +10,6 @@ public class AutenticarUsuarioCmd extends _Comando {
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
-		System.out.println("Validando usuário");
 		return false;
 	}
 
