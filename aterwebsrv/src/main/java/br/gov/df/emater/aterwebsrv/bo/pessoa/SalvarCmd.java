@@ -62,7 +62,7 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Telefone;
 
 @Service("PessoaSalvarCmd")
 public class SalvarCmd extends _Comando {
-	
+
 	@Autowired
 	private ArquivoDao arquivoDao;
 
@@ -190,7 +190,7 @@ public class SalvarCmd extends _Comando {
 				pf.setNascimentoMunicipio(null);
 			}
 		}
-		
+
 		// gravar o perfil
 		if (result.getPerfilArquivo() != null) {
 			result.setPerfilArquivo(arquivoDao.findByMd5(result.getPerfilArquivo().getMd5()));
@@ -214,7 +214,7 @@ public class SalvarCmd extends _Comando {
 			if (publicoAlvo.getPublicoAlvoSetorList() != null) {
 				for (PublicoAlvoSetor publicoAlvoSetor : publicoAlvo.getPublicoAlvoSetorList()) {
 					publicoAlvoSetor.setPublicoAlvo(publicoAlvo);
-					if (publicoAlvo.getId() != null) {						
+					if (publicoAlvo.getId() != null) {
 						PublicoAlvoSetor salvo = publicoAlvoSetorDao.findOneByPublicoAlvoAndSetor(publicoAlvo, publicoAlvoSetor.getSetor());
 						if (salvo != null) {
 							publicoAlvoSetor.setId(salvo.getId());
@@ -427,7 +427,7 @@ public class SalvarCmd extends _Comando {
 		if (result.getDiagnosticoList() != null) {
 			for (List<Object> formulario : (List<List<Object>>) result.getDiagnosticoList()) {
 				LinkedHashMap<Object, Object> f = (LinkedHashMap<Object, Object>) formulario.get(9);
-				if (f != null) {					
+				if (f != null) {
 					List<LinkedHashMap<Object, Object>> c = (List<LinkedHashMap<Object, Object>>) f.get("coletaList");
 					if (c != null) {
 						for (LinkedHashMap<Object, Object> r : c) {
@@ -442,7 +442,7 @@ public class SalvarCmd extends _Comando {
 			}
 		}
 
-		try {			
+		try {
 			dao.flush();
 		} catch (DataIntegrityViolationException e) {
 			if (e.getMessage().indexOf("uq_pessoa_1") >= 0) {

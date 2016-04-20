@@ -1,0 +1,373 @@
+<div class="panel panel-default">
+    <div class="panel-heading"><h4>{{nomeFormulario}}</h4></div>
+    <div class="panel-body">
+        <form name="frm.formulario" novalidate>
+            <fieldset ng-disabled="['INCLUINDO', 'EDITANDO'].indexOf(navegador.estadoAtual()) < 0">
+                <div class="row">
+                    <div class="col-md-2" title="Código da Atividade">
+                        <div class="form-group">
+                            <label class="control-label" for="codigo">Código da Atividade</label>
+                            <input type="text" class="form-control text-center codigoAtividade" id="codigo" name="codigo" readonly="true" data-ng-model="cadastro.registro.codigo">
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.codigo.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2" title="Formato">
+                        <div class="form-group">
+                            <label class="control-label" for="formato" ng-click="cadastro.registro.formato = 'E'">Formato</label>
+                            <div class="radio" ng-repeat="item in cadastro.apoio.atividadeFormatoList track by item.codigo">
+                                <label for="formato-{{$index}}">
+                                    <input type="radio" name="formato" id="formato-{{$index}}" ng-model="cadastro.registro.formato" ng-value="item.codigo" required="true" ng-disabled="true">
+                                    {{item.descricao}}
+                                </label>
+                            </div>
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.formato.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2" title="Finalidade">
+                        <div class="form-group">
+                            <label class="control-label" for="finalidade">Finalidade</label>
+                            <div class="radio" ng-repeat="item in cadastro.apoio.atividadeFinalidadeList track by item.codigo">
+                                <label for="finalidade-{{$index}}">
+                                    <input type="radio" name="finalidade" id="finalidade-{{$index}}" ng-model="cadastro.registro.finalidade" ng-value="item.codigo" required="true" ng-disabled="true || cadastro.registro.metodo">
+                                    {{item.descricao}}
+                                </label>
+                            </div>
+
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.finalidade.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2" title="Natureza">
+                        <div class="form-group">
+                            <label class="control-label" for="natureza">Natureza</label>
+                            
+                            <div class="radio" ng-repeat="item in cadastro.apoio.atividadeNaturezaList track by item.codigo">
+                                <label for="natureza-{{$index}}">
+                                    <input type="radio" name="natureza" id="natureza-{{$index}}" ng-model="cadastro.registro.natureza" ng-value="item.codigo" required="true" ng-disabled="true">
+                                    {{item.descricao}}
+                                </label>
+                            </div>
+
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.natureza.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2" title="Prioridade">
+                        <div class="form-group">
+                            <label class="control-label" for="prioridade">Prioridade</label>
+                            
+                            <div class="radio" ng-repeat="item in cadastro.apoio.atividadePrioridadeList track by item.codigo">
+                                <label for="prioridade-{{$index}}">
+                                    <input type="radio" name="prioridade" id="prioridade-{{$index}}" ng-model="cadastro.registro.prioridade" ng-value="item.codigo" required="true" ng-disabled="true">
+                                    <span class="label" ng-class="{'label-default' : item.codigo === 'N', 'label-info' : item.codigo === 'B', 'label-danger' : item.codigo === 'A'}">
+                                        {{item.descricao}}
+                                    </span>
+                                </label>
+                            </div>
+
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.prioridade.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2" title="Situação">
+                        <div class="form-group">
+                            <label class="control-label" for="situacao">Situação</label>
+
+                            <div class="form-control" ng-if="cadastro.registro.situacao === 'B' || cadastro.registro.situacao === 'X'">
+                                {{UtilSrv.indiceDePorCampo(cadastro.apoio.atividadeSituacaoList, cadastro.registro.situacao, 'codigo').descricao}}
+                            </div>
+                            <select id="situacao" name="situacao" class="form-control" ng-model="cadastro.registro.situacao" ng-options="item.codigo as item.descricao disable when item.codigo === 'B' for item in cadastro.apoio.atividadeSituacaoList | filter: ((!cadastro.registro.id && {inicial : true}) || (cadastro.registro.id !== null && {})) | orderBy: 'ordem'" required="true" ng-disabled="true" ng-if="cadastro.registro.situacao !== 'B' && cadastro.registro.situacao !== 'X'">
+                            </select>
+
+                            <label class="control-label" for="situacao" ng-show="cadastro.registro.situacaoData">Desde</label>
+                            <div class="form-control" ng-show="cadastro.registro.situacaoData">
+                                {{cadastro.registro.situacaoData}}
+                            </div>
+
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.situacao.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-if="cadastro.registro.situacao === 'X' || cadastro.registro.situacao === 'S'">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label">Motivo da Situação ({{UtilSrv.indiceDePorCampo(cadastro.apoio.atividadeSituacaoList, cadastro.registro.situacao, 'codigo').descricao}})</label>
+                            <textarea id="situacaoMotivo" name="situacaoMotivo" class="form-control" rows="4" ng-model="cadastro.registro.situacaoMotivo" required="true"></textarea>
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.situacaoMotivo.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6" title="Método">
+                        <div class="form-group">
+                            <label class="control-label" for="metodo">Método</label>
+                            <div class="form-control" ng-if="cadastro.registro.id">
+                                {{cadastro.registro.metodo.nome}}
+                            </div>
+                            <select id="metodo" name="metodo" class="form-control" ng-model="cadastro.registro.metodo" ng-options="item as item.nome for item in cadastro.apoio.metodoList | orderBy: 'nome' | filter: {finalidade: cadastro.registro.finalidade} track by item.id" required="true" ng-if="!cadastro.registro.id">
+                            </select>
+                            
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.metodo.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3" title="Publico Estimado">
+                        <div class="form-group">
+                            <label class="control-label" for="publicoEstimado" ng-if="cadastro.registro.finalidade === 'O'">Publico Estimado</label>
+                            
+                            <input class="form-control text-right" type="text" id="publicoEstimado" name="publicoEstimado" ng-model="cadastro.registro.publicoEstimado" ng-if="cadastro.registro.finalidade === 'O'" required="true" ng-valor-min="1" ui-number-mask="0"></input>
+                            
+                            <div class="label label-danger" ng-show="navegador.submetido && (frm.formulario.publicoEstimado.$error.required || frm.formulario.publicoEstimado.$error.ngValorMin)">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3" title="Publico Real">
+                        <div class="form-group">
+                            <label class="control-label" for="publicoReal" ng-if="cadastro.registro.finalidade === 'O'">Publico Real</label>
+                            
+                            <input class="form-control text-right" type="text" id="publicoReal" name="publicoReal" ng-model="cadastro.registro.publicoReal" ng-disabled="true" ng-if="cadastro.registro.finalidade === 'O'" ui-number-mask="0"></input>
+
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.publicoReal.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-show="cadastro.registro.metodo">
+                    <div class="col-md-6" title="Assunto">
+                        <div class="form-group" ng-class="{'ng-invalid': frm.formulario.assuntoTotal.$error.ngValorMin}">
+                            <label class="control-label" for="assuntoTotal">Assunto</label>
+
+                            <ng-include src="'atividade/sub-assunto.html'" ng-controller="AtividadeAssuntoCtrl"/>
+
+                            <input type="hidden" id="assuntoTotal" name="assuntoTotal" ng-model="cadastro.registro.assuntoList.length" ng-valor-min="1">
+                            
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.assuntoTotal.$error.ngValorMin">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6" title="Plano de Ação" ng-show="cadastro.registro.assuntoList.length">
+                        <div class="form-group" ng-class="{'ng-invalid': frm.formulario.planoAcaoTotal.$error.ngValorMin}">
+                            <label class="control-label" for="planoAcaoTotal">Plano de Ação</label>
+
+                            <ng-include src="'atividade/sub-plano-acao.html'" ng-controller="AtividadePlanoAcaoCtrl"/>
+
+                            <input type="hidden" id="planoAcaoTotal" name="planoAcaoTotal" ng-model="cadastro.registro.planoAcaoList.length">
+                            
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.planoAcaoTotal.$error.ngValorMin">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-controller="AtividadePessoaCtrl" ng-show="cadastro.registro.assuntoList.length">
+                    <div class="col-md-6" title="Demandantes">
+                        <div class="form-group" ng-class="{'ng-invalid': frm.formulario.demandanteTotal.$error.ngValorMin}">
+                            <label class="control-label" for="demandanteTotal">Demandantes</label>
+                            
+                            <ng-include src="'atividade/sub-pessoa.html'" ng-controller="DemandanteAtividadePessoaCtrl" />
+
+                            <input type="hidden" id="demandanteTotal" name="demandanteTotal" ng-model="cadastro.registro.pessoaDemandanteList.length" ng-valor-min="1">
+
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.demandanteTotal.$error.ngValorMin">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6" title="Executores">
+                        <div class="form-group" ng-class="{'ng-invalid': frm.formulario.executorTotal.$error.ngValorMin}">
+                            <label class="control-label" for="executorTotal">Executores</label>
+                            
+                            <ng-include src="'atividade/sub-pessoa.html'" ng-controller="ExecutorAtividadePessoaCtrl" />
+
+                            <input type="hidden" id="executorTotal" name="executorTotal" ng-model="cadastro.registro.pessoaExecutorList.length" ng-valor-min="1">
+
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.executorTotal.$error.ngValorMin">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>                  
+                </div>
+                <div class="row" ng-show="cadastro.registro.pessoaExecutorList.length">
+                    <div class="col-md-3" title="Início">
+                        <div class="form-group">
+                            <label class="control-label" for="inicio">Início</label>
+                            
+                            <input class="form-control" type="text" id="inicio" name="inicio" ng-model="cadastro.registro.inicio" required="true" ui-date-mask></input>
+                            
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.inicio.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.inicio.$error.date">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Data Inválida!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3" title="Previsão Conclusão">
+                        <div class="form-group">
+                            <label class="control-label" for="previsaoConclusao">Previsão Conclusão</label>
+                            
+                            <input class="form-control" type="text" id="previsaoConclusao" name="previsaoConclusao" ng-model="cadastro.registro.inicio" ng-required="!cadastro.registro.duracaoEstimada" ui-date-mask></input>
+                            
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.previsaoConclusao.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.previsaoConclusao.$error.date">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Data Inválida!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3" title="Percentual Conclusão">
+                        <div class="form-group">
+                            <label class="control-label" for="percentualConclusao">Percentual Conclusão</label>
+                            
+                            <div class="form-control" id="percentualConclusao" name="percentualConclusao" 
+                                data-ng-class="{'texto-branco': cadastro.registro.percentualConclusao > 0,'': cadastro.registro.percentualConclusao<1, 'label-warning': cadastro.registro.percentualConclusao>=1 && cadastro.registro.percentualConclusao<3, 'label-info': cadastro.registro.percentualConclusao>=3 && cadastro.registro.percentualConclusao<5, 'label-success': cadastro.registro.percentualConclusao>=5}">
+                                <uib-rating ng-model="cadastro.registro.percentualConclusao" min="0" max="5" on-hover="hoveringOver(value)" on-leave="overStar = null"></uib-rating>
+                                <span class="label" data-ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}" data-ng-show="overStar && !isReadonly">{{percent}}%</span>
+                                <span class="pull-right">{{cadastro.registro.percentualConclusao ? cadastro.registro.percentualConclusao * 20: 0}}%<span class="glyphicon glyphicon-trash" data-ng-click="cadastro.registro.percentualConclusao = 0" data-ng-hide="cadastro.registro.id"></span></span>
+                            </div>
+
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.percentualConclusao.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3" title="Conclusão">
+                        <div class="form-group">
+                            <label class="control-label" for="conclusao">Conclusão</label>
+                            
+                            <input class="form-control" type="text" id="conclusao" name="conclusao" ng-model="cadastro.registro.inicio" ui-date-mask></input>
+                            
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.conclusao.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.conclusao.$error.date">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Data Inválida!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-show="cadastro.registro.pessoaExecutorList.length">
+                    <div class="col-md-3" title="Duração Estimada (horas)">
+                        <div class="form-group">
+                            <label class="control-label" for="duracaoEstimada">Duração Estimada (horas)</label>
+                            
+                            <input class="form-control text-right" type="text" id="duracaoEstimada" name="duracaoEstimada" ng-model="cadastro.registro.duracaoEstimada" ng-required="!cadastro.registro.previsaoConclusao" ui-number-mask="0"></input>
+
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.duracaoEstimada.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3" title="Duração Suspensão (horas)">
+                        <div class="form-group">
+                            <label class="control-label" for="duracaoSuspensao">Duração Suspensão (horas)</label>
+                            
+                            <input class="form-control text-right" type="text" id="duracaoSuspensao" name="duracaoSuspensao" ng-model="cadastro.registro.duracaoSuspensao" ng-disabled="true" ui-number-mask="0"></input>
+                            
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.duracaoSuspensao.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3" title="Duração Real (horas)">
+                        <div class="form-group">
+                            <label class="control-label" for="duracaoReal">Duração Real (horas)</label>
+                            
+                            <input class="form-control text-right" type="text" id="duracaoReal" name="duracaoReal" ng-model="cadastro.registro.duracaoReal" ng-disabled="true" ui-number-mask="0"></input>
+                            
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.duracaoReal.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-show="cadastro.registro.id">
+                    <div class="col-md-12" title="Ocorrências">
+                        <div class="form-group" ng-class="{'ng-invalid': frm.formulario.ocorrenciaTotal.$error.ngValorMin}">
+                            <label class="control-label" for="ocorrenciaTotal">Ocorrências</label>
+
+                            <ng-include src="'atividade/sub-ocorrencia.html'" ng-controller="AtividadeOcorrenciaCtrl" />
+
+                            <input type="hidden" id="ocorrenciaTotal" name="ocorrenciaTotal" ng-model="cadastro.registro.ocorrenciaList.length">
+                            
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.ocorrenciaTotal.$error.ngValorMin">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Detalhamento</label>
+                            <textarea id="detalhamento" name="detalhamento" class="form-control" rows="4" ng-model="cadastro.registro.detalhamento"></textarea>
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.detalhamento.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group col-md-8">
+                            <label class="control-label">Resp. Inclusão</label>
+                            <input class="form-control" type="text" readonly="true" ng-model="cadastro.registro.inclusaoUsuario.pessoa.apelidoSigla"/>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label class="control-label">Dt. Inclusão</label>
+                            <input class="form-control" type="text" readonly="true" ng-model="cadastro.registro.inclusaoData"/>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label class="control-label">Resp. Atualização</label>
+                            <input class="form-control" type="text" readonly="true"  ng-model="cadastro.registro.alteracaoUsuario.pessoa.apelidoSigla"/>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label class="control-label">Dt. Atualização</label>
+                            <input class="form-control" type="text" readonly="true" ng-model="cadastro.registro.alteracaoData"/>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,45 @@
+<div class="panel panel-default">
+    <div class="panel-heading"><h4>{{nomeFormulario}}</h4></div>
+    <div class="panel-body">
+        <form class="form-horizontal" name="frm.filtro" novalidate>
+            <fieldset>
+                <div class="form-group" title="Módulo do Sistema">
+                    <label class="col-md-4 control-label" for="modulo">
+                        Módulo do Sistema
+                    </label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="modulo" name="modulo" ng-model="cadastro.filtro.modulo">
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.modulo.$error.required">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Campo Obrigatório
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" title="Funcionalidade do Sistema">
+                    <label class="col-md-4 control-label" for="funcionalidade">
+                        Funcionalidade do Sistema
+                    </label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="funcionalidade" name="funcionalidade" ng-model="cadastro.filtro.funcionalidade">
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.funcionalidade.$error.required">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Campo Obrigatório
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" title="Comando da Funcionalidade do Sistema">
+                    <label class="col-md-4 control-label" for="comando">
+                        Comando da Funcionalidade do Sistema
+                    </label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="comando" name="comando" ng-model="cadastro.filtro.comando">
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.comando.$error.required">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Campo Obrigatório
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>

@@ -1,16 +1,11 @@
 package br.gov.df.emater.aterwebsrv.bo.pessoa;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-
 import javax.persistence.EntityManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.gov.df.emater.aterwebsrv.bo.BoException;
-import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaDao;
@@ -18,10 +13,6 @@ import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoSetor;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.FormularioDestino;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.Situacao;
-import br.gov.df.emater.aterwebsrv.modelo.dto.FormularioCadFiltroDto;
-import br.gov.df.emater.aterwebsrv.modelo.formulario.Formulario;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaArquivo;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaEmail;
@@ -43,10 +34,6 @@ public class VisualizarCmd extends _Comando {
 	@Autowired
 	private EntityManager em;
 
-	@Autowired
-	private FacadeBo facadeBo;
-
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		Integer id = (Integer) contexto.getRequisicao();
@@ -144,18 +131,6 @@ public class VisualizarCmd extends _Comando {
 		}
 		if (result.getUsuarioAlteracao() != null) {
 			result.setUsuarioAlteracao(result.getUsuarioAlteracao().infoBasica());
-		}
-
-		// captar os formularios ativos
-		_Contexto formularioResposta = facadeBo.formularioFiltroExecutar(contexto.getUsuario(), new FormularioCadFiltroDto(Confirmacao.S));
-		if (formularioResposta.getResposta() != null) {
-			List<Formulario> lista = new ArrayList<Formulario>();
-			for (Object[] diagnostico : (List<Object[]>) formularioResposta.getResposta()) {
-				if (FormularioDestino.PE.equals(diagnostico[6]) || (Confirmacao.S.equals(result.getPublicoAlvoConfirmacao()) && FormularioDestino.PA.equals(diagnostico[6]))) {					
-					lista.add(new Formulario((Integer) diagnostico[0], (String) diagnostico[1], (String) diagnostico[2], (Situacao) diagnostico[3], (Calendar) diagnostico[4], (Calendar) diagnostico[5]));
-				}
-			}
-			result.setDiagnosticoList(lista);
 		}
 
 		em.detach(result);

@@ -2,7 +2,7 @@
 /* jslint loopfunc: true */
 
 var IDLE_TEMPO = 5;
-var TIMEOUT_TEMPO = 2000000;
+var TIMEOUT_TEMPO = 200;
 
 (function(pNmModulo, pNmController, pNmFormulario) {
 
@@ -11,10 +11,9 @@ var TIMEOUT_TEMPO = 2000000;
     angular.module(pNmModulo, ['ui.bootstrap', 'ui.utils', 'ui.router', 'ngSanitize', 'ngAnimate', 'toastr', 'sticky',
         'ui.mask', 'ui.utils.masks', 'ui.navbar', 'ngCookies', 'uiGmapgoogle-maps', 'ngFileUpload', 'ngTagsInput', 'ui.tree',
         'ngIdle',
-        'mensagemSrv', 'segurancaSrv', 'utilSrv',
-        'frz.form', 'frz.tabela', 'frz.arquivo', 'frz.endereco', 'frz.painel.vidro', 'frz.navegador',
-        'casa', 'contrato', 'info',
-        'offline', 'pessoa', 'formulario', 'propriedadeRural', 'atividade', 'indiceProducao',
+        'mensagemSrv', 'segurancaSrv', 'utilSrv', 'frz.form', 'frz.tabela', 'frz.arquivo', 'frz.endereco', 'frz.painel.vidro', 'frz.navegador',
+        'casa', 'contrato', 'info', 'offline', 'pessoa', 'formulario', 'propriedadeRural', 'atividade', 'indiceProducao', 
+        'funcionalidade',
     ]);
 
     // inicio: codigo para habilitar o modal recursivo
@@ -399,7 +398,7 @@ var TIMEOUT_TEMPO = 2000000;
                 var authenticated = ($rootScope.token !== null && $rootScope.token.username !== null && $rootScope.token.username.length > 0) && ((!username) || (username && username === $rootScope.token.username));
                 if (authenticated) {
                     if (!Idle.running()) {
-                        Idle.watch();
+                        //Idle.watch();
                     }
                 } else {
                     if (Idle.running()) {
@@ -695,6 +694,7 @@ var TIMEOUT_TEMPO = 2000000;
             $rootScope.timeoutTempo = TIMEOUT_TEMPO;
 
             $rootScope.$on('IdleStart', function() {
+                inicializaDescansoTela();
                 $rootScope.exibeDescansoTela();
             });
             $rootScope.$on('IdleEnd', function() {
@@ -706,11 +706,47 @@ var TIMEOUT_TEMPO = 2000000;
                 $rootScope.executarLogout();
             });
 
-            if (!$rootScope.voceConheceList) {
+            var armazenarDescansoTela = function () {
                 SegurancaSrv.descansoTela().success(function(resposta) {
-                    $rootScope.voceConheceList = resposta.resultado;
+                    var apoio = localStorage.getItem('apoio');
+                    if (apoio) {
+                        apoio = JSON.parse(apoio);
+                    } else {
+                        apoio = {};
+                    }
+                    apoio.voceConhece = {};
+                    if (resposta && resposta.mensagem && resposta.mensagem === 'OK' && resposta.resultado) {
+                        apoio.voceConhece.lista = resposta.resultado;
+                        apoio.voceConhece.data = moment().add(1, 'days').format('DD/MM/YYYY');
+                        $rootScope.voceConheceList = apoio.voceConhece.lista;
+                    }
+                    localStorage.setItem('apoio', JSON.stringify(apoio));
                 });
-            }
+            };
+
+            var inicializaDescansoTela = function() {
+                if (!$rootScope.voceConheceList || !$rootScope.voceConheceList.length) {
+                    var apoio = localStorage.getItem('apoio');
+                    if (apoio) {
+                        apoio = JSON.parse(apoio);
+                    } else {
+                        apoio = {};
+                    }
+                    if (apoio && apoio.voceConhece) {
+                        var data = apoio.voceConhece.data ? moment(apoio.voceConhece.data, 'DD/MM/YYYY') : moment(new Date(), 'DD/MM/YYYY').subtract(1, 'days');
+                        var lista = apoio.voceConhece.lista ? apoio.voceConhece.lista : [];
+                        if (data.isBefore(moment())) {
+                            armazenarDescansoTela();
+                        } else {
+                            $rootScope.voceConheceList = lista;
+                        }
+                    } else {
+                        armazenarDescansoTela();
+                    }
+                }
+            };
+            
+            inicializaDescansoTela();
 
             $rootScope.exibeDescansoTela = function() {
                 $rootScope.descansoTela = $uibModal.open({

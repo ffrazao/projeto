@@ -1,0 +1,127 @@
+<div class="panel panel-default">
+    <div class="panel-heading container-fluid">
+        <frz-navegador
+        ng-model="atividadePessoaNvg" exibe-nome-botao="false"
+        dados="cadastro.registro[lista]"
+        acoes-especiais="acoesEspeciais"
+        on-abrir = "abrir()"
+        on-agir = "agir()"
+        on-editar = "editar()"
+        on-especial = "especial()"
+        on-excluir = "excluir()"
+        on-filtrar = "filtrar()"
+        on-incluir = "incluir()"
+        on-listar = "listar()"
+        on-navegar-primeiro = "navegarPrimeiro()"
+        on-navegar-anterior = "navegarAnterior()"
+        on-navegar-proximo = "navegarPosterior()"
+        on-navegar-ultimo = "navegarUltimo()"
+        on-proxima-pagina="proximaPagina()"
+        on-ultima-pagina="ultimaPagina()"
+        ></frz-navegador>
+    </div>
+    <div class="painel-body"  ng-hide="cadastro.registro[lista].length">
+        <div class="alert alert-warning" style="margin: 0px;" role="alert">
+            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+            Nenhum registro localizado!
+        </div>
+    </div>
+    <div class="table-responsive" ng-show="cadastro.registro[lista].length > 0">
+        <ng-form name="atividadePessoaListFrm">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <td colspan="8">
+                            <div class="input-group">
+                                <input type="text" class="form-control" ng-model="cadastro.apoio[lista].filtro.pessoa.nome" placeholder="Filtrar">
+                                <span class="input-group-btn">
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-default" ng-click="cadastro.apoio[lista].filtro.pessoa.nome = ''">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </button>
+                                    </div>
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><frz-seletor ng-model="atividadePessoaNvg" dados="cadastro.registro[lista]"></frz-seletor></th>
+                        <th>#</th>
+                        <th>Nome</th>
+                        <th>Principal</th>
+                        <th>Início</th>
+                        <th>Ativo</th>
+                        <th>Término</th>
+                        <th>Duração</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="reg in cadastro.registro[lista] | filter: cadastro.apoio[lista].filtro | filter: {cadastroAcao: '!E'} | pagina: atividadePessoaNvg.paginaAtual : atividadePessoaNvg.tamanhoPagina | limitTo: atividadePessoaNvg.tamanhoPagina | orderBy: ['pessoa.nome']">
+                        <td>
+                            <input type="radio" ng-show="atividadePessoaNvg.selecao.tipo === 'U'" ng-model="atividadePessoaNvg.selecao.item" ng-value="reg"/>
+                            <input type="checkbox" ng-show="atividadePessoaNvg.selecao.tipo === 'M'" checklist-model="atividadePessoaNvg.selecao.items" checklist-value="reg"/>
+                        </td>
+                        <td>
+                            {{$index + 1 + ((atividadePessoaNvg.paginaAtual-1) * atividadePessoaNvg.tamanhoPagina)}}
+                        </td>
+                        <td><a ng-click="modalVerPessoa(pessoa.id)">{{reg.pessoa.nome}}</a></td>
+                        <td>
+                            <div class="radio">
+                                <label for="principal">
+                                    <input type="radio" id="principal{{$index}}" name="principal" ng-model="cadastro.apoio.principal[lista]" ng-value="reg.pessoa" requied="true">
+                                </label>
+                            </div>
+                            <div class="label label-danger" ng-show="navegador.submetido && atividadePessoaListFrm.principal.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control input-sm" id="inicio" name="inicio{{$index}}" ng-model="reg.inicio" ui-date-mask required="true">
+                            <div class="label label-danger" ng-show="navegador.submetido && atividadePessoaListFrm.inicio{{$index}}.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                        <td>
+                            <div class="checkbox">
+                                <label for="ativo{{$index}}">
+                                    <input type="checkbox" id="ativo" name="ativo{{$index}}" ng-model="reg.ativo" ng-true-value="'S'" ng-false-value="'N'" ng-change="onAtivoMudar(reg)">
+                                </label>
+                            </div>
+                            <div class="label label-danger" ng-show="navegador.submetido && atividadePessoaListFrm.ativo{{$index}}.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control input-sm" id="termino" name="termino{{$index}}" ng-model="reg.termino" ui-date-mask ng-required="reg.ativo === 'N'">
+                            <div class="label label-danger" ng-show="navegador.submetido && atividadePessoaListFrm.termino{{$index}}.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                        <td>
+                            {{reg.duracao}}
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="8">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <b>Responsável</b> <a ng-click="modalVerPessoa(cadastro.apoio.principal[lista].id)">{{cadastro.apoio.principal[lista].nome}}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </ng-form>
+    </div>
+    <div class="panel-footer">
+    </div>
+</div>

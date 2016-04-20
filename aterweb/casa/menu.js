@@ -168,6 +168,12 @@
                 visivel: false,
                 subtree: [
                     {
+                        name: 'Funcionalidade',
+                        link: 'p.funcionalidade.filtro',
+                        funcionalidade: 'FUNCIONALIDADE',
+                        visivel: false,
+                    },
+                    {
                         name: 'Usuário',
                         link: 'p.usuario.filtro',
                         funcionalidade: 'USUARIO',
