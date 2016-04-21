@@ -1,5 +1,6 @@
 package br.gov.df.emater.aterwebsrv.modelo.sistema;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -20,21 +21,31 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 public class Funcionalidade extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Enumerated(EnumType.STRING)
 	private Confirmacao ativo;
-	
+
 	private String codigo;
-	
-	@OneToMany(mappedBy="funcionalidade")
+
+	@OneToMany(mappedBy = "funcionalidade")
 	private Set<FuncionalidadeComando> funcionalidadeComandoList;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
+	@OneToMany(mappedBy = "funcionalidade")
+	private Set<ModuloFuncionalidade> moduloFuncionalidadeList;
+
 	private String nome;
-	
+
+	public Funcionalidade() {
+	}
+
+	public Funcionalidade(Serializable id) {
+		super(id);
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -69,6 +80,10 @@ public class Funcionalidade extends EntidadeBase implements _ChavePrimaria<Integ
 		return this.id;
 	}
 
+	public Set<ModuloFuncionalidade> getModuloFuncionalidadeList() {
+		return moduloFuncionalidadeList;
+	}
+
 	public String getNome() {
 		return nome;
 	}
@@ -80,7 +95,7 @@ public class Funcionalidade extends EntidadeBase implements _ChavePrimaria<Integ
 		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
 		return result;
 	}
-	
+
 	public void setAtivo(Confirmacao ativo) {
 		this.ativo = ativo;
 	}
@@ -98,8 +113,12 @@ public class Funcionalidade extends EntidadeBase implements _ChavePrimaria<Integ
 		this.id = id;
 	}
 
+	public void setModuloFuncionalidadeList(Set<ModuloFuncionalidade> moduloFuncionalidadeList) {
+		this.moduloFuncionalidadeList = moduloFuncionalidadeList;
+	}
+
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
+
 }
