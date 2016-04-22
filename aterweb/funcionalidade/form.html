@@ -34,13 +34,14 @@
                             </div>
                         </div>
                     </div>
+                    [{{cadastro.registro}}]
                 </div>
                 <div class="row">
                     <div class="col-md-6" title="Módulos da Funcionalidade">
                         <div class="form-group" ng-class="{'ng-invalid': frm.formulario.moduloTotal.$error.ngValorMin}">
                             <label class="control-label" for="moduloTotal">Módulos da Funcionalidade</label>
 
-                            <ng-include src="'atividade/sub-assunto.html'" ng-controller="AtividadeAssuntoCtrl"/>
+                            <ng-include src="'funcionalidade/sub-modulo.html'" ng-controller="FuncionalidadeModuloCtrl"/>
 
                             <input type="hidden" id="moduloTotal" name="moduloTotal" ng-model="cadastro.registro.moduloList.length" ng-valor-min="1">
                             
@@ -54,7 +55,7 @@
                         <div class="form-group" ng-class="{'ng-invalid': frm.formulario.comandoTotal.$error.ngValorMin}">
                             <label class="control-label" for="comandoTotal">Comandos da Funcionalidade</label>
 
-                            <ng-include src="'atividade/sub-plano-acao.html'" ng-controller="AtividadePlanoAcaoCtrl"/>
+                            <ng-include src="'funcionalidade/sub-comando.html'" ng-controller="FuncionalidadeComandoCtrl"/>
 
                             <input type="hidden" id="comandoTotal" name="comandoTotal" ng-model="cadastro.registro.comandoList.length" ng-valor-min="1">
                             

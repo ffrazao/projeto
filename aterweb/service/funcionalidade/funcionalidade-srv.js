@@ -14,49 +14,38 @@ angular.module(pNmModulo).factory(pNmFactory,
               
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
                 UtilSrv.dominio({ent: [
-                   'PessoaGenero',
-                   'PessoaGeracao',
-                   'PessoaSituacao',
-                   'PublicoAlvoSegmento',
-                   'PublicoAlvoCategoria',
-                   'AtividadeFormato',
-                   'AtividadeFinalidade',
-                   'AtividadeNatureza',
-                   'AtividadePrioridade',
-                   'AtividadeSituacao',
-                   'Metodo',
-                   'Assunto',
+                   'Modulo',
+                   'Comando',
                    'Confirmacao',
                 ]}).success(function(resposta) {
                     if (resposta && resposta.resultado) {
-                        scp.cadastro.apoio.generoList = resposta.resultado[0];
-                        scp.cadastro.apoio.pessoaGeracaoList = resposta.resultado[1];
-                        scp.cadastro.apoio.pessoaSituacaoList = resposta.resultado[2];
-                        scp.cadastro.apoio.publicoAlvoSegmentoList = resposta.resultado[3];
-                        scp.cadastro.apoio.publicoAlvoCategoriaList = resposta.resultado[4];
-                        scp.cadastro.apoio.atividadeFormatoList = resposta.resultado[5];
-                        scp.cadastro.apoio.atividadeFinalidadeList = resposta.resultado[6];
-                        scp.cadastro.apoio.atividadeNaturezaList = resposta.resultado[7];
-                        scp.cadastro.apoio.atividadePrioridadeList = resposta.resultado[8];
-                        scp.cadastro.apoio.atividadeSituacaoList = resposta.resultado[9];
-                        scp.cadastro.apoio.metodoList = resposta.resultado[10];
-                        scp.cadastro.apoio.assuntoList = resposta.resultado[11];
-                        scp.cadastro.apoio.confirmacaoList = resposta.resultado[12];
-                   }
-                });
-                if ($rootScope.isAuthenticated()) {
-                    var t = $rootScope.token;
-                    if (t && t.lotacaoAtual && t.lotacaoAtual.pessoaJuridica) {
-                        scp.cadastro.apoio.localList = [];
-                        ComunidadeSrv.lista({pessoaJuridicaList: [angular.fromJson(t.lotacaoAtual.pessoaJuridica.id)]}, scp.cadastro.apoio.localList, t);
-                    } else {
-                        toastr.error('Não foi possível identificar a sua lotação', 'Erro ao carregar os dados');
+                        var i = 0;
+                        scp.cadastro.apoio.moduloList = resposta.resultado[i++];
+                        scp.cadastro.apoio.comandoList = resposta.resultado[i++];
+                        scp.cadastro.apoio.confirmacaoList = resposta.resultado[i++];
                     }
-                }
-                scp.cadastro.filtro.inicio = new Date();
-                scp.cadastro.filtro.inicio.setMonth(scp.cadastro.filtro.inicio.getMonth() - 6);
-                scp.cadastro.filtro.inicio.setDate(1);
-                scp.cadastro.filtro.termino = new Date();
+                    var involucro = null;
+                    if (scp.cadastro.apoio.moduloList) {
+                        involucro = [];
+                        scp.cadastro.apoio.moduloList.forEach(function(elemento) {
+                            delete elemento['@jsonId'];
+                            involucro.push({'modulo': elemento});
+                        });
+                        scp.cadastro.apoio.moduloList = angular.copy(involucro);
+                    } else {
+                        scp.cadastro.apoio.moduloList = [];
+                    }
+                    if (scp.cadastro.apoio.comandoList) {
+                        involucro = [];
+                        scp.cadastro.apoio.comandoList.forEach(function(elemento) {
+                            delete elemento['@jsonId'];
+                            involucro.push({'comando': elemento});
+                        });
+                        scp.cadastro.apoio.comandoList = angular.copy(involucro);
+                    } else {
+                        scp.cadastro.apoio.comandoList = [];
+                    }
+                });
 
             },
             filtrar : function(filtro) {
@@ -70,26 +59,28 @@ angular.module(pNmModulo).factory(pNmFactory,
                 SegurancaSrv.acesso(this.funcionalidade, 'INCLUIR');
                 return $http.get(this.endereco + '/novo');
             },
-            incluir : function(atividade) {
+            incluir : function(funcionalidade) {
                 SegurancaSrv.acesso(this.funcionalidade, 'INCLUIR');
-                return $http.post(this.endereco + '/incluir', atividade);
+                return $http.post(this.endereco + '/incluir', funcionalidade);
             },
             visualizar : function(id) {
                 SegurancaSrv.acesso(this.funcionalidade, 'VISUALIZAR');
                 return $http.get(this.endereco + '/visualizar', {params: {'id': id}});
             },
-            editar : function(atividade) {
+            editar : function(funcionalidade) {
                 SegurancaSrv.acesso(this.funcionalidade, 'EDITAR');
-                return $http.post(this.endereco + '/editar', atividade);
+                return $http.post(this.endereco + '/editar', funcionalidade);
             },
             excluir : function() {
                 SegurancaSrv.acesso(this.funcionalidade, 'EXCLUIR');
             },
-            tagUnidade : function(nome) {
-                return $http.post($rootScope.servicoUrl + '/unidade-organizacional/lista', {"nome":nome, "classificacao":["OP"]}, { cache: false } );
+            salvarComando : function(comando) {
+                SegurancaSrv.acesso(this.funcionalidade, 'INCLUIR');
+                return $http.post(this.endereco + '/salvar-comando', comando);
             },
-            tagComunidade : function( unidade, nome) {
-                return ComunidadeSrv.lista({"unidadeOrganizacionalList": [unidade], "nome":nome});
+            salvarModulo : function(modulo) {
+                SegurancaSrv.acesso(this.funcionalidade, 'INCLUIR');
+                return $http.post(this.endereco + '/salvar-modulo', modulo);
             },
 
         };

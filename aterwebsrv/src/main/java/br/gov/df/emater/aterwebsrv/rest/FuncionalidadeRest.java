@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
 import br.gov.df.emater.aterwebsrv.modelo.dto.FuncionalidadeCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Funcionalidade;
+import br.gov.df.emater.aterwebsrv.modelo.sistema.Modulo;
 
 @RestController
 @RequestMapping("/funcionalidade")
@@ -61,5 +62,12 @@ public class FuncionalidadeRest {
 	public Resposta visualizar(@RequestParam Integer id, Principal usuario) throws Exception {
 		return new Resposta(facadeBo.funcionalidadeVisualizar(usuario, id).getResposta());
 	}
+	
+	@RequestMapping(value = "/salvar-modulo", method = RequestMethod.POST)
+	public Resposta incluir(@RequestBody Modulo modulo, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.funcionalidadeSalvarModulo(usuario, modulo).getResposta());
+	}
+
+
 
 }

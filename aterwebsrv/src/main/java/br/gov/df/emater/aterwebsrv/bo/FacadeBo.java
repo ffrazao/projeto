@@ -35,7 +35,9 @@ import br.gov.df.emater.aterwebsrv.modelo.formulario.Formulario;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.FormularioVersao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
+import br.gov.df.emater.aterwebsrv.modelo.sistema.Comando;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Funcionalidade;
+import br.gov.df.emater.aterwebsrv.modelo.sistema.Modulo;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 
 @Service
@@ -86,38 +88,6 @@ public class FacadeBo implements BeanFactoryAware {
 	public _Contexto atividadeVisualizar(Principal usuario, Integer id) throws Exception {
 		return this._executar(usuario, "AtividadeVisualizarCh", id);
 	}
-	
-	@Transactional
-	public _Contexto funcionalidadeExcluir(Principal usuario, Funcionalidade funcionalidade) throws Exception {
-		return this._executar(usuario, "FuncionalidadeExcluirCh", funcionalidade);
-	}
-
-	@Transactional(readOnly = true)
-	public _Contexto funcionalidadeFiltroExecutar(Principal usuario, FuncionalidadeCadFiltroDto filtro) throws Exception {
-		return this._executar(usuario, "FuncionalidadeFiltroExecutarCh", filtro);
-	}
-
-	@Transactional(readOnly = true)
-	public _Contexto funcionalidadeFiltroNovo(Principal usuario) throws Exception {
-		return this._executar(usuario, "FuncionalidadeFiltroNovoCmd");
-	}
-
-	@Transactional(readOnly = true)
-	public _Contexto funcionalidadeNovo(Principal usuario, Funcionalidade funcionalidade) throws Exception {
-		return this._executar(usuario, "FuncionalidadeNovoCh", funcionalidade);
-	}
-
-	@Transactional
-	public _Contexto funcionalidadeSalvar(Principal usuario, Funcionalidade funcionalidade) throws Exception {
-		return this._executar(usuario, "FuncionalidadeSalvarCh", funcionalidade);
-	}
-
-	@Transactional(readOnly = true)
-	public _Contexto funcionalidadeVisualizar(Principal usuario, Integer id) throws Exception {
-		return this._executar(usuario, "FuncionalidadeVisualizarCh", id);
-	}
-
-
 
 	@Transactional(readOnly = true)
 	public _Contexto bemClassificacaoFiltroExecutar(Principal usuario, BemClassificacaoCadFiltroDto filtro) throws Exception {
@@ -193,6 +163,46 @@ public class FacadeBo implements BeanFactoryAware {
 		requisicao.put("codigo", codigo);
 		requisicao.put("posicao", posicao);
 		return this._executar(usuario, "FormularioVisualizarPorCodigoCh", requisicao);
+	}
+
+	@Transactional
+	public _Contexto funcionalidadeExcluir(Principal usuario, Funcionalidade funcionalidade) throws Exception {
+		return this._executar(usuario, "FuncionalidadeExcluirCh", funcionalidade);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto funcionalidadeFiltroExecutar(Principal usuario, FuncionalidadeCadFiltroDto filtro) throws Exception {
+		return this._executar(usuario, "FuncionalidadeFiltroExecutarCh", filtro);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto funcionalidadeFiltroNovo(Principal usuario) throws Exception {
+		return this._executar(usuario, "FuncionalidadeFiltroNovoCmd");
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto funcionalidadeNovo(Principal usuario, Funcionalidade funcionalidade) throws Exception {
+		return this._executar(usuario, "FuncionalidadeNovoCh", funcionalidade);
+	}
+
+	@Transactional
+	public _Contexto funcionalidadeSalvar(Principal usuario, Funcionalidade funcionalidade) throws Exception {
+		return this._executar(usuario, "FuncionalidadeSalvarCh", funcionalidade);
+	}
+
+	@Transactional
+	public _Contexto funcionalidadeSalvarComando(Principal usuario, Comando comando) throws Exception {
+		return this._executar(usuario, "FuncionalidadeSalvarComandoCh", comando);
+	}
+
+	@Transactional
+	public _Contexto funcionalidadeSalvarModulo(Principal usuario, Modulo modulo) throws Exception {
+		return this._executar(usuario, "FuncionalidadeSalvarModuloCh", modulo);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto funcionalidadeVisualizar(Principal usuario, Integer id) throws Exception {
+		return this._executar(usuario, "FuncionalidadeVisualizarCh", id);
 	}
 
 	@Transactional
@@ -309,7 +319,7 @@ public class FacadeBo implements BeanFactoryAware {
 	public _Contexto segurancaEsqueciSenha(String email) throws Exception {
 		return this._executar(null, "SegurancaEsqueciSenhaCh", email);
 	}
-	
+
 	@Transactional
 	public _Contexto segurancaRenovarSenha(Usuario usuario) throws Exception {
 		return this._executar(null, "SegurancaRenovarSenhaCmd", usuario);

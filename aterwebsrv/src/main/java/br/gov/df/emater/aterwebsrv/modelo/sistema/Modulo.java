@@ -3,6 +3,8 @@ package br.gov.df.emater.aterwebsrv.modelo.sistema;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,6 +13,7 @@ import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 
 /**
  * The persistent class for the modulo database table.
@@ -21,6 +24,9 @@ import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 public class Modulo extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
+
+	@Enumerated(EnumType.STRING)
+	private Confirmacao ativo;
 
 	private String codigo;
 
@@ -53,6 +59,10 @@ public class Modulo extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return true;
 	}
 
+	public Confirmacao getAtivo() {
+		return ativo;
+	}
+
 	public String getCodigo() {
 		return codigo;
 	}
@@ -76,6 +86,10 @@ public class Modulo extends EntidadeBase implements _ChavePrimaria<Integer> {
 		int result = super.hashCode();
 		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
 		return result;
+	}
+
+	public void setAtivo(Confirmacao ativo) {
+		this.ativo = ativo;
 	}
 
 	public void setCodigo(String codigo) {
