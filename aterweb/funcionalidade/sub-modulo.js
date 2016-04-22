@@ -101,7 +101,7 @@ angular.module(pNmModulo).controller(pNmController,
                         $scope.cadastro.registro.producaoFormaList = [];
                         $scope.funcionalidadeModuloNvg.setDados($scope.cadastro.registro.producaoFormaList);
                     }
-                    var composicao = pegaComposicaoId(conteudo);
+                    /*var composicao = pegaComposicaoId(conteudo);
                     var j, igual;
                     for (j in $scope.cadastro.registro.producaoFormaList) {
                         igual = angular.equals(composicao, pegaComposicaoId($scope.cadastro.registro.producaoFormaList[j]));
@@ -110,7 +110,7 @@ angular.module(pNmModulo).controller(pNmController,
                             toastr.warning('Um registro recentemente incluido, porém ainda não salvo, foi atualizado');
                             return;
                         }
-                    }
+                    }*/
                     $scope.cadastro.registro.producaoFormaList.push(conteudo);
                 }
             });
