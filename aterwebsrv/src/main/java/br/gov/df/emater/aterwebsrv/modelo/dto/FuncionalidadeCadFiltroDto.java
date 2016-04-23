@@ -1,36 +1,38 @@
 package br.gov.df.emater.aterwebsrv.modelo.dto;
 
+import java.util.Set;
+
 public class FuncionalidadeCadFiltroDto extends FiltroDtoCustom {
 
 	private static final long serialVersionUID = 1L;
 
-	private String comando;
+	private Set<TagDto> comando;
 
-	private String funcionalidade;
+	private Set<TagDto> funcionalidade;
 
-	private String modulo;
+	private Set<TagDto> modulo;
 
-	public String getComando() {
+	public Set<TagDto> getComando() {
 		return comando;
 	}
 
-	public String getFuncionalidade() {
+	public Set<TagDto> getFuncionalidade() {
 		return funcionalidade;
 	}
 
-	public String getModulo() {
+	public Set<TagDto> getModulo() {
 		return modulo;
 	}
 
-	public void setComando(String comando) {
+	public void setComando(Set<TagDto> comando) {
 		this.comando = comando;
 	}
 
-	public void setFuncionalidade(String funcionalidade) {
+	public void setFuncionalidade(Set<TagDto> funcionalidade) {
 		this.funcionalidade = funcionalidade;
 	}
 
-	public void setModulo(String modulo) {
+	public void setModulo(Set<TagDto> modulo) {
 		this.modulo = modulo;
 	}
 

@@ -8,7 +8,7 @@
                         Módulo do Sistema
                     </label>
                     <div class="col-md-6">
-                        <input type="text" class="form-control" id="modulo" name="modulo" ng-model="cadastro.filtro.modulo">
+                        <tags-input id="modulo" name="modulo" ng-model="cadastro.filtro.modulo" placeholder="Digite o nome, ou parte dele, e tecle enter" replace-spaces-with-dashes="false"></tags-input>
                         <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.modulo.$error.required">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             Campo Obrigatório
@@ -20,7 +20,7 @@
                         Funcionalidade do Sistema
                     </label>
                     <div class="col-md-6">
-                        <input type="text" class="form-control" id="funcionalidade" name="funcionalidade" ng-model="cadastro.filtro.funcionalidade">
+                        <tags-input id="funcionalidade" name="funcionalidade" ng-model="cadastro.filtro.funcionalidade" placeholder="Digite o nome, ou parte dele, e tecle enter" replace-spaces-with-dashes="false"></tags-input>
                         <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.funcionalidade.$error.required">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             Campo Obrigatório
@@ -32,7 +32,7 @@
                         Comando da Funcionalidade do Sistema
                     </label>
                     <div class="col-md-6">
-                        <input type="text" class="form-control" id="comando" name="comando" ng-model="cadastro.filtro.comando">
+                        <tags-input id="comando" name="comando" ng-model="cadastro.filtro.comando" placeholder="Digite o nome, ou parte dele, e tecle enter" replace-spaces-with-dashes="false"></tags-input>
                         <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.comando.$error.required">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             Campo Obrigatório

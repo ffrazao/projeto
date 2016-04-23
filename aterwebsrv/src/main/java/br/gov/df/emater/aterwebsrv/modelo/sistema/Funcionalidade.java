@@ -13,12 +13,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 
 @Entity
 @Table(name = "funcionalidade", schema = EntidadeBase.SISTEMA_SCHEMA)
-public class Funcionalidade extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class Funcionalidade extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<Funcionalidade> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -40,6 +41,13 @@ public class Funcionalidade extends EntidadeBase implements _ChavePrimaria<Integ
 	private String nome;
 
 	public Funcionalidade() {
+	}
+
+	public Funcionalidade(Integer id, String nome, String codigo, Confirmacao ativo) {
+		this.id = id;
+		this.nome = nome;
+		this.codigo = codigo;
+		this.ativo = ativo;
 	}
 
 	public Funcionalidade(Serializable id) {
@@ -94,6 +102,11 @@ public class Funcionalidade extends EntidadeBase implements _ChavePrimaria<Integ
 		int result = super.hashCode();
 		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
 		return result;
+	}
+
+	@Override
+	public Funcionalidade infoBasica() {
+		return new Funcionalidade(getId(), getNome(), getCodigo(), getAtivo());
 	}
 
 	public void setAtivo(Confirmacao ativo) {

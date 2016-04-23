@@ -43,9 +43,9 @@ public class UtilDaoImpl implements UtilDao {
 	 *            definição da ordem dos dados
 	 * @return a relação das entidades em formato JSon
 	 */
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public List<?> getDominio(String entidade, String nomeChavePrimaria, String valorChavePrimaria, String order) {
+	public List<?> getDominio(String entidade, String nomeChavePrimaria, String valorChavePrimaria, String order, String nomeEnum) throws DaoException {
 		if (logger.isTraceEnabled()) {
 			logger.trace(String.format("Recuperando domínio para Entidade[%s], NomeChavePrimaria[%s], ValorChavePrim�ria[%s]", entidade, nomeChavePrimaria, valorChavePrimaria));
 		}
@@ -69,7 +69,13 @@ public class UtilDaoImpl implements UtilDao {
 			try {
 				query.setParameter("1", Integer.parseInt(valorChavePrimaria));
 			} catch (NumberFormatException e) {
-				query.setParameter("1", valorChavePrimaria);
+				try {
+					query.setParameter("1", valorChavePrimaria);
+				} catch (IllegalArgumentException ex) {
+					Class<?> enumList = getEnumClass(nomeEnum);
+					Object vlr = Enum.valueOf((Class<Enum>) enumList, valorChavePrimaria);
+					query.setParameter("1", vlr);
+				}
 			}
 		}
 
@@ -95,48 +101,61 @@ public class UtilDaoImpl implements UtilDao {
 	 *            nome da Enumeração a ser chamada
 	 */
 	@Override
-	public List<Map<String, Object>> getEnumeracao(String enumeracao) throws Exception {
-		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
-		Class<?> c = null;
+	public List<Map<String, Object>> getEnumeracao(String enumeracao) throws DaoException {
 		try {
-			c = Class.forName(String.format("br.gov.df.emater.aterwebsrv.modelo.dominio.%s", enumeracao));
+			List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+
+			Class<?> c = getEnumClass(enumeracao);
+			if (c == null) {
+				return null;
+			}
+			boolean emOrdem = false;
+			for (Field campo : c.getDeclaredFields()) {
+				if (campo.isEnumConstant()) {
+					Map<String, Object> item = new HashMap<String, Object>();
+					item.put("codigo", ((Enum<?>) campo.get(c)).name());
+
+					if (campo.getDeclaringClass().getDeclaredFields() != null) {
+						for (Field subCampo : campo.getDeclaringClass().getDeclaredFields()) {
+							if (!subCampo.isEnumConstant() && !"ENUM$VALUES".equals(subCampo.getName())) {
+								subCampo.setAccessible(true);
+								item.put(subCampo.getName(), subCampo.get(campo.get(c)));
+								if (!emOrdem && "ordem".equals(subCampo.getName())) {
+									emOrdem = true;
+								}
+							}
+						}
+					}
+					result.add(item);
+				}
+			}
+			if (emOrdem) {
+				Collections.sort(result, new Comparator<Map<String, Object>>() {
+					@Override
+					public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+						return ((Integer) o1.get("ordem")).compareTo(((Integer) o2.get("ordem")));
+					}
+				});
+			}
+			return result;
+		} catch (Exception e) {
+			throw new DaoException(e);
+		}
+	}
+
+	private Class<?> getEnumClass(String enumeracao) throws DaoException {
+		Class<?> result = null;
+		try {
+			result = Class.forName(String.format("br.gov.df.emater.aterwebsrv.modelo.dominio.%s", enumeracao));
 		} catch (ClassNotFoundException e) {
 			try {
-				c = Class.forName(enumeracao);
+				result = Class.forName(enumeracao);
 			} catch (ClassNotFoundException e1) {
 				return null;
 			}
 		}
-		if (!c.isEnum()) {
+		if (!result.isEnum()) {
 			throw new DaoException(String.format("%s não é uma enumeração válida!", enumeracao));
-		}
-		boolean emOrdem = false;
-		for (Field campo : c.getDeclaredFields()) {
-			if (campo.isEnumConstant()) {
-				Map<String, Object> item = new HashMap<String, Object>();
-				item.put("codigo", ((Enum<?>) campo.get(c)).name());
-
-				if (campo.getDeclaringClass().getDeclaredFields() != null) {
-					for (Field subCampo : campo.getDeclaringClass().getDeclaredFields()) {
-						if (!subCampo.isEnumConstant() && !"ENUM$VALUES".equals(subCampo.getName())) {
-							subCampo.setAccessible(true);
-							item.put(subCampo.getName(), subCampo.get(campo.get(c)));
-							if (!emOrdem && "ordem".equals(subCampo.getName())) {
-								emOrdem = true;
-							}
-						}
-					}
-				}
-				result.add(item);
-			}
-		}
-		if (emOrdem) {
-			Collections.sort(result, new Comparator<Map<String, Object>>() {
-				@Override
-				public int compare(Map<String, Object> o1, Map<String, Object> o2) {
-					return ((Integer) o1.get("ordem")).compareTo(((Integer) o2.get("ordem")));
-				}
-			});
 		}
 		return result;
 	}

@@ -3,15 +3,16 @@
 'use strict';
 
 angular.module(pNmModulo).controller(pNmController,
-    ['$scope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv', 'mensagemSrv', '$log', 'FuncionalidadeSrv',
-    function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv, $log, FuncionalidadeSrv) {
+    ['$scope', '$rootScope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv', 'mensagemSrv', '$log', 'FuncionalidadeSrv',
+    '$timeout',
+    function($scope, $rootScope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv, $log, FuncionalidadeSrv, $timeout) {
 
     // inicio rotinas de apoio
     var jaCadastrado = function(conteudo) {
         conteudo.codigo = conteudo.codigo.toUpperCase();
-        for (var j in $scope.cadastro.apoio.moduloList) {
-            if (angular.equals($scope.cadastro.apoio.moduloList[j].modulo.codigo, conteudo.codigo) && !angular.equals($scope.cadastro.apoio.moduloList[j].modulo.id, conteudo.id)) {
-                if ($scope.cadastro.apoio.moduloList[j].cadastroAcao === 'E') {
+        for (var j in $scope.cadastro.apoio.moduloFuncionalidadeList) {
+            if (angular.equals($scope.cadastro.apoio.moduloFuncionalidadeList[j].modulo.codigo, conteudo.codigo) && !angular.equals($scope.cadastro.apoio.moduloFuncionalidadeList[j].modulo.id, conteudo.id)) {
+                if ($scope.cadastro.apoio.moduloFuncionalidadeList[j].cadastroAcao === 'E') {
                     return true;
                 } else {
                     toastr.error('Registro já cadastrado');
@@ -26,10 +27,10 @@ angular.module(pNmModulo).controller(pNmController,
 
     // inicio das operaçoes atribuidas ao navagador
     var init = function() {
-        if (!angular.isArray($scope.cadastro.apoio.modulolist)) {
-            $scope.cadastro.apoio.modulolist = [];
+        if (!angular.isArray($scope.cadastro.apoio.moduloFuncionalidadeList)) {
+            $scope.cadastro.apoio.moduloFuncionalidadeList = [];
         }
-        $scope.funcionalidadeModuloNvg = new FrzNavegadorParams($scope.cadastro.apoio.modulolist, 4);
+        $scope.funcionalidadeModuloNvg = new FrzNavegadorParams($scope.cadastro.apoio.moduloFuncionalidadeList, 4);
     };
     init();
 
@@ -101,16 +102,6 @@ angular.module(pNmModulo).controller(pNmController,
                         $scope.cadastro.registro.producaoFormaList = [];
                         $scope.funcionalidadeModuloNvg.setDados($scope.cadastro.registro.producaoFormaList);
                     }
-                    /*var composicao = pegaComposicaoId(conteudo);
-                    var j, igual;
-                    for (j in $scope.cadastro.registro.producaoFormaList) {
-                        igual = angular.equals(composicao, pegaComposicaoId($scope.cadastro.registro.producaoFormaList[j]));
-                        if (igual) {
-                            $scope.cadastro.registro.producaoFormaList[j] = angular.copy(conteudo);
-                            toastr.warning('Um registro recentemente incluido, porém ainda não salvo, foi atualizado');
-                            return;
-                        }
-                    }*/
                     $scope.cadastro.registro.producaoFormaList.push(conteudo);
                 }
             });
@@ -119,7 +110,9 @@ angular.module(pNmModulo).controller(pNmController,
             //$log.info('Modal dismissed at: ' + new Date());
         });
     };
-
+    $scope.$on('visualizarDepois', function() {
+        $timeout($scope.abrir(), 1000);
+    });
 
     $scope.abrir = function() { 
         $scope.funcionalidadeModuloNvg.mudarEstado('ESPECIAL');

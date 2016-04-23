@@ -106,13 +106,14 @@ public class FacadeBo implements BeanFactoryAware {
 	}
 
 	@Transactional(readOnly = true)
-	public _Contexto dominio(Principal usuario, String[] ent, String npk, String vpk, String order, String[] fetchs) throws Exception {
+	public _Contexto dominio(Principal usuario, String[] ent, String npk, String vpk, String order, String[] fetchs, String nomeEnum) throws Exception {
 		Map<String, Object> requisicao = new HashMap<String, Object>();
 		requisicao.put("entidade", ent);
 		requisicao.put("nomeChavePrimaria", npk);
 		requisicao.put("valorChavePrimaria", vpk);
 		requisicao.put("order", order);
 		requisicao.put("fetchs", fetchs);
+		requisicao.put("nomeEnum", nomeEnum);
 
 		return this._executar(usuario, "DominioCh", requisicao);
 	}

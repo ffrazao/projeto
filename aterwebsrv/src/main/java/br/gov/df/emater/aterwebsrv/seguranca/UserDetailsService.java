@@ -50,7 +50,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 			// usuario
 			for (PerfilFuncionalidadeComando fc : usuarioPerfil.getPerfil().getPerfilFuncionalidadeComandoList()) {
 				// ignorar as funcionalidades inativas
-				if (Confirmacao.N.equals(fc.getFuncionalidadeComando().getFuncionalidade().getAtivo())) {
+				if (Confirmacao.N.equals(fc.getFuncionalidadeComando().getFuncionalidade().getAtivo()) || Confirmacao.N.equals(fc.getFuncionalidadeComando().getComando().getAtivo())) {
 					continue;
 				}
 				String funcionalidade = fc.getFuncionalidadeComando().getFuncionalidade().getCodigo();

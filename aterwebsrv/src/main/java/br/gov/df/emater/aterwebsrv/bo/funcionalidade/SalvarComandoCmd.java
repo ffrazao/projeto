@@ -21,7 +21,7 @@ public class SalvarComandoCmd extends _Comando {
 	public boolean executar(_Contexto contexto) throws Exception {
 		Comando result = (Comando) contexto.getRequisicao();
 
-		dao.saveAndFlush(result);
+		dao.save(result);
 
 		contexto.setResposta(result.getId());
 		return false;

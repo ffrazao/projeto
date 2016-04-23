@@ -20,30 +20,32 @@ angular.module(pNmModulo).factory(pNmFactory,
                 ]}).success(function(resposta) {
                     if (resposta && resposta.resultado) {
                         var i = 0;
-                        scp.cadastro.apoio.moduloList = resposta.resultado[i++];
-                        scp.cadastro.apoio.comandoList = resposta.resultado[i++];
-                        scp.cadastro.apoio.confirmacaoList = resposta.resultado[i++];
+                        scp.cadastro.apoio.moduloFuncionalidadeList = angular.isArray(scp.cadastro.apoio.moduloFuncionalidadeList) ? angular.merge(scp.cadastro.apoio.moduloFuncionalidadeList, resposta.resultado[i++]) : resposta.resultado[i++];
+                        scp.cadastro.apoio.funcionalidadeComandoList = angular.isArray(scp.cadastro.apoio.funcionalidadeComandoList) ? angular.merge(scp.cadastro.apoio.funcionalidadeComandoList, resposta.resultado[i++]) : resposta.resultado[i++];
+                        scp.cadastro.apoio.confirmacaoList = angular.isArray(scp.cadastro.apoio.confirmacaoList) ? angular.merge(scp.cadastro.apoio.confirmacaoList, resposta.resultado[i++]) : resposta.resultado[i++];
                     }
                     var involucro = null;
-                    if (scp.cadastro.apoio.moduloList) {
+                    if (scp.cadastro.apoio.moduloFuncionalidadeList) {
                         involucro = [];
-                        scp.cadastro.apoio.moduloList.forEach(function(elemento) {
+                        angular.forEach(scp.cadastro.apoio.moduloFuncionalidadeList, function(elemento) {
                             delete elemento['@jsonId'];
                             involucro.push({'modulo': elemento});
                         });
-                        scp.cadastro.apoio.moduloList = angular.copy(involucro);
+                        scp.cadastro.apoio.moduloFuncionalidadeList.splice(0, scp.cadastro.apoio.moduloFuncionalidadeList.length);
+                        scp.cadastro.apoio.moduloFuncionalidadeList = angular.merge(scp.cadastro.apoio.moduloFuncionalidadeList, involucro);
                     } else {
-                        scp.cadastro.apoio.moduloList = [];
+                        scp.cadastro.apoio.moduloFuncionalidadeList = [];
                     }
-                    if (scp.cadastro.apoio.comandoList) {
+                    if (scp.cadastro.apoio.funcionalidadeComandoList) {
                         involucro = [];
-                        scp.cadastro.apoio.comandoList.forEach(function(elemento) {
+                        angular.forEach(scp.cadastro.apoio.funcionalidadeComandoList, function(elemento) {
                             delete elemento['@jsonId'];
                             involucro.push({'comando': elemento});
                         });
-                        scp.cadastro.apoio.comandoList = angular.copy(involucro);
+                        scp.cadastro.apoio.funcionalidadeComandoList.splice(0, scp.cadastro.apoio.funcionalidadeComandoList.length);
+                        scp.cadastro.apoio.funcionalidadeComandoList = angular.merge(scp.cadastro.apoio.funcionalidadeComandoList, involucro);
                     } else {
-                        scp.cadastro.apoio.comandoList = [];
+                        scp.cadastro.apoio.funcionalidadeComandoList = [];
                     }
                 });
 

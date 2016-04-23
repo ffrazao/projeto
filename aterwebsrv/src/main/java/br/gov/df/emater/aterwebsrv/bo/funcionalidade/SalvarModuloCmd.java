@@ -21,7 +21,7 @@ public class SalvarModuloCmd extends _Comando {
 	public boolean executar(_Contexto contexto) throws Exception {
 		Modulo result = (Modulo) contexto.getRequisicao();
 
-		dao.saveAndFlush(result);
+		dao.save(result);
 
 		contexto.setResposta(result.getId());
 		return false;

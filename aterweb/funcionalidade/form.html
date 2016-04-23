@@ -34,7 +34,6 @@
                             </div>
                         </div>
                     </div>
-                    [{{cadastro.registro}}]
                 </div>
                 <div class="row">
                     <div class="col-md-6" title="Módulos da Funcionalidade">
@@ -43,7 +42,7 @@
 
                             <ng-include src="'funcionalidade/sub-modulo.html'" ng-controller="FuncionalidadeModuloCtrl"/>
 
-                            <input type="hidden" id="moduloTotal" name="moduloTotal" ng-model="cadastro.registro.moduloList.length" ng-valor-min="1">
+                            <input type="hidden" id="moduloTotal" name="moduloTotal" ng-model="cadastro.registro.moduloFuncionalidadeList.length" ng-valor-min="1">
                             
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.moduloTotal.$error.ngValorMin">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -57,7 +56,7 @@
 
                             <ng-include src="'funcionalidade/sub-comando.html'" ng-controller="FuncionalidadeComandoCtrl"/>
 
-                            <input type="hidden" id="comandoTotal" name="comandoTotal" ng-model="cadastro.registro.comandoList.length" ng-valor-min="1">
+                            <input type="hidden" id="comandoTotal" name="comandoTotal" ng-model="cadastro.registro.funcionalidadeComandoList.length" ng-valor-min="1">
                             
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.comandoTotal.$error.ngValorMin">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>

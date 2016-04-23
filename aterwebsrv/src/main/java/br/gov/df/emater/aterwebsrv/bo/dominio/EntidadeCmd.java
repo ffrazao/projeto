@@ -27,12 +27,13 @@ public class EntidadeCmd extends _Comando {
 		String valorChavePrimaria = (String) requisicao.get("valorChavePrimaria");
 		String order = (String) requisicao.get("order");
 		String[] fetchs = (String[]) requisicao.get("fetchs");
+		String nomeEnum = (String) requisicao.get("nomeEnum");
 
 		List[] result = (List[]) contexto.getResposta();
 
 		for (int i = 0; i < result.length; i++) {
 			if (result[i] == null) {
-				result[i] = dao.getDominio(entidade[i], nomeChavePrimaria, valorChavePrimaria, order);
+				result[i] = dao.getDominio(entidade[i], nomeChavePrimaria, valorChavePrimaria, order, nomeEnum);
 				fetch(result[i], entidade[i], fetchs);
 			}
 		}

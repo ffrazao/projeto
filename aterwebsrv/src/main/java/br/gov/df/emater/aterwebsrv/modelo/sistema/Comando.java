@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.sistema;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -9,12 +11,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 
 @Entity
 @Table(name = "comando", schema = EntidadeBase.SISTEMA_SCHEMA)
-public class Comando extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class Comando extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<Comando> {
 
 	public static enum Codigo {
 		CONSULTAR("Consultar"), EDITAR("Editar"), EXCLUIR("Excluir"), INCLUIR("Incluir"), VISUALIZAR("Visualizar");
@@ -43,6 +46,20 @@ public class Comando extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private String nome;
 
+	public Comando() {
+	}
+
+	public Comando(Serializable id) {
+		super(id);
+	}
+
+	public Comando(Integer id, String nome, String codigo, Confirmacao ativo) {
+		this.id = id;
+		this.nome = nome;
+		this.codigo = codigo;
+		this.ativo = ativo;
+	}
+
 	public Confirmacao getAtivo() {
 		return ativo;
 	}
@@ -58,6 +75,11 @@ public class Comando extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	public String getNome() {
 		return nome;
+	}
+
+	@Override
+	public Comando infoBasica() {
+		return new Comando(getId(), getNome(), getCodigo(), getAtivo());
 	}
 
 	public void setAtivo(Confirmacao ativo) {

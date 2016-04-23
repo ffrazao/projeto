@@ -10,6 +10,8 @@ import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.sistema.FuncionalidadeDao;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Funcionalidade;
+import br.gov.df.emater.aterwebsrv.modelo.sistema.FuncionalidadeComando;
+import br.gov.df.emater.aterwebsrv.modelo.sistema.ModuloFuncionalidade;
 
 @Service("FuncionalidadeVisualizarCmd")
 public class VisualizarCmd extends _Comando {
@@ -23,13 +25,26 @@ public class VisualizarCmd extends _Comando {
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		Integer id = (Integer) contexto.getRequisicao();
-		Funcionalidade result = dao.findOne(id);
+		Funcionalidade funcionalidade = dao.findOne(id);
 
-		if (result == null) {
+		if (funcionalidade == null) {
 			throw new BoException("Registro não localizado");
 		}
-
-		em.detach(result);
+		// fetch nas dependencias
+		for (ModuloFuncionalidade moduloFuncionalidade: funcionalidade.getModuloFuncionalidadeList()) {
+			moduloFuncionalidade.setFuncionalidade(null);
+			moduloFuncionalidade.setModulo(moduloFuncionalidade.getModulo().infoBasica());
+		}
+		for (FuncionalidadeComando funcionalidadeComando: funcionalidade.getFuncionalidadeComandoList()) {
+			funcionalidadeComando.setFuncionalidade(null);
+			funcionalidadeComando.setComando(funcionalidadeComando.getComando().infoBasica());
+		}
+		em.detach(funcionalidade);
+		
+		Funcionalidade result = funcionalidade.infoBasica();
+		result.setModuloFuncionalidadeList(funcionalidade.getModuloFuncionalidadeList());
+		result.setFuncionalidadeComandoList(funcionalidade.getFuncionalidadeComandoList());
+		
 		contexto.setResposta(result);
 
 		return false;

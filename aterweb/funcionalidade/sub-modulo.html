@@ -2,7 +2,7 @@
     <div class="panel-heading container-fluid">
         <frz-navegador
         ng-model="funcionalidadeModuloNvg" exibe-nome-botao="false"
-        dados="cadastro.apoio.moduloList"
+        dados="cadastro.apoio.moduloFuncionalidadeList"
         acoes-especiais="acoesEspeciais"
         on-abrir = "abrir()"
         on-agir = "agir()"
@@ -20,18 +20,18 @@
         on-ultima-pagina="ultimaPagina()"
         ></frz-navegador>
     </div>
-    <div class="painel-body"  ng-hide="cadastro.apoio.moduloList.length">
+    <div class="painel-body"  ng-hide="cadastro.apoio.moduloFuncionalidadeList.length">
         <div class="alert alert-warning" style="margin: 0px;" role="alert">
             <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
             Nenhum registro localizado!
         </div>
     </div>
-    <div class="table-responsive" ng-show="cadastro.apoio.moduloList.length > 0">
-        <ng-form name="moduloListFrm">
+    <div class="table-responsive" ng-show="cadastro.apoio.moduloFuncionalidadeList.length > 0">
+        <ng-form name="moduloFuncionalidadeListFrm">
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th><frz-seletor ng-model="funcionalidadeModuloNvg" dados="cadastro.apoio.moduloList"></frz-seletor></th>
+                        <th><frz-seletor ng-model="funcionalidadeModuloNvg" dados="cadastro.apoio.moduloFuncionalidadeList"></frz-seletor></th>
                         <th>#</th>
                         <th>Pertence</th>
                         <th>Módulo</th>
@@ -40,7 +40,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="reg in cadastro.apoio.moduloList | filter: {cadastroAcao: '!E'} | pagina: funcionalidadeModuloNvg.paginaAtual : funcionalidadeModuloNvg.tamanhoPagina | limitTo: funcionalidadeModuloNvg.tamanhoPagina | orderBy: ['modulo.nome']">
+                    <tr ng-repeat="reg in cadastro.apoio.moduloFuncionalidadeList | filter: {cadastroAcao: '!E'} | pagina: funcionalidadeModuloNvg.paginaAtual : funcionalidadeModuloNvg.tamanhoPagina | limitTo: funcionalidadeModuloNvg.tamanhoPagina | orderBy: ['modulo.nome']">
                         <td>
                             <input type="radio" ng-show="funcionalidadeModuloNvg.selecao.tipo === 'U'" ng-model="funcionalidadeModuloNvg.selecao.item" ng-value="reg"/>
                             <input type="checkbox" ng-show="funcionalidadeModuloNvg.selecao.tipo === 'M'" checklist-model="funcionalidadeModuloNvg.selecao.items" checklist-value="reg"/>
@@ -49,7 +49,7 @@
                             {{$index + 1 + ((funcionalidadeModuloNvg.paginaAtual-1) * funcionalidadeModuloNvg.tamanhoPagina)}}
                         </td>
                         <td>
-                            <input type="checkbox" checklist-model="cadastro.registro.moduloList" checklist-value="reg"></input>
+                            <input type="checkbox" checklist-model="cadastro.registro.moduloFuncionalidadeList" checklist-value="reg"></input>
                         </td>
                         <td>
                             {{reg.modulo.nome}}

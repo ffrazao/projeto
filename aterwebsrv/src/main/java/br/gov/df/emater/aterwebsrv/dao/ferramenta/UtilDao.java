@@ -3,6 +3,7 @@ package br.gov.df.emater.aterwebsrv.dao.ferramenta;
 import java.util.List;
 import java.util.Map;
 
+import br.gov.df.emater.aterwebsrv.dao.DaoException;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacao;
 
 public interface UtilDao {
@@ -18,7 +19,7 @@ public interface UtilDao {
 	 *            valor da chave prim�ria da entidade
 	 * @return a rela��o das entidades
 	 */
-	List<?> getDominio(String entidade, String nomeChavePrimaria, String valorChavePrimaria, String order);
+	List<?> getDominio(String entidade, String nomeChavePrimaria, String valorChavePrimaria, String order, String nomeEnum) throws DaoException;
 
 	/**
 	 * Método genérico para retorno de Enumerações do sistema (enum)
@@ -26,7 +27,7 @@ public interface UtilDao {
 	 * @param enumeracao
 	 *            nome da Enumeração a ser chamada
 	 */
-	List<Map<String, Object>> getEnumeracao(String enumeracao) throws Exception;
+	List<Map<String, Object>> getEnumeracao(String enumeracao) throws DaoException;
 
 	Map<String, Object> ipaBemClassificacaoDetalhes(BemClassificacao bemClassificacao);
 

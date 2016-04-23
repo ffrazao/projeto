@@ -36,9 +36,9 @@ public class UtilRest {
 	}
 
 	@RequestMapping(value = "dominio", method = RequestMethod.GET)
-	public Resposta getDominio(@RequestParam(required = true) String[] ent, @RequestParam(required = false) String npk, @RequestParam(required = false) String vpk, @RequestParam(required = false) String order, @RequestParam(required = false) String[] fetchs, Principal usuario)
+	public Resposta getDominio(@RequestParam(required = true) String[] ent, @RequestParam(required = false) String npk, @RequestParam(required = false) String vpk, @RequestParam(required = false) String order, @RequestParam(required = false) String[] fetchs, @RequestParam(required = false) String nomeEnum, Principal usuario)
 			throws Exception {
-		return new Resposta(facadeBo.dominio(usuario, ent, npk, vpk, order, fetchs).getResposta());
+		return new Resposta(facadeBo.dominio(usuario, ent, npk, vpk, order, fetchs, nomeEnum).getResposta());
 	}
 
 	@ResponseStatus(HttpStatus.OK)

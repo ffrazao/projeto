@@ -1,5 +1,6 @@
 package br.gov.df.emater.aterwebsrv.modelo.sistema;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -12,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 
@@ -21,7 +23,7 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
  */
 @Entity
 @Table(name = "modulo", schema = EntidadeBase.SISTEMA_SCHEMA)
-public class Modulo extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class Modulo extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<Modulo> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -40,6 +42,17 @@ public class Modulo extends EntidadeBase implements _ChavePrimaria<Integer> {
 	private String nome;
 
 	public Modulo() {
+	}
+
+	public Modulo(Serializable id) {
+		super(id);
+	}
+
+	public Modulo(Integer id, String nome, String codigo, Confirmacao ativo) {
+		this.id = id;
+		this.nome = nome;
+		this.codigo = codigo;
+		this.ativo = ativo;
 	}
 
 	@Override
@@ -86,6 +99,11 @@ public class Modulo extends EntidadeBase implements _ChavePrimaria<Integer> {
 		int result = super.hashCode();
 		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
 		return result;
+	}
+
+	@Override
+	public Modulo infoBasica() {
+		return new Modulo(getId(), getNome(), getCodigo(), getAtivo());
 	}
 
 	public void setAtivo(Confirmacao ativo) {

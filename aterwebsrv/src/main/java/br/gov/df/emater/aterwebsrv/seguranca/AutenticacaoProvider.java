@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.seguranca;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -10,8 +12,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
+import br.gov.df.emater.aterwebsrv.dao.sistema.ModuloDao;
 import br.gov.df.emater.aterwebsrv.dao.sistema.UsuarioDao;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.UsuarioStatusConta;
+import br.gov.df.emater.aterwebsrv.modelo.sistema.Modulo;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 
 /**
@@ -28,6 +33,9 @@ public class AutenticacaoProvider extends DaoAuthenticationProvider {
 	@Autowired
 	private UsuarioDao dao;
 
+	@Autowired
+	private ModuloDao moduloDao;
+	
 	public AutenticacaoProvider() {
 		ReflectionSaltSource ss = new ReflectionSaltSource();
 		ss.setUserPropertyToUse("id");
@@ -35,6 +43,7 @@ public class AutenticacaoProvider extends DaoAuthenticationProvider {
 		this.setPasswordEncoder(new Md5PasswordEncoder());
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Authentication authenticate(Authentication autenticacao) throws AuthenticationException {
 		Authentication result;
@@ -60,6 +69,13 @@ public class AutenticacaoProvider extends DaoAuthenticationProvider {
 			}
 			throw e;
 		}
+		// Filtrar modulos ativos 
+		Map<String,Object> details = (Map<String,Object>) autenticacao.getDetails();
+		Modulo modulo = moduloDao.findOne(Integer.parseInt((String) details.get("MODULO")));
+		if (Confirmacao.N.equals(modulo.getAtivo())) {
+			throw new BadCredentialsException("Tentativa de acesso a um módulo inativo!");
+		}
+		
 		if (result.isAuthenticated()) {
 			Usuario u = dao.findOne(((Usuario) result.getPrincipal()).getId());
 			u.setTentativaAcessoInvalido(null);

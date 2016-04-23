@@ -122,6 +122,21 @@
             // fim: atividades do Modal
 
             // inicio das operaçoes atribuidas ao navagador
+            $scope.visualizarDepois = function(registro) {
+                removerCampo(registro, ['@jsonId']);
+                if (registro.moduloFuncionalidadeList) {
+                    angular.forEach(registro.moduloFuncionalidadeList, function(elemento) {
+                        delete elemento['id'];
+                    });
+                }
+                if (registro.funcionalidadeComandoList) {
+                    angular.forEach(registro.funcionalidadeComandoList, function(elemento) {
+                        delete elemento['id'];
+                    });
+                }
+                $scope.$broadcast('visualizarDepois');
+            };
+
             $scope.confirmarFiltrarAntes = function(filtro) {
                 filtro.empresaList = [];
                 filtro.unidadeOrganizacionalList = [];

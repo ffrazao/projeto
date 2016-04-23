@@ -3,14 +3,16 @@
 'use strict';
 
 angular.module(pNmModulo).controller(pNmController,
-    ['$scope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv', 'mensagemSrv', '$log',
-    function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv, $log) {
+    ['$scope', '$rootScope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv', 'mensagemSrv', '$log', 'FuncionalidadeSrv',
+    '$timeout',
+    function($scope, $rootScope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv, $log, FuncionalidadeSrv, $timeout) {
 
     // inicio rotinas de apoio
     var jaCadastrado = function(conteudo) {
-        for (var j in conteudo) {
-            if (angular.equals($scope.getList()[j].pessoa.id, conteudo.pessoa.id)) {
-                if ($scope.getList()[j].cadastroAcao === 'E') {
+        conteudo.codigo = conteudo.codigo.toUpperCase();
+        for (var j in $scope.cadastro.apoio.funcionalidadeComandoList) {
+            if (angular.equals($scope.cadastro.apoio.funcionalidadeComandoList[j].comando.codigo, conteudo.codigo) && !angular.equals($scope.cadastro.apoio.funcionalidadeComandoList[j].comando.id, conteudo.id)) {
+                if ($scope.cadastro.apoio.funcionalidadeComandoList[j].cadastroAcao === 'E') {
                     return true;
                 } else {
                     toastr.error('Registro já cadastrado');
@@ -21,74 +23,122 @@ angular.module(pNmModulo).controller(pNmController,
         return true;
     };
 
-    $scope.modalSelecinarPessoa = function (destino) {
-        // abrir a modal
-        var modalInstance = $uibModal.open({
-            animation: true,
-            templateUrl: 'pessoa/pessoa-modal.html',
-            controller: 'PessoaCtrl',
-            size: 'lg',
-            resolve: {
-                modalCadastro: function() {
-                    return $scope.cadastroBase();
-                }
-            }
-        });
-        // processar retorno da modal
-        modalInstance.result.then(function (resultado) {
-            // processar o retorno positivo da modal
-            var reg = null;
-            if (resultado.selecao.tipo === 'U') {
-                reg = {
-                    pessoa: {
-                        id: resultado.selecao.item[0], 
-                        nome: resultado.selecao.item[1],
-                        pessoaTipo: resultado.selecao.item[3],
-                    },
-                };
-                $scope.preparaClassePessoa(reg.pessoa);
-                destino.push(reg);
-            } else {
-                for (var i in resultado.selecao.items) {
-                    reg = {
-                        pessoa: {
-                            id: resultado.selecao.items[i][0], 
-                            nome: resultado.selecao.items[i][1],
-                            pessoaTipo: resultado.selecao.items[i][3],
-                        },
-                    };
-                    $scope.preparaClassePessoa(reg.pessoa);
-                    destino.push(reg);
-                }
-            }
-            toastr.info('Operação realizada!', 'Informação');
-        }, function () {
-            // processar o retorno negativo da modal
-            
-        });
-    };
     // fim rotinas de apoio
 
     // inicio das operaçoes atribuidas ao navagador
     var init = function() {
-        if (!angular.isArray($scope.cadastro.registro.planoAcaoList)) {
-            $scope.cadastro.registro.planoAcaoList = [];
+        if (!angular.isArray($scope.cadastro.apoio.funcionalidadeComandoList)) {
+            $scope.cadastro.apoio.funcionalidadeComandoList = [];
         }
-        $scope.atividadePlanoAcaoNvg = new FrzNavegadorParams($scope.cadastro.registro.planoAcaoList, 4);
+        $scope.funcionalidadeComandoNvg = new FrzNavegadorParams($scope.cadastro.apoio.funcionalidadeComandoList, 4);
     };
     init();
 
+    var editarItem = function (destino, item, selecaoId) {
+
+        var form = 
+            '<div class="modal-body">' +
+            '    <div class="container-fluid">' +
+                '        <div class="row">' +
+                '            <div class="col-md-3 text-right">' +
+                '                <label class="form-label">Nome do Módulo</label>' +
+                '            </div>' +
+                '            <div class="col-md-8">' +
+                '                <input class="form-control" id="nome" name="nome" ng-model="conteudo.nome" ng-required="true" >' +
+                '                <div class="label label-danger" ng-show="confirmacaoFrm.nome.$error.required">' +
+                '                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' +
+                '                     Campo Obrigatório' +
+                '                </div>' +
+                '            </div>' +
+                '        </div>' +
+                '        <div class="row">' +
+                '            <div class="col-md-3 text-right">' +
+                '                <label class="form-label">Código do Módulo</label>' +
+                '            </div>' +
+                '            <div class="col-md-6">' +
+                '                <input class="form-control" id="codigo" name="codigo" ng-model="conteudo.codigo" ng-required="true" style="text-transform: uppercase;">' +
+                '                <div class="label label-danger" ng-show="confirmacaoFrm.codigo.$error.required">' +
+                '                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' +
+                '                     Campo Obrigatório' +
+                '                </div>' +
+                '            </div>' +
+                '        </div>' +
+                '        <div class="row">' +
+                '            <div class="col-md-3 text-right">' +
+                '                <label class="form-label">Ativo</label>' +
+                '            </div>' +
+                '            <div class="col-md-3">' +
+                '                <input type="checkbox" id="ativo" name="ativo" ng-model="conteudo.ativo" ng-true-value="\'S\'" ng-false-value="\'N\'">' +
+                '                <div class="label label-danger" ng-show="confirmacaoFrm.ativo.$error.required">' +
+                '                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' +
+                '                     Campo Obrigatório' +
+                '                </div>' +
+                '            </div>' +
+                '        </div>';
+        form +=
+            '    </div>' +
+            '</div>';
+
+        item.formula = $scope.formula;
+        if (!item.producaoFormaComposicaoList) {
+            item.producaoFormaComposicaoList = [];
+        }
+
+        mensagemSrv.confirmacao(false, form, null, item, null, jaCadastrado).then(function (conteudo) {
+            // processar o retorno positivo da modal
+            FuncionalidadeSrv.salvarComando(conteudo).success(function (resposta) {
+                FuncionalidadeSrv.abrir($scope);
+                if (destino) {
+                    if (!conteudo['cadastroAcao'] || (conteudo['cadastroAcao'] && conteudo['cadastroAcao'] !== 'I')) {
+                        conteudo['cadastroAcao'] = 'A';
+                    }
+                    destino = angular.copy(conteudo,destino);
+                    if (selecaoId) {
+                        $scope.funcionalidadeComandoNvg.selecao.items[selecaoId] = destino;
+                    }
+                } else {
+                    conteudo['cadastroAcao'] = 'I';
+                    if (!$scope.cadastro.registro.producaoFormaList) {
+                        $scope.cadastro.registro.producaoFormaList = [];
+                        $scope.funcionalidadeComandoNvg.setDados($scope.cadastro.registro.producaoFormaList);
+                    }
+                    $scope.cadastro.registro.producaoFormaList.push(conteudo);
+                }
+            });
+        }, function () {
+            // processar o retorno negativo da modal
+            //$log.info('Modal dismissed at: ' + new Date());
+        });
+    };
+    $scope.$on('visualizarDepois', function() {
+        $timeout($scope.abrir(), 1000);
+    });
+
     $scope.abrir = function() { 
-        $scope.atividadePlanoAcaoNvg.mudarEstado('ESPECIAL'); 
-        $scope.atividadePlanoAcaoNvg.botao('edicao').visivel = false;
+        $scope.funcionalidadeComandoNvg.mudarEstado('ESPECIAL');
     };
     $scope.incluir = function() {
-        if (!angular.isArray($scope.cadastro.registro.planoAcaoList)) {
-            $scope.cadastro.registro.planoAcaoList = [];
-        }
-        $scope.cadastro.registro.planoAcaoList.push({});
+        var item = {};
+        editarItem(null, item);
     };
-    $scope.editar = function() {};
+    $scope.editar = function() {
+        var item = null;
+        var i, j;
+        if ($scope.funcionalidadeComandoNvg.selecao.tipo === 'U' && $scope.funcionalidadeComandoNvg.selecao.item) {
+            item = angular.copy($scope.funcionalidadeComandoNvg.selecao.item);
+            editarItem($scope.funcionalidadeComandoNvg.selecao.item.comando, item.comando);
+        } else if ($scope.funcionalidadeComandoNvg.selecao.items && $scope.funcionalidadeComandoNvg.selecao.items.length) {
+            for (i in $scope.funcionalidadeComandoNvg.selecao.items) {
+                for (j in $scope.cadastro.registro.producaoFormaList) {
+                    if (angular.equals($scope.funcionalidadeComandoNvg.selecao.items[i], $scope.cadastro.registro.producaoFormaList[j])) {
+                        item = angular.copy($scope.cadastro.registro.producaoFormaList[j]);
+                        editarItem($scope.cadastro.registro.producaoFormaList[j].comando, item.comando, i);
+                        break;
+                    }
+                }
+            }
+        }
+    };
     $scope.excluir = function(nvg, dados) {
         mensagemSrv.confirmacao(false, 'confirme a exclusão').then(function (conteudo) {
             var i, j;
@@ -155,23 +205,7 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.voltar = function() {};
     // fim das operaçoes atribuidas ao navagador
 
-    $scope.$watch('cadastro.registro.planoAcaoList', function() {
-        if (angular.isArray($scope.cadastro.registro.planoAcaoList) && !angular.isArray($scope.atividadePlanoAcaoNvg.dados)) {
-            $scope.atividadePlanoAcaoNvg.setDados($scope.cadastro.registro.planoAcaoList);
-            $scope.atividadePlanoAcaoNvg.botao('edicao').visivel = false;
-            return;
-        }
-        if (!angular.isArray($scope.cadastro.registro.planoAcaoList)) {
-            return;
-        }
-        if ($scope.cadastro.registro.planoAcaoList.length !== $scope.atividadePlanoAcaoNvg.dados.length) {
-            $scope.atividadePlanoAcaoNvg.setDados($scope.cadastro.registro.planoAcaoList);
-            $scope.atividadePlanoAcaoNvg.botao('edicao').visivel = false;
-            return;
-        }
-    }, true);
-
 } // fim função
 ]);
 
-})('funcionalidade', 'FuncionalidadeComandoCtrl', 'PlanoAcao da Atividade!');
+})('funcionalidade', 'FuncionalidadeComandoCtrl', 'Comandos da Funcionalidade!');

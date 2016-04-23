@@ -2,37 +2,24 @@
 
     'use strict';
 
-    angular.module(pNmModulo).controller(pNmController, ['$scope', '$location', '$uibModal', 'toastr', '$state', '$http', 'TokenStorage', '$cookies', '$uibModalInstance', 'CestaDeValores',
+    angular.module(pNmModulo).controller(pNmController, ['$scope', '$location', '$uibModal', 'toastr', '$state', '$http', 'TokenStorage', '$cookies', '$uibModalInstance', 'CestaDeValores', 'UtilSrv',
 
-        function($scope, $location, $uibModal, toastr, $state, $http, TokenStorage, $cookies, $uibModalInstance, CestaDeValores) {
+        function($scope, $location, $uibModal, toastr, $state, $http, TokenStorage, $cookies, $uibModalInstance, CestaDeValores, UtilSrv) {
             $scope.cadastro = $scope.cadastroBase();
 
             $scope.iniciar = function() {
                 $scope.cadastro.original = $location.search();
-                $scope.cadastro.apoio.moduloList = [{
-                    codigo: 1,
-                    nome: 'Principal'
-                }, {
-                    codigo: 2,
-                    nome: 'Compras'
-                }, {
-                    codigo: 3,
-
-                    nome: 'Crédito'
-                }, {
-                    codigo: 4,
-                    nome: 'Funcional'
-                }, {
-                    codigo: 5,
-                    nome: 'Institucinal'
-                }, {
-                    codigo: 6,
-                    nome: 'Orçamento'
-                }, {
-                    codigo: 7,
-                    nome: 'Patrimônio'
-                }, ];
-                $scope.cadastro.registro.modulo = 1;
+                UtilSrv.dominio({ent: [
+                   'Modulo',
+                ], npk: 'ativo', vpk: 'S', nomeEnum: 'Confirmacao', order: 'id'}).success(function(resposta) {
+                    if (resposta && resposta.resultado) {
+                        var i = 0;
+                        $scope.cadastro.apoio.moduloList = angular.isArray($scope.cadastro.apoio.moduloList) ? angular.merge($scope.cadastro.apoio.moduloList, resposta.resultado[i++]) : resposta.resultado[i++];
+                    }
+                    if (angular.isArray($scope.cadastro.apoio.moduloList)) {
+                        $scope.cadastro.registro.modulo = $scope.cadastro.apoio.moduloList[0];
+                    }
+                });
             };
 
             $scope.reiniciar = function() {
@@ -61,7 +48,7 @@
                 $http.post($scope.servicoUrl + '/api/login', {
                     "username": $scope.cadastro.registro.username,
                     "password": $scope.cadastro.registro.password,
-                    "modulo": $scope.cadastro.registro.modulo
+                    "modulo": $scope.cadastro.registro.modulo.id
                 }).
                 success(function(result, status, headers, config) {
                     $scope.token = null;
