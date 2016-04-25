@@ -41,7 +41,7 @@ angular.module(pNmModulo).controller(pNmController,
             '    <div class="container-fluid">' +
                 '        <div class="row">' +
                 '            <div class="col-md-3 text-right">' +
-                '                <label class="form-label">Nome do Módulo</label>' +
+                '                <label class="form-label">Nome do Comando</label>' +
                 '            </div>' +
                 '            <div class="col-md-8">' +
                 '                <input class="form-control" id="nome" name="nome" ng-model="conteudo.nome" ng-required="true" >' +
@@ -53,7 +53,7 @@ angular.module(pNmModulo).controller(pNmController,
                 '        </div>' +
                 '        <div class="row">' +
                 '            <div class="col-md-3 text-right">' +
-                '                <label class="form-label">Código do Módulo</label>' +
+                '                <label class="form-label">Código do Comando</label>' +
                 '            </div>' +
                 '            <div class="col-md-6">' +
                 '                <input class="form-control" id="codigo" name="codigo" ng-model="conteudo.codigo" ng-required="true" style="text-transform: uppercase;">' +
@@ -79,15 +79,10 @@ angular.module(pNmModulo).controller(pNmController,
             '    </div>' +
             '</div>';
 
-        item.formula = $scope.formula;
-        if (!item.producaoFormaComposicaoList) {
-            item.producaoFormaComposicaoList = [];
-        }
-
         mensagemSrv.confirmacao(false, form, null, item, null, jaCadastrado).then(function (conteudo) {
             // processar o retorno positivo da modal
             FuncionalidadeSrv.salvarComando(conteudo).success(function (resposta) {
-                FuncionalidadeSrv.abrir($scope);
+                //FuncionalidadeSrv.abrir($scope);
                 if (destino) {
                     if (!conteudo['cadastroAcao'] || (conteudo['cadastroAcao'] && conteudo['cadastroAcao'] !== 'I')) {
                         conteudo['cadastroAcao'] = 'A';
@@ -98,11 +93,12 @@ angular.module(pNmModulo).controller(pNmController,
                     }
                 } else {
                     conteudo['cadastroAcao'] = 'I';
-                    if (!$scope.cadastro.registro.producaoFormaList) {
-                        $scope.cadastro.registro.producaoFormaList = [];
-                        $scope.funcionalidadeComandoNvg.setDados($scope.cadastro.registro.producaoFormaList);
+                    if (!$scope.cadastro.apoio.funcionalidadeComandoList) {
+                        $scope.cadastro.apoio.funcionalidadeComandoList = [];
+                        $scope.funcionalidadeComandoNvg.setDados($scope.cadastro.apoio.funcionalidadeComandoList);
                     }
-                    $scope.cadastro.registro.producaoFormaList.push(conteudo);
+                    conteudo.id = resposta.resultado;
+                    $scope.cadastro.apoio.funcionalidadeComandoList.push({comando: conteudo});
                 }
             });
         }, function () {
@@ -118,7 +114,7 @@ angular.module(pNmModulo).controller(pNmController,
         $scope.funcionalidadeComandoNvg.mudarEstado('ESPECIAL');
     };
     $scope.incluir = function() {
-        var item = {};
+        var item = {ativo:'S'};
         editarItem(null, item);
     };
     $scope.editar = function() {

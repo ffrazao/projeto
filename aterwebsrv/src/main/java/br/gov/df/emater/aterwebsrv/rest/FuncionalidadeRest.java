@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
 import br.gov.df.emater.aterwebsrv.modelo.dto.FuncionalidadeCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.modelo.sistema.Comando;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Funcionalidade;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Modulo;
 
@@ -58,16 +59,19 @@ public class FuncionalidadeRest {
 		return new Resposta(facadeBo.funcionalidadeSalvar(usuario, funcionalidade).getResposta());
 	}
 
+	@RequestMapping(value = "/salvar-comando", method = RequestMethod.POST)
+	public Resposta salvarComando(@RequestBody Comando comando, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.funcionalidadeSalvarComando(usuario, comando).getResposta());
+	}
+
+	@RequestMapping(value = "/salvar-modulo", method = RequestMethod.POST)
+	public Resposta salvarModulo(@RequestBody Modulo modulo, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.funcionalidadeSalvarModulo(usuario, modulo).getResposta());
+	}
+
 	@RequestMapping(value = "/visualizar", method = RequestMethod.GET)
 	public Resposta visualizar(@RequestParam Integer id, Principal usuario) throws Exception {
 		return new Resposta(facadeBo.funcionalidadeVisualizar(usuario, id).getResposta());
 	}
-	
-	@RequestMapping(value = "/salvar-modulo", method = RequestMethod.POST)
-	public Resposta incluir(@RequestBody Modulo modulo, Principal usuario) throws Exception {
-		return new Resposta(facadeBo.funcionalidadeSalvarModulo(usuario, modulo).getResposta());
-	}
-
-
 
 }

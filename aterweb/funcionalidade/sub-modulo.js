@@ -79,15 +79,10 @@ angular.module(pNmModulo).controller(pNmController,
             '    </div>' +
             '</div>';
 
-        item.formula = $scope.formula;
-        if (!item.producaoFormaComposicaoList) {
-            item.producaoFormaComposicaoList = [];
-        }
-
         mensagemSrv.confirmacao(false, form, null, item, null, jaCadastrado).then(function (conteudo) {
             // processar o retorno positivo da modal
             FuncionalidadeSrv.salvarModulo(conteudo).success(function (resposta) {
-                FuncionalidadeSrv.abrir($scope);
+                //FuncionalidadeSrv.abrir($scope);
                 if (destino) {
                     if (!conteudo['cadastroAcao'] || (conteudo['cadastroAcao'] && conteudo['cadastroAcao'] !== 'I')) {
                         conteudo['cadastroAcao'] = 'A';
@@ -98,11 +93,12 @@ angular.module(pNmModulo).controller(pNmController,
                     }
                 } else {
                     conteudo['cadastroAcao'] = 'I';
-                    if (!$scope.cadastro.registro.producaoFormaList) {
-                        $scope.cadastro.registro.producaoFormaList = [];
-                        $scope.funcionalidadeModuloNvg.setDados($scope.cadastro.registro.producaoFormaList);
+                    if (!$scope.cadastro.apoio.moduloFuncionalidadeList) {
+                        $scope.cadastro.apoio.moduloFuncionalidadeList = [];
+                        $scope.funcionalidadeModuloNvg.setDados($scope.cadastro.apoio.moduloFuncionalidadeList);
                     }
-                    $scope.cadastro.registro.producaoFormaList.push(conteudo);
+                    conteudo.id = resposta.resultado;
+                    $scope.cadastro.apoio.moduloFuncionalidadeList.push({modulo: conteudo});
                 }
             });
         }, function () {
@@ -118,7 +114,7 @@ angular.module(pNmModulo).controller(pNmController,
         $scope.funcionalidadeModuloNvg.mudarEstado('ESPECIAL');
     };
     $scope.incluir = function() {
-        var item = {};
+        var item = {ativo:'S'};
         editarItem(null, item);
     };
     $scope.editar = function() {

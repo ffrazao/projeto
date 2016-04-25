@@ -20,6 +20,8 @@ public class SalvarModuloCmd extends _Comando {
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		Modulo result = (Modulo) contexto.getRequisicao();
+		
+		result.setCodigo(result.getCodigo().toUpperCase().replaceAll("\\s", "_"));
 
 		dao.save(result);
 
