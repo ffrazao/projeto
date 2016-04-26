@@ -27,17 +27,22 @@ import br.gov.df.emater.aterwebsrv.modelo.dto.FormularioCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.FormularioColetaCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.FuncionalidadeCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.IndiceProducaoCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.modelo.dto.LogAcaoCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.modelo.dto.PerfilCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.PessoaCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.PropriedadeRuralCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.PublicoAlvoPropriedadeRuralCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.UnidadeOrganizacionalCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.modelo.dto.UsuarioCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.Formulario;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.FormularioVersao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Comando;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Funcionalidade;
+import br.gov.df.emater.aterwebsrv.modelo.sistema.LogAcao;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Modulo;
+import br.gov.df.emater.aterwebsrv.modelo.sistema.Perfil;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 
 @Service
@@ -246,6 +251,86 @@ public class FacadeBo implements BeanFactoryAware {
 		return this._executar(usuario, "IndiceProducaoVisualizarCh", id);
 	}
 
+	@Transactional
+	public _Contexto logAcaoExcluir(Principal usuario, LogAcao logAcao) throws Exception {
+		return this._executar(usuario, "LogAcaoExcluirCh", logAcao);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto logAcaoFiltroExecutar(Principal usuario, LogAcaoCadFiltroDto filtro) throws Exception {
+		return this._executar(usuario, "LogAcaoFiltroExecutarCh", filtro);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto logAcaoFiltroNovo(Principal usuario) throws Exception {
+		return this._executar(usuario, "LogAcaoFiltroNovoCmd");
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto logAcaoNovo(Principal usuario, LogAcao logAcao) throws Exception {
+		return this._executar(usuario, "LogAcaoNovoCh", logAcao);
+	}
+
+	@Transactional
+	public _Contexto logAcaoSalvar(Principal usuario, LogAcao logAcao) throws Exception {
+		return this._executar(usuario, "LogAcaoSalvarCh", logAcao);
+	}
+
+	@Transactional
+	public _Contexto logAcaoSalvarComando(Principal usuario, Comando comando) throws Exception {
+		return this._executar(usuario, "LogAcaoSalvarComandoCh", comando);
+	}
+
+	@Transactional
+	public _Contexto logAcaoSalvarModulo(Principal usuario, Modulo modulo) throws Exception {
+		return this._executar(usuario, "LogAcaoSalvarModuloCh", modulo);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto logAcaoVisualizar(Principal usuario, Integer id) throws Exception {
+		return this._executar(usuario, "LogAcaoVisualizarCh", id);
+	}
+
+	@Transactional
+	public _Contexto perfilExcluir(Principal usuario, Perfil perfil) throws Exception {
+		return this._executar(usuario, "PerfilExcluirCh", perfil);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto perfilFiltroExecutar(Principal usuario, PerfilCadFiltroDto filtro) throws Exception {
+		return this._executar(usuario, "PerfilFiltroExecutarCh", filtro);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto perfilFiltroNovo(Principal usuario) throws Exception {
+		return this._executar(usuario, "PerfilFiltroNovoCmd");
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto perfilNovo(Principal usuario, Perfil perfil) throws Exception {
+		return this._executar(usuario, "PerfilNovoCh", perfil);
+	}
+
+	@Transactional
+	public _Contexto perfilSalvar(Principal usuario, Perfil perfil) throws Exception {
+		return this._executar(usuario, "PerfilSalvarCh", perfil);
+	}
+
+	@Transactional
+	public _Contexto perfilSalvarComando(Principal usuario, Comando comando) throws Exception {
+		return this._executar(usuario, "PerfilSalvarComandoCh", comando);
+	}
+
+	@Transactional
+	public _Contexto perfilSalvarModulo(Principal usuario, Modulo modulo) throws Exception {
+		return this._executar(usuario, "PerfilSalvarModuloCh", modulo);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto perfilVisualizar(Principal usuario, Integer id) throws Exception {
+		return this._executar(usuario, "PerfilVisualizarCh", id);
+	}
+
 	@Transactional(readOnly = true)
 	public _Contexto pessoaBuscarCep(Principal usuario, String cep) throws Exception {
 		return this._executar(usuario, "PessoaBuscarCepCmd", cep);
@@ -350,6 +435,36 @@ public class FacadeBo implements BeanFactoryAware {
 	@Transactional(readOnly = true)
 	public _Contexto unidadeOrganizacionalFiltroExecutar(Principal usuario, UnidadeOrganizacionalCadFiltroDto filtro) throws Exception {
 		return this._executar(usuario, "UnidadeOrganizacionalFiltroExecutarCh", filtro);
+	}
+
+	@Transactional
+	public _Contexto usuarioExcluir(Principal usuario, Usuario usr) throws Exception {
+		return this._executar(usuario, "UsuarioExcluirCh", usr);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto usuarioFiltroExecutar(Principal usuario, UsuarioCadFiltroDto filtro) throws Exception {
+		return this._executar(usuario, "UsuarioFiltroExecutarCh", filtro);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto usuarioFiltroNovo(Principal usuario) throws Exception {
+		return this._executar(usuario, "UsuarioFiltroNovoCmd");
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto usuarioNovo(Principal usuario, Usuario usr) throws Exception {
+		return this._executar(usuario, "UsuarioNovoCh", usr);
+	}
+
+	@Transactional
+	public _Contexto usuarioSalvar(Principal usuario, Usuario usr) throws Exception {
+		return this._executar(usuario, "UsuarioSalvarCh", usr);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto usuarioVisualizar(Principal usuario, Integer id) throws Exception {
+		return this._executar(usuario, "UsuarioVisualizarCh", id);
 	}
 
 	@Transactional(readOnly = true)

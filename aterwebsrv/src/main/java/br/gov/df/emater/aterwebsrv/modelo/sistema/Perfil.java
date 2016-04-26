@@ -1,5 +1,6 @@
 package br.gov.df.emater.aterwebsrv.modelo.sistema;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -13,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 
@@ -22,7 +24,7 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
  */
 @Entity
 @Table(name = "perfil", schema = EntidadeBase.SISTEMA_SCHEMA)
-public class Perfil extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class Perfil extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<Perfil> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -43,6 +45,17 @@ public class Perfil extends EntidadeBase implements _ChavePrimaria<Integer> {
 	private List<PerfilFuncionalidadeComando> perfilFuncionalidadeComandoList;
 
 	public Perfil() {
+	}
+
+	public Perfil(Integer id, String nome, String codigo, Confirmacao ativo) {
+		this.id = id;
+		this.nome = nome;
+		this.codigo = codigo;
+		this.ativo = ativo;
+	}
+
+	public Perfil(Serializable id) {
+		super(id);
 	}
 
 	@Override
@@ -89,6 +102,11 @@ public class Perfil extends EntidadeBase implements _ChavePrimaria<Integer> {
 		int result = super.hashCode();
 		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
 		return result;
+	}
+
+	@Override
+	public Perfil infoBasica() {
+		return new Perfil(getId(), getNome(), getCodigo(), getAtivo());
 	}
 
 	public void setAtivo(Confirmacao ativo) {

@@ -1,5 +1,6 @@
 package br.gov.df.emater.aterwebsrv.modelo.sistema;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Map;
@@ -122,6 +123,10 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 	private UsuarioStatusConta usuarioStatusConta;
 
 	public Usuario() {
+	}
+
+	public Usuario(Serializable id) {
+		super(id);
 	}
 
 	public Usuario(String name) {

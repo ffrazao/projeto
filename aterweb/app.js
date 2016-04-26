@@ -13,7 +13,7 @@ var TIMEOUT_TEMPO = 200;
         'ngIdle',
         'mensagemSrv', 'segurancaSrv', 'utilSrv', 'frz.form', 'frz.tabela', 'frz.arquivo', 'frz.endereco', 'frz.painel.vidro', 'frz.navegador',
         'casa', 'contrato', 'info', 'offline', 'pessoa', 'formulario', 'propriedadeRural', 'atividade', 'indiceProducao', 
-        'funcionalidade',
+        'funcionalidade', 'perfil', 'usuario', 'logAcao',
     ]);
 
     // inicio: codigo para habilitar o modal recursivo

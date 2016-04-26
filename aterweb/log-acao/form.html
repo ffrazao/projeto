@@ -1,0 +1,41 @@
+<div class="panel panel-default">
+    <div class="panel-heading"><h4>{{nomeFormulario}}</h4></div>
+    <div class="panel-body">
+        <form name="frm.formulario" novalidate>
+            <fieldset ng-disabled="['INCLUINDO', 'EDITANDO'].indexOf(navegador.estadoAtual()) < 0">
+                <div class="row">
+                    <div class="col-md-4" title="Nome da Funcionalidade">
+                        <div class="form-group">
+                            <label class="control-label" for="nome">Nome da Funcionalidade</label>
+                            <input type="text" class="form-control" id="nome" name="nome" ng-model="cadastro.registro.nome" ng-required="true">
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.nome.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4" title="Código da Funcionalidade">
+                        <div class="form-group">
+                            <label class="control-label" for="codigo">Código da Funcionalidade</label>
+                            <input type="text" class="form-control" id="codigo" name="codigo" ng-model="cadastro.registro.codigo" ng-required="true" style="text-transform: uppercase;">
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.codigo.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4" title="Funcionalidade Ativa?">
+                        <div class="form-group">
+                            <label class="control-label" for="Ativo">Funcionalidade Ativa?</label>
+                            <input type="checkbox" id="ativo" name="ativo" ng-model="cadastro.registro.ativo" ng-true-value="'S'" ng-false-value="'N'">
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.ativo.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
