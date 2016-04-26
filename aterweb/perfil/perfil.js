@@ -70,15 +70,18 @@
             // inicio das operaçoes atribuidas ao navagador
             $scope.visualizarDepois = function(registro) {
                 removerCampo(registro, ['@jsonId']);
-                if (registro.moduloFuncionalidadeList) {
-                    angular.forEach(registro.moduloFuncionalidadeList, function(elemento) {
-                        delete elemento['id'];
-                    });
-                }
-                if (registro.funcionalidadeComandoList) {
-                    angular.forEach(registro.funcionalidadeComandoList, function(elemento) {
-                        delete elemento['id'];
-                    });
+                if (registro.perfilFuncionalidadeComandoList) {
+                    if ($scope.cadastro.apoio.funcionalidadeComandoList) {
+                        for (var i in $scope.cadastro.apoio.funcionalidadeComandoList) {
+                            for (var j in registro.perfilFuncionalidadeComandoList) {
+                                if ($scope.cadastro.apoio.funcionalidadeComandoList[i].funcionalidadeComando.id === registro.perfilFuncionalidadeComandoList[j].funcionalidadeComando.id) {
+                                    $scope.cadastro.apoio.funcionalidadeComandoList[i] = angular.copy(registro.perfilFuncionalidadeComandoList[j]);
+                                    break;
+                                }
+                            }
+
+                        }
+                    }
                 }
                 $scope.$broadcast('visualizarDepois');
             };

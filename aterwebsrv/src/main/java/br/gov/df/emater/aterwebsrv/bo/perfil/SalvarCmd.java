@@ -5,13 +5,10 @@ import org.springframework.stereotype.Service;
 
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
-import br.gov.df.emater.aterwebsrv.dao.sistema.FuncionalidadeComandoDao;
-import br.gov.df.emater.aterwebsrv.dao.sistema.ModuloFuncionalidadeDao;
 import br.gov.df.emater.aterwebsrv.dao.sistema.PerfilDao;
-import br.gov.df.emater.aterwebsrv.modelo.sistema.Funcionalidade;
-import br.gov.df.emater.aterwebsrv.modelo.sistema.FuncionalidadeComando;
-import br.gov.df.emater.aterwebsrv.modelo.sistema.ModuloFuncionalidade;
+import br.gov.df.emater.aterwebsrv.dao.sistema.PerfilFuncionalidadeComandoDao;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Perfil;
+import br.gov.df.emater.aterwebsrv.modelo.sistema.PerfilFuncionalidadeComando;
 
 @Service("PerfilSalvarCmd")
 public class SalvarCmd extends _Comando {
@@ -20,10 +17,7 @@ public class SalvarCmd extends _Comando {
 	private PerfilDao dao;
 
 	@Autowired
-	private ModuloFuncionalidadeDao moduloFuncionalidadeDao;
-
-	@Autowired
-	private FuncionalidadeComandoDao funcionalidadeComandoDao;
+	private PerfilFuncionalidadeComandoDao perfilFuncionalidadeComandoDao;
 
 	public SalvarCmd() {
 	}
@@ -31,7 +25,7 @@ public class SalvarCmd extends _Comando {
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		Perfil result = (Perfil) contexto.getRequisicao();
-		
+
 		result.setCodigo(result.getCodigo().toUpperCase().replaceAll("\\s", "_"));
 
 		Perfil salvo = null;
@@ -40,60 +34,35 @@ public class SalvarCmd extends _Comando {
 		}
 
 		// remover os itens descartados
-//		if (salvo != null) {
-//			if (salvo.getModuloFuncionalidadeList() != null) {
-//				for (ModuloFuncionalidade moduloFuncionalidadeSalvo : salvo.getModuloFuncionalidadeList()) {
-//					boolean encontrou = false;
-//					if (result.getModuloFuncionalidadeList() != null) {
-//						for (ModuloFuncionalidade moduloFuncionalidade : result.getModuloFuncionalidadeList()) {
-//							if (moduloFuncionalidade.getModulo().getId().equals(moduloFuncionalidadeSalvo.getModulo().getId())) {
-//								moduloFuncionalidade.setId(moduloFuncionalidadeSalvo.getId());
-//								encontrou = true;
-//								break;
-//							}
-//						}
-//					}
-//					if (!encontrou) {
-//						moduloFuncionalidadeDao.delete(moduloFuncionalidadeSalvo);
-//					}
-//				}
-//			}
-//			if (salvo.getFuncionalidadeComandoList() != null) {
-//				for (FuncionalidadeComando funcionalidadeComandoSalvo : salvo.getFuncionalidadeComandoList()) {
-//					boolean encontrou = false;
-//					if (result.getFuncionalidadeComandoList() != null) {
-//						for (FuncionalidadeComando funcionalidadeComando : result.getFuncionalidadeComandoList()) {
-//							if (funcionalidadeComando.getComando().getId().equals(funcionalidadeComandoSalvo.getComando().getId())) {
-//								funcionalidadeComando.setId(funcionalidadeComandoSalvo.getId());
-//								encontrou = true;
-//								break;
-//							}
-//						}
-//					}
-//					if (!encontrou) {
-//						funcionalidadeComandoDao.delete(funcionalidadeComandoSalvo);
-//					}
-//				}
-//			}
-//		}
-		
+		if (salvo != null) {
+			if (salvo.getPerfilFuncionalidadeComandoList() != null) {
+				for (PerfilFuncionalidadeComando perfilFuncionalidadeComandoSalvo : salvo.getPerfilFuncionalidadeComandoList()) {
+					boolean encontrou = false;
+					if (result.getPerfilFuncionalidadeComandoList() != null) {
+						for (PerfilFuncionalidadeComando perfilFuncionalidadeComando : result.getPerfilFuncionalidadeComandoList()) {
+							if (perfilFuncionalidadeComando.getFuncionalidadeComando().getId().equals(perfilFuncionalidadeComandoSalvo.getFuncionalidadeComando().getId())) {
+								perfilFuncionalidadeComando.setId(perfilFuncionalidadeComandoSalvo.getId());
+								encontrou = true;
+								break;
+							}
+						}
+					}
+					if (!encontrou) {
+						perfilFuncionalidadeComandoDao.delete(perfilFuncionalidadeComandoSalvo);
+					}
+				}
+			}
+		}
+
 		// preparar para salvar
 		dao.save(result);
 
-		// if (result.getModuloFuncionalidadeList() != null) {
-		// for (ModuloFuncionalidade moduloFuncionalidade :
-		// result.getModuloFuncionalidadeList()) {
-		// moduloFuncionalidade.setFuncionalidade(result);
-		// moduloFuncionalidadeDao.save(moduloFuncionalidade);
-		// }
-		// }
-		// if (result.getFuncionalidadeComandoList() != null) {
-		// for (FuncionalidadeComando funcionalidadeComando :
-		// result.getFuncionalidadeComandoList()) {
-		// funcionalidadeComando.setFuncionalidade(result);
-		// funcionalidadeComandoDao.save(funcionalidadeComando);
-		// }
-		// }
+		if (result.getPerfilFuncionalidadeComandoList() != null) {
+			for (PerfilFuncionalidadeComando perfilFuncionalidadeComando : result.getPerfilFuncionalidadeComandoList()) {
+				perfilFuncionalidadeComando.setPerfil(result);
+				perfilFuncionalidadeComandoDao.save(perfilFuncionalidadeComando);
+			}
+		}
 
 		contexto.setResposta(result.getId());
 		return false;

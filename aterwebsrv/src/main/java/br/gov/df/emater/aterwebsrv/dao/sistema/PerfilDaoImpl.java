@@ -30,25 +30,24 @@ public class PerfilDaoImpl implements PerfilDaoCustom {
 
 		// construção do sql
 		sql = new StringBuilder();
-
 		sql.append("select distinct a.id").append("\n");
-		sql.append("        , a.nome").append("\n");
-		sql.append("        , a.codigo").append("\n");
-		sql.append("        , a.ativo").append("\n");
-		sql.append("from            sistema.funcionalidade a").append("\n");
-		sql.append("left join       sistema.modulo_funcionalidade b").append("\n");
-		sql.append("on              b.funcionalidade_id  = a.id").append("\n");
-		sql.append("left join       sistema.modulo b1").append("\n");
-		sql.append("on              b.modulo_id  = b1.id").append("\n");
+		sql.append("              , a.nome").append("\n");
+		sql.append("              , a.codigo").append("\n");
+		sql.append("              , a.ativo").append("\n");
+		sql.append("from            sistema.perfil a").append("\n");
+		sql.append("left join       sistema.perfil_funcionalidade_comando b").append("\n");
+		sql.append("on              b.perfil_id = a.id").append("\n");
 		sql.append("left join       sistema.funcionalidade_comando c").append("\n");
-		sql.append("on              c.funcionalidade_id  = a.id").append("\n");
-		sql.append("left join       sistema.comando c1").append("\n");
-		sql.append("on              c.comando_id  = c1.id").append("\n");
+		sql.append("on              c.id = b.funcionalidade_comando_id").append("\n");
+		sql.append("left join       sistema.funcionalidade d").append("\n");
+		sql.append("on              d.id = c.funcionalidade_id").append("\n");
+		sql.append("left join       sistema.comando e").append("\n");
+		sql.append("on              e.id = c.comando_id").append("\n");
 		sql.append("where (1 = 1)").append("\n");
-		if (!CollectionUtils.isEmpty(filtro.getFuncionalidade())) {
+		if (!CollectionUtils.isEmpty(filtro.getPerfilNome())) {
 			sql.append("and (").append("\n");
 			sqlTemp = new StringBuilder();
-			for (TagDto nome : filtro.getFuncionalidade()) {
+			for (TagDto nome : filtro.getPerfilNome()) {
 				if (sqlTemp.length() > 0) {
 					sqlTemp.append(" or ");
 				}
@@ -59,30 +58,44 @@ public class PerfilDaoImpl implements PerfilDaoCustom {
 			sql.append(sqlTemp);
 			sql.append(" )").append("\n");
 		}
-		if (!CollectionUtils.isEmpty(filtro.getModulo())) {
+		if (!CollectionUtils.isEmpty(filtro.getPerfilCodigo())) {
 			sql.append("and (").append("\n");
 			sqlTemp = new StringBuilder();
-			for (TagDto nome : filtro.getModulo()) {
+			for (TagDto nome : filtro.getPerfilCodigo()) {
 				if (sqlTemp.length() > 0) {
 					sqlTemp.append(" or ");
 				}
 				String n = nome.getText().replaceAll("\\s", "%");
 				params.add(String.format("%%%s%%", n));
-				sqlTemp.append(" (b1.nome like ?").append(params.size()).append(")").append("\n");
+				sqlTemp.append(" (a.nome like ?").append(params.size()).append(")").append("\n");
 			}
 			sql.append(sqlTemp);
 			sql.append(" )").append("\n");
 		}
-		if (!CollectionUtils.isEmpty(filtro.getComando())) {
+		if (!CollectionUtils.isEmpty(filtro.getFuncionalidadeNome())) {
 			sql.append("and (").append("\n");
 			sqlTemp = new StringBuilder();
-			for (TagDto nome : filtro.getComando()) {
+			for (TagDto nome : filtro.getFuncionalidadeNome()) {
 				if (sqlTemp.length() > 0) {
 					sqlTemp.append(" or ");
 				}
 				String n = nome.getText().replaceAll("\\s", "%");
 				params.add(String.format("%%%s%%", n));
-				sqlTemp.append(" (c1.nome like ?").append(params.size()).append(")").append("\n");
+				sqlTemp.append(" (d.nome like ?").append(params.size()).append(")").append("\n");
+			}
+			sql.append(sqlTemp);
+			sql.append(" )").append("\n");
+		}
+		if (!CollectionUtils.isEmpty(filtro.getComandoNome())) {
+			sql.append("and (").append("\n");
+			sqlTemp = new StringBuilder();
+			for (TagDto nome : filtro.getComandoNome()) {
+				if (sqlTemp.length() > 0) {
+					sqlTemp.append(" or ");
+				}
+				String n = nome.getText().replaceAll("\\s", "%");
+				params.add(String.format("%%%s%%", n));
+				sqlTemp.append(" (e.nome like ?").append(params.size()).append(")").append("\n");
 			}
 			sql.append(sqlTemp);
 			sql.append(" )").append("\n");

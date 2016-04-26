@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.sistema;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,11 +11,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 
 @Entity
 @Table(name = "funcionalidade_comando", schema = EntidadeBase.SISTEMA_SCHEMA)
-public class FuncionalidadeComando extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class FuncionalidadeComando extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<FuncionalidadeComando> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -28,6 +31,20 @@ public class FuncionalidadeComando extends EntidadeBase implements _ChavePrimari
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
+
+	public FuncionalidadeComando() {
+
+	}
+
+	public FuncionalidadeComando(Integer id, Funcionalidade funcionalidade, Comando comando) {
+		super(id);
+		setFuncionalidade(funcionalidade);
+		setComando(comando);
+	}
+
+	public FuncionalidadeComando(Serializable id) {
+		super(id);
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -73,6 +90,10 @@ public class FuncionalidadeComando extends EntidadeBase implements _ChavePrimari
 		return result;
 	}
 
+	public FuncionalidadeComando infoBasica() {
+		return new FuncionalidadeComando(getId(), getFuncionalidade() == null ? null : getFuncionalidade().infoBasica(), getComando() == null ? null : getComando().infoBasica());
+	}
+
 	public void setComando(Comando comando) {
 		this.comando = comando;
 	}
@@ -85,5 +106,5 @@ public class FuncionalidadeComando extends EntidadeBase implements _ChavePrimari
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 }

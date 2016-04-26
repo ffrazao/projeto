@@ -1,0 +1,25 @@
+<div class="row" style="height: 400px; overflow: scroll;">
+    <ol id="funcionalidadeComandoList">
+        <label class="control-label" ng-repeat-start="item in cadastro.apoio.funcionalidadeComandoList | orderBy: ['funcionalidadeComando.funcionalidade.codigo', 'funcionalidadeComando.comando.codigo']" ng-show="cadastro.apoio.funcionalidadeComandoList[$index].funcionalidadeComando.funcionalidade.id !== cadastro.apoio.funcionalidadeComandoList[$index-1].funcionalidadeComando.funcionalidade.id">
+            {{item.funcionalidadeComando.funcionalidade.nome}} ({{item.funcionalidadeComando.funcionalidade.codigo}}) <button type="button" class="btn btn-primary btn-sm sr-only"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
+        </label>
+        <li ng-repeat-end ng-class="{'ng-invalid': exibeErroConceder($index, item.conceder)}">
+            <label for="funcionalidadeComando{{$index}}">
+                <input type="checkbox" id="funcionalidadeComando{{$index}}" name="funcionalidadeComando{{$index}}" 
+                    checklist-model="cadastro.registro.perfilFuncionalidadeComandoList" checklist-value="item"
+                    checklist-comparator="funcionalidadeComandoCompare">
+                </input>
+                {{item.funcionalidadeComando.comando.nome}}
+            </label>
+            <label class="control-label" for="conceder-{{$parent.$index}}-{{$index}}" ng-repeat="c in cadastro.apoio.confirmacaoList" ng-show="exibeConceder($parent.$index)">
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="radio" name="conceder-{{$parent.$index}}" id="conceder-{{$parent.$index}}-{{$index}}" ng-value="c.codigo" ng-model="item.conceder" ng-required="true">
+                {{c.codigo === 'S' ? 'Conceder' : 'Negar'}}
+            </label>
+            <div class="label label-danger" ng-show="exibeErroConceder($index, item.conceder)">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                Campo Obrigatório
+            </div>
+        </li>
+    </ol>
+</div>

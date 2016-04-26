@@ -6,34 +6,44 @@ public class PerfilCadFiltroDto extends FiltroDtoCustom {
 
 	private static final long serialVersionUID = 1L;
 
-	private Set<TagDto> comando;
+	private Set<TagDto> comandoNome;
 
-	private Set<TagDto> funcionalidade;
+	private Set<TagDto> funcionalidadeNome;
 
-	private Set<TagDto> modulo;
+	private Set<TagDto> perfilCodigo;
 
-	public Set<TagDto> getComando() {
-		return comando;
+	private Set<TagDto> perfilNome;
+
+	public Set<TagDto> getComandoNome() {
+		return comandoNome;
 	}
 
-	public Set<TagDto> getFuncionalidade() {
-		return funcionalidade;
+	public Set<TagDto> getFuncionalidadeNome() {
+		return funcionalidadeNome;
 	}
 
-	public Set<TagDto> getModulo() {
-		return modulo;
+	public Set<TagDto> getPerfilCodigo() {
+		return perfilCodigo;
 	}
 
-	public void setComando(Set<TagDto> comando) {
-		this.comando = comando;
+	public Set<TagDto> getPerfilNome() {
+		return perfilNome;
 	}
 
-	public void setFuncionalidade(Set<TagDto> funcionalidade) {
-		this.funcionalidade = funcionalidade;
+	public void setComandoNome(Set<TagDto> comandoNome) {
+		this.comandoNome = comandoNome;
 	}
 
-	public void setModulo(Set<TagDto> modulo) {
-		this.modulo = modulo;
+	public void setFuncionalidadeNome(Set<TagDto> funcionalidadeNome) {
+		this.funcionalidadeNome = funcionalidadeNome;
+	}
+
+	public void setPerfilCodigo(Set<TagDto> perfilCodigo) {
+		this.perfilCodigo = perfilCodigo;
+	}
+
+	public void setPerfilNome(Set<TagDto> perfilNome) {
+		this.perfilNome = perfilNome;
 	}
 
 }
