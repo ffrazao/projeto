@@ -30,7 +30,7 @@ angular.module(pNmModulo).controller(pNmController,
         if (!angular.isArray($scope.cadastro.apoio.funcionalidadeComandoList)) {
             $scope.cadastro.apoio.funcionalidadeComandoList = [];
         }
-        $scope.funcionalidadeComandoNvg = new FrzNavegadorParams($scope.cadastro.apoio.funcionalidadeComandoList, 4);
+        $scope.funcionalidadeComandoNvg = new FrzNavegadorParams($scope.cadastro.apoio.funcionalidadeComandoList, 10);
     };
     init();
 

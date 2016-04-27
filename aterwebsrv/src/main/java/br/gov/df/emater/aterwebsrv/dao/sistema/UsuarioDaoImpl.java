@@ -9,10 +9,10 @@ import javax.persistence.Query;
 
 import org.springframework.util.CollectionUtils;
 
-import br.gov.df.emater.aterwebsrv.modelo.dto.FuncionalidadeCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.TagDto;
+import br.gov.df.emater.aterwebsrv.modelo.dto.UsuarioCadFiltroDto;
 
-public class UsuarioDaoImpl implements FuncionalidadeDaoCustom {
+public class UsuarioDaoImpl implements UsuarioDaoCustom {
 
 	@PersistenceContext
 	private EntityManager em;
@@ -22,7 +22,7 @@ public class UsuarioDaoImpl implements FuncionalidadeDaoCustom {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Object[]> filtrar(FuncionalidadeCadFiltroDto filtro) {
+	public List<Object[]> filtrar(UsuarioCadFiltroDto filtro) {
 		// objetos de trabalho
 		List<Object[]> result = null;
 		List<Object> params = new ArrayList<Object>();
@@ -31,63 +31,52 @@ public class UsuarioDaoImpl implements FuncionalidadeDaoCustom {
 		// construção do sql
 		sql = new StringBuilder();
 
-		sql.append("select distinct a.id").append("\n");
-		sql.append("        , a.nome").append("\n");
-		sql.append("        , a.codigo").append("\n");
-		sql.append("        , a.ativo").append("\n");
-		sql.append("from            sistema.funcionalidade a").append("\n");
-		sql.append("left join       sistema.modulo_funcionalidade b").append("\n");
-		sql.append("on              b.funcionalidade_id  = a.id").append("\n");
-		sql.append("left join       sistema.modulo b1").append("\n");
-		sql.append("on              b.modulo_id  = b1.id").append("\n");
-		sql.append("left join       sistema.funcionalidade_comando c").append("\n");
-		sql.append("on              c.funcionalidade_id  = a.id").append("\n");
-		sql.append("left join       sistema.comando c1").append("\n");
-		sql.append("on              c.comando_id  = c1.id").append("\n");
+		sql.append("select          a.id").append("\n");
+		sql.append("               ,ifnull(b.nome, c.nome) as nome").append("\n");
+		sql.append("               ,if(c.nome is null, b.pessoa_tipo, 'UO') as tipo").append("\n");
+		sql.append("               ,d.md5").append("\n");
+		sql.append("               ,b.situacao as pessoa_situacao").append("\n");
+		sql.append("               ,a.situacao as usuario_situacao").append("\n");
+		sql.append("               ,a.nome_usuario").append("\n");
+		sql.append("from            sistema.usuario a").append("\n");
+		sql.append("left join       pessoa.pessoa b").append("\n");
+		sql.append("on              b.id = a.pessoa_id").append("\n");
+		sql.append("left join       funcional.unidade_organizacional c").append("\n");
+		sql.append("on              c.id = a.unidade_organizacional_id").append("\n");
+
+		sql.append("left join       pessoa.arquivo d").append("\n");
+		sql.append("on              d.id = b.perfil_arquivo_id").append("\n");
+
 		sql.append("where (1 = 1)").append("\n");
-		if (!CollectionUtils.isEmpty(filtro.getFuncionalidade())) {
+		if (!CollectionUtils.isEmpty(filtro.getPessoaNome())) {
 			sql.append("and (").append("\n");
 			sqlTemp = new StringBuilder();
-			for (TagDto nome : filtro.getFuncionalidade()) {
+			for (TagDto nome : filtro.getPessoaNome()) {
 				if (sqlTemp.length() > 0) {
 					sqlTemp.append(" or ");
 				}
 				String n = nome.getText().replaceAll("\\s", "%");
 				params.add(String.format("%%%s%%", n));
-				sqlTemp.append(" (a.nome like ?").append(params.size()).append(")").append("\n");
+				sqlTemp.append(" (ifnull(b.nome, c.nome) like ?").append(params.size()).append(")").append("\n");
 			}
 			sql.append(sqlTemp);
 			sql.append(" )").append("\n");
 		}
-		if (!CollectionUtils.isEmpty(filtro.getModulo())) {
+		if (!CollectionUtils.isEmpty(filtro.getUsuarioNome())) {
 			sql.append("and (").append("\n");
 			sqlTemp = new StringBuilder();
-			for (TagDto nome : filtro.getModulo()) {
+			for (TagDto nome : filtro.getUsuarioNome()) {
 				if (sqlTemp.length() > 0) {
 					sqlTemp.append(" or ");
 				}
 				String n = nome.getText().replaceAll("\\s", "%");
 				params.add(String.format("%%%s%%", n));
-				sqlTemp.append(" (b1.nome like ?").append(params.size()).append(")").append("\n");
+				sqlTemp.append(" (a.nome_usuario like ?").append(params.size()).append(")").append("\n");
 			}
 			sql.append(sqlTemp);
 			sql.append(" )").append("\n");
 		}
-		if (!CollectionUtils.isEmpty(filtro.getComando())) {
-			sql.append("and (").append("\n");
-			sqlTemp = new StringBuilder();
-			for (TagDto nome : filtro.getComando()) {
-				if (sqlTemp.length() > 0) {
-					sqlTemp.append(" or ");
-				}
-				String n = nome.getText().replaceAll("\\s", "%");
-				params.add(String.format("%%%s%%", n));
-				sqlTemp.append(" (c1.nome like ?").append(params.size()).append(")").append("\n");
-			}
-			sql.append(sqlTemp);
-			sql.append(" )").append("\n");
-		}
-		sql.append("order by        a.nome").append("\n");
+		sql.append("order by        2").append("\n");
 
 		// criar a query
 		Query query = em.createNativeQuery(sql.toString());

@@ -40,7 +40,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                    'OrganizacaoTipo',
                    'Estado'
                 ]}).success(function(resposta) {
-                    if (resposta && resposta.resultado) {
+                    if (resposta && resposta.mensagem === 'OK') {
                         scp.cadastro.apoio.pessoaTipoList = resposta.resultado[0];
                         scp.cadastro.apoio.generoList = resposta.resultado[1];
                         scp.cadastro.apoio.pessoaGeracaoList = resposta.resultado[2];

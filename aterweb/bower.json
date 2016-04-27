@@ -35,7 +35,8 @@
     "ng-tags-input": "~3",
     "angular-simple-logger": "~0.1.5",
     "angular-ui-tree": "~2",
-    "ng-idle": "~1"
+    "ng-idle": "~1",
+    "angular-filter": "~0"
   },
   "devDependencies": {
     "angular-google-maps": "~2"

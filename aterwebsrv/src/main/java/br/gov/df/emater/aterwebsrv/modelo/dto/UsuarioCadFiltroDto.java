@@ -6,34 +6,28 @@ public class UsuarioCadFiltroDto extends FiltroDtoCustom {
 
 	private static final long serialVersionUID = 1L;
 
-	private Set<TagDto> comando;
+	private Set<TagDto> pessoaNome;
 
-	private Set<TagDto> funcionalidade;
+	private Set<TagDto> usuarioNome;
 
-	private Set<TagDto> modulo;
+	public UsuarioCadFiltroDto() {
 
-	public Set<TagDto> getComando() {
-		return comando;
 	}
 
-	public Set<TagDto> getFuncionalidade() {
-		return funcionalidade;
+	public Set<TagDto> getPessoaNome() {
+		return pessoaNome;
 	}
 
-	public Set<TagDto> getModulo() {
-		return modulo;
+	public void setPessoaNome(Set<TagDto> pessoaNome) {
+		this.pessoaNome = pessoaNome;
 	}
 
-	public void setComando(Set<TagDto> comando) {
-		this.comando = comando;
+	public Set<TagDto> getUsuarioNome() {
+		return usuarioNome;
 	}
 
-	public void setFuncionalidade(Set<TagDto> funcionalidade) {
-		this.funcionalidade = funcionalidade;
-	}
-
-	public void setModulo(Set<TagDto> modulo) {
-		this.modulo = modulo;
+	public void setUsuarioNome(Set<TagDto> usuarioNome) {
+		this.usuarioNome = usuarioNome;
 	}
 
 }

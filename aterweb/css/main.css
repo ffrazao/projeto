@@ -256,3 +256,11 @@ tr.angular-ui-tree-empty {
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
 }
+
+.riscado {
+  text-decoration:line-through
+}
+
+.vermelho {
+  color: red;
+}

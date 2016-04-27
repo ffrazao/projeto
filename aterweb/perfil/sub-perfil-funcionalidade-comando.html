@@ -1,25 +1,58 @@
-<div class="row" style="height: 400px; overflow: scroll;">
-    <ol id="funcionalidadeComandoList">
-        <label class="control-label" ng-repeat-start="item in cadastro.apoio.funcionalidadeComandoList | orderBy: ['funcionalidadeComando.funcionalidade.codigo', 'funcionalidadeComando.comando.codigo']" ng-show="cadastro.apoio.funcionalidadeComandoList[$index].funcionalidadeComando.funcionalidade.id !== cadastro.apoio.funcionalidadeComandoList[$index-1].funcionalidadeComando.funcionalidade.id">
-            {{item.funcionalidadeComando.funcionalidade.nome}} ({{item.funcionalidadeComando.funcionalidade.codigo}}) <button type="button" class="btn btn-primary btn-sm sr-only"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
-        </label>
-        <li ng-repeat-end ng-class="{'ng-invalid': exibeErroConceder($index, item.conceder)}">
-            <label for="funcionalidadeComando{{$index}}">
-                <input type="checkbox" id="funcionalidadeComando{{$index}}" name="funcionalidadeComando{{$index}}" 
-                    checklist-model="cadastro.registro.perfilFuncionalidadeComandoList" checklist-value="item"
-                    checklist-comparator="funcionalidadeComandoCompare">
-                </input>
-                {{item.funcionalidadeComando.comando.nome}}
-            </label>
-            <label class="control-label" for="conceder-{{$parent.$index}}-{{$index}}" ng-repeat="c in cadastro.apoio.confirmacaoList" ng-show="exibeConceder($parent.$index)">
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <input type="radio" name="conceder-{{$parent.$index}}" id="conceder-{{$parent.$index}}-{{$index}}" ng-value="c.codigo" ng-model="item.conceder" ng-required="true">
-                {{c.codigo === 'S' ? 'Conceder' : 'Negar'}}
-            </label>
-            <div class="label label-danger" ng-show="exibeErroConceder($index, item.conceder)">
-                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                Campo Obrigatório
+<div class="row">
+    <div class="col-sm-4" ng-repeat="(key, value) in cadastro.apoio.funcionalidadeComandoList | orderBy: ['funcionalidadeComando.funcionalidade.codigo'] | groupBy: 'funcionalidadeComando.funcionalidade.codigo'">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title container-fluid">
+                    <div class="row">
+                        <label class="col-md-10">{{value[0].funcionalidadeComando.funcionalidade.nome}} ({{value[0].funcionalidadeComando.funcionalidade.codigo}})</label>
+                        <div class="col-md-1">
+                            <button type="button" class="btn btn-success btn-xs" ng-click="concederFuncionalidade(value)" title="Conceder">
+                                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                            </button>
+                            <button type="button" class="btn btn-danger btn-xs" ng-click="negarFuncionalidade(value)" title="Negar">
+                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                    </div>
+                </h3>
             </div>
-        </li>
-    </ol>
+            <div class="panel-body">
+                <ol>
+                    <li ng-class="{'ng-invalid': exibeErroConceder($parent.$index, $index, comando.conceder)}" ng-repeat="comando in value">
+                        <label class="control-label" 
+                            ng-class="{'riscado': comando.conceder === 'N', 'vermelho': comando.conceder === 'N'}"
+                            for="funcionalidadeComando_{{$parent.$index}}_{{$index}}">
+                            <input
+                                type="checkbox"
+                                id="funcionalidadeComando_{{$parent.$parent.$index}}_{{$parent.$index}}"
+                                name="funcionalidadeComando_{{$parent.$parent.$index}}_{{$parent.$index}}"
+                                checklist-model="cadastro.registro.perfilFuncionalidadeComandoList"
+                                checklist-value="comando"
+                                checklist-comparator="funcionalidadeComandoCompare">
+                            </input>
+                            {{comando.funcionalidadeComando.comando.nome}}
+                        </label>
+                        <div class="form-group">
+                            <label class="checkbox-inline" 
+                                for="conceder_{{$parent.$parent.$index}}_{{$parent.$index}}_{{$index}}"
+                                ng-repeat="c in cadastro.apoio.confirmacaoList | orderBy: '-codigo'"
+                                ng-show="exibeConceder($parent.$parent.$index, $parent.$index)">
+                                <input type="radio" 
+                                        name="conceder_{{$parent.$parent.$index}}_{{$parent.$index}}" 
+                                        id="conceder_{{$parent.$parent.$index}}_{{$parent.$index}}_{{$index}}" 
+                                        ng-value="c.codigo"
+                                        ng-model="comando.conceder"
+                                        ng-required="true">
+                                {{c.codigo === 'S' ? 'Conceder' : 'Negar'}}
+                            </label>
+                        </div>
+                        <div class="label label-danger" ng-show="exibeErroConceder($parent.$index, $index, comando.conceder)">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Campo Obrigatório
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
 </div>

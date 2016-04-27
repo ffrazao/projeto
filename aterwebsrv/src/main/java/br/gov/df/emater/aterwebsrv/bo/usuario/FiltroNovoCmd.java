@@ -1,20 +1,19 @@
 package br.gov.df.emater.aterwebsrv.bo.usuario;
 
-import org.apache.commons.chain.Command;
-import org.apache.commons.chain.Context;
 import org.springframework.stereotype.Service;
 
+import br.gov.df.emater.aterwebsrv.bo._Comando;
+import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.UsuarioCadFiltroDto;
 
 @Service("UsuarioFiltroNovoCmd")
-public class FiltroNovoCmd implements Command {
+public class FiltroNovoCmd extends _Comando {
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public boolean execute(Context context) throws Exception {
+	public boolean executar(_Contexto contexto) throws Exception {
 		UsuarioCadFiltroDto filtro = new UsuarioCadFiltroDto();
 
-		context.put("resultado", filtro);
+		contexto.setResposta(filtro);
 		return false;
 	}
 

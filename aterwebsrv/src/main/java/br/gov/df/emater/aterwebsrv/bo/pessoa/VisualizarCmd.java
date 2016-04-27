@@ -56,9 +56,7 @@ public class VisualizarCmd extends _Comando {
 		} else if (result instanceof PessoaJuridica) {
 
 		}
-		result.setUsuarioInclusao(result.getUsuarioInclusao().infoBasica());
-		result.setUsuarioAlteracao(result.getUsuarioAlteracao().infoBasica());
-		
+
 		result.setPerfilArquivo(result.getPerfilArquivo() == null ? null : result.getPerfilArquivo().infoBasica());
 
 		if (Confirmacao.S.equals(result.getPublicoAlvoConfirmacao())) {

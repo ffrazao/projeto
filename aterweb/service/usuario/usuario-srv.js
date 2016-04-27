@@ -14,38 +14,21 @@ angular.module(pNmModulo).factory(pNmFactory,
               
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
                 UtilSrv.dominio({ent: [
-                   'Modulo',
-                   'Comando',
+                   'PessoaTipo',
+                   'PessoaSituacao',
+                   'UnidadeOrganizacional',
+                   'Situacao',
                    'Confirmacao',
+                   'UsuarioStatusConta',
                 ]}).success(function(resposta) {
-                    if (resposta && resposta.resultado) {
+                    if (resposta && resposta.mensagem === 'OK') {
                         var i = 0;
-                        scp.cadastro.apoio.moduloFuncionalidadeList = angular.isArray(scp.cadastro.apoio.moduloFuncionalidadeList) ? angular.merge(scp.cadastro.apoio.moduloFuncionalidadeList, resposta.resultado[i++]) : resposta.resultado[i++];
-                        scp.cadastro.apoio.funcionalidadeComandoList = angular.isArray(scp.cadastro.apoio.funcionalidadeComandoList) ? angular.merge(scp.cadastro.apoio.funcionalidadeComandoList, resposta.resultado[i++]) : resposta.resultado[i++];
-                        scp.cadastro.apoio.confirmacaoList = angular.isArray(scp.cadastro.apoio.confirmacaoList) ? angular.merge(scp.cadastro.apoio.confirmacaoList, resposta.resultado[i++]) : resposta.resultado[i++];
-                    }
-                    var involucro = null;
-                    if (scp.cadastro.apoio.moduloFuncionalidadeList) {
-                        involucro = [];
-                        angular.forEach(scp.cadastro.apoio.moduloFuncionalidadeList, function(elemento) {
-                            delete elemento['@jsonId'];
-                            involucro.push({'modulo': elemento});
-                        });
-                        scp.cadastro.apoio.moduloFuncionalidadeList.splice(0, scp.cadastro.apoio.moduloFuncionalidadeList.length);
-                        scp.cadastro.apoio.moduloFuncionalidadeList = angular.merge(scp.cadastro.apoio.moduloFuncionalidadeList, involucro);
-                    } else {
-                        scp.cadastro.apoio.moduloFuncionalidadeList = [];
-                    }
-                    if (scp.cadastro.apoio.funcionalidadeComandoList) {
-                        involucro = [];
-                        angular.forEach(scp.cadastro.apoio.funcionalidadeComandoList, function(elemento) {
-                            delete elemento['@jsonId'];
-                            involucro.push({'comando': elemento});
-                        });
-                        scp.cadastro.apoio.funcionalidadeComandoList.splice(0, scp.cadastro.apoio.funcionalidadeComandoList.length);
-                        scp.cadastro.apoio.funcionalidadeComandoList = angular.merge(scp.cadastro.apoio.funcionalidadeComandoList, involucro);
-                    } else {
-                        scp.cadastro.apoio.funcionalidadeComandoList = [];
+                        scp.cadastro.apoio.pessoaTipoList            = angular.isArray(scp.cadastro.apoio.pessoaTipoList) ? angular.merge(scp.cadastro.apoio.pessoaTipoList, resposta.resultado[i++]) : resposta.resultado[i++];
+                        scp.cadastro.apoio.pessoaSituacaoList        = angular.isArray(scp.cadastro.apoio.pessoaSituacaoList) ? angular.merge(scp.cadastro.apoio.pessoaSituacaoList, resposta.resultado[i++]) : resposta.resultado[i++];
+                        scp.cadastro.apoio.unidadeOrganizacionalList = angular.isArray(scp.cadastro.apoio.unidadeOrganizacionalList) ? angular.merge(scp.cadastro.apoio.unidadeOrganizacionalList, resposta.resultado[i++]) : resposta.resultado[i++];
+                        scp.cadastro.apoio.situacaoList              = angular.isArray(scp.cadastro.apoio.situacaoList) ? angular.merge(scp.cadastro.apoio.situacaoList, resposta.resultado[i++]) : resposta.resultado[i++];
+                        scp.cadastro.apoio.confirmacaoList           = angular.isArray(scp.cadastro.apoio.confirmacaoList) ? angular.merge(scp.cadastro.apoio.confirmacaoList, resposta.resultado[i++]) : resposta.resultado[i++];
+                        scp.cadastro.apoio.usuarioStatusContaList    = angular.isArray(scp.cadastro.apoio.usuarioStatusContaList) ? angular.merge(scp.cadastro.apoio.usuarioStatusContaList, resposta.resultado[i++]) : resposta.resultado[i++];
                     }
                 });
 

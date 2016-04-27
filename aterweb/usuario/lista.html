@@ -16,13 +16,16 @@
                     <th width="30">
                         #
                     </th>
+                    <th>Foto</th>
                     <th>Nome</th>
-                    <th>Código</th>
-                    <th>Ativo</th>
+                    <th>Tipo</th>
+                    <th>Situação Pessoa</th>
+                    <th>Situação Usuário</th>
+                    <th>Nome Usuário</th>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="item in navegador.dados | orderBy: ['2'] | pagina: navegador.paginaAtual : navegador.tamanhoPagina | limitTo: navegador.tamanhoPagina" ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)">
+                <tr ng-repeat="item in navegador.dados | orderBy: ['1'] | pagina: navegador.paginaAtual : navegador.tamanhoPagina | limitTo: navegador.tamanhoPagina" ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)">
                     <td width="30px">
                         <input type="radio" ng-show="navegador.selecao.tipo === 'U'" ng-model="navegador.selecao.item" ng-value="item"/>
                         <input type="checkbox" ng-show="navegador.selecao.tipo === 'M'" checklist-model="navegador.selecao.items" checklist-value="item" ng-click="crudMataClick(scp, $event);"/>
@@ -30,9 +33,15 @@
                     <td>
                         {{$index + 1 + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)}}
                     </td>
+                    <td title="Foto">
+                        <img class="img-thumbnail" src="img/foto.png" ng-if="!item[CABEC.MD5].length" width="180px" height="180px" />
+                        <img class="img-thumbnail" ng-src="{{servicoUrl}}/arquivo-descer?arquivo={{item[CABEC.MD5]}}" ng-if="item[CABEC.MD5].length" width="180px" height="180px"/>
+                    </td>
                     <td title="Nome">{{item[CABEC.NOME]}}</td>
-                    <td title="Código">{{item[CABEC.CODIGO]}}</td>
-                    <td title="Ativo">{{item[CABEC.ATIVO] == "S" ? "Sim" : "Não"}}</td>
+                    <td title="Tipo">{{item[CABEC.TIPO]}}</td>
+                    <td title="Situação Pessoa">{{item[CABEC.PESSOA_SITUACAO] == "A" ? "Ativo" : "Inativo"}}</td>
+                    <td title="Situação Usuario">{{item[CABEC.USUARIO_SITUACAO] == "A" ? "Ativo" : "Inativo"}}</td>
+                    <td title="Nome Usuario">{{item[CABEC.USUARIO_NOME]}}</td>
                 </tr>
             </tbody>
             <tfoot>

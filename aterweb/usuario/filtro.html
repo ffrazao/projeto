@@ -3,37 +3,25 @@
     <div class="panel-body">
         <form class="form-horizontal" name="frm.filtro" novalidate>
             <fieldset>
-                <div class="form-group" title="Módulo do Sistema">
-                    <label class="col-md-4 control-label" for="modulo">
-                        Módulo do Sistema
+                <div class="form-group" title="Nome da Pessoa">
+                    <label class="col-md-4 control-label" for="pessoaNome">
+                        Nome da Pessoa
                     </label>
                     <div class="col-md-6">
-                        <tags-input id="modulo" name="modulo" ng-model="cadastro.filtro.modulo" placeholder="Digite o nome, ou parte dele, e tecle enter" replace-spaces-with-dashes="false"></tags-input>
-                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.modulo.$error.required">
+                        <tags-input id="pessoaNome" name="pessoaNome" ng-model="cadastro.filtro.pessoaNome" placeholder="Digite o nome, ou parte dele, e tecle enter" replace-spaces-with-dashes="false"></tags-input>
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.pessoaNome.$error.required">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             Campo Obrigatório
                         </div>
                     </div>
                 </div>
-                <div class="form-group" title="Funcionalidade do Sistema">
-                    <label class="col-md-4 control-label" for="funcionalidade">
-                        Funcionalidade do Sistema
+                <div class="form-group" title="Nome do Usuário">
+                    <label class="col-md-4 control-label" for="usuarioNome">
+                        Nome do Usuário
                     </label>
                     <div class="col-md-6">
-                        <tags-input id="funcionalidade" name="funcionalidade" ng-model="cadastro.filtro.funcionalidade" placeholder="Digite o nome, ou parte dele, e tecle enter" replace-spaces-with-dashes="false"></tags-input>
-                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.funcionalidade.$error.required">
-                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                            Campo Obrigatório
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group" title="Comando da Funcionalidade do Sistema">
-                    <label class="col-md-4 control-label" for="comando">
-                        Comando da Funcionalidade do Sistema
-                    </label>
-                    <div class="col-md-6">
-                        <tags-input id="comando" name="comando" ng-model="cadastro.filtro.comando" placeholder="Digite o nome, ou parte dele, e tecle enter" replace-spaces-with-dashes="false"></tags-input>
-                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.comando.$error.required">
+                        <tags-input id="usuarioNome" name="usuarioNome" ng-model="cadastro.filtro.usuarioNome" placeholder="Digite o nome, ou parte dele, e tecle enter" replace-spaces-with-dashes="false" min-length="1"></tags-input>
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.usuarioNome.$error.required">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             Campo Obrigatório
                         </div>

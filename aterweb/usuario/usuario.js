@@ -1,31 +1,28 @@
 /* jslint evil: true, browser: true, plusplus: true, loopfunc: true */
 /* global criarEstadosPadrao, removerCampo */ 
-/* jshint esnext: true */
 
 (function(pNmModulo, pNmController, pNmFormulario, pUrlModulo) {
 
     'use strict';
 
-    var ordem = 0;
-    const CABEC = {
-        ID : ordem++,
-        NOME : ordem++,
-        CODIGO : ordem++,
-        ATIVO : ordem++,
-    };
-
     angular.module(pNmModulo, ['ui.bootstrap', 'ui.utils', 'ui.router', 'ngAnimate', 'frz.navegador', 'frz.form', 'ngSanitize']);
-    angular.module(pNmModulo).constant('CABEC', CABEC);
     angular.module(pNmModulo).config(['$stateProvider', function($stateProvider) {
         criarEstadosPadrao($stateProvider, pNmModulo, pNmController, pUrlModulo);
     }]);
 
     angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'UsuarioSrv',
-        'CABEC',
-        function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, UsuarioSrv,
-            CABEC) {
+        function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, UsuarioSrv) {
 
-            $scope.CABEC = CABEC;
+            var ordem = 0;
+            $scope.CABEC = {
+                ID : ordem++,
+                NOME : ordem++,
+                TIPO: ordem++,
+                MD5 : ordem++,
+                PESSOA_SITUACAO : ordem++,
+                USUARIO_SITUACAO : ordem++,
+                USUARIO_NOME : ordem++,
+            };
 
             // inicializacao
             $scope.crudInit($scope, $state, null, pNmFormulario, UsuarioSrv);

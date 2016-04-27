@@ -36,8 +36,15 @@ public class VisualizarCmd extends _Comando {
 		// }
 		em.detach(usuario);
 
-		Usuario result = usuario.infoBasica();
+		Usuario result = usuario;
 		// result.setModuloFuncionalidadeList(funcionalidade.getModuloFuncionalidadeList());
+		
+		if (result.getUsuarioInclusao() != null) {
+			result.setUsuarioInclusao(result.getUsuarioInclusao().infoBasica());
+		}
+		if (result.getUsuarioAlteracao() != null) {
+			result.setUsuarioAlteracao(result.getUsuarioAlteracao().infoBasica());
+		}
 
 		contexto.setResposta(result);
 

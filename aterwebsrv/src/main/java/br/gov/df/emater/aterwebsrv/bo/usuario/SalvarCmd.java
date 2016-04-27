@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.bo.usuario;
 
+import java.util.Calendar;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,14 @@ public class SalvarCmd extends _Comando {
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		Usuario result = (Usuario) contexto.getRequisicao();
+		if (result.getId() == null) {
+			result.setUsuarioInclusao(getUsuario(contexto.getUsuario().getName()));
+			result.setInclusaoData(Calendar.getInstance());
+		} else {
+			result.setUsuarioInclusao(getUsuario(result.getUsuarioInclusao().getUsername()));
+		}
+		result.setUsuarioAlteracao(getUsuario(contexto.getUsuario().getName()));
+		result.setAlteracaoData(Calendar.getInstance());
 
 		Usuario salvo = null;
 		if (result.getId() != null) {

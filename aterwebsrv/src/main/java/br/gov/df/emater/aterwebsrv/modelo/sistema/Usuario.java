@@ -40,7 +40,9 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.UsuarioStatusConta;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaEmail;
+import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerTimestamp;
+import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerTimestamp;
 
 /**
@@ -61,6 +63,13 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 	@JsonDeserialize(using = JsonDeserializerTimestamp.class)
 	private Calendar acessoExpiraEm;
 
+	@Column(name = "alteracao_data")
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+	@JsonSerialize(using = JsonSerializerData.class)
+	@JsonDeserialize(using = JsonDeserializerData.class)
+	private Calendar alteracaoData;
+
 	@OneToMany(mappedBy = "usuario")
 	private Set<UsuarioPerfil> authorities;
 
@@ -77,6 +86,13 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
+
+	@Column(name = "inclusao_data")
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+	@JsonSerialize(using = JsonSerializerData.class)
+	@JsonDeserialize(using = JsonDeserializerData.class)
+	private Calendar inclusaoData;
 
 	@Column(name = "info_sobre_usuario")
 	private String infoSobreUsuario;
@@ -113,9 +129,17 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 	// @Field(index = Index.YES, store = Store.YES)
 	private String username;
 
+	@ManyToOne
+	@JoinColumn(name = "alteracao_usuario_id")
+	private Usuario usuarioAlteracao;
+
 	@Column(name = "usuario_atualizou_perfil")
 	@Enumerated(EnumType.STRING)
 	protected Confirmacao usuarioAtualizouPerfil;
+
+	@ManyToOne
+	@JoinColumn(name = "inclusao_usuario_id")
+	private Usuario usuarioInclusao;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "situacao")
@@ -159,6 +183,10 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 		return acessoExpiraEm;
 	}
 
+	public Calendar getAlteracaoData() {
+		return alteracaoData;
+	}
+
 	@Override
 	public Set<UsuarioPerfil> getAuthorities() {
 		return authorities;
@@ -175,6 +203,10 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 	@Override
 	public Integer getId() {
 		return id;
+	}
+
+	public Calendar getInclusaoData() {
+		return inclusaoData;
 	}
 
 	public String getInfoSobreUsuario() {
@@ -219,8 +251,16 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 		return username;
 	}
 
+	public Usuario getUsuarioAlteracao() {
+		return usuarioAlteracao;
+	}
+
 	public Confirmacao getUsuarioAtualizouPerfil() {
 		return usuarioAtualizouPerfil;
+	}
+
+	public Usuario getUsuarioInclusao() {
+		return usuarioInclusao;
 	}
 
 	public UsuarioStatusConta getUsuarioStatusConta() {
@@ -267,6 +307,10 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 		this.acessoExpiraEm = acessoExpiraEm;
 	}
 
+	public void setAlteracaoData(Calendar alteracaoData) {
+		this.alteracaoData = alteracaoData;
+	}
+
 	public void setAuthorities(Set<UsuarioPerfil> authorities) {
 		this.authorities = authorities;
 	}
@@ -282,6 +326,10 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 	@Override
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public void setInclusaoData(Calendar inclusaoData) {
+		this.inclusaoData = inclusaoData;
 	}
 
 	public void setInfoSobreUsuario(String infoSobreUsuario) {
@@ -324,8 +372,16 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 		this.username = username;
 	}
 
+	public void setUsuarioAlteracao(Usuario usuarioAlteracao) {
+		this.usuarioAlteracao = usuarioAlteracao;
+	}
+
 	public void setUsuarioAtualizouPerfil(Confirmacao usuarioAtualizouPerfil) {
 		this.usuarioAtualizouPerfil = usuarioAtualizouPerfil;
+	}
+
+	public void setUsuarioInclusao(Usuario usuarioInclusao) {
+		this.usuarioInclusao = usuarioInclusao;
 	}
 
 	public void setUsuarioStatusConta(UsuarioStatusConta usuarioStatusConta) {
