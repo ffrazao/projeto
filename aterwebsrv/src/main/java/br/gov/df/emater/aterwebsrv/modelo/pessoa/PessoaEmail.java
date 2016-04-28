@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.pessoa;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -38,6 +40,14 @@ public class PessoaEmail extends EntidadeBase implements _ChavePrimaria<Integer>
 	private Pessoa pessoa;
 
 	public PessoaEmail() {
+	}
+
+	public PessoaEmail(Serializable id) {
+		super(id);
+	}
+	public PessoaEmail(Integer id, Email email) {
+		this(id);
+		this.setEmail(email);
 	}
 
 	public Email getEmail() {

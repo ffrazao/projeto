@@ -154,12 +154,14 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		super(id);
 	}
 
-	public Pessoa(Integer id, PessoaTipo pessoaTipo, String nome, String apelidoSigla, Arquivo perfilArquivo) {
+	public Pessoa(Integer id, PessoaTipo pessoaTipo, String nome, String apelidoSigla, Arquivo perfilArquivo, PessoaSituacao situacao, Confirmacao publicoAlvoConfirmacao) {
 		this(id);
 		setPessoaTipo(pessoaTipo);
 		setNome(nome);
 		setApelidoSigla(apelidoSigla);
 		setPerfilArquivo(perfilArquivo);
+		setSituacao(situacao);
+		setPublicoAlvoConfirmacao(publicoAlvoConfirmacao);
 	}
 
 	public Calendar getAlteracaoData() {

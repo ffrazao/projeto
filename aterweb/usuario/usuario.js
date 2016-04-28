@@ -10,8 +10,8 @@
         criarEstadosPadrao($stateProvider, pNmModulo, pNmController, pUrlModulo);
     }]);
 
-    angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'UsuarioSrv',
-        function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, UsuarioSrv) {
+    angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'UsuarioSrv', 'SegurancaSrv',
+        function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, UsuarioSrv, SegurancaSrv) {
 
             var ordem = 0;
             $scope.CABEC = {
@@ -66,22 +66,49 @@
 
             // inicio das operaçoes atribuidas ao navagador
             $scope.visualizarDepois = function(registro) {
-                removerCampo(registro, ['@jsonId']);
-                if (registro.moduloFuncionalidadeList) {
-                    angular.forEach(registro.moduloFuncionalidadeList, function(elemento) {
-                        delete elemento['id'];
+                $scope.cadastro.apoio.pessoaEmailList = [];
+                if (registro.pessoa && registro.pessoa.emailList) {                    
+                    registro.pessoa.emailList.forEach( function(elemento) {
+                        $scope.cadastro.apoio.pessoaEmailList.push(elemento);
                     });
                 }
-                if (registro.funcionalidadeComandoList) {
-                    angular.forEach(registro.funcionalidadeComandoList, function(elemento) {
-                        delete elemento['id'];
-                    });
+            };
+
+            var confirmarSalvarAntes = function(cadastro) {
+                removerCampo(cadastro.registro, ['@jsonId']);
+                if (cadastro.registro.pessoa) {
+                    $scope.preparaClassePessoa(cadastro.registro.pessoa);
                 }
-                $scope.$broadcast('visualizarDepois');
+            };
+            $scope.confirmarIncluirAntes = function(cadastro) {
+                return confirmarSalvarAntes(cadastro);
+            };
+            $scope.confirmarEditarAntes = function(cadastro) {
+                return confirmarSalvarAntes(cadastro);
             };
             // fim das operaçoes atribuidas ao navagador
 
             // inicio ações especiais
+            $scope.verificaDisponibilidadeUsername = function (username) {
+
+                SegurancaSrv.visualizarPerfil(username).success(function(resposta) {
+                    if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {
+                        if (resposta.resultado && resposta.resultado.id !== $scope.cadastro.registro.id) {
+                            toastr.error('Este nome de usuário já está em uso!', 'Erro');
+                        } else {
+                            toastr.success('Nome de usuário disponível!', 'Sucesso');
+                        }
+                    } else {
+                        if (resposta.mensagem === 'Usuário não cadastrado') {
+                            toastr.success('Nome de usuário disponível!', 'Sucesso');
+                        } else {                
+                            toastr.error(resposta.mensagem, 'Erro ao pesquisar dados do perfil');
+                            $uibModalInstance.dismiss('cancel');
+                        }
+                    }
+                });
+
+            };
 
             // nomes dos campos para listagem
 

@@ -157,9 +157,10 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 		setUsername(name);
 	}
 
-	public Usuario(String name, Pessoa pessoa) {
-		this(name);
+	public Usuario(String nome, Pessoa pessoa, UnidadeOrganizacional unidadeOrganizacional) {
+		this(nome);
 		setPessoa(pessoa);
+		setUnidadeOrganizacional(unidadeOrganizacional);
 	}
 
 	@Override
@@ -276,7 +277,7 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 	}
 
 	public Usuario infoBasica() {
-		return new Usuario(this.username, this.pessoa.infoBasica());
+		return new Usuario(this.username, this.pessoa == null ? null : this.pessoa.infoBasica(), this.unidadeOrganizacional == null ? null : this.unidadeOrganizacional.infoBasica());
 	}
 
 	@Override

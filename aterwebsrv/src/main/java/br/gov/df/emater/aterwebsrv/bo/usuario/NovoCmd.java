@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.UsuarioStatusConta;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 
 @Service("UsuarioNovoCmd")
@@ -16,6 +18,8 @@ public class NovoCmd extends _Comando {
 		if (result == null) {
 			result = new Usuario();
 		}
+		result.setUsuarioStatusConta(UsuarioStatusConta.A);
+		result.setUsuarioAtualizouPerfil(Confirmacao.N);
 		
 		contexto.setResposta(result);
 

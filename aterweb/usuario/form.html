@@ -85,25 +85,47 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6" title="Nome do Usuário">
+                    <div class="col-md-5" title="Nome do Usuário">
                         <div class="form-group">
                             <label class="control-label" for="username">Nome do Usuário</label>
-                            <input type="text" class="form-control" id="username" name="username" ng-model="cadastro.registro.username" ng-required="true" ng-trim="true">
+                            <div class="input-group">
+                                <input id="username" name="username" type="text" placeholder="nome de usuário" class="form-control input-md" ng-required="true" autofocus ng-model="cadastro.registro.username" ng-pattern="/^[a-z]*[a-z|\.]*[a-z]*$/" ng-trim="true" ng-minlength="6" ng-maxlength="50">
+                                <span class="input-group-btn">
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-default" ng-click="verificaDisponibilidadeUsername(cadastro.registro.username)" ng-disabled="frm.formulario.username.$invalid">
+                                            <span class="glyphicon glyphicon-ok"></span>
+                                        </button>
+                                    </div>
+                                </span>
+                            </div>
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.username.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.username.$error.pattern">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Insira letra(s) minúsculas não acentuados ou o caractere "." ponto.
+                            </div>
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.username.$error.minlength">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Poucos caracteres
+                            </div>
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.username.$error.maxlength">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Muitos caracteres
+                            </div>
+
                         </div>
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="col-md-3" title="Situação do Usuário">
                         <label class="control-label">Situação</label>
                         <select class="form-control" required ng-model="cadastro.registro.usuarioStatusConta" ng-options="item.codigo as item.descricao for item in cadastro.apoio.usuarioStatusContaList">
                         </select>
                     </div>
                     <div class="col-md-3" title="Usuário já Atualizou o Perfil?">
                         <div class="form-group">
-                            <label class="control-label" for="usuarioAtualizouPerfil">Usuário já Atualizou o Perfil?</label>
                             <input type="checkbox" id="usuarioAtualizouPerfil" name="usuarioAtualizouPerfil" ng-model="cadastro.registro.usuarioAtualizouPerfil" ng-true-value="'S'" ng-false-value="'N'">
+                            <label class="control-label" for="usuarioAtualizouPerfil">Usuário já Atualizou o Perfil?</label>
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.usuarioAtualizouPerfil.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
@@ -112,7 +134,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-3" title="O acesso expira em">
+                    <div class="col-md-2" title="O acesso expira em">
                         <div class="form-group">
                             <label class="control-label" for="acessoExpiraEm">O acesso expira em</label>
                             <input type="text" class="form-control" id="acessoExpiraEm" name="acessoExpiraEm" ng-model="cadastro.registro.acessoExpiraEm" ui-date-mask>
@@ -120,26 +142,31 @@
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.acessoExpiraEm.$error.date">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Valor Inválido!
+                            </div>
                         </div>
                     </div>
-tentativaAcessoInvalido
-pessoaEmail
-                    <div class="form-group col-md-3">
-                        <label class="control-label" for="acessoExpiraEm">O acesso expira em</label>
-                        <input type="text" class="form-control" id="acessoExpiraEm" name="acessoExpiraEm" ng-model="cadastro.registro.acessoExpiraEm" ui-date-mask>
-                        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.acessoExpiraEm.$error.required">
+                    <div class="col-md-3" title="Número de Tentativas de Acesso Inválido">
+                        <label class="control-label" for="tentativaAcessoInvalido">Tentativas de Acesso Inválido</label>
+                        <input type="text" class="form-control" id="tentativaAcessoInvalido" name="tentativaAcessoInvalido" ng-model="cadastro.registro.tentativaAcessoInvalido" ui-number-mask="0" ng-valor-max="3">
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.tentativaAcessoInvalido.$error.required">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             Campo Obrigatório
                         </div>
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.tentativaAcessoInvalido.$error.ngValorMax">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Valor Máximo Excedido!
+                        </div>
                     </div>
-                    <div class="col-md-4" title="Usuário já Atualizou o Perfil?">
-                        <div class="form-group">
-                            <label class="control-label" for="usuarioAtualizouPerfil">Usuário já Atualizou o Perfil?</label>
-                            <input type="checkbox" id="usuarioAtualizouPerfil" name="usuarioAtualizouPerfil" ng-model="cadastro.registro.usuarioAtualizouPerfil" ng-true-value="'S'" ng-false-value="'N'">
-                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.usuarioAtualizouPerfil.$error.required">
-                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                                Campo Obrigatório
-                            </div>
+                    <div class="col-md-7" title="Email para recuperação de senha">
+                        <label class="control-label" for="pessoaEmail">Email para recuperação de senha</label>
+                        <select id="pessoaEmail" name="pessoaEmail" type="text" class="form-control" ng-required="true" ng-model="cadastro.registro.pessoaEmail" ng-options="item as item.email.endereco for item in cadastro.apoio.pessoaEmailList | orderBy: ['endereco'] track by item.id">
+                        </select>
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.pessoaEmail.$error.required">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Campo Obrigatório
                         </div>
                     </div>
                 </div>

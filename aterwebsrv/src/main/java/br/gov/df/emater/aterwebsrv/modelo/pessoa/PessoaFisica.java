@@ -24,11 +24,13 @@ import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.CamOrgao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.CnhCategoria;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Escolaridade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.EstadoCivil;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGeracao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaNacionalidade;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaTipo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.RegimeCasamento;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
@@ -192,8 +194,8 @@ public class PessoaFisica extends Pessoa {
 		setPessoaTipo(PessoaTipo.PF);
 	}
 
-	public PessoaFisica(Integer id, String nome, String apelidoSigla, Arquivo perfilArquivo, PessoaGenero genero, String cpf) {
-		super(id, PessoaTipo.PF, nome, apelidoSigla, perfilArquivo);
+	public PessoaFisica(Integer id, String nome, String apelidoSigla, Arquivo perfilArquivo, PessoaSituacao situacao, Confirmacao publicoAlvoConfirmacao, PessoaGenero genero, String cpf) {
+		super(id, PessoaTipo.PF, nome, apelidoSigla, perfilArquivo, situacao, publicoAlvoConfirmacao);
 		setGenero(genero);
 		setCpf(cpf);
 	}
@@ -348,7 +350,7 @@ public class PessoaFisica extends Pessoa {
 	}
 
 	public PessoaFisica infoBasica() {
-		return new PessoaFisica(this.getId(), this.getNome(), this.getApelidoSigla(), this.getPerfilArquivo() == null ? null : this.getPerfilArquivo().infoBasica(), this.getGenero(), this.getCpf());
+		return new PessoaFisica(this.getId(), this.getNome(), this.getApelidoSigla(), this.getPerfilArquivo() == null ? null : this.getPerfilArquivo().infoBasica(), this.getSituacao(), this.getPublicoAlvoConfirmacao(), this.getGenero(), this.getCpf());
 	}
 
 	public void setCamNumero(String camNumero) {

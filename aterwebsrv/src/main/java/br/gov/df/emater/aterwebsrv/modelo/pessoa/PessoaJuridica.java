@@ -9,6 +9,8 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaTipo;
 
 /**
@@ -42,8 +44,8 @@ public class PessoaJuridica extends Pessoa {
 		setPessoaTipo(PessoaTipo.PJ);
 	}
 
-	public PessoaJuridica(Integer id, String nome, String apelidoSigla, Arquivo perfilArquivo, String cnpj) {
-		super(id, PessoaTipo.PJ, nome, apelidoSigla, perfilArquivo);
+	public PessoaJuridica(Integer id, String nome, String apelidoSigla, Arquivo perfilArquivo, PessoaSituacao situacao, Confirmacao publicoAlvoConfirmacao, String cnpj) {
+		super(id, PessoaTipo.PJ, nome, apelidoSigla, perfilArquivo, situacao, publicoAlvoConfirmacao);
 		setCnpj(cnpj);
 	}
 
@@ -61,7 +63,7 @@ public class PessoaJuridica extends Pessoa {
 
 	@Override
 	public Pessoa infoBasica() {
-		return new PessoaJuridica(this.getId(), this.getNome(), this.getApelidoSigla(), this.getPerfilArquivo() == null ? null : this.getPerfilArquivo().infoBasica(), this.getCnpj());
+		return new PessoaJuridica(this.getId(), this.getNome(), this.getApelidoSigla(), this.getPerfilArquivo() == null ? null : this.getPerfilArquivo().infoBasica(), this.getSituacao(), this.getPublicoAlvoConfirmacao(), this.getCnpj());
 	}
 
 	public void setCnaeList(List<PessoaJuridicaCnae> cnaeList) {
