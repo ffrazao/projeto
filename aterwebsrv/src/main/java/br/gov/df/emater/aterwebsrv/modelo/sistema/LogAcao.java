@@ -30,15 +30,12 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerTimestamp;
 @Entity
 @Table(name = "log_acao", schema = EntidadeBase.SISTEMA_SCHEMA)
 public class LogAcao extends EntidadeBase implements _ChavePrimaria<Integer> {
-	
+
 	private static final long serialVersionUID = 1L;
 	private String administrador;
 
 	@Column(name = "comando_codigo")
 	private String comandoCodigo;
-
-	@Lob
-	private String complemento;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
@@ -48,6 +45,9 @@ public class LogAcao extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	@Column(name = "empresa_sigla")
 	private String empresaSigla;
+
+	@Lob
+	private String erro;
 
 	@Column(name = "funcionalidade_codigo")
 	private String funcionalidadeCodigo;
@@ -62,8 +62,11 @@ public class LogAcao extends EntidadeBase implements _ChavePrimaria<Integer> {
 	@Column(name = "nome_usuario")
 	private String nomeUsuario;
 
-	@Column(name = "registro_id")
-	private Integer registroId;
+	@Lob
+	private String requisicao;
+
+	@Lob
+	private String resposta;
 
 	@Column(name = "unidade_organizacional_sigla")
 	private String unidadeOrganizacionalSigla;
@@ -72,7 +75,7 @@ public class LogAcao extends EntidadeBase implements _ChavePrimaria<Integer> {
 	private Integer usuarioId;
 
 	public LogAcao() {
-		
+
 	}
 
 	public LogAcao(Serializable id) {
@@ -87,16 +90,16 @@ public class LogAcao extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return comandoCodigo;
 	}
 
-	public String getComplemento() {
-		return complemento;
-	}
-
 	public Calendar getData() {
 		return data;
 	}
 
 	public String getEmpresaSigla() {
 		return empresaSigla;
+	}
+
+	public String getErro() {
+		return erro;
 	}
 
 	public String getFuncionalidadeCodigo() {
@@ -116,8 +119,12 @@ public class LogAcao extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return nomeUsuario;
 	}
 
-	public Integer getRegistroId() {
-		return registroId;
+	public String getRequisicao() {
+		return requisicao;
+	}
+
+	public String getResposta() {
+		return resposta;
 	}
 
 	public String getUnidadeOrganizacionalSigla() {
@@ -136,16 +143,16 @@ public class LogAcao extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.comandoCodigo = comandoCodigo;
 	}
 
-	public void setComplemento(String complemento) {
-		this.complemento = complemento;
-	}
-
 	public void setData(Calendar data) {
 		this.data = data;
 	}
 
 	public void setEmpresaSigla(String empresaSigla) {
 		this.empresaSigla = empresaSigla;
+	}
+
+	public void setErro(String erro) {
+		this.erro = erro;
 	}
 
 	public void setFuncionalidadeCodigo(String funcionalidadeCodigo) {
@@ -165,8 +172,12 @@ public class LogAcao extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.nomeUsuario = nomeUsuario;
 	}
 
-	public void setRegistroId(Integer registroId) {
-		this.registroId = registroId;
+	public void setRequisicao(String requisicao) {
+		this.requisicao = requisicao;
+	}
+
+	public void setResposta(String resposta) {
+		this.resposta = resposta;
 	}
 
 	public void setUnidadeOrganizacionalSigla(String unidadeOrganizacionalSigla) {
