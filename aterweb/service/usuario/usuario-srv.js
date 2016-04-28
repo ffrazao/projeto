@@ -40,9 +40,9 @@ angular.module(pNmModulo).factory(pNmFactory,
             executarFiltro : function() {
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
             },
-            novo : function() {
+            novo : function(modelo) {
                 SegurancaSrv.acesso(this.funcionalidade, 'INCLUIR');
-                return $http.get(this.endereco + '/novo');
+                return $http.post(this.endereco + '/novo', modelo);
             },
             incluir : function(usuario) {
                 SegurancaSrv.acesso(this.funcionalidade, 'INCLUIR');

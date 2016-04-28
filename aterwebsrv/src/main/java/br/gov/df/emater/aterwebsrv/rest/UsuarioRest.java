@@ -48,9 +48,9 @@ public class UsuarioRest {
 		return salvar(usr, usuario);
 	}
 
-	@RequestMapping(value = "/novo", method = RequestMethod.GET)
-	public Resposta novo(@RequestParam(value = "id", required = false) Integer id, Principal usuario) throws Exception {
-		return new Resposta(facadeBo.usuarioNovo(usuario, id == null ? null : new Usuario(id)).getResposta());
+	@RequestMapping(value = "/novo", method = RequestMethod.POST)
+	public Resposta novo(@RequestBody Usuario usr, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.usuarioNovo(usuario, usr).getResposta());
 	}
 
 	public Resposta salvar(@RequestBody Usuario usr, Principal usuario) throws Exception {

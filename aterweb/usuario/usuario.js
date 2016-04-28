@@ -65,6 +65,77 @@
             // fim: atividades do Modal
 
             // inicio das operaçoes atribuidas ao navagador
+            var modalSelecionarPessoa = function () {
+                // abrir a modal
+                var modalInstance = $uibModal.open({
+                    animation: true,
+                    template: '<ng-include src=\"\'pessoa/pessoa-modal.html\'\"></ng-include>',
+                    controller: 'PessoaCtrl',
+                    size: 'lg',
+                    resolve: {
+                        modalCadastro: function () {
+                            return $scope.cadastroBase();
+                        }
+                    }
+                });
+                // processar retorno da modal
+                modalInstance.result.then(function (resultado) {
+                    // processar o retorno positivo da modal
+                    if (!resultado || !resultado.selecao) {
+                        toastr.error('Erro ao Inserir Usuário do Tipo Pessoa', 'Erro');
+                        return;
+                    }
+                    var pessoa = null;
+                    if (resultado.selecao.tipo === 'U') {
+                        pessoa = {id: resultado.selecao.item[0], pessoaTipo: resultado.selecao.item[3]};
+                    } else {
+                        pessoa = {id: resultado.selecao.items[0][0], pessoaTipo: resultado.selecao.items[0][3]};
+                    }
+                    $scope.preparaClassePessoa(pessoa);
+
+                    $rootScope.incluir($scope, {pessoa: pessoa});
+                }, function () {
+                    // processar o retorno negativo da modal
+                    $log.info('Modal dismissed at: ' + new Date());
+                });
+            };
+            var executaIncluir = function() {
+                var conf = 
+                    '<div class="form-group">' + 
+                    '    <label class="col-md-4 control-label" for="cnfTipoPessoa">Incluir que tipo de Usuário?</label>' + 
+                    '    <div class="col-md-8">' +
+                    '        <label class="radio-inline" for="cnfTipoPessoa-0">' + 
+                    '            <input type="radio" name="cnfTipoPessoa" id="cnfTipoPessoa-0" value="PE" ng-model="conteudo.tipoUsuario" required>' + 
+                    '            Pessoa' +
+                    '        </label>' +
+                    '        <label class="radio-inline" for="cnfTipoPessoa-1">' + 
+                    '            <input type="radio" name="cnfTipoPessoa" id="cnfTipoPessoa-1" value="UO" ng-model="conteudo.tipoUsuario" required>' + 
+                    '            Unidade Organizacional' +
+                    '        </label>' +
+                    '        <div class="label label-danger" ng-show="confirmacaoFrm.cnfTipoPessoa.$error.required">' + 
+                    '            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' + 
+                    '             Campo Obrigatório' + 
+                    '        </div>' + 
+                    '    </div>' + 
+                    '</div>';
+                mensagemSrv.confirmacao(false, conf, null, {
+                    tipoUsuario: 'PE',
+                }).then(function(conteudo) {
+                    // processar o retorno positivo da modal
+                    if (conteudo.tipoUsuario === 'PE') {
+                        modalSelecionarPessoa();
+                    } else {
+                        
+                    }
+                }, function() {
+                    // processar o retorno negativo da modal
+                    //$log.info('Modal dismissed at: ' + new Date());
+                });
+            };
+            $scope.incluir = function(scp) {
+                executaIncluir();
+            };
+
             $scope.visualizarDepois = function(registro) {
                 $scope.cadastro.apoio.pessoaEmailList = [];
                 if (registro.pessoa && registro.pessoa.emailList) {                    
