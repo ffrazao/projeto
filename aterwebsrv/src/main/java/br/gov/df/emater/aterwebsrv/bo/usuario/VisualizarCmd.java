@@ -15,6 +15,7 @@ import br.gov.df.emater.aterwebsrv.dao.sistema.UsuarioDao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaEmail;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
+import br.gov.df.emater.aterwebsrv.modelo.sistema.UsuarioPerfil;
 
 @Service("UsuarioVisualizarCmd")
 public class VisualizarCmd extends _Comando {
@@ -39,7 +40,7 @@ public class VisualizarCmd extends _Comando {
 			pessoa.setObservacoes(usuario.getPessoa().getObservacoes());
 			List<PessoaEmail> pessoaEmailList = new ArrayList<PessoaEmail>();
 			for (PessoaEmail pessoaEmail : usuario.getPessoa().getEmailList()) {
-				pessoaEmailList.add(new PessoaEmail(pessoaEmail.getId(), pessoaEmail.getEmail()));
+				pessoaEmailList.add(new PessoaEmail(pessoaEmail.getId(), pessoaEmail.getEmail().infoBasica()));
 			}
 			pessoa.setEmailList(pessoaEmailList);
 			
@@ -52,6 +53,17 @@ public class VisualizarCmd extends _Comando {
 		}
 		if (usuario.getUsuarioAlteracao() != null) {
 			usuario.setUsuarioAlteracao(usuario.getUsuarioAlteracao().infoBasica());
+		}
+		
+		if (usuario.getPessoaEmail()!=null && usuario.getPessoaEmail().getEmail() != null) {
+			usuario.getPessoaEmail().setEmail(usuario.getPessoaEmail().getEmail().infoBasica());
+			usuario.getPessoaEmail().setPessoa(null);
+		}
+		
+		if (usuario.getAuthorities() != null) {
+			for (UsuarioPerfil usuarioPerfil: usuario.getAuthorities()) {
+				usuarioPerfil.setUsuario(null);
+			}
 		}
 		
 		em.detach(usuario);

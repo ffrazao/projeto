@@ -1,39 +1,59 @@
 package br.gov.df.emater.aterwebsrv.modelo.dto;
 
+import java.util.Calendar;
 import java.util.Set;
+
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerTimestamp;
+import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerTimestamp;
 
 public class LogAcaoCadFiltroDto extends FiltroDtoCustom {
 
 	private static final long serialVersionUID = 1L;
 
-	private Set<TagDto> comando;
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+	@JsonSerialize(using = JsonSerializerTimestamp.class)
+	@JsonDeserialize(using = JsonDeserializerTimestamp.class)
+	private Calendar inicio;
 
-	private Set<TagDto> funcionalidade;
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+	@JsonSerialize(using = JsonSerializerTimestamp.class)
+	@JsonDeserialize(using = JsonDeserializerTimestamp.class)
+	private Calendar termino;
 
-	private Set<TagDto> modulo;
+	private Set<TagDto> usuario;
 
-	public Set<TagDto> getComando() {
-		return comando;
+	public Calendar getInicio() {
+		return inicio;
 	}
 
-	public Set<TagDto> getFuncionalidade() {
-		return funcionalidade;
+	public Calendar getTermino() {
+		return termino;
 	}
 
-	public Set<TagDto> getModulo() {
-		return modulo;
+	public Set<TagDto> getUsuario() {
+		return usuario;
 	}
 
-	public void setComando(Set<TagDto> comando) {
-		this.comando = comando;
+	public void setInicio(Calendar inicio) {
+		this.inicio = inicio;
 	}
 
-	public void setFuncionalidade(Set<TagDto> funcionalidade) {
-		this.funcionalidade = funcionalidade;
+	public void setTermino(Calendar termino) {
+		this.termino = termino;
 	}
 
-	public void setModulo(Set<TagDto> modulo) {
-		this.modulo = modulo;
+	public void setUsuario(Set<TagDto> usuario) {
+		this.usuario = usuario;
 	}
 
 }

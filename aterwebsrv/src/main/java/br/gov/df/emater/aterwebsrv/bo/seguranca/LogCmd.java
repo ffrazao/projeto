@@ -1,16 +1,21 @@
 package br.gov.df.emater.aterwebsrv.bo.seguranca;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
+import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.LogAcao;
+import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
+import br.gov.df.emater.aterwebsrv.seguranca.UserAuthentication;
 
 @Service("SegurancaLogCmd")
 public class LogCmd extends _Comando {
@@ -20,17 +25,30 @@ public class LogCmd extends _Comando {
 
 	@Override
 	public boolean executar(_Contexto context) throws Exception {
-		System.out.format("Log acao[%s], erro[%s], requisicao[%s], resposta[%s]\n", context.getAcao(), context.getErro(), context.getRequisicao(), context.getResposta());
-		ObjectMapper mapper = new ObjectMapper();
 		LogAcao log = new LogAcao();
-		log.setComandoCodigo(context.getAcao());
-		log.setData(Calendar.getInstance());
+		ObjectMapper mapper = new ObjectMapper();
+
+		log.setComandoChain(context.getAcao());
 		if (context.getUsuario() != null) {
-			log.setNomeUsuario(context.getUsuario().getName());
+			Usuario usr = ((UserAuthentication) context.getUsuario()).getDetails();
+			if (usr == null) {
+				throw new BoException("Erro log operação, usuário não identificado");
+			}
+			log.setNomeUsuario(usr.getUsername());
+			log.setUnidadeOrganizacionalId(usr.getLotacaoAtual().getId());
+			Calendar dtLogin = Calendar.getInstance();
+			dtLogin.setTime(new Date((Long) usr.getDetails().get("DATA")));
+			log.setDataLogin(dtLogin);
+			log.setModuloId(Integer.parseInt((String) usr.getDetails().get("MODULO")));
+			log.setNumeroIp((String) usr.getDetails().get("NUMERO_IP"));
+			log.setBrowser((String) usr.getDetails().get("USER_AGENT"));
+			log.setEnderecoOrigem((String) usr.getDetails().get("ORIGIN"));
+			log.setEnderecoReferencia((String) usr.getDetails().get("REFERER"));
 		}
-		log.setRequisicao(mapper.writeValueAsString(context.getRequisicao()));
-		log.setResposta(mapper.writeValueAsString(context.getResposta()));
-		log.setErro(mapper.writeValueAsString(context.getErro()));
+		// captação dos dados transitados
+		log.setRequisicao(UtilitarioString.limitarTextoEm(mapper.writeValueAsString(context.getRequisicao()), 16777210));
+		log.setResposta(UtilitarioString.limitarTextoEm(mapper.writeValueAsString(context.getResposta()), 16777210));
+		log.setErro(UtilitarioString.limitarTextoEm(mapper.writeValueAsString(context.getErro()), 16777210));
 
 		facade._logAcaoSalvar(log);
 

@@ -593,6 +593,17 @@ var TIMEOUT_TEMPO = 200;
                 if (servico) {
                     scope.servico = servico;
                     scope.servico.abrir(scope.scp);
+                    if (scope.servico.filtroNovo) {
+                        scope.servico.filtroNovo().success(function(resposta) {
+                            if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {
+                                scope.cadastro.filtro = resposta.resultado;
+                            } else {
+                                toastr.error(resposta && resposta.mensagem ? resposta.mensagem : resposta, 'Erro ao iniciar filtro');
+                            }
+                        }).error(function(erro) {
+                            toastr.error(erro, 'Erro ao iniciar filtro');
+                        });
+                    }
                 }
             };
 

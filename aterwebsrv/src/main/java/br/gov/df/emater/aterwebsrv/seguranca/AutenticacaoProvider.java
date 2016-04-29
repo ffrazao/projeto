@@ -29,13 +29,13 @@ import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 public class AutenticacaoProvider extends DaoAuthenticationProvider {
 
 	private static final int MAX_TENTATIVA_ACESSO_INVALIDO = 3;
-	
+
 	@Autowired
 	private UsuarioDao dao;
 
 	@Autowired
 	private ModuloDao moduloDao;
-	
+
 	public AutenticacaoProvider() {
 		ReflectionSaltSource ss = new ReflectionSaltSource();
 		ss.setUserPropertyToUse("id");
@@ -69,13 +69,13 @@ public class AutenticacaoProvider extends DaoAuthenticationProvider {
 			}
 			throw e;
 		}
-		// Filtrar modulos ativos 
-		Map<String,Object> details = (Map<String,Object>) autenticacao.getDetails();
+		// Filtrar modulos ativos
+		Map<String, Object> details = (Map<String, Object>) autenticacao.getDetails();
 		Modulo modulo = moduloDao.findOne(Integer.parseInt((String) details.get("MODULO")));
 		if (Confirmacao.N.equals(modulo.getAtivo())) {
 			throw new BadCredentialsException("Tentativa de acesso a um módulo inativo!");
 		}
-		
+
 		if (result.isAuthenticated()) {
 			Usuario u = dao.findOne(((Usuario) result.getPrincipal()).getId());
 			u.setTentativaAcessoInvalido(null);
@@ -86,6 +86,7 @@ public class AutenticacaoProvider extends DaoAuthenticationProvider {
 			u.setId(null);
 			u.setPassword(null);
 			u.setNewPassword(null);
+			u.setDetails((Map<String, Object>) result.getDetails());
 		}
 		return result;
 	}

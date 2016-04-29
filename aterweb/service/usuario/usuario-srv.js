@@ -20,6 +20,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                    'Situacao',
                    'Confirmacao',
                    'UsuarioStatusConta',
+                   'Perfil',
                 ]}).success(function(resposta) {
                     if (resposta && resposta.mensagem === 'OK') {
                         var i = 0;
@@ -29,9 +30,9 @@ angular.module(pNmModulo).factory(pNmFactory,
                         scp.cadastro.apoio.situacaoList              = angular.isArray(scp.cadastro.apoio.situacaoList) ? angular.merge(scp.cadastro.apoio.situacaoList, resposta.resultado[i++]) : resposta.resultado[i++];
                         scp.cadastro.apoio.confirmacaoList           = angular.isArray(scp.cadastro.apoio.confirmacaoList) ? angular.merge(scp.cadastro.apoio.confirmacaoList, resposta.resultado[i++]) : resposta.resultado[i++];
                         scp.cadastro.apoio.usuarioStatusContaList    = angular.isArray(scp.cadastro.apoio.usuarioStatusContaList) ? angular.merge(scp.cadastro.apoio.usuarioStatusContaList, resposta.resultado[i++]) : resposta.resultado[i++];
+                        scp.cadastro.apoio.perfilList                = angular.isArray(scp.cadastro.apoio.perfilList) ? angular.merge(scp.cadastro.apoio.perfilList, resposta.resultado[i++]) : resposta.resultado[i++];
                     }
                 });
-
             },
             filtrar : function(filtro) {
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');

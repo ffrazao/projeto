@@ -40,7 +40,7 @@ public class LogAcaoRest {
 
 	@RequestMapping("/filtro-novo")
 	public Resposta filtroNovo(Principal usuario) throws Exception {
-		return new Resposta(facadeBo.logAcaoFiltroNovo(usuario).values());
+		return new Resposta(facadeBo.logAcaoFiltroNovo(usuario).getResposta());
 	}
 
 	@RequestMapping(value = "/incluir", method = RequestMethod.POST)

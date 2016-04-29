@@ -1,10 +1,31 @@
 package br.gov.df.emater.aterwebsrv.ferramenta;
 
+import java.text.Normalizer;
 import java.util.Collection;
 import java.util.regex.Pattern;
 
 // Singleton utilitario para Strings
 public class UtilitarioString {
+
+	public static String calculaNomeUsuario(String nome) {
+		if (nome == null) {
+			return "";
+		}
+		String[] temp1 = semAcento(nome.toLowerCase()).split("\\s");
+		StringBuilder temp2 = new StringBuilder();
+		StringBuilder temp3 = new StringBuilder();
+		temp2.append(temp1[0]);
+		if (temp1.length > 1) {
+			temp2.append(".");
+			temp2.append(temp1[temp1.length - 1]);
+		}
+		for (char c : temp2.toString().toCharArray()) {
+			if ((c >= 'a' && c <= 'z') || (c == '.')) {
+				temp3.append(c);
+			}
+		}
+		return temp3.toString();
+	}
 
 	public static String collectionToString(Collection<?> objetos) {
 		return collectionToString(objetos, null);
@@ -87,6 +108,12 @@ public class UtilitarioString {
 		return valor;
 	}
 
+	public static String semAcento(String str) {
+		String nfdNormalizedString = Normalizer.normalize(str, Normalizer.Form.NFD);
+		Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+		return pattern.matcher(nfdNormalizedString).replaceAll("");
+	}
+
 	public static String soNumero(String numero) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < numero.length(); i++) {
@@ -95,28 +122,6 @@ public class UtilitarioString {
 			}
 		}
 		return sb.toString();
-	}
-
-	public static String zeroDireita(int num, int tam) {
-		return zeroDireita(String.valueOf(num), tam);
-	}
-
-	public static String zeroDireita(String num, int tam) {
-		StringBuilder sb = new StringBuilder();
-		sb.append(num);
-		sb.append(complemento('0', tam));
-		return sb.substring(0, tam);
-	}
-
-	public static String zeroEsquerda(int num, int tam) {
-		return zeroEsquerda(String.valueOf(num), tam);
-	}
-
-	public static String zeroEsquerda(String num, int tam) {
-		StringBuilder sb = new StringBuilder();
-		sb.append(complemento('0', tam));
-		sb.append(num);
-		return sb.substring(sb.length() - tam, sb.length());
 	}
 
 	public static boolean temCaractereRepetido(String str) {
@@ -143,6 +148,41 @@ public class UtilitarioString {
 		}
 
 		return false;
+	}
+
+	public static String zeroDireita(int num, int tam) {
+		return zeroDireita(String.valueOf(num), tam);
+	}
+
+	public static String zeroDireita(String num, int tam) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(num);
+		sb.append(complemento('0', tam));
+		return sb.substring(0, tam);
+	}
+
+	public static String zeroEsquerda(int num, int tam) {
+		return zeroEsquerda(String.valueOf(num), tam);
+	}
+
+	public static String zeroEsquerda(String num, int tam) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(complemento('0', tam));
+		sb.append(num);
+		return sb.substring(sb.length() - tam, sb.length());
+	}
+
+	public static String limitarTextoEm(String texto, int tamanho) {
+		if (texto == null) {
+			return null;
+		}
+		String result = null;
+		if (texto.length() > tamanho) {
+			result = texto.substring(0, tamanho);
+		} else {
+			result = texto;
+		}
+		return result;
 	}
 
 }

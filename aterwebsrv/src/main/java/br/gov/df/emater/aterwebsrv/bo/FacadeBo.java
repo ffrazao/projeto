@@ -61,13 +61,10 @@ public class FacadeBo implements BeanFactoryAware {
 	}
 
 	private _Contexto _executar(Principal usuario, String comandoNome, Object requisicao) throws Exception {
-		_Contexto result = new _Contexto(usuario, comandoNome, requisicao);
-		this._getComando(comandoNome).execute(result);
+		Command comando = (Command) this.beanFactory.getBean(comandoNome);
+		_Contexto result = new _Contexto(usuario, comando.getClass().getName(), requisicao);
+		comando.execute(result);
 		return result;
-	}
-
-	private Command _getComando(String comandoNome) {
-		return (Command) this.beanFactory.getBean(comandoNome);
 	}
 
 	@Transactional(readOnly=false, propagation=Propagation.REQUIRES_NEW)

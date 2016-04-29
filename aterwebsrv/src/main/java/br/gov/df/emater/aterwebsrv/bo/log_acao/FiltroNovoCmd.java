@@ -1,20 +1,27 @@
 package br.gov.df.emater.aterwebsrv.bo.log_acao;
 
-import org.apache.commons.chain.Command;
-import org.apache.commons.chain.Context;
+import java.util.Calendar;
+
 import org.springframework.stereotype.Service;
 
+import br.gov.df.emater.aterwebsrv.bo._Comando;
+import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.LogAcaoCadFiltroDto;
 
 @Service("LogAcaoFiltroNovoCmd")
-public class FiltroNovoCmd implements Command {
+public class FiltroNovoCmd extends _Comando {
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public boolean execute(Context context) throws Exception {
+	public boolean executar(_Contexto contexto) throws Exception {
 		LogAcaoCadFiltroDto filtro = new LogAcaoCadFiltroDto();
+		
+		Calendar inicio = Calendar.getInstance();
+		inicio.roll(Calendar.MONTH, -1);
+		filtro.setInicio(inicio);
+		filtro.setTermino(Calendar.getInstance());
 
-		context.put("resultado", filtro);
+		contexto.setResposta(filtro);
+
 		return false;
 	}
 

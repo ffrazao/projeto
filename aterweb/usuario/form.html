@@ -173,6 +173,59 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
+                            <label class="control-label">Perfis do Usuário</label>
+                            <div class="row">
+                                <ul>
+                                    <li ng-repeat="item in cadastro.apoio.perfilList | orderBy: ['nome']">
+                                        <label class="control-label" for="authorities_{{$index}}" 
+                                            ng-class="{'riscado': item.ativo === 'N', 'vermelho': item.ativo === 'N'}">
+                                            <input
+                                                type="checkbox"
+                                                id="authorities_{{$index}}"
+                                                name="authorities_{{$index}}"
+                                                checklist-model="cadastro.registro.authorities"
+                                                checklist-value="{perfil: item, ativo: 'S'}"
+                                                checklist-comparator="authoritiesCompare"
+                                                ng-disabled="item.ativo === 'N'">
+                                            </input>
+                                            {{item.nome}}
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label" ng-show="cadastro.registro.authorities.length">Perfis Selecionados</label>
+                            <div class="row">
+                                <ul>
+                                    <li ng-repeat="item in cadastro.registro.authorities | orderBy: ['perfil.nome']">
+                                        <label class="control-label" 
+                                            ng-class="{'riscado': item.ativo === 'N', 'vermelho': item.ativo === 'N'}">
+                                            {{item.perfil.nome}}
+                                        </label> &nbsp;&nbsp;&nbsp; Ativo?
+                                        <label class="checkbox-inline" 
+                                            for="ativo_{{$parent.$index}}_{{$index}}"
+                                            ng-repeat="c in cadastro.apoio.confirmacaoList | orderBy: '-codigo'"
+                                            ng-show="true">
+                                            <input type="radio" 
+                                                name="ativo_{{$parent.$index}}_{{$index}}"
+                                                id="ativo_{{$parent.$index}}_{{$index}}"
+                                                ng-value="c.codigo"
+                                                ng-model="item.ativo"
+                                                ng-required="true">
+                                            {{c.codigo === 'S' ? 'Sim' : 'Não'}}
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
                             <label class="control-label">Observações</label>
                             <textarea class="form-control" rows="4" ng-model="cadastro.registro.pessoa.observacoes" ng-disabled="true"></textarea>
                         </div>

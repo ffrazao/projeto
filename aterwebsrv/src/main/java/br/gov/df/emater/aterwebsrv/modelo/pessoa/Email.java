@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 
 /**
@@ -16,7 +17,7 @@ import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 @Entity
 @Table(name = "email", schema = EntidadeBase.PESSOA_SCHEMA)
 // @Indexed
-public class Email extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class Email extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<Email> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -30,6 +31,11 @@ public class Email extends EntidadeBase implements _ChavePrimaria<Integer> {
 	public Email() {
 	}
 
+	public Email(Integer id, String endereco) {
+		setId(id);
+		setEndereco(endereco);
+	}
+
 	public Email(String endereco) {
 		setEndereco(endereco);
 	}
@@ -41,6 +47,10 @@ public class Email extends EntidadeBase implements _ChavePrimaria<Integer> {
 	@Override
 	public Integer getId() {
 		return id;
+	}
+
+	public Email infoBasica() {
+		return new Email(getId(), getEndereco());
 	}
 
 	public void setEndereco(String endereco) {

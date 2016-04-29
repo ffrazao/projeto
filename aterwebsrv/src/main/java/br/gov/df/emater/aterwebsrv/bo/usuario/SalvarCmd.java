@@ -8,13 +8,18 @@ import org.springframework.stereotype.Service;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.sistema.UsuarioDao;
+import br.gov.df.emater.aterwebsrv.dao.sistema.UsuarioPerfilDao;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
+import br.gov.df.emater.aterwebsrv.modelo.sistema.UsuarioPerfil;
 
 @Service("UsuarioSalvarCmd")
 public class SalvarCmd extends _Comando {
 
 	@Autowired
 	private UsuarioDao dao;
+
+	@Autowired
+	private UsuarioPerfilDao usuarioPerfilDao;
 
 	public SalvarCmd() {
 	}
@@ -37,68 +42,35 @@ public class SalvarCmd extends _Comando {
 		}
 
 		// remover os itens descartados
-		// if (salvo != null) {
-		// if (salvo.getModuloFuncionalidadeList() != null) {
-		// for (ModuloFuncionalidade moduloFuncionalidadeSalvo :
-		// salvo.getModuloFuncionalidadeList()) {
-		// boolean encontrou = false;
-		// if (result.getModuloFuncionalidadeList() != null) {
-		// for (ModuloFuncionalidade moduloFuncionalidade :
-		// result.getModuloFuncionalidadeList()) {
-		// if
-		// (moduloFuncionalidade.getModulo().getId().equals(moduloFuncionalidadeSalvo.getModulo().getId()))
-		// {
-		// moduloFuncionalidade.setId(moduloFuncionalidadeSalvo.getId());
-		// encontrou = true;
-		// break;
-		// }
-		// }
-		// }
-		// if (!encontrou) {
-		// moduloFuncionalidadeDao.delete(moduloFuncionalidadeSalvo);
-		// }
-		// }
-		// }
-		// if (salvo.getFuncionalidadeComandoList() != null) {
-		// for (FuncionalidadeComando funcionalidadeComandoSalvo :
-		// salvo.getFuncionalidadeComandoList()) {
-		// boolean encontrou = false;
-		// if (result.getFuncionalidadeComandoList() != null) {
-		// for (FuncionalidadeComando funcionalidadeComando :
-		// result.getFuncionalidadeComandoList()) {
-		// if
-		// (funcionalidadeComando.getComando().getId().equals(funcionalidadeComandoSalvo.getComando().getId()))
-		// {
-		// funcionalidadeComando.setId(funcionalidadeComandoSalvo.getId());
-		// encontrou = true;
-		// break;
-		// }
-		// }
-		// }
-		// if (!encontrou) {
-		// funcionalidadeComandoDao.delete(funcionalidadeComandoSalvo);
-		// }
-		// }
-		// }
-		// }
+		if (salvo != null) {
+			if (salvo.getAuthorities() != null) {
+				for (UsuarioPerfil authoritiesSalvo : salvo.getAuthorities()) {
+					boolean encontrou = false;
+					if (result.getAuthorities() != null) {
+						for (UsuarioPerfil authorities : result.getAuthorities()) {
+							if (authorities.getPerfil().getId().equals(authoritiesSalvo.getPerfil().getId())) {
+								authorities.setId(authoritiesSalvo.getId());
+								encontrou = true;
+								break;
+							}
+						}
+					}
+					if (!encontrou) {
+						usuarioPerfilDao.delete(authoritiesSalvo);
+					}
+				}
+			}
+		}
 
 		// preparar para salvar
 		dao.save(result);
 
-		// if (result.getModuloFuncionalidadeList() != null) {
-		// for (ModuloFuncionalidade moduloFuncionalidade :
-		// result.getModuloFuncionalidadeList()) {
-		// moduloFuncionalidade.setFuncionalidade(result);
-		// moduloFuncionalidadeDao.save(moduloFuncionalidade);
-		// }
-		// }
-		// if (result.getFuncionalidadeComandoList() != null) {
-		// for (FuncionalidadeComando funcionalidadeComando :
-		// result.getFuncionalidadeComandoList()) {
-		// funcionalidadeComando.setFuncionalidade(result);
-		// funcionalidadeComandoDao.save(funcionalidadeComando);
-		// }
-		// }
+		if (result.getAuthorities() != null) {
+			for (UsuarioPerfil authorities : result.getAuthorities()) {
+				authorities.setUsuario(result);
+				usuarioPerfilDao.save(authorities);
+			}
+		}
 
 		contexto.setResposta(result.getId());
 		return false;

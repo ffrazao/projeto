@@ -4,31 +4,137 @@
         <form name="frm.formulario" novalidate>
             <fieldset ng-disabled="['INCLUINDO', 'EDITANDO'].indexOf(navegador.estadoAtual()) < 0">
                 <div class="row">
-                    <div class="col-md-4" title="Nome da Funcionalidade">
+                    <div class="col-md-4" title="Data do Log">
                         <div class="form-group">
-                            <label class="control-label" for="nome">Nome da Funcionalidade</label>
-                            <input type="text" class="form-control" id="nome" name="nome" ng-model="cadastro.registro.nome" ng-required="true">
-                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.nome.$error.required">
+                            <label class="control-label" for="data">Data do Log</label>
+                            <input type="text" class="form-control" id="data" name="data" ng-model="cadastro.registro.data" ng-required="true" ng-readonly="true">
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.data.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4" title="Código da Funcionalidade">
+                    <div class="col-md-4" title="Comando Executado">
                         <div class="form-group">
-                            <label class="control-label" for="codigo">Código da Funcionalidade</label>
-                            <input type="text" class="form-control" id="codigo" name="codigo" ng-model="cadastro.registro.codigo" ng-required="true" style="text-transform: uppercase;">
-                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.codigo.$error.required">
+                            <label class="control-label" for="comandoChain">Comando Executado</label>
+                            <input type="text" class="form-control" id="comandoChain" name="comandoChain" ng-model="cadastro.registro.comandoChain" ng-required="true" ng-readonly="true">
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.comandoChain.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4" title="Funcionalidade Ativa?">
+                    <div class="col-md-4" title="Nome do Usuário">
                         <div class="form-group">
-                            <label class="control-label" for="Ativo">Funcionalidade Ativa?</label>
-                            <input type="checkbox" id="ativo" name="ativo" ng-model="cadastro.registro.ativo" ng-true-value="'S'" ng-false-value="'N'">
-                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.ativo.$error.required">
+                            <label class="control-label" for="nomeUsuario">Nome do Usuário</label>
+                            <input type="text" class="form-control" id="nomeUsuario" name="nomeUsuario" ng-model="cadastro.registro.nomeUsuario" ng-required="true" ng-readonly="true">
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.nomeUsuario.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4" title="Id da Lotação do Usuário">
+                        <div class="form-group">
+                            <label class="control-label" for="unidadeOrganizacionalId">Id da Lotação do Usuário</label>
+                            <input type="text" class="form-control" id="unidadeOrganizacionalId" name="unidadeOrganizacionalId" ng-model="cadastro.registro.unidadeOrganizacionalId" ng-required="true" ng-readonly="true">
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.unidadeOrganizacionalId.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4" title="Data do Login">
+                        <div class="form-group">
+                            <label class="control-label" for="dataLogin">Data do Login</label>
+                            <input type="text" class="form-control" id="dataLogin" name="dataLogin" ng-model="cadastro.registro.dataLogin" ng-required="true" ng-readonly="true">
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.dataLogin.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4" title="Id do Módulo Acessado">
+                        <div class="form-group">
+                            <label class="control-label" for="moduloId">Id do Módulo Acessado</label>
+                            <input type="text" class="form-control" id="moduloId" name="moduloId" ng-model="cadastro.registro.moduloId" ng-required="true" ng-readonly="true">
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.moduloId.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3" title="Número IP Origem">
+                        <div class="form-group">
+                            <label class="control-label" for="numeroIp">Número IP Origem</label>
+                            <input type="text" class="form-control" id="numeroIp" name="numeroIp" ng-model="cadastro.registro.numeroIp" ng-required="true" ng-readonly="true">
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.numeroIp.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3" title="Browser Utilizado">
+                        <div class="form-group">
+                            <label class="control-label" for="browser">Browser Utilizado</label>
+                            <input type="text" class="form-control" id="browser" name="browser" ng-model="cadastro.registro.browser" ng-required="true" ng-readonly="true">
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.browser.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3" title="Endereço Origem">
+                        <div class="form-group">
+                            <label class="control-label" for="enderecoOrigem">Endereço Origem</label>
+                            <input type="text" class="form-control" id="enderecoOrigem" name="enderecoOrigem" ng-model="cadastro.registro.enderecoOrigem" ng-required="true" ng-readonly="true">
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.enderecoOrigem.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3" title="Endereço Referencia">
+                        <div class="form-group">
+                            <label class="control-label" for="enderecoReferencia">Endereço Referencia</label>
+                            <input type="text" class="form-control" id="enderecoReferencia" name="enderecoReferencia" ng-model="cadastro.registro.enderecoReferencia" ng-required="true" ng-readonly="true">
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.enderecoReferencia.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4" title="Conteúdo da Requisição">
+                        <div class="form-group">
+                            <label class="control-label" for="requisicao">Conteúdo da Requisição</label>
+                            <textarea rows="10" class="form-control" id="requisicao" name="requisicao" ng-model="cadastro.registro.requisicao" ng-required="true" ng-readonly="true"></textarea>
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.requisicao.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4" title="Conteúdo da Resposta">
+                        <div class="form-group">
+                            <label class="control-label" for="resposta">Conteúdo da Resposta</label>
+                            <textarea rows="10" class="form-control" id="resposta" name="resposta" ng-model="cadastro.registro.resposta" ng-required="true" ng-readonly="true"></textarea>
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.resposta.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4" title="Conteúdo do Erro">
+                        <div class="form-group">
+                            <label class="control-label" for="erro">Conteúdo do Erro</label>
+                            <textarea rows="10" class="form-control" id="erro" name="erro" ng-model="cadastro.registro.erro" ng-required="true" ng-readonly="true"></textarea>
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.erro.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>

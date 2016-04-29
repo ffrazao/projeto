@@ -136,13 +136,21 @@
                 executaIncluir();
             };
 
-            $scope.visualizarDepois = function(registro) {
+            var preparaEmailList = function(registro) {
                 $scope.cadastro.apoio.pessoaEmailList = [];
                 if (registro.pessoa && registro.pessoa.emailList) {                    
                     registro.pessoa.emailList.forEach( function(elemento) {
                         $scope.cadastro.apoio.pessoaEmailList.push(elemento);
                     });
                 }
+            };
+
+            $scope.visualizarDepois = function(registro) {
+                return preparaEmailList(registro);
+            };
+
+            $scope.incluirDepois = function(registro) {
+                return preparaEmailList(registro);
             };
 
             var confirmarSalvarAntes = function(cadastro) {
@@ -160,6 +168,10 @@
             // fim das operaçoes atribuidas ao navagador
 
             // inicio ações especiais
+            $scope.authoritiesCompare = function(obj1, obj2) {
+                return obj1.perfil.id === obj2.perfil.id;
+            };
+
             $scope.verificaDisponibilidadeUsername = function (username) {
 
                 SegurancaSrv.visualizarPerfil(username).success(function(resposta) {

@@ -74,6 +74,9 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 	private Set<UsuarioPerfil> authorities;
 
 	@Transient
+	private Map<String, Object> details;
+
+	@Transient
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	@JsonSerialize(using = JsonSerializerTimestamp.class)
@@ -191,6 +194,10 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 	@Override
 	public Set<UsuarioPerfil> getAuthorities() {
 		return authorities;
+	}
+
+	public Map<String, Object> getDetails() {
+		return details;
 	}
 
 	public Calendar getExpires() {
@@ -314,6 +321,10 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 
 	public void setAuthorities(Set<UsuarioPerfil> authorities) {
 		this.authorities = authorities;
+	}
+
+	public void setDetails(Map<String, Object> details) {
+		this.details = details;
 	}
 
 	public void setExpires(Calendar expires) {
