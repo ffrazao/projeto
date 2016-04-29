@@ -7,16 +7,16 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
-import br.gov.df.emater.aterwebsrv.dao.sistema.LogAcaoDao;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.LogAcao;
 
 @Service("SegurancaLogCmd")
 public class LogCmd extends _Comando {
 
 	@Autowired
-	private LogAcaoDao dao;
+	private FacadeBo facade;
 
 	@Override
 	public boolean executar(_Contexto context) throws Exception {
@@ -32,7 +32,7 @@ public class LogCmd extends _Comando {
 		log.setResposta(mapper.writeValueAsString(context.getResposta()));
 		log.setErro(mapper.writeValueAsString(context.getErro()));
 
-		dao.saveAndFlush(log);
+		facade._logAcaoSalvar(log);
 
 		return false;
 	}

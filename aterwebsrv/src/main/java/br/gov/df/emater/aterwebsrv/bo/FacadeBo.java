@@ -11,10 +11,13 @@ import org.apache.commons.chain.Command;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import br.gov.df.emater.aterwebsrv.dao.sistema.LogAcaoDao;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.Atividade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.ArquivoTipo;
@@ -48,6 +51,9 @@ import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 @Service
 public class FacadeBo implements BeanFactoryAware {
 
+	@Autowired
+	private LogAcaoDao _logAcaoDao;
+
 	private BeanFactory beanFactory;
 
 	private _Contexto _executar(Principal usuario, String comandoNome) throws Exception {
@@ -62,6 +68,11 @@ public class FacadeBo implements BeanFactoryAware {
 
 	private Command _getComando(String comandoNome) {
 		return (Command) this.beanFactory.getBean(comandoNome);
+	}
+
+	@Transactional(readOnly=false, propagation=Propagation.REQUIRES_NEW)
+	public void _logAcaoSalvar(LogAcao logAcao) throws Exception {
+		_logAcaoDao.save(logAcao);
 	}
 
 	@Transactional
@@ -285,7 +296,7 @@ public class FacadeBo implements BeanFactoryAware {
 	public _Contexto logAcaoSalvarModulo(Principal usuario, Modulo modulo) throws Exception {
 		return this._executar(usuario, "LogAcaoSalvarModuloCh", modulo);
 	}
-
+	
 	@Transactional(readOnly = true)
 	public _Contexto logAcaoVisualizar(Principal usuario, Integer id) throws Exception {
 		return this._executar(usuario, "LogAcaoVisualizarCh", id);
