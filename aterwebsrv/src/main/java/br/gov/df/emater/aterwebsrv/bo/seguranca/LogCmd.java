@@ -6,6 +6,7 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.gov.df.emater.aterwebsrv.bo.BoException;
@@ -46,9 +47,18 @@ public class LogCmd extends _Comando {
 			log.setEnderecoReferencia((String) usr.getDetails().get("REFERER"));
 		}
 		// captação dos dados transitados
-		log.setRequisicao(UtilitarioString.limitarTextoEm(mapper.writeValueAsString(context.getRequisicao()), 16777210));
-		log.setResposta(UtilitarioString.limitarTextoEm(mapper.writeValueAsString(context.getResposta()), 16777210));
-		log.setErro(UtilitarioString.limitarTextoEm(mapper.writeValueAsString(context.getErro()), 16777210));
+		try {
+			log.setRequisicao(UtilitarioString.limitarTextoEm(mapper.writeValueAsString(context.getRequisicao()), 16777210));
+		} catch (JsonMappingException e) {
+		}
+		try {
+			log.setResposta(UtilitarioString.limitarTextoEm(mapper.writeValueAsString(context.getResposta()), 16777210));
+		} catch (JsonMappingException e) {
+		}
+		try {
+			log.setErro(UtilitarioString.limitarTextoEm(mapper.writeValueAsString(context.getErro()), 16777210));
+		} catch (JsonMappingException e) {
+		}
 
 		facade._logAcaoSalvar(log);
 

@@ -46,6 +46,9 @@ angular.module(pNmModulo).factory(pNmFactory, ['$rootScope', '$http', 'toastr', 
                 return null;
             },
             indiceDePorCampo : function(arr, item, campo) {
+                if (!arr || !item || ! campo) {
+                    return null;
+                }
                 for (var i = arr.length; i--;) {
                     if (angular.equals(arr[i][campo], item)) {
                         return arr[i];
