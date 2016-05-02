@@ -42,7 +42,7 @@
                                         id="conceder_{{$parent.$parent.$index}}_{{$parent.$index}}_{{$index}}" 
                                         ng-value="c.codigo"
                                         ng-model="comando.conceder"
-                                        ng-required="true">
+                                        ng-required="exibeConceder($parent.$parent.$index, $parent.$index)">
                                 {{c.codigo === 'S' ? 'Conceder' : 'Negar'}}
                             </label>
                         </div>

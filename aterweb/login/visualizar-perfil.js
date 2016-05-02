@@ -4,8 +4,8 @@
 
 'use strict';
 
-angular.module(pNmModulo).controller(pNmController, ['$scope', '$uibModalInstance', 'toastr', '$http', 'mensagemSrv', 'SegurancaSrv',
-function ($scope, $uibModalInstance, toastr, $http, mensagemSrv, SegurancaSrv) {
+angular.module(pNmModulo).controller(pNmController, ['$scope', '$uibModalInstance', 'toastr', 'mensagemSrv', 'SegurancaSrv',
+function ($scope, $uibModalInstance, toastr, mensagemSrv, SegurancaSrv) {
 
         $scope.iniciar = function() {
             SegurancaSrv.visualizarPerfil().success(function(resposta) {

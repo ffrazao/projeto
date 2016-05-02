@@ -9,6 +9,8 @@ import javax.persistence.Query;
 
 import org.springframework.util.CollectionUtils;
 
+import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.UsuarioStatusConta;
 import br.gov.df.emater.aterwebsrv.modelo.dto.TagDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.UsuarioCadFiltroDto;
 
@@ -38,15 +40,19 @@ public class UsuarioDaoImpl implements UsuarioDaoCustom {
 		sql.append("               ,b.situacao as pessoa_situacao").append("\n");
 		sql.append("               ,a.situacao as usuario_situacao").append("\n");
 		sql.append("               ,a.nome_usuario").append("\n");
+		sql.append("               ,f.endereco").append("\n");
+		sql.append("               ,b.id as pessoa_id").append("\n");
 		sql.append("from            sistema.usuario a").append("\n");
 		sql.append("left join       pessoa.pessoa b").append("\n");
 		sql.append("on              b.id = a.pessoa_id").append("\n");
 		sql.append("left join       funcional.unidade_organizacional c").append("\n");
 		sql.append("on              c.id = a.unidade_organizacional_id").append("\n");
-
 		sql.append("left join       pessoa.arquivo d").append("\n");
 		sql.append("on              d.id = b.perfil_arquivo_id").append("\n");
-
+		sql.append("left join       pessoa.pessoa_email e").append("\n");
+		sql.append("on              e.id = a.pessoa_email_id").append("\n");
+		sql.append("left join       pessoa.email f").append("\n");
+		sql.append("on              f.id = e.email_id").append("\n");
 		sql.append("where (1 = 1)").append("\n");
 		if (!CollectionUtils.isEmpty(filtro.getPessoaNome())) {
 			sql.append("and (").append("\n");
@@ -57,7 +63,9 @@ public class UsuarioDaoImpl implements UsuarioDaoCustom {
 				}
 				String n = nome.getText().replaceAll("\\s", "%");
 				params.add(String.format("%%%s%%", n));
-				sqlTemp.append(" (ifnull(b.nome, c.nome) like ?").append(params.size()).append(")").append("\n");
+				sqlTemp.append(" (ifnull(b.nome, c.nome) like ?").append(params.size());
+				params.add(String.format("%%%s%%", n));
+				sqlTemp.append(" or ifnull(b.apelido_sigla, '') like ?").append(params.size()).append(")").append("\n");
 			}
 			sql.append(sqlTemp);
 			sql.append(" )").append("\n");
@@ -75,6 +83,28 @@ public class UsuarioDaoImpl implements UsuarioDaoCustom {
 			}
 			sql.append(sqlTemp);
 			sql.append(" )").append("\n");
+		}
+		if (!CollectionUtils.isEmpty(filtro.getUsuarioEmail())) {
+			sql.append("and (").append("\n");
+			sqlTemp = new StringBuilder();
+			for (TagDto nome : filtro.getUsuarioEmail()) {
+				if (sqlTemp.length() > 0) {
+					sqlTemp.append(" or ");
+				}
+				String n = nome.getText().replaceAll("\\s", "%");
+				params.add(String.format("%%%s%%", n));
+				sqlTemp.append(" (f.endereco like ?").append(params.size()).append(")").append("\n");
+			}
+			sql.append(sqlTemp);
+			sql.append(" )").append("\n");
+		}
+		if (!CollectionUtils.isEmpty(filtro.getPessoaSituacao()) && (PessoaSituacao.values().length != (filtro.getPessoaSituacao().size()))) {
+			params.add(filtro.getPessoaSituacao());
+			sql.append("and b.situacao in ?").append(params.size()).append("\n");
+		}
+		if (!CollectionUtils.isEmpty(filtro.getUsuarioSituacao()) && (UsuarioStatusConta.values().length != (filtro.getUsuarioSituacao().size()))) {
+			params.add(filtro.getUsuarioSituacao());
+			sql.append("and a.situacao in ?").append(params.size()).append("\n");
 		}
 		sql.append("order by        2").append("\n");
 

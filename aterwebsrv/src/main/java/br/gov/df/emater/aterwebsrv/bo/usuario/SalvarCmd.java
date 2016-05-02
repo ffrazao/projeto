@@ -5,6 +5,8 @@ import java.util.Calendar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.gov.df.emater.aterwebsrv.bo.BoException;
+import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.sistema.UsuarioDao;
@@ -21,25 +23,36 @@ public class SalvarCmd extends _Comando {
 	@Autowired
 	private UsuarioPerfilDao usuarioPerfilDao;
 
+	@Autowired
+	private FacadeBo facadeBo;
+
 	public SalvarCmd() {
 	}
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		Usuario result = (Usuario) contexto.getRequisicao();
+		Usuario salvo = null;
+		String enviaEmail = null;
+
 		if (result.getId() == null) {
+			// novos usuários
 			result.setUsuarioInclusao(getUsuario(contexto.getUsuario().getName()));
 			result.setInclusaoData(Calendar.getInstance());
+			if (result.getPessoaEmail() == null || result.getPessoaEmail().getEmail() == null || result.getPessoaEmail().getEmail().getEndereco() == null || result.getPessoaEmail().getEmail().getEndereco().trim().length() == 0) {
+				throw new BoException("E-mail do usuário não informado!");
+			}
+			enviaEmail = result.getPessoaEmail().getEmail().getEndereco();
+			if (dao.findByPessoaEmailEmailEndereco(enviaEmail) != null) {
+				throw new BoException("O e-mail deste usuário já esta em uso por outra conta do sistema. Utilize um outro e-mail!");
+			}
 		} else {
+			// usuários existentes
 			result.setUsuarioInclusao(getUsuario(result.getUsuarioInclusao().getUsername()));
+			salvo = dao.findOne(result.getId());
 		}
 		result.setUsuarioAlteracao(getUsuario(contexto.getUsuario().getName()));
 		result.setAlteracaoData(Calendar.getInstance());
-
-		Usuario salvo = null;
-		if (result.getId() != null) {
-			salvo = dao.findOne(result.getId());
-		}
 
 		// remover os itens descartados
 		if (salvo != null) {
@@ -70,6 +83,11 @@ public class SalvarCmd extends _Comando {
 				authorities.setUsuario(result);
 				usuarioPerfilDao.save(authorities);
 			}
+		}
+
+		// enviar senha para novos usuários
+		if (enviaEmail != null) {
+			facadeBo.segurancaEsqueciSenha(enviaEmail);
 		}
 
 		contexto.setResposta(result.getId());

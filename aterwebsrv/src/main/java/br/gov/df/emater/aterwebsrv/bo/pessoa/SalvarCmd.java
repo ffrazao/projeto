@@ -267,6 +267,7 @@ public class SalvarCmd extends _Comando {
 						if (endereco.getPropriedadeRuralConfirmacao() == null) {
 							endereco.setPropriedadeRuralConfirmacao(Confirmacao.N);
 						}
+						pessoaEndereco.getEndereco().setId(null);
 						endereco = enderecoDao.save(pessoaEndereco.getEndereco());
 					}
 					pessoaEndereco.setEndereco(endereco);
@@ -289,10 +290,14 @@ public class SalvarCmd extends _Comando {
 			Integer ordem = 0;
 			for (PessoaTelefone pessoaTelefone : result.getTelefoneList()) {
 				if (!CadastroAcao.E.equals(pessoaTelefone.getCadastroAcao())) {
-					Telefone telefone = pessoaTelefone.getTelefone();
-					telefone = telefoneDao.findByNumero(telefone.getNumero());
+					if (pessoaTelefone.getTelefone() == null || pessoaTelefone.getTelefone().getNumero() == null || pessoaTelefone.getTelefone().getNumero().trim().length() == 0) {
+						throw new BoException("Telefone inválido");
+					}
+					Telefone telefone = telefoneDao.findByNumero(pessoaTelefone.getTelefone().getNumero());
 					if (telefone == null) {
-						telefone = telefoneDao.save(pessoaTelefone.getTelefone());
+						telefone = pessoaTelefone.getTelefone();
+						telefone.setId(null);
+						telefone = telefoneDao.save(telefone);
 					}
 					pessoaTelefone.setTelefone(telefone);
 					pessoaTelefone.setPessoa(result);
@@ -314,10 +319,14 @@ public class SalvarCmd extends _Comando {
 			Integer ordem = 0;
 			for (PessoaEmail pessoaEmail : result.getEmailList()) {
 				if (!CadastroAcao.E.equals(pessoaEmail.getCadastroAcao())) {
-					Email email = pessoaEmail.getEmail();
-					email = emailDao.findByEndereco(email.getEndereco());
+					if (pessoaEmail.getEmail() == null || pessoaEmail.getEmail().getEndereco() == null || pessoaEmail.getEmail().getEndereco().trim().length() == 0) {
+						throw new BoException("E-mail inválido");
+					}
+					Email email = emailDao.findByEndereco(pessoaEmail.getEmail().getEndereco());
 					if (email == null) {
-						email = emailDao.save(pessoaEmail.getEmail());
+						email = pessoaEmail.getEmail();
+						email.setId(null);
+						email = emailDao.save(email);
 					}
 					pessoaEmail.setEmail(email);
 					pessoaEmail.setPessoa(result);

@@ -3,8 +3,8 @@
 'use strict';
 
 angular.module(pNmModulo).controller(pNmController,
-    ['$scope', '$uibModalInstance', 'toastr', 'registroOrig', '$http', 'CestaDeValores', 
-    function ($scope, $uibModalInstance, toastr, registroOrig, $http,  CestaDeValores) {
+    ['$scope', '$uibModalInstance', 'toastr', 'registroOrig', 'CestaDeValores', 'SegurancaSrv',
+    function ($scope, $uibModalInstance, toastr, registroOrig,  CestaDeValores, SegurancaSrv) {
 
         $scope.reiniciar = function() {
             $scope.submitted = false;
@@ -28,7 +28,7 @@ angular.module(pNmModulo).controller(pNmController,
                 toastr.error('Verifique os campos marcados', 'Erro');
                 return;
             }
-            $http.post($scope.servicoUrl + '/api/renovar-senha', $scope.registro).success(function (resposta) {
+            SegurancaSrv.renovarSenha($scope.registro).success(function (resposta) {
                 if (resposta && resposta.mensagem === 'OK') {
                     toastr.success('Sua senha foi renovada');
                     $uibModalInstance.close(angular.copy($scope.registro));

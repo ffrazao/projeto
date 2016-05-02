@@ -30,15 +30,25 @@ public class EmailEnviarCmd extends _Comando {
 
 		MimeMessage mail = javaMailSender.createMimeMessage();
 
-		MimeMessageHelper helper = new MimeMessageHelper(mail, true);
-		helper.setTo(para);
-		helper.setReplyTo(copiaPara);
-		helper.setFrom(remetente);
-		helper.setSubject(assunto);
-		helper.setText(texto);
-		
-		javaMailSender.send(mail);
-		
+		MimeMessageHelper helper = new MimeMessageHelper(mail, false, "UTF-8");
+		if (para != null) {
+			helper.setTo(para);
+		}
+		if (copiaPara != null) {
+			helper.setReplyTo(copiaPara);
+		}
+		if (remetente != null) {
+			helper.setFrom(remetente);
+		}
+		if (assunto != null) {
+			helper.setSubject(assunto);
+		}
+		if (texto != null) {
+			helper.setText(texto);
+		}
+
+		// javaMailSender.send(mail);
+
 		return false;
 	}
 

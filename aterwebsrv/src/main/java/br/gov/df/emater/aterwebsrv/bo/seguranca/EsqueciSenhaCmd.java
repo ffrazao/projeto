@@ -30,7 +30,7 @@ public class EsqueciSenhaCmd extends _Comando {
 		Usuario usuario = usuarioDao.findByPessoaEmailEmailEndereco(email);
 		
 		if (usuario == null) {
-			throw new BoException("Este e-mail para renovação de senha não está cadastrado. Nenhum e-mail foi enviado!");
+			throw new BoException("E-mail vinculado a nenhuma conta de usuário do sistema. Nenhum e-mail foi enviado!");
 		}
 		if (!usuario.isEnabled()) {
 			throw new BoException("A conta vinculada a este e-mail está inativa. Para maiores informações, entre em contato com o administrador do sistema. Nenhum e-mail foi enviado!");
@@ -44,7 +44,7 @@ public class EsqueciSenhaCmd extends _Comando {
 		acessoExpiraEm.roll(Calendar.DATE, 1);
 		
 		StringBuilder texto = new StringBuilder();
-		texto.append("Você solicitou a renovação de sua senha no sistema ATER web. Para tal:").append("\n");
+		texto.append("Senha de acesso ao sistema ATER web. Para tal:").append("\n");
 		texto.append("1. acesse o sistema e efetue o login");
 		texto.append("\n");
 		texto.append("2. informe o usuario => ");
@@ -53,9 +53,9 @@ public class EsqueciSenhaCmd extends _Comando {
 		texto.append("3. informe a senha => ");
 		texto.append(novaSenha.toString());
 		texto.append("\n");
-		texto.append("Caso não tenha solicitado esta renovação de senha, por favor, ignore este e-mail.");
+		texto.append("Caso não tenha solicitado este acesso, por favor, ignore este e-mail.");
 		texto.append("\n");
-		texto.append("O prazo para renovação da senha termina em ");
+		texto.append("O prazo final para ativação desta senha se encerra em ");
 		texto.append(UtilitarioData.getInstance().formataDataHora(acessoExpiraEm));
 		texto.append("\n");
 
@@ -67,9 +67,9 @@ public class EsqueciSenhaCmd extends _Comando {
 		Map<String, Object> requisicao = new HashMap<String, Object>();
 		
 		requisicao.put("para", email);
-		requisicao.put("copiaPara", email);
+		// requisicao.put("copiaPara", email);
 		requisicao.put("remetente", "aterweb@emater.df.gov.br");
-		requisicao.put("assunto", "ATER web, renove sua senha");
+		requisicao.put("assunto", "ATER web, acesso");
 		requisicao.put("texto", texto.toString());
 		
 		contexto.setRequisicao(requisicao);

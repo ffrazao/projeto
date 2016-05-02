@@ -15,6 +15,19 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-group" title="Situação da Pessoa">
+                    <label class="col-md-4 control-label" for="pessoaSituacao">Situação da Pessoa</label>
+                    <div class="col-md-7">
+                        <label class="checkbox-inline" for="pessoaSituacao-{{$index}}" ng-repeat="item in cadastro.apoio.pessoaSituacaoList">
+                            <input type="checkbox" name="pessoaSituacao" id="pessoaSituacao-{{$index}}" checklist-model="cadastro.filtro.pessoaSituacao" checklist-value="item.codigo">
+                            {{item.descricao}}
+                        </label>
+                    </div>
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.pessoaSituacao.$error.required">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        Campo Obrigatório
+                    </div>
+                </div>
                 <div class="form-group" title="Nome do Usuário">
                     <label class="col-md-4 control-label" for="usuarioNome">
                         Nome do Usuário
@@ -27,6 +40,32 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-group" title="E-mail do Usuário">
+                    <label class="col-md-4 control-label" for="usuarioEmail">
+                        E-mail do Usuário
+                    </label>
+                    <div class="col-md-6">
+                        <tags-input id="usuarioEmail" name="usuarioEmail" ng-model="cadastro.filtro.usuarioEmail" placeholder="Digite o nome, ou parte dele, e tecle enter" replace-spaces-with-dashes="false" min-length="1"></tags-input>
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.usuarioEmail.$error.required">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Campo Obrigatório
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" title="Situação do Usuário">
+                    <label class="col-md-4 control-label" for="usuarioSituacao">Situação do Usuário</label>
+                    <div class="col-md-7">
+                        <label class="checkbox-inline" for="usuarioSituacao-{{$index}}" ng-repeat="item in cadastro.apoio.usuarioStatusContaList">
+                            <input type="checkbox" name="usuarioSituacao" id="usuarioSituacao-{{$index}}" checklist-model="cadastro.filtro.usuarioSituacao" checklist-value="item.codigo">
+                            {{item.descricao}}
+                        </label>
+                    </div>
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.usuarioSituacao.$error.required">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        Campo Obrigatório
+                    </div>
+                </div>
+
             </fieldset>
         </form>
     </div>

@@ -59,10 +59,10 @@ public class RenovarSenhaCmd extends _Comando {
 		if (usuarioSalvo.getPessoa() instanceof PessoaFisica) {
 			Calendar aniversario = ((PessoaFisica) usuarioSalvo.getPessoa()).getNascimento();
 			if (aniversario != null) {
-				String ano = Integer.toString(aniversario.get(Calendar.YEAR));
-				String ano2Dig = Integer.toString(aniversario.get(Calendar.YEAR)).substring(2, 4);
-				String mes = Integer.toString(aniversario.get(Calendar.MONTH) + 1);
-				String dia = Integer.toString(aniversario.get(Calendar.DATE));
+				String ano = UtilitarioString.zeroEsquerda(Integer.toString(aniversario.get(Calendar.YEAR)), 4);
+				String ano2Dig = UtilitarioString.zeroEsquerda(Integer.toString(aniversario.get(Calendar.YEAR)).substring(2, 4), 2);
+				String mes = UtilitarioString.zeroEsquerda(Integer.toString(aniversario.get(Calendar.MONTH) + 1), 2);
+				String dia = UtilitarioString.zeroEsquerda(Integer.toString(aniversario.get(Calendar.DATE)), 2);
 				if ((novaSenha.toLowerCase().trim().indexOf(ano) >= 0) || (novaSenha.toLowerCase().trim().indexOf(ano2Dig) >= 0) || (novaSenha.toLowerCase().trim().indexOf(mes) >= 0) || (novaSenha.toLowerCase().trim().indexOf(dia) >= 0)) {
 					throw new BoException("Não utilize parte de seu aniversário como senha de acesso");
 				}

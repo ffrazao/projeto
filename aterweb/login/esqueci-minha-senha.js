@@ -3,8 +3,8 @@
   'use strict';
 
 angular.module(pNmModulo).controller(pNmController,
-      ['$scope', '$uibModalInstance', 'toastr', '$http',
-    function ($scope, $uibModalInstance, toastr, $http) {
+      ['$scope', '$uibModalInstance', 'toastr', 'SegurancaSrv',
+    function ($scope, $uibModalInstance, toastr, SegurancaSrv) {
     $scope.iniciar = function() {
       $scope.registroOrig = {};
       $scope.reiniciar();
@@ -28,7 +28,7 @@ angular.module(pNmModulo).controller(pNmController,
       return;
     }
 
-    $http.get($scope.servicoUrl + '/api/esqueci-senha', {params: {'email': $scope.registro.email}}).success(function (resposta) {
+    SegurancaSrv.esqueciSenha($scope.registro.email).success(function (resposta) {
       if (resposta && resposta.mensagem === 'OK') {
         toastr.success('Foi encaminhado um e-mail com instrucoes para recuperar seu acesso ao sistema');
         $uibModalInstance.close();

@@ -22,6 +22,8 @@
                 PESSOA_SITUACAO : ordem++,
                 USUARIO_SITUACAO : ordem++,
                 USUARIO_NOME : ordem++,
+                EMAIL : ordem++,
+                PESSOA_ID : ordem++,
             };
 
             // inicializacao
@@ -165,9 +167,90 @@
             $scope.confirmarEditarAntes = function(cadastro) {
                 return confirmarSalvarAntes(cadastro);
             };
+            var enviaEmail = function(usuario) {
+                var nomeUsuario = null;
+                var email = null;
+                if (!usuario) {
+                    toastr.error('Objeto nulo', 'Erro ao enviar senha');
+                    return;
+                } else if (angular.isArray(usuario)) {
+                    nomeUsuario = usuario[$scope.CABEC.NOME];
+                    if (usuario[$scope.CABEC.EMAIL]) {
+                        email = usuario[$scope.CABEC.EMAIL];
+                    }
+                } else if (angular.isObject(usuario)) {
+                    nomeUsuario = usuario.pessoa.nome;
+                    if (usuario.pessoaEmail && usuario.pessoaEmail.email && usuario.pessoaEmail.email.endereco) {
+                        email = usuario.pessoaEmail.email.endereco;
+                    }
+                } else {
+                    toastr.error('Objeto inválido', 'Erro ao enviar senha');
+                    return;
+                }
+                if (!email) {
+                    toastr.error('E-mail não informado para o usuário {0}!'.format(nomeUsuario), 'Erro ao renovar senha');
+                } else {
+                    // Para fazer a posterior atualização dos dados foi necessário fazer um chamamento dessa função no
+                    // formato de uma estrutura chamada closure. Em caso de dúvidas, pesquisar na internet a respeito 
+                    // de closure
+                    (function(usuario, nomeUsuario, email) {
+                        SegurancaSrv.esqueciSenha(email)
+                        .success(function (resposta) {
+                            if (resposta && resposta.mensagem === 'OK') {
+                                if (angular.isArray(usuario)) {
+                                    usuario[$scope.CABEC.USUARIO_SITUACAO] = 'R';
+                                } else if (angular.isObject(usuario)) {
+                                    usuario.usuarioStatusConta = 'R';
+                                }
+                                toastr.success('Foi encaminhado um e-mail ao usuário {0}'.format(nomeUsuario));
+                            } else {
+                                toastr.error(resposta.mensagem, 'Erro ao enviar senha ao usuário {0}'.format(nomeUsuario));
+                            }
+                            if ($scope.$$phase !== '$apply' && $scope.$$phase !== '$digest') {
+                                $scope.$apply();
+                            }
+                        })
+                        .error(function(resposta) {
+                            toastr.error(resposta, 'Erro ao enviar senha ao usuário {0}'.format(nomeUsuario));
+                        });
+                    })(usuario, nomeUsuario, email);
+                }
+            };
+
+            $scope.abrir = function(scp) {
+                // ajustar o menu das acoes especiais
+                $scope.navegador.botao('acao', 'acao')['subFuncoes'] = [
+                {
+                    nome: 'Enviar nova senha por e-mail',
+                    descricao: 'Enviar nova senha por e-mail',
+                    acao: function() {
+                        if ($scope.navegador.estadoAtual() === 'VISUALIZANDO') {
+                            enviaEmail($scope.cadastro.registro);
+                        } else if ($scope.navegador.estadoAtual() === 'LISTANDO') {
+                            if ($scope.navegador.selecao.tipo === 'U' && $scope.navegador.selecao.selecionado) {
+                                enviaEmail($scope.navegador.selecao.item);
+                            } else if ($scope.navegador.selecao.tipo === 'M' && $scope.navegador.selecao.marcado > 0) {
+                                $scope.navegador.selecao.items.forEach(function(item) {
+                                    enviaEmail(item);
+                                });
+                            }
+                        }
+                    },
+                    exibir: function() {
+                        return (  ($scope.navegador.estadoAtual() === 'VISUALIZANDO') ||
+                                  ($scope.navegador.estadoAtual() === 'LISTANDO' && 
+                                       ($scope.navegador.selecao.tipo === 'U' && $scope.navegador.selecao.selecionado) ||
+                                       ($scope.navegador.selecao.tipo === 'M' && $scope.navegador.selecao.marcado > 0)));
+                    },
+                },
+                ];
+                $rootScope.abrir(scp);
+            };
+
             // fim das operaçoes atribuidas ao navagador
 
             // inicio ações especiais
+            $scope.UtilSrv = UtilSrv;
             $scope.authoritiesCompare = function(obj1, obj2) {
                 return obj1.perfil.id === obj2.perfil.id;
             };

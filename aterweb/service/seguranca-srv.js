@@ -36,7 +36,16 @@ angular.module(pNmModulo).factory(pNmFactory,
             },
             descansoTela: function() {
                 return $http.get($rootScope.servicoUrl + '/api/visualizar-perfil');
-            }
+            },
+            esqueciSenha: function(email) {
+                return $http.get($rootScope.servicoUrl + '/api/esqueci-senha', {params: {'email': email}});
+            },
+            renovarSenha: function(item) {
+                return $http.post($rootScope.servicoUrl + '/api/renovar-senha', item);
+            },
+            login: function(item) {
+                return $http.post($rootScope.servicoUrl + '/api/login', item);
+            },
         };
         return SegurancaSrv;
     }

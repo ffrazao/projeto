@@ -17,11 +17,12 @@
                         #
                     </th>
                     <th>Foto</th>
-                    <th>Nome</th>
-                    <th>Tipo</th>
+                    <th>Nome Completo</th>
+                    <th>Tipo de Pessoa</th>
                     <th>Situação Pessoa</th>
                     <th>Situação Usuário</th>
                     <th>Nome Usuário</th>
+                    <th>E-mail</th>
                 </tr>
             </thead>
             <tbody>
@@ -37,11 +38,12 @@
                         <img class="img-thumbnail" src="img/foto.png" ng-if="!item[CABEC.MD5].length" width="180px" height="180px" />
                         <img class="img-thumbnail" ng-src="{{servicoUrl}}/arquivo-descer?arquivo={{item[CABEC.MD5]}}" ng-if="item[CABEC.MD5].length" width="180px" height="180px"/>
                     </td>
-                    <td title="Nome">{{item[CABEC.NOME]}}</td>
-                    <td title="Tipo">{{item[CABEC.TIPO]}}</td>
-                    <td title="Situação Pessoa">{{item[CABEC.PESSOA_SITUACAO] == "A" ? "Ativo" : "Inativo"}}</td>
-                    <td title="Situação Usuario">{{item[CABEC.USUARIO_SITUACAO] == "A" ? "Ativo" : "Inativo"}}</td>
-                    <td title="Nome Usuario">{{item[CABEC.USUARIO_NOME]}}</td>
+                    <td title="Nome do Completo"><span ng-hide="item[CABEC.PESSOA_ID]">{{item[CABEC.NOME]}}</span><a ng-click="modalVerPessoa(item[CABEC.PESSOA_ID])" ng-show="item[CABEC.PESSOA_ID]">{{item[CABEC.NOME]}}</a></td>
+                    <td title="Tipo de Pessoa">{{UtilSrv.indiceDePorCampo(cadastro.apoio.pessoaTipoList, item[CABEC.TIPO], "codigo").descricao}}</td>
+                    <td title="Situação Pessoa" ng-class="{'riscado': item[CABEC.PESSOA_SITUACAO] !== 'A', 'vermelho': item[CABEC.PESSOA_SITUACAO] !== 'A'}">{{item[CABEC.PESSOA_SITUACAO] === "A" ? "Ativo" : "Inativo"}}</td>
+                    <td title="Situação Usuario" ng-class="{'riscado': item[CABEC.USUARIO_SITUACAO] !== 'A', 'vermelho': item[CABEC.USUARIO_SITUACAO] !== 'A'}">{{UtilSrv.indiceDePorCampo(cadastro.apoio.usuarioStatusContaList, item[CABEC.USUARIO_SITUACAO], "codigo").descricao}}</td>
+                    <td title="Nome Usuário">{{item[CABEC.USUARIO_NOME]}}</td>
+                    <td title="E-mail">{{item[CABEC.EMAIL]}}</td>
                 </tr>
             </tbody>
             <tfoot>

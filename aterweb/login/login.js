@@ -2,9 +2,9 @@
 
     'use strict';
 
-    angular.module(pNmModulo).controller(pNmController, ['$scope', '$location', '$uibModal', 'toastr', '$state', '$http', 'TokenStorage', '$cookies', '$uibModalInstance', 'CestaDeValores', 'UtilSrv',
+    angular.module(pNmModulo).controller(pNmController, ['$scope', '$location', '$uibModal', 'toastr', '$state', 'TokenStorage', '$cookies', '$uibModalInstance', 'CestaDeValores', 'UtilSrv', 'SegurancaSrv',
 
-        function($scope, $location, $uibModal, toastr, $state, $http, TokenStorage, $cookies, $uibModalInstance, CestaDeValores, UtilSrv) {
+        function($scope, $location, $uibModal, toastr, $state, TokenStorage, $cookies, $uibModalInstance, CestaDeValores, UtilSrv, SegurancaSrv) {
             $scope.cadastro = $scope.cadastroBase();
 
             $scope.iniciar = function() {
@@ -44,8 +44,8 @@
                     //$scope.mensagens.push({ tipo: 'danger', texto: 'Verifique os campos marcados' });
                     return;
                 }
-                
-                $http.post($scope.servicoUrl + '/api/login', {
+
+                SegurancaSrv.login({
                     "username": $scope.cadastro.registro.username,
                     "password": $scope.cadastro.registro.password,
                     "modulo": $scope.cadastro.registro.modulo.id
