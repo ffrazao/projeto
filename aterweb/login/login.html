@@ -14,7 +14,14 @@
 			<div class="form-group">
 				<label class="col-sm-4 control-label" for="username" title="Nome do Usuário do Sistema" accesskey="U"><u>U</u>suário *</label>
 				<div class="col-sm-8">
-					<input id="username" name="username" type="text" placeholder="Nome do Usuário" class="form-control input-md" autofocus ng-model="cadastro.registro.username" required="true">
+					<input id="username" name="username" type="text" placeholder="Nome do Usuário" class="form-control input-md" autofocus ng-model="cadastro.registro.username" required="true" list="browsers">
+					<datalist id="browsers">
+						<option value="Internet Explorer">
+						<option value="Firefox">
+						<option value="Chrome">
+						<option value="Opera">
+						<option value="Safari">
+					</datalist>					
 					<div ng-show="($parent.loginForm.username.$dirty || submitted) && $parent.loginForm.username.$invalid">
 						<div class="label label-danger" ng-show="$parent.loginForm.username.$error.required">
 							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>

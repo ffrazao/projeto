@@ -2,17 +2,23 @@
 
 'use strict';
 
-  angular.module(pNmModulo).controller(pNmController, ['$scope', '$rootScope', '$http', function ($scope, $rootScope, $http) {
+  angular.module(pNmModulo).controller(pNmController, ['$scope', '$rootScope', 'SegurancaSrv', '$state', 
+    function ($scope, $rootScope, SegurancaSrv, $state) {
 
     $scope.init = function () {
-        $http.get($scope.servicoUrl + '/api/users/current').success(function (user) {
+        SegurancaSrv.usuarioLogado()
+        .success(function(user) {
             if (user && user.username && user.username !== 'anonymousUser') {
                 // For display purposes only
                 if ($rootScope.isAuthenticated(user.username)) {
                     return;
                 }
             }
-            $scope.executarLogout();
+            if (!$state.is('info')) {
+                $scope.executarLogout();
+            }
+        }).error(function(a, b, c, d, e) {
+            console.log(a, b, c, d, e);
         });
     };
 

@@ -46,6 +46,9 @@ angular.module(pNmModulo).factory(pNmFactory,
             login: function(item) {
                 return $http.post($rootScope.servicoUrl + '/api/login', item);
             },
+            usuarioLogado: function() {
+                return $http.get($rootScope.servicoUrl + '/api/users/current');
+            },
         };
         return SegurancaSrv;
     }
