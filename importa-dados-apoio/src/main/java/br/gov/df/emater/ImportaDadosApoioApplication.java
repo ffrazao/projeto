@@ -4,7 +4,7 @@ import java.io.File;
 import java.sql.Connection;
 
 import br.gov.df.emater.banco.ConexaoMysql;
-import br.gov.df.emater.importa.ImportaComunidadeBacia;
+import br.gov.df.emater.importa.apoio.ImportaComunidadeBacia;
 
 public class ImportaDadosApoioApplication {
 
@@ -21,15 +21,18 @@ public class ImportaDadosApoioApplication {
 			// mun.executar();
 
 			// new ImportaIBGECNAE(con).executar();
-			
-			new ImportaComunidadeBacia(con).executar();			
+
+			new ImportaComunidadeBacia(con).executar();
 
 			con.commit();
 		} catch (Exception e) {
 			con.rollback();
 			e.printStackTrace();
 		} finally {
-			con.close();
+			try {
+				con.close();
+			} catch (Exception e) {
+			}
 			con = null;
 		}
 	}

@@ -30,7 +30,9 @@ public abstract class Importador {
 
 	protected Connection con;
 
-	protected abstract void executar() throws Exception;
+	public Importador(Connection con) {
+		this.con = con;
+	}
 
 	protected List<Map<String, Object>> criarMapaDoArquivoExcel(File excel, int aba) throws Exception {
 		List<Map<String, Object>> result = null;
@@ -95,6 +97,17 @@ public abstract class Importador {
 		return result;
 	}
 
+	protected File downloadOrigem(String urlStr, File tempDir) throws Exception {
+		File arquivo = new File(tempDir.getPath() + "/temp.zip");
+		if (!arquivo.exists()) {
+			URL url = new URL(urlStr);
+			FileUtils.copyURLToFile(url, arquivo);
+		}
+		return arquivo;
+	}
+
+	protected abstract void executar() throws Exception;
+
 	protected File unzipOrigem(File zip, File tempDir) throws Exception {
 		File result = null;
 		try (final InputStream is = new FileInputStream(zip)) {
@@ -108,19 +121,6 @@ public abstract class Importador {
 			}
 		}
 		return result;
-	}
-
-	protected File downloadOrigem(String urlStr, File tempDir) throws Exception {
-		File arquivo = new File(tempDir.getPath() + "/temp.zip");
-		if (!arquivo.exists()) {
-			URL url = new URL(urlStr);
-			FileUtils.copyURLToFile(url, arquivo);
-		}
-		return arquivo;
-	}
-
-	public Importador(Connection con) {
-		this.con = con;
 	}
 
 }

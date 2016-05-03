@@ -1,4 +1,4 @@
-package br.gov.df.emater.importa;
+package br.gov.df.emater.importa.apoio;
 
 import java.io.File;
 import java.sql.Connection;
@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+
+import br.gov.df.emater.importa.Importador;
 
 public class ImportaIBGEMunicipio extends Importador {
 
