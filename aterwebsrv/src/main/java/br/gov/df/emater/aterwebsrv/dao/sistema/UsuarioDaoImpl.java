@@ -99,12 +99,26 @@ public class UsuarioDaoImpl implements UsuarioDaoCustom {
 			sql.append(" )").append("\n");
 		}
 		if (!CollectionUtils.isEmpty(filtro.getPessoaSituacao()) && (PessoaSituacao.values().length != (filtro.getPessoaSituacao().size()))) {
-			params.add(filtro.getPessoaSituacao());
-			sql.append("and b.situacao in ?").append(params.size()).append("\n");
+			sqlTemp = new StringBuilder();
+			for (PessoaSituacao pessoaSituacao: filtro.getPessoaSituacao()) {
+				if (sqlTemp.length() > 0) {
+					sqlTemp.append(", ");
+				}
+				params.add(pessoaSituacao.name());
+				sqlTemp.append("?").append(params.size());
+			}
+			sql.append("and b.situacao in (").append(sqlTemp).append(")").append("\n");
 		}
 		if (!CollectionUtils.isEmpty(filtro.getUsuarioSituacao()) && (UsuarioStatusConta.values().length != (filtro.getUsuarioSituacao().size()))) {
-			params.add(filtro.getUsuarioSituacao());
-			sql.append("and a.situacao in ?").append(params.size()).append("\n");
+			sqlTemp = new StringBuilder();
+			for (UsuarioStatusConta usuarioStatusConta: filtro.getUsuarioSituacao()) {
+				if (sqlTemp.length() > 0) {
+					sqlTemp.append(", ");
+				}
+				params.add(usuarioStatusConta.name());
+				sqlTemp.append("?").append(params.size());
+			}
+			sql.append("and a.situacao in (").append(sqlTemp).append(")").append("\n");
 		}
 		sql.append("order by        2").append("\n");
 

@@ -36,15 +36,17 @@ public class LogCmd extends _Comando {
 				throw new BoException("Erro log operação, usuário não identificado");
 			}
 			log.setNomeUsuario(usr.getUsername());
-			log.setUnidadeOrganizacionalId(usr.getLotacaoAtual().getId());
+			log.setUnidadeOrganizacionalId(usr.getLotacaoAtual() == null ? null : usr.getLotacaoAtual().getId());
 			Calendar dtLogin = Calendar.getInstance();
-			dtLogin.setTime(new Date((Long) usr.getDetails().get("DATA")));
-			log.setDataLogin(dtLogin);
-			log.setModuloId(Integer.parseInt((String) usr.getDetails().get("MODULO")));
-			log.setNumeroIp((String) usr.getDetails().get("NUMERO_IP"));
-			log.setBrowser((String) usr.getDetails().get("USER_AGENT"));
-			log.setEnderecoOrigem((String) usr.getDetails().get("ORIGIN"));
-			log.setEnderecoReferencia((String) usr.getDetails().get("REFERER"));
+			if (usr.getDetails() != null) {				
+				dtLogin.setTime(new Date((Long) usr.getDetails().get("DATA")));
+				log.setDataLogin(dtLogin);
+				log.setModuloId(Integer.parseInt((String) usr.getDetails().get("MODULO")));
+				log.setNumeroIp((String) usr.getDetails().get("NUMERO_IP"));
+				log.setBrowser((String) usr.getDetails().get("USER_AGENT"));
+				log.setEnderecoOrigem((String) usr.getDetails().get("ORIGIN"));
+				log.setEnderecoReferencia((String) usr.getDetails().get("REFERER"));
+			}
 		}
 		// captação dos dados transitados
 		try {

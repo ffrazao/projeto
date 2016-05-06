@@ -39,7 +39,7 @@ public class RenovarSenhaCmd extends _Comando {
 			}
 		}
 		for (String nome : usuario.getPessoa().getNome().split(" ")) {
-			if (novaSenha.toLowerCase().trim().indexOf(nome.toLowerCase()) >= 0) {
+			if (nome.length() > 3 && novaSenha.toLowerCase().trim().indexOf(nome.toLowerCase()) >= 0) {
 				throw new BoException("Não utilize parte de seu nome como senha de acesso");
 			}
 		}

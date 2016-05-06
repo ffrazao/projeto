@@ -20,6 +20,9 @@ public abstract class _Comando implements Command {
 	}
 
 	public Usuario getUsuario(String userName) {
+		if (userName == null) {
+			return null;
+		}
 		return usuarioDao.findByUsername(userName);
 	}
 

@@ -35,11 +35,13 @@ import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoConfiguracaoViDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.TelefoneDao;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
+import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoSetor;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.CadastroAcao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.Coleta;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.FormularioVersao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Arquivo;
@@ -53,6 +55,7 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaEmail;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaEndereco;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaGrupoSocial;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaRelacionamento;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaTelefone;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Relacionamento;
@@ -152,17 +155,19 @@ public class SalvarCmd extends _Comando {
 	public boolean executar(_Contexto contexto) throws Exception {
 		Pessoa result = (Pessoa) contexto.getRequisicao();
 		if (result.getId() == null) {
-			result.setUsuarioInclusao(getUsuario(contexto.getUsuario().getName()));
+			result.setUsuarioInclusao(getUsuario(contexto.getUsuario() == null ? null : contexto.getUsuario().getName()));
 			result.setInclusaoData(Calendar.getInstance());
 		} else {
-			result.setUsuarioInclusao(getUsuario(result.getUsuarioInclusao().getUsername()));
+			result.setUsuarioInclusao(getUsuario(result.getUsuarioInclusao() == null ? null : result.getUsuarioInclusao().getUsername()));
 		}
-		result.setUsuarioAlteracao(getUsuario(contexto.getUsuario().getName()));
+		result.setUsuarioAlteracao(getUsuario(contexto.getUsuario() == null ? null : contexto.getUsuario().getName()));
 		result.setAlteracaoData(Calendar.getInstance());
 
 		// ajustar os dados de nascimento da pessoa
 		if (result instanceof PessoaFisica) {
 			PessoaFisica pf = (PessoaFisica) result;
+
+			pf.setCpf(UtilitarioString.formataCpf(pf.getCpf()));
 
 			if (pf.getNascimentoPais() != null && pf.getNascimentoPais().getId() != null) {
 				pf.setNascimentoPais(paisDao.findOne(pf.getNascimentoPais().getId()));
@@ -189,13 +194,18 @@ public class SalvarCmd extends _Comando {
 			} else {
 				pf.setNascimentoMunicipio(null);
 			}
+		} else {
+			PessoaJuridica pj = (PessoaJuridica) result;
+			pj.setCnpj(UtilitarioString.formataCnpj(pj.getCnpj()));
 		}
 
 		// gravar o perfil
 		if (result.getPerfilArquivo() != null) {
 			result.setPerfilArquivo(arquivoDao.findByMd5(result.getPerfilArquivo().getMd5()));
 		}
-
+		if (result.getSituacao() == null) {
+			result.setSituacao(PessoaSituacao.A);
+		}
 		dao.save(result);
 
 		PublicoAlvo publicoAlvo = result.getPublicoAlvo();
@@ -221,6 +231,9 @@ public class SalvarCmd extends _Comando {
 						}
 					}
 				}
+			}
+			if (publicoAlvo.getDapNumero() != null) {
+				publicoAlvo.setDapNumero(publicoAlvo.getDapNumero().toUpperCase());
 			}
 			publicoAlvoDao.save(publicoAlvo);
 
@@ -270,6 +283,7 @@ public class SalvarCmd extends _Comando {
 						pessoaEndereco.getEndereco().setId(null);
 						endereco = enderecoDao.save(pessoaEndereco.getEndereco());
 					}
+					endereco.setCep(UtilitarioString.formataCep(endereco.getCep()));
 					pessoaEndereco.setEndereco(endereco);
 					pessoaEndereco.setPessoa(result);
 					pessoaEndereco.setOrdem(++ordem);
@@ -348,8 +362,12 @@ public class SalvarCmd extends _Comando {
 					Relacionamento relacionamento = pessoaRelacionamento.getRelacionamento();
 
 					if (relacionamento == null || relacionamento.getId() == null) {
-						relacionamento = new Relacionamento();
-						relacionamento.setRelacionamentoTipo(pessoaRelacionamento.getRelacionamento().getRelacionamentoTipo());
+						if (relacionamento == null) {							
+							relacionamento = new Relacionamento();
+						}
+						if (relacionamento.getRelacionamentoTipo() == null) {							
+							relacionamento.setRelacionamentoTipo(pessoaRelacionamento.getRelacionamento().getRelacionamentoTipo());
+						}
 					} else {
 						Relacionamento salvo = relacionamentoDao.findById(relacionamento.getId());
 						salvo.getPessoaRelacionamentoList().size();

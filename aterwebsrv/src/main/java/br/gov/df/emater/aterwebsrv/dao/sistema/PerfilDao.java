@@ -8,4 +8,6 @@ import br.gov.df.emater.aterwebsrv.modelo.sistema.Perfil;
 @Repository("PerfilDao")
 public interface PerfilDao extends JpaRepository<Perfil, Integer>, PerfilDaoCustom {
 
+	Perfil findOneByCodigo(String codigo);
+
 }

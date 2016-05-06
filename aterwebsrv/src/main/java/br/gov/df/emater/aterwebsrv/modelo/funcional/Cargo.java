@@ -7,24 +7,30 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.CargoTipo;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.Escolaridade;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 
-/**
- * The persistent class for the cargo database table.
- * 
- */
 @Entity
 @Table(name = "cargo", schema = EntidadeBase.FUNCIONAL_SCHEMA)
 public class Cargo extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "codigo_cbo")
-	private String codigoCbo;
+	@Column(name = "codigo_externo")
+	private String codigoExterno;
+
+	@Enumerated(EnumType.STRING)
+	private Confirmacao efetivo;
+	
+	@Enumerated(EnumType.STRING)
+	private Escolaridade escolaridade;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,18 +38,26 @@ public class Cargo extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private String nome;
 
-	@Column(name = "tipo")
-	@Enumerated(EnumType.STRING)
-	private CargoTipo tipo;
+	@ManyToOne
+	@JoinColumn(name = "pessoa_juridica_id")
+	private PessoaJuridica pessoaJuridica;
 
-	public Cargo() {
+	@ManyToOne
+	@JoinColumn(name = "tabela_cbo_id")
+	private TabelaCbo tabelaCbo;
+
+	public String getCodigoExterno() {
+		return codigoExterno;
 	}
 
-	public String getCodigoCbo() {
-		return codigoCbo;
+	public Confirmacao getEfetivo() {
+		return efetivo;
 	}
 
-	@Override
+	public Escolaridade getEscolaridade() {
+		return escolaridade;
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -52,15 +66,26 @@ public class Cargo extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return nome;
 	}
 
-	public CargoTipo getTipo() {
-		return tipo;
+	public PessoaJuridica getPessoaJuridica() {
+		return pessoaJuridica;
 	}
 
-	public void setCodigoCbo(String codigoCbo) {
-		this.codigoCbo = codigoCbo;
+	public TabelaCbo getTabelaCbo() {
+		return tabelaCbo;
 	}
 
-	@Override
+	public void setCodigoExterno(String codigoExterno) {
+		this.codigoExterno = codigoExterno;
+	}
+
+	public void setEfetivo(Confirmacao efetivo) {
+		this.efetivo = efetivo;
+	}
+
+	public void setEscolaridade(Escolaridade escolaridade) {
+		this.escolaridade = escolaridade;
+	}
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
@@ -69,8 +94,12 @@ public class Cargo extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.nome = nome;
 	}
 
-	public void setTipo(CargoTipo tipo) {
-		this.tipo = tipo;
+	public void setPessoaJuridica(PessoaJuridica pessoaJuridica) {
+		this.pessoaJuridica = pessoaJuridica;
+	}
+
+	public void setTabelaCbo(TabelaCbo tabelaCbo) {
+		this.tabelaCbo = tabelaCbo;
 	}
 
 }

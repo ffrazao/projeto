@@ -69,6 +69,9 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	@OneToMany(mappedBy = "pessoa")
 	private List<PessoaArquivo> arquivoList;
 
+	@Column(name = "chave_sisater")
+	private String chaveSisater;
+
 	@Transient
 	private Object diagnosticoList;
 
@@ -176,6 +179,10 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		return arquivoList;
 	}
 
+	public String getChaveSisater() {
+		return chaveSisater;
+	}
+
 	public Object getDiagnosticoList() {
 		return diagnosticoList;
 	}
@@ -267,6 +274,10 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 
 	public void setArquivoList(List<PessoaArquivo> arquivoList) {
 		this.arquivoList = arquivoList;
+	}
+
+	public void setChaveSisater(String chaveSisater) {
+		this.chaveSisater = chaveSisater;
 	}
 
 	public void setDiagnosticoList(Object diagnosticoList) {

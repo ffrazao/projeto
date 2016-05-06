@@ -3,6 +3,7 @@ package br.gov.df.emater.aterwebsrv.modelo.dto;
 import java.util.List;
 import java.util.Set;
 
+import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.ater.Comunidade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;
@@ -189,7 +190,7 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 	}
 
 	public void setCnpj(String cnpj) {
-		this.cnpj = cnpj;
+		this.cnpj = UtilitarioString.formataCnpj(cnpj);
 	}
 
 	public void setComunidadeList(List<Comunidade> comunidadeList) {
@@ -197,7 +198,7 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 	}
 
 	public void setCpf(String cpf) {
-		this.cpf = cpf;
+		this.cpf = UtilitarioString.formataCpf(cpf);
 	}
 
 	public void setEmpresaList(List<PessoaJuridica> empresaList) {

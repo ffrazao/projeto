@@ -13,13 +13,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.df.emater.aterwebsrv.dao.funcional.EmpregoDao;
 import br.gov.df.emater.aterwebsrv.dao.funcional.LotacaoDao;
+import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoConfiguracaoViDao;
 import br.gov.df.emater.aterwebsrv.dao.sistema.UsuarioDao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.RelacionamentoParticipacao;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.Emprego;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.Lotacao;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaRelacionamento;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoConfiguracaoVi;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Perfil;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.PerfilFuncionalidadeComando;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
@@ -38,6 +42,9 @@ public class UserDetailsService implements org.springframework.security.core.use
 
 	@Autowired
 	private LotacaoDao lotacaoDao;
+
+	@Autowired
+	private RelacionamentoConfiguracaoViDao relacionamentoConfiguracaoViDao;
 
 	private void avaliarPerfil(Set<UsuarioPerfil> authorities, Set<UsuarioPerfil> authoritiesRetorno, Map<String, Set<String>> perfilFuncionalidadeComandoListRetorno, Map<String, Set<String>> perfilFuncionalidadeComandoListNegadoRetorno) {
 		for (UsuarioPerfil usuarioPerfil : authorities) {
@@ -102,8 +109,19 @@ public class UserDetailsService implements org.springframework.security.core.use
 		UnidadeOrganizacional lotacaoAtual = null;
 
 		// inicio avaliar perfis da empresa do usuario
-		for (Emprego emprego : empregoDao.findByPessoaFisicaId(usuario.getPessoa().getId())) {
-			for (Usuario usuarioEmpregador : usuarioDao.findByPessoa(emprego.getPessoaJuridica())) {
+		for (Emprego emprego : empregoDao.findByPessoaRelacionamentoListPessoaIn(usuario.getPessoa())) {
+			Pessoa empregador = null;
+			for (PessoaRelacionamento pr : emprego.getPessoaRelacionamentoList()) {
+				RelacionamentoConfiguracaoVi relacionamentoConfiguracaoVi = relacionamentoConfiguracaoViDao.findByTipoIdAndRelacionadorId(pr.getRelacionamento().getRelacionamentoTipo().getId(), pr.getRelacionamentoFuncao().getId());
+				if (RelacionamentoParticipacao.A.equals(relacionamentoConfiguracaoVi.getRelacionadorParticipacao())) {
+					empregador = pr.getPessoa();
+					break;
+				}
+			}
+			if (usuario.getPessoa().getId().equals(empregador.getId())) {
+				continue;
+			}
+			for (Usuario usuarioEmpregador : usuarioDao.findByPessoa(empregador)) {
 				avaliarPerfil(usuarioEmpregador.getAuthorities(), authoritiesRetorno, perfilFuncionalidadeComandoListRetorno, perfilFuncionalidadeComandoListNegadoRetorno);
 			}
 			// inicio avaliar perfis da lotacoes do usuario

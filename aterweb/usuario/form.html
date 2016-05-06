@@ -40,7 +40,7 @@
                         </div>
                         <div class="row">
                             <div class="form-group col-md-3">
-                                <label class="control-label">Situação</label>
+                                <label class="control-label" ng-class="{'riscado': cadastro.registro.pessoa.situacao !== 'A', 'vermelho': cadastro.registro.pessoa.situacao !== 'A'}">Situação</label>
                                 <select class="form-control" required ng-model="cadastro.registro.pessoa.situacao" ng-disabled="true" ng-options="item.codigo as item.descricao for item in cadastro.apoio.pessoaSituacaoList">
                                 </select>
                             </div>
@@ -118,7 +118,7 @@
                         </div>
                     </div>
                     <div class="col-md-3" title="Situação do Usuário">
-                        <label class="control-label">Situação</label>
+                        <label class="control-label" ng-class="{'riscado': cadastro.registro.usuarioStatusConta !== 'A', 'vermelho': cadastro.registro.usuarioStatusConta !== 'A'}">Situação</label>
                         <select class="form-control" required ng-model="cadastro.registro.usuarioStatusConta" ng-options="item.codigo as item.descricao for item in cadastro.apoio.usuarioStatusContaList">
                         </select>
                     </div>

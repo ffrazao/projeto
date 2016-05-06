@@ -7,7 +7,9 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 
 @Repository("PessoaDao")
 public interface PessoaDao extends JpaRepository<Pessoa, Integer>, PessoaDaoCustom {
-	
-	Pessoa findByNome( String nome );
+
+	Pessoa findByNome(String nome);
+
+	Pessoa findOneByApelidoSigla(String string);
 
 }

@@ -8,11 +8,14 @@ import org.springframework.stereotype.Repository;
 
 import br.gov.df.emater.aterwebsrv.modelo.dominio.UnidadeOrganizacionalClassificacao;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 
 @Repository("UnidadeOrganizacionalDao")
 public interface UnidadeOrganizacionalDao extends JpaRepository<UnidadeOrganizacional, Integer> {
 
 	List<UnidadeOrganizacional> findByNomeLikeAndClassificacaoIn(String nome, Set<UnidadeOrganizacionalClassificacao> classificacao);
+
+	UnidadeOrganizacional findOneByPessoaJuridicaAndSigla(PessoaJuridica pessoa, String lotacaoSigla);
 	
 }
 	

@@ -40,7 +40,7 @@
                     </td>
                     <td title="Nome do Completo"><span ng-hide="item[CABEC.PESSOA_ID]">{{item[CABEC.NOME]}}</span><a ng-click="modalVerPessoa(item[CABEC.PESSOA_ID])" ng-show="item[CABEC.PESSOA_ID]">{{item[CABEC.NOME]}}</a></td>
                     <td title="Tipo de Pessoa">{{UtilSrv.indiceDePorCampo(cadastro.apoio.pessoaTipoList, item[CABEC.TIPO], "codigo").descricao}}</td>
-                    <td title="Situação Pessoa" ng-class="{'riscado': item[CABEC.PESSOA_SITUACAO] !== 'A', 'vermelho': item[CABEC.PESSOA_SITUACAO] !== 'A'}">{{item[CABEC.PESSOA_SITUACAO] === "A" ? "Ativo" : "Inativo"}}</td>
+                    <td title="Situação Pessoa" ng-class="{'riscado': item[CABEC.PESSOA_SITUACAO] !== 'A', 'vermelho': item[CABEC.PESSOA_SITUACAO] !== 'A'}">{{UtilSrv.indiceDePorCampo(cadastro.apoio.pessoaSituacaoList, item[CABEC.PESSOA_SITUACAO], "codigo").descricao}}</td>
                     <td title="Situação Usuario" ng-class="{'riscado': item[CABEC.USUARIO_SITUACAO] !== 'A', 'vermelho': item[CABEC.USUARIO_SITUACAO] !== 'A'}">{{UtilSrv.indiceDePorCampo(cadastro.apoio.usuarioStatusContaList, item[CABEC.USUARIO_SITUACAO], "codigo").descricao}}</td>
                     <td title="Nome Usuário">{{item[CABEC.USUARIO_NOME]}}</td>
                     <td title="E-mail">{{item[CABEC.EMAIL]}}</td>

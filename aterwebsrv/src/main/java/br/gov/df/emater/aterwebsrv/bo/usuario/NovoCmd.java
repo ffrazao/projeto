@@ -3,6 +3,7 @@ package br.gov.df.emater.aterwebsrv.bo.usuario;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +36,7 @@ public class NovoCmd extends _Comando {
 			result = new Usuario();
 		}
 		if (result.getPessoa() != null && result.getPessoa().getId() != null) {
-			Pessoa salvo = pessoaDao.findOne(result.getPessoa().getId());
+			Pessoa salvo = pessoaDao.getOne(result.getPessoa().getId());
 			if (salvo == null) {
 				throw new BoException("Registro de Pessoa Inexistente!");
 			}
@@ -50,17 +51,44 @@ public class NovoCmd extends _Comando {
 			}
 			if (pessoaEmailList.size() == 0) {
 				throw new BoException("Nenhum e-mail vinculado a esta pessoa!");
-			} else  if (pessoaEmailList.size() == 1) {
+			} else  if (pessoaEmailList.size() == 1 && result.getPessoaEmail() == null) {
 				result.setPessoaEmail(new PessoaEmail(pessoaEmailList.get(0).getId(), pessoaEmailList.get(0).getEmail().infoBasica()));
 			}
 			result.getPessoa().setEmailList(pessoaEmailList);
 
 			result.setUsername(UtilitarioString.calculaNomeUsuario(result.getPessoa().getNome()));
+			
+			boolean valido = false;
+			do {
+				if (dao.findByUsername(result.getUsername()) == null) {
+					valido = true;
+				} else {
+					boolean pegaContador = true;
+					StringBuilder contadorStr = new StringBuilder();
+					StringBuilder usernameStr = new StringBuilder();
+					char[] username = result.getUsername().toCharArray();
+					ArrayUtils.reverse(username);
+					for (char c: username) {
+						if (pegaContador && Character.isDigit(c)) {
+							contadorStr.append(c);
+						} else {
+							pegaContador = false;
+							usernameStr.append(c);
+						}
+					}
+					Integer contador = contadorStr.length() > 0 ? Integer.parseInt(contadorStr.reverse().toString()) : 0;
+					result.setUsername(usernameStr.reverse().append(++contador).toString());
+				}
+			} while(!valido);
 		}
 
 		result.setId(null);
-		result.setUsuarioStatusConta(UsuarioStatusConta.A);
-		result.setUsuarioAtualizouPerfil(Confirmacao.N);
+		if (result.getUsuarioStatusConta() == null) {
+			result.setUsuarioStatusConta(UsuarioStatusConta.A);
+		}
+		if (result.getUsuarioAtualizouPerfil() == null) {			
+			result.setUsuarioAtualizouPerfil(Confirmacao.N);
+		}
 
 		contexto.setResposta(result);
 

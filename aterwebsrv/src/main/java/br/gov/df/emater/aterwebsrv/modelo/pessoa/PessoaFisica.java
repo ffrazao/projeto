@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
+import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.CamOrgao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.CnhCategoria;
@@ -111,7 +112,6 @@ public class PessoaFisica extends Pessoa {
 	@Column(name = "ctps_serie")
 	// @Field(index = Index.YES, store = Store.YES)
 	private String ctpsSerie;
-
 
 	@Enumerated(EnumType.STRING)
 	private Escolaridade escolaridade;
@@ -402,7 +402,7 @@ public class PessoaFisica extends Pessoa {
 	}
 
 	public void setCpf(String cpf) {
-		this.cpf = cpf;
+		this.cpf = UtilitarioString.formataCpf(cpf);
 	}
 
 	public void setCtpsNumero(String ctpsNumero) {

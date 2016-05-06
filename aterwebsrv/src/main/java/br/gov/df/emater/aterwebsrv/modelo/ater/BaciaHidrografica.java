@@ -2,6 +2,7 @@ package br.gov.df.emater.aterwebsrv.modelo.ater;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,6 +22,9 @@ import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 public class BaciaHidrografica extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<BaciaHidrografica> {
 
 	private static final long serialVersionUID = 1L;
+
+	@Column(name = "chave_sisater")
+	private String chaveSisater;
 
 	private String codigo;
 
@@ -44,6 +48,10 @@ public class BaciaHidrografica extends EntidadeBase implements _ChavePrimaria<In
 		setNome(nome);
 	}
 
+	public String getChaveSisater() {
+		return chaveSisater;
+	}
+
 	public String getCodigo() {
 		return codigo;
 	}
@@ -65,6 +73,10 @@ public class BaciaHidrografica extends EntidadeBase implements _ChavePrimaria<In
 	public BaciaHidrografica infoBasica() {
 		// TODO Auto-generated method stub
 		return new BaciaHidrografica(this.id, this.nome);
+	}
+
+	public void setChaveSisater(String chaveSisater) {
+		this.chaveSisater = chaveSisater;
 	}
 
 	public void setCodigo(String codigo) {

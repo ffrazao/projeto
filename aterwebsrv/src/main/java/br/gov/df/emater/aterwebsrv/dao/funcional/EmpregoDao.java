@@ -6,10 +6,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import br.gov.df.emater.aterwebsrv.modelo.funcional.Emprego;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 
 @Repository("EmpregoDao")
-public interface EmpregoDao extends JpaRepository<Emprego, Long> {
+public interface EmpregoDao extends JpaRepository<Emprego, Integer> {
 
-	List<Emprego> findByPessoaFisicaId(Integer id);
+	List<Emprego> findByPessoaRelacionamentoListPessoaIn(Pessoa pessoa);
+
+	List<Emprego> findByMatricula(String matricula);
 
 }

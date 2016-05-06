@@ -3,6 +3,7 @@ package br.gov.df.emater.aterwebsrv.modelo.funcional;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -27,6 +28,9 @@ public class UnidadeOrganizacional extends EntidadeBase implements _ChavePrimari
 
 	private static final long serialVersionUID = 1L;
 
+	@Column(name = "chave_sisater")
+	private String chaveSisater;
+
 	@Enumerated(EnumType.STRING)
 	private UnidadeOrganizacionalClassificacao classificacao;
 
@@ -48,6 +52,10 @@ public class UnidadeOrganizacional extends EntidadeBase implements _ChavePrimari
 	public UnidadeOrganizacional() {
 	}
 
+	public UnidadeOrganizacional(Serializable id) {
+		super(id);
+	}
+
 	public UnidadeOrganizacional(Serializable id, String nome, String sigla, PessoaJuridica pessoaJuridica, UnidadeOrganizacionalClassificacao classificacao) {
 		this(id);
 		setNome(nome);
@@ -56,8 +64,8 @@ public class UnidadeOrganizacional extends EntidadeBase implements _ChavePrimari
 		setClassificacao(classificacao);
 	}
 
-	public UnidadeOrganizacional(Serializable id) {
-		super(id);
+	public String getChaveSisater() {
+		return chaveSisater;
 	}
 
 	public UnidadeOrganizacionalClassificacao getClassificacao() {
@@ -88,6 +96,10 @@ public class UnidadeOrganizacional extends EntidadeBase implements _ChavePrimari
 	@Override
 	public UnidadeOrganizacional infoBasica() {
 		return new UnidadeOrganizacional(this.id, this.nome, this.sigla, this.pessoaJuridica == null ? null : (PessoaJuridica) pessoaJuridica.infoBasica(), this.classificacao);
+	}
+
+	public void setChaveSisater(String chaveSisater) {
+		this.chaveSisater = chaveSisater;
 	}
 
 	public void setClassificacao(UnidadeOrganizacionalClassificacao classificacao) {

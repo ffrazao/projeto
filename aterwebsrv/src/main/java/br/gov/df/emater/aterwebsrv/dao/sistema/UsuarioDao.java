@@ -16,6 +16,8 @@ public interface UsuarioDao extends JpaRepository<Usuario, Integer>, UsuarioDaoC
 
 	Usuario findByUsername(String nomeUsuario);
 
+	Usuario findOneByPessoa(Pessoa pessoa);
+
 	List<Usuario> findByPessoa(Pessoa pessoa);
 
 	List<Usuario> findByUnidadeOrganizacional(UnidadeOrganizacional unidadeOrganizacional);

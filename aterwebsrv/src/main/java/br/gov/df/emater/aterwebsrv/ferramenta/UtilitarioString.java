@@ -1,8 +1,11 @@
 package br.gov.df.emater.aterwebsrv.ferramenta;
 
 import java.text.Normalizer;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.regex.Pattern;
+
+import org.apache.commons.lang3.text.WordUtils;
 
 // Singleton utilitario para Strings
 public class UtilitarioString {
@@ -183,6 +186,25 @@ public class UtilitarioString {
 			result = texto;
 		}
 		return result;
+	}
+
+	public static String formataNomeProprio(String nome) {
+		if (nome == null) {
+			return null;
+		}
+		nome = WordUtils.capitalizeFully(nome.trim(), new char[] {'\'', ' ', '-', '.', '\"' , '('});
+		StringBuilder result = new StringBuilder();
+		for (String palavra: nome.split("\\s")) {
+			if (result.length() > 0) {
+				result.append(' ');
+			}
+			if (Arrays.asList(new String[] { "de", "da", "do", "das", "dos", "e" }).contains(palavra.toLowerCase())) {
+				result.append(palavra.toLowerCase());
+			} else {
+				result.append(palavra);
+			}
+		}
+		return result.toString();
 	}
 
 }

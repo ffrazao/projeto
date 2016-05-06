@@ -46,8 +46,13 @@ public class PessoaEmail extends EntidadeBase implements _ChavePrimaria<Integer>
 		super(id);
 	}
 	public PessoaEmail(Integer id, Email email) {
+		this(id, email, "C");
+	}
+
+	public PessoaEmail(Integer id, Email email, String finalidade) {
 		this(id);
 		this.setEmail(email);
+		this.setFinalidade(finalidade);
 	}
 
 	public Email getEmail() {

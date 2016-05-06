@@ -250,7 +250,7 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 	}
 
 	public void setCep(String cep) {
-		this.cep = cep;
+		this.cep = UtilitarioString.formataCep(cep);
 	}
 
 	public void setCidade(Cidade cidade) {

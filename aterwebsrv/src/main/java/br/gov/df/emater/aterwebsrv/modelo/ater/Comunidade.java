@@ -2,6 +2,8 @@ package br.gov.df.emater.aterwebsrv.modelo.ater;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,6 +14,7 @@ import javax.persistence.Table;
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Cidade;
 
@@ -25,12 +28,15 @@ public class Comunidade extends EntidadeBase implements _ChavePrimaria<Integer>,
 
 	private static final long serialVersionUID = 1L;
 
+	@Enumerated(EnumType.STRING)
+	protected Confirmacao assentamento;
+
+	@Column(name = "chave_sisater")
+	private String chaveSisater;
+
 	@ManyToOne
 	@JoinColumn(name = "cidade_id")
 	private Cidade cidade;
-
-	@Column(name = "codigo_sisater")
-	private String codigoSisater;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -57,12 +63,16 @@ public class Comunidade extends EntidadeBase implements _ChavePrimaria<Integer>,
 		setUnidadeOrganizacional(unidadeOrganizacional);
 	}
 
-	public Cidade getCidade() {
-		return cidade;
+	public Confirmacao getAssentamento() {
+		return assentamento;
 	}
 
-	public String getCodigoSisater() {
-		return codigoSisater;
+	public String getChaveSisater() {
+		return chaveSisater;
+	}
+
+	public Cidade getCidade() {
+		return cidade;
 	}
 
 	public Integer getId() {
@@ -86,12 +96,16 @@ public class Comunidade extends EntidadeBase implements _ChavePrimaria<Integer>,
 		return new Comunidade(this.getId(), this.getNome(), this.unidadeOrganizacional == null ? null : this.unidadeOrganizacional.infoBasica());
 	}
 
-	public void setCidade(Cidade cidade) {
-		this.cidade = cidade;
+	public void setAssentamento(Confirmacao assentamento) {
+		this.assentamento = assentamento;
 	}
 
-	public void setCodigoSisater(String codigoSisater) {
-		this.codigoSisater = codigoSisater;
+	public void setChaveSisater(String chaveSisater) {
+		this.chaveSisater = chaveSisater;
+	}
+
+	public void setCidade(Cidade cidade) {
+		this.cidade = cidade;
 	}
 
 	public void setId(Integer id) {

@@ -49,7 +49,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 @Table(name = "propriedade_rural", schema = EntidadeBase.ATER_SCHEMA)
 // @Indexed
 public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<PropriedadeRural> {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	@Column(name = "alteracao_data")
@@ -114,6 +114,9 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 
 	@Column(name = "cartorio_informacao")
 	private String cartorioInformacao;
+
+	@Column(name = "chave_sisater")
+	private String chaveSisater;
 
 	@ManyToOne
 	@JoinColumn(name = "comunidade_id")
@@ -468,6 +471,10 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 		return cartorioInformacao;
 	}
 
+	public String getChaveSisater() {
+		return chaveSisater;
+	}
+
 	public Comunidade getComunidade() {
 		return comunidade;
 	}
@@ -784,6 +791,10 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 
 	public void setCartorioInformacao(String cartorioInformacao) {
 		this.cartorioInformacao = cartorioInformacao;
+	}
+
+	public void setChaveSisater(String chaveSisater) {
+		this.chaveSisater = chaveSisater;
 	}
 
 	public void setComunidade(Comunidade comunidade) {

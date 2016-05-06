@@ -90,7 +90,7 @@ public class VisualizarPerfilCmd extends _Comando {
 
 				// Encontrar a lotação atual da pessoa
 				List<Lotacao> lotacaoList = new ArrayList<Lotacao>();
-				for (Emprego emprego : empregoDao.findByPessoaFisicaId(usuario.getPessoa().getId())) {
+				for (Emprego emprego : empregoDao.findByPessoaRelacionamentoListPessoaIn(usuario.getPessoa())) {
 					if ((emprego.getInicio() == null || emprego.getInicio().before(Calendar.getInstance())) && (emprego.getTermino() == null || emprego.getTermino().after(Calendar.getInstance()))) {
 						// inicio avaliar perfis da lotacoes do usuario
 						for (Lotacao l : lotacaoDao.findByEmprego(emprego)) {

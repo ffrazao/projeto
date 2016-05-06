@@ -46,13 +46,19 @@ public class UsuarioPerfil extends EntidadeBase implements _ChavePrimaria<Intege
 	public UsuarioPerfil() {
 	}
 
+	public UsuarioPerfil(Perfil perfil, Confirmacao ativo) {
+		setPerfil(perfil);
+		setAtivo(ativo);
+	}
+
 	@Override
 	public String getAuthority() {
 		Perfil p = getPerfil();
 		return p == null ? null : p.getCodigo();
 	}
-	
-	public void setAuthority(String authority) {}
+
+	public void setAuthority(String authority) {
+	}
 
 	public Confirmacao getAtivo() {
 		return ativo;

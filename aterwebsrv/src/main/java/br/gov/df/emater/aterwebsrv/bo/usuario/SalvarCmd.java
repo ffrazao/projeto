@@ -34,10 +34,16 @@ public class SalvarCmd extends _Comando {
 		Usuario result = (Usuario) contexto.getRequisicao();
 		Usuario salvo = null;
 		String enviaEmail = null;
+		
+		// flag para enviar automaticamente a senha ao usuário ou não
+		Boolean enviarEmailUsuario = (Boolean) contexto.get("enviarEmailUsuario");
+		if (enviarEmailUsuario == null) {
+			enviarEmailUsuario = true;
+		}
 
 		if (result.getId() == null) {
 			// novos usuários
-			result.setUsuarioInclusao(getUsuario(contexto.getUsuario().getName()));
+			result.setUsuarioInclusao(getUsuario(contexto.getUsuario() == null ? null : contexto.getUsuario().getName()));
 			result.setInclusaoData(Calendar.getInstance());
 			if (result.getPessoaEmail() == null || result.getPessoaEmail().getEmail() == null || result.getPessoaEmail().getEmail().getEndereco() == null || result.getPessoaEmail().getEmail().getEndereco().trim().length() == 0) {
 				throw new BoException("E-mail do usuário não informado!");
@@ -48,10 +54,10 @@ public class SalvarCmd extends _Comando {
 			}
 		} else {
 			// usuários existentes
-			result.setUsuarioInclusao(getUsuario(result.getUsuarioInclusao().getUsername()));
+			result.setUsuarioInclusao(getUsuario(result.getUsuarioInclusao() == null ? null : result.getUsuarioInclusao().getUsername()));
 			salvo = dao.findOne(result.getId());
 		}
-		result.setUsuarioAlteracao(getUsuario(contexto.getUsuario().getName()));
+		result.setUsuarioAlteracao(getUsuario(contexto.getUsuario() == null ? null : contexto.getUsuario().getName()));
 		result.setAlteracaoData(Calendar.getInstance());
 
 		// remover os itens descartados
@@ -86,8 +92,8 @@ public class SalvarCmd extends _Comando {
 		}
 
 		// enviar senha para novos usuários
-		if (enviaEmail != null) {
-			facadeBo.segurancaEsqueciSenha(enviaEmail);
+		if (enviarEmailUsuario && enviaEmail != null) {
+			//facadeBo.segurancaEsqueciSenha(enviaEmail);
 		}
 
 		contexto.setResposta(result.getId());

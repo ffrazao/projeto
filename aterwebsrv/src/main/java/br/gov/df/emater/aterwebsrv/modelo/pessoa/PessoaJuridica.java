@@ -2,12 +2,12 @@ package br.gov.df.emater.aterwebsrv.modelo.pessoa;
 
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
@@ -31,10 +31,6 @@ public class PessoaJuridica extends Pessoa {
 	// @Field(index = Index.YES, store = Store.YES)
 	private String cnpj;
 
-	@Column(name = "inscricao_estadual")
-	// @Field(index = Index.YES, store = Store.YES)
-	private String inscricaoEstadual;
-
 	public PessoaJuridica() {
 		setPessoaTipo(PessoaTipo.PJ);
 	}
@@ -57,10 +53,6 @@ public class PessoaJuridica extends Pessoa {
 		return cnpj;
 	}
 
-	public String getInscricaoEstadual() {
-		return inscricaoEstadual;
-	}
-
 	@Override
 	public Pessoa infoBasica() {
 		return new PessoaJuridica(this.getId(), this.getNome(), this.getApelidoSigla(), this.getPerfilArquivo() == null ? null : this.getPerfilArquivo().infoBasica(), this.getSituacao(), this.getPublicoAlvoConfirmacao(), this.getCnpj());
@@ -71,11 +63,7 @@ public class PessoaJuridica extends Pessoa {
 	}
 
 	public void setCnpj(String cnpj) {
-		this.cnpj = cnpj;
-	}
-
-	public void setInscricaoEstadual(String inscricaoEstadual) {
-		this.inscricaoEstadual = inscricaoEstadual;
+		this.cnpj = UtilitarioString.formataCnpj(cnpj);
 	}
 
 }

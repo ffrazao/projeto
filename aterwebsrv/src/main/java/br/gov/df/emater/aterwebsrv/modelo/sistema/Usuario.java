@@ -308,7 +308,7 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 	@Override
 	@JsonIgnore
 	public boolean isEnabled() {
-		return Arrays.asList(UsuarioStatusConta.A, UsuarioStatusConta.R).contains(getUsuarioStatusConta()) || PessoaSituacao.A.equals(getPessoa().getSituacao());
+		return Arrays.asList(UsuarioStatusConta.A, UsuarioStatusConta.R).contains(getUsuarioStatusConta()) && PessoaSituacao.A.equals(getPessoa().getSituacao());
 	}
 
 	public void setAcessoExpiraEm(Calendar acessoExpiraEm) {
