@@ -17,4 +17,6 @@ public interface ComunidadeDao extends JpaRepository<Comunidade, Integer> {
 
 	List<Comunidade> findByUnidadeOrganizacionalPessoaJuridicaIdInAndNomeLikeOrderByNomeAsc(Set<Integer> pessoaJuridicaList, String nomeLike);
 
+	List<Comunidade> findByNomeOrderByNomeAsc(String nome);
+
 }
