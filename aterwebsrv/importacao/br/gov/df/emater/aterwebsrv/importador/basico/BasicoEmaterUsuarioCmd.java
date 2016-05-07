@@ -1,4 +1,4 @@
-package br.gov.df.emater.aterwebsrv.importador;
+package br.gov.df.emater.aterwebsrv.importador.basico;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,7 +19,7 @@ import br.gov.df.emater.aterwebsrv.modelo.sistema.UsuarioPerfil;
 import br.gov.df.emater.aterwebsrv.seguranca.UserAuthentication;
 
 @Service
-public class EmaterUsuarioCmd extends _Comando {
+public class BasicoEmaterUsuarioCmd extends _Comando {
 
 	@Autowired
 	private PerfilDao perfilDao;

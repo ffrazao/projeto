@@ -223,6 +223,9 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 	@Column(name = "pastagem_silagem")
 	private String pastagemSilagem;
 
+	@OneToMany(mappedBy = "propriedadeRural")
+	private List<PropriedadeRuralPendencia> pendenciaList;
+
 	@Column(name = "principais_atividades_produtivas")
 	private String principaisAtividadesProdutivas;
 
@@ -588,6 +591,10 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 		return pastagemSilagem;
 	}
 
+	public List<PropriedadeRuralPendencia> getPendenciaList() {
+		return pendenciaList;
+	}
+
 	public String getPrincipaisAtividadesProdutivas() {
 		return principaisAtividadesProdutivas;
 	}
@@ -908,6 +915,10 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 
 	public void setPastagemSilagem(String pastagemSilagem) {
 		this.pastagemSilagem = pastagemSilagem;
+	}
+
+	public void setPendenciaList(List<PropriedadeRuralPendencia> pendenciaList) {
+		this.pendenciaList = pendenciaList;
 	}
 
 	public void setPrincipaisAtividadesProdutivas(String principaisAtividadesProdutivas) {

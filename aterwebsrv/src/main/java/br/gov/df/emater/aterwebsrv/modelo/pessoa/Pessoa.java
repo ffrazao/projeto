@@ -109,6 +109,9 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	// @Field(index = Index.YES, store = Store.YES)
 	private String observacoes;
 
+	@OneToMany(mappedBy = "pessoa")
+	private List<PessoaPendencia> pendenciaList;
+
 	@ManyToOne
 	@JoinColumn(name = "perfil_arquivo_id")
 	private Arquivo perfilArquivo;
@@ -224,6 +227,10 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		return observacoes;
 	}
 
+	public List<PessoaPendencia> getPendenciaList() {
+		return pendenciaList;
+	}
+
 	public Arquivo getPerfilArquivo() {
 		return perfilArquivo;
 	}
@@ -319,6 +326,10 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 
 	public void setObservacoes(String observacoes) {
 		this.observacoes = observacoes;
+	}
+
+	public void setPendenciaList(List<PessoaPendencia> pendenciaList) {
+		this.pendenciaList = pendenciaList;
 	}
 
 	public void setPerfilArquivo(Arquivo perfilArquivo) {

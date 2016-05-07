@@ -11,18 +11,25 @@ import java.sql.SQLException;
 public class ConexaoFirebird {
 
 	public static enum DbSater {
-		// GEPRE NORTE??
-		ASBRA(null), ASCRI("GEPRE SUDESTE"), ASFOR("GEPRE LESTE"), ASPBE("GEPRE NOROESTE"), ASSOB("GESOB"), ELALG("GERAG"), ELBRA("GBRAZ"), ELCEI("GECEI"), ELGAM("GEGAM"), ELJAR("GEJAR"), ELPAD("GEPAD"), ELPAR("GEPAR"), ELPIP("GEPIP"), ELPLA("GEPLA"), ELRIP("GERIP"), ELRSS(
-				"GESEB"), ELSOB("GESOB"), ELTAB("GETAB"), ELTAQ("GETAQ"), ELVAR("GEVAB");
+		ASBRA("GEPRE NORTE", "GO"), ASCRI("GEPRE SUDESTE", "GO"), ASFOR("GEPRE LESTE", "GO"), ASPBE("GEPRE NOROESTE", "GO"), ASSOB("GESOB", "GO"), // repetido
+		ELALG("GERAG", "DF"), ELBRA("GBRAZ", "DF"), ELCEI("GECEI", "DF"), ELGAM("GEGAM", "DF"), ELJAR("GEJAR", "DF"), ELPAD("GEPAD", "DF"), ELPAR("GEPAR", "DF"), ELPIP("GEPIP", "DF"), ELPLA("GEPLA", "DF"), ELRIP("GERIP", "DF"), ELRSS("GESEB", "DF"), ELSOB("GESOB",
+				"DF"), ELTAB("GETAB", "DF"), ELTAQ("GETAQ", "DF"), ELVAR("GEVAB", "DF");
 
 		private String sigla;
 
-		DbSater(String sigla) {
+		private String siglaEstado;
+
+		DbSater(String sigla, String siglaEstado) {
 			this.sigla = sigla;
+			this.siglaEstado = siglaEstado;
 		}
 
 		public String getSigla() {
 			return sigla;
+		}
+
+		public String getSiglaEstado() {
+			return siglaEstado;
 		}
 	}
 
@@ -38,7 +45,10 @@ public class ConexaoFirebird {
 
 	private static final String SENHA = "masterkey";
 
-	private static final String URL = "jdbc:firebirdsql:localhost:c:\\SATERBD\\%s?encoding=ISO8859_1";
+	// private static final String URL =
+	// "jdbc:firebirdsql:localhost:c:\\SATERBD\\%s?encoding=ISO8859_1";
+
+	private static final String URL = "jdbc:firebirdsql:localhost:c:\\SATERBD\\%s?encoding=WIN1252";
 
 	private static final String USUARIO = "sysdba";
 
@@ -71,15 +81,19 @@ public class ConexaoFirebird {
 
 	public static byte[] lerCampoBlob(ResultSet rs, String nomeCampoBlob) throws SQLException, IOException {
 		byte[] result = null;
-		try (ByteArrayOutputStream baos = new ByteArrayOutputStream(1024); BufferedInputStream bis = new BufferedInputStream(rs.getBinaryStream(nomeCampoBlob))) {
-			byte buffer[] = new byte[1024];
-			int bytesLidos = 0;
-			if (!rs.wasNull()) {
-				while ((bytesLidos = bis.read(buffer, 0, buffer.length)) != -1) {
-					baos.write(buffer, 0, bytesLidos);
+		try {
+			try (ByteArrayOutputStream baos = new ByteArrayOutputStream(1024); BufferedInputStream bis = new BufferedInputStream(rs.getBinaryStream(nomeCampoBlob))) {
+				byte buffer[] = new byte[1024];
+				int bytesLidos = 0;
+				if (!rs.wasNull()) {
+					while ((bytesLidos = bis.read(buffer, 0, buffer.length)) != -1) {
+						baos.write(buffer, 0, bytesLidos);
+					}
+					result = baos.toByteArray();
 				}
-				result = baos.toByteArray();
 			}
+		} catch (Exception e) {
+			throw e;
 		}
 		return result;
 	}

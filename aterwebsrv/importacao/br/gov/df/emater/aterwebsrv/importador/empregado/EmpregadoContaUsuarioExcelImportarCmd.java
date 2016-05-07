@@ -1,4 +1,4 @@
-package br.gov.df.emater.aterwebsrv.importador;
+package br.gov.df.emater.aterwebsrv.importador.empregado;
 
 import java.util.Calendar;
 import java.util.List;
@@ -30,7 +30,7 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoFuncao;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 
 @Service
-public class ContaUsuarioExcelImportarCmd extends _Comando {
+public class EmpregadoContaUsuarioExcelImportarCmd extends _Comando {
 
 	@Autowired
 	private PessoaDao pessoaDao;

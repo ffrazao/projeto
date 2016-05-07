@@ -2,7 +2,7 @@ package br.gov.df.emater.aterwebsrv.modelo.dominio;
 
 public enum PropriedadeRuralSituacao {
 
-	A("Ativo", 1), I("Inativo", 2);
+	A("Ativo", 1), I("Inativo", 2), P("Inativo por Pendências Cadastrais", 3);
 
 	private String descricao;
 

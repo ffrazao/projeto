@@ -1,4 +1,4 @@
-package br.gov.df.emater.aterwebsrv.importador;
+package br.gov.df.emater.aterwebsrv.importador.basico;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaEmail;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 
 @Service
-public class EmaterCmd extends _Comando {
+public class BasicoEmaterCmd extends _Comando {
 
 	@Autowired
 	private PessoaDao pessoaDao;

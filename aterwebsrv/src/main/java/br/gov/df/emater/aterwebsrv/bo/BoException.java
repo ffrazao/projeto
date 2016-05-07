@@ -12,10 +12,17 @@ public class BoException extends Exception {
 		super(message);
 	}
 
+	public BoException(String mensagem, Object ... itens) {
+		this(String.format(mensagem, (Object[]) itens));
+	}
+
 	public BoException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
+	public BoException(String mensagem, Throwable cause, Object ... itens) {
+		this(String.format(mensagem, (Object[]) itens), cause);
+	}
 	public BoException(Throwable cause) {
 		super(cause);
 	}

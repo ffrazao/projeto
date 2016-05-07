@@ -1,4 +1,4 @@
-package br.gov.df.emater.aterwebsrv.importador;
+package br.gov.df.emater.aterwebsrv.importador.sisater;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -16,11 +16,13 @@ import br.gov.df.emater.aterwebsrv.dao.ater.BaciaHidrograficaDao;
 import br.gov.df.emater.aterwebsrv.dao.ater.ComunidadeBaciaHidrograficaDao;
 import br.gov.df.emater.aterwebsrv.dao.ater.ComunidadeDao;
 import br.gov.df.emater.aterwebsrv.importador.apoio.ConexaoFirebird.DbSater;
+import br.gov.df.emater.aterwebsrv.importador.apoio.ImpUtil;
 import br.gov.df.emater.aterwebsrv.modelo.ater.BaciaHidrografica;
 import br.gov.df.emater.aterwebsrv.modelo.ater.Comunidade;
 import br.gov.df.emater.aterwebsrv.modelo.ater.ComunidadeBaciaHidrografica;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.Municipio;
 
 @Service
 public class SisaterComunidadeCmd extends _Comando {
@@ -28,54 +30,85 @@ public class SisaterComunidadeCmd extends _Comando {
 	private static final String SQL = "SELECT * FROM COM00 ORDER BY COMUNIDADE";
 
 	@Autowired
-	private ComunidadeDao comunidadeDao;
-
-	@Autowired
 	private BaciaHidrograficaDao baciaHidrograficaDao;
+
+	private DbSater base;
 
 	@Autowired
 	private ComunidadeBaciaHidrograficaDao comunidadeBaciaHidrograficaDao;
 
+	// private Municipio brasilia;
+
+	// private Municipio cristalina;
+
+	// private Municipio formosa;
+
+	// private Municipio padreBernardo;
+
+	@Autowired
+	private ComunidadeDao comunidadeDao;
+
+	private Connection con;
+
+	private ImpUtil impUtil;
+
+	private Municipio[] municipioAtendimentoList;
+
+	private UnidadeOrganizacional unidadeOrganizacional;
+
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
-		
-		Connection con = (Connection) contexto.get("conexao");
-		UnidadeOrganizacional unidadeOrganizacional = (UnidadeOrganizacional) contexto.get("unidadeOrganizacional");
-		DbSater base = (DbSater) contexto.get("base");
-		
+
+		con = (Connection) contexto.get("conexao");
+		unidadeOrganizacional = (UnidadeOrganizacional) contexto.get("unidadeOrganizacional");
+		base = (DbSater) contexto.get("base");
+		impUtil = (ImpUtil) contexto.get("impUtil");
+		// brasilia = (Municipio) contexto.get("brasilia");
+		// cristalina = (Municipio) contexto.get("cristalina");
+		// formosa = (Municipio) contexto.get("formosa");
+		// padreBernardo = (Municipio) contexto.get("padreBernardo");
+		municipioAtendimentoList = (Municipio[]) contexto.get("municipioAtendimentoList");
+
 		try (Statement st = con.createStatement(); ResultSet rs = st.executeQuery(SQL);) {
 			while (rs.next()) {
 				Comunidade comunidade = null;
-				String comunidadeNome = rs.getString("COMUNIDADE");
+				String comunidadeNome = impUtil.deNomeComunidadeSisaterParaAterWeb(rs.getString("COMUNIDADE"));
+				if (comunidadeNome == null || comunidadeNome.length() == 0) {
+					throw new BoException("Nome da comunidade não informada");
+				}
 				List<Comunidade> comunidadeList = comunidadeDao.findByNomeOrderByNomeAsc(comunidadeNome);
 				if (comunidadeList == null || comunidadeList.isEmpty()) {
-					comunidade = novaComunidade(unidadeOrganizacional, comunidadeNome, rs, base);
+					comunidade = novaComunidade(comunidadeNome, rs);
 				} else {
 					for (Comunidade c : comunidadeList) {
 						if (c.getUnidadeOrganizacional().getId().equals(unidadeOrganizacional.getId())) {
 							if (comunidade != null) {
-								throw new BoException("Comunidade duplicada - " + comunidade.getNome());
+								throw new BoException("Comunidade duplicada - %s", comunidade.getNome());
 							}
 							comunidade = c;
 						}
 					}
 					if (comunidade == null) {
-						comunidade = novaComunidade(unidadeOrganizacional, comunidadeNome, rs, base);
+						comunidade = novaComunidade(comunidadeNome, rs);
 					}
 				}
 
 				BaciaHidrografica baciaHidrografica = null;
-				String baciaHidrograficaNome = rs.getString("COMUNIDADE");
+				String baciaHidrograficaNome = impUtil.deNomeBaciaHidrograficaSisaterParaAterWeb(rs.getString("BACIA"));
 				List<BaciaHidrografica> baciaHidrograficaList = baciaHidrograficaDao.findByNomeOrderByNomeAsc(baciaHidrograficaNome);
 				if (baciaHidrograficaList == null || baciaHidrograficaList.isEmpty()) {
-					baciaHidrografica = novaBaciaHidrografica(baciaHidrograficaNome, rs, base);
+					baciaHidrografica = novaBaciaHidrografica(baciaHidrograficaNome);
 				} else {
 					for (BaciaHidrografica b : baciaHidrograficaList) {
 						if (baciaHidrografica != null) {
-							throw new BoException("Bacia Hidrografica duplicada - " + baciaHidrografica.getNome());
+							throw new BoException("Bacia Hidrografica duplicada - %s", baciaHidrografica.getNome());
 						}
 						baciaHidrografica = b;
 					}
+				}
+
+				if (comunidade == null || baciaHidrografica == null) {
+					throw new BoException("Comunidade ou Bacia Hidrográfica não localizados %s - %s", comunidade, baciaHidrografica);
 				}
 
 				ComunidadeBaciaHidrografica comunidadeBaciaHidrografica = null;
@@ -83,33 +116,33 @@ public class SisaterComunidadeCmd extends _Comando {
 				if (comunidadeBaciaHidrograficaList == null || comunidadeBaciaHidrograficaList.isEmpty()) {
 					comunidadeBaciaHidrografica = novaComunidadeBaciaHidrografica(comunidade, baciaHidrografica);
 				} else {
-					for (ComunidadeBaciaHidrografica b : comunidadeBaciaHidrograficaList) {
+					for (ComunidadeBaciaHidrografica cb : comunidadeBaciaHidrograficaList) {
 						if (comunidadeBaciaHidrografica != null) {
-							throw new BoException(String.format("Comunidade Bacia Hidrografica duplicada - %s, %s" + comunidadeBaciaHidrografica.getComunidade().getNome(), comunidadeBaciaHidrografica.getBaciaHidrografica().getNome()));
+							throw new BoException("Comunidade Bacia Hidrografica duplicada - %s, %s", comunidadeBaciaHidrografica.getComunidade().getNome(), comunidadeBaciaHidrografica.getBaciaHidrografica().getNome());
 						}
-						comunidadeBaciaHidrografica = b;
+						comunidadeBaciaHidrografica = cb;
 					}
 				}
-
 			}
 		}
 		return false;
 	}
 
-	private Comunidade novaComunidade(UnidadeOrganizacional unidadeOrganizacional, String comunidadeNome, ResultSet rs, DbSater base) throws SQLException {
+	private BaciaHidrografica novaBaciaHidrografica(String baciaHidrograficaNome) throws SQLException {
+		BaciaHidrografica result = new BaciaHidrografica();
+		result.setNome(baciaHidrograficaNome);
+		result.setChaveSisater(impUtil.chaveBaciaHidrografica(base, baciaHidrograficaNome));
+		return baciaHidrograficaDao.save(result);
+	}
+
+	private Comunidade novaComunidade(String comunidadeNome, ResultSet rs) throws SQLException, BoException {
 		Comunidade result = new Comunidade();
 		result.setUnidadeOrganizacional(unidadeOrganizacional);
 		result.setNome(comunidadeNome);
-		result.setAssentamento(rs.getString("").equals("") ? Confirmacao.S : Confirmacao.N);
-		result.setChaveSisater(String.format("%s[%s=%s]", base.name(), "IDCOM", rs.getString("")));
+		result.setAssentamento(rs.getString("TIPO").equals("Comunidade") ? Confirmacao.N : Confirmacao.S);
+		result.setChaveSisater(impUtil.chaveComunidade(base, rs.getString("IDUND"), rs.getString("IDCOM")));
+		result.setCidade(impUtil.deNomeCidadeComunidadeSisaterParaAterWeb(rs.getString("REGIAO"), base, municipioAtendimentoList));
 		return comunidadeDao.save(result);
-	}
-
-	private BaciaHidrografica novaBaciaHidrografica(String baciaHidrograficaNome, ResultSet rs, DbSater base) throws SQLException {
-		BaciaHidrografica result = new BaciaHidrografica();
-		result.setNome(baciaHidrograficaNome);
-		result.setChaveSisater(String.format("%s[%s=%s]", base.name(), "IDCOM", rs.getString("")));
-		return baciaHidrograficaDao.save(result);
 	}
 
 	private ComunidadeBaciaHidrografica novaComunidadeBaciaHidrografica(Comunidade comunidade, BaciaHidrografica baciaHidrografica) throws SQLException {

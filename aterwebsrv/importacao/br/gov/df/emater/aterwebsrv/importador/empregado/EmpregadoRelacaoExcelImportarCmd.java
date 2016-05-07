@@ -1,4 +1,4 @@
-package br.gov.df.emater.aterwebsrv.importador;
+package br.gov.df.emater.aterwebsrv.importador.empregado;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,7 +40,7 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoFuncao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoTipo;
 
 @Service
-public class RelacaoEmpregadosExcelImportarCmd extends _Comando {
+public class EmpregadoRelacaoExcelImportarCmd extends _Comando {
 
 	@Autowired
 	private CargoDao cargoDao;

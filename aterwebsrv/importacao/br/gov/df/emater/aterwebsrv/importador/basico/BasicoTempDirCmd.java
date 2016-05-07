@@ -1,4 +1,4 @@
-package br.gov.df.emater.aterwebsrv.importador;
+package br.gov.df.emater.aterwebsrv.importador.basico;
 
 import java.io.File;
 
@@ -8,9 +8,9 @@ import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 
 @Service
-public class TempDirCmd extends _Comando {
+public class BasicoTempDirCmd extends _Comando {
 	
-	public static final File TEMP_DIR = new File(TempDirCmd.class.getResource("/").getPath() + "/../temp");
+	public static final File TEMP_DIR = new File(BasicoTempDirCmd.class.getResource("/").getPath() + "/../temp");
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {

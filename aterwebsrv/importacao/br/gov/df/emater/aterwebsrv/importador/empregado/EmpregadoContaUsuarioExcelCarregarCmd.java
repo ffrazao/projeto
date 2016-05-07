@@ -1,4 +1,4 @@
-package br.gov.df.emater.aterwebsrv.importador;
+package br.gov.df.emater.aterwebsrv.importador.empregado;
 
 import java.io.File;
 import java.util.Collections;
@@ -14,7 +14,7 @@ import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioExcel;
 
 @Service
-public class ContaUsuarioExcelCarregarCmd extends _Comando {
+public class EmpregadoContaUsuarioExcelCarregarCmd extends _Comando {
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {

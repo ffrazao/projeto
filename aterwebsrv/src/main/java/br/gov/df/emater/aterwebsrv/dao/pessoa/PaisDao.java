@@ -12,5 +12,7 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pais;
 public interface PaisDao extends JpaRepository<Pais, Integer> {
 
 	List<Pais> findByPadrao(Confirmacao padrao);
+
+	List<Pais> findByNomeLike(String nome);
 	
 }

@@ -1,4 +1,4 @@
-package br.gov.df.emater.aterwebsrv.importador;
+package br.gov.df.emater.aterwebsrv.importador.sisater;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.funcional.UnidadeOrganizacionalDao;
+import br.gov.df.emater.aterwebsrv.importador.ImportFacadeBo;
 import br.gov.df.emater.aterwebsrv.importador.apoio.ConexaoFirebird;
 import br.gov.df.emater.aterwebsrv.importador.apoio.ConexaoFirebird.DbSater;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
@@ -24,6 +25,7 @@ public class SisaterCmd extends _Comando {
 	@Autowired
 	private UnidadeOrganizacionalDao unidadeOrganizacionalDao;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 
@@ -34,6 +36,7 @@ public class SisaterCmd extends _Comando {
 			try (Connection con = ConexaoFirebird.getConnection(base)) {
 				try {
 					Map<Object, Object> map = new HashMap<Object, Object>();
+					map.putAll(contexto);
 					map.put("base", base);
 					map.put("conexao", con);
 					map.put("unidadeOrganizacional", unidadeOrganizacionalDao.findOneByPessoaJuridicaAndSigla((PessoaJuridica) contexto.get("emater"), base.getSigla()));
