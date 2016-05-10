@@ -1,6 +1,6 @@
 package br.gov.df.emater.aterwebsrv.modelo.ater;
 
-import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -22,8 +22,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.NumberFormat;
-import org.springframework.format.annotation.NumberFormat.Style;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -36,7 +34,6 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoCategoria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoSegmento;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
-import br.gov.df.emater.aterwebsrv.rest.json.JsonFormatarBigDecimal;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 
 /**
@@ -49,18 +46,6 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<PublicoAlvo> {
 
 	private static final long serialVersionUID = 1L;
-
-	@Column(name = "benef_soc_aposentadoria_pensao")
-	private String benefSocAposentadoriaPensao;
-
-	@Column(name = "benef_soc_ctps_assinada")
-	private String benefSocCtpsAssinada;
-
-	@Column(name = "benef_soc_necessid_espec")
-	private String benefSocNecessidEspec;
-
-	@Column(name = "benef_soc_prog_sociais")
-	private String benefSocProgSociais;
 
 	@Column(name = "carteira_produtor_emissao")
 	@Temporal(TemporalType.DATE)
@@ -83,21 +68,6 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 	@Enumerated(EnumType.STRING)
 	private PublicoAlvoCategoria categoria;
 
-	@Column(name = "compra_instituc_paa_conab")
-	private String compraInstitucPaaConab;
-
-	@Column(name = "compra_instituc_paa_estoque")
-	private String compraInstitucPaaEstoque;
-
-	@Column(name = "compra_instituc_paa_termo_adesao")
-	private String compraInstitucPaaTermoAdesao;
-
-	@Column(name = "compra_instituc_papa")
-	private String compraInstitucPapa;
-
-	@Column(name = "compra_instituc_pnae")
-	private String compraInstitucPnae;
-
 	@Column(name = "dap_numero")
 	// @Field(index = Index.YES, store = Store.YES)
 	private String dapNumero;
@@ -117,12 +87,6 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 	@JsonDeserialize(using = JsonDeserializerData.class)
 	private Calendar dapValidade;
 
-	@Column(name = "forca_trab_eventual")
-	private Integer forcaTrabEventual;
-
-	@Column(name = "forca_trab_permanente")
-	private Integer forcaTrabPermanente;
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
@@ -131,51 +95,9 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 	@JoinColumn(name = "organizacao_tipo_id")
 	private OrganizacaoTipo organizacaoTipo;
 
-	@Column(name = "patrimonio_benfeitorias")
-	@NumberFormat(style = Style.CURRENCY)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal patrimonioBenfeitorias;
-
-	@Column(name = "patrimonio_dividas")
-	@NumberFormat(style = Style.CURRENCY)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal patrimonioDividas;
-
-	@Column(name = "patrimonio_maquina_equip")
-	@NumberFormat(style = Style.CURRENCY)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal patrimonioMaquinaEquip;
-
-	@Column(name = "patrimonio_outros")
-	@NumberFormat(style = Style.CURRENCY)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal patrimonioOutros;
-
-	@Column(name = "patrimonio_semovente")
-	@NumberFormat(style = Style.CURRENCY)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal patrimonioSemovente;
-
-	@Column(name = "patrimonio_terras")
-	@NumberFormat(style = Style.CURRENCY)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal patrimonioTerras;
-
 	@OneToOne
 	@JoinColumn(name = "pessoa_id")
 	private Pessoa pessoa;
-
-	@Column(name = "projeto_espec_atepa")
-	private String projetoEspecAtepa;
-
-	@Column(name = "projeto_espec_bsm")
-	private String projetoEspecBsm;
-
-	@Column(name = "projeto_espec_incra")
-	private String projetoEspecIncra;
-
-	@Column(name = "projeto_espec_sustentabilidade")
-	private String projetoEspecSustentabilidade;
 
 	@OneToMany(mappedBy = "publicoAlvo")
 	private List<PublicoAlvoPropriedadeRural> publicoAlvoPropriedadeRuralList;
@@ -184,32 +106,14 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 	@OneToMany(mappedBy = "publicoAlvo", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<PublicoAlvoSetor> publicoAlvoSetorList;
 
-	@Column(name = "renda_bruta_anual_assalariado")
-	@NumberFormat(style = Style.CURRENCY)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal rendaBrutaAnualAssalariado;
-
-	@Column(name = "renda_bruta_anual_outras")
-	@NumberFormat(style = Style.CURRENCY)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal rendaBrutaAnualOutras;
-
-	@Column(name = "renda_bruta_anual_propriedade")
-	@NumberFormat(style = Style.CURRENCY)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal rendaBrutaAnualPropriedade;
-
-	@Column(name = "salario_mensal")
-	@NumberFormat(style = Style.CURRENCY)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal salarioMensal;
-
 	@Enumerated(EnumType.STRING)
 	private PublicoAlvoSegmento segmento;
 
 	private Integer tradicao;
 
 	public PublicoAlvo() {
+		// este campo não pode ser nulo, pois possui replicação do tipo cascade
+		this.setPublicoAlvoSetorList(new ArrayList<PublicoAlvoSetor>());
 	}
 
 	public PublicoAlvo(Integer id) {
@@ -219,33 +123,6 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 	public PublicoAlvo(Integer id, Pessoa pessoa) {
 		this(id);
 		setPessoa(pessoa.infoBasica());
-	}
-
-	public String getBenefSocAposentadoriaPensao() {
-		return benefSocAposentadoriaPensao;
-	}
-
-	// @IndexedEmbedded
-	// @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	// @JoinTable(
-	// name = "publico_alvo_setor",
-	// catalog = EntidadeBase.ATER_SCHEMA,
-	// joinColumns = { @JoinColumn(name = "publico_alvo_id", nullable = false,
-	// updatable = false) },
-	// inverseJoinColumns = { @JoinColumn(name = "setor_id", nullable = false,
-	// updatable = false) })
-	// private List<PublicoAlvoSetor> publicoAlvoSetorList;
-
-	public String getBenefSocCtpsAssinada() {
-		return benefSocCtpsAssinada;
-	}
-
-	public String getBenefSocNecessidEspec() {
-		return benefSocNecessidEspec;
-	}
-
-	public String getBenefSocProgSociais() {
-		return benefSocProgSociais;
 	}
 
 	public Calendar getCarteiraProdutorEmissao() {
@@ -264,26 +141,6 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 		return categoria;
 	}
 
-	public String getCompraInstitucPaaConab() {
-		return compraInstitucPaaConab;
-	}
-
-	public String getCompraInstitucPaaEstoque() {
-		return compraInstitucPaaEstoque;
-	}
-
-	public String getCompraInstitucPaaTermoAdesao() {
-		return compraInstitucPaaTermoAdesao;
-	}
-
-	public String getCompraInstitucPapa() {
-		return compraInstitucPapa;
-	}
-
-	public String getCompraInstitucPnae() {
-		return compraInstitucPnae;
-	}
-
 	public String getDapNumero() {
 		return dapNumero;
 	}
@@ -300,14 +157,6 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 		return dapValidade;
 	}
 
-	public Integer getForcaTrabEventual() {
-		return forcaTrabEventual;
-	}
-
-	public Integer getForcaTrabPermanente() {
-		return forcaTrabPermanente;
-	}
-
 	@Override
 	public Integer getId() {
 		return id;
@@ -317,48 +166,8 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 		return organizacaoTipo;
 	}
 
-	public BigDecimal getPatrimonioBenfeitorias() {
-		return patrimonioBenfeitorias;
-	}
-
-	public BigDecimal getPatrimonioDividas() {
-		return patrimonioDividas;
-	}
-
-	public BigDecimal getPatrimonioMaquinaEquip() {
-		return patrimonioMaquinaEquip;
-	}
-
-	public BigDecimal getPatrimonioOutros() {
-		return patrimonioOutros;
-	}
-
-	public BigDecimal getPatrimonioSemovente() {
-		return patrimonioSemovente;
-	}
-
-	public BigDecimal getPatrimonioTerras() {
-		return patrimonioTerras;
-	}
-
 	public Pessoa getPessoa() {
 		return pessoa;
-	}
-
-	public String getProjetoEspecAtepa() {
-		return projetoEspecAtepa;
-	}
-
-	public String getProjetoEspecBsm() {
-		return projetoEspecBsm;
-	}
-
-	public String getProjetoEspecIncra() {
-		return projetoEspecIncra;
-	}
-
-	public String getProjetoEspecSustentabilidade() {
-		return projetoEspecSustentabilidade;
 	}
 
 	public List<PublicoAlvoPropriedadeRural> getPublicoAlvoPropriedadeRuralList() {
@@ -367,22 +176,6 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 
 	public List<PublicoAlvoSetor> getPublicoAlvoSetorList() {
 		return publicoAlvoSetorList;
-	}
-
-	public BigDecimal getRendaBrutaAnualAssalariado() {
-		return rendaBrutaAnualAssalariado;
-	}
-
-	public BigDecimal getRendaBrutaAnualOutras() {
-		return rendaBrutaAnualOutras;
-	}
-
-	public BigDecimal getRendaBrutaAnualPropriedade() {
-		return rendaBrutaAnualPropriedade;
-	}
-
-	public BigDecimal getSalarioMensal() {
-		return salarioMensal;
 	}
 
 	public PublicoAlvoSegmento getSegmento() {
@@ -396,22 +189,6 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 	@Override
 	public PublicoAlvo infoBasica() {
 		return new PublicoAlvo(getId(), getPessoa().infoBasica());
-	}
-
-	public void setBenefSocAposentadoriaPensao(String benefSocAposentadoriaPensao) {
-		this.benefSocAposentadoriaPensao = benefSocAposentadoriaPensao;
-	}
-
-	public void setBenefSocCtpsAssinada(String benefSocCtpsAssinada) {
-		this.benefSocCtpsAssinada = benefSocCtpsAssinada;
-	}
-
-	public void setBenefSocNecessidEspec(String benefSocNecessidEspec) {
-		this.benefSocNecessidEspec = benefSocNecessidEspec;
-	}
-
-	public void setBenefSocProgSociais(String benefSocProgSociais) {
-		this.benefSocProgSociais = benefSocProgSociais;
 	}
 
 	public void setCarteiraProdutorEmissao(Calendar carteiraProdutorEmissao) {
@@ -430,26 +207,6 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 		this.categoria = categoria;
 	}
 
-	public void setCompraInstitucPaaConab(String compraInstitucPaaConab) {
-		this.compraInstitucPaaConab = compraInstitucPaaConab;
-	}
-
-	public void setCompraInstitucPaaEstoque(String compraInstitucPaaEstoque) {
-		this.compraInstitucPaaEstoque = compraInstitucPaaEstoque;
-	}
-
-	public void setCompraInstitucPaaTermoAdesao(String compraInstitucPaaTermoAdesao) {
-		this.compraInstitucPaaTermoAdesao = compraInstitucPaaTermoAdesao;
-	}
-
-	public void setCompraInstitucPapa(String compraInstitucPapa) {
-		this.compraInstitucPapa = compraInstitucPapa;
-	}
-
-	public void setCompraInstitucPnae(String compraInstitucPnae) {
-		this.compraInstitucPnae = compraInstitucPnae;
-	}
-
 	public void setDapNumero(String dapNumero) {
 		this.dapNumero = dapNumero;
 	}
@@ -466,14 +223,6 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 		this.dapValidade = dapValidade;
 	}
 
-	public void setForcaTrabEventual(Integer forcaTrabEventual) {
-		this.forcaTrabEventual = forcaTrabEventual;
-	}
-
-	public void setForcaTrabPermanente(Integer forcaTrabPermanente) {
-		this.forcaTrabPermanente = forcaTrabPermanente;
-	}
-
 	@Override
 	public void setId(Integer id) {
 		this.id = id;
@@ -483,48 +232,8 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 		this.organizacaoTipo = organizacaoTipo;
 	}
 
-	public void setPatrimonioBenfeitorias(BigDecimal patrimonioBenfeitorias) {
-		this.patrimonioBenfeitorias = patrimonioBenfeitorias;
-	}
-
-	public void setPatrimonioDividas(BigDecimal patrimonioDividas) {
-		this.patrimonioDividas = patrimonioDividas;
-	}
-
-	public void setPatrimonioMaquinaEquip(BigDecimal patrimonioMaquinaEquip) {
-		this.patrimonioMaquinaEquip = patrimonioMaquinaEquip;
-	}
-
-	public void setPatrimonioOutros(BigDecimal patrimonioOutros) {
-		this.patrimonioOutros = patrimonioOutros;
-	}
-
-	public void setPatrimonioSemovente(BigDecimal patrimonioSemovente) {
-		this.patrimonioSemovente = patrimonioSemovente;
-	}
-
-	public void setPatrimonioTerras(BigDecimal patrimonioTerras) {
-		this.patrimonioTerras = patrimonioTerras;
-	}
-
 	public void setPessoa(Pessoa pessoa) {
 		this.pessoa = pessoa;
-	}
-
-	public void setProjetoEspecAtepa(String projetoEspecAtepa) {
-		this.projetoEspecAtepa = projetoEspecAtepa;
-	}
-
-	public void setProjetoEspecBsm(String projetoEspecBsm) {
-		this.projetoEspecBsm = projetoEspecBsm;
-	}
-
-	public void setProjetoEspecIncra(String projetoEspecIncra) {
-		this.projetoEspecIncra = projetoEspecIncra;
-	}
-
-	public void setProjetoEspecSustentabilidade(String projetoEspecSustentabilidade) {
-		this.projetoEspecSustentabilidade = projetoEspecSustentabilidade;
 	}
 
 	public void setPublicoAlvoPropriedadeRuralList(List<PublicoAlvoPropriedadeRural> publicoAlvoPropriedadeRuralList) {
@@ -533,22 +242,6 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 
 	public void setPublicoAlvoSetorList(List<PublicoAlvoSetor> publicoAlvoSetorList) {
 		this.publicoAlvoSetorList = publicoAlvoSetorList;
-	}
-
-	public void setRendaBrutaAnualAssalariado(BigDecimal rendaBrutaAnualAssalariado) {
-		this.rendaBrutaAnualAssalariado = rendaBrutaAnualAssalariado;
-	}
-
-	public void setRendaBrutaAnualOutras(BigDecimal rendaBrutaAnualOutras) {
-		this.rendaBrutaAnualOutras = rendaBrutaAnualOutras;
-	}
-
-	public void setRendaBrutaAnualPropriedade(BigDecimal rendaBrutaAnualPropriedade) {
-		this.rendaBrutaAnualPropriedade = rendaBrutaAnualPropriedade;
-	}
-
-	public void setSalarioMensal(BigDecimal salarioMensal) {
-		this.salarioMensal = salarioMensal;
 	}
 
 	public void setSegmento(PublicoAlvoSegmento segmento) {

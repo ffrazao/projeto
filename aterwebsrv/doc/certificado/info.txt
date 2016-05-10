@@ -1,0 +1,1 @@
+Estes dados foram criados seguindo o documento ../certificado_digital.docx através do console do servidor do aterweb 10.233.33.3 conforme orientações do site

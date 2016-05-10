@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.ater;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,6 +30,15 @@ public class Setor extends EntidadeBase implements _ChavePrimaria<Integer> {
 	private String nome;
 
 	public Setor() {
+	}
+
+	public Setor(Serializable id) {
+		super(id);
+	}
+
+	public Setor(Serializable id, String nome) {
+		this(id);
+		this.setNome(nome);
 	}
 
 	@Override

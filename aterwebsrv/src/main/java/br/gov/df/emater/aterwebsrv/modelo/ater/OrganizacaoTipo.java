@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.ater;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,6 +28,16 @@ public class OrganizacaoTipo extends EntidadeBase implements _ChavePrimaria<Inte
 	private String nome;
 
 	public OrganizacaoTipo() {
+	}
+
+	public OrganizacaoTipo(Serializable id) {
+		super(id);
+		this.setNome(nome);
+	}
+
+	public OrganizacaoTipo(Serializable id, String nome) {
+		this(id);
+		this.setNome(nome);
 	}
 
 	@Override

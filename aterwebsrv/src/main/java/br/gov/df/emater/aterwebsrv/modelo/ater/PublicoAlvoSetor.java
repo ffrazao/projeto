@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.ater;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,7 +26,7 @@ public class PublicoAlvoSetor extends EntidadeBase implements _ChavePrimaria<Int
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
-
+	
 	@ManyToOne
 	@JoinColumn(name = "publico_alvo_id")
 	private PublicoAlvo publicoAlvo;
@@ -34,6 +36,15 @@ public class PublicoAlvoSetor extends EntidadeBase implements _ChavePrimaria<Int
 	private Setor setor;
 
 	public PublicoAlvoSetor() {
+	}
+
+	public PublicoAlvoSetor(Serializable id) {
+		super(id);
+	}
+
+	public PublicoAlvoSetor(Serializable id, Setor setor) {
+		super(id);
+		this.setSetor(setor);
 	}
 
 	@Override

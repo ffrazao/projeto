@@ -1,5 +1,8 @@
 package br.gov.df.emater.aterwebsrv.modelo.pessoa;
 
+import java.io.Serializable;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,6 +20,9 @@ public class PessoaGrupoSocial extends EntidadeBase implements _ChavePrimaria<In
 
 	private static final long serialVersionUID = 1L;
 
+	@Column(name = "chave_sisater")
+	private String chaveSisater;
+
 	@ManyToOne
 	@JoinColumn(name = "grupo_social_id")
 	private GrupoSocial grupoSocial;
@@ -32,6 +38,19 @@ public class PessoaGrupoSocial extends EntidadeBase implements _ChavePrimaria<In
 	public PessoaGrupoSocial() {
 	}
 
+	public PessoaGrupoSocial(Serializable id) {
+		super(id);
+	}
+
+	public PessoaGrupoSocial(Serializable id, GrupoSocial grupoSocial) {
+		super(id);
+		this.setGrupoSocial(grupoSocial);
+	}
+
+	public String getChaveSisater() {
+		return chaveSisater;
+	}
+
 	public GrupoSocial getGrupoSocial() {
 		return grupoSocial;
 	}
@@ -43,6 +62,10 @@ public class PessoaGrupoSocial extends EntidadeBase implements _ChavePrimaria<In
 
 	public Pessoa getPessoa() {
 		return pessoa;
+	}
+
+	public void setChaveSisater(String chaveSisater) {
+		this.chaveSisater = chaveSisater;
 	}
 
 	public void setGrupoSocial(GrupoSocial grupoSocial) {

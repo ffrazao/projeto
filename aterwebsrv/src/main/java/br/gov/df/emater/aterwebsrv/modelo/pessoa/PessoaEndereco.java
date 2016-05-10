@@ -1,5 +1,8 @@
 package br.gov.df.emater.aterwebsrv.modelo.pessoa;
 
+import java.io.Serializable;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,15 +24,18 @@ public class PessoaEndereco extends EntidadeBase implements _ChavePrimaria<Integ
 
 	private static final long serialVersionUID = 1L;
 
+	@Column(name = "chave_sisater")
+	private String chaveSisater;
+
+	@ManyToOne
+	@JoinColumn(name = "endereco_id")
+	private Endereco endereco;
+
 	private String finalidade;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
-
-	@ManyToOne
-	@JoinColumn(name = "endereco_id")
-	private Endereco endereco;
 
 	private Integer ordem;
 
@@ -38,6 +44,24 @@ public class PessoaEndereco extends EntidadeBase implements _ChavePrimaria<Integ
 	private Pessoa pessoa;
 
 	public PessoaEndereco() {
+	}
+
+	public PessoaEndereco(Serializable id) {
+		super(id);
+	}
+
+	public PessoaEndereco(Serializable id, Endereco endereco, String finalidade) {
+		super(id);
+		this.setEndereco(endereco);
+		this.setFinalidade(finalidade);
+	}
+
+	public String getChaveSisater() {
+		return chaveSisater;
+	}
+
+	public Endereco getEndereco() {
+		return endereco;
 	}
 
 	public String getFinalidade() {
@@ -57,6 +81,14 @@ public class PessoaEndereco extends EntidadeBase implements _ChavePrimaria<Integ
 		return pessoa;
 	}
 
+	public void setChaveSisater(String chaveSisater) {
+		this.chaveSisater = chaveSisater;
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
+	}
+
 	public void setFinalidade(String finalidade) {
 		this.finalidade = finalidade;
 	}
@@ -64,14 +96,6 @@ public class PessoaEndereco extends EntidadeBase implements _ChavePrimaria<Integ
 	@Override
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public Endereco getEndereco() {
-		return endereco;
-	}
-
-	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
 	}
 
 	public void setOrdem(Integer ordem) {

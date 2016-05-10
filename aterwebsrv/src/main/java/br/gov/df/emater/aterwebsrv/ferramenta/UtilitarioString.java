@@ -5,10 +5,15 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
 // Singleton utilitario para Strings
 public class UtilitarioString {
+
+	public static final int[] DDD_TELEFONE = new int[] { 11, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 24, 27, 28, 31, 32, 33, 34, 35, 37, 38, 41, 42, 43, 44, 45, 46, 47, 48, 49, 51, 53, 54, 55, 61, 62, 63, 64, 65, 66, 67, 68, 69, 71, 73, 74, 75, 77, 79, 81, 82, 83, 84, 85, 86, 87,
+			88, 89, 91, 92, 93, 94, 95, 96, 97, 98, 99 };
 
 	public static String calculaNomeUsuario(String nome) {
 		if (nome == null) {
@@ -192,9 +197,9 @@ public class UtilitarioString {
 		if (nome == null) {
 			return null;
 		}
-		nome = WordUtils.capitalizeFully(nome.trim(), new char[] {'\'', ' ', '-', '.', '\"' , '('});
+		nome = WordUtils.capitalizeFully(nome.trim(), new char[] { '\'', ' ', '-', '.', '\"', '(' });
 		StringBuilder result = new StringBuilder();
-		for (String palavra: nome.split("\\s")) {
+		for (String palavra : nome.split("\\s")) {
 			if (result.length() > 0) {
 				result.append(' ');
 			}
@@ -205,6 +210,81 @@ public class UtilitarioString {
 			}
 		}
 		return result.toString();
+	}
+
+	public static String formataTelefone(String numero) {
+		if (numero == null) {
+			return null;
+		}
+		class Check {
+			public String[] numeroComDddEntreParenteses(String numero) {
+				numero = numero.trim();
+				if (numero.startsWith("(") && numero.indexOf(")") > 0) {
+					String ddd = soNumero(numero.substring(1, numero.indexOf(")") - 1));
+					numero = soNumero(numero.substring(numero.indexOf(")") + 1, numero.length()));
+					return numeroComDddTudoJunto(ddd + numero);
+				}
+				return null;
+			}
+
+			String[] numeroComDddSeparado(String numero, int posicao) {
+				String[] result = null;
+				switch (numero.charAt(posicao)) {
+				case ' ':
+				case '-':
+				case '.':
+					if (NumberUtils.isDigits(numero.substring(0, posicao))) {
+						result = new String[2];
+						result[0] = numero.substring(0, posicao);
+						result[1] = numero.substring(posicao, numero.length());
+						return numeroComDddTudoJunto(result[0] + result[1]);
+					}
+				}
+				return null;
+			}
+
+			public String[] numeroComDddTudoJunto(String numero) {
+				numero = soNumero(numero);
+				if (numero.startsWith("0") && (numero.length() == 11 || numero.length() == 12) && ArrayUtils.contains(DDD_TELEFONE, Integer.parseInt(numero.substring(1, 3)))) {
+					return new String[] { numero.substring(1, 3), numero.substring(3, numero.length()) };
+				}
+				if ((numero.length() == 10 || numero.length() == 11) && ArrayUtils.contains(DDD_TELEFONE, Integer.parseInt(numero.substring(0, 2)))) {
+					return new String[] { numero.substring(0, 2), numero.substring(2, numero.length()) };
+				}
+				return null;
+			}
+
+			public String[] numeroSemDdd(String numero) {
+				numero = soNumero(numero);
+				if (numero.length() == 8 || numero.length() == 9) {
+					return numeroComDddTudoJunto("61" + numero);
+				}
+				return null;
+			}
+		}
+		Check check = new Check();
+		// verificar se foi informado o ddd no numero
+		String[] num = check.numeroSemDdd(numero);
+		if (num == null) {
+			num = check.numeroComDddSeparado(numero, 2);
+		}
+		if (num == null) {
+			num = check.numeroComDddSeparado(numero, 3);
+		}
+		if (num == null) {
+			num = check.numeroComDddEntreParenteses(numero);
+		}
+		if (num == null) {
+			num = check.numeroComDddTudoJunto(numero);
+		}
+		if (num != null) {
+			int pos = 4;
+			if (num[1].length() == 9) {
+				pos++;
+			}
+			return String.format("(%s) %s-%s", num[0], num[1].substring(0, pos), num[1].substring(pos, num[1].length()));
+		}
+		return numero;
 	}
 
 }

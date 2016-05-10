@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.pessoa;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,6 +28,10 @@ public class GrupoSocial extends EntidadeBase implements _ChavePrimaria<Integer>
 	private String nome;
 
 	public GrupoSocial() {
+	}
+
+	public GrupoSocial(Serializable id) {
+		super(id);
 	}
 
 	public Integer getId() {

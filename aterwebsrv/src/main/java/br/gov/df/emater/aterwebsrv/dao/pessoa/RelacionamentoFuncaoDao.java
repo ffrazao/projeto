@@ -8,4 +8,6 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoFuncao;
 @Repository("RelacionamentoFuncaoDao")
 public interface RelacionamentoFuncaoDao extends JpaRepository<RelacionamentoFuncao, Integer> {
 
+	RelacionamentoFuncao findOneByNomeSeMasculino(String nomeSeMasculino);
+
 }

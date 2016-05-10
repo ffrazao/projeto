@@ -155,6 +155,9 @@ public class PessoaFisica extends Pessoa {
 	// @Field(index = Index.YES, store = Store.YES)
 	private String nisNumero;
 
+	@Transient
+	private String nomeMaeConjuge;
+
 	@ManyToOne
 	@JoinColumn(name = "profissao_id")
 	private Profissao profissao;
@@ -172,6 +175,9 @@ public class PessoaFisica extends Pessoa {
 
 	@Column(name = "rg_orgao_emissor")
 	private String rgOrgaoEmissor;
+
+	@Column(name = "rg_uf")
+	private String rgUf;
 
 	@Column(name = "titulo_numero")
 	// @Field(index = Index.YES, store = Store.YES)
@@ -321,6 +327,10 @@ public class PessoaFisica extends Pessoa {
 		return nisNumero;
 	}
 
+	public String getNomeMaeConjuge() {
+		return nomeMaeConjuge;
+	}
+
 	public Profissao getProfissao() {
 		return profissao;
 	}
@@ -335,6 +345,10 @@ public class PessoaFisica extends Pessoa {
 
 	public String getRgOrgaoEmissor() {
 		return rgOrgaoEmissor;
+	}
+
+	public String getRgUf() {
+		return rgUf;
 	}
 
 	public String getTituloNumero() {
@@ -457,6 +471,10 @@ public class PessoaFisica extends Pessoa {
 		this.nisNumero = nisNumero;
 	}
 
+	public void setNomeMaeConjuge(String nomeMaeConjuge) {
+		this.nomeMaeConjuge = nomeMaeConjuge;
+	}
+
 	public void setProfissao(Profissao profissao) {
 		this.profissao = profissao;
 	}
@@ -471,6 +489,10 @@ public class PessoaFisica extends Pessoa {
 
 	public void setRgOrgaoEmissor(String rgOrgaoEmissor) {
 		this.rgOrgaoEmissor = rgOrgaoEmissor;
+	}
+
+	public void setRgUf(String rgUf) {
+		this.rgUf = rgUf;
 	}
 
 	public void setTituloNumero(String tituloNumero) {

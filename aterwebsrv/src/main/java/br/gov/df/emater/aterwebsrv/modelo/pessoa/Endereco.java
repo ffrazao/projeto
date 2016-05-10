@@ -18,7 +18,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
-import org.hibernate.validator.constraints.NotBlank;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -87,6 +86,10 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 	// @Max(value = 250, message = "Muito extenso")
 	private String complemento;
 
+	@Column(name = "endereco_atualizado")
+	@Enumerated(EnumType.STRING)
+	private Confirmacao enderecoAtualizado;
+
 	@Column(name = "endereco_sisater")
 	// @Max(value = 500, message = "Muito extenso")
 	private String enderecoSisater;
@@ -105,7 +108,7 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
-	@NotBlank
+	// @NotBlank
 	// @Field(index = Index.YES, store = Store.YES)
 	// @Max(value = 250, message = "Muito extenso")
 	private String logradouro;
@@ -140,28 +143,33 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 		super(id);
 	}
 
+	public Endereco(Serializable id, String enderecoSisater) {
+		super(id);
+		this.setEnderecoSisater(enderecoSisater);
+	}
+
 	public Endereco(String bairro, String cep, Cidade cidade, String codigoIbge, String complemento, String enderecoSisater, Estado estado, Integer id, Point entradaPrincipal, String logradouro, Municipio municipio, String nomePropriedadeRuralOuEstabelecimento, String numero,
 			Pais pais, Confirmacao propriedadeRuralConfirmacao, String roteiroAcessoOuEnderecoInternacional, List<Area> areaList) {
 		super();
-		this.bairro = bairro;
-		this.cep = cep;
-		this.cidade = cidade;
-		this.codigoIbge = codigoIbge;
-		this.complemento = complemento;
-		this.enderecoSisater = enderecoSisater;
-		this.estado = estado;
-		this.id = id;
-		this.entradaPrincipal = entradaPrincipal;
-		this.logradouro = logradouro;
-		this.municipio = municipio;
-		this.nomePropriedadeRuralOuEstabelecimento = nomePropriedadeRuralOuEstabelecimento;
-		this.numero = numero;
-		this.pais = pais;
-		this.propriedadeRuralConfirmacao = propriedadeRuralConfirmacao;
-		this.roteiroAcessoOuEnderecoInternacional = roteiroAcessoOuEnderecoInternacional;
-		this.areaList = areaList;
-		if (this.areaList != null) {
-			for (Area area : this.areaList) {
+		this.setBairro(bairro);
+		this.setCep(cep);
+		this.setCidade(cidade);
+		this.setCodigoIbge(codigoIbge);
+		this.setComplemento(complemento);
+		this.setEnderecoSisater(enderecoSisater);
+		this.setEstado(estado);
+		this.setId(id);
+		this.setEntradaPrincipal(entradaPrincipal);
+		this.setLogradouro(logradouro);
+		this.setMunicipio(municipio);
+		this.setNomePropriedadeRuralOuEstabelecimento(nomePropriedadeRuralOuEstabelecimento);
+		this.setNumero(numero);
+		this.setPais(pais);
+		this.setPropriedadeRuralConfirmacao(propriedadeRuralConfirmacao);
+		this.setRoteiroAcessoOuEnderecoInternacional(roteiroAcessoOuEnderecoInternacional);
+		this.setAreaList(areaList);
+		if (this.getAreaList() != null) {
+			for (Area area : this.getAreaList()) {
 				area.setEndereco(null);
 			}
 		}
@@ -189,6 +197,10 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	public String getComplemento() {
 		return complemento;
+	}
+
+	public Confirmacao getEnderecoAtualizado() {
+		return enderecoAtualizado;
 	}
 
 	public String getEnderecoSisater() {
@@ -263,6 +275,10 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	public void setComplemento(String complemento) {
 		this.complemento = complemento;
+	}
+
+	public void setEnderecoAtualizado(Confirmacao enderecoAtualizado) {
+		this.enderecoAtualizado = enderecoAtualizado;
 	}
 
 	public void setEnderecoSisater(String enderecoSisater) {

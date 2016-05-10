@@ -206,13 +206,19 @@ public class SalvarCmd extends _Comando {
 		if (result.getSituacao() == null) {
 			result.setSituacao(PessoaSituacao.A);
 		}
-		dao.save(result);
-
+		
+		// guardar os dados do publico alvo
 		PublicoAlvo publicoAlvo = result.getPublicoAlvo();
 		result.setPublicoAlvo(null);
+		
+		// salvar o registro da pessoa
+		dao.save(result);
 
 		// publico alvo
 		if (Confirmacao.S.equals(result.getPublicoAlvoConfirmacao())) {
+			if (publicoAlvo == null) {
+				throw new BoException("Informações sobre o público alvo não informadas");
+			}
 			publicoAlvo.setPessoa(result);
 			if (publicoAlvo.getId() == null) {
 				PublicoAlvo salvo = (PublicoAlvo) publicoAlvoDao.findOneByPessoa(publicoAlvo.getPessoa());
@@ -259,7 +265,7 @@ public class SalvarCmd extends _Comando {
 					}
 				}
 			}
-			result.setPublicoAlvo(publicoAlvo);
+			//result.setPublicoAlvo(publicoAlvo);
 		}
 
 		// salvar enderecos
@@ -274,16 +280,18 @@ public class SalvarCmd extends _Comando {
 			Integer ordem = 0;
 			for (PessoaEndereco pessoaEndereco : result.getEnderecoList()) {
 				if (!CadastroAcao.E.equals(pessoaEndereco.getCadastroAcao())) {
+					
 					Endereco endereco = pessoaEndereco.getEndereco();
 					List<Endereco> pesquisa = enderecoDao.procurar(endereco);
 					if (CollectionUtils.isEmpty(pesquisa)) {
-						if (endereco.getPropriedadeRuralConfirmacao() == null) {
-							endereco.setPropriedadeRuralConfirmacao(Confirmacao.N);
-						}
-						pessoaEndereco.getEndereco().setId(null);
-						endereco = enderecoDao.save(pessoaEndereco.getEndereco());
+						endereco.setId(null);
+					}
+					if (endereco.getPropriedadeRuralConfirmacao() == null) {
+						endereco.setPropriedadeRuralConfirmacao(Confirmacao.N);
 					}
 					endereco.setCep(UtilitarioString.formataCep(endereco.getCep()));
+					endereco = enderecoDao.save(endereco);
+					
 					pessoaEndereco.setEndereco(endereco);
 					pessoaEndereco.setPessoa(result);
 					pessoaEndereco.setOrdem(++ordem);
@@ -305,7 +313,7 @@ public class SalvarCmd extends _Comando {
 			for (PessoaTelefone pessoaTelefone : result.getTelefoneList()) {
 				if (!CadastroAcao.E.equals(pessoaTelefone.getCadastroAcao())) {
 					if (pessoaTelefone.getTelefone() == null || pessoaTelefone.getTelefone().getNumero() == null || pessoaTelefone.getTelefone().getNumero().trim().length() == 0) {
-						throw new BoException("Telefone inválido");
+						throw new BoException("Telefone não informado");
 					}
 					Telefone telefone = telefoneDao.findByNumero(pessoaTelefone.getTelefone().getNumero());
 					if (telefone == null) {
@@ -334,12 +342,13 @@ public class SalvarCmd extends _Comando {
 			for (PessoaEmail pessoaEmail : result.getEmailList()) {
 				if (!CadastroAcao.E.equals(pessoaEmail.getCadastroAcao())) {
 					if (pessoaEmail.getEmail() == null || pessoaEmail.getEmail().getEndereco() == null || pessoaEmail.getEmail().getEndereco().trim().length() == 0) {
-						throw new BoException("E-mail inválido");
+						throw new BoException("E-mail não informado");
 					}
 					Email email = emailDao.findByEndereco(pessoaEmail.getEmail().getEndereco());
 					if (email == null) {
 						email = pessoaEmail.getEmail();
 						email.setId(null);
+						email.setEndereco(email.getEndereco().trim().toLowerCase());
 						email = emailDao.save(email);
 					}
 					pessoaEmail.setEmail(email);
@@ -377,6 +386,7 @@ public class SalvarCmd extends _Comando {
 					relacionamento.setTermino(pessoaRelacionamento.getRelacionamento().getTermino());
 					relacionamento = relacionamentoDao.save(relacionamento);
 
+					// salvar o relacionado
 					pessoaRelacionamento.setRelacionamento(relacionamento);
 					pessoaRelacionamentoDao.save(pessoaRelacionamento);
 
@@ -387,7 +397,7 @@ public class SalvarCmd extends _Comando {
 					boolean encontrou = false;
 					if (relacionamento.getPessoaRelacionamentoList() != null) {
 						for (PessoaRelacionamento rel : relacionamento.getPessoaRelacionamentoList()) {
-							if (rel.getPessoa().getId().equals(result.getId())) {
+							if (rel.getPessoa() != null && rel.getPessoa().getId().equals(result.getId())) {
 								relacionador = rel;
 								encontrou = true;
 								break;

@@ -27,6 +27,7 @@ public class ImportFacadeBo implements BeanFactoryAware {
 		if (map != null) {
 			result.putAll(map);
 		}
+		result.setUsuario(usuario);
 		comando.execute(result);
 		return result;
 	}

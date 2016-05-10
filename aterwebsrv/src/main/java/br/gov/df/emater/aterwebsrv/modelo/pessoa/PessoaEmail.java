@@ -2,6 +2,7 @@ package br.gov.df.emater.aterwebsrv.modelo.pessoa;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,6 +24,9 @@ public class PessoaEmail extends EntidadeBase implements _ChavePrimaria<Integer>
 
 	private static final long serialVersionUID = 1L;
 
+	@Column(name = "chave_sisater")
+	private String chaveSisater;
+	
 	@ManyToOne
 	@JoinColumn(name = "email_id")
 	private Email email;
@@ -42,9 +46,6 @@ public class PessoaEmail extends EntidadeBase implements _ChavePrimaria<Integer>
 	public PessoaEmail() {
 	}
 
-	public PessoaEmail(Serializable id) {
-		super(id);
-	}
 	public PessoaEmail(Integer id, Email email) {
 		this(id, email, "C");
 	}
@@ -53,6 +54,14 @@ public class PessoaEmail extends EntidadeBase implements _ChavePrimaria<Integer>
 		this(id);
 		this.setEmail(email);
 		this.setFinalidade(finalidade);
+	}
+
+	public PessoaEmail(Serializable id) {
+		super(id);
+	}
+
+	public String getChaveSisater() {
+		return chaveSisater;
 	}
 
 	public Email getEmail() {
@@ -74,6 +83,10 @@ public class PessoaEmail extends EntidadeBase implements _ChavePrimaria<Integer>
 
 	public Pessoa getPessoa() {
 		return pessoa;
+	}
+
+	public void setChaveSisater(String chaveSisater) {
+		this.chaveSisater = chaveSisater;
 	}
 
 	public void setEmail(Email email) {

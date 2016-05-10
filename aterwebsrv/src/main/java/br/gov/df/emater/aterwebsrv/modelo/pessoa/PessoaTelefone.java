@@ -1,5 +1,8 @@
 package br.gov.df.emater.aterwebsrv.modelo.pessoa;
 
+import java.io.Serializable;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -24,6 +27,9 @@ public class PessoaTelefone extends EntidadeBase implements _ChavePrimaria<Integ
 
 	private static final long serialVersionUID = 1L;
 
+	@Column(name = "chave_sisater")
+	private String chaveSisater;
+	
 	private String finalidade;
 
 	@Id
@@ -44,6 +50,20 @@ public class PessoaTelefone extends EntidadeBase implements _ChavePrimaria<Integ
 	private TelefoneTipo tipo;
 
 	public PessoaTelefone() {
+	}
+
+	public PessoaTelefone(Serializable id) {
+		super(id);
+	}
+	public PessoaTelefone(Serializable id, Telefone telefone, String finalidade, TelefoneTipo tipo) {
+		this(id);
+		setTelefone(telefone);
+		setFinalidade(finalidade);
+		setTipo(tipo);
+	}
+
+	public String getChaveSisater() {
+		return chaveSisater;
 	}
 
 	public String getFinalidade() {
@@ -69,6 +89,10 @@ public class PessoaTelefone extends EntidadeBase implements _ChavePrimaria<Integ
 
 	public TelefoneTipo getTipo() {
 		return tipo;
+	}
+
+	public void setChaveSisater(String chaveSisater) {
+		this.chaveSisater = chaveSisater;
 	}
 
 	public void setFinalidade(String finalidade) {

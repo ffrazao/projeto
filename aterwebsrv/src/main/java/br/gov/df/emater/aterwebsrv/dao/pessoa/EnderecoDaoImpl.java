@@ -25,8 +25,6 @@ public class EnderecoDaoImpl implements EnderecoDaoCustom {
 
 		// construção do sql
 		sql = new StringBuilder();
-		sql.append("from Endereco e").append("\n");
-		sql.append("where (1 = 1)").append("\n");
 		if (!StringUtils.isEmpty(filtro.getEstado())) {
 			params.add(filtro.getEstado());
 			sql.append("and e.estado = ?").append(params.size()).append("\n");
@@ -45,7 +43,9 @@ public class EnderecoDaoImpl implements EnderecoDaoCustom {
 		}
 		if (!StringUtils.isEmpty(filtro.getLogradouro())) {
 			params.add(filtro.getLogradouro());
-//			sql.append("and convert(e.logradouro using utf8) like _utf8 ?").append(params.size()).append(" collate utf8_general_ci").append("\n");
+			// sql.append("and convert(e.logradouro using utf8) like _utf8
+			// ?").append(params.size()).append(" collate
+			// utf8_general_ci").append("\n");
 			sql.append("and e.logradouro = ?").append(params.size()).append("\n");
 		}
 		if (!StringUtils.isEmpty(filtro.getComplemento())) {
@@ -56,6 +56,16 @@ public class EnderecoDaoImpl implements EnderecoDaoCustom {
 			params.add(filtro.getNumero());
 			sql.append("and e.numero = ?").append(params.size()).append("\n");
 		}
+		if (sql.length() == 0) {
+			if (!StringUtils.isEmpty(filtro.getEnderecoSisater())) {
+				params.add(filtro.getEnderecoSisater());
+				sql.append("and e.enderecoSisater = ?").append(params.size()).append("\n");
+			}
+		}
+		if (sql.length() == 0) {
+			return null;
+		}
+		sql.insert(0, "from Endereco e where (1 = 1)\n");
 
 		// criar a query
 		TypedQuery<Endereco> query = em.createQuery(sql.toString(), Endereco.class);
