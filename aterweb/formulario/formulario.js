@@ -1,4 +1,4 @@
-/* global criarEstadosPadrao */ /* jslint evil: true */
+/* global criarEstadosPadrao, toCamelCase, isUndefOrNull */ /* jslint evil: true */
 
 (function(pNmModulo, pNmController, pNmFormulario, pUrlModulo) {
     'use strict';
@@ -79,6 +79,10 @@
                     },
                 ];
                 $rootScope.abrir(scp);
+            };
+
+            $scope.visualizarDepois = function(registro) {
+                angular.copy(registro.formulario, registro);
             };
 
             // fim das operaçoes atribuidas ao navagador
@@ -332,6 +336,28 @@
             // fim trabalho tab
 
             // inicio dos watches
+            $scope.$watch('cadastro.registro.nome', function() {
+                if (isUndefOrNull($scope.cadastro.registro)) {
+                    return;
+                }
+                var codigo = toCamelCase($scope.cadastro.registro.nome);
+                if (isUndefOrNull(codigo)) {
+                    return;
+                }
+                $scope.cadastro.registro.codigo = codigo.latinize();
+            });
+
+            $scope.$watch('cadastro.apoio.formulario.opcao[7].opcao[2].opcao[0].formAtual.nome', function() {
+                if (isUndefOrNull($scope.cadastro.apoio.formulario.opcao[7].opcao[2].opcao[0].formAtual)) {
+                    return;
+                }
+                var codigo = toCamelCase($scope.cadastro.apoio.formulario.opcao[7].opcao[2].opcao[0].formAtual.nome);
+                if (isUndefOrNull(codigo)) {
+                    return;
+                }
+                $scope.cadastro.apoio.formulario.opcao[7].opcao[2].opcao[0].formAtual.codigo = codigo.latinize();
+            }, true);
+
             $scope.$watch('cadastro.apoio.formulario.opcao[7].opcao[2].opcao[0].formAtual.tipo', function() {
                 if (!$scope.cadastro.apoio.formulario.opcao[7].opcao[2].opcao[0].formAtual) {
                     return;

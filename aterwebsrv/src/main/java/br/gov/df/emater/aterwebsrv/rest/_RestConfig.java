@@ -17,6 +17,7 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
@@ -28,7 +29,7 @@ import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
 import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module.Feature;
 
 @Configuration
-//@EnableWebMvc
+@EnableWebMvc // estava dando um erro e comentei esta linha. Parou de fazer upload de arquivos descomentei novamente
 @ComponentScan(basePackages = { "br.gov.df.emater.aterwebsrv" })
 public class _RestConfig extends WebMvcConfigurerAdapter {
 

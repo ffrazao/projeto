@@ -1,5 +1,6 @@
 package br.gov.df.emater.aterwebsrv.importador.apoio;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -13,34 +14,74 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.gov.df.emater.aterwebsrv.bo.BoException;
+import br.gov.df.emater.aterwebsrv.dao.ater.BaciaHidrograficaDao;
+import br.gov.df.emater.aterwebsrv.dao.ater.ComunidadeDao;
+import br.gov.df.emater.aterwebsrv.dao.ater.SistemaProducaoDao;
+import br.gov.df.emater.aterwebsrv.dao.formulario.FormularioVersaoDao;
+import br.gov.df.emater.aterwebsrv.dao.funcional.EmpregoViDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.CidadeDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.ProfissaoDao;
+import br.gov.df.emater.aterwebsrv.dao.sistema.UsuarioDao;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.importador.apoio.ConexaoFirebird.DbSater;
+import br.gov.df.emater.aterwebsrv.modelo.ater.BaciaHidrografica;
+import br.gov.df.emater.aterwebsrv.modelo.ater.Comunidade;
 import br.gov.df.emater.aterwebsrv.modelo.ater.OrganizacaoTipo;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoSetor;
 import br.gov.df.emater.aterwebsrv.modelo.ater.Setor;
+import br.gov.df.emater.aterwebsrv.modelo.ater.SistemaProducao;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.ConfirmacaoDap;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Escolaridade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.EstadoCivil;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.PropriedadeRuralVinculoTipo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoCategoria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoSegmento;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.RegimeCasamento;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.SituacaoFundiaria;
+import br.gov.df.emater.aterwebsrv.modelo.formulario.FormularioVersao;
+import br.gov.df.emater.aterwebsrv.modelo.funcional.EmpregoVi;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Cidade;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.Endereco;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Municipio;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Profissao;
+import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 
 @Service
 public class ImpUtil {
 
 	@Autowired
+	private BaciaHidrograficaDao baciaHidrograficaDao;
+
+	private List<BaciaHidrografica> baciaHidrograficaList = new ArrayList<BaciaHidrografica>();
+
+	@Autowired
 	private CidadeDao cidadeDao;
+
+	@Autowired
+	private ComunidadeDao comunidadeDao;
+
+	private List<Comunidade> comunidadeList = new ArrayList<Comunidade>();
+
+	@Autowired
+	private EmpregoViDao empregoViDao;
+
+	@Autowired
+	private FormularioVersaoDao formularioVersaoDao;
+
+	private List<FormularioVersao> formularioVersaoList;
+
+	protected final Log logger = LogFactory.getLog(getClass());
 
 	private Map<String, OrganizacaoTipo> organizacaoTipoMap = null;
 
@@ -51,12 +92,115 @@ public class ImpUtil {
 
 	private Map<String, Setor> setorMap = null;
 
+	@Autowired
+	private SistemaProducaoDao sistemaProducaoDao;
+
+	private List<SistemaProducao> sistemaProducaoList = new ArrayList<SistemaProducao>();
+
+	@Autowired
+	private UsuarioDao usuarioDao;
+
+	private String ajustaNomeCidade(String cidade, String estado) {
+		switch (estado.trim().toLowerCase()) {
+		case "df":
+			switch (UtilitarioString.semAcento(cidade.trim().toLowerCase())) {
+			case "scia":
+				return "Guará";
+			case "alexandre gusmao":
+				return "Brazlândia";
+			case "aguas claras":
+				return "Taguatinga";
+			case "riacho fundo i":
+			case "riacho fundo ii":
+				return "Riacho Fundo";
+			case "park way":
+				return "Núcleo Bandeirante";
+			}
+		case "go":
+			switch (UtilitarioString.semAcento(cidade.trim().toLowerCase())) {
+			case "sao marcos":
+				return "Cristalina";
+			case "cocalzinho":
+				return "Cocalzinho de Goiás";
+			case "planaltina de goias":
+				return "Planaltina";
+			}
+			break;
+		}
+		return cidade;
+	}
+
+	public BigDecimal captaBigDecimal(Double valor) {
+		if (valor == null) {
+			return null;
+		}
+		return new BigDecimal(valor);
+	}
+
 	public Calendar captaData(Date data) {
 		if (data == null) {
 			return null;
 		}
 		Calendar result = new GregorianCalendar();
 		result.setTime(data);
+		return result;
+	}
+
+	public String captaUtm(String coord) {
+		if (StringUtils.containsAny(coord, '°', '\'', '\"')) {
+			return coord;
+		}
+		if (coord == null || coord.trim().length() == 0) {
+			return null;
+		}
+		StringBuilder temp = new StringBuilder();
+		int totPonto = 0;
+		for (int i = 0; i < coord.length(); i++) {
+			if ((i == 0 && coord.charAt(i) == '-') || Character.isDigit(coord.charAt(i)) || coord.charAt(i) == ',' || coord.charAt(i) == '.') {
+				temp.append(coord.charAt(i));
+			}
+			if (coord.charAt(i) == '.') {
+				totPonto++;
+			}
+		}
+		if (totPonto > 1) {
+			coord = UtilitarioString.substituirTudo(coord, ".", "");
+		}
+
+		if (temp.toString().trim().length() == 0) {
+			return coord;
+		}
+		coord = temp.toString();
+		return coord;
+	}
+
+	public String[] captaUtmNE(String c1, String c2) {
+		String[] result = new String[4];
+
+		c1 = captaUtm(c1);
+		c2 = captaUtm(c2);
+		if (c1 != null && c2 != null) {
+			try {
+				Double c1n = Double.parseDouble(c1.replaceAll(",", "."));
+				Double c2n = Double.parseDouble(c2.replaceAll(",", "."));
+				if (c1n > c2n) {
+					String temp = c1;
+					c1 = c2;
+					c2 = temp;
+				}
+				if ((c1.startsWith("8") || c1.startsWith("2")) && c1.length() < 7) {
+					c1 = UtilitarioString.zeroDireita(c1, 7);
+				}
+				if ((c2.startsWith("8") || c2.startsWith("2")) && c2.length() < 7) {
+					c2 = UtilitarioString.zeroDireita(c2, 7);
+				}
+				result[0] = c1;
+				result[1] = c2;
+			} catch (NullPointerException | NumberFormatException e) {
+				result[2] = c1.trim();
+				result[3] = c2.trim();
+			}
+		}
 		return result;
 	}
 
@@ -78,6 +222,14 @@ public class ImpUtil {
 
 	public String chaveBeneficiario(DbSater base, String idund, String idbem) {
 		return String.format("%s=[IDUND=%s,IDBEN=%s]", base.name(), idund, idbem);
+	}
+
+	public String chaveColetaFormulario(DbSater base, String idund, String idBemIdPrp, boolean beneficiario, String nomeCampo) {
+		if (beneficiario) {
+			return String.format("%s[CAMPO=%s]", chaveBeneficiario(base, idund, idBemIdPrp), nomeCampo);
+		} else {
+			return String.format("%s[CAMPO=%s]", chavePropriedadeRural(base, idund, idBemIdPrp), nomeCampo);
+		}
 	}
 
 	public String chaveComunidade(DbSater base, String idund, String idcom) {
@@ -102,6 +254,18 @@ public class ImpUtil {
 
 	public String chavePessoaTelefone(DbSater base, String idund, String idbem, String nomeCampo) {
 		return String.format("%s[CAMPO=%s]", chaveBeneficiario(base, idund, idbem), nomeCampo);
+	}
+
+	public String chavePropriedadeRural(DbSater base, String idund, String idprp) {
+		return String.format("%s=[IDUND=%s,IDPRP=%s]", base.name(), idund, idprp);
+	}
+
+	public String chavePropriedadeRuralArquivo(DbSater base, String idPrp, String descricao) {
+		return String.format("%s=[IDPRP=%s,DESCRICAO=%s]", base.name(), idPrp, descricao);
+	}
+
+	public String chavePublicoAlvoPropriedadeRural(DbSater base, String idprp, String idben) {
+		return String.format("%s=[IDPRP=%s,IDBEN=%s]", base.name(), idprp, idben);
 	}
 
 	public void criarMarcaTabela(Connection con, String tabela) throws SQLException {
@@ -139,40 +303,7 @@ public class ImpUtil {
 			return null;
 		}
 
-		switch (base.getSiglaEstado()) {
-		case "DF":
-			switch (UtilitarioString.semAcento(registro.trim().toLowerCase())) {
-			case "scia":
-				registro = "Guará";
-				break;
-			case "alexandre gusmao":
-				registro = "Brazlândia";
-				break;
-			case "aguas claras":
-				registro = "Taguatinga";
-				break;
-			case "riacho fundo i":
-			case "riacho fundo ii":
-				registro = "Riacho Fundo";
-				break;
-			case "park way":
-				registro = "Núcleo Bandeirante";
-				break;
-			}
-		case "GO":
-			switch (UtilitarioString.semAcento(registro.trim().toLowerCase())) {
-			case "sao marcos":
-				registro = "Cristalina";
-				break;
-			case "cocalzinho":
-				registro = "Cocalzinho de Goiás";
-				break;
-			case "planaltina de goias":
-				registro = "Planaltina";
-				break;
-			}
-			break;
-		}
+		registro = ajustaNomeCidade(registro, base.getSiglaEstado());
 
 		List<Cidade> cidadeList = null;
 		for (Municipio municipio : municipioAtendimentoList) {
@@ -203,6 +334,31 @@ public class ImpUtil {
 		}
 	}
 
+	public String deParaConfirmacao(String registro) {
+		if (registro == null) {
+			return null;
+		}
+		switch (UtilitarioString.semAcento(registro.trim().toLowerCase())) {
+		case "sim":
+			return "S";
+		case "nao":
+			return "N";
+		default:
+			return null;
+		}
+	}
+
+	public Confirmacao deParaConfirmacaoObj(String registro) {
+		if (registro == null) {
+			return null;
+		}
+		registro = deParaConfirmacao(registro);
+		if (registro == null) {
+			return null;
+		}
+		return Confirmacao.valueOf(Confirmacao.class, registro);
+	}
+
 	public ConfirmacaoDap deParaDapSituacao(String registro) {
 		if (registro == null) {
 			return null;
@@ -217,6 +373,44 @@ public class ImpUtil {
 		default:
 			return null;
 		}
+	}
+
+	public String deParaDividaFinalidade(String registro) {
+		if (registro == null) {
+			return null;
+		}
+		switch (UtilitarioString.semAcento(registro.trim().toLowerCase())) {
+		case "custeio":
+			return "C";
+		case "investimento":
+			return "I";
+		case "outras":
+			return "O";
+		case "securitizacao":
+			return "S";
+		default:
+			return null;
+		}
+	}
+
+	public Endereco deParaEndereco(DbSater base, Confirmacao propriedadeRuralConfirmacao, String nomePropriedadeRuralOuEstabelecimento, String logradouro, String cep, String regiao, String roteiroAcessoOuEnderecoInternacional) {
+		Endereco result = new Endereco();
+		result.setPropriedadeRuralConfirmacao(propriedadeRuralConfirmacao);
+		result.setNomePropriedadeRuralOuEstabelecimento(nomePropriedadeRuralOuEstabelecimento);
+		result.setLogradouro(logradouro);
+		result.setCep(cep);
+		result.setBairro(regiao);
+		Cidade cidade = getEnderecoLocalizacao(regiao, base);
+		if (cidade != null) {
+			result.setCidade(cidade);
+			result.setMunicipio(cidade.getMunicipio());
+			result.setEstado(cidade.getMunicipio().getEstado());
+			result.setPais(cidade.getMunicipio().getEstado().getPais());
+		}
+		result.setRoteiroAcessoOuEnderecoInternacional(roteiroAcessoOuEnderecoInternacional);
+		result.setEnderecoSisater(String.format("%s\n%s", logradouro, cep == null ? "" : cep));
+		result.setEnderecoAtualizado(Confirmacao.N);
+		return result;
 	}
 
 	public Escolaridade deParaEscolaridade(String registro) {
@@ -339,6 +533,23 @@ public class ImpUtil {
 		return result;
 	}
 
+	public PropriedadeRuralVinculoTipo deParaPropriedadeRuralVinculoTipo(String registro) throws BoException {
+		if (registro == null) {
+			throw new BoException("Vinculo com a propriedade não informado");
+		}
+		switch (UtilitarioString.semAcento(registro.trim().toLowerCase())) {
+		case "arrendamento":
+			return PropriedadeRuralVinculoTipo.AR;
+		case "parceria":
+			return PropriedadeRuralVinculoTipo.PA;
+		case "proprio":
+		case "ex-proprietario":
+			return PropriedadeRuralVinculoTipo.PR;
+		default:
+			throw new BoException("Categoria não identificada [%s]", registro);
+		}
+	}
+
 	public PublicoAlvoCategoria deParaPublicoAlvoCategoria(String registro) throws BoException {
 		if (registro == null) {
 			throw new BoException("Categoria não informada");
@@ -428,6 +639,128 @@ public class ImpUtil {
 			throw new BoException("Setor não identificado");
 		}
 		return result;
+	}
+
+	public SituacaoFundiaria deParaSituacaoFundiaria(String registro) {
+		if (registro == null || registro.trim().length() == 0) {
+			return null;
+		}
+		// PPFUND
+		switch (UtilitarioString.semAcento(registro.trim().toLowerCase())) {
+		case "concessao de uso":
+			return SituacaoFundiaria.C;
+		case "escritura definitiva":
+			return SituacaoFundiaria.E;
+		case "posse":
+			return SituacaoFundiaria.P;
+		default:
+			return null;
+		}
+	}
+
+	public Usuario deParaUsuario(String registro) {
+		registro = UtilitarioString.soNumero(registro, 'X', 'x');
+		if (registro == null || registro.trim().length() == 0) {
+			return null;
+		}
+		registro = UtilitarioString.zeroEsquerda(registro.toUpperCase(), 8);
+		List<EmpregoVi> empregoList = empregoViDao.findByMatricula(registro);
+		if (empregoList == null || empregoList.size() != 1) {
+			return null;
+		}
+		List<Usuario> result = usuarioDao.findByPessoa(new PessoaFisica(empregoList.get(0).getEmpregadoId()));
+		if (result == null || result.size() != 1) {
+			return null;
+		}
+		return result.get(0);
+	}
+
+	public BaciaHidrografica getBaciaHidrografica(String nome) throws BoException {
+		if (nome == null) {
+			logger.error("Bacia não informada");
+			return null;
+			// throw new BoException("Bacia não informada");
+		}
+		for (BaciaHidrografica baciaHidrografica : baciaHidrograficaList) {
+			if (baciaHidrografica.getNome().equalsIgnoreCase(nome)) {
+				return baciaHidrografica;
+			}
+		}
+		List<BaciaHidrografica> baciaHidrografica = baciaHidrograficaDao.findByNomeOrderByNomeAsc(nome);
+		if (baciaHidrografica == null || baciaHidrografica.size() != 1) {
+			logger.error(String.format("Bacia inexistente [%s]", nome));
+			return null;
+			// throw new BoException("Bacia inexistente [%s]", nome);
+		}
+		baciaHidrograficaList.add(baciaHidrografica.get(0));
+
+		return baciaHidrografica.get(0);
+	}
+
+	public Comunidade getComunidade(String nome) throws BoException {
+		if (nome == null) {
+			logger.error("Comunidade não informada");
+			return null;
+			// throw new BoException("Comunidade não informada");
+		}
+		for (Comunidade comunidade : comunidadeList) {
+			if (comunidade.getNome().equalsIgnoreCase(nome)) {
+				return comunidade;
+			}
+		}
+		List<Comunidade> comunidade = comunidadeDao.findByNomeOrderByNomeAsc(nome);
+		if (comunidade == null || comunidade.size() != 1) {
+			logger.error(String.format("Comunidade inexistente [%s]", nome));
+			return null;
+			// throw new BoException("Comunidade inexistente [%s]", nome);
+		}
+		comunidadeList.add(comunidade.get(0));
+
+		return comunidade.get(0);
+	}
+
+	private Cidade getEnderecoLocalizacao(String local, DbSater base) {
+		if (local == null || local.trim().length() == 0) {
+			return null;
+		}
+		local = ajustaNomeCidade(local, base.getSiglaEstado());
+		List<Cidade> cidadeList = cidadeDao.findByNomeLikeAndMunicipioEstadoSiglaIn(local, "DF", "GO");
+		if (cidadeList != null && cidadeList.size() == 1) {
+			return cidadeList.get(0);
+		}
+		return null;
+	}
+
+	public FormularioVersao getFormularioVersao(String codigoFormulario) {
+		if (formularioVersaoList == null) {
+			formularioVersaoList = new ArrayList<FormularioVersao>();
+		}
+		for (FormularioVersao formularioVersao : formularioVersaoList) {
+			if (formularioVersao.getFormulario().getCodigo().equals(codigoFormulario)) {
+				return formularioVersao;
+			}
+		}
+		FormularioVersao formularioVersao = formularioVersaoDao.findOneByFormularioCodigoAndVersao(codigoFormulario, 1);
+		formularioVersaoList.add(formularioVersao);
+		return formularioVersao;
+	}
+
+	public SistemaProducao getSistemaProducao(String nome) throws BoException {
+		if (nome == null) {
+			throw new BoException("Sistema de Produção não informada");
+		}
+		for (SistemaProducao sistemaProducao : sistemaProducaoList) {
+			if (sistemaProducao.getNome().equalsIgnoreCase(nome)) {
+				return sistemaProducao;
+			}
+		}
+		SistemaProducao sistemaProducao = sistemaProducaoDao.findOneByNome(nome);
+		if (sistemaProducao == null) {
+			return null;
+		}
+		sistemaProducaoList.add(sistemaProducao);
+
+		return sistemaProducao;
 	}
 
 	public void pessoaConfiguraNome(Pessoa pessoa, String nome, String apelidoSigla) {

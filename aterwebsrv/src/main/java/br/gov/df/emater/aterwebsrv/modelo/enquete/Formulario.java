@@ -1,5 +1,6 @@
 package br.gov.df.emater.aterwebsrv.modelo.enquete;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -19,14 +20,14 @@ import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity(name = "br.gov.df.emater.aterwebsrv.modelo.enquete.formulario")
 @Table(name = "formulario", schema = EntidadeBase.ENQUETE_SCHEMA)
@@ -38,7 +39,7 @@ public class Formulario extends EntidadeBase implements _ChavePrimaria<Integer> 
 	private String codigo;
 
 	@OneToMany(mappedBy = "formulario", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<FormularioDirecionamento> formularioDirecionamentoList;
+	private List<FormularioDirecionamento> formularioDirecionamentoList = new ArrayList<FormularioDirecionamento>();
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -55,7 +56,7 @@ public class Formulario extends EntidadeBase implements _ChavePrimaria<Integer> 
 	private String nome;
 
 	@OneToMany(mappedBy = "formulario", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Pergunta> perguntaList;
+	private List<Pergunta> perguntaList = new ArrayList<Pergunta>();
 
 	@Column(name = "permitir_excluir_resposta")
 	@Enumerated(EnumType.STRING)

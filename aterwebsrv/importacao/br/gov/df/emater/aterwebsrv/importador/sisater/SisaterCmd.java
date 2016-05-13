@@ -36,14 +36,18 @@ public class SisaterCmd extends _Comando {
 
 		int cont = 0;
 		for (DbSater base : DbSater.values()) {
-			if (base.getSigla() == null)
+			if (base.getSigla() == null) {
 				continue;
+			}
 
-			if (cont >= 1)
+			if (++cont < 6) {
+				continue;
+			} else if (cont > 6) {
 				break;
+			}
 
 			if (logger.isInfoEnabled()) {
-				logger.info(String.format("%s. importando base [%s]", ++cont, base.name()));
+				logger.info(String.format("%s. importando base [%s]", cont, base.name()));
 			}
 
 			try (Connection con = ConexaoFirebird.getConnection(base)) {

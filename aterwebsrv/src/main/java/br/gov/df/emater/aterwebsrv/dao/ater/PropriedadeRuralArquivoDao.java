@@ -10,4 +10,6 @@ public interface PropriedadeRuralArquivoDao extends JpaRepository<PropriedadeRur
 
 	PropriedadeRuralArquivo findOneByPropriedadeRuralAndArquivo(PropriedadeRural result, Arquivo arquivo);
 
+	PropriedadeRuralArquivo findOneByChaveSisater(String chaveSisater);
+
 }

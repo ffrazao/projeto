@@ -63,9 +63,9 @@ public class SalvarCmd extends _Comando {
 			result.setUsuarioInclusao(getUsuario(contexto.getUsuario().getName()));
 			result.setInclusaoData(Calendar.getInstance());
 		} else {
-			result.setUsuarioInclusao(getUsuario(result.getUsuarioInclusao().getUsername()));
+			result.setUsuarioInclusao(result.getUsuarioInclusao() == null ? null : getUsuario(result.getUsuarioInclusao().getUsername()));
 		}
-		result.setUsuarioAlteracao(getUsuario(contexto.getUsuario().getName()));
+		result.setUsuarioAlteracao(contexto.getUsuario() == null ? null : getUsuario(contexto.getUsuario().getName()));
 		result.setAlteracaoData(Calendar.getInstance());
 
 		if (result.getEndereco() == null) {

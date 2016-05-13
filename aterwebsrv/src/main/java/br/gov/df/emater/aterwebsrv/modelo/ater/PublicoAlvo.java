@@ -104,7 +104,7 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 
 	// @IndexedEmbedded
 	@OneToMany(mappedBy = "publicoAlvo", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<PublicoAlvoSetor> publicoAlvoSetorList;
+	private List<PublicoAlvoSetor> publicoAlvoSetorList = new ArrayList<PublicoAlvoSetor>();
 
 	@Enumerated(EnumType.STRING)
 	private PublicoAlvoSegmento segmento;

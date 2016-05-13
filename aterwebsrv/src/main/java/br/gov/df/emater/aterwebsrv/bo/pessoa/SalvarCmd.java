@@ -149,7 +149,7 @@ public class SalvarCmd extends _Comando {
 		}
 		return result;
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
@@ -206,11 +206,11 @@ public class SalvarCmd extends _Comando {
 		if (result.getSituacao() == null) {
 			result.setSituacao(PessoaSituacao.A);
 		}
-		
+
 		// guardar os dados do publico alvo
 		PublicoAlvo publicoAlvo = result.getPublicoAlvo();
 		result.setPublicoAlvo(null);
-		
+
 		// salvar o registro da pessoa
 		dao.save(result);
 
@@ -265,7 +265,7 @@ public class SalvarCmd extends _Comando {
 					}
 				}
 			}
-			//result.setPublicoAlvo(publicoAlvo);
+			// result.setPublicoAlvo(publicoAlvo);
 		}
 
 		// salvar enderecos
@@ -280,7 +280,7 @@ public class SalvarCmd extends _Comando {
 			Integer ordem = 0;
 			for (PessoaEndereco pessoaEndereco : result.getEnderecoList()) {
 				if (!CadastroAcao.E.equals(pessoaEndereco.getCadastroAcao())) {
-					
+
 					Endereco endereco = pessoaEndereco.getEndereco();
 					List<Endereco> pesquisa = enderecoDao.procurar(endereco);
 					if (CollectionUtils.isEmpty(pesquisa)) {
@@ -292,6 +292,10 @@ public class SalvarCmd extends _Comando {
 					endereco.setCep(UtilitarioString.formataCep(endereco.getCep()));
 					endereco = enderecoDao.save(endereco);
 					
+					PessoaEndereco salvo= pessoaEnderecoDao.findOneByPessoaAndEndereco(result, endereco);
+					if (salvo != null) {
+						pessoaEndereco.setId(salvo.getId());
+					}
 					pessoaEndereco.setEndereco(endereco);
 					pessoaEndereco.setPessoa(result);
 					pessoaEndereco.setOrdem(++ordem);
@@ -320,6 +324,10 @@ public class SalvarCmd extends _Comando {
 						telefone = pessoaTelefone.getTelefone();
 						telefone.setId(null);
 						telefone = telefoneDao.save(telefone);
+					}
+					PessoaTelefone salvo= pessoaTelefoneDao.findOneByPessoaAndTelefone(result, telefone);
+					if (salvo != null) {
+						pessoaTelefone.setId(salvo.getId());
 					}
 					pessoaTelefone.setTelefone(telefone);
 					pessoaTelefone.setPessoa(result);
@@ -351,6 +359,10 @@ public class SalvarCmd extends _Comando {
 						email.setEndereco(email.getEndereco().trim().toLowerCase());
 						email = emailDao.save(email);
 					}
+					PessoaEmail salvo= pessoaEmailDao.findOneByPessoaAndEmail(result, email);
+					if (salvo != null) {
+						pessoaEmail.setId(salvo.getId());
+					}
 					pessoaEmail.setEmail(email);
 					pessoaEmail.setPessoa(result);
 					pessoaEmail.setOrdem(++ordem);
@@ -371,10 +383,10 @@ public class SalvarCmd extends _Comando {
 					Relacionamento relacionamento = pessoaRelacionamento.getRelacionamento();
 
 					if (relacionamento == null || relacionamento.getId() == null) {
-						if (relacionamento == null) {							
+						if (relacionamento == null) {
 							relacionamento = new Relacionamento();
 						}
-						if (relacionamento.getRelacionamentoTipo() == null) {							
+						if (relacionamento.getRelacionamentoTipo() == null) {
 							relacionamento.setRelacionamentoTipo(pessoaRelacionamento.getRelacionamento().getRelacionamentoTipo());
 						}
 					} else {

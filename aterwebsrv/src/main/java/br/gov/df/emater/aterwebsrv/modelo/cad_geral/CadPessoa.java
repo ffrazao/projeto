@@ -1,5 +1,6 @@
 package br.gov.df.emater.aterwebsrv.modelo.cad_geral;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -22,6 +23,9 @@ import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
@@ -30,9 +34,6 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.StatusValidoInvalido;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity
 @Table(name = "cad_pessoa", schema = EntidadeBase.CAD_GERAL_SCHEMA)
@@ -52,7 +53,7 @@ public class CadPessoa extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "cad_pessoa_propriedade", schema = EntidadeBase.CAD_GERAL_SCHEMA, joinColumns = { @JoinColumn(name = "cad_pessoa_id") }, inverseJoinColumns = { @JoinColumn(name = "cad_propriedade_id") })
-	private List<CadPropriedade> cadPropriedadeList;
+	private List<CadPropriedade> cadPropriedadeList = new ArrayList<CadPropriedade>();
 
 	@Column(name = "caixa_postal")
 	private String caixaPostal;

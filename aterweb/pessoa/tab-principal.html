@@ -107,16 +107,16 @@
                 <input class="form-control" type="text" ng-model="cadastro.registro.rgNumero"/>
             </div>
             <div class="col-md-3">
-                <label class="control-label">Órg. Emis.</label>
-                <input class="form-control" type="text" ng-model="cadastro.registro.rgOrgaoEmissor"/>
-            </div>
-            <div class="col-md-3">
                 <label class="control-label">Data</label>
                 <input class="form-control" type="text" id="rgDataEmissao" name="rgDataEmissao" ng-model="cadastro.registro.rgDataEmissao" ui-date-mask/>
                 <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.rgDataEmissao.$error.date">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     Valor Inválido!
                 </div>
+            </div>
+            <div class="col-md-3">
+                <label class="control-label">Órg. Emis.</label>
+                <input class="form-control" type="text" ng-model="cadastro.registro.rgOrgaoEmissor"/>
             </div>
             <div class="col-md-3">
                 <label class="control-label">UF</label>

@@ -1,5 +1,6 @@
 package br.gov.df.emater.aterwebsrv.modelo.enquete;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -21,15 +22,15 @@ import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity
 @Table(name = "formulario_direcionamento", schema = EntidadeBase.ENQUETE_SCHEMA)
@@ -63,7 +64,7 @@ public class FormularioDirecionamento extends EntidadeBase implements _ChavePrim
 	private Confirmacao permiteImpressao;
 
 	@OneToMany(mappedBy = "formularioDirecionamento", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private List<RespostaVersao> respostaVersaoList;
+	private List<RespostaVersao> respostaVersaoList = new ArrayList<RespostaVersao>();
 
 	@Column(name = "termino")
 	@Temporal(TemporalType.TIMESTAMP)

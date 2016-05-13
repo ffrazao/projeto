@@ -1,5 +1,6 @@
 package br.gov.df.emater.aterwebsrv.modelo.ater;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -25,6 +26,11 @@ public class PropriedadeRuralArquivo extends EntidadeBase implements _ChavePrima
 	@JoinColumn(name = "arquivo_id")
 	private Arquivo arquivo;
 
+	@Column(name = "chave_sisater")
+	private String chaveSisater;
+
+	private String descricao;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
@@ -45,8 +51,22 @@ public class PropriedadeRuralArquivo extends EntidadeBase implements _ChavePrima
 		setArquivo(arquivo);
 	}
 
+	public PropriedadeRuralArquivo(PropriedadeRural propriedadeRural, Arquivo arquivo, Confirmacao perfil) {
+		setPropriedadeRural(propriedadeRural);
+		setArquivo(arquivo);
+		setPerfil(perfil);
+	}
+
 	public Arquivo getArquivo() {
 		return arquivo;
+	}
+
+	public String getChaveSisater() {
+		return chaveSisater;
+	}
+
+	public String getDescricao() {
+		return descricao;
 	}
 
 	@Override
@@ -64,6 +84,14 @@ public class PropriedadeRuralArquivo extends EntidadeBase implements _ChavePrima
 
 	public void setArquivo(Arquivo arquivo) {
 		this.arquivo = arquivo;
+	}
+
+	public void setChaveSisater(String chaveSisater) {
+		this.chaveSisater = chaveSisater;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
 	@Override

@@ -103,18 +103,18 @@ public class VisualizarCmd extends _Comando {
 				Relacionamento relacionamento = relacionador.getRelacionamento();
 				Pessoa pessoaRelacionado = null;
 				Integer idRelacionamento = null;
-				RelacionamentoFuncao relacionadoFuncao = null;
+				//RelacionamentoFuncao relacionadoFuncao = null;
 				for (PessoaRelacionamento relacionado : relacionamento.getPessoaRelacionamentoList()) {
-					if (!relacionado.getPessoa().getId().equals(result.getId())) {
+					if (relacionado.getPessoa() != null && !relacionado.getPessoa().getId().equals(result.getId())) {
 						pessoaRelacionado = relacionado.getPessoa().infoBasica();
 						idRelacionamento = relacionado.getId();
-						relacionadoFuncao = relacionado.getRelacionamentoFuncao().infoBasica();
+						//relacionadoFuncao = relacionado.getRelacionamentoFuncao();
 						break;
 					}
 				}
 				relacionador.setId(idRelacionamento);
 				relacionador.setRelacionamento(relacionador.getRelacionamento().infoBasica());
-				relacionador.setRelacionamentoFuncao(relacionadoFuncao);
+				relacionador.setRelacionamentoFuncao(relacionador.getRelacionamentoFuncao() == null ? null : relacionador.getRelacionamentoFuncao().infoBasica());
 				relacionador.setPessoa(pessoaRelacionado);
 			}
 		}

@@ -128,7 +128,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                         objOpcao();
                     }
                     // TODO fazer aqui a troca do codigo do formulario pelo formulario em si
-                    if (elemento.tipo === 'array') {
+                    if (elemento.tipo === 'array' || elemento.tipo === 'objeto') {
                         if (elemento.opcao.formulario.length !== 1) {
                             toastr.error('A opção para multiplos formulários ainda não foi implementada!', 'Multiplos Formulários');
                             return;

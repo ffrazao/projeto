@@ -1,5 +1,6 @@
 package br.gov.df.emater.aterwebsrv.modelo.enquete;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -43,7 +44,7 @@ public class OpcaoResposta extends EntidadeBase implements _ChavePrimaria<Intege
 	private OpcaoRespostaTipo opcaoRespostaTipo;
 
 	@OneToMany(mappedBy = "opcaoResposta", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<OpcaoValor> opcaoValorList;
+	private List<OpcaoValor> opcaoValorList = new ArrayList<OpcaoValor>();
 
 	@Column(name = "sql")
 	@Lob

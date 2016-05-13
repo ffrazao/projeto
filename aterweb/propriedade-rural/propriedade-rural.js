@@ -135,36 +135,40 @@
             };
 
             // Inicio Trabalho com tabs
-            $scope.tabs = [{
+            $scope.tabs = [
+                {
                     'nome': 'Principal',
                     'include': 'propriedade-rural/tab-principal.html',
                     'visivel': true,
-                }, {
+                }, 
+                {
                     'nome': 'Diagnósticos',
                     'include': 'propriedade-rural/tab-diagnostico.html',
                     'visivel': true,
                     'selecao': function() {
                         $scope.$broadcast('abaDiagnosticoAtivada');
                     },
-                }, {
+                }, 
+                {
                     'nome': 'Índice de Produção',
                     'include': 'propriedade-rural/tab-indice-producao.html',
                     'visivel': true,
-                }, {
+                }, 
+                {
                     'nome': 'Arquivos',
                     'include': 'propriedade-rural/tab-arquivo.html',
                     'visivel': true,
                 },
-                /*{
-            'nome': 'Pendências',
-            'include': 'propriedade-rural/tab-pendencia.html',
-            'visivel': true,
-        },*/
                 {
+                    'nome': 'Pendências',
+                    'include': 'propriedade-rural/tab-pendencia.html',
+                    'visivel': true,
+                },
+                /*{
                     'nome': 'Complementos',
                     'include': 'propriedade-rural/tab-complemento.html',
                     'visivel': false,
-                },
+                },*/
             ];
             // {nome:'Complementos',url:'propriedade-rural/tab-complemento.html'}, 
             // Fim Trabalho com tabs

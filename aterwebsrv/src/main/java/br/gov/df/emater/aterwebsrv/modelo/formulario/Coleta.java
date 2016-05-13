@@ -40,29 +40,8 @@ public class Coleta extends EntidadeBase implements _ChavePrimaria<Integer>, Inf
 
 	private static final long serialVersionUID = 1L;
 
-	public Coleta() {
-
-	}
-
-	public Coleta(Serializable id) {
-		super(id);
-	}
-
-	public Coleta(Integer id, FormularioVersao formularioVersao, Usuario usuario, Calendar dataColeta, Confirmacao finalizada, Pessoa pessoa, PropriedadeRural propriedadeRural, Object valor, String valorString) {
-		this(id);
-		setFormularioVersao(formularioVersao == null ? null : new FormularioVersao(formularioVersao.getId()));
-		setUsuario(usuario == null ? null : usuario.infoBasica());
-		setDataColeta(dataColeta);
-		setFinalizada(finalizada);
-		setPessoa(pessoa == null ? null : pessoa.infoBasica());
-		setPropriedadeRural(propriedadeRural == null ? null : propriedadeRural.infoBasica());
-		setValor(valor);
-		setValorString(valorString);
-	}
-
-	public Coleta infoBasica() {
-		return new Coleta(this.getId(), this.getFormularioVersao(), this.getUsuario(), this.getDataColeta(), this.getFinalizada(), this.getPessoa(), this.getPropriedadeRural(), this.getValor(), this.getValorString());
-	}
+	@Column(name = "chave_sisater")
+	private String chaveSisater;
 
 	@Column(name = "data_coleta")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -101,6 +80,29 @@ public class Coleta extends EntidadeBase implements _ChavePrimaria<Integer>, Inf
 	@Column(name = "valor")
 	private String valorString;
 
+	public Coleta() {
+	}
+
+	public Coleta(Integer id, FormularioVersao formularioVersao, Usuario usuario, Calendar dataColeta, Confirmacao finalizada, Pessoa pessoa, PropriedadeRural propriedadeRural, Object valor, String valorString) {
+		this(id);
+		this.setFormularioVersao(formularioVersao);
+		this.setUsuario(usuario);
+		this.setDataColeta(dataColeta);
+		this.setFinalizada(finalizada);
+		this.setPessoa(pessoa);
+		this.setPropriedadeRural(propriedadeRural);
+		this.setValor(valor);
+		this.setValorString(valorString);
+	}
+
+	public Coleta(Serializable id) {
+		super(id);
+	}
+
+	public String getChaveSisater() {
+		return chaveSisater;
+	}
+
 	public Calendar getDataColeta() {
 		return dataColeta;
 	}
@@ -136,6 +138,15 @@ public class Coleta extends EntidadeBase implements _ChavePrimaria<Integer>, Inf
 
 	public String getValorString() {
 		return valorString;
+	}
+
+	public Coleta infoBasica() {
+		return new Coleta(this.getId(), this.getFormularioVersao() == null ? null : new FormularioVersao(this.getFormularioVersao().getId()), this.getUsuario() == null ? null : this.getUsuario().infoBasica(), this.getDataColeta(), this.getFinalizada(),
+				this.getPessoa() == null ? null : this.getPessoa().infoBasica(), this.getPropriedadeRural() == null ? null : this.getPropriedadeRural().infoBasica(), this.getValor(), this.getValorString());
+	}
+
+	public void setChaveSisater(String chaveSisater) {
+		this.chaveSisater = chaveSisater;
 	}
 
 	public void setDataColeta(Calendar dataColeta) {

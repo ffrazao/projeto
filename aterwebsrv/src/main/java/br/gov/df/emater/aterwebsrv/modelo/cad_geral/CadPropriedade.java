@@ -1,6 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.cad_geral;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -25,6 +26,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
@@ -32,9 +36,6 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.StatusValidoInvalido;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonFormatarBigDecimal;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity
 @Table(name = "cad_propriedade", schema = EntidadeBase.CAD_GERAL_SCHEMA)
@@ -60,7 +61,7 @@ public class CadPropriedade extends EntidadeBase implements _ChavePrimaria<Integ
 
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "cad_pessoa_propriedade", schema = EntidadeBase.CAD_GERAL_SCHEMA, joinColumns = { @JoinColumn(name = "cad_propriedade_id") }, inverseJoinColumns = { @JoinColumn(name = "cad_pessoa_id") })
-	private List<CadPessoa> cadPessoaList;
+	private List<CadPessoa> cadPessoaList = new ArrayList<CadPessoa>();
 
 	@Column(name = "cidade")
 	private String cidade;

@@ -1,5 +1,6 @@
 package br.gov.df.emater.aterwebsrv.modelo.enquete;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -19,13 +20,13 @@ import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerTimestamp;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerTimestamp;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity
 @Table(name = "resposta_versao", schema = EntidadeBase.ENQUETE_SCHEMA)
@@ -50,7 +51,7 @@ public class RespostaVersao extends EntidadeBase implements
 	private Calendar inicio;
 
 	@OneToMany(mappedBy = "respostaVersao", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Resposta> respostaList;
+	private List<Resposta> respostaList = new ArrayList<Resposta>();
 
 	@Column(name = "termino")
 	@Temporal(TemporalType.TIMESTAMP)

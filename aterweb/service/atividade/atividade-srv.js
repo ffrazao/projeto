@@ -50,7 +50,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                         scp.cadastro.apoio.localList = [];
                         ComunidadeSrv.lista({pessoaJuridicaList: [angular.fromJson(t.lotacaoAtual.pessoaJuridica.id)]}, scp.cadastro.apoio.localList, t);
                     } else {
-                        toastr.error('Não foi possível identificar a sua lotação', 'Erro ao carregar os dados');
+                        toastr.warning('Não foi possível identificar a sua lotação', 'Erro ao carregar os dados');
                     }
                 }
                 scp.cadastro.filtro.inicio = new Date();

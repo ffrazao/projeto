@@ -9,4 +9,6 @@ public interface FormularioVersaoDao extends JpaRepository<FormularioVersao, Int
 
 	Integer countByFormulario(Formulario formulario);
 
+	FormularioVersao findOneByFormularioCodigoAndVersao(String codigoFormulario, int i);
+
 }

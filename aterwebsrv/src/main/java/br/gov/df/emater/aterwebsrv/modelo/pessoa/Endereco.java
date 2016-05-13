@@ -1,6 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.pessoa;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -66,7 +67,7 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 	}
 
 	@OneToMany(mappedBy = "endereco", cascade = CascadeType.ALL)
-	private List<Area> areaList;
+	private List<Area> areaList = new ArrayList<Area>();
 
 	// @Max(value = 250, message = "Muito extenso")
 	private String bairro;
@@ -143,9 +144,11 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 		super(id);
 	}
 
-	public Endereco(Serializable id, String enderecoSisater) {
+	public Endereco(Serializable id, String logradouro, String cep) {
 		super(id);
-		this.setEnderecoSisater(enderecoSisater);
+		this.setLogradouro(logradouro);
+		this.setCep(cep);
+		this.setEnderecoSisater(String.format("%s%s", logradouro, cep == null ? null : String.format("\n%s", cep)));
 	}
 
 	public Endereco(String bairro, String cep, Cidade cidade, String codigoIbge, String complemento, String enderecoSisater, Estado estado, Integer id, Point entradaPrincipal, String logradouro, Municipio municipio, String nomePropriedadeRuralOuEstabelecimento, String numero,

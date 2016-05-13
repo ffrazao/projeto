@@ -464,13 +464,13 @@
                     'indice': indice++,
                     'ativo': false,
                 },
-                /* {
+                {
                     'nome': 'Pendências',
                     'include': 'pessoa/tab-pendencia.html',
                     'visivel': true,
                     'indice': indice++,
                     'ativo': false,
-                }, */
+                }, 
             ];
             $scope.setTabAtiva = function(nome) {
                 $scope.tabs.forEach(function(item, idx) {

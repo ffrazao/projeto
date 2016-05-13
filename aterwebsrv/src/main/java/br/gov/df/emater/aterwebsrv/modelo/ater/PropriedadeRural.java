@@ -1,6 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.ater;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -59,30 +60,6 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 	@JsonDeserialize(using = JsonDeserializerData.class)
 	private Calendar alteracaoData;
 
-	@Column(name = "area_irrigada_aspersao")
-	private String areaIrrigadaAspersao;
-
-	@Column(name = "area_irrigada_auto_propelido")
-	private String areaIrrigadaAutoPropelido;
-
-	@Column(name = "area_irrigada_gotejamento")
-	private String areaIrrigadaGotejamento;
-
-	@Column(name = "area_irrigada_micro_aspersao")
-	private String areaIrrigadaMicroAspersao;
-
-	@Column(name = "area_irrigada_outros")
-	private String areaIrrigadaOutros;
-
-	@Column(name = "area_irrigada_pivo_central")
-	private String areaIrrigadaPivoCentral;
-
-	@Column(name = "area_irrigada_superficie")
-	private String areaIrrigadaSuperficie;
-
-	@Column(name = "area_irrigada_total")
-	private String areaIrrigadaTotal;
-
 	@Column(name = "area_total")
 	@NumberFormat(style = Style.NUMBER)
 	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
@@ -92,18 +69,18 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 	// @IndexedEmbedded
 	private List<PropriedadeRuralArquivo> arquivoList;
 
+//	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "bacia_hidrografica_id")
-	@NotNull
 	private BaciaHidrografica baciaHidrografica;
 
-	@NumberFormat(style = Style.CURRENCY)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal benfeitoria;
-
-	@OneToMany(mappedBy = "propriedadeRural")
-	// @IndexedEmbedded
-	private List<Benfeitoria> benfeitoriaList;
+	// @NumberFormat(style = Style.CURRENCY)
+	// @JsonDeserialize(using = JsonFormatarBigDecimal.class)
+	// private BigDecimal benfeitoria;
+	//
+	// @OneToMany(mappedBy = "propriedadeRural")
+	// // @IndexedEmbedded
+	// private List<Benfeitoria> benfeitoriaList;
 
 	@Column(name = "cartorio_data_registro")
 	@Temporal(TemporalType.DATE)
@@ -118,9 +95,9 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 	@Column(name = "chave_sisater")
 	private String chaveSisater;
 
+	//@NotNull
 	@ManyToOne
 	@JoinColumn(name = "comunidade_id")
-	@NotNull
 	private Comunidade comunidade;
 
 	@OneToOne
@@ -128,25 +105,9 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 	@NotNull
 	private Endereco endereco;
 
-	@Column(name = "fonte_agua_domestica")
-	private String fonteAguaDomestica;
-
-	@Column(name = "fonte_agua_domestica_vazao")
-	@NumberFormat(style = Style.NUMBER)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal fonteAguaDomesticaVazao;
-
-	@Column(name = "fonte_agua_principal")
-	private String fonteAguaPrincipal;
-
-	@Column(name = "fonte_agua_principal_vazao")
-	@NumberFormat(style = Style.NUMBER)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal fonteAguaPrincipalVazao;
-
 	// @IndexedEmbedded
 	@OneToMany(mappedBy = "propriedadeRural", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<PropriedadeRuralFormaUtilizacaoEspacoRural> formaUtilizacaoEspacoRuralList;
+	private List<PropriedadeRuralFormaUtilizacaoEspacoRural> formaUtilizacaoEspacoRuralList = new ArrayList<PropriedadeRuralFormaUtilizacaoEspacoRural>();
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -158,21 +119,6 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 	@JsonSerialize(using = JsonSerializerData.class)
 	@JsonDeserialize(using = JsonDeserializerData.class)
 	private Calendar inclusaoData;
-
-	@Column(name = "mao_de_obra_contratada")
-	private String maoDeObraContratada;
-
-	@Column(name = "mao_de_obra_familiar")
-	private String maoDeObraFamiliar;
-
-	@Column(name = "mao_de_obra_temporaria")
-	private String maoDeObraTemporaria;
-
-	@Column(name = "morad_propried_familias")
-	private String moradPropriedFamilias;
-
-	@Column(name = "morad_propried_pessoas")
-	private String moradPropriedPessoas;
 
 	private String nome;
 
@@ -199,30 +145,6 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 	@JsonDeserialize(using = JsonDeserializerData.class)
 	private Calendar outorgaValidade;
 
-	@Column(name = "pastagem_artificial")
-	private String pastagemArtificial;
-
-	@Column(name = "pastagem_canavial")
-	private String pastagemCanavial;
-
-	@Column(name = "pastagem_capineira")
-	private String pastagemCapineira;
-
-	@Column(name = "pastagem_feno")
-	private String pastagemFeno;
-
-	@Column(name = "pastagem_ilp_ilpf")
-	private String pastagemIlpIlpf;
-
-	@Column(name = "pastagem_natural")
-	private String pastagemNatural;
-
-	@Column(name = "pastagem_rotacionada")
-	private String pastagemRotacionada;
-
-	@Column(name = "pastagem_silagem")
-	private String pastagemSilagem;
-
 	@OneToMany(mappedBy = "propriedadeRural")
 	private List<PropriedadeRuralPendencia> pendenciaList;
 
@@ -244,129 +166,16 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 	@Enumerated(EnumType.STRING)
 	private PropriedadeRuralSituacao situacao;
 
+	@Column(name = "situacao_data")
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+	@JsonSerialize(using = JsonSerializerData.class)
+	@JsonDeserialize(using = JsonDeserializerData.class)
+	private Calendar situacaoData;
+
 	@Column(name = "situacao_fundiaria")
 	@Enumerated(EnumType.STRING)
 	private SituacaoFundiaria situacaoFundiaria;
-
-	@Column(name = "uso_solo_benfeitoria_ha")
-	@NumberFormat(style = Style.NUMBER)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal usoSoloBenfeitoriaHa;
-
-	@Column(name = "uso_solo_benfeitoria_vl_tot")
-	@NumberFormat(style = Style.CURRENCY)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal usoSoloBenfeitoriaVlTot;
-
-	@Column(name = "uso_solo_benfeitoria_vl_unit")
-	@NumberFormat(style = Style.CURRENCY)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal usoSoloBenfeitoriaVlUnit;
-
-	@Column(name = "uso_solo_cultura_perene_ha")
-	@NumberFormat(style = Style.NUMBER)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal usoSoloCulturaPereneHa;
-
-	@Column(name = "uso_solo_cultura_perene_vl_tot")
-	@NumberFormat(style = Style.CURRENCY)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal usoSoloCulturaPereneVlTot;
-
-	@Column(name = "uso_solo_cultura_perene_vl_unit")
-	@NumberFormat(style = Style.CURRENCY)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal usoSoloCulturaPereneVlUnit;
-
-	@Column(name = "uso_solo_cultura_temporaria_ha")
-	@NumberFormat(style = Style.NUMBER)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal usoSoloCulturaTemporariaHa;
-
-	@Column(name = "uso_solo_cultura_temporaria_vl_tot")
-	@NumberFormat(style = Style.CURRENCY)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal usoSoloCulturaTemporariaVlTot;
-
-	@Column(name = "uso_solo_cultura_temporaria_vl_unit")
-	@NumberFormat(style = Style.CURRENCY)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal usoSoloCulturaTemporariaVlUnit;
-
-	@Column(name = "uso_solo_outras_ha")
-	@NumberFormat(style = Style.NUMBER)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal usoSoloOutrasHa;
-
-	@Column(name = "uso_solo_outras_vl_tot")
-	@NumberFormat(style = Style.CURRENCY)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal usoSoloOutrasVlTot;
-
-	@Column(name = "uso_solo_outras_vl_unit")
-	@NumberFormat(style = Style.CURRENCY)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal usoSoloOutrasVlUnit;
-
-	@Column(name = "uso_solo_pastagem_ha")
-	@NumberFormat(style = Style.NUMBER)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal usoSoloPastagemHa;
-
-	@Column(name = "uso_solo_pastagem_vl_tot")
-	@NumberFormat(style = Style.CURRENCY)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal usoSoloPastagemVlTot;
-
-	@Column(name = "uso_solo_pastagem_vl_unit")
-	@NumberFormat(style = Style.CURRENCY)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal usoSoloPastagemVlUnit;
-
-	@Column(name = "uso_solo_preserv_permanente_ha")
-	@NumberFormat(style = Style.NUMBER)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal usoSoloPreservPermanenteHa;
-
-	@Column(name = "uso_solo_preserv_permanente_vl_tot")
-	@NumberFormat(style = Style.CURRENCY)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal usoSoloPreservPermanenteVlTot;
-
-	@Column(name = "uso_solo_preserv_permanente_vl_unit")
-	@NumberFormat(style = Style.CURRENCY)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal usoSoloPreservPermanenteVlUnit;
-
-	@Column(name = "uso_solo_reserva_legal_ha")
-	@NumberFormat(style = Style.NUMBER)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal usoSoloReservaLegalHa;
-
-	@Column(name = "uso_solo_reserva_legal_vl_tot")
-	@NumberFormat(style = Style.CURRENCY)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal usoSoloReservaLegalVlTot;
-
-	@Column(name = "uso_solo_reserva_legal_vl_unit")
-	@NumberFormat(style = Style.CURRENCY)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal usoSoloReservaLegalVlUnit;
-
-	@Column(name = "uso_solo_total_ha")
-	@NumberFormat(style = Style.NUMBER)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal usoSoloTotalHa;
-
-	@Column(name = "uso_solo_total_vl_tot")
-	@NumberFormat(style = Style.CURRENCY)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal usoSoloTotalVlTot;
-
-	@Column(name = "uso_solo_total_vl_unit")
-	@NumberFormat(style = Style.CURRENCY)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal usoSoloTotalVlUnit;
 
 	@ManyToOne
 	@JoinColumn(name = "alteracao_usuario_id")
@@ -414,38 +223,6 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 		return alteracaoData;
 	}
 
-	public String getAreaIrrigadaAspersao() {
-		return areaIrrigadaAspersao;
-	}
-
-	public String getAreaIrrigadaAutoPropelido() {
-		return areaIrrigadaAutoPropelido;
-	}
-
-	public String getAreaIrrigadaGotejamento() {
-		return areaIrrigadaGotejamento;
-	}
-
-	public String getAreaIrrigadaMicroAspersao() {
-		return areaIrrigadaMicroAspersao;
-	}
-
-	public String getAreaIrrigadaOutros() {
-		return areaIrrigadaOutros;
-	}
-
-	public String getAreaIrrigadaPivoCentral() {
-		return areaIrrigadaPivoCentral;
-	}
-
-	public String getAreaIrrigadaSuperficie() {
-		return areaIrrigadaSuperficie;
-	}
-
-	public String getAreaIrrigadaTotal() {
-		return areaIrrigadaTotal;
-	}
-
 	public BigDecimal getAreaTotal() {
 		return areaTotal;
 	}
@@ -456,14 +233,6 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 
 	public BaciaHidrografica getBaciaHidrografica() {
 		return baciaHidrografica;
-	}
-
-	public BigDecimal getBenfeitoria() {
-		return benfeitoria;
-	}
-
-	public List<Benfeitoria> getBenfeitoriaList() {
-		return benfeitoriaList;
 	}
 
 	public Calendar getCartorioDataRegistro() {
@@ -486,22 +255,6 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 		return endereco;
 	}
 
-	public String getFonteAguaDomestica() {
-		return fonteAguaDomestica;
-	}
-
-	public BigDecimal getFonteAguaDomesticaVazao() {
-		return fonteAguaDomesticaVazao;
-	}
-
-	public String getFonteAguaPrincipal() {
-		return fonteAguaPrincipal;
-	}
-
-	public BigDecimal getFonteAguaPrincipalVazao() {
-		return fonteAguaPrincipalVazao;
-	}
-
 	public List<PropriedadeRuralFormaUtilizacaoEspacoRural> getFormaUtilizacaoEspacoRuralList() {
 		return formaUtilizacaoEspacoRuralList;
 	}
@@ -513,26 +266,6 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 
 	public Calendar getInclusaoData() {
 		return inclusaoData;
-	}
-
-	public String getMaoDeObraContratada() {
-		return maoDeObraContratada;
-	}
-
-	public String getMaoDeObraFamiliar() {
-		return maoDeObraFamiliar;
-	}
-
-	public String getMaoDeObraTemporaria() {
-		return maoDeObraTemporaria;
-	}
-
-	public String getMoradPropriedFamilias() {
-		return moradPropriedFamilias;
-	}
-
-	public String getMoradPropriedPessoas() {
-		return moradPropriedPessoas;
 	}
 
 	public String getNome() {
@@ -559,38 +292,6 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 		return outorgaValidade;
 	}
 
-	public String getPastagemArtificial() {
-		return pastagemArtificial;
-	}
-
-	public String getPastagemCanavial() {
-		return pastagemCanavial;
-	}
-
-	public String getPastagemCapineira() {
-		return pastagemCapineira;
-	}
-
-	public String getPastagemFeno() {
-		return pastagemFeno;
-	}
-
-	public String getPastagemIlpIlpf() {
-		return pastagemIlpIlpf;
-	}
-
-	public String getPastagemNatural() {
-		return pastagemNatural;
-	}
-
-	public String getPastagemRotacionada() {
-		return pastagemRotacionada;
-	}
-
-	public String getPastagemSilagem() {
-		return pastagemSilagem;
-	}
-
 	public List<PropriedadeRuralPendencia> getPendenciaList() {
 		return pendenciaList;
 	}
@@ -615,104 +316,12 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 		return situacao;
 	}
 
+	public Calendar getSituacaoData() {
+		return situacaoData;
+	}
+
 	public SituacaoFundiaria getSituacaoFundiaria() {
 		return situacaoFundiaria;
-	}
-
-	public BigDecimal getUsoSoloBenfeitoriaHa() {
-		return usoSoloBenfeitoriaHa;
-	}
-
-	public BigDecimal getUsoSoloBenfeitoriaVlTot() {
-		return usoSoloBenfeitoriaVlTot;
-	}
-
-	public BigDecimal getUsoSoloBenfeitoriaVlUnit() {
-		return usoSoloBenfeitoriaVlUnit;
-	}
-
-	public BigDecimal getUsoSoloCulturaPereneHa() {
-		return usoSoloCulturaPereneHa;
-	}
-
-	public BigDecimal getUsoSoloCulturaPereneVlTot() {
-		return usoSoloCulturaPereneVlTot;
-	}
-
-	public BigDecimal getUsoSoloCulturaPereneVlUnit() {
-		return usoSoloCulturaPereneVlUnit;
-	}
-
-	public BigDecimal getUsoSoloCulturaTemporariaHa() {
-		return usoSoloCulturaTemporariaHa;
-	}
-
-	public BigDecimal getUsoSoloCulturaTemporariaVlTot() {
-		return usoSoloCulturaTemporariaVlTot;
-	}
-
-	public BigDecimal getUsoSoloCulturaTemporariaVlUnit() {
-		return usoSoloCulturaTemporariaVlUnit;
-	}
-
-	public BigDecimal getUsoSoloOutrasHa() {
-		return usoSoloOutrasHa;
-	}
-
-	public BigDecimal getUsoSoloOutrasVlTot() {
-		return usoSoloOutrasVlTot;
-	}
-
-	public BigDecimal getUsoSoloOutrasVlUnit() {
-		return usoSoloOutrasVlUnit;
-	}
-
-	public BigDecimal getUsoSoloPastagemHa() {
-		return usoSoloPastagemHa;
-	}
-
-	public BigDecimal getUsoSoloPastagemVlTot() {
-		return usoSoloPastagemVlTot;
-	}
-
-	public BigDecimal getUsoSoloPastagemVlUnit() {
-		return usoSoloPastagemVlUnit;
-	}
-
-	public BigDecimal getUsoSoloPreservPermanenteHa() {
-		return usoSoloPreservPermanenteHa;
-	}
-
-	public BigDecimal getUsoSoloPreservPermanenteVlTot() {
-		return usoSoloPreservPermanenteVlTot;
-	}
-
-	public BigDecimal getUsoSoloPreservPermanenteVlUnit() {
-		return usoSoloPreservPermanenteVlUnit;
-	}
-
-	public BigDecimal getUsoSoloReservaLegalHa() {
-		return usoSoloReservaLegalHa;
-	}
-
-	public BigDecimal getUsoSoloReservaLegalVlTot() {
-		return usoSoloReservaLegalVlTot;
-	}
-
-	public BigDecimal getUsoSoloReservaLegalVlUnit() {
-		return usoSoloReservaLegalVlUnit;
-	}
-
-	public BigDecimal getUsoSoloTotalHa() {
-		return usoSoloTotalHa;
-	}
-
-	public BigDecimal getUsoSoloTotalVlTot() {
-		return usoSoloTotalVlTot;
-	}
-
-	public BigDecimal getUsoSoloTotalVlUnit() {
-		return usoSoloTotalVlUnit;
 	}
 
 	public Usuario getUsuarioAlteracao() {
@@ -740,38 +349,6 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 		this.alteracaoData = alteracaoData;
 	}
 
-	public void setAreaIrrigadaAspersao(String areaIrrigadaAspersao) {
-		this.areaIrrigadaAspersao = areaIrrigadaAspersao;
-	}
-
-	public void setAreaIrrigadaAutoPropelido(String areaIrrigadaAutoPropelido) {
-		this.areaIrrigadaAutoPropelido = areaIrrigadaAutoPropelido;
-	}
-
-	public void setAreaIrrigadaGotejamento(String areaIrrigadaGotejamento) {
-		this.areaIrrigadaGotejamento = areaIrrigadaGotejamento;
-	}
-
-	public void setAreaIrrigadaMicroAspersao(String areaIrrigadaMicroAspersao) {
-		this.areaIrrigadaMicroAspersao = areaIrrigadaMicroAspersao;
-	}
-
-	public void setAreaIrrigadaOutros(String areaIrrigadaOutros) {
-		this.areaIrrigadaOutros = areaIrrigadaOutros;
-	}
-
-	public void setAreaIrrigadaPivoCentral(String areaIrrigadaPivoCentral) {
-		this.areaIrrigadaPivoCentral = areaIrrigadaPivoCentral;
-	}
-
-	public void setAreaIrrigadaSuperficie(String areaIrrigadaSuperficie) {
-		this.areaIrrigadaSuperficie = areaIrrigadaSuperficie;
-	}
-
-	public void setAreaIrrigadaTotal(String areaIrrigadaTotal) {
-		this.areaIrrigadaTotal = areaIrrigadaTotal;
-	}
-
 	public void setAreaTotal(BigDecimal areaTotal) {
 		this.areaTotal = areaTotal;
 	}
@@ -782,14 +359,6 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 
 	public void setBaciaHidrografica(BaciaHidrografica baciaHidrografica) {
 		this.baciaHidrografica = baciaHidrografica;
-	}
-
-	public void setBenfeitoria(BigDecimal benfeitoria) {
-		this.benfeitoria = benfeitoria;
-	}
-
-	public void setBenfeitoriaList(List<Benfeitoria> benfeitoriaList) {
-		this.benfeitoriaList = benfeitoriaList;
 	}
 
 	public void setCartorioDataRegistro(Calendar cartorioDataRegistro) {
@@ -812,22 +381,6 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 		this.endereco = endereco;
 	}
 
-	public void setFonteAguaDomestica(String fonteAguaDomestica) {
-		this.fonteAguaDomestica = fonteAguaDomestica;
-	}
-
-	public void setFonteAguaDomesticaVazao(BigDecimal fonteAguaDomesticaVazao) {
-		this.fonteAguaDomesticaVazao = fonteAguaDomesticaVazao;
-	}
-
-	public void setFonteAguaPrincipal(String fonteAguaPrincipal) {
-		this.fonteAguaPrincipal = fonteAguaPrincipal;
-	}
-
-	public void setFonteAguaPrincipalVazao(BigDecimal fonteAguaPrincipalVazao) {
-		this.fonteAguaPrincipalVazao = fonteAguaPrincipalVazao;
-	}
-
 	public void setFormaUtilizacaoEspacoRuralList(List<PropriedadeRuralFormaUtilizacaoEspacoRural> formaUtilizacaoEspacoRuralList) {
 		this.formaUtilizacaoEspacoRuralList = formaUtilizacaoEspacoRuralList;
 	}
@@ -839,26 +392,6 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 
 	public void setInclusaoData(Calendar inclusaoData) {
 		this.inclusaoData = inclusaoData;
-	}
-
-	public void setMaoDeObraContratada(String maoDeObraContratada) {
-		this.maoDeObraContratada = maoDeObraContratada;
-	}
-
-	public void setMaoDeObraFamiliar(String maoDeObraFamiliar) {
-		this.maoDeObraFamiliar = maoDeObraFamiliar;
-	}
-
-	public void setMaoDeObraTemporaria(String maoDeObraTemporaria) {
-		this.maoDeObraTemporaria = maoDeObraTemporaria;
-	}
-
-	public void setMoradPropriedFamilias(String moradPropriedFamilias) {
-		this.moradPropriedFamilias = moradPropriedFamilias;
-	}
-
-	public void setMoradPropriedPessoas(String moradPropriedPessoas) {
-		this.moradPropriedPessoas = moradPropriedPessoas;
 	}
 
 	public void setNome(String nome) {
@@ -885,38 +418,6 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 		this.outorgaValidade = outorgaValidade;
 	}
 
-	public void setPastagemArtificial(String pastagemArtificial) {
-		this.pastagemArtificial = pastagemArtificial;
-	}
-
-	public void setPastagemCanavial(String pastagemCanavial) {
-		this.pastagemCanavial = pastagemCanavial;
-	}
-
-	public void setPastagemCapineira(String pastagemCapineira) {
-		this.pastagemCapineira = pastagemCapineira;
-	}
-
-	public void setPastagemFeno(String pastagemFeno) {
-		this.pastagemFeno = pastagemFeno;
-	}
-
-	public void setPastagemIlpIlpf(String pastagemIlpIlpf) {
-		this.pastagemIlpIlpf = pastagemIlpIlpf;
-	}
-
-	public void setPastagemNatural(String pastagemNatural) {
-		this.pastagemNatural = pastagemNatural;
-	}
-
-	public void setPastagemRotacionada(String pastagemRotacionada) {
-		this.pastagemRotacionada = pastagemRotacionada;
-	}
-
-	public void setPastagemSilagem(String pastagemSilagem) {
-		this.pastagemSilagem = pastagemSilagem;
-	}
-
 	public void setPendenciaList(List<PropriedadeRuralPendencia> pendenciaList) {
 		this.pendenciaList = pendenciaList;
 	}
@@ -941,104 +442,12 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 		this.situacao = situacao;
 	}
 
+	public void setSituacaoData(Calendar situacaoData) {
+		this.situacaoData = situacaoData;
+	}
+
 	public void setSituacaoFundiaria(SituacaoFundiaria situacaoFundiaria) {
 		this.situacaoFundiaria = situacaoFundiaria;
-	}
-
-	public void setUsoSoloBenfeitoriaHa(BigDecimal usoSoloBenfeitoriaHa) {
-		this.usoSoloBenfeitoriaHa = usoSoloBenfeitoriaHa;
-	}
-
-	public void setUsoSoloBenfeitoriaVlTot(BigDecimal usoSoloBenfeitoriaVlTot) {
-		this.usoSoloBenfeitoriaVlTot = usoSoloBenfeitoriaVlTot;
-	}
-
-	public void setUsoSoloBenfeitoriaVlUnit(BigDecimal usoSoloBenfeitoriaVlUnit) {
-		this.usoSoloBenfeitoriaVlUnit = usoSoloBenfeitoriaVlUnit;
-	}
-
-	public void setUsoSoloCulturaPereneHa(BigDecimal usoSoloCulturaPereneHa) {
-		this.usoSoloCulturaPereneHa = usoSoloCulturaPereneHa;
-	}
-
-	public void setUsoSoloCulturaPereneVlTot(BigDecimal usoSoloCulturaPereneVlTot) {
-		this.usoSoloCulturaPereneVlTot = usoSoloCulturaPereneVlTot;
-	}
-
-	public void setUsoSoloCulturaPereneVlUnit(BigDecimal usoSoloCulturaPereneVlUnit) {
-		this.usoSoloCulturaPereneVlUnit = usoSoloCulturaPereneVlUnit;
-	}
-
-	public void setUsoSoloCulturaTemporariaHa(BigDecimal usoSoloCulturaTemporariaHa) {
-		this.usoSoloCulturaTemporariaHa = usoSoloCulturaTemporariaHa;
-	}
-
-	public void setUsoSoloCulturaTemporariaVlTot(BigDecimal usoSoloCulturaTemporariaVlTot) {
-		this.usoSoloCulturaTemporariaVlTot = usoSoloCulturaTemporariaVlTot;
-	}
-
-	public void setUsoSoloCulturaTemporariaVlUnit(BigDecimal usoSoloCulturaTemporariaVlUnit) {
-		this.usoSoloCulturaTemporariaVlUnit = usoSoloCulturaTemporariaVlUnit;
-	}
-
-	public void setUsoSoloOutrasHa(BigDecimal usoSoloOutrasHa) {
-		this.usoSoloOutrasHa = usoSoloOutrasHa;
-	}
-
-	public void setUsoSoloOutrasVlTot(BigDecimal usoSoloOutrasVlTot) {
-		this.usoSoloOutrasVlTot = usoSoloOutrasVlTot;
-	}
-
-	public void setUsoSoloOutrasVlUnit(BigDecimal usoSoloOutrasVlUnit) {
-		this.usoSoloOutrasVlUnit = usoSoloOutrasVlUnit;
-	}
-
-	public void setUsoSoloPastagemHa(BigDecimal usoSoloPastagemHa) {
-		this.usoSoloPastagemHa = usoSoloPastagemHa;
-	}
-
-	public void setUsoSoloPastagemVlTot(BigDecimal usoSoloPastagemVlTot) {
-		this.usoSoloPastagemVlTot = usoSoloPastagemVlTot;
-	}
-
-	public void setUsoSoloPastagemVlUnit(BigDecimal usoSoloPastagemVlUnit) {
-		this.usoSoloPastagemVlUnit = usoSoloPastagemVlUnit;
-	}
-
-	public void setUsoSoloPreservPermanenteHa(BigDecimal usoSoloPreservPermanenteHa) {
-		this.usoSoloPreservPermanenteHa = usoSoloPreservPermanenteHa;
-	}
-
-	public void setUsoSoloPreservPermanenteVlTot(BigDecimal usoSoloPreservPermanenteVlTot) {
-		this.usoSoloPreservPermanenteVlTot = usoSoloPreservPermanenteVlTot;
-	}
-
-	public void setUsoSoloPreservPermanenteVlUnit(BigDecimal usoSoloPreservPermanenteVlUnit) {
-		this.usoSoloPreservPermanenteVlUnit = usoSoloPreservPermanenteVlUnit;
-	}
-
-	public void setUsoSoloReservaLegalHa(BigDecimal usoSoloReservaLegalHa) {
-		this.usoSoloReservaLegalHa = usoSoloReservaLegalHa;
-	}
-
-	public void setUsoSoloReservaLegalVlTot(BigDecimal usoSoloReservaLegalVlTot) {
-		this.usoSoloReservaLegalVlTot = usoSoloReservaLegalVlTot;
-	}
-
-	public void setUsoSoloReservaLegalVlUnit(BigDecimal usoSoloReservaLegalVlUnit) {
-		this.usoSoloReservaLegalVlUnit = usoSoloReservaLegalVlUnit;
-	}
-
-	public void setUsoSoloTotalHa(BigDecimal usoSoloTotalHa) {
-		this.usoSoloTotalHa = usoSoloTotalHa;
-	}
-
-	public void setUsoSoloTotalVlTot(BigDecimal usoSoloTotalVlTot) {
-		this.usoSoloTotalVlTot = usoSoloTotalVlTot;
-	}
-
-	public void setUsoSoloTotalVlUnit(BigDecimal usoSoloTotalVlUnit) {
-		this.usoSoloTotalVlUnit = usoSoloTotalVlUnit;
 	}
 
 	public void setUsuarioAlteracao(Usuario usuarioAlteracao) {

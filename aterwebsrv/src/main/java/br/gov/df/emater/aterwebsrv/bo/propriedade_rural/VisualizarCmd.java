@@ -13,6 +13,7 @@ import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.ater.PropriedadeRuralDao;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
+import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRuralArquivo;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRuralFormaUtilizacaoEspacoRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
 
@@ -34,8 +35,8 @@ public class VisualizarCmd extends _Comando {
 			throw new BoException("Registro não localizado");
 		}
 
-		result.setUsuarioInclusao(result.getUsuarioInclusao().infoBasica());
-		result.setUsuarioAlteracao(result.getUsuarioAlteracao().infoBasica());
+		result.setUsuarioInclusao(result.getUsuarioInclusao() == null ? null: result.getUsuarioInclusao().infoBasica());
+		result.setUsuarioAlteracao(result.getUsuarioAlteracao() == null ? null: result.getUsuarioAlteracao().infoBasica());
 		result.setEndereco(result.getEndereco().infoBasica());
 
 		if (result.getPublicoAlvoPropriedadeRuralList() != null) {
@@ -56,6 +57,11 @@ public class VisualizarCmd extends _Comando {
 		if (result.getFormaUtilizacaoEspacoRuralList() != null) {
 			for (PropriedadeRuralFormaUtilizacaoEspacoRural formaUtilizacaoEspacoRural : result.getFormaUtilizacaoEspacoRuralList()) {
 				formaUtilizacaoEspacoRural.setPropriedadeRural(null);
+			}
+		}
+		if (result.getArquivoList() != null) {
+			for (PropriedadeRuralArquivo a: result.getArquivoList()) {
+				a.getId();
 			}
 		}
 		

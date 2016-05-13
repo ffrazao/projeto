@@ -2,7 +2,10 @@ package br.gov.df.emater.aterwebsrv.ferramenta;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -13,6 +16,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class UtilitarioExcel {
 
@@ -76,4 +80,43 @@ public class UtilitarioExcel {
 		return result;
 	}
 
+	public static boolean criarArquivoExcelDoMapa(List<Map<String, Object>> mapList, List<String> cabecalhoList, String arqExcel) throws IOException {
+		if (mapList == null || mapList.size() == 0) {
+			return false;
+		}
+		Workbook book = new XSSFWorkbook();
+		try {
+			Sheet sheet = book.createSheet("Planilha1");
+			int rownum = 0;
+			int cellnum = 0;
+			Row row = sheet.createRow(rownum++);
+			for (String cabecalho: cabecalhoList) {
+				Cell cell = row.createCell(cellnum++);
+				cell.setCellValue(cabecalho);
+			}
+			for (Map<String, Object> registro : mapList) {
+				row = sheet.createRow(rownum++);
+				cellnum = 0;
+				for (String cabecalho: cabecalhoList) {
+					Object valor = registro.get(cabecalho);
+					Cell cell = row.createCell(cellnum++);
+					if (valor instanceof String) {
+						cell.setCellValue((String) valor);
+					} else if (valor instanceof Boolean) {
+						cell.setCellValue((Boolean) valor);
+					} else if (valor instanceof Date) {
+						cell.setCellValue((Date) valor);
+					} else if (valor instanceof Double) {
+						cell.setCellValue((Double) valor);
+					}
+				}
+			}
+			try (FileOutputStream os = new FileOutputStream(arqExcel);) {
+				book.write(os);
+			}
+		} finally {
+			book.close();
+		}
+		return true;
+	}
 }

@@ -17,4 +17,6 @@ public interface PublicoAlvoPropriedadeRuralDao extends JpaRepository<PublicoAlv
 	
 	List<PublicoAlvoPropriedadeRural> findByPublicoAlvoInAndPropriedadeRuralIdIsNotNull(List<PublicoAlvo> publicoAlvoList);
 
+	PublicoAlvoPropriedadeRural findOneByChaveSisater(String chaveSisater);
+
 }

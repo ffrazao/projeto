@@ -28,7 +28,6 @@ import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Escolaridade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaNacionalidade;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaRelacionamentoInformadoTipo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.RegimeCasamento;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
@@ -121,18 +120,13 @@ public class PessoaRelacionamento extends EntidadeBase implements _ChavePrimaria
 	@Column(name = "rg_uf")
 	private String rgUf;
 
-	@Column(name = "tipo_vinculo_informado")
-	@Enumerated(EnumType.STRING)
-	private PessoaRelacionamentoInformadoTipo tipoVinculoInformado;
-
 	public PessoaRelacionamento() {
 	}
 
-	public PessoaRelacionamento(Integer id, Relacionamento relacionamento, PessoaRelacionamentoInformadoTipo tipoVinculoInformado, String nome, String apelido, String cpf, String rgNumero, Calendar rgDataEmissao, String rgOrgaoEmissor, String rgUf, Profissao profissaoId,
+	public PessoaRelacionamento(Integer id, Relacionamento relacionamento, String nome, String apelido, String cpf, String rgNumero, Calendar rgDataEmissao, String rgOrgaoEmissor, String rgUf, Profissao profissaoId,
 			PessoaGenero genero, PessoaNacionalidade nacionalidade, Municipio nascimentoMunicipio, Pais nascimentoPais, Calendar nascimento, Escolaridade escolaridade, RegimeCasamento regimeCasamento, String nomeMaeConjuge) {
 		this.setId(id);
 		this.setRelacionamento(relacionamento);
-		this.setTipoVinculoInformado(tipoVinculoInformado);
 		this.setNome(nome);
 		this.setApelido(apelido);
 		this.setCpf(cpf);
@@ -251,10 +245,6 @@ public class PessoaRelacionamento extends EntidadeBase implements _ChavePrimaria
 		return rgUf;
 	}
 
-	public PessoaRelacionamentoInformadoTipo getTipoVinculoInformado() {
-		return tipoVinculoInformado;
-	}
-
 	public void setApelido(String apelido) {
 		this.apelido = apelido;
 	}
@@ -344,15 +334,11 @@ public class PessoaRelacionamento extends EntidadeBase implements _ChavePrimaria
 		this.rgUf = rgUf;
 	}
 
-	public void setTipoVinculoInformado(PessoaRelacionamentoInformadoTipo tipoVinculoInformado) {
-		this.tipoVinculoInformado = tipoVinculoInformado;
-	}
-
-	public void transformarInformacao(RelacionamentoFuncao relacionamentoFuncao, PessoaRelacionamentoInformadoTipo tipoVinculoInformado) throws BoException {
-		if (this.getPessoa() == null && this.getTipoVinculoInformado() != null) {
-			if (relacionamentoFuncao == null) {
-				throw new BoException("Funcao não informada");
-			}
+	public void transformarInformacao() throws BoException {
+		if (this.relacionamentoFuncao == null) {
+			throw new BoException("Função no relacionamento não informada!");
+		}
+		if (this.getPessoa() == null) {
 			PessoaFisica pessoa = new PessoaFisica();
 			pessoa.setNome(this.getNome());
 			pessoa.setApelidoSigla(this.getApelido());
@@ -373,7 +359,6 @@ public class PessoaRelacionamento extends EntidadeBase implements _ChavePrimaria
 
 			// atribuir os novos dados
 			this.setPessoa(pessoa);
-			this.setRelacionamentoFuncao(relacionamentoFuncao);
 
 			// limpar os dados movidos
 			this.setNome(null);
@@ -392,12 +377,8 @@ public class PessoaRelacionamento extends EntidadeBase implements _ChavePrimaria
 			this.setEscolaridade(null);
 			this.setCertidaoCasamentoRegime(null);
 			this.setNomeMaeConjuge(null);
-		} else if (this.getPessoa() != null && this.getTipoVinculoInformado() == null) {
-			if (tipoVinculoInformado == null) {
-				throw new BoException("Funcao não informada");
-			}
+		} else if (this.getPessoa() != null) {
 			// atribuir os novos dados
-			this.setTipoVinculoInformado(tipoVinculoInformado);
 			this.setNome(((PessoaFisica) this.getPessoa()).getNome());
 			this.setApelido(((PessoaFisica) this.getPessoa()).getApelidoSigla());
 			this.setCpf(((PessoaFisica) this.getPessoa()).getCpf());
@@ -417,7 +398,6 @@ public class PessoaRelacionamento extends EntidadeBase implements _ChavePrimaria
 
 			// limpar os dados movidos
 			this.setPessoa(null);
-			this.setRelacionamentoFuncao(relacionamentoFuncao);
 		} else {
 			throw new BoException("Informações inválidas para fazer a conversão");
 		}

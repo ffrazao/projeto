@@ -122,10 +122,14 @@ public class UtilitarioString {
 		return pattern.matcher(nfdNormalizedString).replaceAll("");
 	}
 
-	public static String soNumero(String numero) {
+	public static String soNumero(String numero, char... ignorar) {
+		if (numero == null) {
+			return null;
+		}
+		String ignorarStr = new String(ignorar);
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < numero.length(); i++) {
-			if (Character.isDigit(numero.charAt(i))) {
+			if (Character.isDigit(numero.charAt(i)) || ignorarStr.indexOf(numero.charAt(i)) >= 0) {
 				sb.append(numero.charAt(i));
 			}
 		}
@@ -133,7 +137,6 @@ public class UtilitarioString {
 	}
 
 	public static boolean temCaractereRepetido(String str) {
-		// TODO Auto-generated method stub
 		return temCaractereRepetido(str, 2);
 	}
 
@@ -229,6 +232,9 @@ public class UtilitarioString {
 
 			String[] numeroComDddSeparado(String numero, int posicao) {
 				String[] result = null;
+				if (numero.length() - 1 < posicao) {
+					return null;
+				}
 				switch (numero.charAt(posicao)) {
 				case ' ':
 				case '-':
@@ -285,6 +291,13 @@ public class UtilitarioString {
 			return String.format("(%s) %s-%s", num[0], num[1].substring(0, pos), num[1].substring(pos, num[1].length()));
 		}
 		return numero;
+	}
+
+	public static String substituirTudo(String str, String encontrar, String substituir) {
+		while (str.indexOf(encontrar) >= 0) {
+			str = str.replaceAll(encontrar, substituir);
+		}
+		return str;
 	}
 
 }

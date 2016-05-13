@@ -116,7 +116,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                         }
                         ComunidadeSrv.lista(fltr, scp.cadastro.apoio.localList, t);
                     } else {
-                        toastr.error('Não foi possível identificar a sua lotação', 'Erro ao carregar os dados');
+                        toastr.warning('Não foi possível identificar a sua lotação', 'Erro ao carregar os dados');
                     }
                 }
             },

@@ -9,7 +9,7 @@
                         <div class="form-group">
                             <label class="control-label"><span ng-if="cadastro.registro.pessoaTipo==='PF'">Foto</span><span ng-if="cadastro.registro.pessoaTipo==='PJ'">Logomarca</span></label>
                             <div>
-                                <img class="img-thumbnail" src="img/foto.png" ng-click="selecionaFotoPerfil()" ng-hide="cadastro.registro.perfilArquivo.localDiretorioWeb.length" width="180px" height="180px" />
+                                <img class="img-thumbnail" src="img/foto.png" ng-click="selecionaFotoPerfil()" ng-hide="cadastro.registro.perfilArquivo.md5.length" width="180px" height="180px" />
                                 <img class="img-thumbnail" ng-src="{{servicoUrl}}/arquivo-descer?arquivo={{cadastro.registro.perfilArquivo.md5}}" ng-click="selecionaFotoPerfil()" ng-if="cadastro.registro.perfilArquivo.md5.length" width="180px" height="180px" />
                             </div>
                         </div>
@@ -115,6 +115,14 @@
                         <div class="form-group col-md-4">
                             <label class="control-label">Dt. Atualização</label>
                             <input class="form-control" type="text" readonly="true" ng-model="cadastro.registro.alteracaoData"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Chave Sisater</label>
+                            <input class="form-control" type="text" readonly="true" ng-model="cadastro.registro.chaveSisater"/>
                         </div>
                     </div>
                 </div>

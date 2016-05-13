@@ -39,7 +39,7 @@
                         {{$index + 1 + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)}}
                     </td>
                     <td width="96px" rowspan="2">
-                        <img src="img/foto.gif" class="img-thumbnail"  ng-click="selecionaFotoPerfil()" ng-hide="item['7'].length" width="180px" height="180px" />
+                        <img class="img-thumbnail" src="img/foto.gif" ng-click="selecionaFotoPerfil()" ng-hide="item['7'].length" width="180px" height="180px" />
                         <img class="img-thumbnail" ng-src="{{servicoUrl}}/arquivo-descer?arquivo={{item['7']}}" ng-if="item['7'].length" width="180px" height="180px" />
                     </td>
                     <td><a ng-click="modalVerPessoa(item[0])">{{item[1]}}<small ng-if="item[2]" alt="apelido/ sigla"><br><i>{{item[2]}}</i></small></a></td>

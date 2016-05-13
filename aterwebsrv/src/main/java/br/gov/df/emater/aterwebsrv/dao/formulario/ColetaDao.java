@@ -6,4 +6,6 @@ import br.gov.df.emater.aterwebsrv.modelo.formulario.Coleta;
 
 public interface ColetaDao extends JpaRepository<Coleta, Integer> {
 
+	Coleta findOneByChaveSisater(String chaveColetaFormulario);
+
 }
