@@ -5,7 +5,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -29,6 +28,7 @@ import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaEmailDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaEnderecoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaGrupoSocialDao;
+import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaPendenciaDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaRelacionamentoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaTelefoneDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoConfiguracaoViDao;
@@ -56,6 +56,7 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaEndereco;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaGrupoSocial;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaPendencia;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaRelacionamento;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaTelefone;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Relacionamento;
@@ -101,6 +102,9 @@ public class SalvarCmd extends _Comando {
 
 	@Autowired
 	private PessoaGrupoSocialDao pessoaGrupoSocialDao;
+
+	@Autowired
+	private PessoaPendenciaDao pessoaPendenciaDao;
 
 	@Autowired
 	private PessoaRelacionamentoDao pessoaRelacionamentoDao;
@@ -149,7 +153,7 @@ public class SalvarCmd extends _Comando {
 		}
 		return result;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
@@ -265,7 +269,6 @@ public class SalvarCmd extends _Comando {
 					}
 				}
 			}
-			// result.setPublicoAlvo(publicoAlvo);
 		}
 
 		// salvar enderecos
@@ -291,8 +294,8 @@ public class SalvarCmd extends _Comando {
 					}
 					endereco.setCep(UtilitarioString.formataCep(endereco.getCep()));
 					endereco = enderecoDao.save(endereco);
-					
-					PessoaEndereco salvo= pessoaEnderecoDao.findOneByPessoaAndEndereco(result, endereco);
+
+					PessoaEndereco salvo = pessoaEnderecoDao.findOneByPessoaAndEndereco(result, endereco);
 					if (salvo != null) {
 						pessoaEndereco.setId(salvo.getId());
 					}
@@ -325,7 +328,7 @@ public class SalvarCmd extends _Comando {
 						telefone.setId(null);
 						telefone = telefoneDao.save(telefone);
 					}
-					PessoaTelefone salvo= pessoaTelefoneDao.findOneByPessoaAndTelefone(result, telefone);
+					PessoaTelefone salvo = pessoaTelefoneDao.findOneByPessoaAndTelefone(result, telefone);
 					if (salvo != null) {
 						pessoaTelefone.setId(salvo.getId());
 					}
@@ -359,7 +362,7 @@ public class SalvarCmd extends _Comando {
 						email.setEndereco(email.getEndereco().trim().toLowerCase());
 						email = emailDao.save(email);
 					}
-					PessoaEmail salvo= pessoaEmailDao.findOneByPessoaAndEmail(result, email);
+					PessoaEmail salvo = pessoaEmailDao.findOneByPessoaAndEmail(result, email);
 					if (salvo != null) {
 						pessoaEmail.setId(salvo.getId());
 					}
@@ -491,15 +494,24 @@ public class SalvarCmd extends _Comando {
 			}
 		}
 
-		try {
-			dao.flush();
-		} catch (DataIntegrityViolationException e) {
-			if (e.getMessage().indexOf("uq_pessoa_1") >= 0) {
-				throw new BoException("Número de Inscrição Estadual já utilizado!");
-			} else {
-				throw e;
+		// salvar pendencias do cadastro
+		if (result.getPendenciaList() != null) {
+			// tratar a exclusao de registros
+			for (PessoaPendencia pendencia : result.getPendenciaList()) {
+				if (CadastroAcao.E.equals(pendencia.getCadastroAcao())) {
+					pessoaPendenciaDao.delete(pendencia);
+				}
+			}
+			// tratar a insersao de registros
+			for (PessoaPendencia pendencia : result.getPendenciaList()) {
+				if (!CadastroAcao.E.equals(pendencia.getCadastroAcao())) {
+					pendencia.setPessoa(result);
+					pessoaPendenciaDao.save(pendencia);
+				}
 			}
 		}
+
+		dao.flush();
 
 		contexto.setResposta(result.getId());
 		return false;

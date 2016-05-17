@@ -15,6 +15,7 @@ import br.gov.df.emater.aterwebsrv.dao.ater.PropriedadeRuralDao;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRuralArquivo;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRuralFormaUtilizacaoEspacoRural;
+import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRuralPendencia;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
 
 @Service("PropriedadeRuralVisualizarCmd")
@@ -64,6 +65,13 @@ public class VisualizarCmd extends _Comando {
 				a.getId();
 			}
 		}
+		
+		if (result.getPendenciaList() != null) {
+			for (PropriedadeRuralPendencia propriedadeRuralPendencia: result.getPendenciaList()) {
+				propriedadeRuralPendencia.setPropriedadeRural(null);
+			}
+		}
+
 		
 		em.detach(result);
 		contexto.setResposta(result);

@@ -8,6 +8,6 @@ import br.gov.df.emater.aterwebsrv.modelo.ater.SistemaProducao;
 @Repository("SistemaProducaoDao")
 public interface SistemaProducaoDao extends JpaRepository<SistemaProducao, Integer> {
 
-	SistemaProducao findOneByNome(String sistemaProducao);
+	SistemaProducao findOneByNomeIgnoreCase(String sistemaProducao);
 
 }

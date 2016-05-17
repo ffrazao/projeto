@@ -16,7 +16,7 @@ import net.objecthunter.exp4j.ExpressionBuilder;
 
 public enum FormulaProduto {
 
-	A("A", 1), B("A * B", 2);
+	A("A", 1), B("A * B", 2), C("A * B", 3);
 
 	private String descricao;
 

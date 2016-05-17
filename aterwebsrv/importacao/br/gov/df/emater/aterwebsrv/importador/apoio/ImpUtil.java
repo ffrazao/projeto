@@ -26,6 +26,7 @@ import br.gov.df.emater.aterwebsrv.dao.ater.ComunidadeDao;
 import br.gov.df.emater.aterwebsrv.dao.ater.SistemaProducaoDao;
 import br.gov.df.emater.aterwebsrv.dao.formulario.FormularioVersaoDao;
 import br.gov.df.emater.aterwebsrv.dao.funcional.EmpregoViDao;
+import br.gov.df.emater.aterwebsrv.dao.funcional.UnidadeOrganizacionalDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.CidadeDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.ProfissaoDao;
 import br.gov.df.emater.aterwebsrv.dao.sistema.UsuarioDao;
@@ -49,11 +50,13 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.RegimeCasamento;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.SituacaoFundiaria;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.FormularioVersao;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.EmpregoVi;
+import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Cidade;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Endereco;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Municipio;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Profissao;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 
@@ -96,6 +99,11 @@ public class ImpUtil {
 	private SistemaProducaoDao sistemaProducaoDao;
 
 	private List<SistemaProducao> sistemaProducaoList = new ArrayList<SistemaProducao>();
+
+	@Autowired
+	private UnidadeOrganizacionalDao unidadeOrganizacionalDao;
+
+	private List<UnidadeOrganizacional> unidadeOrganizacionalList = new ArrayList<UnidadeOrganizacional>();
 
 	@Autowired
 	private UsuarioDao usuarioDao;
@@ -254,6 +262,14 @@ public class ImpUtil {
 
 	public String chavePessoaTelefone(DbSater base, String idund, String idbem, String nomeCampo) {
 		return String.format("%s[CAMPO=%s]", chaveBeneficiario(base, idund, idbem), nomeCampo);
+	}
+
+	public String chaveProducaoAgricola(DbSater base, String idUnd, int idIpa, String idBen, String idPrp, String nomeCampo) {
+		return String.format("%s=[IDUND=%s,IDIPA=%d,IDBEN=%s,IDPRP=%s][TABELA=%s]", base.name(), idUnd, idIpa, idBen, idPrp, nomeCampo);
+	}
+
+	public String chaveProducaoAgricolaGeral(DbSater base, String idUnd, int idIpa, String safra, String nomeCampo) {
+		return String.format("%s=[IDUND=%s,IDIPA=%d,SAFRA=%s][TABELA=%s]", base.name(), idUnd, idIpa, safra, nomeCampo);
 	}
 
 	public String chavePropriedadeRural(DbSater base, String idund, String idprp) {
@@ -477,7 +493,7 @@ public class ImpUtil {
 
 	public PessoaGenero deParaGenero(String registro) {
 		if (registro == null) {
-			return null;
+			return PessoaGenero.M;
 		}
 		switch (UtilitarioString.semAcento(registro.trim().toLowerCase())) {
 		case "feminino":
@@ -658,6 +674,21 @@ public class ImpUtil {
 		}
 	}
 
+	public UnidadeOrganizacional deParaUnidadeOrganizacional(PessoaJuridica empresa, String registro) throws BoException {
+		for (UnidadeOrganizacional uo : unidadeOrganizacionalList) {
+			if (uo.getSigla().equalsIgnoreCase(registro)) {
+				return uo;
+			}
+		}
+		UnidadeOrganizacional uo = unidadeOrganizacionalDao.findOneByPessoaJuridicaAndSigla(empresa, registro);
+		if (uo != null) {
+			unidadeOrganizacionalList.add(uo);
+		} else {
+			throw new BoException("Unidade Organizacional não encontrada");
+		}
+		return uo;
+	}
+
 	public Usuario deParaUsuario(String registro) {
 		registro = UtilitarioString.soNumero(registro, 'X', 'x');
 		if (registro == null || registro.trim().length() == 0) {
@@ -754,9 +785,10 @@ public class ImpUtil {
 				return sistemaProducao;
 			}
 		}
-		SistemaProducao sistemaProducao = sistemaProducaoDao.findOneByNome(nome);
+		SistemaProducao sistemaProducao = sistemaProducaoDao.findOneByNomeIgnoreCase(nome);
 		if (sistemaProducao == null) {
-			return null;
+//			return null;
+			throw new BoException("Sistema de Produção não cadastrado [%s]", nome);
 		}
 		sistemaProducaoList.add(sistemaProducao);
 

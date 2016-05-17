@@ -102,21 +102,27 @@ public class SalvarCmd extends _Comando {
 			} catch (Exception e) {
 				throw new BoException(e);
 			}
-			if (producaoForma.getVolume() != null) {
+			if (producaoForma.getVolume() != null && producaoForma.getValorUnitario() != null) {
 				producaoForma.setValorTotal(producaoForma.getVolume().multiply(producaoForma.getValorUnitario(), UtilitarioNumero.BIG_DECIMAL_PRECISAO));
+			} else {
+				producaoForma.setValorTotal(null);
 			}
 
 			producaoFormaDao.save(producaoForma);
 
 			Integer ordem = 0;
-			for (ProducaoFormaComposicao producaoFormaComposicao : producaoForma.getProducaoFormaComposicaoList()) {
-				// se não foi excluido
-				if (CadastroAcao.E.equals(producaoFormaComposicao.getCadastroAcao())) {
-					continue;
+			try {				
+				for (ProducaoFormaComposicao producaoFormaComposicao : producaoForma.getProducaoFormaComposicaoList()) {
+					// se não foi excluido
+					if (CadastroAcao.E.equals(producaoFormaComposicao.getCadastroAcao())) {
+						continue;
+					}
+					producaoFormaComposicao.setProducaoForma(producaoForma);
+					producaoFormaComposicao.setOrdem(++ordem);
+					producaoFormaComposicaoDao.save(producaoFormaComposicao);
 				}
-				producaoFormaComposicao.setProducaoForma(producaoForma);
-				producaoFormaComposicao.setOrdem(++ordem);
-				producaoFormaComposicaoDao.save(producaoFormaComposicao);
+			} catch (NullPointerException e) {
+				throw e;
 			}
 		}
 

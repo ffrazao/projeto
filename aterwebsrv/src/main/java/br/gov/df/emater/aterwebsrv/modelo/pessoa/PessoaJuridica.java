@@ -7,7 +7,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
-import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
@@ -63,7 +62,7 @@ public class PessoaJuridica extends Pessoa {
 	}
 
 	public void setCnpj(String cnpj) {
-		this.cnpj = UtilitarioString.formataCnpj(cnpj);
+		this.cnpj = cnpj;
 	}
 
 }

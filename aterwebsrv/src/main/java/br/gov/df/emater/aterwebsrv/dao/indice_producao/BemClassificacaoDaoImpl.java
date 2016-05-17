@@ -13,6 +13,7 @@ import br.gov.df.emater.aterwebsrv.modelo.dto.BemClassificacaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.FiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacaoFormaProducaoItem;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacaoFormaProducaoValor;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.FormaProducaoValor;
 
 public class BemClassificacaoDaoImpl implements BemClassificacaoDaoCustom {
@@ -85,6 +86,9 @@ public class BemClassificacaoDaoImpl implements BemClassificacaoDaoCustom {
 					bemClassificacaoFormaProducaoItemList = fetchBemClassificacaoFormaProducaoItem(bemClassificacaoFormaProducaoItemList, b);
 				}
 			}
+			if (bc.getBemClassificacaoFormaProducaoValorList() != null) {
+				bemClassificacaoFormaProducaoItemList = fetchBemClassificacaoFormaProducaoValor(bemClassificacaoFormaProducaoItemList, bc.getBemClassificacaoFormaProducaoValorList());
+			}
 			linha.add(bemClassificacaoFormaProducaoItemList);
 
 			List<Object> bemClassificacaoList = null;
@@ -120,6 +124,20 @@ public class BemClassificacaoDaoImpl implements BemClassificacaoDaoCustom {
 			} else {
 				linha.add(null);
 			}
+			List<Object[]> bemClassificacaoFormaProducaoValorList = null;
+			Object[] formaProducaoItem = null;
+			if (bc.getBemClassificacaoFormaProducaoValorList() != null) {
+				for (BemClassificacaoFormaProducaoValor bcfpvl : bc.getBemClassificacaoFormaProducaoValorList()) {
+					if (formaProducaoItem == null) {
+						formaProducaoItem = new Object[] { bcfpvl.getFormaProducaoValor().getFormaProducaoItem().getId(), bcfpvl.getFormaProducaoValor().getFormaProducaoItem().getNome() };
+					}
+					if (bemClassificacaoFormaProducaoValorList == null) {
+						bemClassificacaoFormaProducaoValorList = new ArrayList<Object[]>();
+					}
+					bemClassificacaoFormaProducaoValorList.add(new Object[] { bcfpvl.getFormaProducaoValor().getId(), bcfpvl.getFormaProducaoValor().getNome() });
+				}
+			}
+			linha.add(formaProducaoItem == null ? null : new Object[] { formaProducaoItem, bemClassificacaoFormaProducaoValorList });
 
 			if (result == null) {
 				result = new ArrayList<Object>();
@@ -142,6 +160,51 @@ public class BemClassificacaoDaoImpl implements BemClassificacaoDaoCustom {
 				linhaSub.add(v.getNome());
 				formaProducaoValorList.add(linhaSub.toArray());
 			}
+			linha.add(formaProducaoValorList);
+
+			if (result == null) {
+				result = new ArrayList<Object[]>();
+			}
+			result.add(linha.toArray());
+		}
+		return result;
+	}
+
+	private List<Object[]> fetchBemClassificacaoFormaProducaoValor(List<Object[]> result, List<BemClassificacaoFormaProducaoValor> bc) {
+		if (bc != null && bc.size() > 0) {
+			List<Object> linha = new ArrayList<Object>();
+			
+			List<Object> bemClassificacaoFormaProducaoItemList = new ArrayList<Object>();
+			bemClassificacaoFormaProducaoItemList.add(bc.get(0).getFormaProducaoValor().getFormaProducaoItem().getId());
+			bemClassificacaoFormaProducaoItemList.add(bc.get(0).getFormaProducaoValor().getFormaProducaoItem().getNome());
+
+			List<Object[]> formaProducaoValorList = new ArrayList<Object[]>();
+			
+			for (BemClassificacaoFormaProducaoValor v : bc) {				
+				if (!bemClassificacaoFormaProducaoItemList.get(0).equals(v.getFormaProducaoValor().getFormaProducaoItem().getId())) {
+					// adicionar item
+					linha.add(bemClassificacaoFormaProducaoItemList.get(0));
+					linha.add(bemClassificacaoFormaProducaoItemList.get(1));
+					linha.add(formaProducaoValorList);
+					if (result == null) {
+						result = new ArrayList<Object[]>();
+					}
+					result.add(linha.toArray());
+					// reiniciar agrupadores
+					linha = new ArrayList<Object>();
+					bemClassificacaoFormaProducaoItemList = new ArrayList<Object>();
+					formaProducaoValorList = new ArrayList<Object[]>();
+					bemClassificacaoFormaProducaoItemList.add(v.getFormaProducaoValor().getFormaProducaoItem().getId());
+					bemClassificacaoFormaProducaoItemList.add(v.getFormaProducaoValor().getFormaProducaoItem().getNome());
+				}
+
+				List<Object> linhaSub = new ArrayList<Object>();
+				linhaSub.add(v.getFormaProducaoValor().getId());
+				linhaSub.add(v.getFormaProducaoValor().getNome());
+				formaProducaoValorList.add(linhaSub.toArray());
+			}
+			linha.add(bemClassificacaoFormaProducaoItemList.get(0));
+			linha.add(bemClassificacaoFormaProducaoItemList.get(1));
 			linha.add(formaProducaoValorList);
 
 			if (result == null) {

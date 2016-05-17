@@ -36,6 +36,7 @@ import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PropriedadeRuralSituacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.SituacaoFundiaria;
+import br.gov.df.emater.aterwebsrv.modelo.pendencia.Pendenciavel;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Endereco;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
@@ -49,7 +50,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 @Entity
 @Table(name = "propriedade_rural", schema = EntidadeBase.ATER_SCHEMA)
 // @Indexed
-public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<PropriedadeRural> {
+public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<PropriedadeRural>, Pendenciavel<PropriedadeRuralPendencia> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -69,7 +70,7 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 	// @IndexedEmbedded
 	private List<PropriedadeRuralArquivo> arquivoList;
 
-//	@NotNull
+	// @NotNull
 	@ManyToOne
 	@JoinColumn(name = "bacia_hidrografica_id")
 	private BaciaHidrografica baciaHidrografica;
@@ -95,7 +96,7 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 	@Column(name = "chave_sisater")
 	private String chaveSisater;
 
-	//@NotNull
+	// @NotNull
 	@ManyToOne
 	@JoinColumn(name = "comunidade_id")
 	private Comunidade comunidade;
@@ -146,7 +147,7 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 	private Calendar outorgaValidade;
 
 	@OneToMany(mappedBy = "propriedadeRural")
-	private List<PropriedadeRuralPendencia> pendenciaList;
+	private List<PropriedadeRuralPendencia> pendenciaList = new ArrayList<PropriedadeRuralPendencia>();
 
 	@Column(name = "principais_atividades_produtivas")
 	private String principaisAtividadesProdutivas;

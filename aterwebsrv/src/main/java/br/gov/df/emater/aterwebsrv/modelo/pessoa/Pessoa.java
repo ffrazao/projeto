@@ -1,5 +1,6 @@
 package br.gov.df.emater.aterwebsrv.modelo.pessoa;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -38,6 +39,7 @@ import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaTipo;
+import br.gov.df.emater.aterwebsrv.modelo.pendencia.Pendenciavel;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
@@ -51,7 +53,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 @Inheritance(strategy = InheritanceType.JOINED)
 // para identificar classes dentro de contextos polimórficos
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
-public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<Pessoa> {
+public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<Pessoa>, Pendenciavel<PessoaPendencia> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -110,7 +112,7 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	private String observacoes;
 
 	@OneToMany(mappedBy = "pessoa")
-	private List<PessoaPendencia> pendenciaList;
+	private List<PessoaPendencia> pendenciaList = new ArrayList<PessoaPendencia>();
 
 	@ManyToOne
 	@JoinColumn(name = "perfil_arquivo_id")
@@ -227,6 +229,7 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		return observacoes;
 	}
 
+	@Override
 	public List<PessoaPendencia> getPendenciaList() {
 		return pendenciaList;
 	}
@@ -328,6 +331,7 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		this.observacoes = observacoes;
 	}
 
+	@Override
 	public void setPendenciaList(List<PessoaPendencia> pendenciaList) {
 		this.pendenciaList = pendenciaList;
 	}

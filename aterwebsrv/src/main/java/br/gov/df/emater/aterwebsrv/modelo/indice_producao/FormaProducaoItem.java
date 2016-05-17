@@ -1,5 +1,6 @@
 package br.gov.df.emater.aterwebsrv.modelo.indice_producao;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -29,6 +30,10 @@ public class FormaProducaoItem extends EntidadeBase implements _ChavePrimaria<In
 
 	public FormaProducaoItem() {
 		super();
+	}
+
+	public FormaProducaoItem(Serializable id) {
+		super(id);
 	}
 
 	public List<FormaProducaoValor> getFormaProducaoValorList() {

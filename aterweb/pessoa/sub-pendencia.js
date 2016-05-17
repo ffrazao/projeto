@@ -3,8 +3,8 @@
 'use strict';
 
 angular.module(pNmModulo).controller(pNmController,
-    ['$scope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv', 'mensagemSrv',
-    function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv) {
+    ['$scope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv', 'mensagemSrv', '$sce',
+    function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv, $sce) {
 
     // inicializacao
     var init = function() {
@@ -28,6 +28,7 @@ angular.module(pNmModulo).controller(pNmController,
     // inicio rotinas de apoio
     // $scope.seleciona = function(pessoaPendenciaNvg, item) { };
     // $scope.mataClick = function(pessoaPendenciaNvg, event, item){ };
+
     // fim rotinas de apoio
 
     // inicio das operaçoes atribuidas ao navagador

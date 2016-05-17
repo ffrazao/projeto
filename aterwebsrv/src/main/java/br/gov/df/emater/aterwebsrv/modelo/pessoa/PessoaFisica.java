@@ -416,7 +416,7 @@ public class PessoaFisica extends Pessoa {
 	}
 
 	public void setCpf(String cpf) {
-		this.cpf = UtilitarioString.formataCpf(cpf);
+		this.cpf = cpf;
 	}
 
 	public void setCtpsNumero(String ctpsNumero) {

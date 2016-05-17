@@ -20,6 +20,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                    'Confirmacao',
                    'PropriedadeRuralVinculoTipo',
                    'FormaUtilizacaoEspacoRural',
+                   'PendenciaTipo',
                 ]}).success(function(resposta) {
                     if (resposta && resposta.resultado) {
                         var i = 0;
@@ -32,6 +33,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                         scp.cadastro.apoio.confirmacaoList = resposta.resultado[i++];
                         scp.cadastro.apoio.propriedadeRuralVinculoTipoList = resposta.resultado[i++];
                         scp.cadastro.apoio.formaUtilizacaoEspacoRuralList = resposta.resultado[i++];
+                        scp.cadastro.apoio.pendenciaTipoList = resposta.resultado[i++];
 
                         scp.cadastro.apoio.baciaHidrograficaList = [];
 

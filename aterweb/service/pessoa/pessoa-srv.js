@@ -38,7 +38,8 @@ angular.module(pNmModulo).factory(pNmFactory,
                    'PropriedadeRuralVinculoTipo',
                    'Situacao',
                    'OrganizacaoTipo',
-                   'Estado'
+                   'Estado',
+                   'PendenciaTipo'
                 ]}).success(function(resposta) {
                     if (resposta && resposta.mensagem === 'OK') {
                         scp.cadastro.apoio.pessoaTipoList = resposta.resultado[0];
@@ -79,6 +80,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                         scp.cadastro.apoio.situacaoList = resposta.resultado[23];
                         scp.cadastro.apoio.organizacaoTipoList = resposta.resultado[24];
                         scp.cadastro.apoio.estadoList = resposta.resultado[25];
+                        scp.cadastro.apoio.pendenciaTipoList = resposta.resultado[26];
 
                         scp.cadastro.apoio.tradicaoList = [];
                         var anoAtual = new Date().getFullYear();

@@ -15,4 +15,12 @@ public interface PessoaFisicaDao extends JpaRepository<PessoaFisica, Integer> {
 	
 	List<PessoaFisica> findByNomeIgnoreCaseAndGenero(String nome, PessoaGenero genero);
 
+	List<PessoaFisica> findByCpf(String numero);
+
+	List<PessoaFisica> findByRgNumero(String numero);
+
+	List<PessoaFisica> findByRgNumeroAndRgUf(String numero, String uf);
+
+	List<PessoaFisica> findByNisNumero(String numero);
+
 }

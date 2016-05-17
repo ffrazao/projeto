@@ -40,9 +40,9 @@ public class SisaterCmd extends _Comando {
 				continue;
 			}
 
-			if (++cont < 6) {
+			if (++cont < 1) {
 				continue;
-			} else if (cont > 6) {
+			} else if (cont > 2) {
 				break;
 			}
 

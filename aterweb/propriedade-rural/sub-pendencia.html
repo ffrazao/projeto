@@ -2,7 +2,7 @@
     <div class="panel-heading container-fluid">
         <frz-navegador
         ng-model="propriedadeRuralPendenciaNvg" exibe-nome-botao="false"
-        dados="cadastro.registro.pendencia"
+        dados="cadastro.registro.pendenciaList"
         acoes-especiais="acoesEspeciais"
         on-abrir = "abrir()"
         on-agir = "agir()"
@@ -20,35 +20,35 @@
         on-ultima-pagina="ultimaPagina()"
         ></frz-navegador>
     </div>
-    <div class="painel-body"  ng-hide="cadastro.registro.pendencia.length">
+    <div class="painel-body"  ng-hide="cadastro.registro.pendenciaList.length">
         <div class="alert alert-warning" style="margin: 0px;" role="alert">
             <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
             Nenhum registro localizado!
         </div>
     </div>
-    <div class="table-responsive" ng-show="cadastro.registro.pendencia.length > 0">
+    <div class="table-responsive" ng-show="cadastro.registro.pendenciaList.length > 0">
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th><frz-seletor ng-model="propriedadeRuralPendenciaNvg" dados="cadastro.registro.pendencia"></frz-seletor></th>
+                    <th><frz-seletor ng-model="propriedadeRuralPendenciaNvg" dados="cadastro.registro.pendenciaList"></frz-seletor></th>
                     <th>#</th>
-                    <th>Nome</th>
-                    <th>Pendência</th>
-                    <th>Função</th>
+                    <th>Codigo</th>
+                    <th>Tipo</th>
+                    <th>Descrição</th>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="tel in cadastro.registro.pendencia">
+                <tr ng-repeat="item in cadastro.registro.pendenciaList" ng-class="{vermelho: item.tipo === 'E'}">
                     <td>
-                        <input type="radio" ng-show="propriedadeRuralPendenciaNvg.selecao.tipo === 'U'" ng-model="propriedadeRuralPendenciaNvg.selecao.item" ng-value="tel"/>
-                        <input type="checkbox" ng-show="propriedadeRuralPendenciaNvg.selecao.tipo === 'M'" checklist-model="propriedadeRuralPendenciaNvg.selecao.items" checklist-value="tel"/>
+                        <input type="radio" ng-show="propriedadeRuralPendenciaNvg.selecao.tipo === 'U'" ng-model="propriedadeRuralPendenciaNvg.selecao.item" ng-value="item"/>
+                        <input type="checkbox" ng-show="propriedadeRuralPendenciaNvg.selecao.tipo === 'M'" checklist-model="propriedadeRuralPendenciaNvg.selecao.items" checklist-value="item"/>
                     </td>
                     <td>
                         {{$index + 1 + ((propriedadeRuralPendenciaNvg.paginaAtual-1) * propriedadeRuralPendenciaNvg.tamanhoPagina)}}
                     </td>
-                    <td>{{tel.propriedadeRural.nome}}</td>
-                    <td>{{tel.pendenciaTipo.id}}</td>
-                    <td>{{tel.pendenciaFuncao.id}}</td>
+                    <td>{{item.codigo}}</td>
+                    <td>{{UtilSrv.indiceDePorCampo(cadastro.apoio.pendenciaTipoList, item.tipo, 'codigo').descricao}}</td>
+                    <td><p compile="item.descricao"></p></td>
                 </tr>
             </tbody>
             <tfoot>

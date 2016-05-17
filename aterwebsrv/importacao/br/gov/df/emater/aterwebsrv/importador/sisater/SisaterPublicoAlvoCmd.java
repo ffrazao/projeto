@@ -370,8 +370,6 @@ public class SisaterPublicoAlvoCmd extends _Comando {
 		public void avalia(List<PessoaTelefone> result, String nomeCampo, TelefoneTipo tipo) throws SQLException {
 			String informado = rs.getString(nomeCampo);
 			if (informado != null && informado.trim().length() > 0) {
-				informado = UtilitarioString.formataTelefone(informado);
-
 				PessoaTelefone sisater = new PessoaTelefone(null, new Telefone(informado), "P", tipo);
 				sisater.setChaveSisater(impUtil.chavePessoaTelefone(base, rs.getString("IDUND"), rs.getString("IDBEN"), nomeCampo));
 
@@ -404,8 +402,8 @@ public class SisaterPublicoAlvoCmd extends _Comando {
 	private static final String SISATER_TABELA = "BENEF00";
 
 	private static final String SQL = String.format("SELECT T.* FROM %s T ORDER BY T.%s", SISATER_TABELA, SISATER_CAMPO);
-	private static final String SQL_DIVIDA = "SELECT T.* FROM DIVIDA T WHERE T.IDBEN = ?";
 
+	private static final String SQL_DIVIDA = "SELECT T.* FROM DIVIDA T WHERE T.IDBEN = ?";
 	private static final String SQL_FOTO = "SELECT T.BFFOTO FROM BENEF02 T WHERE T.IDBEN = ?";
 
 	private static final String SQL_PATRIMANI = "SELECT T.* FROM PATRIMANI T WHERE T.IDBEN = ?";
@@ -495,10 +493,10 @@ public class SisaterPublicoAlvoCmd extends _Comando {
 	private List<PessoaEmail> captarEmailList(ResultSet rs, Pessoa salvo) throws SQLException {
 		List<PessoaEmail> result = null;
 		String emailStr = rs.getString("BFEMAIL");
-		if (emailStr != null) {
+		if (emailStr != null && emailStr.trim().length() > 0) {
 			result = new ArrayList<PessoaEmail>();
 
-			PessoaEmail sisater = new PessoaEmail(null, new Email(emailStr.toLowerCase()), "P");
+			PessoaEmail sisater = new PessoaEmail(null, new Email(emailStr), "P");
 			sisater.setChaveSisater(impUtil.chavePessoaEmail(base, rs.getString("IDUND"), rs.getString("IDBEN")));
 
 			boolean encontrou = false;
@@ -842,7 +840,7 @@ public class SisaterPublicoAlvoCmd extends _Comando {
 		// result.setCnhNumero(rs.getString("cnhNumero"));
 		// result.setCnhPrimeiraHabilitacao(rs.getString("cnhPrimeiraHabilitacao"));
 		// result.setCnhValidade(rs.getString("cnhValidade"));
-		result.setCpf(UtilitarioString.formataCpf(rs.getString("BFCPF")));
+		result.setCpf(rs.getString("BFCPF"));
 		// result.setCtpsNumero(rs.getString("ctpsNumero"));
 		// result.setCtpsSerie(rs.getString("ctpsSerie"));
 		result.setEscolaridade(impUtil.deParaEscolaridade(rs.getString("BFINS")));

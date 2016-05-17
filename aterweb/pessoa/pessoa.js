@@ -6,8 +6,8 @@
     angular.module(pNmModulo).config(['$stateProvider', function($stateProvider) {
         criarEstadosPadrao($stateProvider, pNmModulo, pNmController, pUrlModulo);
     }]);
-    angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'PessoaSrv', '$rootScope',
-        function($scope, toastr, FrzNavegadorParams, $state, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, PessoaSrv, $rootScope) {
+    angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'PessoaSrv', '$rootScope', '$interval',
+        function($scope, toastr, FrzNavegadorParams, $state, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, PessoaSrv, $rootScope, $interval) {
 
             // inicializacao
             $scope.crudInit($scope, $state, modalCadastro, pNmFormulario, PessoaSrv);
@@ -597,11 +597,13 @@
                 if (newValue && newValue.length) {
                     var categoria = UtilSrv.indiceDePorCampo($scope.cadastro.apoio.publicoAlvoCategoriaList, newValue, 'codigo');
                     $scope.cadastro.apoio.publicoAlvoSegmentoList = [];
-                    $scope.cadastro.apoio.publicoAlvoSegmentoListOriginal.forEach(function(segmento) {
-                        if (categoria.publicoAlvoSegmentoList.indexOf(segmento.codigo) >= 0) {
-                            $scope.cadastro.apoio.publicoAlvoSegmentoList.push(segmento);
-                        }
-                    });
+                    if ($scope.cadastro.apoio.publicoAlvoSegmentoListOriginal) {
+                        $scope.cadastro.apoio.publicoAlvoSegmentoListOriginal.forEach(function(segmento) {
+                            if (categoria.publicoAlvoSegmentoList.indexOf(segmento.codigo) >= 0) {
+                                $scope.cadastro.apoio.publicoAlvoSegmentoList.push(segmento);
+                            }
+                        });
+                    }
                 }
             });
             $scope.$watch('cadastro.registro.publicoAlvoConfirmacao + cadastro.registro.publicoAlvo.dapSituacao + cadastro.registro.publicoAlvo.dapValidade', function(newValue, oldValue) {
@@ -620,6 +622,30 @@
                     $scope.cadastro.apoio.dapImagem = "img/dap-a-vencer.png";
                 } else {
                     $scope.cadastro.apoio.dapImagem = "img/dap-vencida.png";
+                }
+            });
+            $scope.$watch('cadastro.registro.pendenciaList', function(newValue, oldValue) {
+                $scope.alertas = [];
+                if ($scope.cadastro.registro.pendenciaList && $scope.cadastro.registro.pendenciaList.length > 0) {
+                    var erro = null, alerta = null;
+                    $scope.cadastro.registro.pendenciaList.forEach(function(item) {
+                        if (item.tipo === 'E') {
+                            erro = {tipo:'danger', mensagem: 'Este registro possui ERROS de cadastro!'};
+                        }
+                        if (item.tipo === 'A') {
+                            alerta = {tipo:'warning', mensagem: 'Este registro possui AVISOS de cadastro!'};
+                        }
+                    });
+                    if (erro) {
+                        $scope.alertas.push(erro);
+                    }
+                    if (alerta) {
+                        $scope.alertas.push(alerta);
+                    }
+                    $interval(function(){
+                        $(".piscar").fadeOut();
+                        $(".piscar").fadeIn();
+                    }, 2000);
                 }
             });
 

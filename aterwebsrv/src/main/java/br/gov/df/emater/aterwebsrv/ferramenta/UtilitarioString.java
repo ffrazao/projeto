@@ -77,123 +77,50 @@ public class UtilitarioString {
 		return sb.toString();
 	}
 
-	public static String formataCep(String cep) {
-		if (cep == null) {
-			return null;
-		}
-		cep = zeroEsquerda(soNumero(cep.trim()), 8);
-		return Pattern.compile("(\\d{2})(\\d{3})(\\d{3})").matcher(cep).replaceAll("$1.$2-$3");
-	}
-
-	public static String formataCnpj(String cnpj) {
-		if (cnpj == null) {
-			return null;
-		}
-		cnpj = zeroEsquerda(soNumero(cnpj.trim()), 14);
-		return Pattern.compile("(\\d{2})(\\d{3})(\\d{3})(\\d{4})(\\d{2})").matcher(cnpj).replaceAll("$1.$2.$3/$4-$5");
-	}
-
-	public static String formataCpf(String cpf) {
-		if (cpf == null) {
-			return null;
-		}
-		cpf = zeroEsquerda(soNumero(cpf.trim()), 11);
-		return Pattern.compile("(\\d{3})(\\d{3})(\\d{3})(\\d{2})").matcher(cpf).replaceAll("$1.$2.$3-$4");
-	}
-
-	public static boolean isEmpty(String vlr) {
-		return vlr == null || vlr.trim().length() == 0;
-	}
-
-	public static String removeAspas(String valor) {
-		// remover as aspas da string
-		if (valor.startsWith("\"")) {
-			valor = valor.substring(1);
-		}
-		if (valor.endsWith("\"")) {
-			valor = valor.substring(0, valor.length() - 1);
-		}
-		return valor;
-	}
-
-	public static String semAcento(String str) {
-		String nfdNormalizedString = Normalizer.normalize(str, Normalizer.Form.NFD);
-		Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
-		return pattern.matcher(nfdNormalizedString).replaceAll("");
-	}
-
-	public static String soNumero(String numero, char... ignorar) {
+	public static String formataCep(String numero) {
 		if (numero == null) {
 			return null;
 		}
-		String ignorarStr = new String(ignorar);
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < numero.length(); i++) {
-			if (Character.isDigit(numero.charAt(i)) || ignorarStr.indexOf(numero.charAt(i)) >= 0) {
-				sb.append(numero.charAt(i));
-			}
-		}
-		return sb.toString();
+		numero = zeroEsquerda(soNumero(numero.trim()), 8);
+		return Pattern.compile("(\\d{2})(\\d{3})(\\d{3})").matcher(numero).replaceAll("$1.$2-$3");
 	}
 
-	public static boolean temCaractereRepetido(String str) {
-		return temCaractereRepetido(str, 2);
-	}
-
-	public static boolean temCaractereRepetido(String str, int vezes) {
-		if (str == null || str.length() < vezes) {
-			return false;
-		}
-		StringBuilder repete = new StringBuilder();
-		int cont = 0;
-		for (char c : str.toCharArray()) {
-			if (repete.length() > 0 && c == repete.charAt(repete.length() - 1)) {
-				cont++;
-			} else {
-				cont = 0;
-			}
-			repete.append(c);
-			if (cont + 1 == vezes) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	public static String zeroDireita(int num, int tam) {
-		return zeroDireita(String.valueOf(num), tam);
-	}
-
-	public static String zeroDireita(String num, int tam) {
-		StringBuilder sb = new StringBuilder();
-		sb.append(num);
-		sb.append(complemento('0', tam));
-		return sb.substring(0, tam);
-	}
-
-	public static String zeroEsquerda(int num, int tam) {
-		return zeroEsquerda(String.valueOf(num), tam);
-	}
-
-	public static String zeroEsquerda(String num, int tam) {
-		StringBuilder sb = new StringBuilder();
-		sb.append(complemento('0', tam));
-		sb.append(num);
-		return sb.substring(sb.length() - tam, sb.length());
-	}
-
-	public static String limitarTextoEm(String texto, int tamanho) {
-		if (texto == null) {
+	public static String formataEmail(String endereco) {
+		if (endereco == null) {
 			return null;
 		}
-		String result = null;
-		if (texto.length() > tamanho) {
-			result = texto.substring(0, tamanho);
-		} else {
-			result = texto;
+		endereco = endereco.trim().toLowerCase();
+		return endereco;
+	}
+
+	public static String formataCnpj(String numero) {
+		if (numero == null) {
+			return null;
 		}
-		return result;
+		numero = zeroEsquerda(soNumero(numero.trim()), 14);
+		return Pattern.compile("(\\d{2})(\\d{3})(\\d{3})(\\d{4})(\\d{2})").matcher(numero).replaceAll("$1.$2.$3/$4-$5");
+	}
+
+	public static String formataCpf(String numero) {
+		if (numero == null) {
+			return null;
+		}
+		numero = zeroEsquerda(soNumero(numero.trim()), 11);
+		return Pattern.compile("(\\d{3})(\\d{3})(\\d{3})(\\d{2})").matcher(numero).replaceAll("$1.$2.$3-$4");
+	}
+
+	public static String formataNis(String numero) {
+		if (numero == null) {
+			return null;
+		}
+		numero = soNumero(numero.trim());
+		if (numero.length() < 11) {
+			numero = zeroEsquerda(numero, 13);
+		}
+		if (numero.length() < 13) {
+			numero += "01"; 
+		}
+		return Pattern.compile("(\\d{1})(\\d{10})(\\d{2})").matcher(numero).replaceAll("$1.$2-$3");
 	}
 
 	public static String formataNomeProprio(String nome) {
@@ -293,11 +220,106 @@ public class UtilitarioString {
 		return numero;
 	}
 
+	public static boolean isEmpty(String vlr) {
+		return vlr == null || vlr.trim().length() == 0;
+	}
+
+	public static String limitarTextoEm(String texto, int tamanho) {
+		if (texto == null) {
+			return null;
+		}
+		String result = null;
+		if (texto.length() > tamanho) {
+			result = texto.substring(0, tamanho);
+		} else {
+			result = texto;
+		}
+		return result;
+	}
+
+	public static String removeAspas(String valor) {
+		// remover as aspas da string
+		if (valor.startsWith("\"")) {
+			valor = valor.substring(1);
+		}
+		if (valor.endsWith("\"")) {
+			valor = valor.substring(0, valor.length() - 1);
+		}
+		return valor;
+	}
+
+	public static String semAcento(String str) {
+		String nfdNormalizedString = Normalizer.normalize(str, Normalizer.Form.NFD);
+		Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+		return pattern.matcher(nfdNormalizedString).replaceAll("");
+	}
+
+	public static String soNumero(String numero, char... ignorar) {
+		if (numero == null) {
+			return null;
+		}
+		String ignorarStr = new String(ignorar);
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < numero.length(); i++) {
+			if (Character.isDigit(numero.charAt(i)) || ignorarStr.indexOf(numero.charAt(i)) >= 0) {
+				sb.append(numero.charAt(i));
+			}
+		}
+		return sb.toString();
+	}
+
 	public static String substituirTudo(String str, String encontrar, String substituir) {
 		while (str.indexOf(encontrar) >= 0) {
 			str = str.replaceAll(encontrar, substituir);
 		}
 		return str;
+	}
+
+	public static boolean temCaractereRepetido(String str) {
+		return temCaractereRepetido(str, 2);
+	}
+
+	public static boolean temCaractereRepetido(String str, int vezes) {
+		if (str == null || str.length() < vezes) {
+			return false;
+		}
+		StringBuilder repete = new StringBuilder();
+		int cont = 0;
+		for (char c : str.toCharArray()) {
+			if (repete.length() > 0 && c == repete.charAt(repete.length() - 1)) {
+				cont++;
+			} else {
+				cont = 0;
+			}
+			repete.append(c);
+			if (cont + 1 == vezes) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public static String zeroDireita(int num, int tam) {
+		return zeroDireita(String.valueOf(num), tam);
+	}
+
+	public static String zeroDireita(String num, int tam) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(num);
+		sb.append(complemento('0', tam));
+		return sb.substring(0, tam);
+	}
+
+	public static String zeroEsquerda(int num, int tam) {
+		return zeroEsquerda(String.valueOf(num), tam);
+	}
+
+	public static String zeroEsquerda(String num, int tam) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(complemento('0', tam));
+		sb.append(num);
+		return sb.substring(sb.length() - tam, sb.length());
 	}
 
 }

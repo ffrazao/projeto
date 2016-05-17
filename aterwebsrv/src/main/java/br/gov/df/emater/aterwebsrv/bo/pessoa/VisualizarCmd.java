@@ -20,10 +20,10 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaEndereco;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaGrupoSocial;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaPendencia;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaRelacionamento;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaTelefone;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Relacionamento;
-import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoFuncao;
 
 @Service("PessoaVisualizarCmd")
 public class VisualizarCmd extends _Comando {
@@ -121,6 +121,12 @@ public class VisualizarCmd extends _Comando {
 		if (result.getTelefoneList() != null) {
 			for (PessoaTelefone pessoaTelefone : result.getTelefoneList()) {
 				pessoaTelefone.setPessoa(null);
+			}
+		}
+		
+		if (result.getPendenciaList() != null) {
+			for (PessoaPendencia pessoaPendencia: result.getPendenciaList()) {
+				pessoaPendencia.setPessoa(null);
 			}
 		}
 

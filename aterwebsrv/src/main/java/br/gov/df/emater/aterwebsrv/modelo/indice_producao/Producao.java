@@ -53,6 +53,9 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer> {
 	@JoinColumn(name = "bem_id")
 	private Bem bem;
 
+	@Column(name = "chave_sisater")
+	private String chaveSisater;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
@@ -97,12 +100,12 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.propriedadeRural = producao.getPropriedadeRural();
 		this.publicoAlvo = producao.getPublicoAlvo();
 		this.unidadeOrganizacional = producao.getUnidadeOrganizacional();
-		
+
 		if (producao.getProducaoFormaList() != null) {
-			
-			for (ProducaoForma producaoForma: producao.getProducaoFormaList()) {
+
+			for (ProducaoForma producaoForma : producao.getProducaoFormaList()) {
 				ProducaoForma pf = new ProducaoForma(producaoForma);
-				if (this.producaoFormaList == null) {					
+				if (this.producaoFormaList == null) {
 					this.producaoFormaList = new ArrayList<ProducaoForma>();
 				}
 				this.producaoFormaList.add(pf);
@@ -124,6 +127,10 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	public Bem getBem() {
 		return bem;
+	}
+
+	public String getChaveSisater() {
+		return chaveSisater;
 	}
 
 	@Override
@@ -169,6 +176,10 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	public void setBem(Bem bem) {
 		this.bem = bem;
+	}
+
+	public void setChaveSisater(String chaveSisater) {
+		this.chaveSisater = chaveSisater;
 	}
 
 	@Override

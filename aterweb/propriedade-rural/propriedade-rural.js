@@ -22,10 +22,10 @@
     ]);
     angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance',
         'modalCadastro', 'UtilSrv', 'mensagemSrv', 'PropriedadeRuralSrv', 'EnderecoSrv', 'uiGmapGoogleMapApi', 'uiGmapIsReady',
-        'ponteControllerSrv',
+        'ponteControllerSrv', '$interval',
         function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance,
             modalCadastro, UtilSrv, mensagemSrv, PropriedadeRuralSrv, EnderecoSrv, uiGmapGoogleMapApi, uiGmapIsReady,
-            ponteControllerSrv) {
+            ponteControllerSrv, $interval) {
 
             // inicializacao
             $scope.crudInit($scope, $state, null, pNmFormulario, PropriedadeRuralSrv);
@@ -66,6 +66,8 @@
                 });
             };
             // fim: atividades do Modal
+
+            $scope.UtilSrv = UtilSrv;
 
             var editarItem = function(destino, item) {
                 mensagemSrv.confirmacao(false, '<frz-endereco conteudo="conteudo"/>', null, item, null, null).then(function(conteudo) {
@@ -281,6 +283,30 @@
                     }
                 });
                 $scope.cadastro.apoio.enderecoResumo = result;
+            });
+            $scope.$watch('cadastro.registro.pendenciaList', function(newValue, oldValue) {
+                $scope.alertas = [];
+                if ($scope.cadastro.registro.pendenciaList && $scope.cadastro.registro.pendenciaList.length > 0) {
+                    var erro = null, alerta = null;
+                    $scope.cadastro.registro.pendenciaList.forEach(function(item) {
+                        if (item.tipo === 'E') {
+                            erro = {tipo:'danger', mensagem: 'Este registro possui ERROS de cadastro!'};
+                        }
+                        if (item.tipo === 'A') {
+                            alerta = {tipo:'warning', mensagem: 'Este registro possui AVISOS de cadastro!'};
+                        }
+                    });
+                    if (erro) {
+                        $scope.alertas.push(erro);
+                    }
+                    if (alerta) {
+                        $scope.alertas.push(alerta);
+                    }
+                    $interval(function(){
+                        $(".piscar").fadeOut();
+                        $(".piscar").fadeIn();
+                    }, 2000);
+                }
             });
 
             // fim dos watches
@@ -566,7 +592,7 @@
 
             $scope.confirmarFiltrarAntes = function(filtro) {
 
-                if ($scope.cadastro.apoio.filtro.map.polys && $scope.cadastro.apoio.filtro.map.polys.length) {
+                if ($scope.cadastro.apoio.filtro.map && $scope.cadastro.apoio.filtro.map.polys && $scope.cadastro.apoio.filtro.map.polys.length) {
                     filtro.areaList = [];
 
                     $scope.cadastro.apoio.filtro.map.polys.forEach(function(poly) {

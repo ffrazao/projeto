@@ -1,8 +1,36 @@
 package br.gov.df.emater.aterwebsrv.ferramenta;
 
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Util {
+
+	private static final int[] pesoCNPJ = { 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
+
+	private static final int[] pesoCPF = { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
+
+	private static int cnpCalcularDigito(String str, int[] peso) {
+		int soma = 0;
+		for (int indice = str.length() - 1, digito; indice >= 0; indice--) {
+			digito = Integer.parseInt(str.substring(indice, indice + 1));
+			soma += digito * peso[peso.length - str.length() + indice];
+		}
+		soma = 11 - soma % 11;
+		return soma > 9 ? 0 : soma;
+	}
+
+	private static String extraiNumeroProtocolo(String numero) {
+		String str = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		StringBuilder sb = new StringBuilder();
+		for (char c : numero.toCharArray()) {
+			int pos = str.indexOf(c);
+			if (pos >= 0) {
+				sb.append(UtilitarioString.zeroEsquerda(pos, 2));
+			}
+		}
+		return sb.toString();
+	}
 
 	public static String gerarCodigoAtividade() {
 		String str = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -18,16 +46,55 @@ public class Util {
 		return sb.toString();
 	}
 
-	private static String extraiNumeroProtocolo(String numero) {
-		String str = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		StringBuilder sb = new StringBuilder();
-		for (char c : numero.toCharArray()) {
-			int pos = str.indexOf(c);
-			if (pos >= 0) {
-				sb.append(UtilitarioString.zeroEsquerda(pos, 2));
-			}
+	public static boolean isEmailValido(String endereco) {
+		if ((endereco == null) || (endereco.trim().length() == 0))
+			return false;
+		String emailPattern = "\\b(^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@([A-Za-z0-9-])+(\\.[A-Za-z0-9-]+)*((\\.[A-Za-z0-9]{2,})|(\\.[A-Za-z0-9]{2,}\\.[A-Za-z0-9]{2,}))$)\\b";
+		Pattern pattern = Pattern.compile(emailPattern, Pattern.CASE_INSENSITIVE);
+		Matcher matcher = pattern.matcher(endereco);
+		return matcher.matches();
+	}
+
+	public static boolean isCnpjValido(String numero) {
+		if (numero == null) {
+			return false;
 		}
-		return sb.toString();
+		numero = UtilitarioString.zeroEsquerda(UtilitarioString.soNumero(numero), 14);
+		if (UtilitarioString.temCaractereRepetido(numero, 14)) {
+			return false;
+		}
+		Integer digito1 = cnpCalcularDigito(numero.substring(0, 12), pesoCNPJ);
+		Integer digito2 = cnpCalcularDigito(numero.substring(0, 12) + digito1, pesoCNPJ);
+		return numero.equals(numero.substring(0, 12) + digito1.toString() + digito2.toString());
+	}
+
+	public static boolean isCpfValido(String numero) {
+		if (numero == null) {
+			return false;
+		}
+		numero = UtilitarioString.zeroEsquerda(UtilitarioString.soNumero(numero), 11);
+		if (UtilitarioString.temCaractereRepetido(numero, 11)) {
+			return false;
+		}
+		Integer digito1 = cnpCalcularDigito(numero.substring(0, 9), pesoCPF);
+		Integer digito2 = cnpCalcularDigito(numero.substring(0, 9) + digito1, pesoCPF);
+		return numero.equals(numero.substring(0, 9) + digito1.toString() + digito2.toString());
+	}
+
+	public static boolean isNisValido(String numero) {
+		if (numero == null) {
+			return false;
+		}
+		numero = UtilitarioString.soNumero(numero);
+		if (numero.length() > 13) {
+			return false;
+		}
+		numero = UtilitarioString.zeroEsquerda(numero, 11);
+		if (UtilitarioString.temCaractereRepetido(numero, 11)) {
+			return false;
+		}
+		Integer resto = nisCalcularDigito(numero);
+		return numero.endsWith(resto.toString());
 	}
 
 	private static int modulo10(String numero) {
@@ -83,6 +150,27 @@ public class Util {
 
 		// retorna o digito verificador
 		return dv;
+	}
+
+	private static Integer nisCalcularDigito(String nis) {
+		nis = nis.substring(0, 11);
+		int[] multiplicador = new int[] { 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
+		int soma;
+		int resto;
+		if (nis == null || nis.trim().length() == 0) {
+			return null;
+		}
+		soma = 0;
+		for (int i = 0; i < 10; i++) {
+			soma += Character.getNumericValue(nis.charAt(i)) * multiplicador[i];
+		}
+		resto = soma % 11;
+		if (resto < 2) {
+			resto = 0;
+		} else {
+			resto = 11 - resto;
+		}
+		return resto;
 	}
 
 }

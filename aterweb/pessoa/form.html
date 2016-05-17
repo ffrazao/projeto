@@ -1,7 +1,9 @@
+
 <div class="panel panel-default">
     <div class="panel-heading"><h4>{{nomeFormulario}}</h4></div>
     <div class="panel-body">
         <form name="frm.formulario" novalidate>
+            <uib-alert ng-repeat="alerta in alertas" type="{{alerta.tipo}}"><p class="piscar">{{alerta.mensagem}}</p></uib-alert>
             <fieldset ng-disabled="['INCLUINDO', 'EDITANDO'].indexOf(navegador.estadoAtual()) < 0">
             <!--<fieldset>-->
                 <div class="row">

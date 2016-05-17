@@ -33,6 +33,9 @@ public class BemClassificacao extends EntidadeBase implements _ChavePrimaria<Int
 	private List<BemClassificacaoFormaProducaoItem> bemClassificacaoFormaProducaoItemList;
 
 	@OneToMany(mappedBy = "bemClassificacao")
+	private List<BemClassificacaoFormaProducaoValor> bemClassificacaoFormaProducaoValorList;
+
+	@OneToMany(mappedBy = "bemClassificacao")
 	private List<BemClassificacao> bemClassificacaoList;
 
 	@Enumerated(EnumType.STRING)
@@ -82,6 +85,10 @@ public class BemClassificacao extends EntidadeBase implements _ChavePrimaria<Int
 		return bemClassificacaoFormaProducaoItemList;
 	}
 
+	public List<BemClassificacaoFormaProducaoValor> getBemClassificacaoFormaProducaoValorList() {
+		return bemClassificacaoFormaProducaoValorList;
+	}
+
 	public List<BemClassificacao> getBemClassificacaoList() {
 		return bemClassificacaoList;
 	}
@@ -115,12 +122,21 @@ public class BemClassificacao extends EntidadeBase implements _ChavePrimaria<Int
 		return unidadeMedida;
 	}
 
+	@Override
+	public BemClassificacao infoBasica() {
+		return new BemClassificacao(getId(), getNome(), getBemClassificacao());
+	}
+
 	public void setBemClassificacao(BemClassificacao bemClassificacao) {
 		this.bemClassificacao = bemClassificacao;
 	}
 
 	public void setBemClassificacaoFormaProducaoItemList(List<BemClassificacaoFormaProducaoItem> bemClassificacaoFormaProducaoItemList) {
 		this.bemClassificacaoFormaProducaoItemList = bemClassificacaoFormaProducaoItemList;
+	}
+
+	public void setBemClassificacaoFormaProducaoValorList(List<BemClassificacaoFormaProducaoValor> bemClassificacaoFormaProducaoValorList) {
+		this.bemClassificacaoFormaProducaoValorList = bemClassificacaoFormaProducaoValorList;
 	}
 
 	public void setBemClassificacaoList(List<BemClassificacao> bemClassificacaoList) {
@@ -154,11 +170,6 @@ public class BemClassificacao extends EntidadeBase implements _ChavePrimaria<Int
 
 	public void setUnidadeMedida(UnidadeMedida unidadeMedida) {
 		this.unidadeMedida = unidadeMedida;
-	}
-
-	@Override
-	public BemClassificacao infoBasica() {
-		return new BemClassificacao(getId(), getNome(), getBemClassificacao());
 	}
 
 }

@@ -375,6 +375,19 @@ var TIMEOUT_TEMPO = 200;
         };
     });
 
+    angular.module(pNmModulo).directive('compile', ['$compile', function ($compile) {
+        return function(scope, element, attrs) {
+            scope.$watch(
+                function(scope) {
+                    return scope.$eval(attrs.compile);
+                },
+                function(value) {
+                    element.html(value);
+                    $compile(element.contents())(scope);
+                }
+            );};
+    }]);
+
     angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 'toastr', 'UtilSrv', '$stateParams', '$timeout', 'TokenStorage', '$state', 'CestaDeValores', 'SegurancaSrv',
         'Idle',
         function($rootScope, $uibModal, FrzNavegadorParams, toastr, UtilSrv, $stateParams, $timeout, TokenStorage, $state, CestaDeValores, SegurancaSrv,
@@ -876,9 +889,6 @@ var TIMEOUT_TEMPO = 200;
 
                 scp.servico.incluir(scp.cadastro.registro).success(function(resposta) {
                     if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {
-                        scp.navegador.voltar(scp);
-                        scp.navegador.mudarEstado('VISUALIZANDO');
-                        scp.crudVaiPara(scp, scp.stt, 'form');
                         scp.navegador.submetido = false;
                         scp.navegador.dados.push(scp.cadastro.registro);
                         if (scp.navegador.selecao.tipo === 'U') {
@@ -890,7 +900,7 @@ var TIMEOUT_TEMPO = 200;
                         scp.navegador.refresh();
 
                         toastr.info('Operação realizada!', 'Informação');
-
+                        $rootScope.visualizar(scp, resposta.resultado);
                     } else {
                         toastr.error(resposta && resposta.mensagem ? resposta.mensagem : resposta, 'Erro ao incluir');
                     }
@@ -917,13 +927,8 @@ var TIMEOUT_TEMPO = 200;
 
                 scp.servico.editar(registro).success(function(resposta) {
                     if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {
-                        scp.navegador.voltar(scp);
-                        scp.navegador.mudarEstado('VISUALIZANDO');
-                        scp.crudVaiPara(scp, scp.stt, 'form');
-                        scp.navegador.submetido = false;
-                        angular.copy(scp.cadastro.registro, scp.cadastro.original);
-                        $rootScope.limparRegistroMarcadoExclusao(scp);
                         toastr.info('Operação realizada!', 'Informação');
+                        $rootScope.visualizar(scp, resposta.resultado);
                     } else {
                         toastr.error(resposta && resposta.mensagem ? resposta.mensagem : resposta, 'Erro ao editar');
                     }
@@ -1188,7 +1193,7 @@ var TIMEOUT_TEMPO = 200;
                 angular.copy(scp.cadastro.original, scp.cadastro.registro);
                 $rootScope.limparRegistroMarcadoExclusao(scp);
             };
-            $rootScope.visualizar = function(scp) {
+            $rootScope.visualizar = function(scp, idInf) {
                 var id = null;
                 if ($stateParams.id) {
                     id = $stateParams.id;
@@ -1204,6 +1209,9 @@ var TIMEOUT_TEMPO = 200;
                     } else if (scp.navegador.selecao.items[scp.navegador.folhaAtual].id) {
                         id = scp.navegador.selecao.items[scp.navegador.folhaAtual].id;
                     }
+                }
+                if (id === null) {
+                    id = idInf;
                 }
                 if (id === null) {
                     scp.incluir(scp);

@@ -18,7 +18,6 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.Situacao;
 import br.gov.df.emater.aterwebsrv.modelo.dto.FiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.FormularioCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.FormularioColetaCadFiltroDto;
-import br.gov.df.emater.aterwebsrv.modelo.formulario.Coleta;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.FormularioVersao;
 
 public class FormularioDaoImpl implements FormularioDaoCustom {
@@ -208,24 +207,6 @@ public class FormularioDaoImpl implements FormularioDaoCustom {
 
 		// executar a consulta
 		result = (List<FormularioVersao>) query.getResultList();
-
-		if (result != null && result.size() > 0) {
-			List<FormularioVersao> formularioVersaoList = new ArrayList<FormularioVersao>();
-			for (FormularioVersao formularioVersao : result) {
-				FormularioVersao fv = formularioVersao.infoBasica();
-				if (!enviaColetas) {
-					fv.setColetaList(null);
-				} else {
-					List<Coleta> coletaList = new ArrayList<Coleta>();
-					for (Coleta coleta : formularioVersao.getColetaList()) {
-						coletaList.add(coleta.infoBasica());
-					}
-					fv.setColetaList(coletaList);
-				}
-				formularioVersaoList.add(fv);
-			}
-			result = formularioVersaoList;
-		}
 
 		// retornar
 		return result;
