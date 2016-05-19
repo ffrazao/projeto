@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.bo.pendencia.VerificarPendenciasCmd;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaDao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PendenciaCodigo;
@@ -17,7 +18,7 @@ public class VerifPendInscricaoEstadualCmd extends VerificarPendenciasCmd {
 	private PessoaDao pessoaDao;
 
 	@Override
-	public String constatarPendencia() {
+	public String constatarPendencia(_Contexto contexto) {
 		Pessoa pessoa = (Pessoa) getPendenciavel();
 		String uf = pessoa.getInscricaoEstadualUf();
 		String numero = pessoa.getInscricaoEstadual();

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.bo.pendencia.VerificarPendenciasCmd;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PendenciaCodigo;
@@ -14,7 +15,7 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 public class VerifPendTelefoneCmd extends VerificarPendenciasCmd {
 
 	@Override
-	public String constatarPendencia() {
+	public String constatarPendencia(_Contexto contexto) {
 		Pessoa pessoa = (Pessoa) getPendenciavel();
 
 		List<String> mensagemList = new ArrayList<String>();
@@ -34,14 +35,7 @@ public class VerifPendTelefoneCmd extends VerificarPendenciasCmd {
 				}
 			}
 		}
-		if (mensagemList.size() == 0) {
-			return null;
-		}
-		StringBuilder sb = new StringBuilder();
-		for (String mensagem : mensagemList) {
-			sb.append(mensagem).append("\n");
-		}
-		return sb.toString();
+		return extraiResultado(mensagemList);
 	}
 
 	@Override

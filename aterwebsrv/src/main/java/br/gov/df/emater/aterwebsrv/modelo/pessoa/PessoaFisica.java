@@ -21,7 +21,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
-import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.CamOrgao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.CnhCategoria;
@@ -45,7 +44,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 @Table(name = "pessoa_fisica", schema = EntidadeBase.PESSOA_SCHEMA)
 @PrimaryKeyJoinColumn(name = "id")
 // @Indexed
-public class PessoaFisica extends Pessoa {
+public class PessoaFisica extends Pessoa implements PessoaFisicaDadosBasicos {
 
 	private static final long serialVersionUID = 1L;
 
@@ -234,6 +233,7 @@ public class PessoaFisica extends Pessoa {
 		return certidaoCasamentoLivro;
 	}
 
+	@Override
 	public RegimeCasamento getCertidaoCasamentoRegime() {
 		return certidaoCasamentoRegime;
 	}
@@ -254,6 +254,7 @@ public class PessoaFisica extends Pessoa {
 		return cnhValidade;
 	}
 
+	@Override
 	public String getCpf() {
 		return cpf;
 	}
@@ -266,6 +267,7 @@ public class PessoaFisica extends Pessoa {
 		return ctpsSerie;
 	}
 
+	@Override
 	public Escolaridade getEscolaridade() {
 		return escolaridade;
 	}
@@ -274,6 +276,7 @@ public class PessoaFisica extends Pessoa {
 		return estadoCivil;
 	}
 
+	@Override
 	public PessoaGenero getGenero() {
 		return genero;
 	}
@@ -303,22 +306,27 @@ public class PessoaFisica extends Pessoa {
 		return UtilitarioData.getInstance().qtdAnosEntre(getNascimento(), Calendar.getInstance());
 	}
 
+	@Override
 	public PessoaNacionalidade getNacionalidade() {
 		return nacionalidade;
 	}
 
+	@Override
 	public Calendar getNascimento() {
 		return nascimento;
 	}
 
+	@Override
 	public Estado getNascimentoEstado() {
 		return nascimentoEstado;
 	}
 
+	@Override
 	public Municipio getNascimentoMunicipio() {
 		return nascimentoMunicipio;
 	}
 
+	@Override
 	public Pais getNascimentoPais() {
 		return nascimentoPais;
 	}
@@ -327,26 +335,32 @@ public class PessoaFisica extends Pessoa {
 		return nisNumero;
 	}
 
+	@Override
 	public String getNomeMaeConjuge() {
 		return nomeMaeConjuge;
 	}
 
+	@Override
 	public Profissao getProfissao() {
 		return profissao;
 	}
 
+	@Override
 	public Calendar getRgDataEmissao() {
 		return rgDataEmissao;
 	}
 
+	@Override
 	public String getRgNumero() {
 		return rgNumero;
 	}
 
+	@Override
 	public String getRgOrgaoEmissor() {
 		return rgOrgaoEmissor;
 	}
 
+	@Override
 	public String getRgUf() {
 		return rgUf;
 	}
@@ -363,6 +377,7 @@ public class PessoaFisica extends Pessoa {
 		return tituloZona;
 	}
 
+	@Override
 	public PessoaFisica infoBasica() {
 		return new PessoaFisica(this.getId(), this.getNome(), this.getApelidoSigla(), this.getPerfilArquivo() == null ? null : this.getPerfilArquivo().infoBasica(), this.getSituacao(), this.getPublicoAlvoConfirmacao(), this.getGenero(), this.getCpf());
 	}
@@ -395,6 +410,7 @@ public class PessoaFisica extends Pessoa {
 		this.certidaoCasamentoLivro = certidaoCasamentoLivro;
 	}
 
+	@Override
 	public void setCertidaoCasamentoRegime(RegimeCasamento certidaoCasamentoRegime) {
 		this.certidaoCasamentoRegime = certidaoCasamentoRegime;
 	}
@@ -415,6 +431,7 @@ public class PessoaFisica extends Pessoa {
 		this.cnhValidade = cnhValidade;
 	}
 
+	@Override
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
@@ -427,6 +444,7 @@ public class PessoaFisica extends Pessoa {
 		this.ctpsSerie = ctpsSerie;
 	}
 
+	@Override
 	public void setEscolaridade(Escolaridade escolaridade) {
 		this.escolaridade = escolaridade;
 	}
@@ -435,6 +453,7 @@ public class PessoaFisica extends Pessoa {
 		this.estadoCivil = estadoCivil;
 	}
 
+	@Override
 	public void setGenero(PessoaGenero genero) {
 		this.genero = genero;
 	}
@@ -447,22 +466,27 @@ public class PessoaFisica extends Pessoa {
 		this.idade = idade;
 	}
 
+	@Override
 	public void setNacionalidade(PessoaNacionalidade nacionalidade) {
 		this.nacionalidade = nacionalidade;
 	}
 
+	@Override
 	public void setNascimento(Calendar nascimento) {
 		this.nascimento = nascimento;
 	}
 
+	@Override
 	public void setNascimentoEstado(Estado nascimentoEstado) {
 		this.nascimentoEstado = nascimentoEstado;
 	}
 
+	@Override
 	public void setNascimentoMunicipio(Municipio nascimentoMunicipio) {
 		this.nascimentoMunicipio = nascimentoMunicipio;
 	}
 
+	@Override
 	public void setNascimentoPais(Pais nascimentoPais) {
 		this.nascimentoPais = nascimentoPais;
 	}
@@ -471,26 +495,32 @@ public class PessoaFisica extends Pessoa {
 		this.nisNumero = nisNumero;
 	}
 
+	@Override
 	public void setNomeMaeConjuge(String nomeMaeConjuge) {
 		this.nomeMaeConjuge = nomeMaeConjuge;
 	}
 
+	@Override
 	public void setProfissao(Profissao profissao) {
 		this.profissao = profissao;
 	}
 
+	@Override
 	public void setRgDataEmissao(Calendar rgDataEmissao) {
 		this.rgDataEmissao = rgDataEmissao;
 	}
 
+	@Override
 	public void setRgNumero(String rgNumero) {
 		this.rgNumero = rgNumero;
 	}
 
+	@Override
 	public void setRgOrgaoEmissor(String rgOrgaoEmissor) {
 		this.rgOrgaoEmissor = rgOrgaoEmissor;
 	}
 
+	@Override
 	public void setRgUf(String rgUf) {
 		this.rgUf = rgUf;
 	}

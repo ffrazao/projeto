@@ -69,7 +69,7 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 		private List<FormaProducaoValor> formaProducaoValorList = new ArrayList<FormaProducaoValor>();
 
 		private int geral;
-		
+
 		private String nomeTabela;
 
 		private OrigemList tabela;
@@ -440,11 +440,11 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 						}
 					}
 					cont++;
-					
+
 					// FIXME quebra-galho para teste. remover este código
-					if (cont > 50) {
-						break;
-					}
+					// if (cont > 50) {
+					// break;
+					// }
 
 					em.detach(producao);
 
@@ -690,6 +690,7 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 			throw new BoException("Unidade de Medida não identificada");
 		}
 	}
+
 	private static enum OrigemList {
 		IPAA00("SELECT D.IDUND, D.IDIPA, D3.SAFRA, D.IDBEN, D.IDPRP, D.DTIPA, CULTURA, GRUPO, SUBGRUPO, CULTURA, SISTEMA, PROTECAO, USOAGUA, D.AREA, D1.CHAVE_ATER_WEB AS CHAVE_ATER_WEB_PESSOA, D2.CHAVE_ATER_WEB AS CHAVE_ATER_WEB_PROP, D3.QUANTIDADE, D3.UNIDADE, D.AREA * D3.QUANTIDADE AS PRODUTIVIDADE, D3.PDCUND FROM IPAA01 D, BENEF00 D1, PROP00 D2, IPAA00 D3 WHERE (D.IDBEN = D1.IDBEN) AND (D.IDPRP = D2.IDPRP) AND (D.IDIPA = D3.IDIPA) ORDER BY 1, 2, 3, 4"), IPAF00(
 				"SELECT D.IDUND, D.IDIPA, D3.SAFRA, D.IDBEN, D.IDPRP, D.DTIPA, CULTURA, GRUPO, SUBGRUPO, CULTURA, SISTEMA, PROTECAO, USOAGUA, D.AREA, D1.CHAVE_ATER_WEB AS CHAVE_ATER_WEB_PESSOA, D2.CHAVE_ATER_WEB AS CHAVE_ATER_WEB_PROP, D3.QUANTIDADE, D3.UNIDADE, D.AREA * D3.QUANTIDADE AS PRODUTIVIDADE, D3.PDCUND FROM IPAF01 D, BENEF00 D1, PROP00 D2, IPAF00 D3 WHERE (D.IDBEN = D1.IDBEN) AND (D.IDPRP = D2.IDPRP) AND (D.IDIPA = D3.IDIPA) ORDER BY 1, 2, 3, 4"), IPAN00(
@@ -764,7 +765,8 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 
 		for (OrigemList origem : OrigemList.values()) {
 			for (int i = 0; i <= 1; i++) {
-				 if (origem.equals(OrigemList.IPAA00) || origem.equals(OrigemList.IPAF00) || (origem.equals(OrigemList.IPAN00) && i == 0)) continue;
+				if (origem.equals(OrigemList.IPAA00) || origem.equals(OrigemList.IPAF00) || (origem.equals(OrigemList.IPAN00) && i == 0))
+					continue;
 
 				checkProducaoList.importar(base, contexto.getUsuario(), origem, i);
 			}

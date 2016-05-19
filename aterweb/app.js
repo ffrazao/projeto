@@ -392,7 +392,7 @@ var TIMEOUT_TEMPO = 200;
         'Idle',
         function($rootScope, $uibModal, FrzNavegadorParams, toastr, UtilSrv, $stateParams, $timeout, TokenStorage, $state, CestaDeValores, SegurancaSrv,
             Idle) {
-            $rootScope.servicoUrl = "https://localhost:8443";
+            $rootScope.servicoUrl = "https://10.22.1.169:8443";
             $rootScope.token = null;
             $rootScope.isAuthenticated = function(username) {
                 if (!$rootScope.token) {

@@ -38,11 +38,12 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
  */
 @Entity
 @Table(name = "pessoa_relacionamento", schema = EntidadeBase.PESSOA_SCHEMA)
-public class PessoaRelacionamento extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class PessoaRelacionamento extends EntidadeBase implements _ChavePrimaria<Integer>, PessoaFisicaDadosBasicos {
 
 	private static final long serialVersionUID = 1L;
 
-	private String apelido;
+	@Column(name="apelido_sigla")
+	private String apelidoSigla;
 
 	@Column(name = "regime_casamento")
 	@Enumerated(EnumType.STRING)
@@ -123,12 +124,12 @@ public class PessoaRelacionamento extends EntidadeBase implements _ChavePrimaria
 	public PessoaRelacionamento() {
 	}
 
-	public PessoaRelacionamento(Integer id, Relacionamento relacionamento, String nome, String apelido, String cpf, String rgNumero, Calendar rgDataEmissao, String rgOrgaoEmissor, String rgUf, Profissao profissaoId,
-			PessoaGenero genero, PessoaNacionalidade nacionalidade, Municipio nascimentoMunicipio, Pais nascimentoPais, Calendar nascimento, Escolaridade escolaridade, RegimeCasamento regimeCasamento, String nomeMaeConjuge) {
+	public PessoaRelacionamento(Integer id, Relacionamento relacionamento, String nome, String apelido, String cpf, String rgNumero, Calendar rgDataEmissao, String rgOrgaoEmissor, String rgUf, Profissao profissaoId, PessoaGenero genero, PessoaNacionalidade nacionalidade,
+			Municipio nascimentoMunicipio, Pais nascimentoPais, Calendar nascimento, Escolaridade escolaridade, RegimeCasamento regimeCasamento, String nomeMaeConjuge) {
 		this.setId(id);
 		this.setRelacionamento(relacionamento);
 		this.setNome(nome);
-		this.setApelido(apelido);
+		this.setApelidoSigla(apelido);
 		this.setCpf(cpf);
 		this.setRgNumero(rgNumero);
 		this.setRgDataEmissao(rgDataEmissao);
@@ -156,10 +157,12 @@ public class PessoaRelacionamento extends EntidadeBase implements _ChavePrimaria
 		this.setRelacionamentoFuncao(relacionamentoFuncao);
 	}
 
-	public String getApelido() {
-		return apelido;
+	@Override
+	public String getApelidoSigla() {
+		return apelidoSigla;
 	}
 
+	@Override
 	public RegimeCasamento getCertidaoCasamentoRegime() {
 		return certidaoCasamentoRegime;
 	}
@@ -168,14 +171,17 @@ public class PessoaRelacionamento extends EntidadeBase implements _ChavePrimaria
 		return chaveSisater;
 	}
 
+	@Override
 	public String getCpf() {
 		return cpf;
 	}
 
+	@Override
 	public Escolaridade getEscolaridade() {
 		return escolaridade;
 	}
 
+	@Override
 	public PessoaGenero getGenero() {
 		return genero;
 	}
@@ -185,30 +191,37 @@ public class PessoaRelacionamento extends EntidadeBase implements _ChavePrimaria
 		return id;
 	}
 
+	@Override
 	public PessoaNacionalidade getNacionalidade() {
 		return nacionalidade;
 	}
 
+	@Override
 	public Calendar getNascimento() {
 		return nascimento;
 	}
 
+	@Override
 	public Estado getNascimentoEstado() {
 		return nascimentoEstado;
 	}
 
+	@Override
 	public Municipio getNascimentoMunicipio() {
 		return nascimentoMunicipio;
 	}
 
+	@Override
 	public Pais getNascimentoPais() {
 		return nascimentoPais;
 	}
 
+	@Override
 	public String getNome() {
 		return nome;
 	}
 
+	@Override
 	public String getNomeMaeConjuge() {
 		return nomeMaeConjuge;
 	}
@@ -217,6 +230,7 @@ public class PessoaRelacionamento extends EntidadeBase implements _ChavePrimaria
 		return pessoa;
 	}
 
+	@Override
 	public Profissao getProfissao() {
 		return profissao;
 	}
@@ -229,26 +243,32 @@ public class PessoaRelacionamento extends EntidadeBase implements _ChavePrimaria
 		return relacionamentoFuncao;
 	}
 
+	@Override
 	public Calendar getRgDataEmissao() {
 		return rgDataEmissao;
 	}
 
+	@Override
 	public String getRgNumero() {
 		return rgNumero;
 	}
 
+	@Override
 	public String getRgOrgaoEmissor() {
 		return rgOrgaoEmissor;
 	}
 
+	@Override
 	public String getRgUf() {
 		return rgUf;
 	}
 
-	public void setApelido(String apelido) {
-		this.apelido = apelido;
+	@Override
+	public void setApelidoSigla(String apelido) {
+		this.apelidoSigla = apelido;
 	}
 
+	@Override
 	public void setCertidaoCasamentoRegime(RegimeCasamento certidaoCasamentoRegime) {
 		this.certidaoCasamentoRegime = certidaoCasamentoRegime;
 	}
@@ -257,14 +277,17 @@ public class PessoaRelacionamento extends EntidadeBase implements _ChavePrimaria
 		this.chaveSisater = chaveSisater;
 	}
 
+	@Override
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
 
+	@Override
 	public void setEscolaridade(Escolaridade escolaridade) {
 		this.escolaridade = escolaridade;
 	}
 
+	@Override
 	public void setGenero(PessoaGenero genero) {
 		this.genero = genero;
 	}
@@ -274,30 +297,37 @@ public class PessoaRelacionamento extends EntidadeBase implements _ChavePrimaria
 		this.id = id;
 	}
 
+	@Override
 	public void setNacionalidade(PessoaNacionalidade nacionalidade) {
 		this.nacionalidade = nacionalidade;
 	}
 
+	@Override
 	public void setNascimento(Calendar nascimento) {
 		this.nascimento = nascimento;
 	}
 
+	@Override
 	public void setNascimentoEstado(Estado nascimentoEstado) {
 		this.nascimentoEstado = nascimentoEstado;
 	}
 
+	@Override
 	public void setNascimentoMunicipio(Municipio nascimentoMunicipio) {
 		this.nascimentoMunicipio = nascimentoMunicipio;
 	}
 
+	@Override
 	public void setNascimentoPais(Pais nascimentoPais) {
 		this.nascimentoPais = nascimentoPais;
 	}
 
+	@Override
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
 
+	@Override
 	public void setNomeMaeConjuge(String nomeMaeConjuge) {
 		this.nomeMaeConjuge = nomeMaeConjuge;
 	}
@@ -306,6 +336,7 @@ public class PessoaRelacionamento extends EntidadeBase implements _ChavePrimaria
 		this.pessoa = pessoa;
 	}
 
+	@Override
 	public void setProfissao(Profissao profissao) {
 		this.profissao = profissao;
 	}
@@ -318,18 +349,22 @@ public class PessoaRelacionamento extends EntidadeBase implements _ChavePrimaria
 		this.relacionamentoFuncao = relacionamentoFuncao;
 	}
 
+	@Override
 	public void setRgDataEmissao(Calendar rgDataEmissao) {
 		this.rgDataEmissao = rgDataEmissao;
 	}
 
+	@Override
 	public void setRgNumero(String rgNumero) {
 		this.rgNumero = rgNumero;
 	}
 
+	@Override
 	public void setRgOrgaoEmissor(String rgOrgaoEmissor) {
 		this.rgOrgaoEmissor = rgOrgaoEmissor;
 	}
 
+	@Override
 	public void setRgUf(String rgUf) {
 		this.rgUf = rgUf;
 	}
@@ -341,7 +376,7 @@ public class PessoaRelacionamento extends EntidadeBase implements _ChavePrimaria
 		if (this.getPessoa() == null) {
 			PessoaFisica pessoa = new PessoaFisica();
 			pessoa.setNome(this.getNome());
-			pessoa.setApelidoSigla(this.getApelido());
+			pessoa.setApelidoSigla(this.getApelidoSigla());
 			pessoa.setCpf(this.getCpf());
 			pessoa.setRgNumero(this.getRgNumero());
 			pessoa.setRgDataEmissao(this.getRgDataEmissao());
@@ -362,7 +397,7 @@ public class PessoaRelacionamento extends EntidadeBase implements _ChavePrimaria
 
 			// limpar os dados movidos
 			this.setNome(null);
-			this.setApelido(null);
+			this.setApelidoSigla(null);
 			this.setCpf(null);
 			this.setRgNumero(null);
 			this.setRgDataEmissao(null);
@@ -380,7 +415,7 @@ public class PessoaRelacionamento extends EntidadeBase implements _ChavePrimaria
 		} else if (this.getPessoa() != null) {
 			// atribuir os novos dados
 			this.setNome(((PessoaFisica) this.getPessoa()).getNome());
-			this.setApelido(((PessoaFisica) this.getPessoa()).getApelidoSigla());
+			this.setApelidoSigla(((PessoaFisica) this.getPessoa()).getApelidoSigla());
 			this.setCpf(((PessoaFisica) this.getPessoa()).getCpf());
 			this.setRgNumero(((PessoaFisica) this.getPessoa()).getRgNumero());
 			this.setRgDataEmissao(((PessoaFisica) this.getPessoa()).getRgDataEmissao());

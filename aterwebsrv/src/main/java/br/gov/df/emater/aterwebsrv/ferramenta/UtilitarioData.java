@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import org.joda.time.Interval;
 import org.joda.time.Period;
@@ -39,6 +40,13 @@ public class UtilitarioData {
 			return null;
 		}
 		return DATE_FORMAT.format(date.getTime());
+	}
+
+	public synchronized String formataData(Date date) {
+		if (date == null) {
+			return null;
+		}
+		return DATE_FORMAT.format(date);
 	}
 
 	public synchronized Calendar formataData(String date) throws ParseException {

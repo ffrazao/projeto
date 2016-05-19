@@ -31,7 +31,7 @@ public class BasicoInicioImportacaoCmd extends _Comando {
 
 	@Autowired
 	private RelacionamentoConfiguracaoViDao relacionamentoConfiguracaoViDao;
-
+	
 	@Autowired
 	private RelacionamentoFuncaoDao relacionamentoFuncaoDao;
 

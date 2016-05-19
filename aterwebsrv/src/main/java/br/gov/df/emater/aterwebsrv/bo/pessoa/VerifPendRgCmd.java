@@ -9,6 +9,7 @@ import org.apache.commons.lang3.EnumUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.bo.pendencia.VerificarPendenciasCmd;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaFisicaDao;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
@@ -18,14 +19,14 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica;
 
 @Service("PessoaVerifPendRgCmd")
 public class VerifPendRgCmd extends VerificarPendenciasCmd {
-	
-	private final Calendar ANO_1900 = new GregorianCalendar(1900,0,1);
+
+	private final Calendar ANO_1900 = new GregorianCalendar(1900, 0, 1);
 
 	@Autowired
 	private PessoaFisicaDao dao;
 
 	@Override
-	public String constatarPendencia() {
+	public String constatarPendencia(_Contexto contexto) {
 		if (!(getPendenciavel() instanceof PessoaFisica)) {
 			return null;
 		}
@@ -77,14 +78,7 @@ public class VerifPendRgCmd extends VerificarPendenciasCmd {
 				}
 			}
 		}
-		if (mensagemList.size() == 0) {
-			return null;
-		}
-		StringBuilder sb = new StringBuilder();
-		for (String mensagem : mensagemList) {
-			sb.append(mensagem).append("\n");
-		}
-		return sb.toString();
+		return extraiResultado(mensagemList);
 	}
 
 	@Override

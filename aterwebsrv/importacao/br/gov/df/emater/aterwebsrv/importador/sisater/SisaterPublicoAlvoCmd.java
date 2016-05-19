@@ -305,7 +305,7 @@ public class SisaterPublicoAlvoCmd extends _Comando {
 				impUtil.pessoaConfiguraNome(pessoa, rs.getString(nomeCampo[0]), null);
 			} else {
 				impUtil.pessoaConfiguraNome(pessoa, rs.getString(nomeCampo[0]), nomeCampo[1] == null ? null : rs.getString(nomeCampo[1]));
-				pessoa.setCpf(nomeCampo[2] == null ? null : UtilitarioString.formataCpf(rs.getString(nomeCampo[2])));
+				pessoa.setCpf(nomeCampo[2] == null ? null : rs.getString(nomeCampo[2]));
 				pessoa.setRgNumero(nomeCampo[3] == null ? null : rs.getString(nomeCampo[3]));
 				pessoa.setRgDataEmissao(nomeCampo[4] == null ? null : impUtil.captaData(rs.getDate(nomeCampo[4])));
 				String localRg = nomeCampo[5] == null ? null : rs.getString(nomeCampo[5]);

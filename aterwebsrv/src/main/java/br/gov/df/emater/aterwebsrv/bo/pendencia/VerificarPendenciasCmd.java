@@ -2,6 +2,7 @@ package br.gov.df.emater.aterwebsrv.bo.pendencia;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
@@ -12,6 +13,7 @@ import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.ater.PropriedadeRuralPendenciaDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaPendenciaDao;
+import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRuralPendencia;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PendenciaCodigo;
@@ -50,9 +52,18 @@ public abstract class VerificarPendenciasCmd extends _Comando {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public final void adicionarPendencia(String descricao) throws IOException {
+	public final void adicionarPendencia(_Contexto contexto, String descricao) throws IOException {
 		Pendencia pendencia = null;
 
+		// inserir no contexto
+		List<String> pendenciaList = (List<String>) contexto.get("pendenciaList");
+		if (pendenciaList == null) {
+			pendenciaList = new ArrayList<String>();
+		}
+		pendenciaList.add(descricao);
+		contexto.put("pendenciaList", pendenciaList);
+
+		// inserir no objeto analisado
 		if (getPendenciavel() instanceof Pessoa) {
 			pendencia = new PessoaPendencia(getCodigo(), descricao);
 			Pessoa pessoa = (Pessoa) getPendenciavel();
@@ -78,18 +89,24 @@ public abstract class VerificarPendenciasCmd extends _Comando {
 		}
 	}
 
-	public abstract String constatarPendencia();
+	public abstract String constatarPendencia(_Contexto contexto);
 
 	@Override
 	public final boolean executar(_Contexto contexto) throws Exception {
-		setPendenciavel((Pendenciavel<?>) contexto.getRequisicao());
+		if (contexto.getRequisicao() instanceof Pendenciavel) {			
+			setPendenciavel((Pendenciavel<?>) contexto.getRequisicao());
+		}
 
-		String pendencia = constatarPendencia();
+		String pendencia = constatarPendencia(contexto);
 		if (!StringUtils.isBlank(pendencia)) {
-			adicionarPendencia(pendencia);
+			adicionarPendencia(contexto, pendencia);
 		}
 
 		return false;
+	}
+
+	protected String extraiResultado(List<String> lista) {
+		return UtilitarioString.collectionToString(lista, "\n");
 	}
 
 	public abstract PendenciaCodigo getCodigo();

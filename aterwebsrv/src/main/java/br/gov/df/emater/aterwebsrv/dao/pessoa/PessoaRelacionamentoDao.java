@@ -13,4 +13,6 @@ public interface PessoaRelacionamentoDao extends JpaRepository<PessoaRelacioname
 
 	List<PessoaRelacionamento> findByRelacionamento(Relacionamento relacionamento);
 
+	List<PessoaRelacionamento> findByCpf(String numero);
+
 }

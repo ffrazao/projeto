@@ -30,6 +30,7 @@ import br.gov.df.emater.aterwebsrv.dao.funcional.UnidadeOrganizacionalDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.CidadeDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.ProfissaoDao;
 import br.gov.df.emater.aterwebsrv.dao.sistema.UsuarioDao;
+import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.importador.apoio.ConexaoFirebird.DbSater;
 import br.gov.df.emater.aterwebsrv.modelo.ater.BaciaHidrografica;
@@ -224,6 +225,10 @@ public class ImpUtil {
 		ps.executeUpdate();
 	}
 
+	public Object chaveAtividade(DbSater base, String idUnd, int idAtr, Date aterDt, String idEmp, String idMet, String idTema, String idAcao, String tabela) {
+		return String.format("%s=[IDUND=%s,IDATR=%d,ATERDT=%s,IDEMP=%s,IDMET=%s,IDTEMA=%s,IDACA=%s][TABELA=%s]", base.name(), idUnd, idAtr, UtilitarioData.getInstance().formataData(aterDt), idEmp, idMet, idTema, idAcao, tabela);
+	}
+
 	public String chaveBaciaHidrografica(DbSater base, String baciaHidrograficaNome) {
 		return String.format("%s=[BACIA=%s]", base.name(), baciaHidrograficaNome);
 	}
@@ -242,6 +247,10 @@ public class ImpUtil {
 
 	public String chaveComunidade(DbSater base, String idund, String idcom) {
 		return String.format("%s=[IDUND=%s,IDCOM=%s]", base.name(), idund, idcom);
+	}
+
+	public String chaveEmpregado(DbSater base, String idEmp) {
+		return String.format("%s=[IDEMP=%s]", base.name(), idEmp);
 	}
 
 	public String chavePessoaEmail(DbSater base, String idund, String idbem) {

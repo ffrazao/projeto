@@ -4,13 +4,19 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class Util {
 
-	private static final int[] pesoCNPJ = { 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
+	private static final int[] PESO_CNPJ = { 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
 
-	private static final int[] pesoCPF = { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
+	private static final int[] PESO_CPF = { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
 
-	private static int cnpCalcularDigito(String str, int[] peso) {
+	private static final int[] PESO_NIS = { 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
+
+	private static final String STR_NUMERO_ALFABETO = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+	private static int calcularDigitoCnp(String str, int[] peso) {
 		int soma = 0;
 		for (int indice = str.length() - 1, digito; indice >= 0; indice--) {
 			digito = Integer.parseInt(str.substring(indice, indice + 1));
@@ -20,11 +26,25 @@ public class Util {
 		return soma > 9 ? 0 : soma;
 	}
 
+	private static Integer calcularDigitoNis(String nis) {
+		// este cálculo foi extraído de http://www.macoratti.net/alg_pis.htm
+		int result = 0, soma = 0;
+		for (int i = 0; i < 10; i++) {
+			soma += Character.getNumericValue(nis.charAt(i)) * PESO_NIS[i];
+		}
+		result = soma % 11;
+		if (result < 2) {
+			result = 0;
+		} else {
+			result = 11 - result;
+		}
+		return result;
+	}
+
 	private static String extraiNumeroProtocolo(String numero) {
-		String str = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		StringBuilder sb = new StringBuilder();
 		for (char c : numero.toCharArray()) {
-			int pos = str.indexOf(c);
+			int pos = STR_NUMERO_ALFABETO.indexOf(c);
 			if (pos >= 0) {
 				sb.append(UtilitarioString.zeroEsquerda(pos, 2));
 			}
@@ -33,26 +53,16 @@ public class Util {
 	}
 
 	public static String gerarCodigoAtividade() {
-		String str = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		StringBuilder sb = new StringBuilder();
 		Random r = new Random();
 		for (int i = 0; i < 8; i++) {
-			int j = r.nextInt(str.length());
-			sb.append(str.charAt(j));
+			int j = r.nextInt(STR_NUMERO_ALFABETO.length());
+			sb.append(STR_NUMERO_ALFABETO.charAt(j));
 		}
 		sb.append(modulo10(extraiNumeroProtocolo(sb.toString())));
 		sb.insert(4, ".");
 		sb.insert(9, "-");
 		return sb.toString();
-	}
-
-	public static boolean isEmailValido(String endereco) {
-		if ((endereco == null) || (endereco.trim().length() == 0))
-			return false;
-		String emailPattern = "\\b(^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@([A-Za-z0-9-])+(\\.[A-Za-z0-9-]+)*((\\.[A-Za-z0-9]{2,})|(\\.[A-Za-z0-9]{2,}\\.[A-Za-z0-9]{2,}))$)\\b";
-		Pattern pattern = Pattern.compile(emailPattern, Pattern.CASE_INSENSITIVE);
-		Matcher matcher = pattern.matcher(endereco);
-		return matcher.matches();
 	}
 
 	public static boolean isCnpjValido(String numero) {
@@ -63,8 +73,8 @@ public class Util {
 		if (UtilitarioString.temCaractereRepetido(numero, 14)) {
 			return false;
 		}
-		Integer digito1 = cnpCalcularDigito(numero.substring(0, 12), pesoCNPJ);
-		Integer digito2 = cnpCalcularDigito(numero.substring(0, 12) + digito1, pesoCNPJ);
+		Integer digito1 = calcularDigitoCnp(numero.substring(0, 12), PESO_CNPJ);
+		Integer digito2 = calcularDigitoCnp(numero.substring(0, 12) + digito1, PESO_CNPJ);
 		return numero.equals(numero.substring(0, 12) + digito1.toString() + digito2.toString());
 	}
 
@@ -76,9 +86,19 @@ public class Util {
 		if (UtilitarioString.temCaractereRepetido(numero, 11)) {
 			return false;
 		}
-		Integer digito1 = cnpCalcularDigito(numero.substring(0, 9), pesoCPF);
-		Integer digito2 = cnpCalcularDigito(numero.substring(0, 9) + digito1, pesoCPF);
+		Integer digito1 = calcularDigitoCnp(numero.substring(0, 9), PESO_CPF);
+		Integer digito2 = calcularDigitoCnp(numero.substring(0, 9) + digito1, PESO_CPF);
 		return numero.equals(numero.substring(0, 9) + digito1.toString() + digito2.toString());
+	}
+
+	public static boolean isEmailValido(String endereco) {
+		if (endereco == null || endereco.trim().length() == 0 || !(endereco.indexOf("@") > 0) || endereco.endsWith("@") || StringUtils.countMatches(endereco, "@") > 1) {
+			return false;
+		}
+		String emailPattern = "\\b(^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@([A-Za-z0-9-])+(\\.[A-Za-z0-9-]+)*((\\.[A-Za-z0-9]{2,})|(\\.[A-Za-z0-9]{2,}\\.[A-Za-z0-9]{2,}))$)\\b";
+		Pattern pattern = Pattern.compile(emailPattern, Pattern.CASE_INSENSITIVE);
+		Matcher matcher = pattern.matcher(endereco);
+		return matcher.matches();
 	}
 
 	public static boolean isNisValido(String numero) {
@@ -86,14 +106,14 @@ public class Util {
 			return false;
 		}
 		numero = UtilitarioString.soNumero(numero);
-		if (numero.length() > 13) {
+		if (numero.length() > 11) {
 			return false;
 		}
 		numero = UtilitarioString.zeroEsquerda(numero, 11);
 		if (UtilitarioString.temCaractereRepetido(numero, 11)) {
 			return false;
 		}
-		Integer resto = nisCalcularDigito(numero);
+		Integer resto = calcularDigitoNis(numero);
 		return numero.endsWith(resto.toString());
 	}
 
@@ -151,26 +171,4 @@ public class Util {
 		// retorna o digito verificador
 		return dv;
 	}
-
-	private static Integer nisCalcularDigito(String nis) {
-		nis = nis.substring(0, 11);
-		int[] multiplicador = new int[] { 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
-		int soma;
-		int resto;
-		if (nis == null || nis.trim().length() == 0) {
-			return null;
-		}
-		soma = 0;
-		for (int i = 0; i < 10; i++) {
-			soma += Character.getNumericValue(nis.charAt(i)) * multiplicador[i];
-		}
-		resto = soma % 11;
-		if (resto < 2) {
-			resto = 0;
-		} else {
-			resto = 11 - resto;
-		}
-		return resto;
-	}
-
 }

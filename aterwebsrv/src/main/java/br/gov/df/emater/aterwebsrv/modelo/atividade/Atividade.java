@@ -1,12 +1,15 @@
 package br.gov.df.emater.aterwebsrv.modelo.atividade;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -54,6 +57,9 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	@OneToMany(mappedBy = "atividade")
 	private List<AtividadeAssunto> assuntoList;
+
+	@OneToMany(mappedBy = "atividade", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+	private List<AtividadeChaveSisater> chaveSisaterList = new ArrayList<AtividadeChaveSisater>();
 
 	private String codigo;
 
@@ -172,6 +178,10 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return assuntoList;
 	}
 
+	public List<AtividadeChaveSisater> getChaveSisaterList() {
+		return chaveSisaterList;
+	}
+
 	public String getCodigo() {
 		return codigo;
 	}
@@ -283,6 +293,10 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	public void setAssuntoList(List<AtividadeAssunto> assuntoList) {
 		this.assuntoList = assuntoList;
+	}
+
+	public void setChaveSisaterList(List<AtividadeChaveSisater> chaveSisaterList) {
+		this.chaveSisaterList = chaveSisaterList;
 	}
 
 	public void setCodigo(String codigo) {

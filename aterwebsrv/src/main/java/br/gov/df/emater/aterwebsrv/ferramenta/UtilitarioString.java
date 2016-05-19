@@ -45,7 +45,7 @@ public class UtilitarioString {
 
 	public static String collectionToString(Collection<?> objetos, String delimitador, boolean stringValue, boolean ignoreNull) {
 		StringBuilder result = new StringBuilder();
-		if (objetos == null) {
+		if (objetos == null || objetos.size() == 0) {
 			if (ignoreNull) {
 				return null;
 			} else {
@@ -86,10 +86,13 @@ public class UtilitarioString {
 	}
 
 	public static String formataEmail(String endereco) {
-		if (endereco == null) {
+		if (endereco == null || endereco.trim().length() == 0) {
 			return null;
 		}
-		endereco = endereco.trim().toLowerCase();
+		endereco = UtilitarioString.substituirTudo(UtilitarioString.semAcento(endereco.trim().toLowerCase()), " ", "");
+		if (endereco.trim().length() == 0) {
+			return null;
+		}
 		return endereco;
 	}
 
@@ -113,14 +116,9 @@ public class UtilitarioString {
 		if (numero == null) {
 			return null;
 		}
-		numero = soNumero(numero.trim());
-		if (numero.length() < 11) {
-			numero = zeroEsquerda(numero, 13);
-		}
-		if (numero.length() < 13) {
-			numero += "01"; 
-		}
-		return Pattern.compile("(\\d{1})(\\d{10})(\\d{2})").matcher(numero).replaceAll("$1.$2-$3");
+		numero = zeroEsquerda(soNumero(numero.trim()), 11);
+		// este formato foi encontrado em http://www.geradorpis.com/
+		return Pattern.compile("(\\d{3})(\\d{4})(\\d{3})(\\d{1})").matcher(numero).replaceAll("$1.$2.$3-$4");
 	}
 
 	public static String formataNomeProprio(String nome) {

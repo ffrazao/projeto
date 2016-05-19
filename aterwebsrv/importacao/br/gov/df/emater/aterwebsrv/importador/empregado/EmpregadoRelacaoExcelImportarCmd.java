@@ -155,7 +155,7 @@ public class EmpregadoRelacaoExcelImportarCmd extends _Comando {
 				pessoaRelacionamento.setRelacionamentoFuncao(empregadorFuncao);
 				Emprego emprego = new Emprego();
 				emprego.setInicio(admissao);
-				emprego.setMatricula(UtilitarioString.zeroEsquerda((String) reg.get("MATRICULA").toString().toUpperCase(), 8));
+				emprego.setMatricula(UtilitarioString.zeroEsquerda((String) reg.get("MATRICULA").toString().trim().toUpperCase(), 8));
 				emprego.setCargo(cargo);
 				emprego.setRelacionamentoTipo(relacionamentoTipo);
 				pessoaRelacionamento.setRelacionamento(emprego);
