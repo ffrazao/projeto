@@ -53,30 +53,35 @@ public class SisaterPublicoAlvoPropriedadeRuralCmd extends _Comando {
 
 		agora = (Calendar) contexto.get("agora");
 
-		impUtil.criarMarcaTabela(con, SISATER_TABELA);
+		impUtil.criarMarcaTabelaSisater(con, SISATER_TABELA);
 
 		try (Statement st = con.createStatement(); ResultSet rs = st.executeQuery(SQL);) {
 			int cont = 0;
 			while (rs.next()) {
-				cont++;
-				PublicoAlvoPropriedadeRural publicoAlvoPropriedadeRural = null;
 				try {
-					publicoAlvoPropriedadeRural = novoPublicoAlvoPropriedadeRural(rs);
-				} catch (BoException e) {
-					continue;
+					PublicoAlvoPropriedadeRural publicoAlvoPropriedadeRural = null;
+					try {
+						publicoAlvoPropriedadeRural = novoPublicoAlvoPropriedadeRural(rs);
+					} catch (BoException e) {
+						continue;
+					}
+					publicoAlvoPropriedadeRural.setChaveSisater(impUtil.chavePublicoAlvoPropriedadeRural(base, rs.getString("IDPRP"), rs.getString("IDBEN")));
+
+					// recuperar os IDs
+					PublicoAlvoPropriedadeRural salvo = publicoAlvoPropriedadeRuralDao.findOneByChaveSisater(publicoAlvoPropriedadeRural.getChaveSisater());
+					if (salvo != null) {
+						publicoAlvoPropriedadeRural.setId(salvo.getId());
+					}
+
+					// salvar no MySQL e no Firebird
+					publicoAlvoPropriedadeRural = publicoAlvoPropriedadeRuralDao.save(publicoAlvoPropriedadeRural);
+
+					impUtil.chaveAterWebAtualizar(con, publicoAlvoPropriedadeRural.getId(), SISATER_TABELA, "IDPRP = ? AND IDBEN =  ?", rs.getString("IDPRP"), rs.getString("IDBEN"));
+
+					cont++;
+				} catch (Exception e) {
+					logger.error(e);
 				}
-				publicoAlvoPropriedadeRural.setChaveSisater(impUtil.chavePublicoAlvoPropriedadeRural(base, rs.getString("IDPRP"), rs.getString("IDBEN")));
-
-				// recuperar os IDs
-				PublicoAlvoPropriedadeRural salvo = publicoAlvoPropriedadeRuralDao.findOneByChaveSisater(publicoAlvoPropriedadeRural.getChaveSisater());
-				if (salvo != null) {
-					publicoAlvoPropriedadeRural.setId(salvo.getId());
-				}
-
-				// salvar no MySQL e no Firebird
-				publicoAlvoPropriedadeRural = publicoAlvoPropriedadeRuralDao.save(publicoAlvoPropriedadeRural);
-
-				impUtil.chaveAterWebAtualizar(con, publicoAlvoPropriedadeRural.getId(), SISATER_TABELA, "IDPRP = ? AND IDBEN =  ?", rs.getString("IDPRP"), rs.getString("IDBEN"));
 			}
 			if (logger.isDebugEnabled()) {
 				logger.debug(String.format("[%s] importado %d vinculo entre pessoas e propriedades rurais", base.name(), cont));
@@ -92,6 +97,9 @@ public class SisaterPublicoAlvoPropriedadeRuralCmd extends _Comando {
 
 		if (pessoa == null || propriedadeRural == null) {
 			throw new BoException("Pessoa ou Propriedade Rural inexistente");
+			// logger.error(String.format("Pessoa ou Propriedade Rural
+			// inexistente"));
+			// return null;
 		}
 		result.setPublicoAlvo(pessoa.getPublicoAlvo());
 		result.setPropriedadeRural(propriedadeRural);

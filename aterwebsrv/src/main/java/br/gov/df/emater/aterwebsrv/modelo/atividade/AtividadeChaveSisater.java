@@ -37,6 +37,10 @@ public class AtividadeChaveSisater extends EntidadeBase implements _ChavePrimari
 		super(id);
 	}
 
+	public AtividadeChaveSisater(String chaveSisater) {
+		this.setChaveSisater(chaveSisater);
+	}
+
 	public Atividade getAtividade() {
 		return atividade;
 	}

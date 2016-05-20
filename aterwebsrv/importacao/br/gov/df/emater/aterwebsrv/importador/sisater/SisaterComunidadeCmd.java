@@ -70,59 +70,68 @@ public class SisaterComunidadeCmd extends _Comando {
 		municipioAtendimentoList = (Municipio[]) contexto.get("municipioAtendimentoList");
 
 		try (Statement st = con.createStatement(); ResultSet rs = st.executeQuery(SQL);) {
+			int cont = 0;
 			while (rs.next()) {
-				Comunidade comunidade = null;
-				String comunidadeNome = impUtil.deNomeComunidadeSisaterParaAterWeb(rs.getString("COMUNIDADE"));
-				if (comunidadeNome == null || comunidadeNome.length() == 0) {
-					throw new BoException("Nome da comunidade não informada");
-				}
-				List<Comunidade> comunidadeList = comunidadeDao.findByNomeOrderByNomeAsc(comunidadeNome);
-				if (comunidadeList == null || comunidadeList.isEmpty()) {
-					comunidade = novaComunidade(comunidadeNome, rs);
-				} else {
-					for (Comunidade c : comunidadeList) {
-						if (c.getUnidadeOrganizacional().getId().equals(unidadeOrganizacional.getId())) {
-							if (comunidade != null) {
-								throw new BoException("Comunidade duplicada - %s", comunidade.getNome());
-							}
-							comunidade = c;
-						}
+				try {
+					Comunidade comunidade = null;
+					String comunidadeNome = impUtil.deNomeComunidadeSisaterParaAterWeb(rs.getString("COMUNIDADE"));
+					if (comunidadeNome == null || comunidadeNome.length() == 0) {
+						throw new BoException("Nome da comunidade não informada");
 					}
-					if (comunidade == null) {
+					List<Comunidade> comunidadeList = comunidadeDao.findByNomeOrderByNomeAsc(comunidadeNome);
+					if (comunidadeList == null || comunidadeList.isEmpty()) {
 						comunidade = novaComunidade(comunidadeNome, rs);
-					}
-				}
-
-				BaciaHidrografica baciaHidrografica = null;
-				String baciaHidrograficaNome = impUtil.deNomeBaciaHidrograficaSisaterParaAterWeb(rs.getString("BACIA"));
-				List<BaciaHidrografica> baciaHidrograficaList = baciaHidrograficaDao.findByNomeOrderByNomeAsc(baciaHidrograficaNome);
-				if (baciaHidrograficaList == null || baciaHidrograficaList.isEmpty()) {
-					baciaHidrografica = novaBaciaHidrografica(baciaHidrograficaNome);
-				} else {
-					for (BaciaHidrografica b : baciaHidrograficaList) {
-						if (baciaHidrografica != null) {
-							throw new BoException("Bacia Hidrografica duplicada - %s", baciaHidrografica.getNome());
+					} else {
+						for (Comunidade c : comunidadeList) {
+							if (c.getUnidadeOrganizacional().getId().equals(unidadeOrganizacional.getId())) {
+								if (comunidade != null) {
+									throw new BoException("Comunidade duplicada - %s", comunidade.getNome());
+								}
+								comunidade = c;
+							}
 						}
-						baciaHidrografica = b;
-					}
-				}
-
-				if (comunidade == null || baciaHidrografica == null) {
-					throw new BoException("Comunidade ou Bacia Hidrográfica não localizados %s - %s", comunidade, baciaHidrografica);
-				}
-
-				ComunidadeBaciaHidrografica comunidadeBaciaHidrografica = null;
-				List<ComunidadeBaciaHidrografica> comunidadeBaciaHidrograficaList = comunidadeBaciaHidrograficaDao.findByComunidadeAndBaciaHidrografica(comunidade, baciaHidrografica);
-				if (comunidadeBaciaHidrograficaList == null || comunidadeBaciaHidrograficaList.isEmpty()) {
-					comunidadeBaciaHidrografica = novaComunidadeBaciaHidrografica(comunidade, baciaHidrografica);
-				} else {
-					for (ComunidadeBaciaHidrografica cb : comunidadeBaciaHidrograficaList) {
-						if (comunidadeBaciaHidrografica != null) {
-							throw new BoException("Comunidade Bacia Hidrografica duplicada - %s, %s", comunidadeBaciaHidrografica.getComunidade().getNome(), comunidadeBaciaHidrografica.getBaciaHidrografica().getNome());
+						if (comunidade == null) {
+							comunidade = novaComunidade(comunidadeNome, rs);
 						}
-						comunidadeBaciaHidrografica = cb;
 					}
+
+					BaciaHidrografica baciaHidrografica = null;
+					String baciaHidrograficaNome = impUtil.deNomeBaciaHidrograficaSisaterParaAterWeb(rs.getString("BACIA"));
+					List<BaciaHidrografica> baciaHidrograficaList = baciaHidrograficaDao.findByNomeOrderByNomeAsc(baciaHidrograficaNome);
+					if (baciaHidrograficaList == null || baciaHidrograficaList.isEmpty()) {
+						baciaHidrografica = novaBaciaHidrografica(baciaHidrograficaNome);
+					} else {
+						for (BaciaHidrografica b : baciaHidrograficaList) {
+							if (baciaHidrografica != null) {
+								throw new BoException("Bacia Hidrografica duplicada - %s", baciaHidrografica.getNome());
+							}
+							baciaHidrografica = b;
+						}
+					}
+
+					if (comunidade == null || baciaHidrografica == null) {
+						throw new BoException("Comunidade ou Bacia Hidrográfica não localizados %s - %s", comunidade, baciaHidrografica);
+					}
+
+					ComunidadeBaciaHidrografica comunidadeBaciaHidrografica = null;
+					List<ComunidadeBaciaHidrografica> comunidadeBaciaHidrograficaList = comunidadeBaciaHidrograficaDao.findByComunidadeAndBaciaHidrografica(comunidade, baciaHidrografica);
+					if (comunidadeBaciaHidrograficaList == null || comunidadeBaciaHidrograficaList.isEmpty()) {
+						comunidadeBaciaHidrografica = novaComunidadeBaciaHidrografica(comunidade, baciaHidrografica);
+					} else {
+						for (ComunidadeBaciaHidrografica cb : comunidadeBaciaHidrograficaList) {
+							if (comunidadeBaciaHidrografica != null) {
+								throw new BoException("Comunidade Bacia Hidrografica duplicada - %s, %s", comunidadeBaciaHidrografica.getComunidade().getNome(), comunidadeBaciaHidrografica.getBaciaHidrografica().getNome());
+							}
+							comunidadeBaciaHidrografica = cb;
+						}
+					}
+					cont++;
+				} catch (Exception e) {
+					logger.error(e);
 				}
+			}
+			if (logger.isDebugEnabled()) {
+				logger.debug(String.format("[%s] importado %d comunidades", base.name(), cont));
 			}
 		}
 		return false;

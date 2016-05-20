@@ -82,11 +82,7 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 				bemClassificacao.setUnidadeMedida(unidadeMedida);
 				bemClassificacao = bemClassificacaoDao.save(bemClassificacao);
 			} else if (unidadeMedida != null && !unidadeMedida.getId().equals(bemClassificacao.getUnidadeMedida().getId())) {
-				// throw new BoException("Unidade de Medida duplicada [%s, já
-				// tem %s, tentando inserir %s]", bemClassificacao.getNome(),
-				// bemClassificacao.getUnidadeMedida().getNome(),
-				// unidadeMedida.getNome());
-				logger.error(String.format("Unidade de Medida duplicada [%s, já tem %s, tentando inserir %s]", bemClassificacao.getNome(), bemClassificacao.getUnidadeMedida().getNome(), unidadeMedida.getNome()));
+				throw new BoException("Unidade de Medida duplicada [%s, já tem %s, tentando inserir %s]", bemClassificacao.getNome(), bemClassificacao.getUnidadeMedida().getNome(), unidadeMedida.getNome());
 			}
 		}
 
@@ -423,42 +419,37 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 
 			this.nomeTabela = String.format("%s%d", tabela.name().substring(0, tabela.name().length() - 1), geral);
 
-			impUtil.criarMarcaTabela(con, nomeTabela);
+			impUtil.criarMarcaTabelaSisater(con, nomeTabela);
 
 			try (Statement st = con.createStatement(); ResultSet rs = st.executeQuery(geral == 0 ? String.format(SQL, nomeTabela) : tabela.sql);) {
 				int cont = 0;
 				while (rs.next()) {
-					Producao producao = null;
 					try {
+						Producao producao = null;
 						producao = novoProducao(rs);
+
+						// FIXME quebra-galho para teste. remover este código
+						// if (cont > 50) {
+						// break;
+						// }
+
+						em.detach(producao);
+
+						// salvar no MySQL e no Firebird
+						producao.setId((Integer) facadeBo.indiceProducaoSalvar(usuario, producao).getResposta());
+
+						if (geral == 0) {
+							impUtil.chaveAterWebAtualizar(con, producao.getId(), nomeTabela, "IDUND = ? AND IDIPA = ? AND SAFRA = ?", rs.getString("IDUND"), rs.getInt("IDIPA"), rs.getString("SAFRA"));
+						} else {
+							if (tabela.equals(OrigemList.IPAN00)) {
+								impUtil.chaveAterWebAtualizar(con, producao.getId(), nomeTabela, "IDUND = ? AND IDIPA = ? AND IDBEN = ?", rs.getString("IDUND"), rs.getInt("IDIPA"), rs.getString("IDBEN"));
+							} else {
+								impUtil.chaveAterWebAtualizar(con, producao.getId(), nomeTabela, "IDUND = ? AND IDIPA = ? AND IDBEN = ? AND IDPRP = ?", rs.getString("IDUND"), rs.getInt("IDIPA"), rs.getString("IDBEN"), rs.getString("IDPRP"));
+							}
+						}
+						cont++;
 					} catch (BoException e) {
-						if ("Propriedade Rural não identificada".equals(e.getMessage())) {
-							logger.error(e.getMessage());
-							continue;
-						} else {
-							throw e;
-						}
-					}
-					cont++;
-
-					// FIXME quebra-galho para teste. remover este código
-					// if (cont > 50) {
-					// break;
-					// }
-
-					em.detach(producao);
-
-					// salvar no MySQL e no Firebird
-					producao.setId((Integer) facadeBo.indiceProducaoSalvar(usuario, producao).getResposta());
-
-					if (geral == 0) {
-						impUtil.chaveAterWebAtualizar(con, producao.getId(), nomeTabela, "IDUND = ? AND IDIPA = ? AND SAFRA = ?", rs.getString("IDUND"), rs.getInt("IDIPA"), rs.getString("SAFRA"));
-					} else {
-						if (tabela.equals(OrigemList.IPAN00)) {
-							impUtil.chaveAterWebAtualizar(con, producao.getId(), nomeTabela, "IDUND = ? AND IDIPA = ? AND IDBEN = ?", rs.getString("IDUND"), rs.getInt("IDIPA"), rs.getString("IDBEN"));
-						} else {
-							impUtil.chaveAterWebAtualizar(con, producao.getId(), nomeTabela, "IDUND = ? AND IDIPA = ? AND IDBEN = ? AND IDPRP = ?", rs.getString("IDUND"), rs.getInt("IDIPA"), rs.getString("IDBEN"), rs.getString("IDPRP"));
-						}
+						logger.error(e.getMessage());
 					}
 				}
 				if (logger.isDebugEnabled()) {
@@ -679,9 +670,10 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 			}
 			List<UnidadeMedida> lista = unidadeMedidaDao.findByNomeLikeIgnoreCase(nome);
 			if (lista == null || lista.isEmpty()) {
-				// throw new BoException("Unidade de Medida não cadastrada");
-				logger.error(String.format("Unidade de Medida não cadastrada"));
-				return null;
+				throw new BoException("Unidade de Medida não cadastrada");
+				// logger.error(String.format("Unidade de Medida não
+				// cadastrada"));
+				// return null;
 			}
 			if (lista.size() == 1) {
 				unidadeMedidaList.add(lista.get(0));

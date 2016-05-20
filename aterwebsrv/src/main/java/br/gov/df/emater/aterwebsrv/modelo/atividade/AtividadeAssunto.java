@@ -39,6 +39,15 @@ public class AtividadeAssunto extends EntidadeBase implements _ChavePrimaria<Int
 		super(id);
 	}
 
+	public AtividadeAssunto(Integer id, Assunto assunto) {
+		super(id);
+		setAssunto(assunto);
+	}
+
+	public AtividadeAssunto(Assunto assunto) {
+		this(null, assunto);
+	}
+
 	public Assunto getAssunto() {
 		return assunto;
 	}

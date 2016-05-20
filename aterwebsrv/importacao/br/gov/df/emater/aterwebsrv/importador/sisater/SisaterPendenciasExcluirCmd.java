@@ -9,7 +9,7 @@ import br.gov.df.emater.aterwebsrv.dao.ater.PropriedadeRuralPendenciaDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaPendenciaDao;
 
 @Service
-public class SisaterExcluirPendenciasCmd extends _Comando {
+public class SisaterPendenciasExcluirCmd extends _Comando {
 
 	@Autowired
 	private PessoaPendenciaDao pessoaPendenciaDao;
@@ -19,8 +19,12 @@ public class SisaterExcluirPendenciasCmd extends _Comando {
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
-		pessoaPendenciaDao.deleteAll();
-		propriedadeRuralPendenciaDao.deleteAll();
+		try {
+			pessoaPendenciaDao.deleteAll();
+			propriedadeRuralPendenciaDao.deleteAll();
+		} catch (Exception e) {
+			logger.error(e);
+		}
 		return false;
 	}
 

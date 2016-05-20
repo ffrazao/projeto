@@ -225,8 +225,12 @@ public class ImpUtil {
 		ps.executeUpdate();
 	}
 
-	public Object chaveAtividade(DbSater base, String idUnd, int idAtr, Date aterDt, String idEmp, String idMet, String idTema, String idAcao, String tabela) {
-		return String.format("%s=[IDUND=%s,IDATR=%d,ATERDT=%s,IDEMP=%s,IDMET=%s,IDTEMA=%s,IDACA=%s][TABELA=%s]", base.name(), idUnd, idAtr, UtilitarioData.getInstance().formataData(aterDt), idEmp, idMet, idTema, idAcao, tabela);
+	public String chaveAtividadeAntes2014(DbSater base, String idUnd, int idAtr, String tabela) {
+		return String.format("%s=[IDUND=%s,IDATR=%d][TABELA=%s]", base.name(), idUnd, idAtr, tabela);
+	}
+
+	public String chaveAtividadeDepois2014(DbSater base, String idUnd, int idAtr, Date aterDt, String idEmp, String idMet, String idTema, String idAcao, String tabela) {
+		return String.format("%s=[IDUND=%s,IDATR=%d,ATERDT=%s,IDEMP=%s,IDMET=%s,IDTEMA=%s,IDACAO=%s][TABELA=%s]", base.name(), idUnd, idAtr, UtilitarioData.getInstance().formataData(aterDt), idEmp, idMet, idTema, idAcao, tabela);
 	}
 
 	public String chaveBaciaHidrografica(DbSater base, String baciaHidrograficaNome) {
@@ -293,7 +297,7 @@ public class ImpUtil {
 		return String.format("%s=[IDPRP=%s,IDBEN=%s]", base.name(), idprp, idben);
 	}
 
-	public void criarMarcaTabela(Connection con, String tabela) throws SQLException {
+	public void criarMarcaTabelaSisater(Connection con, String tabela) throws SQLException {
 		try {
 			try (Statement st = con.createStatement(); ResultSet rs = st.executeQuery(String.format("SELECT CHAVE_ATER_WEB FROM %s", tabela))) {
 				return;
@@ -342,8 +346,14 @@ public class ImpUtil {
 
 		if (cidadeList == null || cidadeList.size() == 0) {
 			throw new BoException("Cidade não encontrada - %s", registro);
+			// logger.error(String.format("Cidade não encontrada - %s",
+			// registro));
+			// return null;
 		} else if (cidadeList.size() > 1) {
 			throw new BoException("Mais de uma cidade encontrada - %s", registro);
+			// logger.error(String.format("Mais de uma cidade encontrada - %s",
+			// registro));
+			// return null;
 		}
 		return cidadeList.get(0);
 	}
@@ -536,6 +546,8 @@ public class ImpUtil {
 		OrganizacaoTipo result = organizacaoTipoMap.get(UtilitarioString.semAcento(registro).toLowerCase());
 		if (result == null) {
 			throw new BoException("Setor não identificado");
+			// logger.error(String.format(("Setor não identificado")));
+			// return null;
 		}
 		return result;
 
@@ -561,6 +573,9 @@ public class ImpUtil {
 	public PropriedadeRuralVinculoTipo deParaPropriedadeRuralVinculoTipo(String registro) throws BoException {
 		if (registro == null) {
 			throw new BoException("Vinculo com a propriedade não informado");
+			// logger.error(String.format("Vinculo com a propriedade não
+			// informado"));
+			// return null;
 		}
 		switch (UtilitarioString.semAcento(registro.trim().toLowerCase())) {
 		case "arrendamento":
@@ -572,12 +587,17 @@ public class ImpUtil {
 			return PropriedadeRuralVinculoTipo.PR;
 		default:
 			throw new BoException("Categoria não identificada [%s]", registro);
+			// logger.error(String.format("Categoria não identificada [%s]",
+			// registro));
+			// return null;
 		}
 	}
 
 	public PublicoAlvoCategoria deParaPublicoAlvoCategoria(String registro) throws BoException {
 		if (registro == null) {
 			throw new BoException("Categoria não informada");
+			// logger.error(String.format("Categoria não informada"));
+			// return null;
 		}
 
 		switch (UtilitarioString.semAcento(registro.trim().toLowerCase())) {
@@ -589,12 +609,17 @@ public class ImpUtil {
 			return PublicoAlvoCategoria.T;
 		default:
 			throw new BoException("Categoria não identificada [%s]", registro);
+			// logger.error(String.format("Categoria não identificada [%s]",
+			// registro));
+			// return null;
 		}
 	}
 
 	public PublicoAlvoSegmento deParaPublicoAlvoSegmento(String registro) throws BoException {
 		if (registro == null) {
 			throw new BoException("Segmento não informado");
+			// logger.error(String.format("Segmento não informado"));
+			// return null;
 		}
 
 		switch (UtilitarioString.semAcento(registro.trim().toLowerCase())) {
@@ -604,6 +629,9 @@ public class ImpUtil {
 			return PublicoAlvoSegmento.P;
 		default:
 			throw new BoException("Segmento não identificado [%s]", registro);
+			// logger.error(String.format("Segmento não identificado [%s]",
+			// registro));
+			// return null;
 		}
 	}
 
@@ -662,6 +690,8 @@ public class ImpUtil {
 		Setor result = setorMap.get(UtilitarioString.semAcento(registro).toLowerCase());
 		if (result == null) {
 			throw new BoException("Setor não identificado");
+			// logger.error(String.format("Setor não identificado"));
+			// return null;
 		}
 		return result;
 	}
@@ -694,6 +724,9 @@ public class ImpUtil {
 			unidadeOrganizacionalList.add(uo);
 		} else {
 			throw new BoException("Unidade Organizacional não encontrada");
+			// logger.error(String.format("Unidade Organizacional não
+			// encontrada"));
+			// return null;
 		}
 		return uo;
 	}
@@ -717,9 +750,9 @@ public class ImpUtil {
 
 	public BaciaHidrografica getBaciaHidrografica(String nome) throws BoException {
 		if (nome == null) {
-			logger.error("Bacia não informada");
-			return null;
-			// throw new BoException("Bacia não informada");
+			throw new BoException("Bacia não informada");
+			// logger.error("Bacia não informada");
+			// return null;
 		}
 		for (BaciaHidrografica baciaHidrografica : baciaHidrograficaList) {
 			if (baciaHidrografica.getNome().equalsIgnoreCase(nome)) {
@@ -728,9 +761,9 @@ public class ImpUtil {
 		}
 		List<BaciaHidrografica> baciaHidrografica = baciaHidrograficaDao.findByNomeOrderByNomeAsc(nome);
 		if (baciaHidrografica == null || baciaHidrografica.size() != 1) {
-			logger.error(String.format("Bacia inexistente [%s]", nome));
-			return null;
-			// throw new BoException("Bacia inexistente [%s]", nome);
+			throw new BoException("Bacia inexistente [%s]", nome);
+			// logger.error(String.format("Bacia inexistente [%s]", nome));
+			// return null;
 		}
 		baciaHidrograficaList.add(baciaHidrografica.get(0));
 
@@ -739,9 +772,9 @@ public class ImpUtil {
 
 	public Comunidade getComunidade(String nome) throws BoException {
 		if (nome == null) {
-			logger.error("Comunidade não informada");
-			return null;
-			// throw new BoException("Comunidade não informada");
+			throw new BoException("Comunidade não informada");
+			// logger.error("Comunidade não informada");
+			// return null;
 		}
 		for (Comunidade comunidade : comunidadeList) {
 			if (comunidade.getNome().equalsIgnoreCase(nome)) {
@@ -750,9 +783,9 @@ public class ImpUtil {
 		}
 		List<Comunidade> comunidade = comunidadeDao.findByNomeOrderByNomeAsc(nome);
 		if (comunidade == null || comunidade.size() != 1) {
-			logger.error(String.format("Comunidade inexistente [%s]", nome));
-			return null;
-			// throw new BoException("Comunidade inexistente [%s]", nome);
+			throw new BoException("Comunidade inexistente [%s]", nome);
+			// logger.error(String.format("Comunidade inexistente [%s]", nome));
+			// return null;
 		}
 		comunidadeList.add(comunidade.get(0));
 
@@ -788,6 +821,8 @@ public class ImpUtil {
 	public SistemaProducao getSistemaProducao(String nome) throws BoException {
 		if (nome == null) {
 			throw new BoException("Sistema de Produção não informada");
+			// logger.error(String.format("Sistema de Produção não informada"));
+			// return null;
 		}
 		for (SistemaProducao sistemaProducao : sistemaProducaoList) {
 			if (sistemaProducao.getNome().equalsIgnoreCase(nome)) {
@@ -796,8 +831,10 @@ public class ImpUtil {
 		}
 		SistemaProducao sistemaProducao = sistemaProducaoDao.findOneByNomeIgnoreCase(nome);
 		if (sistemaProducao == null) {
-//			return null;
 			throw new BoException("Sistema de Produção não cadastrado [%s]", nome);
+			// logger.error(String.format("Sistema de Produção não cadastrado
+			// [%s]", nome));
+			// return null;
 		}
 		sistemaProducaoList.add(sistemaProducao);
 

@@ -256,7 +256,7 @@ public class SisaterPropriedadeRuralCmd extends _Comando {
 
 		agora = (Calendar) contexto.get("agora");
 
-		impUtil.criarMarcaTabela(con, SISATER_TABELA);
+		impUtil.criarMarcaTabelaSisater(con, SISATER_TABELA);
 
 		psFoto = con.prepareStatement(SQL_FOTO);
 
@@ -265,32 +265,38 @@ public class SisaterPropriedadeRuralCmd extends _Comando {
 		try (Statement st = con.createStatement(); ResultSet rs = st.executeQuery(SQL);) {
 			int cont = 0;
 			while (rs.next()) {
-				cont++;
-				PropriedadeRural propriedadeRural = novoPropriedadeRural(rs);
+				try {
+					PropriedadeRural propriedadeRural = novoPropriedadeRural(rs);
 
-				// recuperar os IDs
-				PropriedadeRural salvo = propriedadeRuralDao.findOneByChaveSisater(propriedadeRural.getChaveSisater());
-				if (salvo != null) {
-					propriedadeRural.setId(salvo.getId());
+					// recuperar os IDs
+					PropriedadeRural salvo = propriedadeRuralDao.findOneByChaveSisater(propriedadeRural.getChaveSisater());
+					if (salvo != null) {
+						propriedadeRural.setId(salvo.getId());
+					}
+
+					// Este campo no sisater está vinculado ao publico alvo, no
+					// caso
+					// ele será alimentado ao importar os beneficiários
+					// viculados a
+					// esta propriedade
+					// propriedadeRural.setFormaUtilizacaoEspacoRuralList(rs.getString(""));
+
+					propriedadeRural.setObservacoes(rs.getString("PPOBS1"));
+
+					propriedadeRural.setSituacao(PropriedadeRuralSituacao.A);
+					propriedadeRural.setSituacaoData(agora);
+					propriedadeRural.setArquivoList(captarArquivoList(rs.getString("IDPRP"), propriedadeRural));
+
+					// salvar no MySQL e no Firebird
+					propriedadeRural.setId((Integer) facadeBo.propriedadeRuralSalvar(contexto.getUsuario(), propriedadeRural).getResposta());
+
+					impUtil.chaveAterWebAtualizar(con, propriedadeRural.getId(), SISATER_TABELA, "IDUND = ? AND IDPRP = ?", rs.getString("IDUND"), rs.getString("IDPRP"));
+
+					captarDiagnosticoList(rs, propriedadeRural);
+					cont++;
+				} catch (Exception e) {
+					logger.error(e);
 				}
-
-				// Este campo no sisater está vinculado ao publico alvo, no caso
-				// ele será alimentado ao importar os beneficiários viculados a
-				// esta propriedade
-				// propriedadeRural.setFormaUtilizacaoEspacoRuralList(rs.getString(""));
-
-				propriedadeRural.setObservacoes(rs.getString("PPOBS1"));
-
-				propriedadeRural.setSituacao(PropriedadeRuralSituacao.A);
-				propriedadeRural.setSituacaoData(agora);
-				propriedadeRural.setArquivoList(captarArquivoList(rs.getString("IDPRP"), propriedadeRural));
-
-				// salvar no MySQL e no Firebird
-				propriedadeRural.setId((Integer) facadeBo.propriedadeRuralSalvar(contexto.getUsuario(), propriedadeRural).getResposta());
-
-				impUtil.chaveAterWebAtualizar(con, propriedadeRural.getId(), SISATER_TABELA, "IDUND = ? AND IDPRP = ?", rs.getString("IDUND"), rs.getString("IDPRP"));
-
-				captarDiagnosticoList(rs, propriedadeRural);
 			}
 			if (logger.isDebugEnabled()) {
 				logger.debug(String.format("[%s] importado %d propriedades rurais", base.name(), cont));

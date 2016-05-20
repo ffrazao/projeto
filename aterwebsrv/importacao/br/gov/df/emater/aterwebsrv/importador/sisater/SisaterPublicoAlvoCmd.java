@@ -614,70 +614,74 @@ public class SisaterPublicoAlvoCmd extends _Comando {
 
 		psDivida = con.prepareStatement(SQL_DIVIDA);
 
-		impUtil.criarMarcaTabela(con, SISATER_TABELA);
+		impUtil.criarMarcaTabelaSisater(con, SISATER_TABELA);
 
 		try (Statement st = con.createStatement(); ResultSet rs = st.executeQuery(SQL);) {
 			int cont = 0;
 			while (rs.next()) {
-				cont++;
-				Pessoa pessoa = null;
-
-				String natureza = UtilitarioString.semAcento(rs.getString("BFNATUREZA"));
-				if (natureza.equalsIgnoreCase("fisica")) {
-					pessoa = novoPessoaFisica(rs);
-				} else if (natureza.equalsIgnoreCase("juridica")) {
-					pessoa = novoPessoaJuridica(rs);
-				} else {
-					throw new BoException("Natureza da Pessoa não identificada %s", natureza);
-				}
-				if (pessoa == null) {
-					throw new BoException("Não foi possível identificar os dados pessoais");
-				}
-				pessoa.setChaveSisater(impUtil.chaveBeneficiario(base, rs.getString("IDUND"), rs.getString("IDBEN")));
-				pessoa.setPublicoAlvoConfirmacao(Confirmacao.S);
-				pessoa.setPublicoAlvo(novoPublicoAlvo(pessoa, rs));
-				impUtil.pessoaConfiguraNome(pessoa, rs.getString("BFNOME"), rs.getString("BFAPELIDO"));
-
-				// recuperar os IDs
-				Pessoa salvo = pessoaDao.findOneByChaveSisater(pessoa.getChaveSisater());
-				if (salvo != null) {
-					pessoa.setId(salvo.getId());
-				}
-
-				pessoa.setEmailList(captarEmailList(rs, salvo));
-				pessoa.setTelefoneList(captarTelefoneList(rs, salvo));
-				pessoa.setEnderecoList(captarEnderecoList(rs, salvo));
-				pessoa.setGrupoSocialList(captarGrupoSocialList(rs, salvo));
-				pessoa.setRelacionamentoList(captarRelacionamentoList(rs, salvo, pessoa));
-
-				if (rs.getString("BFINSCEST") != null) {
-					pessoa.setInscricaoEstadualUf(distritoFederal.getSigla());
-					pessoa.setInscricaoEstadual(rs.getString("BFINSCEST"));
-				}
-				pessoa.setObservacoes(rs.getString("OBSERVACAO"));
-
-				pessoa.setPerfilArquivo(captarPerfilArquivo(rs.getString("IDBEN")));
-				pessoa.setSituacao(PessoaSituacao.A);
-				pessoa.setSituacaoData(agora);
-
-				// salvar no MySQL e no Firebird
-				pessoa.setId((Integer) facadeBo.pessoaSalvar(contexto.getUsuario(), pessoa).getResposta());
-
-				impUtil.chaveAterWebAtualizar(con, pessoa.getId(), SISATER_TABELA, "IDUND = ? AND IDBEN =  ?", rs.getString("IDUND"), rs.getString("IDBEN"));
-
-				// identificar último usuario que atualizou o registro
-				Usuario atualizador = impUtil.deParaUsuario(rs.getString("IDEMP"));
-				Calendar atualizacaoData = impUtil.captaData(rs.getDate("BFDTATUAL"));
-				if (atualizador != null) {
-					if (atualizacaoData != null) {
-						pessoa.setInclusaoData(atualizacaoData);
-						pessoa.setAlteracaoData(atualizacaoData);
+				try {
+					Pessoa pessoa = null;
+	
+					String natureza = UtilitarioString.semAcento(rs.getString("BFNATUREZA"));
+					if (natureza.equalsIgnoreCase("fisica")) {
+						pessoa = novoPessoaFisica(rs);
+					} else if (natureza.equalsIgnoreCase("juridica")) {
+						pessoa = novoPessoaJuridica(rs);
+					} else {
+						throw new BoException("Natureza da Pessoa não identificada %s", natureza);
 					}
-					pessoa.setUsuarioAlteracao(atualizador);
-					pessoaDao.save(pessoa);
+					if (pessoa == null) {
+						throw new BoException("Não foi possível identificar os dados pessoais");
+					}
+					pessoa.setChaveSisater(impUtil.chaveBeneficiario(base, rs.getString("IDUND"), rs.getString("IDBEN")));
+					pessoa.setPublicoAlvoConfirmacao(Confirmacao.S);
+					pessoa.setPublicoAlvo(novoPublicoAlvo(pessoa, rs));
+					impUtil.pessoaConfiguraNome(pessoa, rs.getString("BFNOME"), rs.getString("BFAPELIDO"));
+	
+					// recuperar os IDs
+					Pessoa salvo = pessoaDao.findOneByChaveSisater(pessoa.getChaveSisater());
+					if (salvo != null) {
+						pessoa.setId(salvo.getId());
+					}
+	
+					pessoa.setEmailList(captarEmailList(rs, salvo));
+					pessoa.setTelefoneList(captarTelefoneList(rs, salvo));
+					pessoa.setEnderecoList(captarEnderecoList(rs, salvo));
+					pessoa.setGrupoSocialList(captarGrupoSocialList(rs, salvo));
+					pessoa.setRelacionamentoList(captarRelacionamentoList(rs, salvo, pessoa));
+	
+					if (rs.getString("BFINSCEST") != null) {
+						pessoa.setInscricaoEstadualUf(distritoFederal.getSigla());
+						pessoa.setInscricaoEstadual(rs.getString("BFINSCEST"));
+					}
+					pessoa.setObservacoes(rs.getString("OBSERVACAO"));
+	
+					pessoa.setPerfilArquivo(captarPerfilArquivo(rs.getString("IDBEN")));
+					pessoa.setSituacao(PessoaSituacao.A);
+					pessoa.setSituacaoData(agora);
+	
+					// salvar no MySQL e no Firebird
+					pessoa.setId((Integer) facadeBo.pessoaSalvar(contexto.getUsuario(), pessoa).getResposta());
+	
+					impUtil.chaveAterWebAtualizar(con, pessoa.getId(), SISATER_TABELA, "IDUND = ? AND IDBEN =  ?", rs.getString("IDUND"), rs.getString("IDBEN"));
+	
+					// identificar último usuario que atualizou o registro
+					Usuario atualizador = impUtil.deParaUsuario(rs.getString("IDEMP"));
+					Calendar atualizacaoData = impUtil.captaData(rs.getDate("BFDTATUAL"));
+					if (atualizador != null) {
+						if (atualizacaoData != null) {
+							pessoa.setInclusaoData(atualizacaoData);
+							pessoa.setAlteracaoData(atualizacaoData);
+						}
+						pessoa.setUsuarioAlteracao(atualizador);
+						pessoaDao.save(pessoa);
+					}
+	
+					captarDiagnosticoList(rs, pessoa);
+					cont++;
+				} catch (Exception e) {
+					logger.error(e);
 				}
-
-				captarDiagnosticoList(rs, pessoa);
 			}
 			if (logger.isDebugEnabled()) {
 				logger.debug(String.format("[%s] importado %d pessoas", base.name(), cont));

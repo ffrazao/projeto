@@ -18,6 +18,7 @@ import br.gov.df.emater.aterwebsrv.dao.atividade.OcorrenciaDao;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.Atividade;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.AtividadeAssunto;
+import br.gov.df.emater.aterwebsrv.modelo.atividade.AtividadeChaveSisater;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.AtividadePessoa;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.Ocorrencia;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.AtividadeFinalidade;
@@ -91,6 +92,10 @@ public class SalvarCmd extends _Comando {
 			result.setPublicoReal(null);
 			result.setPublicoEstimado(null);
 		}
+		
+		for (AtividadeChaveSisater c: result.getChaveSisaterList()) {
+			c.setAtividade(result);
+		}
 
 		dao.save(result);
 
@@ -124,10 +129,12 @@ public class SalvarCmd extends _Comando {
 		responsavel = null;
 		List<Integer> executorList = new ArrayList<Integer>();
 		for (AtividadePessoa ativPess : result.getPessoaExecutorList()) {
-			if (executorList.contains(ativPess.getPessoa().getId())) {
-				throw new BoException("Executor vinculado mais de uma vez à Atividade");
-			} else {
-				executorList.add(ativPess.getPessoa().getId());
+			if (ativPess.getPessoa() != null) {
+				if (executorList.contains(ativPess.getPessoa().getId())) {
+					throw new BoException("Executor vinculado mais de uma vez à Atividade");
+				} else {
+					executorList.add(ativPess.getPessoa().getId());
+				}
 			}
 			ativPess.setAtividade(result);
 			ativPess.setParticipacao(AtividadePessoaParticipacao.E);

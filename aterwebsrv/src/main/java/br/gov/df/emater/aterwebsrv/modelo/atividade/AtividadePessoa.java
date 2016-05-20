@@ -81,6 +81,16 @@ public class AtividadePessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		super(id);
 	}
 
+	public AtividadePessoa(UnidadeOrganizacional unidadeOrganizacional, Pessoa pessoa, Calendar inicio, AtividadePessoaParticipacao participacao, Confirmacao responsavel) {
+		super();
+		this.unidadeOrganizacional = unidadeOrganizacional;
+		this.pessoa = pessoa;
+		this.inicio = inicio;
+		this.participacao = participacao;
+		this.responsavel = responsavel;
+		this.ativo = Confirmacao.S;
+	}
+
 	public Atividade getAtividade() {
 		return atividade;
 	}

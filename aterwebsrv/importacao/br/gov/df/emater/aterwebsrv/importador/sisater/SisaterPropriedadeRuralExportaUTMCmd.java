@@ -37,7 +37,7 @@ public class SisaterPropriedadeRuralExportaUTMCmd extends _Comando {
 		base = (DbSater) contexto.get("base");
 		impUtil = (ImpUtil) contexto.get("impUtil");
 
-		impUtil.criarMarcaTabela(con, SISATER_TABELA);
+		impUtil.criarMarcaTabelaSisater(con, SISATER_TABELA);
 
 		List<Map<String, Object>> regList = new ArrayList<Map<String, Object>>();
 		boolean encontrou = false;
@@ -50,18 +50,22 @@ public class SisaterPropriedadeRuralExportaUTMCmd extends _Comando {
 		try (Statement st = con.createStatement(); ResultSet rs = st.executeQuery(SQL);) {
 			int cont = 0;
 			while (rs.next()) {
-				cont++;
-				Map<String, Object> linha = new HashMap<String, Object>();
-				String[] coords = impUtil.captaUtmNE(rs.getString("PPUTMN"), rs.getString("PPUTME"));
-				linha.put(cabecalho.get(0), impUtil.chavePropriedadeRural(base, rs.getString("IDUND"), rs.getString("IDPRP")));
-				for (int i = 0; i < 4; i++) {
-					linha.put(cabecalho.get(i + 1), coords[i]);
-				}
-				if ((linha.get("PPUTMN") != null && linha.get("PPUTME") != null) || (linha.get("PPUTMN-str") != null && linha.get("PPUTME-str") != null)) {
-					if (!encontrou) {
-						encontrou = true;
+				try {
+					Map<String, Object> linha = new HashMap<String, Object>();
+					String[] coords = impUtil.captaUtmNE(rs.getString("PPUTMN"), rs.getString("PPUTME"));
+					linha.put(cabecalho.get(0), impUtil.chavePropriedadeRural(base, rs.getString("IDUND"), rs.getString("IDPRP")));
+					for (int i = 0; i < 4; i++) {
+						linha.put(cabecalho.get(i + 1), coords[i]);
 					}
-					regList.add(linha);
+					if ((linha.get("PPUTMN") != null && linha.get("PPUTME") != null) || (linha.get("PPUTMN-str") != null && linha.get("PPUTME-str") != null)) {
+						if (!encontrou) {
+							encontrou = true;
+						}
+						regList.add(linha);
+					}
+					cont++;
+				} catch (Exception e) {
+					logger.error(e);
 				}
 			}
 			if (logger.isDebugEnabled()) {
