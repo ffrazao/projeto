@@ -819,11 +819,33 @@ public class ImpUtil {
 	}
 
 	public SistemaProducao getSistemaProducao(String nome) throws BoException {
-		if (nome == null) {
+		if (nome == null || nome.trim().length() == 0) {
 			throw new BoException("Sistema de Produção não informada");
 			// logger.error(String.format("Sistema de Produção não informada"));
 			// return null;
 		}
+		switch (nome) {
+		case "Em transição":
+		case "Transição Agroecológica":
+		case "Transição agroecológica":
+			nome = "Convencional (Transição)";
+			break;
+
+		case "Base Agroecológica":
+			nome = "Agroecológico";
+			break;
+
+		case "Convencional (Prát. Presev.+Trans.)":
+			nome = "Convencional (Prática Preservacionista + Transição)";
+			break;
+
+		case "Convenc. + Prát. Preserv.":
+		case "Convencional (Prát. Preserv.)":
+		case "Convencional":
+			nome = "Convencional (Prática Preservacionista)";
+			break;
+		}
+
 		for (SistemaProducao sistemaProducao : sistemaProducaoList) {
 			if (sistemaProducao.getNome().equalsIgnoreCase(nome)) {
 				return sistemaProducao;

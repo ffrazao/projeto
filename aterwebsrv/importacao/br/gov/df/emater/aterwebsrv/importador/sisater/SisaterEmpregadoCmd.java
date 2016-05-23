@@ -79,7 +79,10 @@ public class SisaterEmpregadoCmd extends _Comando {
 							}
 						} else if (empregoList != null && empregoList.size() == 0) {
 							// salvar o empregado
-							PessoaFisica empregado = new PessoaFisica();
+							PessoaFisica empregado = (PessoaFisica) pessoaDao.findOneByChaveSisater(impUtil.chaveEmpregado(base, rs.getString("IDEMP")));
+							if (empregado == null) {
+								new PessoaFisica();
+							}
 							empregado.setChaveSisater(impUtil.chaveEmpregado(base, rs.getString("IDEMP")));
 							empregado.setNome(rs.getString("EMNOME"));
 							empregado.setApelidoSigla(rs.getString("EMAPELIDO"));
@@ -214,7 +217,7 @@ public class SisaterEmpregadoCmd extends _Comando {
 
 		emater = (PessoaJuridica) contexto.get("emater");
 		ematerUsuario = (Usuario) contexto.get("ematerUsuario");
-		empregadorFuncao = (RelacionamentoFuncao) contexto.get("empregadoFuncaor");
+		empregadorFuncao = (RelacionamentoFuncao) contexto.get("empregadorFuncao");
 		empregadoFuncao = (RelacionamentoFuncao) contexto.get("empregadoFuncao");
 		relacionamentoTipo = (RelacionamentoTipo) contexto.get("relacionamentoTipo");
 		cargoPadrao = cargoDao.findOneByPessoaJuridicaAndNome(emater, "Assistente Administrativo");

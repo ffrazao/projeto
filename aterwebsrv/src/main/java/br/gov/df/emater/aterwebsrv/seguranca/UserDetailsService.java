@@ -21,6 +21,7 @@ import br.gov.df.emater.aterwebsrv.modelo.funcional.Emprego;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.Lotacao;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaRelacionamento;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoConfiguracaoVi;
@@ -109,27 +110,29 @@ public class UserDetailsService implements org.springframework.security.core.use
 		UnidadeOrganizacional lotacaoAtual = null;
 
 		// inicio avaliar perfis da empresa do usuario
-		for (Emprego emprego : empregoDao.findByPessoaRelacionamentoListPessoaIn(usuario.getPessoa())) {
-			Pessoa empregador = null;
-			for (PessoaRelacionamento pr : emprego.getPessoaRelacionamentoList()) {
-				RelacionamentoConfiguracaoVi relacionamentoConfiguracaoVi = relacionamentoConfiguracaoViDao.findByTipoIdAndRelacionadorId(pr.getRelacionamento().getRelacionamentoTipo().getId(), pr.getRelacionamentoFuncao().getId());
-				if (RelacionamentoParticipacao.A.equals(relacionamentoConfiguracaoVi.getRelacionadorParticipacao())) {
-					empregador = pr.getPessoa();
-					break;
+		if (usuario.getPessoa() != null && usuario.getPessoa() instanceof PessoaFisica) {
+			for (Emprego emprego : empregoDao.findByPessoaRelacionamentoListPessoaIn(usuario.getPessoa())) {
+				Pessoa empregador = null;
+				for (PessoaRelacionamento pr : emprego.getPessoaRelacionamentoList()) {
+					RelacionamentoConfiguracaoVi relacionamentoConfiguracaoVi = relacionamentoConfiguracaoViDao.findByTipoIdAndRelacionadorId(pr.getRelacionamento().getRelacionamentoTipo().getId(), pr.getRelacionamentoFuncao().getId());
+					if (RelacionamentoParticipacao.A.equals(relacionamentoConfiguracaoVi.getRelacionadorParticipacao())) {
+						empregador = pr.getPessoa();
+						break;
+					}
 				}
-			}
-			if (usuario.getPessoa().getId().equals(empregador.getId())) {
-				continue;
-			}
-			for (Usuario usuarioEmpregador : usuarioDao.findByPessoa(empregador)) {
-				avaliarPerfil(usuarioEmpregador.getAuthorities(), authoritiesRetorno, perfilFuncionalidadeComandoListRetorno, perfilFuncionalidadeComandoListNegadoRetorno);
-			}
-			// inicio avaliar perfis da lotacoes do usuario
-			for (Lotacao lotacao : lotacaoDao.findByEmprego(emprego)) {
-				for (Usuario usuarioUnidadeOrganizacional : usuarioDao.findByUnidadeOrganizacional(lotacao.getUnidadeOrganizacional())) {
-					avaliarPerfil(usuarioUnidadeOrganizacional.getAuthorities(), authoritiesRetorno, perfilFuncionalidadeComandoListRetorno, perfilFuncionalidadeComandoListNegadoRetorno);
+				if (usuario.getPessoa().getId().equals(empregador.getId())) {
+					continue;
 				}
-				lotacaoAtual = lotacao.getUnidadeOrganizacional();
+				for (Usuario usuarioEmpregador : usuarioDao.findByPessoa(empregador)) {
+					avaliarPerfil(usuarioEmpregador.getAuthorities(), authoritiesRetorno, perfilFuncionalidadeComandoListRetorno, perfilFuncionalidadeComandoListNegadoRetorno);
+				}
+				// inicio avaliar perfis da lotacoes do usuario
+				for (Lotacao lotacao : lotacaoDao.findByEmprego(emprego)) {
+					for (Usuario usuarioUnidadeOrganizacional : usuarioDao.findByUnidadeOrganizacional(lotacao.getUnidadeOrganizacional())) {
+						avaliarPerfil(usuarioUnidadeOrganizacional.getAuthorities(), authoritiesRetorno, perfilFuncionalidadeComandoListRetorno, perfilFuncionalidadeComandoListNegadoRetorno);
+					}
+					lotacaoAtual = lotacao.getUnidadeOrganizacional();
+				}
 			}
 		}
 		// fim avaliar perfis da empresa do usuario
