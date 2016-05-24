@@ -24,6 +24,7 @@ public class SisaterPendenciasExcluirCmd extends _Comando {
 			propriedadeRuralPendenciaDao.deleteAll();
 		} catch (Exception e) {
 			logger.error(e);
+			e.printStackTrace();
 		}
 		return false;
 	}

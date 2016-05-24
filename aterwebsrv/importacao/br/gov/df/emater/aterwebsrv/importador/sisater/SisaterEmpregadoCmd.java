@@ -66,7 +66,11 @@ public class SisaterEmpregadoCmd extends _Comando {
 
 						List<Emprego> empregoList = empregoDao.findByMatricula(matricula);
 						if (empregoList != null && empregoList.size() == 1) {
-							for (PessoaRelacionamento pessoaRelacionamento : empregoList.get(0).getPessoaRelacionamentoList()) {
+							List<PessoaRelacionamento> pessoaRelacionamentoList = empregoList.get(0).getPessoaRelacionamentoList();
+							if (pessoaRelacionamentoList == null) {
+								pessoaRelacionamentoList = pessoaRelacionamentoDao.findByRelacionamento(empregoList.get(0));
+							}
+							for (PessoaRelacionamento pessoaRelacionamento : pessoaRelacionamentoList) {
 								if (empregadoFuncao.getId().equals(pessoaRelacionamento.getRelacionamentoFuncao().getId())) {
 									Pessoa empregado = pessoaRelacionamento.getPessoa();
 									empregado.setChaveSisater(impUtil.chaveEmpregado(base, rs.getString("IDEMP")));
@@ -81,7 +85,7 @@ public class SisaterEmpregadoCmd extends _Comando {
 							// salvar o empregado
 							PessoaFisica empregado = (PessoaFisica) pessoaDao.findOneByChaveSisater(impUtil.chaveEmpregado(base, rs.getString("IDEMP")));
 							if (empregado == null) {
-								new PessoaFisica();
+								empregado = new PessoaFisica();
 							}
 							empregado.setChaveSisater(impUtil.chaveEmpregado(base, rs.getString("IDEMP")));
 							empregado.setNome(rs.getString("EMNOME"));
@@ -129,6 +133,7 @@ public class SisaterEmpregadoCmd extends _Comando {
 						cont++;
 					} catch (Exception e) {
 						logger.error(e);
+						e.printStackTrace();
 					}
 				}
 			}

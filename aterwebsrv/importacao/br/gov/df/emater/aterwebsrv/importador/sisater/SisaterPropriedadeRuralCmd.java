@@ -296,6 +296,7 @@ public class SisaterPropriedadeRuralCmd extends _Comando {
 					cont++;
 				} catch (Exception e) {
 					logger.error(e);
+					e.printStackTrace();
 				}
 			}
 			if (logger.isDebugEnabled()) {

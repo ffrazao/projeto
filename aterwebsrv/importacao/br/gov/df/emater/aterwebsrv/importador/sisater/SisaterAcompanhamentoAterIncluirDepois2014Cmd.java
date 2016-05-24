@@ -24,6 +24,7 @@ import br.gov.df.emater.aterwebsrv.dao.atividade.AssuntoDao;
 import br.gov.df.emater.aterwebsrv.dao.atividade.MetodoDao;
 import br.gov.df.emater.aterwebsrv.dao.funcional.EmpregoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaDao;
+import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaRelacionamentoDao;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.importador.apoio.ConexaoFirebird.DbSater;
@@ -144,6 +145,7 @@ public class SisaterAcompanhamentoAterIncluirDepois2014Cmd extends _Comando {
 						cont++;
 					} catch (Exception e) {
 						logger.error(e);
+						e.printStackTrace();
 					}
 				}
 				salvar(usuario);
@@ -277,6 +279,9 @@ public class SisaterAcompanhamentoAterIncluirDepois2014Cmd extends _Comando {
 
 	@Autowired
 	private PessoaDao pessoaDao;
+	
+	@Autowired
+	private PessoaRelacionamentoDao pessoaRelacionamentoDao;
 
 	Assunto assuntoPega(String nome) throws BoException {
 		switch (nome) {
@@ -360,7 +365,11 @@ public class SisaterAcompanhamentoAterIncluirDepois2014Cmd extends _Comando {
 		}
 
 		Pessoa pessoa = null;
-		for (PessoaRelacionamento pessoaRelacionamento : empregoList.get(0).getPessoaRelacionamentoList()) {
+		List<PessoaRelacionamento> pessoaRelacionamentoList = empregoList.get(0).getPessoaRelacionamentoList();
+		if (pessoaRelacionamentoList == null) {
+			pessoaRelacionamentoList = pessoaRelacionamentoDao.findByRelacionamento(empregoList.get(0));
+		}
+		for (PessoaRelacionamento pessoaRelacionamento : pessoaRelacionamentoList) {
 			if (empregadoFuncao.getId().equals(pessoaRelacionamento.getRelacionamentoFuncao().getId())) {
 				pessoa = pessoaRelacionamento.getPessoa();
 				break;

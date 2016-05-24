@@ -32,6 +32,7 @@ import br.gov.df.emater.aterwebsrv.dao.pessoa.GrupoSocialDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.MunicipioDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PaisDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaDao;
+import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaRelacionamentoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoFuncaoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoTipoDao;
@@ -341,6 +342,10 @@ public class SisaterPublicoAlvoCmd extends _Comando {
 				List<Relacionamento> relacionamentoList = relacionamentoDao.findByPessoaRelacionamentoListPessoa(salvo);
 				if (relacionamentoList != null) {
 					salvo: for (Relacionamento relacionamentoSalvo : relacionamentoList) {
+						List<PessoaRelacionamento> pessoaRelacionamentoList = relacionamentoSalvo.getPessoaRelacionamentoList();
+						if (pessoaRelacionamentoList == null) {
+							pessoaRelacionamentoList = pessoaRelacionamentoDao.findByRelacionamento(relacionamentoSalvo);
+						}
 						for (PessoaRelacionamento pessoaRelacionamentoSalvo : relacionamentoSalvo.getPessoaRelacionamentoList()) {
 							if (sisater.getChaveSisater().equals(pessoaRelacionamentoSalvo.getChaveSisater())) {
 								sisater.setId(pessoaRelacionamentoSalvo.getId());
@@ -433,6 +438,9 @@ public class SisaterPublicoAlvoCmd extends _Comando {
 
 	@Autowired
 	private ColetaDao coletaDao;
+
+	@Autowired
+	private PessoaRelacionamentoDao pessoaRelacionamentoDao;
 
 	private Connection con;
 
@@ -681,6 +689,7 @@ public class SisaterPublicoAlvoCmd extends _Comando {
 					cont++;
 				} catch (Exception e) {
 					logger.error(e);
+					e.printStackTrace();
 				}
 			}
 			if (logger.isDebugEnabled()) {

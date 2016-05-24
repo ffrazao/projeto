@@ -13,6 +13,7 @@ import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.ater.PropriedadeRuralDao;
+import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoDao;
 import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoPropriedadeRuralDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaDao;
 import br.gov.df.emater.aterwebsrv.importador.apoio.ConexaoFirebird.DbSater;
@@ -41,6 +42,9 @@ public class SisaterPublicoAlvoPropriedadeRuralCmd extends _Comando {
 
 	@Autowired
 	private PessoaDao pessoaDao;
+	
+	@Autowired
+	private PublicoAlvoDao publicoAlvoDao;
 
 	@Autowired
 	private PropriedadeRuralDao propriedadeRuralDao;
@@ -60,11 +64,7 @@ public class SisaterPublicoAlvoPropriedadeRuralCmd extends _Comando {
 			while (rs.next()) {
 				try {
 					PublicoAlvoPropriedadeRural publicoAlvoPropriedadeRural = null;
-					try {
-						publicoAlvoPropriedadeRural = novoPublicoAlvoPropriedadeRural(rs);
-					} catch (BoException e) {
-						continue;
-					}
+					publicoAlvoPropriedadeRural = novoPublicoAlvoPropriedadeRural(rs);
 					publicoAlvoPropriedadeRural.setChaveSisater(impUtil.chavePublicoAlvoPropriedadeRural(base, rs.getString("IDPRP"), rs.getString("IDBEN")));
 
 					// recuperar os IDs
@@ -81,6 +81,7 @@ public class SisaterPublicoAlvoPropriedadeRuralCmd extends _Comando {
 					cont++;
 				} catch (Exception e) {
 					logger.error(e);
+					e.printStackTrace();
 				}
 			}
 			if (logger.isDebugEnabled()) {
@@ -95,7 +96,10 @@ public class SisaterPublicoAlvoPropriedadeRuralCmd extends _Comando {
 		Pessoa pessoa = pessoaDao.findOneByChaveSisater(impUtil.chaveBeneficiario(base, rs.getString("IDBEN").substring(0, 2), rs.getString("IDBEN")));
 		PropriedadeRural propriedadeRural = propriedadeRuralDao.findOneByChaveSisater(impUtil.chavePropriedadeRural(base, rs.getString("IDPRP").substring(0, 2), rs.getString("IDPRP")));
 
-		if (pessoa == null || propriedadeRural == null) {
+		if (pessoa != null && pessoa.getPublicoAlvo() == null) {
+			pessoa.setPublicoAlvo(publicoAlvoDao.findOneByPessoa(pessoa));
+		}
+		if (pessoa == null || pessoa.getPublicoAlvo() == null || propriedadeRural == null ) {
 			throw new BoException("Pessoa ou Propriedade Rural inexistente");
 			// logger.error(String.format("Pessoa ou Propriedade Rural
 			// inexistente"));

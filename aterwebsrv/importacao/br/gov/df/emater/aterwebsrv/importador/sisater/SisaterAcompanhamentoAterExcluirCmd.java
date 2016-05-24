@@ -20,6 +20,7 @@ public class SisaterAcompanhamentoAterExcluirCmd extends _Comando {
 			atividadeDao.flush();
 		} catch (Exception e) {
 			logger.error(e);
+			e.printStackTrace();
 		}
 
 		return false;

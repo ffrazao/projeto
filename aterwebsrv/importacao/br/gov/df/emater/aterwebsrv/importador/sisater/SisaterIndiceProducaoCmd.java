@@ -450,6 +450,7 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 						cont++;
 					} catch (BoException e) {
 						logger.error(e.getMessage());
+						e.printStackTrace();
 					}
 				}
 				if (logger.isDebugEnabled()) {

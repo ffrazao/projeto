@@ -72,6 +72,7 @@ public class SisaterCmd extends _Comando {
 						}
 					} catch (SQLException e1) {
 					}
+					e.printStackTrace();
 					throw e;
 				}
 			}
