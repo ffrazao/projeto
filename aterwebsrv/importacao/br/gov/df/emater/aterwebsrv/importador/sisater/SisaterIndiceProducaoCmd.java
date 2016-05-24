@@ -757,8 +757,8 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 
 		for (OrigemList origem : OrigemList.values()) {
 			for (int i = 0; i <= 1; i++) {
-				if (origem.equals(OrigemList.IPAA00) || origem.equals(OrigemList.IPAF00) || (origem.equals(OrigemList.IPAN00) && i == 0))
-					continue;
+//				if (origem.equals(OrigemList.IPAA00) || origem.equals(OrigemList.IPAF00) || (origem.equals(OrigemList.IPAN00) && i == 0))
+//					continue;
 
 				checkProducaoList.importar(base, contexto.getUsuario(), origem, i);
 			}
