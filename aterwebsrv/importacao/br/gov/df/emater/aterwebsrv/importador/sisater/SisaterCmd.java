@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
 
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
@@ -27,18 +29,26 @@ public class SisaterCmd extends _Comando {
 	@Autowired
 	private UnidadeOrganizacionalDao unidadeOrganizacionalDao;
 
+	private PlatformTransactionManager transactionManager;
+	
+	private TransactionStatus transactionStatus;
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		if (logger.isInfoEnabled()) {
 			logger.info("INICIO DA IMPORTAÇÃO");
 		}
+		
+		transactionManager = (PlatformTransactionManager) contexto.get("transactionManager");
+		transactionStatus = (TransactionStatus) contexto.get("transactionStatus");
 
 		int cont = 0;
 		for (DbSater base : DbSater.values()) {
 			if (base.getSigla() == null) {
 				continue;
 			}
+			transactionManager.commit(transactionStatus);
 
 //			if (++cont < 6) {
 //				continue;

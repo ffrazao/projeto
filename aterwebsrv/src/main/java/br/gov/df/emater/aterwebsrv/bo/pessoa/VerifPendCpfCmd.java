@@ -87,7 +87,11 @@ public class VerifPendCpfCmd extends VerificarPendenciasCmd {
 		if (salvoPessoaRelacionamentoList != null) {
 			for (PessoaRelacionamento salvoPessoaRelacionamento : salvoPessoaRelacionamentoList) {
 				Pessoa relacionado = null;
-				for (PessoaRelacionamento pr : salvoPessoaRelacionamento.getRelacionamento().getPessoaRelacionamentoList()) {
+				List<PessoaRelacionamento> pessoaRelacionamentoList = salvoPessoaRelacionamento.getRelacionamento().getPessoaRelacionamentoList();
+				if (pessoaRelacionamentoList == null) {
+					pessoaRelacionamentoList = pessoaRelacionamentoDao.findByRelacionamento(salvoPessoaRelacionamento.getRelacionamento());
+				}
+				for (PessoaRelacionamento pr : pessoaRelacionamentoList) {
 					if (pr.getPessoa() != null) {
 						relacionado = pr.getPessoa();
 						break;

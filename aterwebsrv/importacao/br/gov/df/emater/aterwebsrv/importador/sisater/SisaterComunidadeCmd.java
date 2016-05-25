@@ -8,6 +8,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
 
 import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
@@ -33,6 +35,11 @@ public class SisaterComunidadeCmd extends _Comando {
 	private BaciaHidrograficaDao baciaHidrograficaDao;
 
 	private DbSater base;
+	
+	private PlatformTransactionManager transactionManager;
+	
+	private TransactionStatus transactionStatus;
+
 
 	@Autowired
 	private ComunidadeBaciaHidrograficaDao comunidadeBaciaHidrograficaDao;
@@ -68,6 +75,11 @@ public class SisaterComunidadeCmd extends _Comando {
 		// formosa = (Municipio) contexto.get("formosa");
 		// padreBernardo = (Municipio) contexto.get("padreBernardo");
 		municipioAtendimentoList = (Municipio[]) contexto.get("municipioAtendimentoList");
+		
+		transactionManager = (PlatformTransactionManager) contexto.get("transactionManager");
+		
+		transactionStatus = (TransactionStatus) contexto.get("transactionStatus");
+
 
 		try (Statement st = con.createStatement(); ResultSet rs = st.executeQuery(SQL);) {
 			int cont = 0;
@@ -131,6 +143,9 @@ public class SisaterComunidadeCmd extends _Comando {
 					e.printStackTrace();
 				}
 			}
+			
+			transactionManager.commit(transactionStatus);
+			
 			if (logger.isDebugEnabled()) {
 				logger.debug(String.format("[%s] importado %d comunidades", base.name(), cont));
 			}

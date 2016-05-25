@@ -68,6 +68,15 @@ public class SalvarCmd extends _Comando {
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		Atividade result = (Atividade) contexto.getRequisicao();
+		
+		List<AtividadePessoa> atividadePessoaDemandList = result.getPessoaDemandanteList();
+		List<AtividadePessoa> atividadePessoaExecList = result.getPessoaExecutorList();
+		
+		// FIX-ME
+		if (atividadePessoaDemandList == null || atividadePessoaExecList == null) {
+			return true;
+		}
+		
 		if (result.getId() == null) {
 			result.setInclusaoUsuario(getUsuario(contexto.getUsuario().getName()));
 			result.setCodigo(gerarCodigoAtividade());
@@ -96,7 +105,7 @@ public class SalvarCmd extends _Comando {
 		for (AtividadeChaveSisater c: result.getChaveSisaterList()) {
 			c.setAtividade(result);
 		}
-
+		
 		dao.save(result);
 
 		for (AtividadeAssunto assunto : result.getAssuntoList()) {
@@ -106,7 +115,7 @@ public class SalvarCmd extends _Comando {
 
 		Pessoa responsavel = null;
 		List<Integer> demandanteList = new ArrayList<Integer>();
-		for (AtividadePessoa ativPess : result.getPessoaDemandanteList()) {
+		for (AtividadePessoa ativPess : atividadePessoaDemandList) {
 			if (demandanteList.contains(ativPess.getPessoa().getId())) {
 				throw new BoException("Demandante vinculado mais de uma vez à Atividade");
 			} else {
@@ -128,7 +137,7 @@ public class SalvarCmd extends _Comando {
 
 		responsavel = null;
 		List<Integer> executorList = new ArrayList<Integer>();
-		for (AtividadePessoa ativPess : result.getPessoaExecutorList()) {
+		for (AtividadePessoa ativPess : atividadePessoaExecList) {
 			if (ativPess.getPessoa() != null) {
 				if (executorList.contains(ativPess.getPessoa().getId())) {
 					throw new BoException("Executor vinculado mais de uma vez à Atividade");
