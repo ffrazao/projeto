@@ -60,12 +60,12 @@ public class SalvarCmd extends _Comando {
 	public boolean executar(_Contexto contexto) throws Exception {
 		PropriedadeRural result = (PropriedadeRural) contexto.getRequisicao();
 		if (result.getId() == null) {
-			result.setUsuarioInclusao(getUsuario(contexto.getUsuario().getName()));
+			result.setInclusaoUsuario(getUsuario(contexto.getUsuario().getName()));
 			result.setInclusaoData(Calendar.getInstance());
 		} else {
-			result.setUsuarioInclusao(result.getUsuarioInclusao() == null ? null : getUsuario(result.getUsuarioInclusao().getUsername()));
+			result.setInclusaoUsuario(result.getInclusaoUsuario() == null ? null : getUsuario(result.getInclusaoUsuario().getUsername()));
 		}
-		result.setUsuarioAlteracao(contexto.getUsuario() == null ? null : getUsuario(contexto.getUsuario().getName()));
+		result.setAlteracaoUsuario(contexto.getUsuario() == null ? null : getUsuario(contexto.getUsuario().getName()));
 		result.setAlteracaoData(Calendar.getInstance());
 
 		if (result.getEndereco() == null) {

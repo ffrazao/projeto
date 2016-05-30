@@ -15,6 +15,9 @@ import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
@@ -47,6 +50,7 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaRelacionamento;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoFuncao;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
+import br.gov.df.emater.aterwebsrv.seguranca.UserAuthentication;
 
 @Service
 public class SisaterAcompanhamentoAterIncluirAntes2014Cmd extends _Comando {
@@ -116,7 +120,6 @@ public class SisaterAcompanhamentoAterIncluirAntes2014Cmd extends _Comando {
 		private PreparedStatement demandantePs;
 
 		void importar(DbSater base, Principal usuario) throws Exception {
-
 			impUtil.criarMarcaTabelaSisater(con, TABELA);
 			demandantePs = con.prepareStatement(String.format("SELECT IDUND, IDBEN FROM %s WHERE IDUND = ? AND IDATR = ?", TABELA_SUB));
 			idUnd = null;
@@ -128,6 +131,7 @@ public class SisaterAcompanhamentoAterIncluirAntes2014Cmd extends _Comando {
 				int cont = 0;
 
 				while (rs.next()) {
+					TransactionStatus transactionStatus = transactionManager.getTransaction(transactionDefinition);
 					try {
 						if (!(rs.getString("IDUND").equals(idUnd) && rs.getInt("IDATR") == idAtr)) {
 							idUnd = rs.getString("IDUND");
@@ -142,13 +146,23 @@ public class SisaterAcompanhamentoAterIncluirAntes2014Cmd extends _Comando {
 						acumulaChaveSisater(impUtil.chaveAtividadeAntes2014(base, rs.getString("IDUND"), rs.getInt("IDATR"), TABELA));
 
 						cont++;
-
+						transactionManager.commit(transactionStatus);
 					} catch (Exception e) {
 						logger.error(e);
 						e.printStackTrace();
+						transactionManager.rollback(transactionStatus);
 					}
 				}
-				salvar(usuario);
+				TransactionStatus transactionStatus = transactionManager.getTransaction(transactionDefinition);
+				try {
+					salvar(usuario);
+					cont++;
+					transactionManager.commit(transactionStatus);
+				} catch (Exception e) {
+					logger.error(e);
+					e.printStackTrace();
+					transactionManager.rollback(transactionStatus);
+				}
 
 				if (logger.isDebugEnabled()) {
 					logger.debug(String.format("[%s] importado %d atividades", base.name(), cont));
@@ -166,7 +180,6 @@ public class SisaterAcompanhamentoAterIncluirAntes2014Cmd extends _Comando {
 				int ini;
 				String c;
 				for (AtividadeChaveSisater chave : atividade.getChaveSisaterList()) {
-
 					c = chave.getChaveSisater();
 
 					ini = c.indexOf("IDUND") + 1 + "IDUND".length();
@@ -174,9 +187,8 @@ public class SisaterAcompanhamentoAterIncluirAntes2014Cmd extends _Comando {
 					ini = c.indexOf("IDATR") + 1 + "IDATR".length();
 					String idAtr = c.substring(ini, c.indexOf("]", ini));
 
-					impUtil.chaveAterWebAtualizar(con, atividade.getId(), TABELA, "IDUND = ? AND IDATR = ?", idUnd, Integer.parseInt(idAtr));
+					impUtil.chaveAterWebAtualizar(con, atividade.getId(), agora, TABELA, "IDUND = ? AND IDATR = ?", idUnd, Integer.parseInt(idAtr));
 				}
-
 			}
 		}
 
@@ -185,9 +197,9 @@ public class SisaterAcompanhamentoAterIncluirAntes2014Cmd extends _Comando {
 
 			// info basicas
 			result.setInclusaoData(agora);
-			result.setInclusaoUsuario(new Usuario(ematerUsuario.getId()));
+			result.setInclusaoUsuario(ematerUsuario);
 			result.setAlteracaoData(agora);
-			result.setAlteracaoUsuario(new Usuario(ematerUsuario.getId()));
+			result.setAlteracaoUsuario(ematerUsuario);
 			result.setFinalidade(AtividadeFinalidade.O);
 			result.setFormato(AtividadeFormato.E);
 			result.setNatureza(AtividadeNatureza.D);
@@ -229,6 +241,8 @@ public class SisaterAcompanhamentoAterIncluirAntes2014Cmd extends _Comando {
 
 	private Calendar agora;
 
+	private Usuario ematerUsuario;
+
 	@Autowired
 	private AssuntoDao assuntoDao;
 
@@ -245,8 +259,6 @@ public class SisaterAcompanhamentoAterIncluirAntes2014Cmd extends _Comando {
 
 	private PessoaJuridica emater;
 
-	private Usuario ematerUsuario;
-
 	private FacadeBo facadeBo;
 
 	private ImpUtil impUtil;
@@ -261,7 +273,7 @@ public class SisaterAcompanhamentoAterIncluirAntes2014Cmd extends _Comando {
 
 	@Autowired
 	private PessoaDao pessoaDao;
-	
+
 	@Autowired
 	private PessoaRelacionamentoDao pessoaRelacionamentoDao;
 
@@ -296,6 +308,9 @@ public class SisaterAcompanhamentoAterIncluirAntes2014Cmd extends _Comando {
 		return assunto;
 	}
 
+	private PlatformTransactionManager transactionManager;
+	private DefaultTransactionDefinition transactionDefinition;
+
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		con = (Connection) contexto.get("conexao");
@@ -304,11 +319,15 @@ public class SisaterAcompanhamentoAterIncluirAntes2014Cmd extends _Comando {
 		impUtil = (ImpUtil) contexto.get("impUtil");
 
 		emater = (PessoaJuridica) contexto.get("emater");
-		ematerUsuario = (Usuario) contexto.get("ematerUsuario");
 
 		empregadoFuncao = (RelacionamentoFuncao) contexto.get("empregadoFuncao");
 
 		agora = (Calendar) contexto.get("agora");
+
+		ematerUsuario = ((UserAuthentication) contexto.getUsuario()).getDetails();
+
+		transactionManager = (PlatformTransactionManager) contexto.get("transactionManager");
+		transactionDefinition = (DefaultTransactionDefinition) contexto.get("transactionDefinition");
 
 		check.importar(base, contexto.getUsuario());
 

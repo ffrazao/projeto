@@ -14,6 +14,9 @@ import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
@@ -40,6 +43,7 @@ import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoFormaComposica
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.UnidadeMedida;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
+import br.gov.df.emater.aterwebsrv.seguranca.UserAuthentication;
 
 @Service
 public class SisaterIndiceProducaoCmd extends _Comando {
@@ -424,6 +428,7 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 			try (Statement st = con.createStatement(); ResultSet rs = st.executeQuery(geral == 0 ? String.format(SQL, nomeTabela) : tabela.sql);) {
 				int cont = 0;
 				while (rs.next()) {
+					TransactionStatus transactionStatus = transactionManager.getTransaction(transactionDefinition);
 					try {
 						Producao producao = null;
 						producao = novoProducao(rs);
@@ -439,18 +444,20 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 						producao.setId((Integer) facadeBo.indiceProducaoSalvar(usuario, producao).getResposta());
 
 						if (geral == 0) {
-							impUtil.chaveAterWebAtualizar(con, producao.getId(), nomeTabela, "IDUND = ? AND IDIPA = ? AND SAFRA = ?", rs.getString("IDUND"), rs.getInt("IDIPA"), rs.getString("SAFRA"));
+							impUtil.chaveAterWebAtualizar(con, producao.getId(), agora, nomeTabela, "IDUND = ? AND IDIPA = ? AND SAFRA = ?", rs.getString("IDUND"), rs.getInt("IDIPA"), rs.getString("SAFRA"));
 						} else {
 							if (tabela.equals(OrigemList.IPAN00)) {
-								impUtil.chaveAterWebAtualizar(con, producao.getId(), nomeTabela, "IDUND = ? AND IDIPA = ? AND IDBEN = ?", rs.getString("IDUND"), rs.getInt("IDIPA"), rs.getString("IDBEN"));
+								impUtil.chaveAterWebAtualizar(con, producao.getId(), agora, nomeTabela, "IDUND = ? AND IDIPA = ? AND IDBEN = ?", rs.getString("IDUND"), rs.getInt("IDIPA"), rs.getString("IDBEN"));
 							} else {
-								impUtil.chaveAterWebAtualizar(con, producao.getId(), nomeTabela, "IDUND = ? AND IDIPA = ? AND IDBEN = ? AND IDPRP = ?", rs.getString("IDUND"), rs.getInt("IDIPA"), rs.getString("IDBEN"), rs.getString("IDPRP"));
+								impUtil.chaveAterWebAtualizar(con, producao.getId(), agora, nomeTabela, "IDUND = ? AND IDIPA = ? AND IDBEN = ? AND IDPRP = ?", rs.getString("IDUND"), rs.getInt("IDIPA"), rs.getString("IDBEN"), rs.getString("IDPRP"));
 							}
 						}
 						cont++;
-					} catch (BoException e) {
-						logger.error(e.getMessage());
+						transactionManager.commit(transactionStatus);
+					} catch (Exception e) {
+						logger.error(e);
 						e.printStackTrace();
+						transactionManager.rollback(transactionStatus);
 					}
 				}
 				if (logger.isDebugEnabled()) {
@@ -480,9 +487,9 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 			// info basicas
 			result.setAno(rs.getInt("SAFRA"));
 			result.setInclusaoData(agora);
-			result.setInclusaoUsuario(new Usuario(ematerUsuario.getId()));
+			result.setInclusaoUsuario(ematerUsuario);
 			result.setAlteracaoData(agora);
-			result.setAlteracaoUsuario(new Usuario(ematerUsuario.getId()));
+			result.setAlteracaoUsuario(ematerUsuario);
 
 			// recuperar o bem
 			switch (tabela) {
@@ -742,6 +749,9 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 	@Autowired
 	private UnidadeMedidaDao unidadeMedidaDao;
 
+	private PlatformTransactionManager transactionManager;
+	private DefaultTransactionDefinition transactionDefinition;
+
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		con = (Connection) contexto.get("conexao");
@@ -750,16 +760,21 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 		impUtil = (ImpUtil) contexto.get("impUtil");
 
 		emater = (PessoaJuridica) contexto.get("emater");
-		ematerUsuario = (Usuario) contexto.get("ematerUsuario");
+		ematerUsuario = ((UserAuthentication) contexto.getUsuario()).getDetails();
 
 		agora = (Calendar) contexto.get("agora");
+
+		transactionManager = (PlatformTransactionManager) contexto.get("transactionManager");
+		transactionDefinition = (DefaultTransactionDefinition) contexto.get("transactionDefinition");
 
 		checkProducaoList.init();
 
 		for (OrigemList origem : OrigemList.values()) {
 			for (int i = 0; i <= 1; i++) {
-//				if (origem.equals(OrigemList.IPAA00) || origem.equals(OrigemList.IPAF00) || (origem.equals(OrigemList.IPAN00) && i == 0))
-//					continue;
+				// if (origem.equals(OrigemList.IPAA00) ||
+				// origem.equals(OrigemList.IPAF00) ||
+				// (origem.equals(OrigemList.IPAN00) && i == 0))
+				// continue;
 
 				checkProducaoList.importar(base, contexto.getUsuario(), origem, i);
 			}

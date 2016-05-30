@@ -130,11 +130,11 @@ public class VisualizarCmd extends _Comando {
 			}
 		}
 
-		if (result.getUsuarioInclusao() != null) {
-			result.setUsuarioInclusao(result.getUsuarioInclusao().infoBasica());
+		if (result.getInclusaoUsuario() != null) {
+			result.setInclusaoUsuario(result.getInclusaoUsuario().infoBasica());
 		}
-		if (result.getUsuarioAlteracao() != null) {
-			result.setUsuarioAlteracao(result.getUsuarioAlteracao().infoBasica());
+		if (result.getAlteracaoUsuario() != null) {
+			result.setAlteracaoUsuario(result.getAlteracaoUsuario().infoBasica());
 		}
 
 		em.detach(result);

@@ -16,6 +16,9 @@ import java.util.Map;
 import org.apache.commons.lang3.EnumUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -73,6 +76,7 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoFuncao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoTipo;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Telefone;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
+import br.gov.df.emater.aterwebsrv.seguranca.UserAuthentication;
 
 @Service
 public class SisaterPublicoAlvoCmd extends _Comando {
@@ -608,7 +612,7 @@ public class SisaterPublicoAlvoCmd extends _Comando {
 		impUtil = (ImpUtil) contexto.get("impUtil");
 		brasil = (Pais) contexto.get("brasil");
 		distritoFederal = (Estado) contexto.get("distritoFederal");
-		ematerUsuario = (Usuario) contexto.get("ematerUsuario");
+		ematerUsuario = ((UserAuthentication) contexto.getUsuario()).getDetails();
 
 		agora = (Calendar) contexto.get("agora");
 
@@ -622,14 +626,18 @@ public class SisaterPublicoAlvoCmd extends _Comando {
 
 		psDivida = con.prepareStatement(SQL_DIVIDA);
 
+		PlatformTransactionManager transactionManager = (PlatformTransactionManager) contexto.get("transactionManager");
+		DefaultTransactionDefinition transactionDefinition = (DefaultTransactionDefinition) contexto.get("transactionDefinition");
+
 		impUtil.criarMarcaTabelaSisater(con, SISATER_TABELA);
 
 		try (Statement st = con.createStatement(); ResultSet rs = st.executeQuery(SQL);) {
 			int cont = 0;
 			while (rs.next()) {
+				TransactionStatus transactionStatus = transactionManager.getTransaction(transactionDefinition);
 				try {
 					Pessoa pessoa = null;
-	
+
 					String natureza = UtilitarioString.semAcento(rs.getString("BFNATUREZA"));
 					if (natureza.equalsIgnoreCase("fisica")) {
 						pessoa = novoPessoaFisica(rs);
@@ -645,34 +653,34 @@ public class SisaterPublicoAlvoCmd extends _Comando {
 					pessoa.setPublicoAlvoConfirmacao(Confirmacao.S);
 					pessoa.setPublicoAlvo(novoPublicoAlvo(pessoa, rs));
 					impUtil.pessoaConfiguraNome(pessoa, rs.getString("BFNOME"), rs.getString("BFAPELIDO"));
-	
+
 					// recuperar os IDs
 					Pessoa salvo = pessoaDao.findOneByChaveSisater(pessoa.getChaveSisater());
 					if (salvo != null) {
 						pessoa.setId(salvo.getId());
 					}
-	
+
 					pessoa.setEmailList(captarEmailList(rs, salvo));
 					pessoa.setTelefoneList(captarTelefoneList(rs, salvo));
 					pessoa.setEnderecoList(captarEnderecoList(rs, salvo));
 					pessoa.setGrupoSocialList(captarGrupoSocialList(rs, salvo));
 					pessoa.setRelacionamentoList(captarRelacionamentoList(rs, salvo, pessoa));
-	
+
 					if (rs.getString("BFINSCEST") != null) {
 						pessoa.setInscricaoEstadualUf(distritoFederal.getSigla());
 						pessoa.setInscricaoEstadual(rs.getString("BFINSCEST"));
 					}
 					pessoa.setObservacoes(rs.getString("OBSERVACAO"));
-	
+
 					pessoa.setPerfilArquivo(captarPerfilArquivo(rs.getString("IDBEN")));
 					pessoa.setSituacao(PessoaSituacao.A);
 					pessoa.setSituacaoData(agora);
-	
+
 					// salvar no MySQL e no Firebird
 					pessoa.setId((Integer) facadeBo.pessoaSalvar(contexto.getUsuario(), pessoa).getResposta());
-	
-					impUtil.chaveAterWebAtualizar(con, pessoa.getId(), SISATER_TABELA, "IDUND = ? AND IDBEN =  ?", rs.getString("IDUND"), rs.getString("IDBEN"));
-	
+
+					impUtil.chaveAterWebAtualizar(con, pessoa.getId(), agora, SISATER_TABELA, "IDUND = ? AND IDBEN =  ?", rs.getString("IDUND"), rs.getString("IDBEN"));
+
 					// identificar último usuario que atualizou o registro
 					Usuario atualizador = impUtil.deParaUsuario(rs.getString("IDEMP"));
 					Calendar atualizacaoData = impUtil.captaData(rs.getDate("BFDTATUAL"));
@@ -681,15 +689,18 @@ public class SisaterPublicoAlvoCmd extends _Comando {
 							pessoa.setInclusaoData(atualizacaoData);
 							pessoa.setAlteracaoData(atualizacaoData);
 						}
-						pessoa.setUsuarioAlteracao(atualizador);
+						pessoa.setAlteracaoUsuario(atualizador);
 						pessoaDao.save(pessoa);
 					}
-	
+
 					captarDiagnosticoList(rs, pessoa);
+					
 					cont++;
+					transactionManager.commit(transactionStatus);
 				} catch (Exception e) {
 					logger.error(e);
 					e.printStackTrace();
+					transactionManager.rollback(transactionStatus);
 				}
 			}
 			if (logger.isDebugEnabled()) {

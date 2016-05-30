@@ -8,6 +8,9 @@ import javax.persistence.EntityManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
@@ -60,84 +63,102 @@ public class EmpregadoContaUsuarioExcelImportarCmd extends _Comando {
 		Calendar agora = (Calendar) contexto.get("agora");
 		RelacionamentoFuncao empregadoFuncao = (RelacionamentoFuncao) contexto.get("empregadoFuncao");
 
+		PlatformTransactionManager transactionManager = (PlatformTransactionManager) contexto.get("transactionManager");
+		DefaultTransactionDefinition transactionDefinition = (DefaultTransactionDefinition) contexto.get("transactionDefinition");
+
+		TransactionStatus transactionStatus = transactionManager.getTransaction(transactionDefinition);
+		int cont = 0;
 		for (Map<String, Object> reg : mapa) {
-			if (((String) reg.get("User Logon Name")) == null || ((String) reg.get("User Logon Name")).trim().length() == 0) {
-				continue;
-			}
-			String conta[] = ((String) reg.get("User Logon Name")).split("\\@");
-			if (conta == null || conta.length != 2) {
-				continue;
-			}
-			String matricula = UtilitarioString.zeroEsquerda(conta[0].substring(3).toUpperCase(), 8);
-			String emailExcel = ((String) reg.get("E-Mail Address")).toLowerCase();
-			List<Emprego> empregoList = empregoDao.findByMatricula(matricula);
-			if (empregoList != null && empregoList.size() > 0) {
-				Emprego emprego = null;
-				for (Emprego e : empregoList) {
-					if (e.getInicio().before(agora) && e.getTermino() == null || e.getTermino().after(agora)) {
-						if (emprego == null) {
-							emprego = e;
-						} else {
-							throw new BoException("Empregado com mais de um emprego ativo");
+			try {
+
+				if (((String) reg.get("User Logon Name")) == null || ((String) reg.get("User Logon Name")).trim().length() == 0) {
+					continue;
+				}
+				String conta[] = ((String) reg.get("User Logon Name")).split("\\@");
+				if (conta == null || conta.length != 2) {
+					continue;
+				}
+				String matricula = UtilitarioString.zeroEsquerda(conta[0].substring(3).toUpperCase(), 8);
+				String emailExcel = ((String) reg.get("E-Mail Address")).toLowerCase();
+				List<Emprego> empregoList = empregoDao.findByMatricula(matricula);
+				if (empregoList != null && empregoList.size() > 0) {
+					Emprego emprego = null;
+					for (Emprego e : empregoList) {
+						if (e.getInicio().before(agora) && e.getTermino() == null || e.getTermino().after(agora)) {
+							if (emprego == null) {
+								emprego = e;
+							} else {
+								throw new BoException("Empregado com mais de um emprego ativo");
+							}
 						}
 					}
-				}
-				if (emprego == null) {
-					throw new BoException("Não foi possível identificar o emprego ativo do usuário");
-				}
+					if (emprego == null) {
+						throw new BoException("Não foi possível identificar o emprego ativo do usuário");
+					}
 
-				List<PessoaRelacionamento> pessoaRelacionamentoList = emprego.getPessoaRelacionamentoList();
-				if (pessoaRelacionamentoList == null) {
-					pessoaRelacionamentoList = pessoaRelacionamentoDao.findByRelacionamento(emprego);
-				}
+					List<PessoaRelacionamento> pessoaRelacionamentoList = emprego.getPessoaRelacionamentoList();
+					if (pessoaRelacionamentoList == null) {
+						pessoaRelacionamentoList = pessoaRelacionamentoDao.findByRelacionamento(emprego);
+					}
 
-				for (PessoaRelacionamento pr : pessoaRelacionamentoList) {
-					if (pr.getRelacionamentoFuncao().getId().equals(empregadoFuncao.getId())) {
-						Pessoa pessoa = pr.getPessoa();
+					for (PessoaRelacionamento pr : pessoaRelacionamentoList) {
+						if (pr.getRelacionamentoFuncao().getId().equals(empregadoFuncao.getId())) {
+							Pessoa pessoa = pr.getPessoa();
 
-						if (usuarioDao.findOneByPessoa(pessoa) == null) {
+							if (usuarioDao.findOneByPessoa(pessoa) == null) {
 
-							PessoaEmail pessoaEmail = null;
+								PessoaEmail pessoaEmail = null;
 
-							if (pessoa.getEmailList() != null) {
-								for (PessoaEmail pe : pessoa.getEmailList()) {
-									if (pe.getEmail().getEndereco().equalsIgnoreCase(emailExcel)) {
-										pessoaEmail = pe;
-										break;
+								if (pessoa.getEmailList() != null) {
+									for (PessoaEmail pe : pessoa.getEmailList()) {
+										if (pe.getEmail().getEndereco().equalsIgnoreCase(emailExcel)) {
+											pessoaEmail = pe;
+											break;
+										}
 									}
 								}
-							}
-							if (pessoaEmail == null) {
-								Email email = emailDao.findByEndereco(emailExcel);
-								if (email == null) {
-									email = new Email();
-									email.setEndereco(emailExcel);
-									email = emailDao.save(email);
+								if (pessoaEmail == null) {
+									Email email = emailDao.findByEndereco(emailExcel);
+									if (email == null) {
+										email = new Email();
+										email.setEndereco(emailExcel);
+										email = emailDao.save(email);
+									}
+									pessoaEmail = new PessoaEmail();
+									pessoaEmail.setEmail(email);
+									pessoaEmail.setFinalidade("C");
+									pessoaEmail.setPessoa(pessoa);
+									pessoaEmail.setOrdem(pessoa.getEmailList() == null ? 1 : pessoa.getEmailList().size() + 1);
+
+									pessoaEmail = pessoaEmailDao.save(pessoaEmail);
+									em.detach(pessoa);
+									pessoa = pessoaDao.findOne(pessoa.getId());
 								}
-								pessoaEmail = new PessoaEmail();
-								pessoaEmail.setEmail(email);
-								pessoaEmail.setFinalidade("C");
-								pessoaEmail.setPessoa(pessoa);
-								pessoaEmail.setOrdem(pessoa.getEmailList() == null ? 1 : pessoa.getEmailList().size() + 1);
 
-								pessoaEmail = pessoaEmailDao.save(pessoaEmail);
-								em.detach(pessoa);
-								pessoa = pessoaDao.findOne(pessoa.getId());
+								Usuario usr = new Usuario();
+								usr.setPessoa(pessoa);
+								usr.setPessoaEmail(pessoaEmail);
+								usr.setUsuarioStatusConta(UsuarioStatusConta.R);
+								usr = (Usuario) facadeBo.usuarioNovo(contexto.getUsuario(), usr).getResposta();
+
+								facadeBo.usuarioSalvar(contexto.getUsuario(), usr);
 							}
-
-							Usuario usr = new Usuario();
-							usr.setPessoa(pessoa);
-							usr.setPessoaEmail(pessoaEmail);
-							usr.setUsuarioStatusConta(UsuarioStatusConta.R);
-							usr = (Usuario) facadeBo.usuarioNovo(contexto.getUsuario(), usr).getResposta();
-							
-							facadeBo.usuarioSalvar(contexto.getUsuario(), usr);
 						}
 					}
 				}
+				cont++;
+				transactionManager.commit(transactionStatus);
+			} catch (Exception e) {
+				logger.error(e);
+				e.printStackTrace();
+				transactionManager.rollback(transactionStatus);
 			}
 		}
-
+		
+		if (logger.isDebugEnabled()) {
+			logger.debug(String.format("ContaEmailEmpregadoExcel importado %d contas", cont));
+		}
+		
 		return false;
 	}
 

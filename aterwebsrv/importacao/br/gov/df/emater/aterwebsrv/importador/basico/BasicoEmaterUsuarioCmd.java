@@ -5,6 +5,9 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
@@ -36,23 +39,31 @@ public class BasicoEmaterUsuarioCmd extends _Comando {
 		Usuario usuario = usuarioDao.findOneByPessoa(emater);
 
 		if (usuario == null) {
-			usuario = new Usuario();
-			usuario.setPessoa(emater);
-			usuario = (Usuario) facadeBo.usuarioNovo(null, usuario).getResposta();
-			usuario.setUsername("emater");
-			Set<UsuarioPerfil> authorities = new HashSet<UsuarioPerfil>();
-			authorities.add(new UsuarioPerfil(perfilDao.findOneByCodigo("ADMIN"), Confirmacao.S));
-			usuario.setAuthorities(authorities);
-			usuario.setId((Integer) facadeBo.usuarioSalvar(null, usuario).getResposta());
-			usuario = usuarioDao.findOne(usuario.getId());
-			usuario.setPassword(Criptografia.MD5(usuario.getId() + "emater"));
+			PlatformTransactionManager transactionManager = (PlatformTransactionManager) contexto.get("transactionManager");
+			DefaultTransactionDefinition transactionDefinition = (DefaultTransactionDefinition) contexto.get("transactionDefinition");
 
-			usuarioDao.save(usuario);
+			TransactionStatus transactionStatus = transactionManager.getTransaction(transactionDefinition);
+			try {
+				usuario = new Usuario();
+				usuario.setPessoa(emater);
+				usuario = (Usuario) facadeBo.usuarioNovo(null, usuario).getResposta();
+				usuario.setUsername("emater");
+				Set<UsuarioPerfil> authorities = new HashSet<UsuarioPerfil>();
+				authorities.add(new UsuarioPerfil(perfilDao.findOneByCodigo("ADMIN"), Confirmacao.S));
+				usuario.setAuthorities(authorities);
+				usuario.setId((Integer) facadeBo.usuarioSalvar(null, usuario).getResposta());
+				usuario = usuarioDao.findOne(usuario.getId());
+				usuario.setPassword(Criptografia.MD5(usuario.getId() + "emater"));
+				usuarioDao.save(usuario);
 
-			contexto.setUsuario(new UserAuthentication(usuario));
+				transactionManager.commit(transactionStatus);
+			} catch (Exception e) {
+				logger.error(e);
+				e.printStackTrace();
+				transactionManager.rollback(transactionStatus);
+			}
 		}
-
-		contexto.put("ematerUsuario", usuario);
+		contexto.setUsuario(new UserAuthentication(usuario));
 
 		return false;
 	}

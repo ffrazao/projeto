@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -165,8 +164,7 @@ public class ImpUtil {
 		StringBuilder temp = new StringBuilder();
 		int totPonto = 0;
 		for (int i = 0; i < coord.length(); i++) {
-			if ((i == 0 && coord.charAt(i) == '-') || Character.isDigit(coord.charAt(i)) || coord.charAt(i) == ','
-					|| coord.charAt(i) == '.') {
+			if ((i == 0 && coord.charAt(i) == '-') || Character.isDigit(coord.charAt(i)) || coord.charAt(i) == ',' || coord.charAt(i) == '.') {
 				temp.append(coord.charAt(i));
 			}
 			if (coord.charAt(i) == '.') {
@@ -214,12 +212,11 @@ public class ImpUtil {
 		return result;
 	}
 
-	public void chaveAterWebAtualizar(Connection con, Integer id, String tabelaSisater, String clausuaWhere,
-			Object... parametroList) throws SQLException {
-		PreparedStatement ps = con.prepareStatement(
-				String.format("UPDATE %s SET CHAVE_ATER_WEB = ? WHERE %s", tabelaSisater, clausuaWhere));
+	public void chaveAterWebAtualizar(Connection con, Integer id, Calendar agora, String tabelaSisater, String clausuaWhere, Object... parametroList) throws SQLException {
+		PreparedStatement ps = con.prepareStatement(String.format("UPDATE %s SET CHAVE_ATER_WEB = ?, DATA_ATER_WEB = ? WHERE %s", tabelaSisater, clausuaWhere));
 		ps.setInt(1, id);
-		int cont = 2;
+		ps.setDate(2, new Date(agora.getTime().getTime()));
+		int cont = 3;
 		if (parametroList != null) {
 			for (Object parametro : parametroList) {
 				ps.setObject(cont++, parametro);
@@ -232,11 +229,8 @@ public class ImpUtil {
 		return String.format("%s=[IDUND=%s,IDATR=%d][TABELA=%s]", base.name(), idUnd, idAtr, tabela);
 	}
 
-	public String chaveAtividadeDepois2014(DbSater base, String idUnd, int idAtr, Date aterDt, String idEmp,
-			String idMet, String idTema, String idAcao, String tabela) {
-		return String.format("%s=[IDUND=%s,IDATR=%d,ATERDT=%s,IDEMP=%s,IDMET=%s,IDTEMA=%s,IDACAO=%s][TABELA=%s]",
-				base.name(), idUnd, idAtr, UtilitarioData.getInstance().formataData(aterDt), idEmp, idMet, idTema,
-				idAcao, tabela);
+	public String chaveAtividadeDepois2014(DbSater base, String idUnd, int idAtr, Date aterDt, String idEmp, String idMet, String idTema, String idAcao, String tabela) {
+		return String.format("%s=[IDUND=%s,IDATR=%d,ATERDT=%s,IDEMP=%s,IDMET=%s,IDTEMA=%s,IDACAO=%s][TABELA=%s]", base.name(), idUnd, idAtr, UtilitarioData.getInstance().formataData(aterDt), idEmp, idMet, idTema, idAcao, tabela);
 	}
 
 	public String chaveBaciaHidrografica(DbSater base, String baciaHidrograficaNome) {
@@ -247,8 +241,7 @@ public class ImpUtil {
 		return String.format("%s=[IDUND=%s,IDBEN=%s]", base.name(), idund, idbem);
 	}
 
-	public String chaveColetaFormulario(DbSater base, String idund, String idBemIdPrp, boolean beneficiario,
-			String nomeCampo) {
+	public String chaveColetaFormulario(DbSater base, String idund, String idBemIdPrp, boolean beneficiario, String nomeCampo) {
 		if (beneficiario) {
 			return String.format("%s[CAMPO=%s]", chaveBeneficiario(base, idund, idBemIdPrp), nomeCampo);
 		} else {
@@ -269,8 +262,7 @@ public class ImpUtil {
 	}
 
 	public String chavePessoaEndereco(DbSater base, String idund, String idbem, String[] nomeCampo) {
-		return String.format("%s[CAMPO=%s][CAMPO=%s]", chaveBeneficiario(base, idund, idbem), nomeCampo[0],
-				nomeCampo[1]);
+		return String.format("%s[CAMPO=%s][CAMPO=%s]", chaveBeneficiario(base, idund, idbem), nomeCampo[0], nomeCampo[1]);
 	}
 
 	public String chavePessoaGrupoSocial(DbSater base, String idund, String idbem, String nomeCampo) {
@@ -285,10 +277,8 @@ public class ImpUtil {
 		return String.format("%s[CAMPO=%s]", chaveBeneficiario(base, idund, idbem), nomeCampo);
 	}
 
-	public String chaveProducaoAgricola(DbSater base, String idUnd, int idIpa, String idBen, String idPrp,
-			String nomeCampo) {
-		return String.format("%s=[IDUND=%s,IDIPA=%d,IDBEN=%s,IDPRP=%s][TABELA=%s]", base.name(), idUnd, idIpa, idBen,
-				idPrp, nomeCampo);
+	public String chaveProducaoAgricola(DbSater base, String idUnd, int idIpa, String idBen, String idPrp, String nomeCampo) {
+		return String.format("%s=[IDUND=%s,IDIPA=%d,IDBEN=%s,IDPRP=%s][TABELA=%s]", base.name(), idUnd, idIpa, idBen, idPrp, nomeCampo);
 	}
 
 	public String chaveProducaoAgricolaGeral(DbSater base, String idUnd, int idIpa, String safra, String nomeCampo) {
@@ -308,16 +298,31 @@ public class ImpUtil {
 	}
 
 	public void criarMarcaTabelaSisater(Connection con, String tabela) throws SQLException {
-		try {
-			try (Statement st = con.createStatement();
-					ResultSet rs = st.executeQuery(String.format("SELECT CHAVE_ATER_WEB FROM %s", tabela))) {
-				return;
+		try (Statement st = con.createStatement();) {
+			try {
+				st.execute(String.format("ALTER TABLE %s DROP DATA_ATER_WEB", tabela));
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			try (Statement st = con.createStatement();) {
+			try {
+				st.execute(String.format("ALTER TABLE %s DROP CHAVE_ATER_WEB", tabela));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
 				st.execute(String.format("ALTER TABLE %s ADD CHAVE_ATER_WEB INT", tabela));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				st.execute(String.format("ALTER TABLE %s ADD DATA_ATER_WEB TIMESTAMP", tabela));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
 				con.commit();
-				return;
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 	}
@@ -338,8 +343,7 @@ public class ImpUtil {
 		}
 	}
 
-	public Cidade deNomeCidadeComunidadeSisaterParaAterWeb(String registro, DbSater base,
-			Municipio[] municipioAtendimentoList) throws BoException {
+	public Cidade deNomeCidadeComunidadeSisaterParaAterWeb(String registro, DbSater base, Municipio[] municipioAtendimentoList) throws BoException {
 		if (registro == null) {
 			return null;
 		}
@@ -440,9 +444,7 @@ public class ImpUtil {
 		}
 	}
 
-	public Endereco deParaEndereco(DbSater base, Confirmacao propriedadeRuralConfirmacao,
-			String nomePropriedadeRuralOuEstabelecimento, String logradouro, String cep, String regiao,
-			String roteiroAcessoOuEnderecoInternacional) {
+	public Endereco deParaEndereco(DbSater base, Confirmacao propriedadeRuralConfirmacao, String nomePropriedadeRuralOuEstabelecimento, String logradouro, String cep, String regiao, String roteiroAcessoOuEnderecoInternacional) {
 		Endereco result = new Endereco();
 		result.setPropriedadeRuralConfirmacao(propriedadeRuralConfirmacao);
 		result.setNomePropriedadeRuralOuEstabelecimento(nomePropriedadeRuralOuEstabelecimento);
@@ -727,8 +729,7 @@ public class ImpUtil {
 		}
 	}
 
-	public UnidadeOrganizacional deParaUnidadeOrganizacional(PessoaJuridica empresa, String registro)
-			throws BoException {
+	public UnidadeOrganizacional deParaUnidadeOrganizacional(PessoaJuridica empresa, String registro) throws BoException {
 		for (UnidadeOrganizacional uo : unidadeOrganizacionalList) {
 			if (uo.getSigla().equalsIgnoreCase(registro)) {
 				return uo;
@@ -883,8 +884,7 @@ public class ImpUtil {
 		pessoa.setApelidoSigla(apelidoSigla);
 		if (pessoa.getNome() != null) {
 			pessoa.setNome(pessoa.getNome().trim());
-			if (pessoa.getNome().length() > 0 && pessoa.getApelidoSigla() == null
-					|| pessoa.getApelidoSigla().trim().length() == 0) {
+			if (pessoa.getNome().length() > 0 && pessoa.getApelidoSigla() == null || pessoa.getApelidoSigla().trim().length() == 0) {
 				pessoa.setApelidoSigla(pessoa.getNome().split("\\s")[0]);
 			}
 		}

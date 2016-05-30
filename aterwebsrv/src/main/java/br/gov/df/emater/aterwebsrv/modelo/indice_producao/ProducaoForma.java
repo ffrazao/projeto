@@ -24,13 +24,14 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
+import br.gov.df.emater.aterwebsrv.modelo._LogInclusaoAlteracao;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 
 @Entity
 @Table(name = "producao_forma", schema = EntidadeBase.INDICE_PRODUCAO_SCHEMA)
-public class ProducaoForma extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class ProducaoForma extends EntidadeBase implements _ChavePrimaria<Integer>, _LogInclusaoAlteracao {
 
 	private static final long serialVersionUID = 1L;
 

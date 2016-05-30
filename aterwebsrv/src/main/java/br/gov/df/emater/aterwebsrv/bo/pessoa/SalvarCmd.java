@@ -159,12 +159,12 @@ public class SalvarCmd extends _Comando {
 	public boolean executar(_Contexto contexto) throws Exception {
 		Pessoa result = (Pessoa) contexto.getRequisicao();
 		if (result.getId() == null) {
-			result.setUsuarioInclusao(getUsuario(contexto.getUsuario() == null ? null : contexto.getUsuario().getName()));
+			result.setInclusaoUsuario(getUsuario(contexto.getUsuario() == null ? null : contexto.getUsuario().getName()));
 			result.setInclusaoData(Calendar.getInstance());
 		} else {
-			result.setUsuarioInclusao(getUsuario(result.getUsuarioInclusao() == null ? null : result.getUsuarioInclusao().getUsername()));
+			result.setInclusaoUsuario(getUsuario(result.getInclusaoUsuario() == null ? null : result.getInclusaoUsuario().getUsername()));
 		}
-		result.setUsuarioAlteracao(getUsuario(contexto.getUsuario() == null ? null : contexto.getUsuario().getName()));
+		result.setAlteracaoUsuario(getUsuario(contexto.getUsuario() == null ? null : contexto.getUsuario().getName()));
 		result.setAlteracaoData(Calendar.getInstance());
 
 		// ajustar os dados de nascimento da pessoa

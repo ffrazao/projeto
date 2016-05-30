@@ -29,6 +29,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
+import br.gov.df.emater.aterwebsrv.modelo._LogInclusaoAlteracao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.AtividadeFinalidade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.AtividadeFormato;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.AtividadeNatureza;
@@ -40,7 +41,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 
 @Entity
 @Table(name = "atividade", schema = EntidadeBase.ATIVIDADE_SCHEMA)
-public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer>, _LogInclusaoAlteracao {
 
 	private static final long serialVersionUID = 1L;
 

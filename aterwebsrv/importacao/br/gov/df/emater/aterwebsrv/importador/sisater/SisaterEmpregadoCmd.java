@@ -2,7 +2,6 @@ package br.gov.df.emater.aterwebsrv.importador.sisater;
 
 import java.io.File;
 import java.io.IOException;
-import java.security.Principal;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,6 +12,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
@@ -42,106 +44,10 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaRelacionamento;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoFuncao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoTipo;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
+import br.gov.df.emater.aterwebsrv.seguranca.UserAuthentication;
 
 @Service
 public class SisaterEmpregadoCmd extends _Comando {
-
-	private class CheckEmpregadoList {
-
-		void importar(DbSater base, Principal usuario) throws Exception {
-			impUtil.criarMarcaTabelaSisater(con, TABELA);
-			int cont = 0;
-			try (Statement st = con.createStatement(); ResultSet rs = st.executeQuery(String.format(SQL, TABELA));) {
-				while (rs.next()) {
-					try {
-
-						String matricula = rs.getString("IDEMP").trim().toUpperCase();
-						matricula = UtilitarioString.substituirTudo(matricula, "-", "");
-						matricula = UtilitarioString.substituirTudo(matricula, ".", "");
-						matricula = UtilitarioString.zeroEsquerda(matricula, 8);
-
-						if (matricula == null || matricula.trim().length() == 0) {
-							continue;
-						}
-
-						List<Emprego> empregoList = empregoDao.findByMatricula(matricula);
-						if (empregoList != null && empregoList.size() == 1) {
-							List<PessoaRelacionamento> pessoaRelacionamentoList = empregoList.get(0).getPessoaRelacionamentoList();
-							if (pessoaRelacionamentoList == null) {
-								pessoaRelacionamentoList = pessoaRelacionamentoDao.findByRelacionamento(empregoList.get(0));
-							}
-							for (PessoaRelacionamento pessoaRelacionamento : pessoaRelacionamentoList) {
-								if (empregadoFuncao.getId().equals(pessoaRelacionamento.getRelacionamentoFuncao().getId())) {
-									Pessoa empregado = pessoaRelacionamento.getPessoa();
-									empregado.setChaveSisater(impUtil.chaveEmpregado(base, rs.getString("IDEMP")));
-									if (empregado.getPerfilArquivo() == null && rs.getObject("EMFOTO") != null) {
-										captarPerfilArquivo(empregado, rs);
-										pessoaDao.save(empregado);
-									}
-									break;
-								}
-							}
-						} else if (empregoList != null && empregoList.size() == 0) {
-							// salvar o empregado
-							PessoaFisica empregado = (PessoaFisica) pessoaDao.findOneByChaveSisater(impUtil.chaveEmpregado(base, rs.getString("IDEMP")));
-							if (empregado == null) {
-								empregado = new PessoaFisica();
-							}
-							empregado.setChaveSisater(impUtil.chaveEmpregado(base, rs.getString("IDEMP")));
-							empregado.setNome(rs.getString("EMNOME"));
-							empregado.setApelidoSigla(rs.getString("EMAPELIDO"));
-							empregado.setGenero(PessoaGenero.M);
-							empregado.setUsuarioInclusao(ematerUsuario);
-							empregado.setInclusaoData(agora);
-							empregado.setUsuarioAlteracao(ematerUsuario);
-							empregado.setAlteracaoData(agora);
-							empregado.setPublicoAlvoConfirmacao(Confirmacao.N);
-							empregado.setSituacao(PessoaSituacao.A);
-							captarPerfilArquivo(empregado, rs);
-							empregado = pessoaDao.save(empregado);
-
-							// salvar a relação de emprego
-							Emprego emprego = new Emprego();
-							emprego.setInicio(impUtil.captaData(rs.getDate("EMDATAADM")));
-							if (emprego.getInicio() == null) {
-								emprego.setInicio(agora);
-							}
-							emprego.setRelacionamentoTipo(relacionamentoTipo);
-							emprego.setCargo(cargoPadrao);
-							emprego = empregoDao.saveAndFlush(emprego);
-
-							PessoaRelacionamento prEmpregador = new PessoaRelacionamento();
-							prEmpregador.setRelacionamento(emprego);
-							prEmpregador.setRelacionamentoFuncao(empregadorFuncao);
-							prEmpregador.setPessoa(emater);
-							prEmpregador = pessoaRelacionamentoDao.save(prEmpregador);
-
-							PessoaRelacionamento prEmpregado = new PessoaRelacionamento();
-							prEmpregado.setRelacionamento(emprego);
-							prEmpregado.setRelacionamentoFuncao(empregadorFuncao);
-							prEmpregado.setPessoa(empregado);
-							prEmpregado = pessoaRelacionamentoDao.save(prEmpregado);
-
-							List<PessoaRelacionamento> pessoaRelacionamentoList = new ArrayList<PessoaRelacionamento>();
-							pessoaRelacionamentoList.add(prEmpregador);
-							pessoaRelacionamentoList.add(prEmpregador);
-							emprego.setPessoaRelacionamentoList(pessoaRelacionamentoList);
-							emprego = empregoDao.saveAndFlush(emprego);
-						} else {
-							throw new BoException("Matricula cadastrada mais de uma vez");
-						}
-						cont++;
-					} catch (Exception e) {
-						logger.error(e);
-						e.printStackTrace();
-					}
-				}
-			}
-			if (logger.isDebugEnabled()) {
-				logger.debug(String.format("[%s] importado %d empregados", base.name(), cont));
-			}
-		}
-	}
 
 	private static final String SQL = "SELECT * FROM %s WHERE EMNOME <> 'Toda a equipe' ORDER BY IDEMP";
 
@@ -158,8 +64,6 @@ public class SisaterEmpregadoCmd extends _Comando {
 	private CargoDao cargoDao;
 
 	private Cargo cargoPadrao;
-
-	private CheckEmpregadoList checkEmpregadoList = new CheckEmpregadoList();
 
 	private Connection con;
 
@@ -221,7 +125,7 @@ public class SisaterEmpregadoCmd extends _Comando {
 		impUtil = (ImpUtil) contexto.get("impUtil");
 
 		emater = (PessoaJuridica) contexto.get("emater");
-		ematerUsuario = (Usuario) contexto.get("ematerUsuario");
+		ematerUsuario = ((UserAuthentication) contexto.getUsuario()).getDetails();
 		empregadorFuncao = (RelacionamentoFuncao) contexto.get("empregadorFuncao");
 		empregadoFuncao = (RelacionamentoFuncao) contexto.get("empregadoFuncao");
 		relacionamentoTipo = (RelacionamentoTipo) contexto.get("relacionamentoTipo");
@@ -229,7 +133,103 @@ public class SisaterEmpregadoCmd extends _Comando {
 
 		agora = (Calendar) contexto.get("agora");
 
-		checkEmpregadoList.importar(base, contexto.getUsuario());
+		PlatformTransactionManager transactionManager = (PlatformTransactionManager) contexto.get("transactionManager");
+		DefaultTransactionDefinition transactionDefinition = (DefaultTransactionDefinition) contexto.get("transactionDefinition");
+
+		impUtil.criarMarcaTabelaSisater(con, TABELA);
+		int cont = 0;
+		try (Statement st = con.createStatement(); ResultSet rs = st.executeQuery(String.format(SQL, TABELA));) {
+			while (rs.next()) {
+				TransactionStatus transactionStatus = transactionManager.getTransaction(transactionDefinition);
+				try {
+
+					String matricula = rs.getString("IDEMP").trim().toUpperCase();
+					matricula = UtilitarioString.substituirTudo(matricula, "-", "");
+					matricula = UtilitarioString.substituirTudo(matricula, ".", "");
+					matricula = UtilitarioString.zeroEsquerda(matricula, 8);
+
+					if (matricula == null || matricula.trim().length() == 0) {
+						continue;
+					}
+
+					List<Emprego> empregoList = empregoDao.findByMatricula(matricula);
+					if (empregoList != null && empregoList.size() == 1) {
+						List<PessoaRelacionamento> pessoaRelacionamentoList = empregoList.get(0).getPessoaRelacionamentoList();
+						if (pessoaRelacionamentoList == null) {
+							pessoaRelacionamentoList = pessoaRelacionamentoDao.findByRelacionamento(empregoList.get(0));
+						}
+						for (PessoaRelacionamento pessoaRelacionamento : pessoaRelacionamentoList) {
+							if (empregadoFuncao.getId().equals(pessoaRelacionamento.getRelacionamentoFuncao().getId())) {
+								Pessoa empregado = pessoaRelacionamento.getPessoa();
+								empregado.setChaveSisater(impUtil.chaveEmpregado(base, rs.getString("IDEMP")));
+								if (empregado.getPerfilArquivo() == null && rs.getObject("EMFOTO") != null) {
+									captarPerfilArquivo(empregado, rs);
+									pessoaDao.save(empregado);
+								}
+								break;
+							}
+						}
+					} else if (empregoList != null && empregoList.size() == 0) {
+						// salvar o empregado
+						PessoaFisica empregado = (PessoaFisica) pessoaDao.findOneByChaveSisater(impUtil.chaveEmpregado(base, rs.getString("IDEMP")));
+						if (empregado == null) {
+							empregado = new PessoaFisica();
+						}
+						empregado.setChaveSisater(impUtil.chaveEmpregado(base, rs.getString("IDEMP")));
+						empregado.setNome(rs.getString("EMNOME"));
+						empregado.setApelidoSigla(rs.getString("EMAPELIDO"));
+						empregado.setGenero(PessoaGenero.M);
+						empregado.setInclusaoUsuario(ematerUsuario);
+						empregado.setInclusaoData(agora);
+						empregado.setAlteracaoUsuario(ematerUsuario);
+						empregado.setAlteracaoData(agora);
+						empregado.setPublicoAlvoConfirmacao(Confirmacao.N);
+						empregado.setSituacao(PessoaSituacao.A);
+						captarPerfilArquivo(empregado, rs);
+						empregado = pessoaDao.save(empregado);
+
+						// salvar a relação de emprego
+						Emprego emprego = new Emprego();
+						emprego.setInicio(impUtil.captaData(rs.getDate("EMDATAADM")));
+						if (emprego.getInicio() == null) {
+							emprego.setInicio(agora);
+						}
+						emprego.setRelacionamentoTipo(relacionamentoTipo);
+						emprego.setCargo(cargoPadrao);
+						emprego = empregoDao.saveAndFlush(emprego);
+
+						PessoaRelacionamento prEmpregador = new PessoaRelacionamento();
+						prEmpregador.setRelacionamento(emprego);
+						prEmpregador.setRelacionamentoFuncao(empregadorFuncao);
+						prEmpregador.setPessoa(emater);
+						prEmpregador = pessoaRelacionamentoDao.save(prEmpregador);
+
+						PessoaRelacionamento prEmpregado = new PessoaRelacionamento();
+						prEmpregado.setRelacionamento(emprego);
+						prEmpregado.setRelacionamentoFuncao(empregadorFuncao);
+						prEmpregado.setPessoa(empregado);
+						prEmpregado = pessoaRelacionamentoDao.save(prEmpregado);
+
+						List<PessoaRelacionamento> pessoaRelacionamentoList = new ArrayList<PessoaRelacionamento>();
+						pessoaRelacionamentoList.add(prEmpregador);
+						pessoaRelacionamentoList.add(prEmpregador);
+						emprego.setPessoaRelacionamentoList(pessoaRelacionamentoList);
+						emprego = empregoDao.saveAndFlush(emprego);
+					} else {
+						throw new BoException("Matricula cadastrada mais de uma vez");
+					}
+					cont++;
+					transactionManager.commit(transactionStatus);
+				} catch (Exception e) {
+					logger.error(e);
+					e.printStackTrace();
+					transactionManager.rollback(transactionStatus);
+				}
+			}
+		}
+		if (logger.isDebugEnabled()) {
+			logger.debug(String.format("[%s] importado %d empregados", base.name(), cont));
+		}
 
 		return false;
 	}

@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
@@ -32,13 +31,13 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoTipo;
 
 @Service
 public class BasicoInicioImportacaoCmd extends _Comando {
-	
+
 	@Autowired
 	private PlatformTransactionManager transactionManager;
 
 	@Autowired
 	private RelacionamentoConfiguracaoViDao relacionamentoConfiguracaoViDao;
-	
+
 	@Autowired
 	private RelacionamentoFuncaoDao relacionamentoFuncaoDao;
 
@@ -67,13 +66,9 @@ public class BasicoInicioImportacaoCmd extends _Comando {
 	public boolean executar(_Contexto contexto) throws Exception {
 		RelacionamentoConfiguracaoVi relacionamentoConfiguracaoVi = relacionamentoConfiguracaoViDao.findOneByTipoCodigoAndRelacionadorParticipacao(RelacionamentoTipo.Codigo.PROFISSIONAL.name(), RelacionamentoParticipacao.A);
 
-		// gestão da transação com o banco de dados
 		DefaultTransactionDefinition transactionDefinition = new DefaultTransactionDefinition();
 		transactionDefinition.setName("ImportacaoATERweb");
 		transactionDefinition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-		
-		TransactionStatus transactionStatus = transactionManager.getTransaction(transactionDefinition);
-		
 
 		contexto.put("enviarEmailUsuario", false);
 		contexto.put("agora", Calendar.getInstance());
@@ -100,11 +95,10 @@ public class BasicoInicioImportacaoCmd extends _Comando {
 
 		contexto.put("municipioAtendimentoList", new Municipio[] { (Municipio) contexto.get("brasilia"), (Municipio) contexto.get("cristalina"), (Municipio) contexto.get("formosa"), (Municipio) contexto.get("padreBernardo"), (Municipio) contexto.get("cocalzinhoDeGoias"),
 				(Municipio) contexto.get("planaltina") });
-		
+
 		contexto.put("transactionManager", transactionManager);
-		contexto.put("transactionStatus", transactionStatus);
+
 		contexto.put("transactionDefinition", transactionDefinition);
-		
 
 		return false;
 	}

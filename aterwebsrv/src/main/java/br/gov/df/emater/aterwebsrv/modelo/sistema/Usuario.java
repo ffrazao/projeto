@@ -34,6 +34,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
+import br.gov.df.emater.aterwebsrv.modelo._LogInclusaoAlteracao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.UsuarioStatusConta;
@@ -52,7 +53,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerTimestamp;
 @Entity
 @Table(name = "usuario", schema = EntidadeBase.SISTEMA_SCHEMA)
 // @Indexed
-public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, UserDetails, InfoBasica<Usuario> {
+public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, UserDetails, InfoBasica<Usuario>, _LogInclusaoAlteracao {
 
 	private static final long serialVersionUID = 1L;
 
@@ -134,7 +135,7 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 
 	@ManyToOne
 	@JoinColumn(name = "alteracao_usuario_id")
-	private Usuario usuarioAlteracao;
+	private Usuario alteracaoUsuario;
 
 	@Column(name = "usuario_atualizou_perfil")
 	@Enumerated(EnumType.STRING)
@@ -142,7 +143,7 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 
 	@ManyToOne
 	@JoinColumn(name = "inclusao_usuario_id")
-	private Usuario usuarioInclusao;
+	private Usuario inclusaoUsuario;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "situacao")
@@ -259,16 +260,16 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 		return username;
 	}
 
-	public Usuario getUsuarioAlteracao() {
-		return usuarioAlteracao;
+	public Usuario getAlteracaoUsuario() {
+		return alteracaoUsuario;
 	}
 
 	public Confirmacao getUsuarioAtualizouPerfil() {
 		return usuarioAtualizouPerfil;
 	}
 
-	public Usuario getUsuarioInclusao() {
-		return usuarioInclusao;
+	public Usuario getInclusaoUsuario() {
+		return inclusaoUsuario;
 	}
 
 	public UsuarioStatusConta getUsuarioStatusConta() {
@@ -384,16 +385,16 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 		this.username = username;
 	}
 
-	public void setUsuarioAlteracao(Usuario usuarioAlteracao) {
-		this.usuarioAlteracao = usuarioAlteracao;
+	public void setAlteracaoUsuario(Usuario usuarioAlteracao) {
+		this.alteracaoUsuario = usuarioAlteracao;
 	}
 
 	public void setUsuarioAtualizouPerfil(Confirmacao usuarioAtualizouPerfil) {
 		this.usuarioAtualizouPerfil = usuarioAtualizouPerfil;
 	}
 
-	public void setUsuarioInclusao(Usuario usuarioInclusao) {
-		this.usuarioInclusao = usuarioInclusao;
+	public void setInclusaoUsuario(Usuario inclusaoUsuario) {
+		this.inclusaoUsuario = inclusaoUsuario;
 	}
 
 	public void setUsuarioStatusConta(UsuarioStatusConta usuarioStatusConta) {
@@ -404,4 +405,5 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 	public String toString() {
 		return (pessoa == null ? getUsername() : (pessoa.getApelidoSigla() == null ? pessoa.getNome() : pessoa.getApelidoSigla()));
 	}
+
 }

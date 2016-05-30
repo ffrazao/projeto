@@ -36,8 +36,8 @@ public class VisualizarCmd extends _Comando {
 			throw new BoException("Registro não localizado");
 		}
 
-		result.setUsuarioInclusao(result.getUsuarioInclusao() == null ? null: result.getUsuarioInclusao().infoBasica());
-		result.setUsuarioAlteracao(result.getUsuarioAlteracao() == null ? null: result.getUsuarioAlteracao().infoBasica());
+		result.setInclusaoUsuario(result.getInclusaoUsuario() == null ? null: result.getInclusaoUsuario().infoBasica());
+		result.setAlteracaoUsuario(result.getAlteracaoUsuario() == null ? null: result.getAlteracaoUsuario().infoBasica());
 		result.setEndereco(result.getEndereco().infoBasica());
 
 		if (result.getPublicoAlvoPropriedadeRuralList() != null) {

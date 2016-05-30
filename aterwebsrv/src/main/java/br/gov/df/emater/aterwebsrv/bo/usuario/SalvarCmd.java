@@ -43,7 +43,7 @@ public class SalvarCmd extends _Comando {
 
 		if (result.getId() == null) {
 			// novos usuários
-			result.setUsuarioInclusao(getUsuario(contexto.getUsuario() == null ? null : contexto.getUsuario().getName()));
+			result.setInclusaoUsuario(getUsuario(contexto.getUsuario() == null ? null : contexto.getUsuario().getName()));
 			result.setInclusaoData(Calendar.getInstance());
 			if (result.getPessoaEmail() == null || result.getPessoaEmail().getEmail() == null || result.getPessoaEmail().getEmail().getEndereco() == null || result.getPessoaEmail().getEmail().getEndereco().trim().length() == 0) {
 				throw new BoException("E-mail do usuário não informado!");
@@ -54,10 +54,10 @@ public class SalvarCmd extends _Comando {
 			}
 		} else {
 			// usuários existentes
-			result.setUsuarioInclusao(getUsuario(result.getUsuarioInclusao() == null ? null : result.getUsuarioInclusao().getUsername()));
+			result.setInclusaoUsuario(getUsuario(result.getInclusaoUsuario() == null ? null : result.getInclusaoUsuario().getUsername()));
 			salvo = dao.findOne(result.getId());
 		}
-		result.setUsuarioAlteracao(getUsuario(contexto.getUsuario() == null ? null : contexto.getUsuario().getName()));
+		result.setAlteracaoUsuario(getUsuario(contexto.getUsuario() == null ? null : contexto.getUsuario().getName()));
 		result.setAlteracaoData(Calendar.getInstance());
 
 		// remover os itens descartados

@@ -15,6 +15,9 @@ import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
@@ -48,6 +51,7 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaRelacionamento;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoFuncao;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
+import br.gov.df.emater.aterwebsrv.seguranca.UserAuthentication;
 
 @Service
 public class SisaterAcompanhamentoAterIncluirDepois2014Cmd extends _Comando {
@@ -129,6 +133,7 @@ public class SisaterAcompanhamentoAterIncluirDepois2014Cmd extends _Comando {
 				int cont = 0;
 
 				while (rs.next()) {
+					TransactionStatus transactionStatus = transactionManager.getTransaction(transactionDefinition);
 					try {
 						if (!(rs.getString("IDUND").equals(idUnd) && rs.getInt("IDATR") == idAtr)) {
 							idUnd = rs.getString("IDUND");
@@ -143,12 +148,23 @@ public class SisaterAcompanhamentoAterIncluirDepois2014Cmd extends _Comando {
 						acumulaChaveSisater(impUtil.chaveAtividadeDepois2014(base, rs.getString("IDUND"), rs.getInt("IDATR"), rs.getDate("ATERDT"), rs.getString("IDEMP"), rs.getString("IDMET"), rs.getString("IDTEMA"), rs.getString("IDACAO"), TABELA));
 
 						cont++;
+						transactionManager.commit(transactionStatus);
 					} catch (Exception e) {
 						logger.error(e);
 						e.printStackTrace();
+						transactionManager.rollback(transactionStatus);
 					}
 				}
-				salvar(usuario);
+				TransactionStatus transactionStatus = transactionManager.getTransaction(transactionDefinition);
+				try {
+					salvar(usuario);
+					cont++;
+					transactionManager.commit(transactionStatus);
+				} catch (Exception e) {
+					logger.error(e);
+					e.printStackTrace();
+					transactionManager.rollback(transactionStatus);
+				}
 
 				if (logger.isDebugEnabled()) {
 					logger.debug(String.format("[%s] importado %d atividades", base.name(), cont));
@@ -184,7 +200,7 @@ public class SisaterAcompanhamentoAterIncluirDepois2014Cmd extends _Comando {
 					ini = c.indexOf("IDACAO") + 1 + "IDACAO".length();
 					String idAcao = c.substring(ini, c.indexOf("]", ini));
 
-					impUtil.chaveAterWebAtualizar(con, atividade.getId(), TABELA, "IDUND = ? AND IDATR = ? AND ATERDT = ? AND IDEMP = ? AND IDMET = ? AND IDTEMA = ? AND IDACAO = ?", idUnd, Integer.parseInt(idAtr),
+					impUtil.chaveAterWebAtualizar(con, atividade.getId(), agora, TABELA, "IDUND = ? AND IDATR = ? AND ATERDT = ? AND IDEMP = ? AND IDMET = ? AND IDTEMA = ? AND IDACAO = ?", idUnd, Integer.parseInt(idAtr),
 							new java.sql.Date(((Calendar) UtilitarioData.getInstance().stringParaData(aterDt)).getTime().getTime()),
 							// aterDt,
 							idEmp, idMet, idTema, idAcao);
@@ -198,9 +214,9 @@ public class SisaterAcompanhamentoAterIncluirDepois2014Cmd extends _Comando {
 
 			// info basicas
 			result.setInclusaoData(agora);
-			result.setInclusaoUsuario(new Usuario(ematerUsuario.getId()));
+			result.setInclusaoUsuario(ematerUsuario);
 			result.setAlteracaoData(agora);
-			result.setAlteracaoUsuario(new Usuario(ematerUsuario.getId()));
+			result.setAlteracaoUsuario(ematerUsuario);
 			result.setFinalidade(AtividadeFinalidade.O);
 			result.setFormato(AtividadeFormato.E);
 			result.setNatureza(AtividadeNatureza.D);
@@ -279,7 +295,7 @@ public class SisaterAcompanhamentoAterIncluirDepois2014Cmd extends _Comando {
 
 	@Autowired
 	private PessoaDao pessoaDao;
-	
+
 	@Autowired
 	private PessoaRelacionamentoDao pessoaRelacionamentoDao;
 
@@ -314,6 +330,9 @@ public class SisaterAcompanhamentoAterIncluirDepois2014Cmd extends _Comando {
 		return assunto;
 	}
 
+	private PlatformTransactionManager transactionManager;
+	private DefaultTransactionDefinition transactionDefinition;
+
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		con = (Connection) contexto.get("conexao");
@@ -322,11 +341,14 @@ public class SisaterAcompanhamentoAterIncluirDepois2014Cmd extends _Comando {
 		impUtil = (ImpUtil) contexto.get("impUtil");
 
 		emater = (PessoaJuridica) contexto.get("emater");
-		ematerUsuario = (Usuario) contexto.get("ematerUsuario");
+		ematerUsuario = ((UserAuthentication) contexto.getUsuario()).getDetails();
 
 		empregadoFuncao = (RelacionamentoFuncao) contexto.get("empregadoFuncao");
 
 		agora = (Calendar) contexto.get("agora");
+
+		transactionManager = (PlatformTransactionManager) contexto.get("transactionManager");
+		transactionDefinition = (DefaultTransactionDefinition) contexto.get("transactionDefinition");
 
 		check.importar(base, contexto.getUsuario());
 

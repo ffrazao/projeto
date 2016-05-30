@@ -48,11 +48,11 @@ public class VisualizarCmd extends _Comando {
 		} else {
 			usuario.setUnidadeOrganizacional(usuario.getUnidadeOrganizacional().infoBasica());
 		}
-		if (usuario.getUsuarioInclusao() != null) {
-			usuario.setUsuarioInclusao(usuario.getUsuarioInclusao().infoBasica());
+		if (usuario.getInclusaoUsuario() != null) {
+			usuario.setInclusaoUsuario(usuario.getInclusaoUsuario().infoBasica());
 		}
-		if (usuario.getUsuarioAlteracao() != null) {
-			usuario.setUsuarioAlteracao(usuario.getUsuarioAlteracao().infoBasica());
+		if (usuario.getAlteracaoUsuario() != null) {
+			usuario.setAlteracaoUsuario(usuario.getAlteracaoUsuario().infoBasica());
 		}
 		
 		if (usuario.getPessoaEmail()!=null && usuario.getPessoaEmail().getEmail() != null) {

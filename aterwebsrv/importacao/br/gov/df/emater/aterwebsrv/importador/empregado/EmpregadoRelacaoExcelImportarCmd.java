@@ -12,6 +12,9 @@ import javax.persistence.EntityManager;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
@@ -72,7 +75,12 @@ public class EmpregadoRelacaoExcelImportarCmd extends _Comando {
 		Calendar agora = (Calendar) contexto.get("agora");
 		PessoaJuridica emater = (PessoaJuridica) contexto.get("emater");
 
+		PlatformTransactionManager transactionManager = (PlatformTransactionManager) contexto.get("transactionManager");
+		DefaultTransactionDefinition transactionDefinition = (DefaultTransactionDefinition) contexto.get("transactionDefinition");
+		
+		int cont = 0;
 		for (Map<String, Object> reg : mapa) {
+			TransactionStatus transactionStatus = transactionManager.getTransaction(transactionDefinition);
 			try {
 				// identificar o empregador
 				PessoaJuridica empregador = null;
@@ -230,11 +238,20 @@ public class EmpregadoRelacaoExcelImportarCmd extends _Comando {
 				if (lotacao == null) {
 					throw new BoException("Não foi possível identificar a lotação do empregado");
 				}
+				pessoaDao.flush();
+				
+				cont++;
+				transactionManager.commit(transactionStatus);
 			} catch (Exception e) {
 				logger.error(e);
+				e.printStackTrace();
+				transactionManager.rollback(transactionStatus);
 			}
 		}
-		pessoaDao.flush();
+		
+		if (logger.isDebugEnabled()) {
+			logger.debug(String.format("RelacaoEmpregadosExcel importado %d empregados", cont));
+		}
 
 		return false;
 	}

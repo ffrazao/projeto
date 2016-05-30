@@ -8,6 +8,9 @@ import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
@@ -42,7 +45,7 @@ public class SisaterPublicoAlvoPropriedadeRuralCmd extends _Comando {
 
 	@Autowired
 	private PessoaDao pessoaDao;
-	
+
 	@Autowired
 	private PublicoAlvoDao publicoAlvoDao;
 
@@ -57,11 +60,15 @@ public class SisaterPublicoAlvoPropriedadeRuralCmd extends _Comando {
 
 		agora = (Calendar) contexto.get("agora");
 
+		PlatformTransactionManager transactionManager = (PlatformTransactionManager) contexto.get("transactionManager");
+		DefaultTransactionDefinition transactionDefinition = (DefaultTransactionDefinition) contexto.get("transactionDefinition");
+
 		impUtil.criarMarcaTabelaSisater(con, SISATER_TABELA);
 
 		try (Statement st = con.createStatement(); ResultSet rs = st.executeQuery(SQL);) {
 			int cont = 0;
 			while (rs.next()) {
+				TransactionStatus transactionStatus = transactionManager.getTransaction(transactionDefinition);
 				try {
 					PublicoAlvoPropriedadeRural publicoAlvoPropriedadeRural = null;
 					publicoAlvoPropriedadeRural = novoPublicoAlvoPropriedadeRural(rs);
@@ -76,12 +83,13 @@ public class SisaterPublicoAlvoPropriedadeRuralCmd extends _Comando {
 					// salvar no MySQL e no Firebird
 					publicoAlvoPropriedadeRural = publicoAlvoPropriedadeRuralDao.save(publicoAlvoPropriedadeRural);
 
-					impUtil.chaveAterWebAtualizar(con, publicoAlvoPropriedadeRural.getId(), SISATER_TABELA, "IDPRP = ? AND IDBEN =  ?", rs.getString("IDPRP"), rs.getString("IDBEN"));
+					impUtil.chaveAterWebAtualizar(con, publicoAlvoPropriedadeRural.getId(), agora, SISATER_TABELA, "IDPRP = ? AND IDBEN =  ?", rs.getString("IDPRP"), rs.getString("IDBEN"));
 
-					cont++;
+					transactionManager.commit(transactionStatus);
 				} catch (Exception e) {
 					logger.error(e);
 					e.printStackTrace();
+					transactionManager.rollback(transactionStatus);
 				}
 			}
 			if (logger.isDebugEnabled()) {
@@ -99,7 +107,7 @@ public class SisaterPublicoAlvoPropriedadeRuralCmd extends _Comando {
 		if (pessoa != null && pessoa.getPublicoAlvo() == null) {
 			pessoa.setPublicoAlvo(publicoAlvoDao.findOneByPessoa(pessoa));
 		}
-		if (pessoa == null || pessoa.getPublicoAlvo() == null || propriedadeRural == null ) {
+		if (pessoa == null || pessoa.getPublicoAlvo() == null || propriedadeRural == null) {
 			throw new BoException("Pessoa ou Propriedade Rural inexistente");
 			// logger.error(String.format("Pessoa ou Propriedade Rural
 			// inexistente"));

@@ -35,6 +35,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
+import br.gov.df.emater.aterwebsrv.modelo._LogInclusaoAlteracao;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
@@ -53,7 +54,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 @Inheritance(strategy = InheritanceType.JOINED)
 // para identificar classes dentro de contextos polimórficos
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
-public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<Pessoa>, Pendenciavel<PessoaPendencia> {
+public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<Pessoa>, Pendenciavel<PessoaPendencia>, _LogInclusaoAlteracao {
 
 	private static final long serialVersionUID = 1L;
 
@@ -149,11 +150,11 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 
 	@ManyToOne
 	@JoinColumn(name = "alteracao_usuario_id")
-	private Usuario usuarioAlteracao;
+	private Usuario alteracaoUsuario;
 
 	@ManyToOne
 	@JoinColumn(name = "inclusao_usuario_id")
-	private Usuario usuarioInclusao;
+	private Usuario inclusaoUsuario;
 
 	public Pessoa() {
 	}
@@ -266,12 +267,12 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		return telefoneList;
 	}
 
-	public Usuario getUsuarioAlteracao() {
-		return usuarioAlteracao;
+	public Usuario getAlteracaoUsuario() {
+		return alteracaoUsuario;
 	}
 
-	public Usuario getUsuarioInclusao() {
-		return usuarioInclusao;
+	public Usuario getInclusaoUsuario() {
+		return inclusaoUsuario;
 	}
 
 	public void setAlteracaoData(Calendar alteracaoData) {
@@ -368,11 +369,11 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		this.telefoneList = telefoneList;
 	}
 
-	public void setUsuarioAlteracao(Usuario usuarioAlteracao) {
-		this.usuarioAlteracao = usuarioAlteracao;
+	public void setAlteracaoUsuario(Usuario alteracaoUsuario) {
+		this.alteracaoUsuario = alteracaoUsuario;
 	}
 
-	public void setUsuarioInclusao(Usuario usuarioInclusao) {
-		this.usuarioInclusao = usuarioInclusao;
+	public void setInclusaoUsuario(Usuario inclusaoUsuario) {
+		this.inclusaoUsuario = inclusaoUsuario;
 	}
 }

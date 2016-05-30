@@ -15,6 +15,9 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -39,6 +42,7 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.PropriedadeRuralSituacao;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.Coleta;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Arquivo;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
+import br.gov.df.emater.aterwebsrv.seguranca.UserAuthentication;
 
 @Service
 public class SisaterPropriedadeRuralCmd extends _Comando {
@@ -252,9 +256,12 @@ public class SisaterPropriedadeRuralCmd extends _Comando {
 		facadeBo = (FacadeBo) contexto.get("facadeBo");
 		base = (DbSater) contexto.get("base");
 		impUtil = (ImpUtil) contexto.get("impUtil");
-		ematerUsuario = (Usuario) contexto.get("ematerUsuario");
+		ematerUsuario = ((UserAuthentication) contexto.getUsuario()).getDetails();
 
 		agora = (Calendar) contexto.get("agora");
+
+		PlatformTransactionManager transactionManager = (PlatformTransactionManager) contexto.get("transactionManager");
+		DefaultTransactionDefinition transactionDefinition = (DefaultTransactionDefinition) contexto.get("transactionDefinition");
 
 		impUtil.criarMarcaTabelaSisater(con, SISATER_TABELA);
 
@@ -265,6 +272,7 @@ public class SisaterPropriedadeRuralCmd extends _Comando {
 		try (Statement st = con.createStatement(); ResultSet rs = st.executeQuery(SQL);) {
 			int cont = 0;
 			while (rs.next()) {
+				TransactionStatus transactionStatus = transactionManager.getTransaction(transactionDefinition);
 				try {
 					PropriedadeRural propriedadeRural = novoPropriedadeRural(rs);
 
@@ -290,13 +298,16 @@ public class SisaterPropriedadeRuralCmd extends _Comando {
 					// salvar no MySQL e no Firebird
 					propriedadeRural.setId((Integer) facadeBo.propriedadeRuralSalvar(contexto.getUsuario(), propriedadeRural).getResposta());
 
-					impUtil.chaveAterWebAtualizar(con, propriedadeRural.getId(), SISATER_TABELA, "IDUND = ? AND IDPRP = ?", rs.getString("IDUND"), rs.getString("IDPRP"));
+					impUtil.chaveAterWebAtualizar(con, propriedadeRural.getId(), agora, SISATER_TABELA, "IDUND = ? AND IDPRP = ?", rs.getString("IDUND"), rs.getString("IDPRP"));
 
 					captarDiagnosticoList(rs, propriedadeRural);
+
 					cont++;
+					transactionManager.commit(transactionStatus);
 				} catch (Exception e) {
 					logger.error(e);
 					e.printStackTrace();
+					transactionManager.rollback(transactionStatus);
 				}
 			}
 			if (logger.isDebugEnabled()) {
