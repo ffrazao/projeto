@@ -8,7 +8,6 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 
@@ -21,7 +20,8 @@ public class ImportFacadeBo implements BeanFactoryAware {
 		return this._executar(usuario, comandoNome, null, null);
 	}
 
-	private _Contexto _executar(Principal usuario, String comandoNome, Object requisicao, Map<Object, Object> map) throws Exception {
+	private _Contexto _executar(Principal usuario, String comandoNome, Object requisicao, Map<Object, Object> map)
+			throws Exception {
 		Command comando = (Command) this.beanFactory.getBean(comandoNome);
 		_Contexto result = new _Contexto(usuario, comando.getClass().getName(), requisicao);
 		if (map != null) {
@@ -32,7 +32,7 @@ public class ImportFacadeBo implements BeanFactoryAware {
 		return result;
 	}
 
-	@Transactional
+	// @Transactional
 	public _Contexto importar(Principal usuario) throws Exception {
 		return this._executar(usuario, "ImportarCh");
 	}
@@ -42,7 +42,7 @@ public class ImportFacadeBo implements BeanFactoryAware {
 		this.beanFactory = beanFactory;
 	}
 
-	@Transactional
+	// @Transactional
 	public _Contexto sisater(Principal usuario, Map<Object, Object> map) throws Exception {
 		return this._executar(usuario, "SisaterCh", null, map);
 	}

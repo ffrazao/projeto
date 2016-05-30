@@ -66,11 +66,10 @@ public class EmpregadoContaUsuarioExcelImportarCmd extends _Comando {
 		PlatformTransactionManager transactionManager = (PlatformTransactionManager) contexto.get("transactionManager");
 		DefaultTransactionDefinition transactionDefinition = (DefaultTransactionDefinition) contexto.get("transactionDefinition");
 
-		TransactionStatus transactionStatus = transactionManager.getTransaction(transactionDefinition);
 		int cont = 0;
 		for (Map<String, Object> reg : mapa) {
+			TransactionStatus transactionStatus = transactionManager.getTransaction(transactionDefinition);
 			try {
-
 				if (((String) reg.get("User Logon Name")) == null || ((String) reg.get("User Logon Name")).trim().length() == 0) {
 					continue;
 				}

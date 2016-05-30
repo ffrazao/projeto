@@ -86,7 +86,8 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 				bemClassificacao.setUnidadeMedida(unidadeMedida);
 				bemClassificacao = bemClassificacaoDao.save(bemClassificacao);
 			} else if (unidadeMedida != null && !unidadeMedida.getId().equals(bemClassificacao.getUnidadeMedida().getId())) {
-				throw new BoException("Unidade de Medida duplicada [%s, já tem %s, tentando inserir %s]", bemClassificacao.getNome(), bemClassificacao.getUnidadeMedida().getNome(), unidadeMedida.getNome());
+				logger.error(String.format("Unidade de Medida duplicada [%s, já tem %s, tentando inserir %s]", bemClassificacao.getNome(), bemClassificacao.getUnidadeMedida().getNome(), unidadeMedida.getNome()));
+				//throw new BoException("Unidade de Medida duplicada [%s, já tem %s, tentando inserir %s]", bemClassificacao.getNome(), bemClassificacao.getUnidadeMedida().getNome(), unidadeMedida.getNome());
 			}
 		}
 

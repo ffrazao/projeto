@@ -70,7 +70,7 @@ public class SisaterPropriedadeRuralExportaUTMCmd extends _Comando {
 				}
 			}
 			if (logger.isDebugEnabled()) {
-				logger.debug(String.format("[%s] importado %d propriedades rurais", base.name(), cont));
+				logger.debug(String.format("[%s] exportado %d coordenadas de propriedades rurais", base.name(), cont));
 			}
 		}
 		if (encontrou) {

@@ -98,13 +98,14 @@ public class SisaterAcompanhamentoAterIncluirAntes2014Cmd extends _Comando {
 				atividade.setPessoaExecutorList(new ArrayList<AtividadePessoa>());
 				atividade.getPessoaExecutorList().add(new AtividadePessoa(impUtil.deParaUnidadeOrganizacional(emater, base.getSigla()), null, atividade.getInicio(), AtividadePessoaParticipacao.E, Confirmacao.N));
 			}
-			for (AtividadePessoa item : atividade.getPessoaExecutorList()) {
-				if (item.getPessoa() != null && empregado.getId().equals(item.getPessoa().getId())) {
-					return;
+			if (empregado != null) {				
+				for (AtividadePessoa item : atividade.getPessoaExecutorList()) {
+					if (item.getPessoa() != null && empregado.getId().equals(item.getPessoa().getId())) {
+						return;
+					}
 				}
+				atividade.getPessoaExecutorList().add(new AtividadePessoa(null, empregado, atividade.getInicio(), AtividadePessoaParticipacao.E, Confirmacao.S));
 			}
-			atividade.getPessoaExecutorList().add(new AtividadePessoa(null, empregado, atividade.getInicio(), AtividadePessoaParticipacao.E, Confirmacao.S));
-			return;
 		}
 
 		private void acumulaChaveSisater(String chaveAtividade) {
@@ -353,11 +354,15 @@ public class SisaterAcompanhamentoAterIncluirAntes2014Cmd extends _Comando {
 
 	private RelacionamentoFuncao empregadoFuncao;
 
-	Pessoa empregadoPega(String matricula) throws BoException {
+	private Pessoa empregadoPega(String matricula) throws BoException {
 		matricula = matricula.trim().toUpperCase();
 		matricula = UtilitarioString.substituirTudo(matricula, "-", "");
 		matricula = UtilitarioString.substituirTudo(matricula, ".", "");
 		matricula = UtilitarioString.zeroEsquerda(matricula, 8);
+		
+		if (matricula.endsWith("T")) {
+			return null;
+		}
 
 		List<Emprego> empregoList = empregoDao.findByMatricula(matricula);
 
