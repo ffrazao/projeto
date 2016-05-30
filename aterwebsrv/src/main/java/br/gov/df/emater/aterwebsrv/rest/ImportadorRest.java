@@ -6,13 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.gov.df.emater.aterwebsrv.importador.ImportFacadeBo;
+import br.gov.df.emater.aterwebsrv.importador.FacadeBoImportar;
 
 @RestController
 public class ImportadorRest {
 
 	@Autowired
-	private ImportFacadeBo facadeBo;
+	private FacadeBoImportar facadeBo;
 
 	public ImportadorRest() {
 	}

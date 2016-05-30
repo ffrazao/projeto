@@ -55,10 +55,11 @@ public class VerifPendCpfCmd extends VerificarPendenciasCmd {
 		if (!Util.isCpfValido(numero)) {
 			if (pessoaFisica == null) {
 				pessoaRelacionamento.setCpf(null);
+				return String.format("O número de CPF informado da pessoa relacionada [%s] é inválido", numero);
 			} else {
 				pessoaFisica.setCpf(null);
+				return String.format("O número de CPF informado [%s] é inválido", numero);
 			}
-			return String.format("O número de CPF informado [%s] é inválido", numero);
 		}
 
 		// formatar o número
@@ -76,6 +77,7 @@ public class VerifPendCpfCmd extends VerificarPendenciasCmd {
 					}
 				} else {
 					// pesquisa de PessoaRelacionamento em PessoaFisica
+					pessoaRelacionamento.setCpf(null);
 					return String.format("O número de CPF informado [%s] da pessoa vinculada [%s] já está vinculado à pessoa <a ng-click=\"modalVerPessoa(%d)\">%s</a><br>", numero, pessoaRelacionamento.getNome(), salvo.getId(), salvo.getNome());
 				}
 			}

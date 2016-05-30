@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 
 @Service
-public class ImportFacadeBo implements BeanFactoryAware {
+public class FacadeBoImportar implements BeanFactoryAware {
 
 	private BeanFactory beanFactory;
 
@@ -20,8 +20,7 @@ public class ImportFacadeBo implements BeanFactoryAware {
 		return this._executar(usuario, comandoNome, null, null);
 	}
 
-	private _Contexto _executar(Principal usuario, String comandoNome, Object requisicao, Map<Object, Object> map)
-			throws Exception {
+	private _Contexto _executar(Principal usuario, String comandoNome, Object requisicao, Map<Object, Object> map) throws Exception {
 		Command comando = (Command) this.beanFactory.getBean(comandoNome);
 		_Contexto result = new _Contexto(usuario, comando.getClass().getName(), requisicao);
 		if (map != null) {

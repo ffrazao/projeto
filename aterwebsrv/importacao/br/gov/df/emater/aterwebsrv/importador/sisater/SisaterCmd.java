@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.funcional.UnidadeOrganizacionalDao;
-import br.gov.df.emater.aterwebsrv.importador.ImportFacadeBo;
+import br.gov.df.emater.aterwebsrv.importador.FacadeBoImportar;
 import br.gov.df.emater.aterwebsrv.importador.apoio.ConexaoFirebird;
 import br.gov.df.emater.aterwebsrv.importador.apoio.ConexaoFirebird.DbSater;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
@@ -19,7 +19,7 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 public class SisaterCmd extends _Comando {
 
 	@Autowired
-	private ImportFacadeBo importFacadeBo;
+	private FacadeBoImportar importFacadeBo;
 
 	@Autowired
 	private UnidadeOrganizacionalDao unidadeOrganizacionalDao;

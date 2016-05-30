@@ -159,7 +159,7 @@ public class SalvarCmd extends _Comando {
 			// identificado");
 		}
 
-		if (demandanteList.containsAll(executorList)) {
+		if (executorList.size() > 0 && demandanteList.containsAll(executorList)) {
 			throw new BoException("Demandante também vinculado como executor à atividade");
 		}
 
