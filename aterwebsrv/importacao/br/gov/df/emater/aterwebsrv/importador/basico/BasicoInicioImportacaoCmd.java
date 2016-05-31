@@ -68,7 +68,7 @@ public class BasicoInicioImportacaoCmd extends _Comando {
 
 		DefaultTransactionDefinition transactionDefinition = new DefaultTransactionDefinition();
 		transactionDefinition.setName("ImportacaoATERweb");
-		transactionDefinition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		transactionDefinition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
 
 		contexto.put("enviarEmailUsuario", false);
 		contexto.put("agora", Calendar.getInstance());
