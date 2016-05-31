@@ -11,19 +11,6 @@ import javax.persistence.Version;
 @Entity
 @Table(name = "teste", schema = "teste")
 public class Teste {
-	
-	public Teste() {
-		
-	}
-	
-	public Teste(Long id) {
-		setId(id);
-	}
-
-	public Teste(Long id, String nome) {
-		this(id);
-		setNome(nome);
-	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,6 +21,19 @@ public class Teste {
 
 	@Version
 	private Long version;
+
+	public Teste() {
+
+	}
+
+	public Teste(Long id) {
+		setId(id);
+	}
+
+	public Teste(Long id, String nome) {
+		this(id);
+		setNome(nome);
+	}
 
 	public Long getId() {
 		return id;

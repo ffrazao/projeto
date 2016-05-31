@@ -10,8 +10,8 @@ import br.gov.df.emater.aterwebsrv.modelo.funcional.EmpregoVi;
 @Repository("EmpregoViDao")
 public interface EmpregoViDao extends JpaRepository<EmpregoVi, Integer> {
 
-	List<EmpregoVi> findOneByEmpregadorIdAndMatricula(Integer empregadorId, String matricula);
-
 	List<EmpregoVi> findByMatricula(String matricula);
+
+	List<EmpregoVi> findOneByEmpregadorIdAndMatricula(Integer empregadorId, String matricula);
 
 }

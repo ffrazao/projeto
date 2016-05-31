@@ -28,9 +28,6 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Endereco;
 
 @Service("PropriedadeRuralSalvarCmd")
 public class SalvarCmd extends _Comando {
-	
-	@Autowired
-	private PropriedadeRuralFormaUtilizacaoEspacoRuralDao propriedadeRuralFormaUtilizacaoEspacoRuralDao;
 
 	@Autowired
 	private AreaDao areaDao;
@@ -48,10 +45,13 @@ public class SalvarCmd extends _Comando {
 	private PropriedadeRuralArquivoDao propriedadeRuralArquivoDao;
 
 	@Autowired
-	private PublicoAlvoPropriedadeRuralDao publicoAlvoPropriedadeRuralDao;
+	private PropriedadeRuralFormaUtilizacaoEspacoRuralDao propriedadeRuralFormaUtilizacaoEspacoRuralDao;
 
 	@Autowired
 	private PublicoAlvoDao publicoAlvoDao;
+
+	@Autowired
+	private PublicoAlvoPropriedadeRuralDao publicoAlvoPropriedadeRuralDao;
 
 	public SalvarCmd() {
 	}
@@ -73,14 +73,14 @@ public class SalvarCmd extends _Comando {
 		}
 		Endereco endereco = result.getEndereco();
 		endereco.setPropriedadeRuralConfirmacao(Confirmacao.S);
-		
-		if (result.getEndereco().getId() != null) {			
+
+		if (result.getEndereco().getId() != null) {
 			Endereco enderecoSalvo = enderecoDao.findOne(result.getEndereco().getId());
 			if (enderecoSalvo != null && enderecoSalvo.getAreaList() != null) {
-				for (Area areaSalvo: enderecoSalvo.getAreaList()) {
+				for (Area areaSalvo : enderecoSalvo.getAreaList()) {
 					boolean encontrou = false;
 					if (endereco.getAreaList() != null) {
-						for (Area area: endereco.getAreaList()) {
+						for (Area area : endereco.getAreaList()) {
 							if (area.getId().equals(areaSalvo.getId())) {
 								encontrou = true;
 								break;
@@ -95,13 +95,12 @@ public class SalvarCmd extends _Comando {
 		}
 
 		if (endereco.getAreaList() != null) {
-			for (Area area: endereco.getAreaList()) {
+			for (Area area : endereco.getAreaList()) {
 				area.setEndereco(endereco);
 			}
 		}
 		enderecoDao.save(endereco);
-		
-		
+
 		// ajustar o setor
 		if (result.getFormaUtilizacaoEspacoRuralList() != null) {
 			for (PropriedadeRuralFormaUtilizacaoEspacoRural formaUtilizacaoEspacoRural : result.getFormaUtilizacaoEspacoRuralList()) {
@@ -110,15 +109,15 @@ public class SalvarCmd extends _Comando {
 					PropriedadeRuralFormaUtilizacaoEspacoRural salvo = propriedadeRuralFormaUtilizacaoEspacoRuralDao.findOneByPropriedadeRuralAndFormaUtilizacaoEspacoRural(result, formaUtilizacaoEspacoRural.getFormaUtilizacaoEspacoRural());
 					if (salvo != null) {
 						formaUtilizacaoEspacoRural.setId(salvo.getId());
-					}					
+					}
 				}
 			}
 		}
-		
+
 		dao.save(result);
-		
+
 		if (result.getPublicoAlvoPropriedadeRuralList() != null) {
-			for (PublicoAlvoPropriedadeRural papr: result.getPublicoAlvoPropriedadeRuralList()) {
+			for (PublicoAlvoPropriedadeRural papr : result.getPublicoAlvoPropriedadeRuralList()) {
 				papr.setPropriedadeRural(result);
 				papr.setPublicoAlvo(publicoAlvoDao.findOneByPessoa(papr.getPublicoAlvo().getPessoa()));
 				publicoAlvoPropriedadeRuralDao.save(papr);
@@ -148,7 +147,7 @@ public class SalvarCmd extends _Comando {
 					arquivo = arquivoDao.save(arquivo);
 					propriedadeRuralArquivo.setArquivo(arquivo);
 					propriedadeRuralArquivo.setPropriedadeRural(result);
-					
+
 					PropriedadeRuralArquivo propriedadeRuralArquivoSalvo = propriedadeRuralArquivoDao.findOneByPropriedadeRuralAndArquivo(result, arquivo);
 					if (propriedadeRuralArquivoSalvo != null) {
 						propriedadeRuralArquivo.setId(propriedadeRuralArquivoSalvo.getId());

@@ -12,10 +12,6 @@ public abstract class FiltroDtoCustom implements FiltroDto {
 
 	private TemMaisRegistros temMaisRegistros;
 
-	public Integer getNumeroPagina() {
-		return numeroPagina;
-	}
-	
 	public void configuraPaginacao(Query query) {
 		Integer ini = this.getNumeroPagina() == null ? 1 : this.getNumeroPagina();
 		Integer tam = FiltroDto.TAMANHO_PAGINA;
@@ -43,22 +39,32 @@ public abstract class FiltroDtoCustom implements FiltroDto {
 		}
 	}
 
-	public void setNumeroPagina(Integer numeroPagina) {
-		this.numeroPagina = numeroPagina;
+	@Override
+	public Integer getNumeroPagina() {
+		return numeroPagina;
 	}
 
+	@Override
 	public Integer getRegistrosPagina() {
 		return registrosPagina;
 	}
 
-	public void setRegistrosPagina(Integer registrosPagina) {
-		this.registrosPagina = registrosPagina;
-	}
-
+	@Override
 	public TemMaisRegistros getTemMaisRegistros() {
 		return temMaisRegistros;
 	}
 
+	@Override
+	public void setNumeroPagina(Integer numeroPagina) {
+		this.numeroPagina = numeroPagina;
+	}
+
+	@Override
+	public void setRegistrosPagina(Integer registrosPagina) {
+		this.registrosPagina = registrosPagina;
+	}
+
+	@Override
 	public void setTemMaisRegistros(TemMaisRegistros temMaisRegistros) {
 		this.temMaisRegistros = temMaisRegistros;
 	}

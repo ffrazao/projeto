@@ -85,17 +85,6 @@ public class UtilitarioString {
 		return Pattern.compile("(\\d{2})(\\d{3})(\\d{3})").matcher(numero).replaceAll("$1.$2-$3");
 	}
 
-	public static String formataEmail(String endereco) {
-		if (endereco == null || endereco.trim().length() == 0) {
-			return null;
-		}
-		endereco = UtilitarioString.substituirTudo(UtilitarioString.semAcento(endereco.trim().toLowerCase()), " ", "");
-		if (endereco.trim().length() == 0) {
-			return null;
-		}
-		return endereco;
-	}
-
 	public static String formataCnpj(String numero) {
 		if (numero == null) {
 			return null;
@@ -110,6 +99,17 @@ public class UtilitarioString {
 		}
 		numero = zeroEsquerda(soNumero(numero.trim()), 11);
 		return Pattern.compile("(\\d{3})(\\d{3})(\\d{3})(\\d{2})").matcher(numero).replaceAll("$1.$2.$3-$4");
+	}
+
+	public static String formataEmail(String endereco) {
+		if (endereco == null || endereco.trim().length() == 0) {
+			return null;
+		}
+		endereco = UtilitarioString.substituirTudo(UtilitarioString.semAcento(endereco.trim().toLowerCase()), " ", "");
+		if (endereco.trim().length() == 0) {
+			return null;
+		}
+		return endereco;
 	}
 
 	public static String formataNis(String numero) {

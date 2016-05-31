@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.gov.df.emater.aterwebsrv.bo.BoException;
-import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.sistema.UsuarioDao;
@@ -20,11 +19,11 @@ public class SalvarCmd extends _Comando {
 	@Autowired
 	private UsuarioDao dao;
 
-	@Autowired
-	private UsuarioPerfilDao usuarioPerfilDao;
+//	@Autowired
+//	private FacadeBo facadeBo;
 
 	@Autowired
-	private FacadeBo facadeBo;
+	private UsuarioPerfilDao usuarioPerfilDao;
 
 	public SalvarCmd() {
 	}
@@ -34,7 +33,7 @@ public class SalvarCmd extends _Comando {
 		Usuario result = (Usuario) contexto.getRequisicao();
 		Usuario salvo = null;
 		String enviaEmail = null;
-		
+
 		// flag para enviar automaticamente a senha ao usuário ou não
 		Boolean enviarEmailUsuario = (Boolean) contexto.get("enviarEmailUsuario");
 		if (enviarEmailUsuario == null) {
@@ -93,7 +92,8 @@ public class SalvarCmd extends _Comando {
 
 		// enviar senha para novos usuários
 		if (enviarEmailUsuario && enviaEmail != null) {
-			//facadeBo.segurancaEsqueciSenha(enviaEmail);
+			// FIXME avaliar necessidade deste codigo
+			// facadeBo.segurancaEsqueciSenha(enviaEmail);
 		}
 
 		contexto.setResposta(result.getId());

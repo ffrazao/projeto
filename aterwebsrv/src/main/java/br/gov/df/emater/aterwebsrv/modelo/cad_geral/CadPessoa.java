@@ -108,13 +108,13 @@ public class CadPessoa extends EntidadeBase implements _ChavePrimaria<Integer> {
 	@Column(name = "numero_inscricao_sef_df")
 	private String numeroInscricaoSefDf;
 
-	@Column(name = "reside_propriedade")
-	@Enumerated(EnumType.STRING)
-	private Confirmacao residePropriedade;
-
 	@Column(name = "sexo")
 	@Enumerated(EnumType.STRING)
 	private PessoaGenero pessoaGenero;
+
+	@Column(name = "reside_propriedade")
+	@Enumerated(EnumType.STRING)
+	private Confirmacao residePropriedade;
 
 	@Column(name = "status")
 	@Enumerated(EnumType.STRING)
@@ -205,12 +205,12 @@ public class CadPessoa extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return numeroInscricaoSefDf;
 	}
 
-	public Confirmacao getResidePropriedade() {
-		return residePropriedade;
-	}
-
 	public PessoaGenero getPessoaGenero() {
 		return pessoaGenero;
+	}
+
+	public Confirmacao getResidePropriedade() {
+		return residePropriedade;
 	}
 
 	public StatusValidoInvalido getStatus() {
@@ -302,12 +302,12 @@ public class CadPessoa extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.numeroInscricaoSefDf = numeroInscricaoSefDf;
 	}
 
-	public void setResidePropriedade(Confirmacao residePropriedade) {
-		this.residePropriedade = residePropriedade;
-	}
-
 	public void setPessoaGenero(PessoaGenero pessoaGenero) {
 		this.pessoaGenero = pessoaGenero;
+	}
+
+	public void setResidePropriedade(Confirmacao residePropriedade) {
+		this.residePropriedade = residePropriedade;
 	}
 
 	public void setStatus(StatusValidoInvalido status) {

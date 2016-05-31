@@ -43,7 +43,7 @@ public class VisualizarCmd extends _Comando {
 				pessoaEmailList.add(new PessoaEmail(pessoaEmail.getId(), pessoaEmail.getEmail().infoBasica()));
 			}
 			pessoa.setEmailList(pessoaEmailList);
-			
+
 			usuario.setPessoa(pessoa);
 		} else {
 			usuario.setUnidadeOrganizacional(usuario.getUnidadeOrganizacional().infoBasica());
@@ -54,18 +54,18 @@ public class VisualizarCmd extends _Comando {
 		if (usuario.getAlteracaoUsuario() != null) {
 			usuario.setAlteracaoUsuario(usuario.getAlteracaoUsuario().infoBasica());
 		}
-		
-		if (usuario.getPessoaEmail()!=null && usuario.getPessoaEmail().getEmail() != null) {
+
+		if (usuario.getPessoaEmail() != null && usuario.getPessoaEmail().getEmail() != null) {
 			usuario.getPessoaEmail().setEmail(usuario.getPessoaEmail().getEmail().infoBasica());
 			usuario.getPessoaEmail().setPessoa(null);
 		}
-		
+
 		if (usuario.getAuthorities() != null) {
-			for (UsuarioPerfil usuarioPerfil: usuario.getAuthorities()) {
+			for (UsuarioPerfil usuarioPerfil : usuario.getAuthorities()) {
 				usuarioPerfil.setUsuario(null);
 			}
 		}
-		
+
 		em.detach(usuario);
 
 		contexto.setResposta(usuario);

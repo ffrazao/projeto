@@ -94,6 +94,23 @@ public class UtilDaoImpl implements UtilDao {
 		return result;
 	}
 
+	private Class<?> getEnumClass(String enumeracao) throws DaoException {
+		Class<?> result = null;
+		try {
+			result = Class.forName(String.format("br.gov.df.emater.aterwebsrv.modelo.dominio.%s", enumeracao));
+		} catch (ClassNotFoundException e) {
+			try {
+				result = Class.forName(enumeracao);
+			} catch (ClassNotFoundException e1) {
+				return null;
+			}
+		}
+		if (!result.isEnum()) {
+			throw new DaoException(String.format("%s não é uma enumeração válida!", enumeracao));
+		}
+		return result;
+	}
+
 	/**
 	 * Método genérico para retorno de Enumerações do sistema (enum)
 	 * 
@@ -143,23 +160,7 @@ public class UtilDaoImpl implements UtilDao {
 		}
 	}
 
-	private Class<?> getEnumClass(String enumeracao) throws DaoException {
-		Class<?> result = null;
-		try {
-			result = Class.forName(String.format("br.gov.df.emater.aterwebsrv.modelo.dominio.%s", enumeracao));
-		} catch (ClassNotFoundException e) {
-			try {
-				result = Class.forName(enumeracao);
-			} catch (ClassNotFoundException e1) {
-				return null;
-			}
-		}
-		if (!result.isEnum()) {
-			throw new DaoException(String.format("%s não é uma enumeração válida!", enumeracao));
-		}
-		return result;
-	}
-
+	@Override
 	public Map<String, Object> ipaBemClassificacaoDetalhes(BemClassificacao bemClassificacao) {
 		Map<String, Object> result = null;
 		if (bemClassificacao != null) {

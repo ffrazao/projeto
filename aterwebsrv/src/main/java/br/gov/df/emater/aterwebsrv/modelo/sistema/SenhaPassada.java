@@ -62,6 +62,7 @@ public class SenhaPassada extends EntidadeBase implements _ChavePrimaria<Integer
 		return dataTroca;
 	}
 
+	@Override
 	public Integer getId() {
 		return id;
 	}
@@ -78,6 +79,7 @@ public class SenhaPassada extends EntidadeBase implements _ChavePrimaria<Integer
 		this.dataTroca = dataTroca;
 	}
 
+	@Override
 	public void setId(Integer id) {
 		this.id = id;
 	}

@@ -46,6 +46,7 @@ public class PessoaJuridicaCnae extends EntidadeBase implements _ChavePrimaria<I
 		return cnae;
 	}
 
+	@Override
 	public Integer getId() {
 		return id;
 	}
@@ -58,6 +59,7 @@ public class PessoaJuridicaCnae extends EntidadeBase implements _ChavePrimaria<I
 		this.cnae = cnae;
 	}
 
+	@Override
 	public void setId(Integer id) {
 		this.id = id;
 	}

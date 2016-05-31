@@ -22,16 +22,16 @@ public class Opcao extends EntidadeBase implements _ChavePrimaria<Integer> {
 	@JoinColumn(name = "elemento_id")
 	private Elemento elemento;
 
-	@Column(name="formulario_codigo")
+	@Column(name = "formulario_codigo")
 	private String formularioCodigo;
 
-	@Column(name="formulario_versao")
+	@Column(name = "formulario_versao")
 	private Integer formularioVersao;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
-	
+
 	public Elemento getElemento() {
 		return elemento;
 	}

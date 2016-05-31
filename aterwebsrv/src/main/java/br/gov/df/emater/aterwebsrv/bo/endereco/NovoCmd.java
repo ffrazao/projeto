@@ -22,7 +22,7 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pais;
 public class NovoCmd extends _Comando {
 
 	@Autowired
-	private PaisDao paisDao;
+	private CidadeDao cidadeDao;
 
 	@Autowired
 	private EstadoDao estadoDao;
@@ -31,12 +31,12 @@ public class NovoCmd extends _Comando {
 	private MunicipioDao municipioDao;
 
 	@Autowired
-	private CidadeDao cidadeDao;
+	private PaisDao paisDao;
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		Endereco result = new Endereco();
-		
+
 		Pais pais = null;
 		Estado estado = null;
 		Municipio municipio = null;

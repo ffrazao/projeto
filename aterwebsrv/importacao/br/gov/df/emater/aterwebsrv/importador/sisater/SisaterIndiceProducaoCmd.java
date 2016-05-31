@@ -87,7 +87,10 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 				bemClassificacao = bemClassificacaoDao.save(bemClassificacao);
 			} else if (unidadeMedida != null && !unidadeMedida.getId().equals(bemClassificacao.getUnidadeMedida().getId())) {
 				logger.error(String.format("Unidade de Medida duplicada [%s, já tem %s, tentando inserir %s]", bemClassificacao.getNome(), bemClassificacao.getUnidadeMedida().getNome(), unidadeMedida.getNome()));
-				//throw new BoException("Unidade de Medida duplicada [%s, já tem %s, tentando inserir %s]", bemClassificacao.getNome(), bemClassificacao.getUnidadeMedida().getNome(), unidadeMedida.getNome());
+				// throw new BoException("Unidade de Medida duplicada [%s, já
+				// tem %s, tentando inserir %s]", bemClassificacao.getNome(),
+				// bemClassificacao.getUnidadeMedida().getNome(),
+				// unidadeMedida.getNome());
 			}
 		}
 
@@ -747,11 +750,11 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 	@Autowired
 	private PublicoAlvoDao publicoAlvoDao;
 
-	@Autowired
-	private UnidadeMedidaDao unidadeMedidaDao;
+	private DefaultTransactionDefinition transactionDefinition;
 
 	private PlatformTransactionManager transactionManager;
-	private DefaultTransactionDefinition transactionDefinition;
+	@Autowired
+	private UnidadeMedidaDao unidadeMedidaDao;
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {

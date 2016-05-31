@@ -71,7 +71,6 @@ public class BaciaHidrografica extends EntidadeBase implements _ChavePrimaria<In
 
 	@Override
 	public BaciaHidrografica infoBasica() {
-		// TODO Auto-generated method stub
 		return new BaciaHidrografica(this.id, this.nome);
 	}
 

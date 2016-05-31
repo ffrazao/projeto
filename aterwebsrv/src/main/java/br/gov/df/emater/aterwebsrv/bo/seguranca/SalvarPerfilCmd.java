@@ -15,31 +15,31 @@ import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 
 @Service("SegurancaSalvarPerfilCmd")
 public class SalvarPerfilCmd extends _Comando {
-	
+
 	@Autowired
-	private UsuarioDao usuarioDao;
+	private ArquivoDao arquivoDao;
 
 	@Autowired
 	private PessoaDao pessoaDao;
 
 	@Autowired
-	private ArquivoDao arquivoDao;
+	private UsuarioDao usuarioDao;
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		Usuario usuario = (Usuario) contexto.getRequisicao();
-		
+
 		Usuario usuarioSalvo = usuarioDao.findOne(usuario.getId());
-		
+
 		if (usuarioSalvo == null) {
 			throw new BoException("Usuário não cadastrado");
 		}
-		
+
 		Usuario username = usuarioDao.findByUsername(usuario.getUsername());
 		if (username != null && username.getId() != usuarioSalvo.getId()) {
 			throw new BoException("Este nome de usuário já está em uso!");
 		}
-		
+
 		// preparar a foto do perfil
 		Arquivo arquivo = usuario.getPessoa().getPerfilArquivo();
 		if (arquivo != null && arquivo.getMd5() != null) {
@@ -47,19 +47,19 @@ public class SalvarPerfilCmd extends _Comando {
 		} else {
 			arquivo = null;
 		}
-		
+
 		usuarioSalvo.getPessoa().setPerfilArquivo(arquivo);
 
 		// salvar a foto do perfil
 		pessoaDao.save(usuarioSalvo.getPessoa());
-		
+
 		// salvar demais dados do usuário
 		usuarioSalvo.setUsername(usuario.getUsername());
 		usuarioSalvo.setPessoaEmail(usuario.getPessoaEmail());
 		usuarioSalvo.setInfoSobreUsuario(usuario.getInfoSobreUsuario());
 		usuarioSalvo.setUsuarioAtualizouPerfil(Confirmacao.S);
 		usuarioDao.save(usuarioSalvo);
-		
+
 		return false;
 	}
 

@@ -58,6 +58,14 @@ public class SisaterAcompanhamentoAterIncluirDepois2014Cmd extends _Comando {
 
 	private class CheckAtividadeList {
 
+		private Atividade atividade;
+
+		private PreparedStatement demandantePs;
+
+		private Integer idAtr;
+
+		private String idUnd;
+
 		private void acumulaAssunto(Assunto assunto) {
 			if (atividade.getAssuntoList() == null) {
 				atividade.setAssuntoList(new ArrayList<AtividadeAssunto>());
@@ -69,6 +77,10 @@ public class SisaterAcompanhamentoAterIncluirDepois2014Cmd extends _Comando {
 			}
 			atividade.getAssuntoList().add(new AtividadeAssunto(assunto));
 			return;
+		}
+
+		private void acumulaChaveSisater(String chaveAtividade) {
+			atividade.getChaveSisaterList().add(new AtividadeChaveSisater(chaveAtividade));
 		}
 
 		private void acumulaPessoaDemandante() throws Exception {
@@ -107,18 +119,6 @@ public class SisaterAcompanhamentoAterIncluirDepois2014Cmd extends _Comando {
 			atividade.getPessoaExecutorList().add(new AtividadePessoa(null, empregado, atividade.getInicio(), AtividadePessoaParticipacao.E, Confirmacao.S));
 			return;
 		}
-
-		private void acumulaChaveSisater(String chaveAtividade) {
-			atividade.getChaveSisaterList().add(new AtividadeChaveSisater(chaveAtividade));
-		}
-
-		private String idUnd;
-
-		private Integer idAtr;
-
-		private Atividade atividade;
-
-		private PreparedStatement demandantePs;
 
 		void importar(DbSater base, Principal usuario) throws Exception {
 
@@ -172,6 +172,31 @@ public class SisaterAcompanhamentoAterIncluirDepois2014Cmd extends _Comando {
 			}
 		}
 
+		private Atividade novoAtividade(ResultSet rs) throws SQLException, BoException {
+			Atividade result = new Atividade();
+
+			// info basicas
+			result.setInclusaoData(agora);
+			result.setInclusaoUsuario(ematerUsuario);
+			result.setAlteracaoData(agora);
+			result.setAlteracaoUsuario(ematerUsuario);
+			result.setFinalidade(AtividadeFinalidade.O);
+			result.setFormato(AtividadeFormato.E);
+			result.setNatureza(AtividadeNatureza.D);
+			result.setPrioridade(AtividadePrioridade.N);
+			result.setSituacao(AtividadeSituacao.C);
+			result.setSituacaoData(agora);
+
+			result.setMetodo(metodoPega(rs.getString("METODO"), rs.getString("IDMET")));
+			result.setInicio(impUtil.captaData(rs.getDate("ATERDT")));
+			result.setConclusao(impUtil.captaData(rs.getDate("ATERDT")));
+			result.setPublicoEstimado(rs.getInt("PUBREAL"));
+			result.setPublicoReal(rs.getInt("PUBREAL"));
+			result.setDetalhamento(rs.getString("OBS"));
+
+			return result;
+		}
+
 		private void salvar(Principal usuario) throws Exception {
 			if (atividade != null) {
 				em.detach(atividade);
@@ -207,31 +232,6 @@ public class SisaterAcompanhamentoAterIncluirDepois2014Cmd extends _Comando {
 				}
 
 			}
-		}
-
-		private Atividade novoAtividade(ResultSet rs) throws SQLException, BoException {
-			Atividade result = new Atividade();
-
-			// info basicas
-			result.setInclusaoData(agora);
-			result.setInclusaoUsuario(ematerUsuario);
-			result.setAlteracaoData(agora);
-			result.setAlteracaoUsuario(ematerUsuario);
-			result.setFinalidade(AtividadeFinalidade.O);
-			result.setFormato(AtividadeFormato.E);
-			result.setNatureza(AtividadeNatureza.D);
-			result.setPrioridade(AtividadePrioridade.N);
-			result.setSituacao(AtividadeSituacao.C);
-			result.setSituacaoData(agora);
-
-			result.setMetodo(metodoPega(rs.getString("METODO"), rs.getString("IDMET")));
-			result.setInicio(impUtil.captaData(rs.getDate("ATERDT")));
-			result.setConclusao(impUtil.captaData(rs.getDate("ATERDT")));
-			result.setPublicoEstimado(rs.getInt("PUBREAL"));
-			result.setPublicoReal(rs.getInt("PUBREAL"));
-			result.setDetalhamento(rs.getString("OBS"));
-
-			return result;
 		}
 	}
 
@@ -281,15 +281,17 @@ public class SisaterAcompanhamentoAterIncluirDepois2014Cmd extends _Comando {
 
 	private Usuario ematerUsuario;
 
+	private RelacionamentoFuncao empregadoFuncao;
+
+	@Autowired
+	private EmpregoDao empregoDao;
+
 	private FacadeBo facadeBo;
 
 	private ImpUtil impUtil;
 
 	@Autowired
 	private MetodoDao metodoDao;
-
-	@Autowired
-	private EmpregoDao empregoDao;
 
 	private List<Metodo> metodoList = new ArrayList<Metodo>();
 
@@ -298,6 +300,9 @@ public class SisaterAcompanhamentoAterIncluirDepois2014Cmd extends _Comando {
 
 	@Autowired
 	private PessoaRelacionamentoDao pessoaRelacionamentoDao;
+
+	private DefaultTransactionDefinition transactionDefinition;
+	private PlatformTransactionManager transactionManager;
 
 	Assunto assuntoPega(String nome) throws BoException {
 		switch (nome) {
@@ -330,8 +335,34 @@ public class SisaterAcompanhamentoAterIncluirDepois2014Cmd extends _Comando {
 		return assunto;
 	}
 
-	private PlatformTransactionManager transactionManager;
-	private DefaultTransactionDefinition transactionDefinition;
+	Pessoa empregadoPega(String matricula) throws BoException {
+		matricula = matricula.trim().toUpperCase();
+		matricula = UtilitarioString.substituirTudo(matricula, "-", "");
+		matricula = UtilitarioString.substituirTudo(matricula, ".", "");
+		matricula = UtilitarioString.zeroEsquerda(matricula, 8);
+
+		List<Emprego> empregoList = empregoDao.findByMatricula(matricula);
+
+		if (empregoList == null || empregoList.size() != 1) {
+			throw new BoException("Empregado não identificado [%s]", matricula);
+		}
+
+		Pessoa pessoa = null;
+		List<PessoaRelacionamento> pessoaRelacionamentoList = empregoList.get(0).getPessoaRelacionamentoList();
+		if (pessoaRelacionamentoList == null) {
+			pessoaRelacionamentoList = pessoaRelacionamentoDao.findByRelacionamento(empregoList.get(0));
+		}
+		for (PessoaRelacionamento pessoaRelacionamento : pessoaRelacionamentoList) {
+			if (empregadoFuncao.getId().equals(pessoaRelacionamento.getRelacionamentoFuncao().getId())) {
+				pessoa = pessoaRelacionamento.getPessoa();
+				break;
+			}
+		}
+		if (pessoa == null) {
+			throw new BoException("Empregado não cadastrado [%s]", matricula);
+		}
+		return pessoa;
+	}
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
@@ -370,36 +401,5 @@ public class SisaterAcompanhamentoAterIncluirDepois2014Cmd extends _Comando {
 		}
 		metodoList.add(metodo);
 		return metodo;
-	}
-
-	private RelacionamentoFuncao empregadoFuncao;
-
-	Pessoa empregadoPega(String matricula) throws BoException {
-		matricula = matricula.trim().toUpperCase();
-		matricula = UtilitarioString.substituirTudo(matricula, "-", "");
-		matricula = UtilitarioString.substituirTudo(matricula, ".", "");
-		matricula = UtilitarioString.zeroEsquerda(matricula, 8);
-
-		List<Emprego> empregoList = empregoDao.findByMatricula(matricula);
-
-		if (empregoList == null || empregoList.size() != 1) {
-			throw new BoException("Empregado não identificado [%s]", matricula);
-		}
-
-		Pessoa pessoa = null;
-		List<PessoaRelacionamento> pessoaRelacionamentoList = empregoList.get(0).getPessoaRelacionamentoList();
-		if (pessoaRelacionamentoList == null) {
-			pessoaRelacionamentoList = pessoaRelacionamentoDao.findByRelacionamento(empregoList.get(0));
-		}
-		for (PessoaRelacionamento pessoaRelacionamento : pessoaRelacionamentoList) {
-			if (empregadoFuncao.getId().equals(pessoaRelacionamento.getRelacionamentoFuncao().getId())) {
-				pessoa = pessoaRelacionamento.getPessoa();
-				break;
-			}
-		}
-		if (pessoa == null) {
-			throw new BoException("Empregado não cadastrado [%s]", matricula);
-		}
-		return pessoa;
 	}
 }

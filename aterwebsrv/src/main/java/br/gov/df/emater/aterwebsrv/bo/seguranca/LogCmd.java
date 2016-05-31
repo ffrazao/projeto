@@ -38,7 +38,7 @@ public class LogCmd extends _Comando {
 			log.setNomeUsuario(usr.getUsername());
 			log.setUnidadeOrganizacionalId(usr.getLotacaoAtual() == null ? null : usr.getLotacaoAtual().getId());
 			Calendar dtLogin = Calendar.getInstance();
-			if (usr.getDetails() != null) {				
+			if (usr.getDetails() != null) {
 				dtLogin.setTime(new Date((Long) usr.getDetails().get("DATA")));
 				log.setDataLogin(dtLogin);
 				log.setModuloId(Integer.parseInt((String) usr.getDetails().get("MODULO")));

@@ -18,15 +18,15 @@ public class EmpregadoRelacaoExcelCarregarCmd extends _Comando {
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
-		
+
 		File tempDir = (File) contexto.get("tempDir");
-		
+
 		File relacaoEmpregados = new File(tempDir, "quadro_de_especialidades_da_emater-df_31_03_2016.xlsx");
 		if (!relacaoEmpregados.exists()) {
 			UtilitarioArquivo.downloadOrigem("http://extranet.emater.df.gov.br/index.php/component/phocadownload/category/1-institucional?download=1021:relacao-de-empregados", relacaoEmpregados);
 		}
 		List<Map<String, Object>> mapa = UtilitarioExcel.criarMapaDoArquivoExcel(relacaoEmpregados, 0, 1);
-		
+
 		Collections.sort(mapa, new Comparator<Map<String, Object>>() {
 			@Override
 			public int compare(Map<String, Object> m1, Map<String, Object> m2) {

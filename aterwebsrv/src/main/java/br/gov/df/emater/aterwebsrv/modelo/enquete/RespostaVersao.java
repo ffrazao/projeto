@@ -30,8 +30,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerTimestamp;
 
 @Entity
 @Table(name = "resposta_versao", schema = EntidadeBase.ENQUETE_SCHEMA)
-public class RespostaVersao extends EntidadeBase implements
-		_ChavePrimaria<Integer> {
+public class RespostaVersao extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -88,8 +87,7 @@ public class RespostaVersao extends EntidadeBase implements
 		return uuid;
 	}
 
-	public void setFormularioDirecionamento(
-			FormularioDirecionamento formularioDirecionamento) {
+	public void setFormularioDirecionamento(FormularioDirecionamento formularioDirecionamento) {
 		this.formularioDirecionamento = formularioDirecionamento;
 	}
 

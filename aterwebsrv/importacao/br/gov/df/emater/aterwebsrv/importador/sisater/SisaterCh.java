@@ -9,9 +9,8 @@ import br.gov.df.emater.aterwebsrv.bo._Cadeia;
 public class SisaterCh extends _Cadeia {
 
 	@Autowired
-	public SisaterCh(SisaterPendenciasExcluirCmd c1, SisaterComunidadeCmd c2, SisaterEmpregadoCmd c3,
-			SisaterPublicoAlvoCmd c4, SisaterPropriedadeRuralExportaUTMCmd c5, SisaterPropriedadeRuralCmd c6,
-			SisaterPublicoAlvoPropriedadeRuralCmd c7, SisaterIndiceProducaoCmd c8, SisaterAcompanhamentoAterCh c9) {
+	public SisaterCh(SisaterPendenciasExcluirCmd c1, SisaterComunidadeCmd c2, SisaterEmpregadoCmd c3, SisaterPublicoAlvoCmd c4, SisaterPropriedadeRuralExportaUTMCmd c5, SisaterPropriedadeRuralCmd c6, SisaterPublicoAlvoPropriedadeRuralCmd c7, SisaterIndiceProducaoCmd c8,
+			SisaterAcompanhamentoAterCh c9) {
 		super.addCommand(c1);
 		super.addCommand(c2);
 		super.addCommand(c3);

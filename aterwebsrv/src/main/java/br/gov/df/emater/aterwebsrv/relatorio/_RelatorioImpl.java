@@ -46,10 +46,12 @@ public class _RelatorioImpl implements _Relatorio {
 		return this.getClass().getClassLoader().getResource(relatorioNome);
 	}
 
+	@Override
 	public byte[] imprimir(String relatorioNome, Map<String, Object> parametros, List<?> lista) throws Exception {
 		return imprimir(relatorioNome, parametros, lista, null);
 	}
 
+	@Override
 	public byte[] imprimir(String relatorioNome, Map<String, Object> parametros, List<?> lista, Formato formato) throws Exception {
 		JasperReport relatorio;
 		URL compilado;

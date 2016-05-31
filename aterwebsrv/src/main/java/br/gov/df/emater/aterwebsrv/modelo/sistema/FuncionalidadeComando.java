@@ -90,6 +90,7 @@ public class FuncionalidadeComando extends EntidadeBase implements _ChavePrimari
 		return result;
 	}
 
+	@Override
 	public FuncionalidadeComando infoBasica() {
 		return new FuncionalidadeComando(getId(), getFuncionalidade() == null ? null : getFuncionalidade().infoBasica(), getComando() == null ? null : getComando().infoBasica());
 	}

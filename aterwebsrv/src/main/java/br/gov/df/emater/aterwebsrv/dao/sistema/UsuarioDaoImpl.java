@@ -100,7 +100,7 @@ public class UsuarioDaoImpl implements UsuarioDaoCustom {
 		}
 		if (!CollectionUtils.isEmpty(filtro.getPessoaSituacao()) && (PessoaSituacao.values().length != (filtro.getPessoaSituacao().size()))) {
 			sqlTemp = new StringBuilder();
-			for (PessoaSituacao pessoaSituacao: filtro.getPessoaSituacao()) {
+			for (PessoaSituacao pessoaSituacao : filtro.getPessoaSituacao()) {
 				if (sqlTemp.length() > 0) {
 					sqlTemp.append(", ");
 				}
@@ -111,7 +111,7 @@ public class UsuarioDaoImpl implements UsuarioDaoCustom {
 		}
 		if (!CollectionUtils.isEmpty(filtro.getUsuarioSituacao()) && (UsuarioStatusConta.values().length != (filtro.getUsuarioSituacao().size()))) {
 			sqlTemp = new StringBuilder();
-			for (UsuarioStatusConta usuarioStatusConta: filtro.getUsuarioSituacao()) {
+			for (UsuarioStatusConta usuarioStatusConta : filtro.getUsuarioSituacao()) {
 				if (sqlTemp.length() > 0) {
 					sqlTemp.append(", ");
 				}

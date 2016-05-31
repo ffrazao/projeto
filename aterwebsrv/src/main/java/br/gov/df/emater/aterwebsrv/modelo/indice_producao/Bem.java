@@ -34,14 +34,14 @@ public class Bem extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBa
 		super();
 	}
 
-	public Bem(Serializable id) {
-		super(id);
-	}
-
 	public Bem(Integer id, String nome, BemClassificacao bemClassificacao) {
 		this(id);
 		setNome(nome);
 		setBemClassificacao(bemClassificacao.infoBasica());
+	}
+
+	public Bem(Serializable id) {
+		super(id);
 	}
 
 	public BemClassificacao getBemClassificacao() {
@@ -57,6 +57,11 @@ public class Bem extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBa
 		return nome;
 	}
 
+	@Override
+	public Bem infoBasica() {
+		return new Bem(getId(), getNome(), getBemClassificacao());
+	}
+
 	public void setBemClassificacao(BemClassificacao bemClassificacao) {
 		this.bemClassificacao = bemClassificacao;
 	}
@@ -68,11 +73,6 @@ public class Bem extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBa
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	@Override
-	public Bem infoBasica() {
-		return new Bem(getId(), getNome(), getBemClassificacao());
 	}
 
 }

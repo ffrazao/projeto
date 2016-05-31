@@ -13,7 +13,7 @@ import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 
 @Service("UnidadeOrganizacionalFiltrarCmd")
 public class FiltrarCmd extends _Comando {
-	
+
 	@Autowired
 	private UnidadeOrganizacionalDao unidadeOrganizacionalDao;
 

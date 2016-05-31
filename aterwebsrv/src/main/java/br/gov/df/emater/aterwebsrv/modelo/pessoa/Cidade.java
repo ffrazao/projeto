@@ -48,15 +48,15 @@ public class Cidade extends EntidadeBase implements _ChavePrimaria<Integer>, Inf
 	public Cidade() {
 	}
 
-	public Cidade(Integer id, String nome, String sigla) {
-		this(id, nome);
-		this.setSigla(sigla);
-	}
-
 	public Cidade(Integer id, String nome) {
 		this();
 		this.setId(id);
 		this.setNome(nome);
+	}
+
+	public Cidade(Integer id, String nome, String sigla) {
+		this(id, nome);
+		this.setSigla(sigla);
 	}
 
 	public String getCodigo() {
@@ -88,6 +88,11 @@ public class Cidade extends EntidadeBase implements _ChavePrimaria<Integer>, Inf
 		return sigla;
 	}
 
+	@Override
+	public Cidade infoBasica() {
+		return new Cidade(this.id, this.nome, this.sigla);
+	}
+
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}
@@ -115,11 +120,6 @@ public class Cidade extends EntidadeBase implements _ChavePrimaria<Integer>, Inf
 
 	public void setSigla(String sigla) {
 		this.sigla = sigla;
-	}
-
-	@Override
-	public Cidade infoBasica() {
-		return new Cidade(this.id, this.nome, this.sigla);
 	}
 
 }

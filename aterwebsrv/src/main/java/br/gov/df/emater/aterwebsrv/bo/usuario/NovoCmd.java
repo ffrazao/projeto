@@ -51,13 +51,13 @@ public class NovoCmd extends _Comando {
 			}
 			if (pessoaEmailList.size() == 0) {
 				throw new BoException("Nenhum e-mail vinculado a esta pessoa!");
-			} else  if (pessoaEmailList.size() == 1 && result.getPessoaEmail() == null) {
+			} else if (pessoaEmailList.size() == 1 && result.getPessoaEmail() == null) {
 				result.setPessoaEmail(new PessoaEmail(pessoaEmailList.get(0).getId(), pessoaEmailList.get(0).getEmail().infoBasica()));
 			}
 			result.getPessoa().setEmailList(pessoaEmailList);
 
 			result.setUsername(UtilitarioString.calculaNomeUsuario(result.getPessoa().getNome()));
-			
+
 			boolean valido = false;
 			do {
 				if (dao.findByUsername(result.getUsername()) == null) {
@@ -68,7 +68,7 @@ public class NovoCmd extends _Comando {
 					StringBuilder usernameStr = new StringBuilder();
 					char[] username = result.getUsername().toCharArray();
 					ArrayUtils.reverse(username);
-					for (char c: username) {
+					for (char c : username) {
 						if (pegaContador && Character.isDigit(c)) {
 							contadorStr.append(c);
 						} else {
@@ -79,14 +79,14 @@ public class NovoCmd extends _Comando {
 					Integer contador = contadorStr.length() > 0 ? Integer.parseInt(contadorStr.reverse().toString()) : 0;
 					result.setUsername(usernameStr.reverse().append(++contador).toString());
 				}
-			} while(!valido);
+			} while (!valido);
 		}
 
 		result.setId(null);
 		if (result.getUsuarioStatusConta() == null) {
 			result.setUsuarioStatusConta(UsuarioStatusConta.A);
 		}
-		if (result.getUsuarioAtualizouPerfil() == null) {			
+		if (result.getUsuarioAtualizouPerfil() == null) {
 			result.setUsuarioAtualizouPerfil(Confirmacao.N);
 		}
 

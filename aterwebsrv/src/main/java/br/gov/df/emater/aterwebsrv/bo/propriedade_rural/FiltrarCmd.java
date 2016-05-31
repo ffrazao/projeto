@@ -12,7 +12,7 @@ import br.gov.df.emater.aterwebsrv.modelo.dto.PropriedadeRuralCadFiltroDto;
 
 @Service("PropriedadeRuralFiltrarCmd")
 public class FiltrarCmd extends _Comando {
-	
+
 	@Autowired
 	private PropriedadeRuralDao propriedadeRuralDao;
 

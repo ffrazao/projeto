@@ -22,6 +22,10 @@ public class PropriedadeRuralFormaUtilizacaoEspacoRural extends EntidadeBase imp
 
 	private static final long serialVersionUID = 1L;
 
+	@ManyToOne
+	@JoinColumn(name = "forma_utilizacao_espaco_rural_id")
+	private FormaUtilizacaoEspacoRural formaUtilizacaoEspacoRural;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
@@ -30,11 +34,11 @@ public class PropriedadeRuralFormaUtilizacaoEspacoRural extends EntidadeBase imp
 	@JoinColumn(name = "propriedade_rural_id")
 	private PropriedadeRural propriedadeRural;
 
-	@ManyToOne
-	@JoinColumn(name = "forma_utilizacao_espaco_rural_id")
-	private FormaUtilizacaoEspacoRural formaUtilizacaoEspacoRural;
-
 	public PropriedadeRuralFormaUtilizacaoEspacoRural() {
+	}
+
+	public FormaUtilizacaoEspacoRural getFormaUtilizacaoEspacoRural() {
+		return formaUtilizacaoEspacoRural;
 	}
 
 	@Override
@@ -46,14 +50,6 @@ public class PropriedadeRuralFormaUtilizacaoEspacoRural extends EntidadeBase imp
 		return propriedadeRural;
 	}
 
-	public void setPropriedadeRural(PropriedadeRural propriedadeRural) {
-		this.propriedadeRural = propriedadeRural;
-	}
-
-	public FormaUtilizacaoEspacoRural getFormaUtilizacaoEspacoRural() {
-		return formaUtilizacaoEspacoRural;
-	}
-
 	public void setFormaUtilizacaoEspacoRural(FormaUtilizacaoEspacoRural formaUtilizacaoEspacoRural) {
 		this.formaUtilizacaoEspacoRural = formaUtilizacaoEspacoRural;
 	}
@@ -61,6 +57,10 @@ public class PropriedadeRuralFormaUtilizacaoEspacoRural extends EntidadeBase imp
 	@Override
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public void setPropriedadeRural(PropriedadeRural propriedadeRural) {
+		this.propriedadeRural = propriedadeRural;
 	}
 
 }

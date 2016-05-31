@@ -52,16 +52,35 @@ public class UsuarioPerfil extends EntidadeBase implements _ChavePrimaria<Intege
 	}
 
 	@Override
-	public String getAuthority() {
-		Perfil p = getPerfil();
-		return p == null ? null : p.getCodigo();
-	}
-
-	public void setAuthority(String authority) {
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UsuarioPerfil other = (UsuarioPerfil) obj;
+		if (perfil == null) {
+			if (other.perfil != null)
+				return false;
+		} else if (!perfil.equals(other.perfil))
+			return false;
+		if (usuario == null) {
+			if (other.usuario != null)
+				return false;
+		} else if (!usuario.equals(other.usuario))
+			return false;
+		return true;
 	}
 
 	public Confirmacao getAtivo() {
 		return ativo;
+	}
+
+	@Override
+	public String getAuthority() {
+		Perfil p = getPerfil();
+		return p == null ? null : p.getCodigo();
 	}
 
 	@Override
@@ -86,30 +105,11 @@ public class UsuarioPerfil extends EntidadeBase implements _ChavePrimaria<Intege
 		return result;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		UsuarioPerfil other = (UsuarioPerfil) obj;
-		if (perfil == null) {
-			if (other.perfil != null)
-				return false;
-		} else if (!perfil.equals(other.perfil))
-			return false;
-		if (usuario == null) {
-			if (other.usuario != null)
-				return false;
-		} else if (!usuario.equals(other.usuario))
-			return false;
-		return true;
-	}
-
 	public void setAtivo(Confirmacao ativo) {
 		this.ativo = ativo;
+	}
+
+	public void setAuthority(String authority) {
 	}
 
 	@Override

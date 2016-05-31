@@ -28,26 +28,26 @@ import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoFormaComposica
 public class SalvarPrincipalCmd extends _Comando {
 
 	@Autowired
-	private  ComunidadeDao comunidadeDao;
+	private ComunidadeDao comunidadeDao;
 
 	@Autowired
 	private ProducaoDao dao;
 
 	@Autowired
-	private FacadeBo facadeBo;
-	
-	@Autowired
 	private EntityManager em;
-	
+
 	@Autowired
-	private  PropriedadeRuralDao propriedadeRuralDao;
-	
+	private FacadeBo facadeBo;
+
 	@Autowired
-	private  UnidadeOrganizacionalDao unidadeOrganizacionalDao;
-	
+	private PropriedadeRuralDao propriedadeRuralDao;
+
+	@Autowired
+	private UnidadeOrganizacionalDao unidadeOrganizacionalDao;
+
 	public SalvarPrincipalCmd() {
 	}
-	
+
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		Integer id = (Integer) contexto.getResposta();
@@ -93,7 +93,7 @@ public class SalvarPrincipalCmd extends _Comando {
 				// se houveram novas formas de produção
 				if (novo != null) {
 					// inserir na producao principal
-					for (ProducaoForma pf: principal.getProducaoFormaList()) {
+					for (ProducaoForma pf : principal.getProducaoFormaList()) {
 						novo.add(pf);
 					}
 					principal.setProducaoFormaList(novo);

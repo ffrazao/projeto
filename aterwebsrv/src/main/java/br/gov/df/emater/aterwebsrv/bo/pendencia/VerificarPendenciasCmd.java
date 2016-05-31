@@ -93,7 +93,7 @@ public abstract class VerificarPendenciasCmd extends _Comando {
 
 	@Override
 	public final boolean executar(_Contexto contexto) throws Exception {
-		if (contexto.getRequisicao() instanceof Pendenciavel) {			
+		if (contexto.getRequisicao() instanceof Pendenciavel) {
 			setPendenciavel((Pendenciavel<?>) contexto.getRequisicao());
 		}
 

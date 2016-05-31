@@ -12,7 +12,7 @@ public class Md5PasswordEncoder implements PasswordEncoder {
 	@Override
 	public String encodePassword(String rawPassword, Object salt) {
 		try {
-			return MD5((salt == null ? "": salt).toString().concat(rawPassword));
+			return MD5((salt == null ? "" : salt).toString().concat(rawPassword));
 		} catch (NoSuchAlgorithmException e) {
 			throw new RuntimeException(e);
 		}

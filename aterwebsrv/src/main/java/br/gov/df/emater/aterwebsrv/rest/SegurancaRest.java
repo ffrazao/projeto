@@ -27,7 +27,7 @@ public class SegurancaRest {
 
 	@RequestMapping(value = "/acesso", method = RequestMethod.GET)
 	public void acesso(@RequestParam String funcionalidade, @RequestParam(required = false) String comando, Principal principal) {
-		Usuario usuario = (Usuario) ((UserAuthentication) principal).getDetails();
+		Usuario usuario = ((UserAuthentication) principal).getDetails();
 		Set<String> comandoList = usuario.getFuncionalidadeComandoList().get(funcionalidade);
 		if (comandoList == null || (comando != null && !comandoList.contains(comando))) {
 			throw new BadCredentialsException("Recurso não disponível");

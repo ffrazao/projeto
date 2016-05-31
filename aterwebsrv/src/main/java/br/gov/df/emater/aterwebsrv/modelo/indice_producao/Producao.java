@@ -114,10 +114,12 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer>, _
 		}
 	}
 
+	@Override
 	public Calendar getAlteracaoData() {
 		return alteracaoData;
 	}
 
+	@Override
 	public Usuario getAlteracaoUsuario() {
 		return alteracaoUsuario;
 	}
@@ -139,10 +141,12 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer>, _
 		return id;
 	}
 
+	@Override
 	public Calendar getInclusaoData() {
 		return inclusaoData;
 	}
 
+	@Override
 	public Usuario getInclusaoUsuario() {
 		return inclusaoUsuario;
 	}
@@ -163,10 +167,12 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer>, _
 		return unidadeOrganizacional;
 	}
 
+	@Override
 	public void setAlteracaoData(Calendar alteracaoData) {
 		this.alteracaoData = alteracaoData;
 	}
 
+	@Override
 	public void setAlteracaoUsuario(Usuario alteracaoUsuario) {
 		this.alteracaoUsuario = alteracaoUsuario;
 	}
@@ -188,10 +194,12 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer>, _
 		this.id = id;
 	}
 
+	@Override
 	public void setInclusaoData(Calendar inclusaoData) {
 		this.inclusaoData = inclusaoData;
 	}
 
+	@Override
 	public void setInclusaoUsuario(Usuario inclusaoUsuario) {
 		this.inclusaoUsuario = inclusaoUsuario;
 	}

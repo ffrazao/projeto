@@ -21,59 +21,6 @@ public class BemClassificacaoDaoImpl implements BemClassificacaoDaoCustom {
 	@PersistenceContext
 	private EntityManager em;
 
-	@Override
-	public List<Object> filtrar(BemClassificacaoCadFiltroDto filtro) {
-		// objetos de trabalho
-		List<Object> result = null;
-		List<BemClassificacao> bemClassificacaoList = null;
-		List<Object> params = new ArrayList<Object>();
-		StringBuilder sql, sqlTemp;
-
-		// construção do sql
-		sql = new StringBuilder();
-		sql.append("select b").append("\n");
-		sql.append("from BemClassificacao b").append("\n");
-		sql.append("where b.bemClassificacao is null").append("\n");
-		if (!StringUtils.isEmpty(filtro.getNome())) {
-			sql.append("and (").append("\n");
-			sqlTemp = new StringBuilder();
-			for (String nome : filtro.getNome().split(FiltroDto.SEPARADOR_CAMPO)) {
-				if (sqlTemp.length() > 0) {
-					sqlTemp.append(" or ");
-				}
-				params.add(String.format("%%%s%%", nome.trim()));
-				sqlTemp.append(" b.nome like ?").append(params.size());
-			}
-			sql.append(sqlTemp);
-			sql.append(" )").append("\n");
-		}
-
-		sql.append("order by b.nome").append("\n");
-
-		// criar a query
-		TypedQuery<BemClassificacao> query = em.createQuery(sql.toString(), BemClassificacao.class);
-
-		// inserir os parametros
-		for (int i = 1; i <= params.size(); i++) {
-			query.setParameter(i, params.get(i - 1));
-		}
-
-		// definir a pagina a ser consultada
-		filtro.configuraPaginacao(query);
-
-		// executar a consulta
-		bemClassificacaoList = query.getResultList();
-
-		if (bemClassificacaoList != null) {
-			for (BemClassificacao o : bemClassificacaoList) {
-				result = fetchBemClassificacao(result, o);
-			}
-		}
-
-		// retornar
-		return result;
-	}
-
 	private List<Object> fetchBemClassificacao(List<Object> result, BemClassificacao bc) {
 		if (bc != null) {
 			List<Object> linha = new ArrayList<Object>();
@@ -173,14 +120,14 @@ public class BemClassificacaoDaoImpl implements BemClassificacaoDaoCustom {
 	private List<Object[]> fetchBemClassificacaoFormaProducaoValor(List<Object[]> result, List<BemClassificacaoFormaProducaoValor> bc) {
 		if (bc != null && bc.size() > 0) {
 			List<Object> linha = new ArrayList<Object>();
-			
+
 			List<Object> bemClassificacaoFormaProducaoItemList = new ArrayList<Object>();
 			bemClassificacaoFormaProducaoItemList.add(bc.get(0).getFormaProducaoValor().getFormaProducaoItem().getId());
 			bemClassificacaoFormaProducaoItemList.add(bc.get(0).getFormaProducaoValor().getFormaProducaoItem().getNome());
 
 			List<Object[]> formaProducaoValorList = new ArrayList<Object[]>();
-			
-			for (BemClassificacaoFormaProducaoValor v : bc) {				
+
+			for (BemClassificacaoFormaProducaoValor v : bc) {
 				if (!bemClassificacaoFormaProducaoItemList.get(0).equals(v.getFormaProducaoValor().getFormaProducaoItem().getId())) {
 					// adicionar item
 					linha.add(bemClassificacaoFormaProducaoItemList.get(0));
@@ -212,6 +159,59 @@ public class BemClassificacaoDaoImpl implements BemClassificacaoDaoCustom {
 			}
 			result.add(linha.toArray());
 		}
+		return result;
+	}
+
+	@Override
+	public List<Object> filtrar(BemClassificacaoCadFiltroDto filtro) {
+		// objetos de trabalho
+		List<Object> result = null;
+		List<BemClassificacao> bemClassificacaoList = null;
+		List<Object> params = new ArrayList<Object>();
+		StringBuilder sql, sqlTemp;
+
+		// construção do sql
+		sql = new StringBuilder();
+		sql.append("select b").append("\n");
+		sql.append("from BemClassificacao b").append("\n");
+		sql.append("where b.bemClassificacao is null").append("\n");
+		if (!StringUtils.isEmpty(filtro.getNome())) {
+			sql.append("and (").append("\n");
+			sqlTemp = new StringBuilder();
+			for (String nome : filtro.getNome().split(FiltroDto.SEPARADOR_CAMPO)) {
+				if (sqlTemp.length() > 0) {
+					sqlTemp.append(" or ");
+				}
+				params.add(String.format("%%%s%%", nome.trim()));
+				sqlTemp.append(" b.nome like ?").append(params.size());
+			}
+			sql.append(sqlTemp);
+			sql.append(" )").append("\n");
+		}
+
+		sql.append("order by b.nome").append("\n");
+
+		// criar a query
+		TypedQuery<BemClassificacao> query = em.createQuery(sql.toString(), BemClassificacao.class);
+
+		// inserir os parametros
+		for (int i = 1; i <= params.size(); i++) {
+			query.setParameter(i, params.get(i - 1));
+		}
+
+		// definir a pagina a ser consultada
+		filtro.configuraPaginacao(query);
+
+		// executar a consulta
+		bemClassificacaoList = query.getResultList();
+
+		if (bemClassificacaoList != null) {
+			for (BemClassificacao o : bemClassificacaoList) {
+				result = fetchBemClassificacao(result, o);
+			}
+		}
+
+		// retornar
 		return result;
 	}
 

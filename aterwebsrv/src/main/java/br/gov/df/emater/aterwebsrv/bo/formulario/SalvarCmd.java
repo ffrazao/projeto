@@ -21,11 +21,11 @@ import br.gov.df.emater.aterwebsrv.modelo.formulario.Observar;
 @Service("FormularioSalvarCmd")
 public class SalvarCmd extends _Comando {
 
-	public SalvarCmd() {
-	}
-
 	@Autowired
 	private FormularioDao dao;
+
+	@Autowired
+	private ElementoDao elementoDao;
 
 	@Autowired
 	private FormularioVersaoDao formularioVersaoDao;
@@ -34,10 +34,10 @@ public class SalvarCmd extends _Comando {
 	private FormularioVersaoElementoDao formularioVersaoElementoDao;
 
 	@Autowired
-	private ElementoDao elementoDao;
-
-	@Autowired
 	private ObservarDao observarDao;
+
+	public SalvarCmd() {
+	}
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {

@@ -17,8 +17,8 @@ public class JsonHibernateAwareObjectMapper extends ObjectMapper {
 		// true);
 		// module.configure(Feature.FORCE_LAZY_LOADING, true);
 
-		//Hibernate4Module hibernate4Module = new Hibernate4Module();
-		//registerModule(hibernate4Module);
+		// Hibernate4Module hibernate4Module = new Hibernate4Module();
+		// registerModule(hibernate4Module);
 
 		// para configurar o formato padr�o das datas
 		// serializadas/desserializadas
@@ -26,7 +26,7 @@ public class JsonHibernateAwareObjectMapper extends ObjectMapper {
 
 		configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		
+
 		// remover todos os itens nulos ou vazios das serializacoes json
 		setSerializationInclusion(Include.NON_NULL);
 		setSerializationInclusion(Include.NON_EMPTY);

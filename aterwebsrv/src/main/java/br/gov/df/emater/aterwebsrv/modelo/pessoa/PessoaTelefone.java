@@ -29,7 +29,7 @@ public class PessoaTelefone extends EntidadeBase implements _ChavePrimaria<Integ
 
 	@Column(name = "chave_sisater")
 	private String chaveSisater;
-	
+
 	private String finalidade;
 
 	@Id
@@ -55,6 +55,7 @@ public class PessoaTelefone extends EntidadeBase implements _ChavePrimaria<Integ
 	public PessoaTelefone(Serializable id) {
 		super(id);
 	}
+
 	public PessoaTelefone(Serializable id, Telefone telefone, String finalidade, TelefoneTipo tipo) {
 		this(id);
 		setTelefone(telefone);

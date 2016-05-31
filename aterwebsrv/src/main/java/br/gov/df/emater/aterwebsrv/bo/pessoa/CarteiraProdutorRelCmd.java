@@ -18,10 +18,10 @@ import br.gov.df.emater.aterwebsrv.relatorio._Relatorio;
 
 @Service("PessoaCarteiraProdutorRelCmd")
 public class CarteiraProdutorRelCmd extends _Comando {
-	
+
 	@Autowired
 	private PublicoAlvoPropriedadeRuralDao dao;
-	
+
 	@Autowired
 	private PublicoAlvoDao publicoAlvoDao;
 
@@ -32,16 +32,16 @@ public class CarteiraProdutorRelCmd extends _Comando {
 	public boolean executar(_Contexto contexto) throws Exception {
 		CarteiraProdutorRelFiltroDto filtro = (CarteiraProdutorRelFiltroDto) contexto.getRequisicao();
 		List<PublicoAlvoPropriedadeRural> lista = null;
-		lista = (List<PublicoAlvoPropriedadeRural>) dao.findAll(filtro.getPublicoAlvoPropriedadeRuralIdList());
-		
+		lista = dao.findAll(filtro.getPublicoAlvoPropriedadeRuralIdList());
+
 		Calendar emissao = Calendar.getInstance();
 		Calendar expiracao = Calendar.getInstance();
 		expiracao.add(Calendar.YEAR, 2);
-		
+
 		Calendar fimCarencia = Calendar.getInstance();
 		fimCarencia.add(Calendar.MONTH, 2);
-		
-		for (PublicoAlvoPropriedadeRural publicoAlvoPropriedadeRural: lista) {
+
+		for (PublicoAlvoPropriedadeRural publicoAlvoPropriedadeRural : lista) {
 			Calendar carteiraExpiracao = publicoAlvoPropriedadeRural.getPublicoAlvo().getCarteiraProdutorExpiracao();
 			if (carteiraExpiracao == null || carteiraExpiracao.before(fimCarencia)) {
 				publicoAlvoPropriedadeRural.getPublicoAlvo().setCarteiraProdutorEmissao(emissao);

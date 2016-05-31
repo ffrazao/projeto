@@ -42,7 +42,7 @@ public class PessoaRelacionamento extends EntidadeBase implements _ChavePrimaria
 
 	private static final long serialVersionUID = 1L;
 
-	@Column(name="apelido_sigla")
+	@Column(name = "apelido_sigla")
 	private String apelidoSigla;
 
 	@Column(name = "regime_casamento")

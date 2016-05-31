@@ -64,10 +64,10 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 		sql.append("join Treat(deman.pessoa as PessoaFisica) pf").append("\n");
 
 		sql.append("where 1 = 1").append("\n");
-		
+
 		sqlCodigo = new StringBuilder();
 		sqlFiltro = new StringBuilder();
-		
+
 		if (!StringUtils.isEmpty(filtro.getCodigo())) {
 			sqlCodigo.append("(").append("\n");
 			sqlTemp = new StringBuilder();
@@ -95,7 +95,7 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 		}
 		if (filtro.getAssunto() != null) {
 			params.add(filtro.getAssunto());
-			sqlFiltro.append("and ass.assunto = ?").append(params.size()).append("\n");			
+			sqlFiltro.append("and ass.assunto = ?").append(params.size()).append("\n");
 		}
 		if (!StringUtils.isEmpty(filtro.getDemandante())) {
 			sqlFiltro.append("and (").append("\n");
@@ -127,7 +127,7 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 			sqlFiltro.append(sqlTemp);
 			sqlFiltro.append(" )").append("\n");
 		}
-		
+
 		// filtro de beneficiario
 		boolean benef = false;
 		if (!CollectionUtils.isEmpty(filtro.getSegmento()) && (PublicoAlvoSegmento.values().length != (filtro.getSegmento().size()))) {
@@ -160,7 +160,7 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 			}
 			sqlFiltro.append(sqlTemp).append("	)").append("\n");
 		}
-		
+
 		// pesquisar por localizacao
 		if (!CollectionUtils.isEmpty(filtro.getEmpresaList()) || !CollectionUtils.isEmpty(filtro.getUnidadeOrganizacionalList()) || !CollectionUtils.isEmpty(filtro.getComunidadeList())) {
 			benef = true;
@@ -182,109 +182,99 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 			}
 			sql.append("                     )").append("\n");
 		}
-		
+
 		if (benef) {
 			sqlFiltro.append("and deman.pessoa.publicoAlvoConfirmacao = 'S'").append("\n");
 		}
 
+		/*
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * if (filtrarPublicoAlvo(filtro)) { if (filtro.getPublicoAlvoSetor() !=
+		 * null) { sql.append("left join alvo.publicoAlvoSetorList paSetor"
+		 * ).append("\n"); } if
+		 * (!CollectionUtils.isEmpty(filtro.getEmpresaList()) ||
+		 * !CollectionUtils.isEmpty(filtro.getUnidadeOrganizacionalList()) ||
+		 * !CollectionUtils.isEmpty(filtro.getComunidadeList())) { sql.append(
+		 * "left join alvo.publicoAlvoPropriedadeRuralList paPropriedadeRural"
+		 * ).append("\n"); } } sql.append("where (1 = 1)").append("\n"); if
+		 * (filtrarPublicoAlvo(filtro)) { sql.append(
+		 * "and   p.publicoAlvoConfirmacao = 'S'").append("\n"); } if
+		 * (!StringUtils.isEmpty(filtro.getNome())) { sql.append("and ("
+		 * ).append("\n"); sqlTemp = new StringBuilder(); for (String nome :
+		 * filtro.getNome().split(FiltroDto.SEPARADOR_CAMPO)) { if
+		 * (sqlTemp.length() > 0) { sqlTemp.append(" or "); }
+		 * params.add(String.format("%%%s%%", nome.trim())); sqlTemp.append(
+		 * " (p.nome like ?").append(params.size());
+		 * params.add(String.format("%%%s%%", nome.trim())); sqlTemp.append(
+		 * " or p.apelidoSigla like ?"
+		 * ).append(params.size()).append(")").append("\n"); }
+		 * sql.append(sqlTemp); sql.append(" )").append("\n"); } if
+		 * (!CollectionUtils.isEmpty(filtro.getTipoPessoa()) &&
+		 * (PessoaTipo.values().length != (filtro.getTipoPessoa().size()))) {
+		 * params.add(filtro.getTipoPessoa()); sql.append(
+		 * "and p.pessoaTipo in ?").append(params.size()).append("\n"); } if
+		 * (!StringUtils.isEmpty(filtro.getCpf())) {
+		 * params.add(UtilitarioString.formataCpf(filtro.getCpf())); sql.append(
+		 * "and p.cpf = ?").append(params.size()).append("\n"); } if
+		 * (!StringUtils.isEmpty(filtro.getCnpj())) {
+		 * params.add(UtilitarioString.formataCnpj(filtro.getCnpj()));
+		 * sql.append("and p.cnpj = ?").append(params.size()).append("\n"); } if
+		 * (!CollectionUtils.isEmpty(filtro.getPessoaGenero()) &&
+		 * (PessoaGenero.values().length != (filtro.getPessoaGenero().size())))
+		 * { params.add(filtro.getPessoaGenero()); sql.append(
+		 * "and p.pessoaGenero in ?").append(params.size()).append("\n"); } if
+		 * (!CollectionUtils.isEmpty(filtro.getPessoaGeracao()) &&
+		 * (PessoaGeracao.values().length !=
+		 * (filtro.getPessoaGeracao().size()))) { sql.append("and ("
+		 * ).append("\n"); sqlTemp = new StringBuilder(); for (PessoaGeracao pg
+		 * : filtro.getPessoaGeracao()) { if (sqlTemp.length() > 0) {
+		 * sqlTemp.append(" or "); } params.add(pg.getIdadeInicio());
+		 * sqlTemp.append(
+		 * "TIMESTAMPDIFF(YEAR, p.nascimento, CURDATE()) between ?"
+		 * ).append(params.size()); params.add(pg.getIdadeFim());
+		 * sqlTemp.append(" and ?").append(params.size()).append("\n"); }
+		 * sql.append(sqlTemp).append("	)").append("\n"); } if
+		 * (!CollectionUtils.isEmpty(filtro.getPessoaSituacao()) &&
+		 * (PessoaSituacao.values().length !=
+		 * (filtro.getPessoaSituacao().size()))) {
+		 * params.add(filtro.getPessoaSituacao()); sql.append(
+		 * "and p.situacao in ?").append(params.size()).append("\n"); } //
+		 * filtro de publico alvo if
+		 * (!CollectionUtils.isEmpty(filtro.getPublicoAlvoSegmento()) &&
+		 * (PublicoAlvoSegmento.values().length !=
+		 * (filtro.getPublicoAlvoSegmento().size()))) {
+		 * params.add(filtro.getPublicoAlvoSegmento()); sql.append(
+		 * "and alvo.segmento in ?").append(params.size()).append("\n"); } if
+		 * (!CollectionUtils.isEmpty(filtro.getPublicoAlvoCategoria()) &&
+		 * (PublicoAlvoCategoria.values().length !=
+		 * (filtro.getPublicoAlvoCategoria().size()))) {
+		 * params.add(filtro.getPublicoAlvoCategoria()); sql.append(
+		 * "and alvo.categoria in ?").append(params.size()).append("\n"); } if
+		 * (!StringUtils.isEmpty(filtro.getPublicoAlvoSetor())) {
+		 * params.add(filtro.getPublicoAlvoSetor()); sql.append(
+		 * "and paSetor.setor.id = ?").append(params.size()).append("\n"); } if
+		 * (!CollectionUtils.isEmpty(filtro.getComunidadeList())) {
+		 * params.add(filtro.getComunidadeList()); sql.append(
+		 * "and paPropriedadeRural.comunidade in ?"
+		 * ).append(params.size()).append("\n"); } if
+		 * (!CollectionUtils.isEmpty(filtro.getUnidadeOrganizacionalList())) {
+		 * params.add(filtro.getUnidadeOrganizacionalList()); sql.append(
+		 * "and paPropriedadeRural.comunidade.unidadeOrganizacional in ?"
+		 * ).append(params.size()).append("\n"); } if
+		 * (!CollectionUtils.isEmpty(filtro.getEmpresaList())) {
+		 * params.add(filtro.getEmpresaList()); sql.append(
+		 * "and paPropriedadeRural.comunidade.unidadeOrganizacional.pessoaJuridica in ?"
+		 * ).append(params.size()).append("\n"); }
+		 * 
+		 * 
+		 */
 
-/*
-		
-		
-		
-		
-		
-		if (filtrarPublicoAlvo(filtro)) {
-			if (filtro.getPublicoAlvoSetor() != null) {
-				sql.append("left join alvo.publicoAlvoSetorList paSetor").append("\n");
-			}
-			if (!CollectionUtils.isEmpty(filtro.getEmpresaList()) || !CollectionUtils.isEmpty(filtro.getUnidadeOrganizacionalList()) || !CollectionUtils.isEmpty(filtro.getComunidadeList())) {
-				sql.append("left join alvo.publicoAlvoPropriedadeRuralList paPropriedadeRural").append("\n");
-			}
-		}
-		sql.append("where (1 = 1)").append("\n");
-		if (filtrarPublicoAlvo(filtro)) {
-			sql.append("and   p.publicoAlvoConfirmacao = 'S'").append("\n");
-		}
-		if (!StringUtils.isEmpty(filtro.getNome())) {
-			sql.append("and (").append("\n");
-			sqlTemp = new StringBuilder();
-			for (String nome : filtro.getNome().split(FiltroDto.SEPARADOR_CAMPO)) {
-				if (sqlTemp.length() > 0) {
-					sqlTemp.append(" or ");
-				}
-				params.add(String.format("%%%s%%", nome.trim()));
-				sqlTemp.append(" (p.nome like ?").append(params.size());
-				params.add(String.format("%%%s%%", nome.trim()));
-				sqlTemp.append(" or p.apelidoSigla like ?").append(params.size()).append(")").append("\n");
-			}
-			sql.append(sqlTemp);
-			sql.append(" )").append("\n");
-		}
-		if (!CollectionUtils.isEmpty(filtro.getTipoPessoa()) && (PessoaTipo.values().length != (filtro.getTipoPessoa().size()))) {
-			params.add(filtro.getTipoPessoa());
-			sql.append("and p.pessoaTipo in ?").append(params.size()).append("\n");
-		}
-		if (!StringUtils.isEmpty(filtro.getCpf())) {
-			params.add(UtilitarioString.formataCpf(filtro.getCpf()));
-			sql.append("and p.cpf = ?").append(params.size()).append("\n");
-		}
-		if (!StringUtils.isEmpty(filtro.getCnpj())) {
-			params.add(UtilitarioString.formataCnpj(filtro.getCnpj()));
-			sql.append("and p.cnpj = ?").append(params.size()).append("\n");
-		}
-		if (!CollectionUtils.isEmpty(filtro.getPessoaGenero()) && (PessoaGenero.values().length != (filtro.getPessoaGenero().size()))) {
-			params.add(filtro.getPessoaGenero());
-			sql.append("and p.pessoaGenero in ?").append(params.size()).append("\n");
-		}
-		if (!CollectionUtils.isEmpty(filtro.getPessoaGeracao()) && (PessoaGeracao.values().length != (filtro.getPessoaGeracao().size()))) {
-			sql.append("and (").append("\n");
-			sqlTemp = new StringBuilder();
-			for (PessoaGeracao pg : filtro.getPessoaGeracao()) {
-				if (sqlTemp.length() > 0) {
-					sqlTemp.append(" or ");
-				}
-				params.add(pg.getIdadeInicio());
-				sqlTemp.append("TIMESTAMPDIFF(YEAR, p.nascimento, CURDATE()) between ?").append(params.size());
-				params.add(pg.getIdadeFim());
-				sqlTemp.append(" and ?").append(params.size()).append("\n");
-			}
-			sql.append(sqlTemp).append("	)").append("\n");
-		}
-		if (!CollectionUtils.isEmpty(filtro.getPessoaSituacao()) && (PessoaSituacao.values().length != (filtro.getPessoaSituacao().size()))) {
-			params.add(filtro.getPessoaSituacao());
-			sql.append("and p.situacao in ?").append(params.size()).append("\n");
-		}
-		// filtro de publico alvo
-		if (!CollectionUtils.isEmpty(filtro.getPublicoAlvoSegmento()) && (PublicoAlvoSegmento.values().length != (filtro.getPublicoAlvoSegmento().size()))) {
-			params.add(filtro.getPublicoAlvoSegmento());
-			sql.append("and alvo.segmento in ?").append(params.size()).append("\n");
-		}
-		if (!CollectionUtils.isEmpty(filtro.getPublicoAlvoCategoria()) && (PublicoAlvoCategoria.values().length != (filtro.getPublicoAlvoCategoria().size()))) {
-			params.add(filtro.getPublicoAlvoCategoria());
-			sql.append("and alvo.categoria in ?").append(params.size()).append("\n");
-		}
-		if (!StringUtils.isEmpty(filtro.getPublicoAlvoSetor())) {
-			params.add(filtro.getPublicoAlvoSetor());
-			sql.append("and paSetor.setor.id = ?").append(params.size()).append("\n");
-		}
-		if (!CollectionUtils.isEmpty(filtro.getComunidadeList())) {
-			params.add(filtro.getComunidadeList());
-			sql.append("and paPropriedadeRural.comunidade in ?").append(params.size()).append("\n");
-		}
-		if (!CollectionUtils.isEmpty(filtro.getUnidadeOrganizacionalList())) {
-			params.add(filtro.getUnidadeOrganizacionalList());
-			sql.append("and paPropriedadeRural.comunidade.unidadeOrganizacional in ?").append(params.size()).append("\n");
-		}
-		if (!CollectionUtils.isEmpty(filtro.getEmpresaList())) {
-			params.add(filtro.getEmpresaList());
-			sql.append("and paPropriedadeRural.comunidade.unidadeOrganizacional.pessoaJuridica in ?").append(params.size()).append("\n");
-		}
-		
-		
-	*/	
-		
-		// este é o codigo que garante que o filtro por codigo é independente dos demais filtros
+		// este é o codigo que garante que o filtro por codigo é independente
+		// dos demais filtros
 		if (sqlCodigo.length() > 0) {
 			if (sqlFiltro.length() > 0) {
 				sql.append("and (").append(sqlCodigo).append(" or (1 = 1 ").append(sqlFiltro).append("))\n");
@@ -294,7 +284,7 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 		} else if (sqlFiltro.length() > 0) {
 			sql.append("and (1 = 1 ").append(sqlFiltro).append(")\n");
 		}
-		
+
 		sql.append("order by a.inicio").append("\n");
 		sql.append("       , a.metodo.nome").append("\n");
 

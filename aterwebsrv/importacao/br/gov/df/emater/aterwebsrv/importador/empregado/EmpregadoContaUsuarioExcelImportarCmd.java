@@ -36,22 +36,22 @@ import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 public class EmpregadoContaUsuarioExcelImportarCmd extends _Comando {
 
 	@Autowired
-	private PessoaDao pessoaDao;
-
-	@Autowired
-	private UsuarioDao usuarioDao;
-
-	@Autowired
 	private EmailDao emailDao;
-
-	@Autowired
-	private PessoaEmailDao pessoaEmailDao;
 
 	@Autowired
 	private EmpregoDao empregoDao;
 
 	@Autowired
+	private PessoaDao pessoaDao;
+
+	@Autowired
+	private PessoaEmailDao pessoaEmailDao;
+
+	@Autowired
 	private PessoaRelacionamentoDao pessoaRelacionamentoDao;
+
+	@Autowired
+	private UsuarioDao usuarioDao;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -153,11 +153,11 @@ public class EmpregadoContaUsuarioExcelImportarCmd extends _Comando {
 				transactionManager.rollback(transactionStatus);
 			}
 		}
-		
+
 		if (logger.isDebugEnabled()) {
 			logger.debug(String.format("ContaEmailEmpregadoExcel importado %d contas", cont));
 		}
-		
+
 		return false;
 	}
 

@@ -26,15 +26,15 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonFormatarBigDecimal;
  */
 @Entity
 @Table(name = "benfeitoria", schema = EntidadeBase.ATER_SCHEMA)
-//@Indexed
+// @Indexed
 public class Benfeitoria extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
 
-//	@Field(index = Index.YES, store = Store.YES)
+	// @Field(index = Index.YES, store = Store.YES)
 	private String caracteristica;
 
-//	@Field(index = Index.YES, store = Store.YES)
+	// @Field(index = Index.YES, store = Store.YES)
 	private String especificacao;
 
 	@Id

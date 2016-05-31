@@ -140,6 +140,7 @@ public class Coleta extends EntidadeBase implements _ChavePrimaria<Integer>, Inf
 		return valorString;
 	}
 
+	@Override
 	public Coleta infoBasica() {
 		return new Coleta(this.getId(), this.getFormularioVersao() == null ? null : new FormularioVersao(this.getFormularioVersao().getId()), this.getUsuario() == null ? null : this.getUsuario().infoBasica(), this.getDataColeta(), this.getFinalizada(),
 				this.getPessoa() == null ? null : this.getPessoa().infoBasica(), this.getPropriedadeRural() == null ? null : this.getPropriedadeRural().infoBasica(), this.getValor(), this.getValorString());

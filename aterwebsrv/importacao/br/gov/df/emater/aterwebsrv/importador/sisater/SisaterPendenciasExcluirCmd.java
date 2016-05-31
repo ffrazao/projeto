@@ -30,7 +30,7 @@ public class SisaterPendenciasExcluirCmd extends _Comando {
 		try {
 			pessoaPendenciaDao.deleteAll();
 			pessoaPendenciaDao.flush();
-			
+
 			propriedadeRuralPendenciaDao.deleteAll();
 			propriedadeRuralPendenciaDao.flush();
 

@@ -16,10 +16,10 @@ public interface ProducaoDao extends JpaRepository<Producao, Integer>, ProducaoD
 
 	List<Producao> findByAnoAndBemAndPropriedadeRuralComunidadeUnidadeOrganizacional(Integer ano, Bem bem, UnidadeOrganizacional unidadeOrganizacional);
 
+	Producao findOneByAnoAndBemAndPublicoAlvoAndPropriedadeRuralAndUnidadeOrganizacionalIsNull(Integer ano, Bem bem, PublicoAlvo publicoAlvo, PropriedadeRural propriedadeRural);
+
 	Producao findOneByAnoAndBemAndUnidadeOrganizacionalAndPublicoAlvoIsNullAndPropriedadeRuralIsNull(Integer ano, Bem bem, UnidadeOrganizacional unidadeOrganizacional);
 
 	Producao findOneByChaveSisater(String chaveSisater);
-
-	Producao findOneByAnoAndBemAndPublicoAlvoAndPropriedadeRuralAndUnidadeOrganizacionalIsNull(Integer ano, Bem bem, PublicoAlvo publicoAlvo, PropriedadeRural propriedadeRural);
 
 }

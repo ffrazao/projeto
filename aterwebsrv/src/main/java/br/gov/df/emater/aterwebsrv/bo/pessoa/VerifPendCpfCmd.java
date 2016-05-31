@@ -42,7 +42,7 @@ public class VerifPendCpfCmd extends VerificarPendenciasCmd {
 		} else {
 			return null;
 		}
-		// TODO fazer verificacao no proprrio registro se pf ver em seus relac.
+		// TODO fazer verificacao no proprio registro se pf ver em seus relac.
 		// se relac ver principa e outros relacs
 		if (numero == null || numero.trim().length() == 0) {
 			if (pessoaFisica == null) {

@@ -139,22 +139,22 @@ public class UtilitarioData {
 		}
 		Object result = null;
 		try {
-			result = (Calendar) formataMilisegundos((String) string);
+			result = formataMilisegundos((String) string);
 		} catch (ParseException e) {
 			try {
-				result = (Calendar) formataDataJavascript((String) string);
+				result = formataDataJavascript((String) string);
 			} catch (ParseException e1) {
 				try {
-					result = (Calendar) formataTimestamp((String) string);
+					result = formataTimestamp((String) string);
 				} catch (ParseException e2) {
 					try {
-						result = (Calendar) formataMilisegundos((String) string);
+						result = formataMilisegundos((String) string);
 					} catch (ParseException e3) {
 						try {
-							result = (Calendar) formataDataHora((String) string);
+							result = formataDataHora((String) string);
 						} catch (ParseException e4) {
 							try {
-								result = (Calendar) formataData((String) string);
+								result = formataData((String) string);
 							} catch (ParseException e5) {
 								result = string;
 							}

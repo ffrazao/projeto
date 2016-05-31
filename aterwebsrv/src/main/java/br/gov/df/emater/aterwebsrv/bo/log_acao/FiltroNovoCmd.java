@@ -14,7 +14,7 @@ public class FiltroNovoCmd extends _Comando {
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		LogAcaoCadFiltroDto filtro = new LogAcaoCadFiltroDto();
-		
+
 		Calendar inicio = Calendar.getInstance();
 		inicio.roll(Calendar.MONTH, -1);
 		filtro.setInicio(inicio);

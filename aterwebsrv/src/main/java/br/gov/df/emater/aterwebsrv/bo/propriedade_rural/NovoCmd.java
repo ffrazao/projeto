@@ -22,25 +22,25 @@ public class NovoCmd extends _Comando {
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		PropriedadeRural result = new PropriedadeRural();
-		
+
 		result.setSituacao(PropriedadeRuralSituacao.A);
-		
+
 		Endereco endereco = new Endereco();
-		
+
 		WKTReader wktReader = new WKTReader();
 		endereco.setEntradaPrincipal((Point) wktReader.read("POINT (-15.732687616157767 -47.90378594955473)"));
 		// endereco.setLatitude(new BigDecimal("-15.732687616157767"));
 		// endereco.setLongitude(new BigDecimal("-47.90378594955473"));
-		
+
 		Polygon geom = (Polygon) wktReader.read("POLYGON((-15.732687616157767 -47.90378594955473, -15.7 -47.90378594955473, -15.732687616157767 -47.9, -15.732687616157767 -47.90378594955473))");
-		
+
 		Area area = new Area();
 		area.setPoligono(geom);
 		List<Area> areaList = new ArrayList<Area>();
 		areaList.add(area);
 		endereco.setAreaList(areaList);
-		
-		//result.setEndereco(endereco);
+
+		// result.setEndereco(endereco);
 
 		contexto.setResposta(result);
 

@@ -28,6 +28,7 @@ public class Comando extends EntidadeBase implements _ChavePrimaria<Integer>, In
 			this.descricao = descricao;
 		}
 
+		@Override
 		public String toString() {
 			return this.descricao;
 		}
@@ -49,15 +50,15 @@ public class Comando extends EntidadeBase implements _ChavePrimaria<Integer>, In
 	public Comando() {
 	}
 
-	public Comando(Serializable id) {
-		super(id);
-	}
-
 	public Comando(Integer id, String nome, String codigo, Confirmacao ativo) {
 		this.id = id;
 		this.nome = nome;
 		this.codigo = codigo;
 		this.ativo = ativo;
+	}
+
+	public Comando(Serializable id) {
+		super(id);
 	}
 
 	public Confirmacao getAtivo() {

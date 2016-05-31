@@ -24,16 +24,16 @@ public class ComunidadeListaDto extends FiltroDtoCustom {
 		}
 	}
 
+	public Set<Integer> getPessoaJuridicaList() {
+		return pessoaJuridicaList;
+	}
+
 	public Set<Integer> getUnidadeOrganizacionalList() {
 		return unidadeOrganizacionalList;
 	}
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	public Set<Integer> getPessoaJuridicaList() {
-		return pessoaJuridicaList;
 	}
 
 	public void setPessoaJuridicaList(Set<Integer> pessoaJuridicaList) {

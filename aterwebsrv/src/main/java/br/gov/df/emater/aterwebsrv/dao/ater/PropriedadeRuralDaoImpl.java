@@ -77,7 +77,7 @@ public class PropriedadeRuralDaoImpl implements PropriedadeRuralDaoCustom {
 		if (!CollectionUtils.isEmpty(filtro.getEmpresaList())) {
 			params.add(filtro.getEmpresaList());
 			sql.append("and p.comunidade.unidadeOrganizacional.pessoaJuridica in ?").append(params.size()).append("\n");
-		}		
+		}
 		if (!CollectionUtils.isEmpty(filtro.getUnidadeOrganizacionalList())) {
 			params.add(filtro.getUnidadeOrganizacionalList());
 			sql.append("and p.comunidade.unidadeOrganizacional in ?").append(params.size()).append("\n");
@@ -86,12 +86,12 @@ public class PropriedadeRuralDaoImpl implements PropriedadeRuralDaoCustom {
 			params.add(filtro.getComunidadeList());
 			sql.append("and p.comunidade in ?").append(params.size()).append("\n");
 		}
-		
+
 		if (!CollectionUtils.isEmpty(filtro.getPublicoAlvoList())) {
 			params.add(filtro.getPublicoAlvoList());
 			sql.append("and vinculados.publicoAlvo in ?").append(params.size()).append("\n");
-		}		
-		
+		}
+
 		if (filtro.getAreaUtil() != null) {
 			if (filtro.getAreaUtil().getAte() == null) {
 				params.add(filtro.getAreaUtil().getDe());
@@ -121,10 +121,10 @@ public class PropriedadeRuralDaoImpl implements PropriedadeRuralDaoCustom {
 			params.add(filtro.getSituacaoFundiaria());
 			sql.append("and p.situacaoFundiaria = ?").append(params.size()).append("\n");
 		}
-		
+
 		if (!CollectionUtils.isEmpty(filtro.getAreaList())) {
 			sqlTemp = new StringBuilder();
-			for (Area area: filtro.getAreaList()) {
+			for (Area area : filtro.getAreaList()) {
 				if (sqlTemp.length() > 0) {
 					sqlTemp.append("or ").append("\n");
 				}
@@ -135,7 +135,6 @@ public class PropriedadeRuralDaoImpl implements PropriedadeRuralDaoCustom {
 				sql.append("and (").append(sqlTemp).append(")").append("\n");
 			}
 		}
-
 
 		sql.append("order by p.nome").append("\n");
 
@@ -167,11 +166,11 @@ public class PropriedadeRuralDaoImpl implements PropriedadeRuralDaoCustom {
 		Integer id = null;
 		Object[] reg = null;
 		int c = 0;
-		for (Object lin : (List<Object[]>) lista) {
+		for (Object lin : lista) {
 			Object[] l = (Object[]) lin;
 			if (!((Integer) l[0]).equals(id)) {
 				if (reg != null) {
-					result.add(reg);					
+					result.add(reg);
 				}
 				reg = new Object[l.length];
 				c = 0;
@@ -179,19 +178,19 @@ public class PropriedadeRuralDaoImpl implements PropriedadeRuralDaoCustom {
 				reg[++c] = l[c];
 				reg[++c] = Endereco.FORMATA((Endereco) l[c]);
 				reg[++c] = (Comunidade) l[c] == null ? null : ((Comunidade) l[c]).getNome();
-				reg[++c] = (BaciaHidrografica) l[c] == null ? null : ((BaciaHidrografica) l[c]).getNome();				
+				reg[++c] = (BaciaHidrografica) l[c] == null ? null : ((BaciaHidrografica) l[c]).getNome();
 				reg[++c] = l[c];
 				reg[++c] = new ArrayList<Object[]>();
-				
-				id = (Integer) reg[0]; 
+
+				id = (Integer) reg[0];
 			}
 			PublicoAlvoPropriedadeRural papr = (PublicoAlvoPropriedadeRural) l[c];
 			if (papr != null) {
-				((List<Object[]>) reg[c]).add(new Object[] {papr.getPublicoAlvo().getPessoa().getNome(), papr.getPublicoAlvo().getId(), papr.getPublicoAlvo().getPessoa().getId()});
+				((List<Object[]>) reg[c]).add(new Object[] { papr.getPublicoAlvo().getPessoa().getNome(), papr.getPublicoAlvo().getId(), papr.getPublicoAlvo().getPessoa().getId() });
 			}
 		}
 		if (reg != null) {
-			result.add(reg);					
+			result.add(reg);
 		}
 
 		return result;

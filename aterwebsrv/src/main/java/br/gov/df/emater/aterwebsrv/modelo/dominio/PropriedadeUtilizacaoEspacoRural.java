@@ -2,9 +2,7 @@ package br.gov.df.emater.aterwebsrv.modelo.dominio;
 
 public enum PropriedadeUtilizacaoEspacoRural {
 
-	LA("Lazer", 1), MO("Moradia", 2), OU("Outra", 7), PA(
-			"Preservação Ambiental", 3), PR("Produção", 4), PS(
-			"Preservação de Serviço", 5), TR("Turismo Rural", 6);
+	LA("Lazer", 1), MO("Moradia", 2), OU("Outra", 7), PA("Preservação Ambiental", 3), PR("Produção", 4), PS("Preservação de Serviço", 5), TR("Turismo Rural", 6);
 
 	private String descricao;
 

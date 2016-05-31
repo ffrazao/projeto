@@ -10,7 +10,7 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 public interface PublicoAlvoDao extends JpaRepository<PublicoAlvo, Integer> {
 
 	PublicoAlvo findOneByPessoa(Pessoa pessoa);
-	
+
 	PublicoAlvo findOneByPessoaId(Integer id);
 
 }

@@ -31,13 +31,13 @@ import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 public class VisualizarPerfilCmd extends _Comando {
 
 	@Autowired
-	private UsuarioDao usuarioDao;
-
-	@Autowired
 	private EmpregoDao empregoDao;
 
 	@Autowired
 	private LotacaoDao lotacaoDao;
+
+	@Autowired
+	private UsuarioDao usuarioDao;
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
@@ -116,7 +116,7 @@ public class VisualizarPerfilCmd extends _Comando {
 
 				linha.put("nome", pessoa.getNome());
 				linha.put("apelidoSigla", pessoa.getApelidoSigla());
-				if (pessoa.getPerfilArquivo() != null) {					
+				if (pessoa.getPerfilArquivo() != null) {
 					linha.put("imagem", pessoa.getPerfilArquivo().getMd5());
 				}
 				StringBuilder temp = new StringBuilder();
@@ -135,7 +135,7 @@ public class VisualizarPerfilCmd extends _Comando {
 				if (temp.toString().length() > 0) {
 					linha.put("nascimentoLocal", temp.toString());
 				}
-				if (pessoa.getNascimento() != null) {					
+				if (pessoa.getNascimento() != null) {
 					linha.put("nascimentoData", UtilitarioData.getInstance().formataData(pessoa.getNascimento()));
 				}
 				if (lotacao != null) {

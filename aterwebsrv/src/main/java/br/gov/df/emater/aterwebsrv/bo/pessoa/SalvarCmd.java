@@ -225,7 +225,7 @@ public class SalvarCmd extends _Comando {
 			}
 			publicoAlvo.setPessoa(result);
 			if (publicoAlvo.getId() == null) {
-				PublicoAlvo salvo = (PublicoAlvo) publicoAlvoDao.findOneByPessoa(publicoAlvo.getPessoa());
+				PublicoAlvo salvo = publicoAlvoDao.findOneByPessoa(publicoAlvo.getPessoa());
 				if (salvo != null) {
 					publicoAlvo.setId(salvo.getId());
 				}

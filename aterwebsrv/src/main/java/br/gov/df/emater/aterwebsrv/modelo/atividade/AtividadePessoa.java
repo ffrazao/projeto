@@ -60,10 +60,6 @@ public class AtividadePessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	@JoinColumn(name = "pessoa_id")
 	private Pessoa pessoa;
 
-	@ManyToOne
-	@JoinColumn(name = "unidade_organizacional_id")
-	private UnidadeOrganizacional unidadeOrganizacional;
-
 	@Enumerated(EnumType.STRING)
 	private Confirmacao responsavel;
 
@@ -72,6 +68,10 @@ public class AtividadePessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	@JsonSerialize(using = JsonSerializerData.class)
 	@JsonDeserialize(using = JsonDeserializerData.class)
 	private Calendar termino;
+
+	@ManyToOne
+	@JoinColumn(name = "unidade_organizacional_id")
+	private UnidadeOrganizacional unidadeOrganizacional;
 
 	public AtividadePessoa() {
 		super();
@@ -103,6 +103,7 @@ public class AtividadePessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		return duracao;
 	}
 
+	@Override
 	public Integer getId() {
 		return id;
 	}
@@ -139,6 +140,7 @@ public class AtividadePessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		this.duracao = duracao;
 	}
 
+	@Override
 	public void setId(Integer id) {
 		this.id = id;
 	}

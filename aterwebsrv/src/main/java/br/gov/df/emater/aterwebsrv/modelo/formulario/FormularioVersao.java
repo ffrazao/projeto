@@ -95,6 +95,7 @@ public class FormularioVersao extends EntidadeBase implements _ChavePrimaria<Int
 		return versao;
 	}
 
+	@Override
 	public FormularioVersao infoBasica() {
 		return new FormularioVersao(this.id, this.formulario, this.versao, this.inicio);
 	}

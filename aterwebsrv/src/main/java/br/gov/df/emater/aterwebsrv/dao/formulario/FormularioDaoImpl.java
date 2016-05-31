@@ -206,7 +206,7 @@ public class FormularioDaoImpl implements FormularioDaoCustom {
 		filtro.configuraPaginacao(query);
 
 		// executar a consulta
-		result = (List<FormularioVersao>) query.getResultList();
+		result = query.getResultList();
 
 		// retornar
 		return result;

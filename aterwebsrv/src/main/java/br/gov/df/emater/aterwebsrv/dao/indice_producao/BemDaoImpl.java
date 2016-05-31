@@ -18,6 +18,12 @@ public class BemDaoImpl implements BemDaoCustom {
 	@PersistenceContext
 	private EntityManager em;
 
+	private void fetchBemClassificacao(BemClassificacao bc) {
+		if (bc != null && bc.getBemClassificacao() != null) {
+			fetchBemClassificacao(bc.getBemClassificacao());
+		}
+	}
+
 	@Override
 	public List<Object[]> filtrar(BemProducaoCadFiltroDto filtro) {
 		// objetos de trabalho
@@ -72,12 +78,6 @@ public class BemDaoImpl implements BemDaoCustom {
 
 		// retornar
 		return result;
-	}
-
-	private void fetchBemClassificacao(BemClassificacao bc) {
-		if (bc != null && bc.getBemClassificacao() != null) {
-			fetchBemClassificacao(bc.getBemClassificacao());
-		}
 	}
 
 }

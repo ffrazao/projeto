@@ -2,7 +2,7 @@ package br.gov.df.emater.aterwebsrv.modelo.dominio;
 
 public enum OpcaoRespostaTipo {
 
-	M("Objetiva - Multi Valor"), S("Subjetiva"), U("Objetiva - �nico Valor"), I("Informa��o"), A("Assinatura"), Q("Quebra de P�gina");
+	A("Assinatura"), I("Informa��o"), M("Objetiva - Multi Valor"), Q("Quebra de P�gina"), S("Subjetiva"), U("Objetiva - �nico Valor");
 
 	private String descricao;
 

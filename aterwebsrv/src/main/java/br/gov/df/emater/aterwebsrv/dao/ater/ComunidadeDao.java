@@ -13,10 +13,10 @@ public interface ComunidadeDao extends JpaRepository<Comunidade, Integer> {
 
 	List<Comunidade> findByNomeLikeOrderByNomeAsc(String nomeLike);
 
+	List<Comunidade> findByNomeOrderByNomeAsc(String nome);
+
 	List<Comunidade> findByUnidadeOrganizacionalIdInAndNomeLikeOrderByNomeAsc(Set<Integer> unidadeOrganizacionalList, String nomeLike);
 
 	List<Comunidade> findByUnidadeOrganizacionalPessoaJuridicaIdInAndNomeLikeOrderByNomeAsc(Set<Integer> pessoaJuridicaList, String nomeLike);
-
-	List<Comunidade> findByNomeOrderByNomeAsc(String nome);
 
 }

@@ -28,16 +28,16 @@ import br.gov.df.emater.aterwebsrv.modelo.dto.TagDto;
 
 public class PessoaDaoImpl implements PessoaDaoCustom {
 
-	@PersistenceContext
-	private EntityManager em;
-
-	private String telefoneQryStr;
-
-	private String emailQryStr;
-
 	private String comunidadeQryStr;
 
 	private String dapQryStr;
+
+	@PersistenceContext
+	private EntityManager em;
+
+	private String emailQryStr;
+
+	private String telefoneQryStr;
 
 	public PessoaDaoImpl() {
 		StringBuilder sql;
@@ -89,6 +89,65 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 		sql.append("and     pa.categoria = 'E'").append("\n");
 		sql.append("and     pa.segmento = 'F'").append("\n");
 		dapQryStr = sql.toString();
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object[]> fetch(List<Object[]> lista) {
+		Query telefoneQry = em.createNativeQuery(telefoneQryStr);
+		Query emailQry = em.createNativeQuery(emailQryStr);
+		Query comunidadeQry = em.createNativeQuery(comunidadeQryStr);
+		Query dapQry = em.createNativeQuery(dapQryStr);
+		List<Object[]> result = new ArrayList<Object[]>();
+		for (Object[] linha : lista) {
+			List<Object> registro = new ArrayList<Object>(Arrays.asList(linha));
+
+			telefoneQry.setParameter(1, registro.get(0));
+			emailQry.setParameter(1, registro.get(0));
+			comunidadeQry.setParameter(1, registro.get(10));
+			dapQry.setParameter(1, registro.get(0));
+
+			registro.add(telefoneQry.getResultList());
+			registro.add(emailQry.getResultList());
+			registro.add(comunidadeQry.getResultList());
+			List<Object> dapRes = dapQry.getResultList();
+			if (dapRes == null || dapRes.size() == 0) {
+				registro.add(null);
+			} else {
+				Object[] dapResObj = (Object[]) dapRes.get(0);
+				if (dapResObj == null || dapResObj.length != 2) {
+					registro.add(null);
+				} else {
+					Character temp1 = (Character) dapResObj[0];
+					Date temp2 = (Date) dapResObj[1];
+
+					if (temp1 == null || temp2 == null) {
+						registro.add(null);
+					} else {
+						ConfirmacaoDap sit = ConfirmacaoDap.valueOf(temp1.toString());
+						Calendar valid = new GregorianCalendar();
+						valid.setTime(temp2);
+						Calendar hoje = Calendar.getInstance();
+						Calendar carencia = Calendar.getInstance();
+						carencia.roll(Calendar.MONTH, 2);
+
+						if (ConfirmacaoDap.S.equals(sit)) {
+							if (valid.after(carencia)) {
+								registro.add("img/dap-ok.png");
+							} else if (valid.after(hoje)) {
+								registro.add("img/dap-a-vencer.png");
+							} else {
+								registro.add("img/dap-vencida.png");
+							}
+						} else {
+							registro.add(null);
+						}
+					}
+				}
+			}
+
+			result.add(registro.toArray());
+		}
+		return result;
 	}
 
 	@Override
@@ -228,65 +287,6 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 		}
 
 		// retornar
-		return result;
-	}
-
-	@SuppressWarnings("unchecked")
-	private List<Object[]> fetch(List<Object[]> lista) {
-		Query telefoneQry = em.createNativeQuery(telefoneQryStr);
-		Query emailQry = em.createNativeQuery(emailQryStr);
-		Query comunidadeQry = em.createNativeQuery(comunidadeQryStr);
-		Query dapQry = em.createNativeQuery(dapQryStr);
-		List<Object[]> result = new ArrayList<Object[]>();
-		for (Object[] linha : lista) {
-			List<Object> registro = new ArrayList<Object>(Arrays.asList(linha));
-
-			telefoneQry.setParameter(1, registro.get(0));
-			emailQry.setParameter(1, registro.get(0));
-			comunidadeQry.setParameter(1, registro.get(10));
-			dapQry.setParameter(1, registro.get(0));
-
-			registro.add(telefoneQry.getResultList());
-			registro.add(emailQry.getResultList());
-			registro.add(comunidadeQry.getResultList());
-			List<Object> dapRes = dapQry.getResultList();
-			if (dapRes == null || dapRes.size() == 0) {
-				registro.add(null);
-			} else {
-				Object[] dapResObj = (Object[]) dapRes.get(0);
-				if (dapResObj == null || dapResObj.length != 2) {
-					registro.add(null);
-				} else {
-					Character temp1 = (Character) dapResObj[0];
-					Date temp2 = (Date) dapResObj[1];
-
-					if (temp1 == null || temp2 == null) {
-						registro.add(null);
-					} else {
-						ConfirmacaoDap sit = ConfirmacaoDap.valueOf(temp1.toString());
-						Calendar valid = new GregorianCalendar();
-						valid.setTime(temp2);
-						Calendar hoje = Calendar.getInstance();
-						Calendar carencia = Calendar.getInstance();
-						carencia.roll(Calendar.MONTH, 2);
-						
-						if (ConfirmacaoDap.S.equals(sit)) {
-							if (valid.after(carencia)) {
-								registro.add("img/dap-ok.png");
-							} else if (valid.after(hoje)) {
-								registro.add("img/dap-a-vencer.png");
-							} else {
-								registro.add("img/dap-vencida.png");
-							}
-						} else {
-							registro.add(null);
-						}
-					}
-				}
-			}
-
-			result.add(registro.toArray());
-		}
 		return result;
 	}
 

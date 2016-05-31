@@ -37,7 +37,7 @@ public class VerifPendEmailCmd extends VerificarPendenciasCmd {
 					informado = UtilitarioString.formataEmail(informado);
 					if (!Util.isEmailValido(informado)) {
 						mensagemList.add(String.format("Email inválido [%s]", informado));
-					} else {						
+					} else {
 						pessoa.getEmailList().get(i).getEmail().setEndereco(informado);
 					}
 				}

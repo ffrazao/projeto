@@ -35,14 +35,14 @@ public class FormularioRest {
 		return salvar(formulario, usuario);
 	}
 
-	@RequestMapping(value = "/filtro-executar", method = RequestMethod.POST)
-	public Resposta filtroExecutar(@RequestBody FormularioCadFiltroDto filtro, Principal usuario) throws Exception {
-		return new Resposta(facadeBo.formularioFiltroExecutar(usuario, filtro).getResposta());
-	}
-
 	@RequestMapping(value = "/filtro-coleta-executar", method = RequestMethod.POST)
 	public Resposta filtroComColetaExecutar(@RequestBody FormularioColetaCadFiltroDto filtro, Principal usuario) throws Exception {
 		return new Resposta(facadeBo.formularioColetaFiltroExecutar(usuario, filtro).getResposta());
+	}
+
+	@RequestMapping(value = "/filtro-executar", method = RequestMethod.POST)
+	public Resposta filtroExecutar(@RequestBody FormularioCadFiltroDto filtro, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.formularioFiltroExecutar(usuario, filtro).getResposta());
 	}
 
 	@RequestMapping("/filtro-novo")
@@ -70,7 +70,7 @@ public class FormularioRest {
 	}
 
 	@RequestMapping(value = "/visualizar-codigo", method = RequestMethod.GET)
-	public Resposta visualizarPorCodigo(@RequestParam String codigo, @RequestParam(required=false) String posicao, Principal usuario) throws Exception {
+	public Resposta visualizarPorCodigo(@RequestParam String codigo, @RequestParam(required = false) String posicao, Principal usuario) throws Exception {
 		return new Resposta(facadeBo.formularioVisualizarPorCodigo(usuario, codigo, posicao).getResposta());
 	}
 

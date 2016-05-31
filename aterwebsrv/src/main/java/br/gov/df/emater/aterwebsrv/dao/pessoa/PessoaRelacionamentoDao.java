@@ -11,8 +11,8 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Relacionamento;
 @Repository("PessoaRelacionamentoDao")
 public interface PessoaRelacionamentoDao extends JpaRepository<PessoaRelacionamento, Integer> {
 
-	List<PessoaRelacionamento> findByRelacionamento(Relacionamento relacionamento);
-
 	List<PessoaRelacionamento> findByCpf(String numero);
+
+	List<PessoaRelacionamento> findByRelacionamento(Relacionamento relacionamento);
 
 }

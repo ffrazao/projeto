@@ -39,6 +39,10 @@ public class PropriedadeRuralCadFiltroDto extends FiltroDtoCustom {
 
 	private List<UnidadeOrganizacional> unidadeOrganizacionalList;
 
+	public List<Area> getAreaList() {
+		return areaList;
+	}
+
 	public AreaUtil getAreaUtil() {
 		return areaUtil;
 	}
@@ -77,10 +81,6 @@ public class PropriedadeRuralCadFiltroDto extends FiltroDtoCustom {
 
 	public List<UnidadeOrganizacional> getUnidadeOrganizacionalList() {
 		return unidadeOrganizacionalList;
-	}
-
-	public List<Area> getAreaList() {
-		return areaList;
 	}
 
 	public void setAreaList(List<Area> areaList) {

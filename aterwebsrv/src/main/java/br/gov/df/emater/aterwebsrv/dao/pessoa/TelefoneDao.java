@@ -7,7 +7,7 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Telefone;
 
 @Repository("TelefoneDao")
 public interface TelefoneDao extends JpaRepository<Telefone, Integer> {
-	
+
 	Telefone findByNumero(String numero);
-	
+
 }

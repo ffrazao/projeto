@@ -72,6 +72,7 @@ public class Lotacao extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return gestor;
 	}
 
+	@Override
 	public Integer getId() {
 		return id;
 	}
@@ -100,6 +101,7 @@ public class Lotacao extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.gestor = gestor;
 	}
 
+	@Override
 	public void setId(Integer id) {
 		this.id = id;
 	}

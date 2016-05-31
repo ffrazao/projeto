@@ -12,6 +12,6 @@ import br.gov.df.emater.aterwebsrv.modelo.ater.ComunidadeBaciaHidrografica;
 @Repository("ComunidadeBaciaHidrograficaDao")
 public interface ComunidadeBaciaHidrograficaDao extends JpaRepository<ComunidadeBaciaHidrografica, Integer> {
 
-	List<ComunidadeBaciaHidrografica> findByComunidadeAndBaciaHidrografica(Comunidade comunidade,  BaciaHidrografica baciaHidrografica);
+	List<ComunidadeBaciaHidrografica> findByComunidadeAndBaciaHidrografica(Comunidade comunidade, BaciaHidrografica baciaHidrografica);
 
 }

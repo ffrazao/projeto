@@ -45,14 +45,6 @@ public class PropriedadeRuralPendencia extends EntidadeBase implements _ChavePri
 	public PropriedadeRuralPendencia() {
 	}
 
-	public PropriedadeRuralPendencia(Serializable id) {
-		super(id);
-	}
-
-	public PropriedadeRuralPendencia(PendenciaCodigo codigo, String descricao) {
-		this(null, codigo, descricao);
-	}
-
 	public PropriedadeRuralPendencia(Integer id, PendenciaCodigo codigo, String descricao) {
 		this.setId(id);
 		this.setCodigo(codigo.name());
@@ -60,6 +52,15 @@ public class PropriedadeRuralPendencia extends EntidadeBase implements _ChavePri
 		this.setDescricao(descricao);
 	}
 
+	public PropriedadeRuralPendencia(PendenciaCodigo codigo, String descricao) {
+		this(null, codigo, descricao);
+	}
+
+	public PropriedadeRuralPendencia(Serializable id) {
+		super(id);
+	}
+
+	@Override
 	public String getCodigo() {
 		return codigo;
 	}
@@ -89,6 +90,7 @@ public class PropriedadeRuralPendencia extends EntidadeBase implements _ChavePri
 		return tipo;
 	}
 
+	@Override
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}

@@ -35,6 +35,10 @@ public class AtividadeAssunto extends EntidadeBase implements _ChavePrimaria<Int
 		super();
 	}
 
+	public AtividadeAssunto(Assunto assunto) {
+		this(null, assunto);
+	}
+
 	public AtividadeAssunto(Integer id) {
 		super(id);
 	}
@@ -42,10 +46,6 @@ public class AtividadeAssunto extends EntidadeBase implements _ChavePrimaria<Int
 	public AtividadeAssunto(Integer id, Assunto assunto) {
 		super(id);
 		setAssunto(assunto);
-	}
-
-	public AtividadeAssunto(Assunto assunto) {
-		this(null, assunto);
 	}
 
 	public Assunto getAssunto() {
@@ -56,6 +56,7 @@ public class AtividadeAssunto extends EntidadeBase implements _ChavePrimaria<Int
 		return atividade;
 	}
 
+	@Override
 	public Integer getId() {
 		return id;
 	}
@@ -72,6 +73,7 @@ public class AtividadeAssunto extends EntidadeBase implements _ChavePrimaria<Int
 		this.atividade = atividade;
 	}
 
+	@Override
 	public void setId(Integer id) {
 		this.id = id;
 	}

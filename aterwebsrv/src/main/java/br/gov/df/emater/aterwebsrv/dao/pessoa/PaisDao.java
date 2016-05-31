@@ -11,8 +11,8 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pais;
 @Repository("PaisDao")
 public interface PaisDao extends JpaRepository<Pais, Integer> {
 
+	List<Pais> findByNomeLike(String nome);
+
 	List<Pais> findByPadrao(Confirmacao padrao);
 
-	List<Pais> findByNomeLike(String nome);
-	
 }

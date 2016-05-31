@@ -23,9 +23,9 @@ public class EnumeracaoCmd extends _Comando {
 		String[] entidade = (String[]) requisicao.get("entidade");
 
 		List[] result = (List[]) contexto.getResposta();
-		
+
 		for (int i = 0; i < result.length; i++) {
-			result[i] = dao.getEnumeracao(entidade[i]); 
+			result[i] = dao.getEnumeracao(entidade[i]);
 		}
 
 		return false;

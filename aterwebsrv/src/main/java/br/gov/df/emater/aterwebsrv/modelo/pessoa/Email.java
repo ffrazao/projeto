@@ -49,6 +49,7 @@ public class Email extends EntidadeBase implements _ChavePrimaria<Integer>, Info
 		return id;
 	}
 
+	@Override
 	public Email infoBasica() {
 		return new Email(getId(), getEndereco());
 	}

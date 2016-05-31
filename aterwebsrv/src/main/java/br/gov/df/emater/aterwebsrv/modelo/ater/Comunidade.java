@@ -75,6 +75,7 @@ public class Comunidade extends EntidadeBase implements _ChavePrimaria<Integer>,
 		return cidade;
 	}
 
+	@Override
 	public Integer getId() {
 		return id;
 	}
@@ -108,6 +109,7 @@ public class Comunidade extends EntidadeBase implements _ChavePrimaria<Integer>,
 		this.cidade = cidade;
 	}
 
+	@Override
 	public void setId(Integer id) {
 		this.id = id;
 	}

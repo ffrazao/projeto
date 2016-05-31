@@ -32,8 +32,23 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoTipo;
 @Service
 public class BasicoInicioImportacaoCmd extends _Comando {
 
+	@PersistenceContext
+	private EntityManager em;
+
 	@Autowired
-	private PlatformTransactionManager transactionManager;
+	private EstadoDao estadoDao;
+
+	@Autowired
+	private FacadeBo facadeBo;
+
+	@Autowired
+	private ImpUtil impUtil;
+
+	@Autowired
+	private MunicipioDao municipioDao;
+
+	@Autowired
+	private PaisDao paisDao;
 
 	@Autowired
 	private RelacionamentoConfiguracaoViDao relacionamentoConfiguracaoViDao;
@@ -44,23 +59,8 @@ public class BasicoInicioImportacaoCmd extends _Comando {
 	@Autowired
 	private RelacionamentoTipoDao relacionamentoTipoDao;
 
-	@PersistenceContext
-	private EntityManager em;
-
 	@Autowired
-	private FacadeBo facadeBo;
-
-	@Autowired
-	private ImpUtil impUtil;
-
-	@Autowired
-	private PaisDao paisDao;
-
-	@Autowired
-	private EstadoDao estadoDao;
-
-	@Autowired
-	private MunicipioDao municipioDao;
+	private PlatformTransactionManager transactionManager;
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {

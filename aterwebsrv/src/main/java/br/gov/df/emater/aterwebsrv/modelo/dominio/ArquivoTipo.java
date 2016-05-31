@@ -2,7 +2,7 @@ package br.gov.df.emater.aterwebsrv.modelo.dominio;
 
 public enum ArquivoTipo {
 
-	P("Perfil", 1), A("Arquivo", 2);
+	A("Arquivo", 2), P("Perfil", 1);
 
 	private String descricao;
 

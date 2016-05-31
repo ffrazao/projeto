@@ -40,11 +40,11 @@ public class CarteiraProdutorVerificarCmd extends _Comando {
 
 		linha.put(nomeItem, itemList);
 	}
-	
+
 	private Map<String, Object> criarItem(String nome, Object objeto) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put(nome, objeto);
-		result.put("erroList" , new ArrayList<String> ());
+		result.put("erroList", new ArrayList<String>());
 		return result;
 	}
 
@@ -69,7 +69,7 @@ public class CarteiraProdutorVerificarCmd extends _Comando {
 				}
 				if (!(pessoa instanceof PessoaFisica)) {
 					acumulaItem(pessoaReg, "erroList", "Carteira disponível somente a pessoas físicas!");
-				} else if (((PessoaFisica) pessoa).getCpf() == null || ((PessoaFisica) pessoa).getNisNumero() == null)  {
+				} else if (((PessoaFisica) pessoa).getCpf() == null || ((PessoaFisica) pessoa).getNisNumero() == null) {
 					acumulaItem(pessoaReg, "erroList", "Documentos (CPF, NIS) não informados!");
 				}
 				if (pessoa.getPublicoAlvo() == null) {
@@ -93,7 +93,7 @@ public class CarteiraProdutorVerificarCmd extends _Comando {
 									continue;
 								}
 							}
-							Map<String, Object> paprReg = criarItem("publicoAlvoPropriedadeRural", publicoAlvoPropriedadeRural.infoBasica());							
+							Map<String, Object> paprReg = criarItem("publicoAlvoPropriedadeRural", publicoAlvoPropriedadeRural.infoBasica());
 							if (publicoAlvoPropriedadeRural.getArea() == null) {
 								acumulaItem(paprReg, "erroList", "Área Explorada na Propriedade Rural não identificado!");
 							}

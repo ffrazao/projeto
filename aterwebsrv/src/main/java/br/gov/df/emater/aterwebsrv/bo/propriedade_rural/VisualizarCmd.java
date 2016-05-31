@@ -36,8 +36,8 @@ public class VisualizarCmd extends _Comando {
 			throw new BoException("Registro não localizado");
 		}
 
-		result.setInclusaoUsuario(result.getInclusaoUsuario() == null ? null: result.getInclusaoUsuario().infoBasica());
-		result.setAlteracaoUsuario(result.getAlteracaoUsuario() == null ? null: result.getAlteracaoUsuario().infoBasica());
+		result.setInclusaoUsuario(result.getInclusaoUsuario() == null ? null : result.getInclusaoUsuario().infoBasica());
+		result.setAlteracaoUsuario(result.getAlteracaoUsuario() == null ? null : result.getAlteracaoUsuario().infoBasica());
 		result.setEndereco(result.getEndereco().infoBasica());
 
 		if (result.getPublicoAlvoPropriedadeRuralList() != null) {
@@ -54,25 +54,24 @@ public class VisualizarCmd extends _Comando {
 			}
 			result.setPublicoAlvoPropriedadeRuralList(paprList);
 		}
-		
+
 		if (result.getFormaUtilizacaoEspacoRuralList() != null) {
 			for (PropriedadeRuralFormaUtilizacaoEspacoRural formaUtilizacaoEspacoRural : result.getFormaUtilizacaoEspacoRuralList()) {
 				formaUtilizacaoEspacoRural.setPropriedadeRural(null);
 			}
 		}
 		if (result.getArquivoList() != null) {
-			for (PropriedadeRuralArquivo a: result.getArquivoList()) {
+			for (PropriedadeRuralArquivo a : result.getArquivoList()) {
 				a.getId();
 			}
 		}
-		
+
 		if (result.getPendenciaList() != null) {
-			for (PropriedadeRuralPendencia propriedadeRuralPendencia: result.getPendenciaList()) {
+			for (PropriedadeRuralPendencia propriedadeRuralPendencia : result.getPendenciaList()) {
 				propriedadeRuralPendencia.setPropriedadeRural(null);
 			}
 		}
 
-		
 		em.detach(result);
 		contexto.setResposta(result);
 

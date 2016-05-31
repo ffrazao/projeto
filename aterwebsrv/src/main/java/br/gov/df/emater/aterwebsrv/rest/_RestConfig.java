@@ -29,9 +29,15 @@ import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
 import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module.Feature;
 
 @Configuration
-@EnableWebMvc // estava dando um erro e comentei esta linha. Parou de fazer upload de arquivos descomentei novamente
+@EnableWebMvc // estava dando um erro e comentei esta linha. Parou de fazer
+				// upload de arquivos descomentei novamente
 @ComponentScan(basePackages = { "br.gov.df.emater.aterwebsrv" })
 public class _RestConfig extends WebMvcConfigurerAdapter {
+
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+	}
 
 	@Override
 	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
@@ -109,11 +115,6 @@ public class _RestConfig extends WebMvcConfigurerAdapter {
 		// Manipulação de Arquivos
 		CommonsMultipartResolver result = new CommonsMultipartResolver();
 		return result;
-	}
-
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
 	}
 
 }

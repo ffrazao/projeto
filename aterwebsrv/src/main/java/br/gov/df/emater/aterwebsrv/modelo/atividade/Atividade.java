@@ -167,10 +167,12 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer>, 
 		super(id);
 	}
 
+	@Override
 	public Calendar getAlteracaoData() {
 		return alteracaoData;
 	}
 
+	@Override
 	public Usuario getAlteracaoUsuario() {
 		return alteracaoUsuario;
 	}
@@ -220,10 +222,12 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer>, 
 		return id;
 	}
 
+	@Override
 	public Calendar getInclusaoData() {
 		return inclusaoData;
 	}
 
+	@Override
 	public Usuario getInclusaoUsuario() {
 		return inclusaoUsuario;
 	}
@@ -284,10 +288,12 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer>, 
 		return situacaoMotivo;
 	}
 
+	@Override
 	public void setAlteracaoData(Calendar alteracaoData) {
 		this.alteracaoData = alteracaoData;
 	}
 
+	@Override
 	public void setAlteracaoUsuario(Usuario alteracaoUsuario) {
 		this.alteracaoUsuario = alteracaoUsuario;
 	}
@@ -337,10 +343,12 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer>, 
 		this.id = id;
 	}
 
+	@Override
 	public void setInclusaoData(Calendar inclusaoData) {
 		this.inclusaoData = inclusaoData;
 	}
 
+	@Override
 	public void setInclusaoUsuario(Usuario inclusaoUsuario) {
 		this.inclusaoUsuario = inclusaoUsuario;
 	}

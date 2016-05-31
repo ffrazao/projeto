@@ -16,11 +16,21 @@ import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
 
 public class ProducaoDaoImpl implements ProducaoDaoCustom {
 
+	@Autowired
+	private BemClassificacaoDao bemClassificacaoDao;
+
 	@PersistenceContext
 	private EntityManager em;
 
-	@Autowired
-	private BemClassificacaoDao bemClassificacaoDao;
+	private void captarBemClassificacaoList(List<BemClassificacao> origem, List<BemClassificacao> destino) {
+		if (origem != null) {
+			for (BemClassificacao bcOrigem : origem) {
+				BemClassificacao bemClassificacao = bemClassificacaoDao.findOne(bcOrigem.getId());
+				captarBemClassificacaoList(bemClassificacao.getBemClassificacaoList(), destino);
+				destino.add(new BemClassificacao(bemClassificacao.getId()));
+			}
+		}
+	}
 
 	@Override
 	public List<Producao> filtrar(IndiceProducaoCadFiltroDto filtro) {
@@ -112,11 +122,7 @@ public class ProducaoDaoImpl implements ProducaoDaoCustom {
 		}
 
 		// definir a pagina a ser consultada
-		if (filtro.getId() == null && 
-				(filtro.getPropriedadeRural() == null || 
-				filtro.getPropriedadeRural().getId() == null) && 
-				(filtro.getPublicoAlvo() == null || 
-				filtro.getPublicoAlvo().getId() == null)) {
+		if (filtro.getId() == null && (filtro.getPropriedadeRural() == null || filtro.getPropriedadeRural().getId() == null) && (filtro.getPublicoAlvo() == null || filtro.getPublicoAlvo().getId() == null)) {
 			filtro.configuraPaginacao(query);
 		}
 
@@ -125,16 +131,6 @@ public class ProducaoDaoImpl implements ProducaoDaoCustom {
 
 		// retornar
 		return result;
-	}
-
-	private void captarBemClassificacaoList(List<BemClassificacao> origem, List<BemClassificacao> destino) {
-		if (origem != null) {
-			for (BemClassificacao bcOrigem : origem) {
-				BemClassificacao bemClassificacao = bemClassificacaoDao.findOne(bcOrigem.getId());
-				captarBemClassificacaoList(bemClassificacao.getBemClassificacaoList(), destino);
-				destino.add(new BemClassificacao(bemClassificacao.getId()));
-			}
-		}
 	}
 
 }

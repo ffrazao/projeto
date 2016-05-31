@@ -15,19 +15,19 @@ public class FiltroNovoCmd implements Command {
 	@Override
 	public boolean execute(Context context) throws Exception {
 		AtividadeCadFiltroDto filtro = new AtividadeCadFiltroDto();
-		
+
 		Calendar hoje = Calendar.getInstance();
-		
+
 		Calendar inicio = Calendar.getInstance();
 		inicio.set(hoje.get(Calendar.YEAR), hoje.get(Calendar.YEAR), hoje.get(Calendar.DATE));
 		inicio.set(Calendar.MONTH, -1);
-		
+
 		Calendar termino = Calendar.getInstance();
 		termino.set(hoje.get(Calendar.YEAR), hoje.get(Calendar.YEAR), hoje.get(Calendar.DATE));
-		
+
 		filtro.setInicio(inicio);
 		filtro.setTermino(termino);
-		
+
 		context.put("resultado", filtro);
 		return false;
 	}

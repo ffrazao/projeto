@@ -20,6 +20,51 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class UtilitarioExcel {
 
+	public static boolean criarArquivoExcelDoMapa(List<Map<String, Object>> mapList, List<String> cabecalhoList, String arqExcel) throws IOException {
+		if (mapList == null || mapList.size() == 0) {
+			File file = new File(arqExcel);
+			if (!file.exists()) {
+				new FileOutputStream(file).close();
+			}
+			file.setLastModified(System.currentTimeMillis());
+			return false;
+		}
+		Workbook book = new XSSFWorkbook();
+		try {
+			Sheet sheet = book.createSheet("Planilha1");
+			int rownum = 0;
+			int cellnum = 0;
+			Row row = sheet.createRow(rownum++);
+			for (String cabecalho : cabecalhoList) {
+				Cell cell = row.createCell(cellnum++);
+				cell.setCellValue(cabecalho);
+			}
+			for (Map<String, Object> registro : mapList) {
+				row = sheet.createRow(rownum++);
+				cellnum = 0;
+				for (String cabecalho : cabecalhoList) {
+					Object valor = registro.get(cabecalho);
+					Cell cell = row.createCell(cellnum++);
+					if (valor instanceof String) {
+						cell.setCellValue((String) valor);
+					} else if (valor instanceof Boolean) {
+						cell.setCellValue((Boolean) valor);
+					} else if (valor instanceof Date) {
+						cell.setCellValue((Date) valor);
+					} else if (valor instanceof Double) {
+						cell.setCellValue((Double) valor);
+					}
+				}
+			}
+			try (FileOutputStream os = new FileOutputStream(arqExcel);) {
+				book.write(os);
+			}
+		} finally {
+			book.close();
+		}
+		return true;
+	}
+
 	public static List<Map<String, Object>> criarMapaDoArquivoExcel(File excel, int aba) throws Exception {
 		return UtilitarioExcel.criarMapaDoArquivoExcel(excel, aba, 0);
 	}
@@ -78,45 +123,5 @@ public class UtilitarioExcel {
 		}
 
 		return result;
-	}
-
-	public static boolean criarArquivoExcelDoMapa(List<Map<String, Object>> mapList, List<String> cabecalhoList, String arqExcel) throws IOException {
-		if (mapList == null || mapList.size() == 0) {
-			return false;
-		}
-		Workbook book = new XSSFWorkbook();
-		try {
-			Sheet sheet = book.createSheet("Planilha1");
-			int rownum = 0;
-			int cellnum = 0;
-			Row row = sheet.createRow(rownum++);
-			for (String cabecalho: cabecalhoList) {
-				Cell cell = row.createCell(cellnum++);
-				cell.setCellValue(cabecalho);
-			}
-			for (Map<String, Object> registro : mapList) {
-				row = sheet.createRow(rownum++);
-				cellnum = 0;
-				for (String cabecalho: cabecalhoList) {
-					Object valor = registro.get(cabecalho);
-					Cell cell = row.createCell(cellnum++);
-					if (valor instanceof String) {
-						cell.setCellValue((String) valor);
-					} else if (valor instanceof Boolean) {
-						cell.setCellValue((Boolean) valor);
-					} else if (valor instanceof Date) {
-						cell.setCellValue((Date) valor);
-					} else if (valor instanceof Double) {
-						cell.setCellValue((Double) valor);
-					}
-				}
-			}
-			try (FileOutputStream os = new FileOutputStream(arqExcel);) {
-				book.write(os);
-			}
-		} finally {
-			book.close();
-		}
-		return true;
 	}
 }

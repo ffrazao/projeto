@@ -2,7 +2,7 @@ package br.gov.df.emater.aterwebsrv.modelo.dominio;
 
 public enum PendenciaTipo {
 
-	E("Erro", 1), A("Aviso", 2);
+	A("Aviso", 2), E("Erro", 1);
 
 	private String descricao;
 

@@ -35,5 +35,5 @@ public enum PessoaGeracao {
 	public String toString() {
 		return this.descricao;
 	}
-	
+
 }

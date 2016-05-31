@@ -21,10 +21,10 @@ import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 public class RenovarSenhaCmd extends _Comando {
 
 	@Autowired
-	private UsuarioDao usuarioDao;
+	private SenhaPassadaDao senhaPassadaDao;
 
 	@Autowired
-	private SenhaPassadaDao senhaPassadaDao;
+	private UsuarioDao usuarioDao;
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
@@ -51,7 +51,7 @@ public class RenovarSenhaCmd extends _Comando {
 		if (UtilitarioString.temCaractereRepetido(novaSenha.toLowerCase(), 3)) {
 			throw new BoException("Não utilize caracteres muitas vezes repetido na senha de acesso");
 		}
-		
+
 		Usuario usuarioSalvo = usuarioDao.findByUsername(usuario.getUsername());
 		if (usuarioSalvo == null) {
 			throw new BoException("Usuário não cadastrado");
@@ -68,7 +68,7 @@ public class RenovarSenhaCmd extends _Comando {
 				}
 			}
 		}
-		
+
 		String senhaAtual = Criptografia.MD5(usuarioSalvo.getId() + usuario.getPassword());
 		if (!senhaAtual.equals(usuarioSalvo.getPassword())) {
 			throw new BoException("A senha atual é inválida!");

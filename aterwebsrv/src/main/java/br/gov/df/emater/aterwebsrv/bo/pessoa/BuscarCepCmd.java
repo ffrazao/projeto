@@ -28,9 +28,6 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Municipio;
 public class BuscarCepCmd extends _Comando {
 
 	@Autowired
-	private PaisDao paisDao;
-
-	@Autowired
 	private EstadoDao estadoDao;
 
 	@Autowired
@@ -38,18 +35,8 @@ public class BuscarCepCmd extends _Comando {
 
 	private ObjectMapper objectMapper;
 
-	private ObjectMapper getObjectMapper() {
-		if (objectMapper == null) {
-			synchronized (BuscarCepCmd.class) {
-				objectMapper = new ObjectMapper();
-				objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-				// remover todos os itens nulos ou vazios das serializacoes json
-				objectMapper.setSerializationInclusion(Include.NON_NULL);
-				objectMapper.setSerializationInclusion(Include.NON_EMPTY);
-			}
-		}
-		return objectMapper;
-	}
+	@Autowired
+	private PaisDao paisDao;
 
 	@Override
 	@SuppressWarnings("unchecked")
@@ -88,5 +75,18 @@ public class BuscarCepCmd extends _Comando {
 
 			return false;
 		}
+	}
+
+	private ObjectMapper getObjectMapper() {
+		if (objectMapper == null) {
+			synchronized (BuscarCepCmd.class) {
+				objectMapper = new ObjectMapper();
+				objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+				// remover todos os itens nulos ou vazios das serializacoes json
+				objectMapper.setSerializationInclusion(Include.NON_NULL);
+				objectMapper.setSerializationInclusion(Include.NON_EMPTY);
+			}
+		}
+		return objectMapper;
 	}
 }

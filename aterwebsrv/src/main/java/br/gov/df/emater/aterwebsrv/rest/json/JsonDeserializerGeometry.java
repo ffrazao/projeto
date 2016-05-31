@@ -57,15 +57,12 @@ public class JsonDeserializerGeometry extends JsonDeserializer<Geometry> {
 		return result;
 	}
 
-	private Geometry point(ArrayNode coordinates) {
-		Coordinate coordinate = toCoordinate(coordinates);
-		Point result = factory.createPoint(coordinate);
-		return result;
-	}
-
-	private Geometry multiPoint(ArrayNode nodes) {
-		Coordinate[] coordinates = toCoordinateArray(nodes);
-		MultiPoint result = factory.createMultiPoint(coordinates);
+	private GeometryCollection geometryCollection(ArrayNode nodes) {
+		Geometry[] geometries = new Geometry[nodes.size()];
+		for (int i = 0; i < geometries.length; ++i) {
+			geometries[i] = geometry(nodes.get(i));
+		}
+		GeometryCollection result = factory.createGeometryCollection(geometries);
 		return result;
 	}
 
@@ -84,13 +81,9 @@ public class JsonDeserializerGeometry extends JsonDeserializer<Geometry> {
 		return result;
 	}
 
-	private Polygon polygon(ArrayNode nodes) {
-		LinearRing outerRing = toLinearRing((ArrayNode) nodes.get(0));
-		LinearRing[] innerRings = new LinearRing[nodes.size() - 1];
-		for (int i = 0; i < innerRings.length; ++i) {
-			innerRings[i] = toLinearRing((ArrayNode) nodes.get(i + 1));
-		}
-		Polygon result = factory.createPolygon(outerRing, innerRings);
+	private Geometry multiPoint(ArrayNode nodes) {
+		Coordinate[] coordinates = toCoordinateArray(nodes);
+		MultiPoint result = factory.createMultiPoint(coordinates);
 		return result;
 	}
 
@@ -103,26 +96,19 @@ public class JsonDeserializerGeometry extends JsonDeserializer<Geometry> {
 		return result;
 	}
 
-	private GeometryCollection geometryCollection(ArrayNode nodes) {
-		Geometry[] geometries = new Geometry[nodes.size()];
-		for (int i = 0; i < geometries.length; ++i) {
-			geometries[i] = geometry(nodes.get(i));
-		}
-		GeometryCollection result = factory.createGeometryCollection(geometries);
+	private Geometry point(ArrayNode coordinates) {
+		Coordinate coordinate = toCoordinate(coordinates);
+		Point result = factory.createPoint(coordinate);
 		return result;
 	}
 
-	private LinearRing toLinearRing(ArrayNode nodes) {
-		Coordinate[] coordinates = toCoordinateArray(nodes);
-		LinearRing result = factory.createLinearRing(coordinates);
-		return result;
-	}
-
-	private Coordinate[] toCoordinateArray(ArrayNode nodes) {
-		Coordinate[] result = new Coordinate[nodes.size()];
-		for (int i = 0; i < result.length; ++i) {
-			result[i] = toCoordinate((ArrayNode) nodes.get(i));
+	private Polygon polygon(ArrayNode nodes) {
+		LinearRing outerRing = toLinearRing((ArrayNode) nodes.get(0));
+		LinearRing[] innerRings = new LinearRing[nodes.size() - 1];
+		for (int i = 0; i < innerRings.length; ++i) {
+			innerRings[i] = toLinearRing((ArrayNode) nodes.get(i + 1));
 		}
+		Polygon result = factory.createPolygon(outerRing, innerRings);
 		return result;
 	}
 
@@ -136,6 +122,20 @@ public class JsonDeserializerGeometry extends JsonDeserializer<Geometry> {
 			z = node.get(1).asDouble();
 		}
 		Coordinate result = new Coordinate(x, y, z);
+		return result;
+	}
+
+	private Coordinate[] toCoordinateArray(ArrayNode nodes) {
+		Coordinate[] result = new Coordinate[nodes.size()];
+		for (int i = 0; i < result.length; ++i) {
+			result[i] = toCoordinate((ArrayNode) nodes.get(i));
+		}
+		return result;
+	}
+
+	private LinearRing toLinearRing(ArrayNode nodes) {
+		Coordinate[] coordinates = toCoordinateArray(nodes);
+		LinearRing result = factory.createLinearRing(coordinates);
 		return result;
 	}
 }

@@ -8,32 +8,32 @@ public class UnidadeOrganizacionalCadFiltroDto extends FiltroDtoCustom {
 
 	private static final long serialVersionUID = 1L;
 
-	private String nome;
-
 	private Set<UnidadeOrganizacionalClassificacao> classificacao;
 
-	public String getNomeLike() {
-		if( this.nome != null ){
-			return String.format( "%%%s%%", this.nome);
-		} else {
-			return "%";	
-		}
+	private String nome;
+
+	public Set<UnidadeOrganizacionalClassificacao> getClassificacao() {
+		return classificacao;
 	}
 
 	public String getNome() {
 		return nome;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public Set<UnidadeOrganizacionalClassificacao> getClassificacao() {
-		return classificacao;
+	public String getNomeLike() {
+		if (this.nome != null) {
+			return String.format("%%%s%%", this.nome);
+		} else {
+			return "%";
+		}
 	}
 
 	public void setClassificacao(Set<UnidadeOrganizacionalClassificacao> classificacao) {
 		this.classificacao = classificacao;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 }

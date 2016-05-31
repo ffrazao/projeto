@@ -24,39 +24,14 @@ public class JsonSerializerGeometry extends JsonSerializer<Geometry> {
 		writeGeometry(value, generator);
 	}
 
-	void writeGeometry(Geometry geom, JsonGenerator gen) throws JsonGenerationException, IOException {
-		if (geom instanceof Point) {
-			write((Point) geom, gen);
-		} else if (geom instanceof MultiPoint) {
-			write((MultiPoint) geom, gen);
-		} else if (geom instanceof LineString) {
-			write((LineString) geom, gen);
-		} else if (geom instanceof MultiLineString) {
-			write((MultiLineString) geom, gen);
-		} else if (geom instanceof Polygon) {
-			write((Polygon) geom, gen);
-		} else if (geom instanceof MultiPolygon) {
-			write((MultiPolygon) geom, gen);
-		} else if (geom instanceof GeometryCollection) {
-			write((GeometryCollection) geom, gen);
-		} else {
-			throw new RuntimeException("Unsupported Geometry type");
+	void write(GeometryCollection coll, JsonGenerator gen) throws JsonGenerationException, IOException {
+		gen.writeStartObject();
+		gen.writeStringField("type", "GeometryCollection");
+		gen.writeArrayFieldStart("geometries");
+		for (int i = 0; i < coll.getNumGeometries(); ++i) {
+			writeGeometry(coll.getGeometryN(i), gen);
 		}
-	}
-
-	void write(Point point, JsonGenerator gen) throws JsonGenerationException, IOException {
-		gen.writeStartObject();
-		gen.writeStringField("type", "Point");
-		gen.writeFieldName("coordinates");
-		writeCoordinate(point.getCoordinate(), gen);
-		gen.writeEndObject();
-	}
-
-	void write(MultiPoint points, JsonGenerator gen) throws JsonGenerationException, IOException {
-		gen.writeStartObject();
-		gen.writeStringField("type", "MultiPoint");
-		gen.writeFieldName("coordinates");
-		writeCoordinates(points.getCoordinates(), gen);
+		gen.writeEndArray();
 		gen.writeEndObject();
 	}
 
@@ -80,27 +55,11 @@ public class JsonSerializerGeometry extends JsonSerializer<Geometry> {
 		gen.writeEndObject();
 	}
 
-	void write(GeometryCollection coll, JsonGenerator gen) throws JsonGenerationException, IOException {
+	void write(MultiPoint points, JsonGenerator gen) throws JsonGenerationException, IOException {
 		gen.writeStartObject();
-		gen.writeStringField("type", "GeometryCollection");
-		gen.writeArrayFieldStart("geometries");
-		for (int i = 0; i < coll.getNumGeometries(); ++i) {
-			writeGeometry(coll.getGeometryN(i), gen);
-		}
-		gen.writeEndArray();
-		gen.writeEndObject();
-	}
-
-	void write(Polygon geom, JsonGenerator gen) throws JsonGenerationException, IOException {
-		gen.writeStartObject();
-		gen.writeStringField("type", "Polygon");
+		gen.writeStringField("type", "MultiPoint");
 		gen.writeFieldName("coordinates");
-		gen.writeStartArray();
-		writeCoordinates(geom.getExteriorRing().getCoordinates(), gen);
-		for (int i = 0; i < geom.getNumInteriorRing(); ++i) {
-			writeCoordinates(geom.getInteriorRingN(i).getCoordinates(), gen);
-		}
-		gen.writeEndArray();
+		writeCoordinates(points.getCoordinates(), gen);
 		gen.writeEndObject();
 	}
 
@@ -120,6 +79,27 @@ public class JsonSerializerGeometry extends JsonSerializer<Geometry> {
 		gen.writeEndObject();
 	}
 
+	void write(Point point, JsonGenerator gen) throws JsonGenerationException, IOException {
+		gen.writeStartObject();
+		gen.writeStringField("type", "Point");
+		gen.writeFieldName("coordinates");
+		writeCoordinate(point.getCoordinate(), gen);
+		gen.writeEndObject();
+	}
+
+	void write(Polygon geom, JsonGenerator gen) throws JsonGenerationException, IOException {
+		gen.writeStartObject();
+		gen.writeStringField("type", "Polygon");
+		gen.writeFieldName("coordinates");
+		gen.writeStartArray();
+		writeCoordinates(geom.getExteriorRing().getCoordinates(), gen);
+		for (int i = 0; i < geom.getNumInteriorRing(); ++i) {
+			writeCoordinates(geom.getInteriorRingN(i).getCoordinates(), gen);
+		}
+		gen.writeEndArray();
+		gen.writeEndObject();
+	}
+
 	void writeCoordinate(Coordinate coordinate, JsonGenerator gen) throws JsonGenerationException, IOException {
 		gen.writeStartArray();
 		gen.writeNumber(coordinate.x);
@@ -133,5 +113,25 @@ public class JsonSerializerGeometry extends JsonSerializer<Geometry> {
 			writeCoordinate(coord, gen);
 		}
 		gen.writeEndArray();
+	}
+
+	void writeGeometry(Geometry geom, JsonGenerator gen) throws JsonGenerationException, IOException {
+		if (geom instanceof Point) {
+			write((Point) geom, gen);
+		} else if (geom instanceof MultiPoint) {
+			write((MultiPoint) geom, gen);
+		} else if (geom instanceof LineString) {
+			write((LineString) geom, gen);
+		} else if (geom instanceof MultiLineString) {
+			write((MultiLineString) geom, gen);
+		} else if (geom instanceof Polygon) {
+			write((Polygon) geom, gen);
+		} else if (geom instanceof MultiPolygon) {
+			write((MultiPolygon) geom, gen);
+		} else if (geom instanceof GeometryCollection) {
+			write((GeometryCollection) geom, gen);
+		} else {
+			throw new RuntimeException("Unsupported Geometry type");
+		}
 	}
 }

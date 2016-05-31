@@ -24,41 +24,49 @@ public class PendenciaImpl implements Pendencia<T> {
 		this.setDescricao(descricao);
 	}
 
+	@Override
 	public String getCodigo() {
 		return codigo;
 	}
 
+	@Override
 	public String getDescricao() {
 		return descricao;
 	}
 
+	@Override
 	public Integer getId() {
 		return id;
-	}
-
-	public PendenciaTipo getTipo() {
-		return tipo;
-	}
-
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
-	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public void setTipo(PendenciaTipo tipo) {
-		this.tipo = tipo;
 	}
 
 	@Override
 	public EntidadeBase getPendenciaDono() {
 		return null;
+	}
+
+	@Override
+	public PendenciaTipo getTipo() {
+		return tipo;
+	}
+
+	@Override
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+
+	@Override
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	@Override
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	@Override
+	public void setTipo(PendenciaTipo tipo) {
+		this.tipo = tipo;
 	}
 
 }

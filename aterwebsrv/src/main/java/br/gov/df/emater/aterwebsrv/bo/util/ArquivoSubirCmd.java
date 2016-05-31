@@ -52,7 +52,7 @@ public class ArquivoSubirCmd extends _Comando implements ArquivoConstantes {
 			if (arquivoEnviado.isEmpty()) {
 				throw new BoException(String.format("O conteúdo do arquivo %s está vazio!", arquivoEnviado.getOriginalFilename()));
 			}
-			
+
 			if (arquivoEnviado.getSize() > 10240000) {
 				throw new BoException(String.format("O conteúdo do arquivo %s excede o tamanho máximo de 10 mega bytes permitido!", arquivoEnviado.getOriginalFilename()));
 			}

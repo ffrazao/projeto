@@ -27,17 +27,17 @@ import br.gov.df.emater.aterwebsrv.seguranca.UserAuthentication;
 
 public class LoginFilter extends AbstractAuthenticationProcessingFilter {
 
+	private static final String DATA = "DATA";
+
 	private static final String MODULO = "MODULO";
 
 	private static final String NUMERO_IP = "NUMERO_IP";
 
-	private static final String USER_AGENT = "USER_AGENT";
-
 	private static final String ORIGIN = "ORIGIN";
-	
-	private static final String DATA = "DATA";
-		
+
 	private static final String REFERER = "REFERER";
+
+	private static final String USER_AGENT = "USER_AGENT";
 
 	private final TokenAuthenticationService tokenAuthenticationService;
 

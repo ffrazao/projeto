@@ -20,16 +20,16 @@ public class ExcluirCmd extends _Comando {
 	public boolean executar(_Contexto contexto) throws Exception {
 		Producao producao = (Producao) contexto.getRequisicao();
 		producao = dao.findOne(producao.getId());
-		
+
 		List<Producao> produtorProducaoList = dao.findByAnoAndBemAndPropriedadeRuralComunidadeUnidadeOrganizacional(producao.getAno(), producao.getBem(), producao.getUnidadeOrganizacional());
 
 		if (produtorProducaoList != null) {
-			for (Producao p: produtorProducaoList) {
+			for (Producao p : produtorProducaoList) {
 				dao.delete(p);
 			}
 		}
 		dao.delete(producao);
-		
+
 		contexto.setResposta(producao);
 		return false;
 	}

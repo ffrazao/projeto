@@ -18,9 +18,9 @@ public class IndiceProducaoCadFiltroDto extends FiltroDtoCustom {
 	private static final long serialVersionUID = 1L;
 
 	private Integer ano;
-	
+
 	private List<BemClassificacao> bemClassificacaoList;
-	
+
 	private List<Bem> bemList;
 
 	private List<Comunidade> comunidadeList;
@@ -34,7 +34,7 @@ public class IndiceProducaoCadFiltroDto extends FiltroDtoCustom {
 	private Integer id;
 
 	private PropriedadeRural propriedadeRural;
-	
+
 	private PublicoAlvo publicoAlvo;
 
 	private List<UnidadeOrganizacional> unidadeOrganizacionalList;
@@ -54,11 +54,11 @@ public class IndiceProducaoCadFiltroDto extends FiltroDtoCustom {
 	public List<Bem> getBemList() {
 		return bemList;
 	}
-	
+
 	public List<Comunidade> getComunidadeList() {
 		return comunidadeList;
 	}
-	
+
 	public Set<Confirmacao> getConfirmado() {
 		return confirmado;
 	}

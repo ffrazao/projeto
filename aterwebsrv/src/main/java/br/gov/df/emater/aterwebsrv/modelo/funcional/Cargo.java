@@ -28,7 +28,7 @@ public class Cargo extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	@Enumerated(EnumType.STRING)
 	private Confirmacao efetivo;
-	
+
 	@Enumerated(EnumType.STRING)
 	private Escolaridade escolaridade;
 
@@ -58,6 +58,7 @@ public class Cargo extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return escolaridade;
 	}
 
+	@Override
 	public Integer getId() {
 		return id;
 	}
@@ -86,6 +87,7 @@ public class Cargo extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.escolaridade = escolaridade;
 	}
 
+	@Override
 	public void setId(Integer id) {
 		this.id = id;
 	}

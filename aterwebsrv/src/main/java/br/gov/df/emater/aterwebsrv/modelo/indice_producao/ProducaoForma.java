@@ -103,17 +103,19 @@ public class ProducaoForma extends EntidadeBase implements _ChavePrimaria<Intege
 		if (producaoForma.getProducaoFormaComposicaoList() != null) {
 			for (ProducaoFormaComposicao pfc : producaoForma.getProducaoFormaComposicaoList()) {
 				if (this.producaoFormaComposicaoList == null) {
-					this.producaoFormaComposicaoList = new ArrayList<ProducaoFormaComposicao>();					
+					this.producaoFormaComposicaoList = new ArrayList<ProducaoFormaComposicao>();
 				}
 				this.producaoFormaComposicaoList.add(new ProducaoFormaComposicao(pfc));
 			}
 		}
 	}
 
+	@Override
 	public Calendar getAlteracaoData() {
 		return alteracaoData;
 	}
 
+	@Override
 	public Usuario getAlteracaoUsuario() {
 		return alteracaoUsuario;
 	}
@@ -127,10 +129,12 @@ public class ProducaoForma extends EntidadeBase implements _ChavePrimaria<Intege
 		return id;
 	}
 
+	@Override
 	public Calendar getInclusaoData() {
 		return inclusaoData;
 	}
 
+	@Override
 	public Usuario getInclusaoUsuario() {
 		return inclusaoUsuario;
 	}
@@ -171,10 +175,12 @@ public class ProducaoForma extends EntidadeBase implements _ChavePrimaria<Intege
 		return volume;
 	}
 
+	@Override
 	public void setAlteracaoData(Calendar alteracaoData) {
 		this.alteracaoData = alteracaoData;
 	}
 
+	@Override
 	public void setAlteracaoUsuario(Usuario alteracaoUsuario) {
 		this.alteracaoUsuario = alteracaoUsuario;
 	}
@@ -188,10 +194,12 @@ public class ProducaoForma extends EntidadeBase implements _ChavePrimaria<Intege
 		this.id = id;
 	}
 
+	@Override
 	public void setInclusaoData(Calendar inclusaoData) {
 		this.inclusaoData = inclusaoData;
 	}
 
+	@Override
 	public void setInclusaoUsuario(Usuario inclusaoUsuario) {
 		this.inclusaoUsuario = inclusaoUsuario;
 	}

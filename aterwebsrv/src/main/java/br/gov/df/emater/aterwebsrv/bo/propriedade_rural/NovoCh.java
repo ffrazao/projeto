@@ -18,10 +18,10 @@ public class NovoCh extends _Cadeia {
 		super.addCommand(c3);
 	}
 
-//	@Autowired
-//	public NovoCh(AutenticarUsuarioCmd c1, LogCmd c2) {
-//		super.addCommand(c1);
-//		super.addCommand(c2);
-//	}
+	// @Autowired
+	// public NovoCh(AutenticarUsuarioCmd c1, LogCmd c2) {
+	// super.addCommand(c1);
+	// super.addCommand(c2);
+	// }
 
 }

@@ -24,11 +24,11 @@ public class Resposta extends EntidadeBase implements _ChavePrimaria<Integer> {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
-	@ManyToOne(cascade=CascadeType.REFRESH)
+	@ManyToOne(cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "pergunta_id")
 	private Pergunta pergunta;
 
-	@ManyToOne(cascade=CascadeType.REFRESH)
+	@ManyToOne(cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "resposta_versao_id")
 	private RespostaVersao respostaVersao;
 
@@ -38,11 +38,11 @@ public class Resposta extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	public Resposta() {
 	}
-	
+
 	public Resposta(Integer id) {
 		setId(id);
 	}
-	
+
 	public Resposta(Integer id, String valor, RespostaVersao respostaVersao) {
 		setId(id);
 		setValor(valor);

@@ -11,16 +11,16 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica;
 @Repository("PessoaFisicaDao")
 public interface PessoaFisicaDao extends JpaRepository<PessoaFisica, Integer> {
 
-	PessoaFisica findOneByNomeAndGenero(String nomeExcel, PessoaGenero genero);
-	
-	List<PessoaFisica> findByNomeIgnoreCaseAndGenero(String nome, PessoaGenero genero);
-
 	List<PessoaFisica> findByCpf(String numero);
+
+	List<PessoaFisica> findByNisNumero(String numero);
+
+	List<PessoaFisica> findByNomeIgnoreCaseAndGenero(String nome, PessoaGenero genero);
 
 	List<PessoaFisica> findByRgNumero(String numero);
 
 	List<PessoaFisica> findByRgNumeroAndRgUf(String numero, String uf);
 
-	List<PessoaFisica> findByNisNumero(String numero);
+	PessoaFisica findOneByNomeAndGenero(String nomeExcel, PessoaGenero genero);
 
 }

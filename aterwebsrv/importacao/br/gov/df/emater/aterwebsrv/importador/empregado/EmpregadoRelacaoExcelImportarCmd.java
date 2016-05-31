@@ -77,14 +77,14 @@ public class EmpregadoRelacaoExcelImportarCmd extends _Comando {
 
 		PlatformTransactionManager transactionManager = (PlatformTransactionManager) contexto.get("transactionManager");
 		DefaultTransactionDefinition transactionDefinition = (DefaultTransactionDefinition) contexto.get("transactionDefinition");
-		
+
 		int cont = 0;
 		for (Map<String, Object> reg : mapa) {
 			TransactionStatus transactionStatus = transactionManager.getTransaction(transactionDefinition);
 			try {
 				// identificar o empregador
 				PessoaJuridica empregador = null;
-				if (Arrays.asList(new String[] { "2 - NORMAL", "8 - CEDIDO" }).contains((String) reg.get("STATUS"))) {
+				if (Arrays.asList(new String[] { "2 - NORMAL", "8 - CEDIDO" }).contains(reg.get("STATUS"))) {
 					empregador = emater;
 				} else {
 					Pessoa sab = pessoaDao.findOneByApelidoSigla("SAB");
@@ -110,21 +110,12 @@ public class EmpregadoRelacaoExcelImportarCmd extends _Comando {
 					cargo = new Cargo();
 					cargo.setPessoaJuridica(empregador);
 					cargo.setNome(nomeCargo.toString());
-					cargo.setEfetivo(
-							Arrays.asList(new String[] { "COMISSIONADO", "JOVEM APRENDIZ" }).contains(cargoExcel)
-									? Confirmacao.N : Confirmacao.S);
-					if (cargoExcel.toUpperCase().endsWith("-NM")
-							|| cargoExcel.toUpperCase().endsWith("TECNICO DE INFORMATICA")
-							|| cargoExcel.toUpperCase().indexOf("ADMINISTRATIVO") >= 0) {
+					cargo.setEfetivo(Arrays.asList(new String[] { "COMISSIONADO", "JOVEM APRENDIZ" }).contains(cargoExcel) ? Confirmacao.N : Confirmacao.S);
+					if (cargoExcel.toUpperCase().endsWith("-NM") || cargoExcel.toUpperCase().endsWith("TECNICO DE INFORMATICA") || cargoExcel.toUpperCase().indexOf("ADMINISTRATIVO") >= 0) {
 						cargo.setEscolaridade(Escolaridade.MC);
-					} else if (cargoExcel.toUpperCase().endsWith("-NS")
-							|| cargoExcel.toUpperCase().endsWith("TECNICO ESPECIALIZADO")
-							|| cargoExcel.toUpperCase().endsWith("MOTORISTA")) {
+					} else if (cargoExcel.toUpperCase().endsWith("-NS") || cargoExcel.toUpperCase().endsWith("TECNICO ESPECIALIZADO") || cargoExcel.toUpperCase().endsWith("MOTORISTA")) {
 						cargo.setEscolaridade(Escolaridade.SC);
-					} else if (cargoExcel.toUpperCase().equals("MECANICO AUTOMOTIVO")
-							|| cargoExcel.toUpperCase().equals("ELETRICISTA")
-							|| cargoExcel.toUpperCase().equals("DESENHISTA")
-							|| cargoExcel.toUpperCase().equals("DIGITADOR")) {
+					} else if (cargoExcel.toUpperCase().equals("MECANICO AUTOMOTIVO") || cargoExcel.toUpperCase().equals("ELETRICISTA") || cargoExcel.toUpperCase().equals("DESENHISTA") || cargoExcel.toUpperCase().equals("DIGITADOR")) {
 						cargo.setEscolaridade(Escolaridade.FC);
 					}
 					cargo = cargoDao.save(cargo);
@@ -147,15 +138,14 @@ public class EmpregadoRelacaoExcelImportarCmd extends _Comando {
 						unidadeOrganizacional.setNome(lotacaoNome);
 						unidadeOrganizacional.setSigla(lotacaoSigla);
 						unidadeOrganizacional.setClassificacao(UnidadeOrganizacionalClassificacao.AD);
-						unidadeOrganizacional = unidadeOrganizacionalDao.save(unidadeOrganizacional);						
+						unidadeOrganizacional = unidadeOrganizacionalDao.save(unidadeOrganizacional);
 					}
 				}
 
 				// identificar a pessoa
 				String nomeExcel = UtilitarioString.formataNomeProprio((String) reg.get("NOME"));
 				String[] nascimentoExcel = ((String) reg.get("DIA/MÊS NASC.")).split("/");
-				Calendar nascimento = new GregorianCalendar(1950, Integer.parseInt(nascimentoExcel[1]) - 1,
-						Integer.parseInt(nascimentoExcel[0]));
+				Calendar nascimento = new GregorianCalendar(1950, Integer.parseInt(nascimentoExcel[1]) - 1, Integer.parseInt(nascimentoExcel[0]));
 				PessoaGenero genero = ((String) reg.get("DESC. SEXO")).equals("M") ? PessoaGenero.M : PessoaGenero.F;
 				Calendar admissao = new GregorianCalendar();
 				admissao.setTime(DateUtil.getJavaDate((double) reg.get("DATA ADMISSÃO")));
@@ -176,8 +166,7 @@ public class EmpregadoRelacaoExcelImportarCmd extends _Comando {
 					pessoaRelacionamento.setRelacionamentoFuncao(empregadorFuncao);
 					Emprego emprego = new Emprego();
 					emprego.setInicio(admissao);
-					emprego.setMatricula(UtilitarioString
-							.zeroEsquerda((String) reg.get("MATRICULA").toString().trim().toUpperCase(), 8));
+					emprego.setMatricula(UtilitarioString.zeroEsquerda(reg.get("MATRICULA").toString().trim().toUpperCase(), 8));
 					emprego.setCargo(cargo);
 					emprego.setRelacionamentoTipo(relacionamentoTipo);
 					pessoaRelacionamento.setRelacionamento(emprego);
@@ -239,7 +228,7 @@ public class EmpregadoRelacaoExcelImportarCmd extends _Comando {
 					throw new BoException("Não foi possível identificar a lotação do empregado");
 				}
 				pessoaDao.flush();
-				
+
 				cont++;
 				transactionManager.commit(transactionStatus);
 			} catch (Exception e) {
@@ -248,7 +237,7 @@ public class EmpregadoRelacaoExcelImportarCmd extends _Comando {
 				transactionManager.rollback(transactionStatus);
 			}
 		}
-		
+
 		if (logger.isDebugEnabled()) {
 			logger.debug(String.format("RelacaoEmpregadosExcel importado %d empregados", cont));
 		}
@@ -256,18 +245,14 @@ public class EmpregadoRelacaoExcelImportarCmd extends _Comando {
 		return false;
 	}
 
-	private Lotacao novaLotacao(Emprego emprego, UnidadeOrganizacional unidadeOrganizacional, Calendar inicio,
-			String funcao) {
+	private Lotacao novaLotacao(Emprego emprego, UnidadeOrganizacional unidadeOrganizacional, Calendar inicio, String funcao) {
 		Lotacao result = new Lotacao();
 		result.setEmprego(emprego);
 		result.setUnidadeOrganizacional(unidadeOrganizacional);
 		result.setInicio(inicio);
-		if (Arrays.asList(new String[] { "CHEFE DA ASSESSORIA JURIDICA", "CHEFE DA COMUNICACAO SOCIAL",
-				"CHEFE DE GABINETE", "COORDENADOR", "DIRETOR", "GERENTE", "GERENTE DE ALEX. GUSMAO",
-				"GERENTE DE BRAZLANDIA", "GERENTE DE CEILANDIA", "GERENTE DE PLANALTINA", "GERENTE DE RIO PRETO",
-				"GERENTE DE SAO SEBASTIAO", "GERENTE DE SOBRADINHO", "GERENTE DE TABATINGA", "GERENTE DE TAQUARA",
-				"GERENTE DE VARGEM BONITA", "GERENTE DO GAMA", "GERENTE DO JARDIM", "GERENTE DO PAD/DF",
-				"GERENTE DO PARANOA", "GERENTE DO PIPIRIPAU", "PRESIDENTE", "SUPERVISOR REGIONAL" }).contains(funcao)) {
+		if (Arrays.asList(new String[] { "CHEFE DA ASSESSORIA JURIDICA", "CHEFE DA COMUNICACAO SOCIAL", "CHEFE DE GABINETE", "COORDENADOR", "DIRETOR", "GERENTE", "GERENTE DE ALEX. GUSMAO", "GERENTE DE BRAZLANDIA", "GERENTE DE CEILANDIA", "GERENTE DE PLANALTINA",
+				"GERENTE DE RIO PRETO", "GERENTE DE SAO SEBASTIAO", "GERENTE DE SOBRADINHO", "GERENTE DE TABATINGA", "GERENTE DE TAQUARA", "GERENTE DE VARGEM BONITA", "GERENTE DO GAMA", "GERENTE DO JARDIM", "GERENTE DO PAD/DF", "GERENTE DO PARANOA", "GERENTE DO PIPIRIPAU",
+				"PRESIDENTE", "SUPERVISOR REGIONAL" }).contains(funcao)) {
 			result.setGestor(Confirmacao.S);
 		} else {
 			result.setGestor(Confirmacao.N);

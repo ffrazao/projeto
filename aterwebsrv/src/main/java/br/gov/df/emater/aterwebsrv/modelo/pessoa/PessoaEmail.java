@@ -26,7 +26,7 @@ public class PessoaEmail extends EntidadeBase implements _ChavePrimaria<Integer>
 
 	@Column(name = "chave_sisater")
 	private String chaveSisater;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "email_id")
 	private Email email;

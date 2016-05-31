@@ -45,7 +45,7 @@ public class EntidadeCmd extends _Comando {
 		// verificar se deve fazer o fetch de algum resultado
 		if (fetchs != null && result != null && result.size() > 0) {
 			List<Method> metodos = new ArrayList<Method>();
-			
+
 			for (String campo : fetchs) {
 				metodos.add(Class.forName(result.get(0).getClass().getName()).getMethod(String.format("get%s%s", campo.substring(0, 1).toUpperCase(), campo.substring(1, campo.length()))));
 			}

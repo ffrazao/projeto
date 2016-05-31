@@ -11,17 +11,12 @@ public class UserAuthentication implements Authentication {
 
 	private static final long serialVersionUID = 1L;
 
-	private final Usuario user;
-
 	private boolean authenticated = true;
+
+	private final Usuario user;
 
 	public UserAuthentication(Usuario user) {
 		this.user = user;
-	}
-
-	@Override
-	public String getName() {
-		return user.getUsername();
 	}
 
 	@Override
@@ -37,6 +32,11 @@ public class UserAuthentication implements Authentication {
 	@Override
 	public Usuario getDetails() {
 		return user;
+	}
+
+	@Override
+	public String getName() {
+		return user.getUsername();
 	}
 
 	@Override

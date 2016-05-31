@@ -41,16 +41,16 @@ public class SisaterPublicoAlvoPropriedadeRuralCmd extends _Comando {
 	private ImpUtil impUtil;
 
 	@Autowired
-	private PublicoAlvoPropriedadeRuralDao publicoAlvoPropriedadeRuralDao;
+	private PessoaDao pessoaDao;
 
 	@Autowired
-	private PessoaDao pessoaDao;
+	private PropriedadeRuralDao propriedadeRuralDao;
 
 	@Autowired
 	private PublicoAlvoDao publicoAlvoDao;
 
 	@Autowired
-	private PropriedadeRuralDao propriedadeRuralDao;
+	private PublicoAlvoPropriedadeRuralDao publicoAlvoPropriedadeRuralDao;
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
@@ -101,17 +101,17 @@ public class SisaterPublicoAlvoPropriedadeRuralCmd extends _Comando {
 
 	private PublicoAlvoPropriedadeRural novoPublicoAlvoPropriedadeRural(ResultSet rs) throws SQLException, BoException {
 		PublicoAlvoPropriedadeRural result = new PublicoAlvoPropriedadeRural();
-		
+
 		String pessoaChaveSisater = impUtil.chaveBeneficiario(base, rs.getString("IDBEN").substring(0, 2), rs.getString("IDBEN"));
 		Pessoa pessoa = pessoaDao.findOneByChaveSisater(pessoaChaveSisater);
-		
+
 		String propriedadeChaveSisater = impUtil.chavePropriedadeRural(base, rs.getString("IDPRP").substring(0, 2), rs.getString("IDPRP"));
 		PropriedadeRural propriedadeRural = propriedadeRuralDao.findOneByChaveSisater(propriedadeChaveSisater);
 
 		if (pessoa != null && pessoa.getPublicoAlvo() == null) {
 			pessoa.setPublicoAlvo(publicoAlvoDao.findOneByPessoa(pessoa));
 		}
-		
+
 		if (pessoa == null || pessoa.getPublicoAlvo() == null || propriedadeRural == null) {
 			throw new BoException("Pessoa ou Propriedade Rural inexistente [%s] [%s]", pessoaChaveSisater, propriedadeChaveSisater);
 			// logger.error(String.format("Pessoa ou Propriedade Rural

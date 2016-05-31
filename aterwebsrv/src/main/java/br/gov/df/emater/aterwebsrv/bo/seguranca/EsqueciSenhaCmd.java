@@ -19,30 +19,30 @@ import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 
 @Service("SegurancaEsqueciSenhaCmd")
 public class EsqueciSenhaCmd extends _Comando {
-	
+
 	@Autowired
 	private UsuarioDao usuarioDao;
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		String email = (String) contexto.getRequisicao();
-		
+
 		Usuario usuario = usuarioDao.findByPessoaEmailEmailEndereco(email);
-		
+
 		if (usuario == null) {
 			throw new BoException("E-mail vinculado a nenhuma conta de usuário do sistema. Nenhum e-mail foi enviado!");
 		}
 		if (!usuario.isEnabled()) {
 			throw new BoException("A conta vinculada a este e-mail está inativa. Para maiores informações, entre em contato com o administrador do sistema. Nenhum e-mail foi enviado!");
 		}
-		
+
 		StringBuilder novaSenha = new StringBuilder();
 		novaSenha.append("Nova");
 		novaSenha.append(UtilitarioString.zeroEsquerda((int) (9999 * Math.random()), 4));
 
 		Calendar acessoExpiraEm = Calendar.getInstance();
 		acessoExpiraEm.roll(Calendar.DATE, 1);
-		
+
 		StringBuilder texto = new StringBuilder();
 		texto.append("Senha de acesso ao sistema ATER web. Para tal:").append("\n");
 		texto.append("1. acesse o sistema e efetue o login");
@@ -61,19 +61,19 @@ public class EsqueciSenhaCmd extends _Comando {
 
 		usuario.setPassword(Criptografia.MD5(usuario.getId() + novaSenha.toString()));
 		usuario.setUsuarioStatusConta(UsuarioStatusConta.R);
-		usuario.setAcessoExpiraEm(acessoExpiraEm);		
+		usuario.setAcessoExpiraEm(acessoExpiraEm);
 		usuarioDao.saveAndFlush(usuario);
-		
+
 		Map<String, Object> requisicao = new HashMap<String, Object>();
-		
+
 		requisicao.put("para", email);
 		// requisicao.put("copiaPara", email);
 		requisicao.put("remetente", "aterweb@emater.df.gov.br");
 		requisicao.put("assunto", "ATER web, acesso");
 		requisicao.put("texto", texto.toString());
-		
+
 		contexto.setRequisicao(requisicao);
-		
+
 		return false;
 	}
 

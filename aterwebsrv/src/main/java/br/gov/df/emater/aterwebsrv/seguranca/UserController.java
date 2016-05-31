@@ -24,15 +24,6 @@ public class UserController {
 	@Autowired
 	UsuarioDao userRepository;
 
-	@RequestMapping(value = "/api/users/current", method = RequestMethod.GET)
-	public Usuario getCurrent(Principal p) {
-		final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication instanceof UserAuthentication) {
-			return ((UserAuthentication) authentication).getDetails();
-		}
-		return new Usuario(authentication.getName()); // anonymous user support
-	}
-
 	@RequestMapping(value = "/api/users/current", method = RequestMethod.PATCH)
 	public ResponseEntity<String> changePassword(@RequestBody final Usuario user) {
 		final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -52,6 +43,15 @@ public class UserController {
 		return new ResponseEntity<String>("password changed", HttpStatus.OK);
 	}
 
+	@RequestMapping(value = "/api/users/current", method = RequestMethod.GET)
+	public Usuario getCurrent(Principal p) {
+		final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication instanceof UserAuthentication) {
+			return ((UserAuthentication) authentication).getDetails();
+		}
+		return new Usuario(authentication.getName()); // anonymous user support
+	}
+
 	@RequestMapping(value = "/admin/api/users/{user}/grant/role/{role}", method = RequestMethod.POST)
 	public ResponseEntity<String> grantRole(
 			@PathVariable Usuario user/* , @PathVariable UserRole role */) {
@@ -64,6 +64,11 @@ public class UserController {
 		return new ResponseEntity<String>("role granted", HttpStatus.OK);
 	}
 
+	@RequestMapping(value = "/admin/api/users", method = RequestMethod.GET)
+	public List<Usuario> list() {
+		return userRepository.findAll();
+	}
+
 	@RequestMapping(value = "/admin/api/users/{user}/revoke/role/{role}", method = RequestMethod.POST)
 	public ResponseEntity<String> revokeRole(
 			@PathVariable Usuario user/* , @PathVariable UserRole role */) {
@@ -74,10 +79,5 @@ public class UserController {
 		// user.revokeRole(role);
 		userRepository.saveAndFlush(user);
 		return new ResponseEntity<String>("role revoked", HttpStatus.OK);
-	}
-
-	@RequestMapping(value = "/admin/api/users", method = RequestMethod.GET)
-	public List<Usuario> list() {
-		return userRepository.findAll();
 	}
 }

@@ -11,5 +11,5 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaEndereco;
 public interface PessoaEnderecoDao extends JpaRepository<PessoaEndereco, Integer> {
 
 	PessoaEndereco findOneByPessoaAndEndereco(Pessoa result, Endereco endereco);
-	
+
 }

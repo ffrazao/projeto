@@ -44,6 +44,7 @@ public class CnaeSecao extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return descricao;
 	}
 
+	@Override
 	public Integer getId() {
 		return id;
 	}
@@ -56,6 +57,7 @@ public class CnaeSecao extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.descricao = descricao;
 	}
 
+	@Override
 	public void setId(Integer id) {
 		this.id = id;
 	}

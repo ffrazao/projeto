@@ -11,10 +11,10 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 
 public interface ColetaDao extends JpaRepository<Coleta, Integer> {
 
-	Coleta findOneByChaveSisater(String chaveColetaFormulario);
-
 	List<Coleta> findByFormularioVersaoAndPessoa(FormularioVersao fv, Pessoa pessoa);
 
 	List<Coleta> findByFormularioVersaoAndPropriedadeRural(FormularioVersao fv, PropriedadeRural propriedadeRural);
+
+	Coleta findOneByChaveSisater(String chaveColetaFormulario);
 
 }

@@ -64,12 +64,16 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 	@JsonDeserialize(using = JsonDeserializerTimestamp.class)
 	private Calendar acessoExpiraEm;
 
-	@Column(name = "alteracao_data")
+	@Column(name = "alteracao_data", insertable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	@JsonSerialize(using = JsonSerializerData.class)
 	@JsonDeserialize(using = JsonDeserializerData.class)
 	private Calendar alteracaoData;
+
+	@ManyToOne
+	@JoinColumn(name = "alteracao_usuario_id")
+	private Usuario alteracaoUsuario;
 
 	@OneToMany(mappedBy = "usuario")
 	private Set<UsuarioPerfil> authorities;
@@ -91,12 +95,16 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
-	@Column(name = "inclusao_data")
+	@Column(name = "inclusao_data", insertable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	@JsonSerialize(using = JsonSerializerData.class)
 	@JsonDeserialize(using = JsonDeserializerData.class)
 	private Calendar inclusaoData;
+
+	@ManyToOne
+	@JoinColumn(name = "inclusao_usuario_id")
+	private Usuario inclusaoUsuario;
 
 	@Column(name = "info_sobre_usuario")
 	private String infoSobreUsuario;
@@ -133,17 +141,9 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 	// @Field(index = Index.YES, store = Store.YES)
 	private String username;
 
-	@ManyToOne
-	@JoinColumn(name = "alteracao_usuario_id")
-	private Usuario alteracaoUsuario;
-
 	@Column(name = "usuario_atualizou_perfil")
 	@Enumerated(EnumType.STRING)
 	protected Confirmacao usuarioAtualizouPerfil;
-
-	@ManyToOne
-	@JoinColumn(name = "inclusao_usuario_id")
-	private Usuario inclusaoUsuario;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "situacao")
@@ -188,8 +188,14 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 		return acessoExpiraEm;
 	}
 
+	@Override
 	public Calendar getAlteracaoData() {
 		return alteracaoData;
+	}
+
+	@Override
+	public Usuario getAlteracaoUsuario() {
+		return alteracaoUsuario;
 	}
 
 	@Override
@@ -214,8 +220,14 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 		return id;
 	}
 
+	@Override
 	public Calendar getInclusaoData() {
 		return inclusaoData;
+	}
+
+	@Override
+	public Usuario getInclusaoUsuario() {
+		return inclusaoUsuario;
 	}
 
 	public String getInfoSobreUsuario() {
@@ -260,16 +272,8 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 		return username;
 	}
 
-	public Usuario getAlteracaoUsuario() {
-		return alteracaoUsuario;
-	}
-
 	public Confirmacao getUsuarioAtualizouPerfil() {
 		return usuarioAtualizouPerfil;
-	}
-
-	public Usuario getInclusaoUsuario() {
-		return inclusaoUsuario;
 	}
 
 	public UsuarioStatusConta getUsuarioStatusConta() {
@@ -284,6 +288,7 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 		return result;
 	}
 
+	@Override
 	public Usuario infoBasica() {
 		return new Usuario(this.username, this.pessoa == null ? null : this.pessoa.infoBasica(), this.unidadeOrganizacional == null ? null : this.unidadeOrganizacional.infoBasica());
 	}
@@ -316,8 +321,14 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 		this.acessoExpiraEm = acessoExpiraEm;
 	}
 
+	@Override
 	public void setAlteracaoData(Calendar alteracaoData) {
 		this.alteracaoData = alteracaoData;
+	}
+
+	@Override
+	public void setAlteracaoUsuario(Usuario usuarioAlteracao) {
+		this.alteracaoUsuario = usuarioAlteracao;
 	}
 
 	public void setAuthorities(Set<UsuarioPerfil> authorities) {
@@ -341,8 +352,14 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 		this.id = id;
 	}
 
+	@Override
 	public void setInclusaoData(Calendar inclusaoData) {
 		this.inclusaoData = inclusaoData;
+	}
+
+	@Override
+	public void setInclusaoUsuario(Usuario inclusaoUsuario) {
+		this.inclusaoUsuario = inclusaoUsuario;
 	}
 
 	public void setInfoSobreUsuario(String infoSobreUsuario) {
@@ -385,16 +402,8 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 		this.username = username;
 	}
 
-	public void setAlteracaoUsuario(Usuario usuarioAlteracao) {
-		this.alteracaoUsuario = usuarioAlteracao;
-	}
-
 	public void setUsuarioAtualizouPerfil(Confirmacao usuarioAtualizouPerfil) {
 		this.usuarioAtualizouPerfil = usuarioAtualizouPerfil;
-	}
-
-	public void setInclusaoUsuario(Usuario inclusaoUsuario) {
-		this.inclusaoUsuario = inclusaoUsuario;
 	}
 
 	public void setUsuarioStatusConta(UsuarioStatusConta usuarioStatusConta) {

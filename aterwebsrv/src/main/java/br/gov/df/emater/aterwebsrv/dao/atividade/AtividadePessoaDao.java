@@ -12,8 +12,8 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.AtividadePessoaParticipacao;
 @Repository("AtividadePessoaDao")
 public interface AtividadePessoaDao extends JpaRepository<AtividadePessoa, Integer> {
 
-	List<AtividadePessoa> findTop10ByAtividadeIdAndParticipacaoOrderByPessoaNomeDesc(Integer atividadeId, AtividadePessoaParticipacao participacao);
-
 	List<AtividadePessoa> findByAtividadeAndParticipacao(Atividade result, AtividadePessoaParticipacao participacao);
+
+	List<AtividadePessoa> findTop10ByAtividadeIdAndParticipacaoOrderByPessoaNomeDesc(Integer atividadeId, AtividadePessoaParticipacao participacao);
 
 }

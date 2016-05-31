@@ -31,20 +31,20 @@ public class VisualizarCmd extends _Comando {
 			throw new BoException("Registro não localizado");
 		}
 		// fetch nas dependencias
-		for (ModuloFuncionalidade moduloFuncionalidade: funcionalidade.getModuloFuncionalidadeList()) {
+		for (ModuloFuncionalidade moduloFuncionalidade : funcionalidade.getModuloFuncionalidadeList()) {
 			moduloFuncionalidade.setFuncionalidade(null);
 			moduloFuncionalidade.setModulo(moduloFuncionalidade.getModulo().infoBasica());
 		}
-		for (FuncionalidadeComando funcionalidadeComando: funcionalidade.getFuncionalidadeComandoList()) {
+		for (FuncionalidadeComando funcionalidadeComando : funcionalidade.getFuncionalidadeComandoList()) {
 			funcionalidadeComando.setFuncionalidade(null);
 			funcionalidadeComando.setComando(funcionalidadeComando.getComando().infoBasica());
 		}
 		em.detach(funcionalidade);
-		
+
 		Funcionalidade result = funcionalidade.infoBasica();
 		result.setModuloFuncionalidadeList(funcionalidade.getModuloFuncionalidadeList());
 		result.setFuncionalidadeComandoList(funcionalidade.getFuncionalidadeComandoList());
-		
+
 		contexto.setResposta(result);
 
 		return false;

@@ -11,8 +11,8 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 @Repository("EmpregoDao")
 public interface EmpregoDao extends JpaRepository<Emprego, Integer> {
 
-	List<Emprego> findByPessoaRelacionamentoListPessoaIn(Pessoa pessoa);
-
 	List<Emprego> findByMatricula(String matricula);
+
+	List<Emprego> findByPessoaRelacionamentoListPessoaIn(Pessoa pessoa);
 
 }

@@ -17,6 +17,15 @@ import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoFormaComposica
 
 class ProducaoCalculo {
 
+	public static String getComposicao(ProducaoForma producaoForma) {
+		List<Integer> idList = new ArrayList<Integer>();
+		for (ProducaoFormaComposicao composicao : producaoForma.getProducaoFormaComposicaoList()) {
+			idList.add(composicao.getFormaProducaoValor().getId());
+		}
+		Collections.sort(idList);
+		return UtilitarioString.collectionToString(idList);
+	}
+
 	private Map<String, Object> bemClassificacaoList;
 
 	private Map<String, CalculoItem> matriz = new HashMap<String, CalculoItem>();
@@ -135,15 +144,6 @@ class ProducaoCalculo {
 
 	public Map<String, Object> getBemClassificacaoList() {
 		return bemClassificacaoList;
-	}
-
-	public static String getComposicao(ProducaoForma producaoForma) {
-		List<Integer> idList = new ArrayList<Integer>();
-		for (ProducaoFormaComposicao composicao : producaoForma.getProducaoFormaComposicaoList()) {
-			idList.add(composicao.getFormaProducaoValor().getId());
-		}
-		Collections.sort(idList);
-		return UtilitarioString.collectionToString(idList);
 	}
 
 	public Map<String, CalculoItem> getMatriz() {

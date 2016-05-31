@@ -443,9 +443,6 @@ public class SisaterPublicoAlvoCmd extends _Comando {
 	@Autowired
 	private ColetaDao coletaDao;
 
-	@Autowired
-	private PessoaRelacionamentoDao pessoaRelacionamentoDao;
-
 	private Connection con;
 
 	private Estado distritoFederal;
@@ -472,6 +469,9 @@ public class SisaterPublicoAlvoCmd extends _Comando {
 
 	@Autowired
 	private PessoaDao pessoaDao;
+
+	@Autowired
+	private PessoaRelacionamentoDao pessoaRelacionamentoDao;
 
 	private PreparedStatement psDivida;
 
@@ -694,7 +694,7 @@ public class SisaterPublicoAlvoCmd extends _Comando {
 					}
 
 					captarDiagnosticoList(rs, pessoa);
-					
+
 					cont++;
 					transactionManager.commit(transactionStatus);
 				} catch (Exception e) {

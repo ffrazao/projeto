@@ -11,7 +11,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -20,6 +19,11 @@ import org.springframework.stereotype.Component;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class CORSFilter implements Filter {
 
+	@Override
+	public void destroy() {
+	}
+
+	@Override
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) res;
@@ -30,9 +34,9 @@ public class CORSFilter implements Filter {
 			response.addHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, x-auth-token");
 			response.addHeader("Access-Control-Max-Age", "3600");
 			response.addHeader("Access-Control-Allow-Credentials", "true");
-			
+
 			response.addHeader("Access-Control-Expose-Headers", "Authorization, Link");
-			response.setStatus(Response.SC_OK);
+			response.setStatus(HttpServletResponse.SC_OK);
 			response.getWriter().print("OK");
 			response.getWriter().flush();
 		} else {
@@ -40,9 +44,7 @@ public class CORSFilter implements Filter {
 		}
 	}
 
+	@Override
 	public void init(FilterConfig filterConfig) {
-	}
-
-	public void destroy() {
 	}
 }

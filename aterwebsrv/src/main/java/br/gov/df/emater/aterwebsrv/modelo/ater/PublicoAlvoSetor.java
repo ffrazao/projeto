@@ -26,7 +26,7 @@ public class PublicoAlvoSetor extends EntidadeBase implements _ChavePrimaria<Int
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "publico_alvo_id")
 	private PublicoAlvo publicoAlvo;

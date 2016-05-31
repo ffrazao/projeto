@@ -57,6 +57,14 @@ public class SisaterAcompanhamentoAterIncluirAntes2014Cmd extends _Comando {
 
 	private class CheckAtividadeList {
 
+		private Atividade atividade;
+
+		private PreparedStatement demandantePs;
+
+		private Integer idAtr;
+
+		private String idUnd;
+
 		private void acumulaAssunto(Assunto assunto) {
 			if (atividade.getAssuntoList() == null) {
 				atividade.setAssuntoList(new ArrayList<AtividadeAssunto>());
@@ -68,6 +76,10 @@ public class SisaterAcompanhamentoAterIncluirAntes2014Cmd extends _Comando {
 			}
 			atividade.getAssuntoList().add(new AtividadeAssunto(assunto));
 			return;
+		}
+
+		private void acumulaChaveSisater(String chaveAtividade) {
+			atividade.getChaveSisaterList().add(new AtividadeChaveSisater(chaveAtividade));
 		}
 
 		private void acumulaPessoaDemandante() throws Exception {
@@ -98,7 +110,7 @@ public class SisaterAcompanhamentoAterIncluirAntes2014Cmd extends _Comando {
 				atividade.setPessoaExecutorList(new ArrayList<AtividadePessoa>());
 				atividade.getPessoaExecutorList().add(new AtividadePessoa(impUtil.deParaUnidadeOrganizacional(emater, base.getSigla()), null, atividade.getInicio(), AtividadePessoaParticipacao.E, Confirmacao.N));
 			}
-			if (empregado != null) {				
+			if (empregado != null) {
 				for (AtividadePessoa item : atividade.getPessoaExecutorList()) {
 					if (item.getPessoa() != null && empregado.getId().equals(item.getPessoa().getId())) {
 						return;
@@ -107,18 +119,6 @@ public class SisaterAcompanhamentoAterIncluirAntes2014Cmd extends _Comando {
 				atividade.getPessoaExecutorList().add(new AtividadePessoa(null, empregado, atividade.getInicio(), AtividadePessoaParticipacao.E, Confirmacao.S));
 			}
 		}
-
-		private void acumulaChaveSisater(String chaveAtividade) {
-			atividade.getChaveSisaterList().add(new AtividadeChaveSisater(chaveAtividade));
-		}
-
-		private String idUnd;
-
-		private Integer idAtr;
-
-		private Atividade atividade;
-
-		private PreparedStatement demandantePs;
 
 		void importar(DbSater base, Principal usuario) throws Exception {
 			impUtil.criarMarcaTabelaSisater(con, TABELA);
@@ -171,28 +171,6 @@ public class SisaterAcompanhamentoAterIncluirAntes2014Cmd extends _Comando {
 			}
 		}
 
-		private void salvar(Principal usuario) throws Exception {
-			if (atividade != null) {
-				em.detach(atividade);
-
-				// salvar no MySQL e no Firebird
-				atividade.setId((Integer) facadeBo.atividadeSalvar(usuario, atividade).getResposta());
-
-				int ini;
-				String c;
-				for (AtividadeChaveSisater chave : atividade.getChaveSisaterList()) {
-					c = chave.getChaveSisater();
-
-					ini = c.indexOf("IDUND") + 1 + "IDUND".length();
-					String idUnd = c.substring(ini, c.indexOf(",", ini));
-					ini = c.indexOf("IDATR") + 1 + "IDATR".length();
-					String idAtr = c.substring(ini, c.indexOf("]", ini));
-
-					impUtil.chaveAterWebAtualizar(con, atividade.getId(), agora, TABELA, "IDUND = ? AND IDATR = ?", idUnd, Integer.parseInt(idAtr));
-				}
-			}
-		}
-
 		private Atividade novoAtividade(ResultSet rs) throws SQLException, BoException {
 			Atividade result = new Atividade();
 
@@ -216,6 +194,28 @@ public class SisaterAcompanhamentoAterIncluirAntes2014Cmd extends _Comando {
 			result.setDetalhamento(rs.getString("ATEROBS"));
 
 			return result;
+		}
+
+		private void salvar(Principal usuario) throws Exception {
+			if (atividade != null) {
+				em.detach(atividade);
+
+				// salvar no MySQL e no Firebird
+				atividade.setId((Integer) facadeBo.atividadeSalvar(usuario, atividade).getResposta());
+
+				int ini;
+				String c;
+				for (AtividadeChaveSisater chave : atividade.getChaveSisaterList()) {
+					c = chave.getChaveSisater();
+
+					ini = c.indexOf("IDUND") + 1 + "IDUND".length();
+					String idUnd = c.substring(ini, c.indexOf(",", ini));
+					ini = c.indexOf("IDATR") + 1 + "IDATR".length();
+					String idAtr = c.substring(ini, c.indexOf("]", ini));
+
+					impUtil.chaveAterWebAtualizar(con, atividade.getId(), agora, TABELA, "IDUND = ? AND IDATR = ?", idUnd, Integer.parseInt(idAtr));
+				}
+			}
 		}
 	}
 
@@ -242,8 +242,6 @@ public class SisaterAcompanhamentoAterIncluirAntes2014Cmd extends _Comando {
 
 	private Calendar agora;
 
-	private Usuario ematerUsuario;
-
 	@Autowired
 	private AssuntoDao assuntoDao;
 
@@ -260,15 +258,19 @@ public class SisaterAcompanhamentoAterIncluirAntes2014Cmd extends _Comando {
 
 	private PessoaJuridica emater;
 
+	private Usuario ematerUsuario;
+
+	private RelacionamentoFuncao empregadoFuncao;
+
+	@Autowired
+	private EmpregoDao empregoDao;
+
 	private FacadeBo facadeBo;
 
 	private ImpUtil impUtil;
 
 	@Autowired
 	private MetodoDao metodoDao;
-
-	@Autowired
-	private EmpregoDao empregoDao;
 
 	private List<Metodo> metodoList = new ArrayList<Metodo>();
 
@@ -277,6 +279,9 @@ public class SisaterAcompanhamentoAterIncluirAntes2014Cmd extends _Comando {
 
 	@Autowired
 	private PessoaRelacionamentoDao pessoaRelacionamentoDao;
+
+	private DefaultTransactionDefinition transactionDefinition;
+	private PlatformTransactionManager transactionManager;
 
 	Assunto assuntoPega(String nome) throws BoException {
 		switch (nome) {
@@ -309,8 +314,38 @@ public class SisaterAcompanhamentoAterIncluirAntes2014Cmd extends _Comando {
 		return assunto;
 	}
 
-	private PlatformTransactionManager transactionManager;
-	private DefaultTransactionDefinition transactionDefinition;
+	private Pessoa empregadoPega(String matricula) throws BoException {
+		matricula = matricula.trim().toUpperCase();
+		matricula = UtilitarioString.substituirTudo(matricula, "-", "");
+		matricula = UtilitarioString.substituirTudo(matricula, ".", "");
+		matricula = UtilitarioString.zeroEsquerda(matricula, 8);
+
+		if (matricula.endsWith("T")) {
+			return null;
+		}
+
+		List<Emprego> empregoList = empregoDao.findByMatricula(matricula);
+
+		if (empregoList == null || empregoList.size() != 1) {
+			throw new BoException("Empregado não identificado [%s]", matricula);
+		}
+
+		Pessoa pessoa = null;
+		List<PessoaRelacionamento> pessoaRelacionamentoList = empregoList.get(0).getPessoaRelacionamentoList();
+		if (pessoaRelacionamentoList == null) {
+			pessoaRelacionamentoList = pessoaRelacionamentoDao.findByRelacionamento(empregoList.get(0));
+		}
+		for (PessoaRelacionamento pessoaRelacionamento : pessoaRelacionamentoList) {
+			if (empregadoFuncao.getId().equals(pessoaRelacionamento.getRelacionamentoFuncao().getId())) {
+				pessoa = pessoaRelacionamento.getPessoa();
+				break;
+			}
+		}
+		if (pessoa == null) {
+			throw new BoException("Empregado não cadastrado [%s]", matricula);
+		}
+		return pessoa;
+	}
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
@@ -350,40 +385,5 @@ public class SisaterAcompanhamentoAterIncluirAntes2014Cmd extends _Comando {
 		}
 		metodoList.add(metodo);
 		return metodo;
-	}
-
-	private RelacionamentoFuncao empregadoFuncao;
-
-	private Pessoa empregadoPega(String matricula) throws BoException {
-		matricula = matricula.trim().toUpperCase();
-		matricula = UtilitarioString.substituirTudo(matricula, "-", "");
-		matricula = UtilitarioString.substituirTudo(matricula, ".", "");
-		matricula = UtilitarioString.zeroEsquerda(matricula, 8);
-		
-		if (matricula.endsWith("T")) {
-			return null;
-		}
-
-		List<Emprego> empregoList = empregoDao.findByMatricula(matricula);
-
-		if (empregoList == null || empregoList.size() != 1) {
-			throw new BoException("Empregado não identificado [%s]", matricula);
-		}
-
-		Pessoa pessoa = null;
-		List<PessoaRelacionamento> pessoaRelacionamentoList = empregoList.get(0).getPessoaRelacionamentoList();
-		if (pessoaRelacionamentoList == null) {
-			pessoaRelacionamentoList = pessoaRelacionamentoDao.findByRelacionamento(empregoList.get(0));
-		}
-		for (PessoaRelacionamento pessoaRelacionamento : pessoaRelacionamentoList) {
-			if (empregadoFuncao.getId().equals(pessoaRelacionamento.getRelacionamentoFuncao().getId())) {
-				pessoa = pessoaRelacionamento.getPessoa();
-				break;
-			}
-		}
-		if (pessoa == null) {
-			throw new BoException("Empregado não cadastrado [%s]", matricula);
-		}
-		return pessoa;
 	}
 }

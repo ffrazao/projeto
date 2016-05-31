@@ -76,6 +76,7 @@ public class Ocorrencia extends EntidadeBase implements _ChavePrimaria<Integer> 
 		return automatico;
 	}
 
+	@Override
 	public Integer getId() {
 		return id;
 	}
@@ -104,6 +105,7 @@ public class Ocorrencia extends EntidadeBase implements _ChavePrimaria<Integer> 
 		this.automatico = automatico;
 	}
 
+	@Override
 	public void setId(Integer id) {
 		this.id = id;
 	}

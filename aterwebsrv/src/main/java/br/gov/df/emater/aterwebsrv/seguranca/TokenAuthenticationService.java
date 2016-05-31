@@ -20,11 +20,15 @@ import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 @Service
 public class TokenAuthenticationService {
 
+	// private static final long _ONE_DAYS = 1000 * 60 * 60 * 24 * 1;
+
+	// private static final long _ONE_HOUR = 1000 * 60 * 60 * 1;
+
+	private static final long _TEN_DAYS = 1000 * 60 * 60 * 24 * 10;
+
 	private static final String AUTH_HEADER_NAME = "X-AUTH-TOKEN";
-	private static final long TEN_DAYS = 1000 * 60 * 60 * 24 * 10;
-//	private static final long ONE_DAYS = 1000 * 60 * 60 * 24 * 1;
-//	private static final long ONE_HOUR = 1000 * 60 * 60 * 1;
-	private static final long EXPIRES_TIME = TEN_DAYS;
+
+	private static final long EXPIRES_TIME = _TEN_DAYS;
 
 	private final TokenHandler tokenHandler;
 
@@ -39,11 +43,11 @@ public class TokenAuthenticationService {
 		expiracao.setTime(new Date(System.currentTimeMillis() + EXPIRES_TIME));
 		user.setExpires(expiracao);
 		String token = tokenHandler.createTokenForUser(user);
-//		StringBuffer buf = new StringBuffer();
-//		for (int i = 0; i < 2; i++) {
-//			buf.append("0");
-//		}
-//		response.addHeader(AUTH_HEADER_NAME, buf.toString());
+		// StringBuffer buf = new StringBuffer();
+		// for (int i = 0; i < 2; i++) {
+		// buf.append("0");
+		// }
+		// response.addHeader(AUTH_HEADER_NAME, buf.toString());
 		response.addHeader(AUTH_HEADER_NAME, token);
 		response.addCookie(new Cookie(AUTH_HEADER_NAME, token));
 		response.getWriter().print(token);

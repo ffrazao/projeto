@@ -412,7 +412,7 @@ public class ImpUtil {
 		if (registro == null) {
 			return null;
 		}
-		return Confirmacao.valueOf(Confirmacao.class, registro);
+		return Enum.valueOf(Confirmacao.class, registro);
 	}
 
 	public ConfirmacaoDap deParaDapSituacao(String registro) {

@@ -45,14 +45,6 @@ public class PessoaPendencia extends EntidadeBase implements _ChavePrimaria<Inte
 	public PessoaPendencia() {
 	}
 
-	public PessoaPendencia(Serializable id) {
-		super(id);
-	}
-
-	public PessoaPendencia(PendenciaCodigo codigo, String descricao) {
-		this(null, codigo, descricao);
-	}
-
 	public PessoaPendencia(Integer id, PendenciaCodigo codigo, String descricao) {
 		this.setId(id);
 		this.setCodigo(codigo.name());
@@ -60,6 +52,15 @@ public class PessoaPendencia extends EntidadeBase implements _ChavePrimaria<Inte
 		this.setDescricao(descricao);
 	}
 
+	public PessoaPendencia(PendenciaCodigo codigo, String descricao) {
+		this(null, codigo, descricao);
+	}
+
+	public PessoaPendencia(Serializable id) {
+		super(id);
+	}
+
+	@Override
 	public String getCodigo() {
 		return codigo;
 	}
@@ -89,6 +90,7 @@ public class PessoaPendencia extends EntidadeBase implements _ChavePrimaria<Inte
 		return tipo;
 	}
 
+	@Override
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}

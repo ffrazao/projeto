@@ -1,7 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.dominio;
 
 public enum UnidadeOrganizacionalClassificacao {
-	
+
 	AD("Administração", 1), AP("Apoio", 4), OP("Operacional", 3), TA("Tática", 2);
 
 	private String descricao;
@@ -21,6 +21,7 @@ public enum UnidadeOrganizacionalClassificacao {
 		return ordem;
 	}
 
+	@Override
 	public String toString() {
 		return this.descricao;
 	};

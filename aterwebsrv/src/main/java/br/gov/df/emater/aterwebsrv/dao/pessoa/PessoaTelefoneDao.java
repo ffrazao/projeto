@@ -11,5 +11,5 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Telefone;
 public interface PessoaTelefoneDao extends JpaRepository<PessoaTelefone, Integer> {
 
 	PessoaTelefone findOneByPessoaAndTelefone(Pessoa result, Telefone telefone);
-	
+
 }

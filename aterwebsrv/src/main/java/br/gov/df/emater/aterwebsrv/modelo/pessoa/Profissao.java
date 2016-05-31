@@ -51,6 +51,11 @@ public class Profissao extends EntidadeBase implements _ChavePrimaria<Integer>, 
 		return nome;
 	}
 
+	@Override
+	public Profissao infoBasica() {
+		return new Profissao(this.id, this.nome);
+	}
+
 	public void setCodigoCbo(String codigoCbo) {
 		this.codigoCbo = codigoCbo;
 	}
@@ -62,11 +67,6 @@ public class Profissao extends EntidadeBase implements _ChavePrimaria<Integer>, 
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	@Override
-	public Profissao infoBasica() {
-		return new Profissao(this.id, this.nome);
 	}
 
 }

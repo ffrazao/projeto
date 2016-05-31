@@ -60,6 +60,7 @@ public class Area extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return endereco;
 	}
 
+	@Override
 	public Integer getId() {
 		return id;
 	}
@@ -80,6 +81,7 @@ public class Area extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.endereco = endereco;
 	}
 
+	@Override
 	public void setId(Integer id) {
 		this.id = id;
 	}

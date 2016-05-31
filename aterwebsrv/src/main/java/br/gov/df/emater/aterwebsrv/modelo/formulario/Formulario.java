@@ -121,6 +121,7 @@ public class Formulario extends EntidadeBase implements _ChavePrimaria<Integer>,
 		return termino;
 	}
 
+	@Override
 	public Formulario infoBasica() {
 		return new Formulario(this.getId(), this.getNome(), this.getCodigo(), this.getSituacao(), this.getInicio(), this.getTermino());
 	}

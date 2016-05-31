@@ -44,15 +44,15 @@ public class Modulo extends EntidadeBase implements _ChavePrimaria<Integer>, Inf
 	public Modulo() {
 	}
 
-	public Modulo(Serializable id) {
-		super(id);
-	}
-
 	public Modulo(Integer id, String nome, String codigo, Confirmacao ativo) {
 		this.id = id;
 		this.nome = nome;
 		this.codigo = codigo;
 		this.ativo = ativo;
+	}
+
+	public Modulo(Serializable id) {
+		super(id);
 	}
 
 	@Override

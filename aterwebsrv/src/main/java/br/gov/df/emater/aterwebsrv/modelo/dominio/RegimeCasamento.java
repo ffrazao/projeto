@@ -2,7 +2,7 @@ package br.gov.df.emater.aterwebsrv.modelo.dominio;
 
 public enum RegimeCasamento {
 
-	N("Não se aplica", 1), P("Comunhão parcial", 2), T("Comunhão total", 3), S("Separação de bens", 4), U("União estável", 5);
+	N("Não se aplica", 1), P("Comunhão parcial", 2), S("Separação de bens", 4), T("Comunhão total", 3), U("União estável", 5);
 
 	private String descricao;
 

@@ -8,7 +8,7 @@ import br.gov.df.emater.aterwebsrv.modelo.dto.PropriedadeRuralCadFiltroDto;
 
 @Service("PropriedadeRuralFiltroNovoCmd")
 public class FiltroNovoCmd implements Command {
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean execute(Context context) throws Exception {

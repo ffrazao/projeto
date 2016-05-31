@@ -48,7 +48,7 @@ public class PessoaRest {
 	public Resposta filtroExecutar(@RequestBody PessoaCadFiltroDto filtro, Principal usuario) throws Exception {
 		return new Resposta(facadeBo.pessoaFiltroExecutar(usuario, filtro).getResposta());
 	}
-	
+
 	@RequestMapping("/filtro-novo")
 	public Resposta filtroNovo(Principal usuario) throws Exception {
 		return new Resposta(facadeBo.pessoaFiltroNovo(usuario).values());

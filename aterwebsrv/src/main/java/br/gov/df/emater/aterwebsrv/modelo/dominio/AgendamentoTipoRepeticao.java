@@ -2,8 +2,7 @@ package br.gov.df.emater.aterwebsrv.modelo.dominio;
 
 public enum AgendamentoTipoRepeticao {
 
-	C("Contagem de Vezes"), 
-	D("Data T�rmino do Agendamento");
+	C("Contagem de Vezes"), D("Data T�rmino do Agendamento");
 
 	private String descricao;
 

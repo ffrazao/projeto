@@ -18,15 +18,15 @@ public class EmpregadoContaUsuarioExcelCarregarCmd extends _Comando {
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
-		
+
 		File tempDir = (File) contexto.get("tempDir");
-		
+
 		File contaEmailEmpregadoExcel = new File(tempDir, "Contas de Email EMATER.xlsx");
 		if (!contaEmailEmpregadoExcel.exists()) {
 			throw new BoException("Não foi possivel encontrar o arquivo das contas de email dos usuario");
 		}
 		List<Map<String, Object>> mapa = UtilitarioExcel.criarMapaDoArquivoExcel(contaEmailEmpregadoExcel, 0, 0);
-		
+
 		Collections.sort(mapa, new Comparator<Map<String, Object>>() {
 			@Override
 			public int compare(Map<String, Object> m1, Map<String, Object> m2) {

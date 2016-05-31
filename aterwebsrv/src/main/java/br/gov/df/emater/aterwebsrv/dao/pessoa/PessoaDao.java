@@ -12,15 +12,15 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 @Repository("PessoaDao")
 public interface PessoaDao extends JpaRepository<Pessoa, Integer>, PessoaDaoCustom {
 
+	List<Pessoa> findByInscricaoEstadual(String numero);
+
+	List<Pessoa> findByInscricaoEstadualUfAndInscricaoEstadual(String uf, String numero);
+
 	Pessoa findByNome(String nome);
 
 	Pessoa findOneByApelidoSigla(String string);
 
 	Pessoa findOneByChaveSisater(String chaveSisater);
-
-	List<Pessoa> findByInscricaoEstadualUfAndInscricaoEstadual(String uf, String numero);
-
-	List<Pessoa> findByInscricaoEstadual(String numero);
 
 	@Modifying
 	@Query("update Pessoa p set p.inscricaoEstadual = null, p.inscricaoEstadualUf = null where p = ?1")

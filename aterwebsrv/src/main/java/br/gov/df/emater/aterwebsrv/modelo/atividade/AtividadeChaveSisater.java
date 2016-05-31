@@ -49,6 +49,7 @@ public class AtividadeChaveSisater extends EntidadeBase implements _ChavePrimari
 		return chaveSisater;
 	}
 
+	@Override
 	public Integer getId() {
 		return id;
 	}
@@ -61,6 +62,7 @@ public class AtividadeChaveSisater extends EntidadeBase implements _ChavePrimari
 		this.chaveSisater = chaveSisater;
 	}
 
+	@Override
 	public void setId(Integer id) {
 		this.id = id;
 	}

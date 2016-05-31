@@ -30,16 +30,16 @@ public class VisualizarCmd extends _Comando {
 	public boolean executar(_Contexto contexto) throws Exception {
 		Integer id = null;
 		String posicao = null;
-		
+
 		if (contexto.getResposta() != null && contexto.getResposta() instanceof Map) {
 			@SuppressWarnings("unchecked")
 			Map<String, Object> requisicao = (Map<String, Object>) contexto.getResposta();
 			id = (Integer) requisicao.get("codigo");
 			posicao = (String) requisicao.get("posicao");
-		} else {			
+		} else {
 			id = (Integer) contexto.getRequisicao();
 		}
-		
+
 		Formulario formulario = dao.findOne(id);
 
 		if (formulario == null) {
@@ -60,11 +60,11 @@ public class VisualizarCmd extends _Comando {
 		}
 
 		em.detach(formulario);
-		
+
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("formulario", formulario);
 		result.put("posicao", posicao);
-		
+
 		contexto.setResposta(result);
 
 		return false;

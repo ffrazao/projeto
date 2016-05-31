@@ -12,12 +12,12 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Municipio;
 @Repository("CidadeDao")
 public interface CidadeDao extends JpaRepository<Cidade, Integer> {
 
+	List<Cidade> findByNomeLikeAndMunicipio(String cidade, Municipio brasilia);
+
+	List<Cidade> findByNomeLikeAndMunicipioEstadoSiglaIn(String nome, String... siglaEstado);
+
 	List<Cidade> findByPadraoAndMunicipio(Confirmacao padrao, Municipio municipio);
 
 	List<Cidade> findByPrincipalAndMunicipio(Confirmacao padrao, Municipio municipio);
-
-	List<Cidade> findByNomeLikeAndMunicipio(String cidade, Municipio brasilia);
-
-	List<Cidade> findByNomeLikeAndMunicipioEstadoSiglaIn(String nome, String ... siglaEstado);
 
 }

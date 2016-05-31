@@ -19,10 +19,10 @@ public class SalvarCmd extends _Comando {
 	private FuncionalidadeDao dao;
 
 	@Autowired
-	private ModuloFuncionalidadeDao moduloFuncionalidadeDao;
+	private FuncionalidadeComandoDao funcionalidadeComandoDao;
 
 	@Autowired
-	private FuncionalidadeComandoDao funcionalidadeComandoDao;
+	private ModuloFuncionalidadeDao moduloFuncionalidadeDao;
 
 	public SalvarCmd() {
 	}
@@ -30,7 +30,7 @@ public class SalvarCmd extends _Comando {
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		Funcionalidade result = (Funcionalidade) contexto.getRequisicao();
-		
+
 		result.setCodigo(result.getCodigo().toUpperCase().replaceAll("\\s", "_"));
 
 		Funcionalidade salvo = null;
@@ -75,7 +75,7 @@ public class SalvarCmd extends _Comando {
 				}
 			}
 		}
-		
+
 		// preparar para salvar
 		dao.save(result);
 

@@ -2,7 +2,7 @@ package br.gov.df.emater.aterwebsrv.modelo.dominio;
 
 public enum AtividadeFinalidade {
 
-	O("Operacional"), A("Administrativa");
+	A("Administrativa"), O("Operacional");
 
 	private String descricao;
 

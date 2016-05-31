@@ -15,11 +15,6 @@ public class Resposta implements Serializable {
 	public Resposta() {
 	}
 
-	public Resposta(Throwable resultado) {
-		this.resultado = resultado;
-		this.mensagem = resultado.getMessage();
-	}
-
 	public Resposta(Object resultado) {
 		this.resultado = resultado;
 		this.mensagem = OK;
@@ -36,6 +31,11 @@ public class Resposta implements Serializable {
 
 	public Resposta(String mensagem, Object resultado) {
 		this.mensagem = mensagem;
+	}
+
+	public Resposta(Throwable resultado) {
+		this.resultado = resultado;
+		this.mensagem = resultado.getMessage();
 	}
 
 	public String getMensagem() {

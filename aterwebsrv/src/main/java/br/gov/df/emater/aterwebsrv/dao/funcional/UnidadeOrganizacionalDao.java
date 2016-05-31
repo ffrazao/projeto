@@ -15,9 +15,8 @@ public interface UnidadeOrganizacionalDao extends JpaRepository<UnidadeOrganizac
 
 	List<UnidadeOrganizacional> findByNomeLikeAndClassificacaoIn(String nome, Set<UnidadeOrganizacionalClassificacao> classificacao);
 
+	UnidadeOrganizacional findOneByPessoaJuridicaAndNome(PessoaJuridica emater, String lotacaoNome);
+
 	UnidadeOrganizacional findOneByPessoaJuridicaAndSigla(PessoaJuridica pessoa, String lotacaoSigla);
 
-	UnidadeOrganizacional findOneByPessoaJuridicaAndNome(PessoaJuridica emater, String lotacaoNome);
-	
 }
-	

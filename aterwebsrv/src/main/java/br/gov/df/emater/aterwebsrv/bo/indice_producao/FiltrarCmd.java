@@ -60,14 +60,14 @@ public class FiltrarCmd extends _Comando {
 					// contabilizar os produtores da producao
 					List<Producao> produtorProducaoList = dao.findByAnoAndBemAndPropriedadeRuralComunidadeUnidadeOrganizacional(producao.getAno(), producao.getBem(), producao.getUnidadeOrganizacional());
 					// TODO utilizar o filtro na producao dos produtores
-					
+
 					if (produtorProducaoList != null) {
 
 						// looping pelos produtores cadastrados
 						for (Producao produtorProducao : produtorProducaoList) {
 							if (!CollectionUtils.isEmpty(filtro.getComunidadeList())) {
 								boolean continuar = false;
-								for (Comunidade comunidade: filtro.getComunidadeList()) {
+								for (Comunidade comunidade : filtro.getComunidadeList()) {
 									if (comunidade.getId().equals(produtorProducao.getPropriedadeRural().getComunidade().getId())) {
 										continuar = true;
 										break;
@@ -81,15 +81,16 @@ public class FiltrarCmd extends _Comando {
 							if (produtorProducao.getProducaoFormaList() != null) {
 								ProducaoCalculo calculoProdutorEsperada = new ProducaoCalculo(bemClassificacaoList, "Estimada");
 								ProducaoCalculo calculoProdutorConfirmada = new ProducaoCalculo(bemClassificacaoList, "Confirmada");
-								for (ProducaoForma producaoForma : produtorProducao.getProducaoFormaList()) {									
+								for (ProducaoForma producaoForma : produtorProducao.getProducaoFormaList()) {
 									String composicao = ProducaoCalculo.getComposicao(producaoForma);
 									Integer publicoAlvoId = produtorProducao.getPublicoAlvo().getId();
-									
-									// verificar se há filtro pela forma de producao
+
+									// verificar se há filtro pela forma de
+									// producao
 									if (!CollectionUtils.isEmpty(filtro.getFormaProducaoValorList())) {
 										boolean continuar = false;
-										fora: for (FormaProducaoValor formaProducaoValor: filtro.getFormaProducaoValorList()) {
-											for (String comp: composicao.split(",")) {
+										fora: for (FormaProducaoValor formaProducaoValor : filtro.getFormaProducaoValorList()) {
+											for (String comp : composicao.split(",")) {
 												if (Integer.valueOf(comp.trim()).equals(formaProducaoValor.getId())) {
 													continuar = true;
 													break fora;
@@ -99,7 +100,7 @@ public class FiltrarCmd extends _Comando {
 										if (!continuar) {
 											continue;
 										}
-									}									
+									}
 
 									// acumular os totais do produtor
 									calculoProducaoProdutoresEsperada.acumulaItem(composicao, producaoForma, publicoAlvoId, false);
@@ -123,8 +124,8 @@ public class FiltrarCmd extends _Comando {
 						// verificar se há filtro pela forma de producao
 						if (!CollectionUtils.isEmpty(filtro.getFormaProducaoValorList())) {
 							boolean continuar = false;
-							fora: for (FormaProducaoValor formaProducaoValor: filtro.getFormaProducaoValorList()) {
-								for (String comp: composicao.split(",")) {
+							fora: for (FormaProducaoValor formaProducaoValor : filtro.getFormaProducaoValorList()) {
+								for (String comp : composicao.split(",")) {
 									if (Integer.valueOf(comp.trim()).equals(formaProducaoValor.getId())) {
 										continuar = true;
 										break fora;
@@ -251,12 +252,12 @@ public class FiltrarCmd extends _Comando {
 			for (ProducaoForma producaoForma : producaoFormaList) {
 				registro = fetchProducaoForma(producaoForma);
 				String composicao = ProducaoCalculo.getComposicao(producaoForma);
-				
+
 				// verificar se há filtro pela forma de producao
 				if (!CollectionUtils.isEmpty(filtro.getFormaProducaoValorList())) {
 					boolean continuar = false;
-					fora: for (FormaProducaoValor formaProducaoValor: filtro.getFormaProducaoValorList()) {
-						for (String comp: composicao.split(",")) {
+					fora: for (FormaProducaoValor formaProducaoValor : filtro.getFormaProducaoValorList()) {
+						for (String comp : composicao.split(",")) {
 							if (Integer.valueOf(comp.trim()).equals(formaProducaoValor.getId())) {
 								continuar = true;
 								break fora;

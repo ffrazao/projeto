@@ -2,7 +2,7 @@ package br.gov.df.emater.aterwebsrv.modelo.dominio;
 
 public enum ConfirmacaoOpcional {
 
-	N("Não"), S("Sim"), O("Opcional");
+	N("Não"), O("Opcional"), S("Sim");
 
 	private String descricao;
 

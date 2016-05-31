@@ -79,7 +79,7 @@ public class VisualizarCmd extends _Comando {
 		if (result.getArquivoList() != null) {
 			for (PessoaArquivo pessoaArquivo : result.getArquivoList()) {
 				pessoaArquivo.setPessoa(null);
-				pessoaArquivo.setArquivo(pessoaArquivo.getArquivo() == null? null : pessoaArquivo.getArquivo().infoBasica());
+				pessoaArquivo.setArquivo(pessoaArquivo.getArquivo() == null ? null : pessoaArquivo.getArquivo().infoBasica());
 			}
 		}
 		if (result.getEmailList() != null) {
@@ -103,12 +103,13 @@ public class VisualizarCmd extends _Comando {
 				Relacionamento relacionamento = relacionador.getRelacionamento();
 				Pessoa pessoaRelacionado = null;
 				Integer idRelacionamento = null;
-				//RelacionamentoFuncao relacionadoFuncao = null;
+				// RelacionamentoFuncao relacionadoFuncao = null;
 				for (PessoaRelacionamento relacionado : relacionamento.getPessoaRelacionamentoList()) {
 					if (relacionado.getPessoa() != null && !relacionado.getPessoa().getId().equals(result.getId())) {
 						pessoaRelacionado = relacionado.getPessoa().infoBasica();
 						idRelacionamento = relacionado.getId();
-						//relacionadoFuncao = relacionado.getRelacionamentoFuncao();
+						// relacionadoFuncao =
+						// relacionado.getRelacionamentoFuncao();
 						break;
 					}
 				}
@@ -123,9 +124,9 @@ public class VisualizarCmd extends _Comando {
 				pessoaTelefone.setPessoa(null);
 			}
 		}
-		
+
 		if (result.getPendenciaList() != null) {
-			for (PessoaPendencia pessoaPendencia: result.getPendenciaList()) {
+			for (PessoaPendencia pessoaPendencia : result.getPendenciaList()) {
 				pessoaPendencia.setPessoa(null);
 			}
 		}

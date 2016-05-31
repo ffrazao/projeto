@@ -8,7 +8,7 @@ import br.gov.df.emater.aterwebsrv.modelo.dto.PessoaCadFiltroDto;
 
 @Service("PessoaFiltroNovoCmd")
 public class FiltroNovoCmd implements Command {
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean execute(Context context) throws Exception {

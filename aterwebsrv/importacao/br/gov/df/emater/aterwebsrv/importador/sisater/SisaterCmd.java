@@ -70,6 +70,8 @@ public class SisaterCmd extends _Comando {
 					throw e;
 				}
 			}
+			// executar o garbage collector
+			System.gc();
 		}
 		if (logger.isInfoEnabled()) {
 			logger.info("FIM DA IMPORTAÇÃO");

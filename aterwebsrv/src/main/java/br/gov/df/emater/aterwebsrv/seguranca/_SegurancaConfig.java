@@ -19,7 +19,7 @@ import br.gov.df.emater.aterwebsrv.seguranca.filter.LoginFilter;
 @Configuration
 @Order(1)
 public class _SegurancaConfig extends WebSecurityConfigurerAdapter {
-	
+
 	@Autowired
 	private AutenticacaoProvider customAuthenticationProvider;
 
@@ -30,28 +30,38 @@ public class _SegurancaConfig extends WebSecurityConfigurerAdapter {
 		super(true);
 	}
 
+	@Bean
+	@Override
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
+	}
+
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.authenticationProvider(customAuthenticationProvider);
+	}
+
+	// @Bean(name = "customAuthenticationProvider")
+	// public CustomAuthenticationProvider getCustomAuthenticationProvider() {
+	// // Customiza��o da autentica��o do usu�rio
+	// CustomAuthenticationProvider result = new CustomAuthenticationProvider();
+	// result.setUserDetailsService(userDetailsService);
+	// result.setSaltSource(null);
+	// result.setPasswordEncoder(new BCryptPasswordEncoder());
+	// return result;
+	// }
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.exceptionHandling().and().anonymous().and().servletApi().and() //.headers().cacheControl().and()
-			.authorizeRequests()
+		http.exceptionHandling().and().anonymous().and().servletApi().and() // .headers().cacheControl().and()
+				.authorizeRequests()
 
 				// allow anonymous resource requests
 				.antMatchers("/").permitAll().antMatchers("/*").permitAll()
-				
-				.antMatchers("/casa/**").permitAll()
-				.antMatchers("/contrato/**").permitAll()
-				.antMatchers("/css/**").permitAll()
-				.antMatchers("/directive/**").permitAll()
-				.antMatchers("/img/**").permitAll()
-				.antMatchers("/js/**").permitAll()
-				.antMatchers("/login/**").permitAll()
-				.antMatchers("/api/esqueci-senha/**").permitAll()
-				.antMatchers("/node_modules/**").permitAll()
-				.antMatchers("/pessoa/**").permitAll()
-				.antMatchers("/propriedade/**").permitAll()
-				.antMatchers("/service/**").permitAll()
-				.antMatchers("/resources/**").permitAll()
-				
+
+				.antMatchers("/casa/**").permitAll().antMatchers("/contrato/**").permitAll().antMatchers("/css/**").permitAll().antMatchers("/directive/**").permitAll().antMatchers("/img/**").permitAll().antMatchers("/js/**").permitAll().antMatchers("/login/**").permitAll()
+				.antMatchers("/api/esqueci-senha/**").permitAll().antMatchers("/node_modules/**").permitAll().antMatchers("/pessoa/**").permitAll().antMatchers("/propriedade/**").permitAll().antMatchers("/service/**").permitAll().antMatchers("/resources/**").permitAll()
+
 				// allow anonymous POSTs to login
 				.antMatchers(HttpMethod.POST, "/api/login").permitAll()
 
@@ -69,27 +79,6 @@ public class _SegurancaConfig extends WebSecurityConfigurerAdapter {
 				// custom Token based authentication based on the header
 				// previously given to the client
 				.addFilterBefore(new AutenticacaoFilter(tokenAuthenticationService), UsernamePasswordAuthenticationFilter.class);
-	}
-
-	@Bean
-	@Override
-	public AuthenticationManager authenticationManagerBean() throws Exception {
-		return super.authenticationManagerBean();
-	}
-
-//	@Bean(name = "customAuthenticationProvider")
-//	public CustomAuthenticationProvider getCustomAuthenticationProvider() {
-//		// Customiza��o da autentica��o do usu�rio
-//		CustomAuthenticationProvider result = new CustomAuthenticationProvider();
-//		result.setUserDetailsService(userDetailsService);
-//		result.setSaltSource(null);
-//		result.setPasswordEncoder(new BCryptPasswordEncoder());
-//		return result;
-//	}
-
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.authenticationProvider(customAuthenticationProvider);
 	}
 
 }

@@ -14,16 +14,16 @@ import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 @Repository("UsuarioDao")
 public interface UsuarioDao extends JpaRepository<Usuario, Integer>, UsuarioDaoCustom {
 
-	Usuario findByUsername(String nomeUsuario);
-
-	Usuario findOneByPessoa(Pessoa pessoa);
-
 	List<Usuario> findByPessoa(Pessoa pessoa);
-
-	List<Usuario> findByUnidadeOrganizacional(UnidadeOrganizacional unidadeOrganizacional);
 
 	Usuario findByPessoaEmailEmailEndereco(String email);
 
 	List<Usuario> findByPessoaPessoaTipoAndUsuarioAtualizouPerfilOrderByPessoaNome(PessoaTipo pessoaTipo, Confirmacao s);
+
+	List<Usuario> findByUnidadeOrganizacional(UnidadeOrganizacional unidadeOrganizacional);
+
+	Usuario findByUsername(String nomeUsuario);
+
+	Usuario findOneByPessoa(Pessoa pessoa);
 
 }

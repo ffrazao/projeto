@@ -80,7 +80,7 @@ public class Elemento extends EntidadeBase implements _ChavePrimaria<Integer> {
 	private Object opcao;
 
 	@Lob
-	@Column(name="opcao")
+	@Column(name = "opcao")
 	private String opcaoString;
 
 	@Enumerated(EnumType.STRING)

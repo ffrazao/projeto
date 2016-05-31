@@ -9,7 +9,7 @@ import br.gov.df.emater.aterwebsrv.bo._Contexto;
 
 @Service
 public class BasicoTempDirCmd extends _Comando {
-	
+
 	public static final File TEMP_DIR = new File(BasicoTempDirCmd.class.getResource("/").getPath() + "/../temp");
 
 	@Override

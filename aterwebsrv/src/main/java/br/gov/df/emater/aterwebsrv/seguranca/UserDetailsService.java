@@ -36,9 +36,6 @@ public class UserDetailsService implements org.springframework.security.core.use
 	private final AccountStatusUserDetailsChecker detailsChecker = new AccountStatusUserDetailsChecker();
 
 	@Autowired
-	private UsuarioDao usuarioDao;
-
-	@Autowired
 	private EmpregoDao empregoDao;
 
 	@Autowired
@@ -46,6 +43,9 @@ public class UserDetailsService implements org.springframework.security.core.use
 
 	@Autowired
 	private RelacionamentoConfiguracaoViDao relacionamentoConfiguracaoViDao;
+
+	@Autowired
+	private UsuarioDao usuarioDao;
 
 	private void avaliarPerfil(Set<UsuarioPerfil> authorities, Set<UsuarioPerfil> authoritiesRetorno, Map<String, Set<String>> perfilFuncionalidadeComandoListRetorno, Map<String, Set<String>> perfilFuncionalidadeComandoListNegadoRetorno) {
 		for (UsuarioPerfil usuarioPerfil : authorities) {

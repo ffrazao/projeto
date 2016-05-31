@@ -73,9 +73,7 @@ public class SisaterPropriedadeRuralExportaUTMCmd extends _Comando {
 				logger.debug(String.format("[%s] exportado %d coordenadas de propriedades rurais", base.name(), cont));
 			}
 		}
-		if (encontrou) {
-			UtilitarioExcel.criarArquivoExcelDoMapa(regList, cabecalho, String.format("c:\\temp\\prop\\%s.xlsx", base.name()));
-		}
+		UtilitarioExcel.criarArquivoExcelDoMapa(regList, cabecalho, String.format("c:\\temp\\prop\\%s.xlsx", base.name()));
 		return false;
 	}
 

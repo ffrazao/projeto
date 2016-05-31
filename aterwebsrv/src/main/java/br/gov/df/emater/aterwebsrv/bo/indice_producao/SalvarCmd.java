@@ -25,23 +25,23 @@ import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoFormaComposica
 @Service("IndiceProducaoSalvarCmd")
 public class SalvarCmd extends _Comando {
 
-	public SalvarCmd() {
-	}
+	@Autowired
+	private BemDao bemDao;
 
 	@Autowired
 	private ProducaoDao dao;
 
 	@Autowired
-	private UtilDao utilDao;
-
-	@Autowired
-	private BemDao bemDao;
+	private ProducaoFormaComposicaoDao producaoFormaComposicaoDao;
 
 	@Autowired
 	private ProducaoFormaDao producaoFormaDao;
 
 	@Autowired
-	private ProducaoFormaComposicaoDao producaoFormaComposicaoDao;
+	private UtilDao utilDao;
+
+	public SalvarCmd() {
+	}
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
@@ -111,7 +111,7 @@ public class SalvarCmd extends _Comando {
 			producaoFormaDao.save(producaoForma);
 
 			Integer ordem = 0;
-			try {				
+			try {
 				for (ProducaoFormaComposicao producaoFormaComposicao : producaoForma.getProducaoFormaComposicaoList()) {
 					// se não foi excluido
 					if (CadastroAcao.E.equals(producaoFormaComposicao.getCadastroAcao())) {

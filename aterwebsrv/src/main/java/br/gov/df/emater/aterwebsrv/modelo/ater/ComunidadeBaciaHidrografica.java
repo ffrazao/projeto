@@ -63,6 +63,11 @@ public class ComunidadeBaciaHidrografica extends EntidadeBase implements _ChaveP
 		return id;
 	}
 
+	@Override
+	public ComunidadeBaciaHidrografica infoBasica() {
+		return new ComunidadeBaciaHidrografica(this.id, this.comunidade != null ? this.comunidade.infoBasica() : null, this.baciaHidrografica != null ? this.baciaHidrografica.infoBasica() : null);
+	}
+
 	public void setBaciaHidrografica(BaciaHidrografica baciaHidrografica) {
 		this.baciaHidrografica = baciaHidrografica;
 	}
@@ -74,11 +79,6 @@ public class ComunidadeBaciaHidrografica extends EntidadeBase implements _ChaveP
 	@Override
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	@Override
-	public ComunidadeBaciaHidrografica infoBasica() {
-		return new ComunidadeBaciaHidrografica(this.id, this.comunidade != null ? this.comunidade.infoBasica() : null, this.baciaHidrografica != null ? this.baciaHidrografica.infoBasica() : null);
 	}
 
 }

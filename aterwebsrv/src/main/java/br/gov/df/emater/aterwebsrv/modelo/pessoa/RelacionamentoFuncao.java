@@ -60,6 +60,7 @@ public class RelacionamentoFuncao extends EntidadeBase implements _ChavePrimaria
 		return nomeSeMasculino;
 	}
 
+	@Override
 	public RelacionamentoFuncao infoBasica() {
 		return new RelacionamentoFuncao(id, nomeSeMasculino, nomeSeFeminino);
 	}

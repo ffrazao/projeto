@@ -34,6 +34,7 @@ public class GrupoSocial extends EntidadeBase implements _ChavePrimaria<Integer>
 		super(id);
 	}
 
+	@Override
 	public Integer getId() {
 		return id;
 	}
@@ -42,6 +43,7 @@ public class GrupoSocial extends EntidadeBase implements _ChavePrimaria<Integer>
 		return nome;
 	}
 
+	@Override
 	public void setId(Integer id) {
 		this.id = id;
 	}

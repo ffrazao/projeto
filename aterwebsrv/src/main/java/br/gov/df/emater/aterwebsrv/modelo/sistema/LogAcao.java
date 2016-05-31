@@ -117,6 +117,7 @@ public class LogAcao extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return erro;
 	}
 
+	@Override
 	public Integer getId() {
 		return id;
 	}
@@ -173,6 +174,7 @@ public class LogAcao extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.erro = erro;
 	}
 
+	@Override
 	public void setId(Integer id) {
 		this.id = id;
 	}

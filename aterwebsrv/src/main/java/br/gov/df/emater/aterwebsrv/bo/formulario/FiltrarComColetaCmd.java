@@ -19,30 +19,30 @@ import br.gov.df.emater.aterwebsrv.modelo.formulario.FormularioVersao;
 public class FiltrarComColetaCmd extends _Comando {
 
 	@Autowired
-	private FormularioDao dao;
+	private ColetaDao coletaDao;
 
 	@Autowired
-	private ColetaDao coletaDao;
+	private FormularioDao dao;
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public boolean executar(_Contexto contexto) throws Exception {
 		List<Object[]> resposta = (List<Object[]>) contexto.getResposta();
-		
+
 		if (resposta == null || resposta.size() == 0) {
 			return false;
 		}
-		
+
 		FormularioColetaCadFiltroDto filtro = (FormularioColetaCadFiltroDto) contexto.getRequisicao();
-		
+
 		List<Object[]> result = new ArrayList<Object[]>();
-		
-		for (Object[] resp: resposta) {
+
+		for (Object[] resp : resposta) {
 			List<Object> linha = new ArrayList<Object>();
 			linha.addAll(Arrays.asList(resp));
 			filtro.setFormularioId((Integer) linha.get(0));
-			List<FormularioVersao> formularioVersaoList = dao.filtrarComColeta(filtro); 
-			
+			List<FormularioVersao> formularioVersaoList = dao.filtrarComColeta(filtro);
+
 			if (formularioVersaoList != null && formularioVersaoList.size() > 0) {
 				for (int i = 0; i < formularioVersaoList.size(); i++) {
 					FormularioVersao fv = formularioVersaoList.get(i).infoBasica();
@@ -68,7 +68,7 @@ public class FiltrarComColetaCmd extends _Comando {
 			linha.add(formularioVersaoList);
 			result.add(linha.toArray());
 		}
-		
+
 		contexto.setResposta(result);
 
 		return false;

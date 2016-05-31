@@ -48,6 +48,7 @@ public class Assunto extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return finalidade;
 	}
 
+	@Override
 	public Integer getId() {
 		return id;
 	}
@@ -56,20 +57,21 @@ public class Assunto extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return nome;
 	}
 
+	public Assunto infoBasica() {
+		return new Assunto(getId(), getNome(), getFinalidade());
+	}
+
 	public void setFinalidade(String finalidade) {
 		this.finalidade = finalidade;
 	}
 
+	@Override
 	public void setId(Integer id) {
 		this.id = id;
 	}
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	public Assunto infoBasica() {
-		return new Assunto(getId(), getNome(), getFinalidade());
 	}
 
 }

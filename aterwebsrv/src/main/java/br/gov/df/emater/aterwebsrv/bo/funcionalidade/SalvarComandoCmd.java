@@ -20,7 +20,7 @@ public class SalvarComandoCmd extends _Comando {
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		Comando result = (Comando) contexto.getRequisicao();
-		
+
 		result.setCodigo(result.getCodigo().toUpperCase().replaceAll("\\s", "_"));
 
 		dao.save(result);

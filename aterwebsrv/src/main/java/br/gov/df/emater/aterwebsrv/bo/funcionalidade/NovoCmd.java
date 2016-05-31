@@ -17,7 +17,7 @@ public class NovoCmd extends _Comando {
 		if (result == null) {
 			result = new Funcionalidade();
 		}
-		
+
 		result.setAtivo(Confirmacao.S);
 
 		contexto.setResposta(result);

@@ -28,7 +28,7 @@ public class BasicoEmaterCmd extends _Comando {
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		FacadeBo facadeBo = (FacadeBo) contexto.get("facadeBo");
-		
+
 		Pessoa emater = pessoaDao.findByNome("Empresa de Assistência Técnica e Extensão Rural do Distrito Federal");
 		if (emater == null) {
 			PlatformTransactionManager transactionManager = (PlatformTransactionManager) contexto.get("transactionManager");
@@ -39,7 +39,7 @@ public class BasicoEmaterCmd extends _Comando {
 				emater = new PessoaJuridica();
 				emater.setNome("Empresa de Assistência Técnica e Extensão Rural do Distrito Federal");
 				emater.setApelidoSigla("EMATER-DF");
-				emater.setPublicoAlvoConfirmacao(Confirmacao.N);			
+				emater.setPublicoAlvoConfirmacao(Confirmacao.N);
 				List<PessoaEmail> pessoaEmailList = new ArrayList<PessoaEmail>();
 				pessoaEmailList.add(new PessoaEmail(null, new Email("aterweb@emater.df.gov.br"), "C"));
 				emater.setEmailList(pessoaEmailList);

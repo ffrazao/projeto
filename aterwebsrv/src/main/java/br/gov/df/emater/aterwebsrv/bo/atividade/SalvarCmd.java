@@ -68,15 +68,15 @@ public class SalvarCmd extends _Comando {
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		Atividade result = (Atividade) contexto.getRequisicao();
-		
+
 		List<AtividadePessoa> atividadePessoaDemandList = result.getPessoaDemandanteList();
 		List<AtividadePessoa> atividadePessoaExecList = result.getPessoaExecutorList();
-		
+
 		// FIX-ME
 		if (atividadePessoaDemandList == null || atividadePessoaExecList == null) {
 			return true;
 		}
-		
+
 		if (result.getId() == null) {
 			result.setInclusaoUsuario(getUsuario(contexto.getUsuario().getName()));
 			result.setCodigo(gerarCodigoAtividade());
@@ -101,11 +101,11 @@ public class SalvarCmd extends _Comando {
 			result.setPublicoReal(null);
 			result.setPublicoEstimado(null);
 		}
-		
-		for (AtividadeChaveSisater c: result.getChaveSisaterList()) {
+
+		for (AtividadeChaveSisater c : result.getChaveSisaterList()) {
 			c.setAtividade(result);
 		}
-		
+
 		dao.save(result);
 
 		for (AtividadeAssunto assunto : result.getAssuntoList()) {

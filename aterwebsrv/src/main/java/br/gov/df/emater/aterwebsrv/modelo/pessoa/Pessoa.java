@@ -58,12 +58,16 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "alteracao_data")
+	@Column(name = "alteracao_data", insertable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	@JsonSerialize(using = JsonSerializerData.class)
 	@JsonDeserialize(using = JsonDeserializerData.class)
 	private Calendar alteracaoData;
+
+	@ManyToOne
+	@JoinColumn(name = "alteracao_usuario_id")
+	private Usuario alteracaoUsuario;
 
 	@Column(name = "apelido_sigla")
 	// @Field(index = Index.YES, store = Store.YES)
@@ -91,12 +95,16 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	protected Integer id;
 
-	@Column(name = "inclusao_data")
+	@Column(name = "inclusao_data", insertable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	@JsonSerialize(using = JsonSerializerData.class)
 	@JsonDeserialize(using = JsonDeserializerData.class)
 	private Calendar inclusaoData;
+
+	@ManyToOne
+	@JoinColumn(name = "inclusao_usuario_id")
+	private Usuario inclusaoUsuario;
 
 	@Column(name = "inscricao_estadual")
 	private String inscricaoEstadual;
@@ -148,14 +156,6 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	@OneToMany(mappedBy = "pessoa")
 	private List<PessoaTelefone> telefoneList;
 
-	@ManyToOne
-	@JoinColumn(name = "alteracao_usuario_id")
-	private Usuario alteracaoUsuario;
-
-	@ManyToOne
-	@JoinColumn(name = "inclusao_usuario_id")
-	private Usuario inclusaoUsuario;
-
 	public Pessoa() {
 	}
 
@@ -173,8 +173,14 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		setPublicoAlvoConfirmacao(publicoAlvoConfirmacao);
 	}
 
+	@Override
 	public Calendar getAlteracaoData() {
 		return alteracaoData;
+	}
+
+	@Override
+	public Usuario getAlteracaoUsuario() {
+		return alteracaoUsuario;
 	}
 
 	public String getApelidoSigla() {
@@ -210,8 +216,14 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		return id;
 	}
 
+	@Override
 	public Calendar getInclusaoData() {
 		return inclusaoData;
+	}
+
+	@Override
+	public Usuario getInclusaoUsuario() {
+		return inclusaoUsuario;
 	}
 
 	public String getInscricaoEstadual() {
@@ -267,16 +279,14 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		return telefoneList;
 	}
 
-	public Usuario getAlteracaoUsuario() {
-		return alteracaoUsuario;
-	}
-
-	public Usuario getInclusaoUsuario() {
-		return inclusaoUsuario;
-	}
-
+	@Override
 	public void setAlteracaoData(Calendar alteracaoData) {
 		this.alteracaoData = alteracaoData;
+	}
+
+	@Override
+	public void setAlteracaoUsuario(Usuario alteracaoUsuario) {
+		this.alteracaoUsuario = alteracaoUsuario;
 	}
 
 	public void setApelidoSigla(String apelidoSigla) {
@@ -312,8 +322,14 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		this.id = id;
 	}
 
+	@Override
 	public void setInclusaoData(Calendar inclusaoData) {
 		this.inclusaoData = inclusaoData;
+	}
+
+	@Override
+	public void setInclusaoUsuario(Usuario inclusaoUsuario) {
+		this.inclusaoUsuario = inclusaoUsuario;
 	}
 
 	public void setInscricaoEstadual(String inscricaoEstadual) {
@@ -367,13 +383,5 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 
 	public void setTelefoneList(List<PessoaTelefone> telefoneList) {
 		this.telefoneList = telefoneList;
-	}
-
-	public void setAlteracaoUsuario(Usuario alteracaoUsuario) {
-		this.alteracaoUsuario = alteracaoUsuario;
-	}
-
-	public void setInclusaoUsuario(Usuario inclusaoUsuario) {
-		this.inclusaoUsuario = inclusaoUsuario;
 	}
 }

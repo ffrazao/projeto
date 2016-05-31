@@ -55,12 +55,16 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "alteracao_data")
+	@Column(name = "alteracao_data", insertable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	@JsonSerialize(using = JsonSerializerData.class)
 	@JsonDeserialize(using = JsonDeserializerData.class)
 	private Calendar alteracaoData;
+
+	@ManyToOne
+	@JoinColumn(name = "alteracao_usuario_id")
+	private Usuario alteracaoUsuario;
 
 	@Column(name = "area_total")
 	@NumberFormat(style = Style.NUMBER)
@@ -71,11 +75,6 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 	// @IndexedEmbedded
 	private List<PropriedadeRuralArquivo> arquivoList;
 
-	// @NotNull
-	@ManyToOne
-	@JoinColumn(name = "bacia_hidrografica_id")
-	private BaciaHidrografica baciaHidrografica;
-
 	// @NumberFormat(style = Style.CURRENCY)
 	// @JsonDeserialize(using = JsonFormatarBigDecimal.class)
 	// private BigDecimal benfeitoria;
@@ -83,6 +82,11 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 	// @OneToMany(mappedBy = "propriedadeRural")
 	// // @IndexedEmbedded
 	// private List<Benfeitoria> benfeitoriaList;
+
+	// @NotNull
+	@ManyToOne
+	@JoinColumn(name = "bacia_hidrografica_id")
+	private BaciaHidrografica baciaHidrografica;
 
 	@Column(name = "cartorio_data_registro")
 	@Temporal(TemporalType.DATE)
@@ -115,12 +119,16 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
-	@Column(name = "inclusao_data")
+	@Column(name = "inclusao_data", insertable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	@JsonSerialize(using = JsonSerializerData.class)
 	@JsonDeserialize(using = JsonDeserializerData.class)
 	private Calendar inclusaoData;
+
+	@ManyToOne
+	@JoinColumn(name = "inclusao_usuario_id")
+	private Usuario inclusaoUsuario;
 
 	private String nome;
 
@@ -179,14 +187,6 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 	@Enumerated(EnumType.STRING)
 	private SituacaoFundiaria situacaoFundiaria;
 
-	@ManyToOne
-	@JoinColumn(name = "alteracao_usuario_id")
-	private Usuario alteracaoUsuario;
-
-	@ManyToOne
-	@JoinColumn(name = "inclusao_usuario_id")
-	private Usuario inclusaoUsuario;
-
 	public PropriedadeRural() {
 
 	}
@@ -221,8 +221,14 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 		return true;
 	}
 
+	@Override
 	public Calendar getAlteracaoData() {
 		return alteracaoData;
+	}
+
+	@Override
+	public Usuario getAlteracaoUsuario() {
+		return alteracaoUsuario;
 	}
 
 	public BigDecimal getAreaTotal() {
@@ -266,8 +272,14 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 		return id;
 	}
 
+	@Override
 	public Calendar getInclusaoData() {
 		return inclusaoData;
+	}
+
+	@Override
+	public Usuario getInclusaoUsuario() {
+		return inclusaoUsuario;
 	}
 
 	public String getNome() {
@@ -294,6 +306,7 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 		return outorgaValidade;
 	}
 
+	@Override
 	public List<PropriedadeRuralPendencia> getPendenciaList() {
 		return pendenciaList;
 	}
@@ -326,14 +339,6 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 		return situacaoFundiaria;
 	}
 
-	public Usuario getAlteracaoUsuario() {
-		return alteracaoUsuario;
-	}
-
-	public Usuario getInclusaoUsuario() {
-		return inclusaoUsuario;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -347,8 +352,14 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 		return new PropriedadeRural(getId(), getNome(), getComunidade() != null ? getComunidade().infoBasica() : null, getAreaTotal(), getEndereco().infoBasica());
 	}
 
+	@Override
 	public void setAlteracaoData(Calendar alteracaoData) {
 		this.alteracaoData = alteracaoData;
+	}
+
+	@Override
+	public void setAlteracaoUsuario(Usuario alteracaoUsuario) {
+		this.alteracaoUsuario = alteracaoUsuario;
 	}
 
 	public void setAreaTotal(BigDecimal areaTotal) {
@@ -392,8 +403,14 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 		this.id = id;
 	}
 
+	@Override
 	public void setInclusaoData(Calendar inclusaoData) {
 		this.inclusaoData = inclusaoData;
+	}
+
+	@Override
+	public void setInclusaoUsuario(Usuario inclusaoUsuario) {
+		this.inclusaoUsuario = inclusaoUsuario;
 	}
 
 	public void setNome(String nome) {
@@ -420,6 +437,7 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 		this.outorgaValidade = outorgaValidade;
 	}
 
+	@Override
 	public void setPendenciaList(List<PropriedadeRuralPendencia> pendenciaList) {
 		this.pendenciaList = pendenciaList;
 	}
@@ -450,14 +468,6 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 
 	public void setSituacaoFundiaria(SituacaoFundiaria situacaoFundiaria) {
 		this.situacaoFundiaria = situacaoFundiaria;
-	}
-
-	public void setAlteracaoUsuario(Usuario alteracaoUsuario) {
-		this.alteracaoUsuario = alteracaoUsuario;
-	}
-
-	public void setInclusaoUsuario(Usuario inclusaoUsuario) {
-		this.inclusaoUsuario = inclusaoUsuario;
 	}
 
 }

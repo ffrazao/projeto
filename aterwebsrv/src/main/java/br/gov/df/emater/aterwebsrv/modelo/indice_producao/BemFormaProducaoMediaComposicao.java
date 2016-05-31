@@ -17,10 +17,6 @@ public class BemFormaProducaoMediaComposicao extends EntidadeBase implements _Ch
 
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
-
 	@ManyToOne
 	@JoinColumn(name = "bem_forma_producao_media_id")
 	private BemFormaProducaoMedia bemFormaProducaoMedia;
@@ -29,28 +25,34 @@ public class BemFormaProducaoMediaComposicao extends EntidadeBase implements _Ch
 	@JoinColumn(name = "forma_producao_valor_id")
 	private FormaProducaoValor formaProducaoValor;
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer id;
 
 	public BemFormaProducaoMedia getBemFormaProducaoMedia() {
 		return bemFormaProducaoMedia;
-	}
-
-	public void setBemFormaProducaoMedia(BemFormaProducaoMedia bemFormaProducaoMedia) {
-		this.bemFormaProducaoMedia = bemFormaProducaoMedia;
 	}
 
 	public FormaProducaoValor getFormaProducaoValor() {
 		return formaProducaoValor;
 	}
 
+	@Override
+	public Integer getId() {
+		return id;
+	}
+
+	public void setBemFormaProducaoMedia(BemFormaProducaoMedia bemFormaProducaoMedia) {
+		this.bemFormaProducaoMedia = bemFormaProducaoMedia;
+	}
+
 	public void setFormaProducaoValor(FormaProducaoValor formaProducaoValor) {
 		this.formaProducaoValor = formaProducaoValor;
+	}
+
+	@Override
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 }

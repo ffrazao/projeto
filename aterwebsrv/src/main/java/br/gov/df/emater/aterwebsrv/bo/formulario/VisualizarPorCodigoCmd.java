@@ -33,7 +33,7 @@ public class VisualizarPorCodigoCmd extends _Comando {
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("codigo", codigo.getId());
 		result.put("posicao", posicaoStr);
-		
+
 		contexto.setResposta(result);
 
 		return false;
