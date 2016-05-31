@@ -31,17 +31,16 @@ public class SisaterCmd extends _Comando {
 			logger.info("INICIO DA IMPORTAÇÃO");
 		}
 
-		int cont = 0;
+		int cont = 1;
 		for (DbSater base : DbSater.values()) {
 			if (base.getSigla() == null) {
 				continue;
 			}
 
-			// if (++cont < 6) {
-			// continue;
-			// } else if (cont > 6) {
-			// break;
-			// }
+			if (cont <= 6 || cont > 99) {
+				cont++;
+				continue;
+			} 
 
 			if (logger.isInfoEnabled()) {
 				logger.info(String.format("%s. importando base [%s]", cont, base.name()));
@@ -72,6 +71,7 @@ public class SisaterCmd extends _Comando {
 			}
 			// executar o garbage collector
 			System.gc();
+			cont++;
 		}
 		if (logger.isInfoEnabled()) {
 			logger.info("FIM DA IMPORTAÇÃO");

@@ -794,9 +794,9 @@ public class ImpUtil {
 
 	public Comunidade getComunidade(String nome) throws BoException {
 		if (nome == null) {
-			throw new BoException("Comunidade não informada");
-			// logger.error("Comunidade não informada");
-			// return null;
+			// throw new BoException("Comunidade não informada");
+			logger.error("Comunidade não informada");
+			return null;
 		}
 		for (Comunidade comunidade : comunidadeList) {
 			if (comunidade.getNome().equalsIgnoreCase(nome)) {
@@ -805,9 +805,9 @@ public class ImpUtil {
 		}
 		List<Comunidade> comunidade = comunidadeDao.findByNomeOrderByNomeAsc(nome);
 		if (comunidade == null || comunidade.size() != 1) {
-			throw new BoException("Comunidade inexistente [%s]", nome);
-			// logger.error(String.format("Comunidade inexistente [%s]", nome));
-			// return null;
+			//throw new BoException("Comunidade inexistente [%s]", nome);
+			logger.error(String.format("Comunidade inexistente [%s]", nome));
+			return null;
 		}
 		comunidadeList.add(comunidade.get(0));
 

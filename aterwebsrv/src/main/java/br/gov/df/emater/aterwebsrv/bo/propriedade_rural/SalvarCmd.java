@@ -1,7 +1,5 @@
 package br.gov.df.emater.aterwebsrv.bo.propriedade_rural;
 
-import java.util.Calendar;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -61,12 +59,10 @@ public class SalvarCmd extends _Comando {
 		PropriedadeRural result = (PropriedadeRural) contexto.getRequisicao();
 		if (result.getId() == null) {
 			result.setInclusaoUsuario(getUsuario(contexto.getUsuario().getName()));
-			result.setInclusaoData(Calendar.getInstance());
 		} else {
 			result.setInclusaoUsuario(result.getInclusaoUsuario() == null ? null : getUsuario(result.getInclusaoUsuario().getUsername()));
 		}
 		result.setAlteracaoUsuario(contexto.getUsuario() == null ? null : getUsuario(contexto.getUsuario().getName()));
-		result.setAlteracaoData(Calendar.getInstance());
 
 		if (result.getEndereco() == null) {
 			throw new BoException("O campo Endereço é obrigatório");

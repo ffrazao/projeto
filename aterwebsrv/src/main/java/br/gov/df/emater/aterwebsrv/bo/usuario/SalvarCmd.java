@@ -1,7 +1,5 @@
 package br.gov.df.emater.aterwebsrv.bo.usuario;
 
-import java.util.Calendar;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +41,6 @@ public class SalvarCmd extends _Comando {
 		if (result.getId() == null) {
 			// novos usuários
 			result.setInclusaoUsuario(getUsuario(contexto.getUsuario() == null ? null : contexto.getUsuario().getName()));
-			result.setInclusaoData(Calendar.getInstance());
 			if (result.getPessoaEmail() == null || result.getPessoaEmail().getEmail() == null || result.getPessoaEmail().getEmail().getEndereco() == null || result.getPessoaEmail().getEmail().getEndereco().trim().length() == 0) {
 				throw new BoException("E-mail do usuário não informado!");
 			}
@@ -57,7 +54,6 @@ public class SalvarCmd extends _Comando {
 			salvo = dao.findOne(result.getId());
 		}
 		result.setAlteracaoUsuario(getUsuario(contexto.getUsuario() == null ? null : contexto.getUsuario().getName()));
-		result.setAlteracaoData(Calendar.getInstance());
 
 		// remover os itens descartados
 		if (salvo != null) {

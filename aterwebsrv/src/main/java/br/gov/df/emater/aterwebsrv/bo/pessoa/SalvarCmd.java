@@ -160,12 +160,10 @@ public class SalvarCmd extends _Comando {
 		Pessoa result = (Pessoa) contexto.getRequisicao();
 		if (result.getId() == null) {
 			result.setInclusaoUsuario(getUsuario(contexto.getUsuario() == null ? null : contexto.getUsuario().getName()));
-			result.setInclusaoData(Calendar.getInstance());
 		} else {
 			result.setInclusaoUsuario(getUsuario(result.getInclusaoUsuario() == null ? null : result.getInclusaoUsuario().getUsername()));
 		}
 		result.setAlteracaoUsuario(getUsuario(contexto.getUsuario() == null ? null : contexto.getUsuario().getName()));
-		result.setAlteracaoData(Calendar.getInstance());
 
 		// ajustar os dados de nascimento da pessoa
 		if (result instanceof PessoaFisica) {

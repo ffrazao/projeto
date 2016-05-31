@@ -85,6 +85,7 @@ public class SisaterPublicoAlvoPropriedadeRuralCmd extends _Comando {
 
 					impUtil.chaveAterWebAtualizar(con, publicoAlvoPropriedadeRural.getId(), agora, SISATER_TABELA, "IDPRP = ? AND IDBEN =  ?", rs.getString("IDPRP"), rs.getString("IDBEN"));
 
+					cont++;
 					transactionManager.commit(transactionStatus);
 				} catch (Exception e) {
 					logger.error(e);
