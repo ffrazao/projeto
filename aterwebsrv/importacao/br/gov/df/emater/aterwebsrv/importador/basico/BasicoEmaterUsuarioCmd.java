@@ -64,6 +64,10 @@ public class BasicoEmaterUsuarioCmd extends _Comando {
 			}
 		}
 		contexto.setUsuario(new UserAuthentication(usuario));
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("Usuário da Emater-DF verificado e carregado");
+		}
 
 		return false;
 	}

@@ -11,6 +11,7 @@ import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaDao;
+import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaEmailDao;
 import br.gov.df.emater.aterwebsrv.dao.sistema.UsuarioDao;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
@@ -27,6 +28,9 @@ public class NovoCmd extends _Comando {
 
 	@Autowired
 	private PessoaDao pessoaDao;
+
+	@Autowired
+	private PessoaEmailDao pessoaEmailDao;
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
@@ -46,7 +50,7 @@ public class NovoCmd extends _Comando {
 			result.setPessoa(salvo.infoBasica());
 			result.getPessoa().setObservacoes(salvo.getObservacoes());
 			List<PessoaEmail> pessoaEmailList = new ArrayList<PessoaEmail>();
-			for (PessoaEmail pessoaEmail : salvo.getEmailList()) {
+			for (PessoaEmail pessoaEmail : pessoaEmailDao.findByPessoa(result.getPessoa())) {
 				pessoaEmailList.add(new PessoaEmail(pessoaEmail.getId(), pessoaEmail.getEmail().infoBasica()));
 			}
 			if (pessoaEmailList.size() == 0) {

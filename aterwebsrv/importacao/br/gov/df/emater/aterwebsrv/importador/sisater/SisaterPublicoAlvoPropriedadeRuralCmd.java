@@ -85,6 +85,17 @@ public class SisaterPublicoAlvoPropriedadeRuralCmd extends _Comando {
 
 					impUtil.chaveAterWebAtualizar(con, publicoAlvoPropriedadeRural.getId(), agora, SISATER_TABELA, "IDPRP = ? AND IDBEN =  ?", rs.getString("IDPRP"), rs.getString("IDBEN"));
 
+					if (cont % 500 == 0) {
+						long memo = Runtime.getRuntime().freeMemory();
+						if (logger.isInfoEnabled()) {
+							logger.info(String.format("memória atual [%d]", memo));
+						}
+						System.gc();
+						if (logger.isInfoEnabled()) {
+							memo -= Runtime.getRuntime().freeMemory();
+							logger.info(String.format("memória atual [%d] foi liberado [%d]", Runtime.getRuntime().freeMemory(), memo));
+						}
+					}
 					cont++;
 					transactionManager.commit(transactionStatus);
 				} catch (Exception e) {

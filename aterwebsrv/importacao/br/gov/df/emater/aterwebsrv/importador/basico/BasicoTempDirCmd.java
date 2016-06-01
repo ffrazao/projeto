@@ -23,6 +23,11 @@ public class BasicoTempDirCmd extends _Comando {
 		}
 
 		contexto.put("tempDir", result);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("Diretório temporário verificado");
+		}
+
 		return false;
 	}
 

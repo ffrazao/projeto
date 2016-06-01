@@ -20,7 +20,8 @@ public class FacadeBoImportar implements BeanFactoryAware {
 		return this._executar(usuario, comandoNome, null, null);
 	}
 
-	private _Contexto _executar(Principal usuario, String comandoNome, Object requisicao, Map<Object, Object> map) throws Exception {
+	private _Contexto _executar(Principal usuario, String comandoNome, Object requisicao, Map<Object, Object> map)
+			throws Exception {
 		Command comando = (Command) this.beanFactory.getBean(comandoNome);
 		_Contexto result = new _Contexto(usuario, comando.getClass().getName(), requisicao);
 		if (map != null) {
@@ -31,7 +32,6 @@ public class FacadeBoImportar implements BeanFactoryAware {
 		return result;
 	}
 
-	// @Transactional
 	public _Contexto importar(Principal usuario) throws Exception {
 		return this._executar(usuario, "ImportarCh");
 	}
@@ -41,8 +41,11 @@ public class FacadeBoImportar implements BeanFactoryAware {
 		this.beanFactory = beanFactory;
 	}
 
-	// @Transactional
 	public _Contexto sisater(Principal usuario, Map<Object, Object> map) throws Exception {
 		return this._executar(usuario, "SisaterCh", null, map);
+	}
+
+	public _Contexto sisaterEmpregado(Principal usuario, Map<Object, Object> map) throws Exception {
+		return this._executar(usuario, "SisaterEmpregadoCmd", null, map);
 	}
 }

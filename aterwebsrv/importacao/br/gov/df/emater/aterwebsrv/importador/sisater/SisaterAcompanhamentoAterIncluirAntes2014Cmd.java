@@ -146,6 +146,17 @@ public class SisaterAcompanhamentoAterIncluirAntes2014Cmd extends _Comando {
 						acumulaPessoaExecutor(empregadoPega(rs.getString("IDEMP")));
 						acumulaChaveSisater(impUtil.chaveAtividadeAntes2014(base, rs.getString("IDUND"), rs.getInt("IDATR"), TABELA));
 
+						if (cont % 500 == 0) {
+							long memo = Runtime.getRuntime().freeMemory();
+							if (logger.isInfoEnabled()) {
+								logger.info(String.format("memória atual [%d]", memo));
+							}
+							System.gc();
+							if (logger.isInfoEnabled()) {
+								memo -= Runtime.getRuntime().freeMemory();
+								logger.info(String.format("memória atual [%d] foi liberado [%d]", Runtime.getRuntime().freeMemory(), memo));
+							}
+						}
 						cont++;
 						transactionManager.commit(transactionStatus);
 					} catch (Exception e) {
@@ -308,7 +319,7 @@ public class SisaterAcompanhamentoAterIncluirAntes2014Cmd extends _Comando {
 		}
 		Assunto assunto = assuntoDao.findOneByNome(nome);
 		if (assunto == null) {
-			throw new BoException("Assunto não cadastrado [%d]", nome);
+			throw new BoException("Assunto não cadastrado [%s]", nome);
 		}
 		assuntoList.add(assunto);
 		return assunto;

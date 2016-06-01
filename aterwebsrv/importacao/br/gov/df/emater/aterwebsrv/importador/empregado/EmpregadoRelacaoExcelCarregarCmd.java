@@ -34,6 +34,10 @@ public class EmpregadoRelacaoExcelCarregarCmd extends _Comando {
 			}
 		});
 		contexto.put("RelacaoEmpregadosExcel", mapa);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("Mapa de empregados carregado na memória");
+		}
 
 		return false;
 	}

@@ -54,6 +54,10 @@ public class BasicoEmaterCmd extends _Comando {
 		}
 
 		contexto.put("emater", pessoaDao.findOne(emater.getId()));
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("Cadastro da Emater-DF verificado e carregado");
+		}
 
 		return false;
 	}

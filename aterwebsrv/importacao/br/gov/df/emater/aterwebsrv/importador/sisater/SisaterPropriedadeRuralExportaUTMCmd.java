@@ -63,6 +63,17 @@ public class SisaterPropriedadeRuralExportaUTMCmd extends _Comando {
 						}
 						regList.add(linha);
 					}
+					if (cont % 500 == 0) {
+						long memo = Runtime.getRuntime().freeMemory();
+						if (logger.isInfoEnabled()) {
+							logger.info(String.format("memória atual [%d]", memo));
+						}
+						System.gc();
+						if (logger.isInfoEnabled()) {
+							memo -= Runtime.getRuntime().freeMemory();
+							logger.info(String.format("memória atual [%d] foi liberado [%d]", Runtime.getRuntime().freeMemory(), memo));
+						}
+					}
 					cont++;
 				} catch (Exception e) {
 					logger.error(e);

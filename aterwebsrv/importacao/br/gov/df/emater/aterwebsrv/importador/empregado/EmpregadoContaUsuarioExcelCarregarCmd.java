@@ -34,6 +34,10 @@ public class EmpregadoContaUsuarioExcelCarregarCmd extends _Comando {
 			}
 		});
 		contexto.put("ContaEmailEmpregadoExcel", mapa);
+		
+		if (logger.isInfoEnabled()) {			
+			logger.info("Mapa das contas dos usuários da Emater-DF carregados");
+		}
 
 		return false;
 	}

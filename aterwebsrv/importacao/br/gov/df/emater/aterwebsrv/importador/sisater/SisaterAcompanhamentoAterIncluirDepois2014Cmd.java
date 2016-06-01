@@ -147,6 +147,17 @@ public class SisaterAcompanhamentoAterIncluirDepois2014Cmd extends _Comando {
 						acumulaPessoaExecutor(empregadoPega(rs.getString("IDEMP")));
 						acumulaChaveSisater(impUtil.chaveAtividadeDepois2014(base, rs.getString("IDUND"), rs.getInt("IDATR"), rs.getDate("ATERDT"), rs.getString("IDEMP"), rs.getString("IDMET"), rs.getString("IDTEMA"), rs.getString("IDACAO"), TABELA));
 
+						if (cont % 500 == 0) {
+							long memo = Runtime.getRuntime().freeMemory();
+							if (logger.isInfoEnabled()) {
+								logger.info(String.format("memória atual [%d]", memo));
+							}
+							System.gc();
+							if (logger.isInfoEnabled()) {
+								memo -= Runtime.getRuntime().freeMemory();
+								logger.info(String.format("memória atual [%d] foi liberado [%d]", Runtime.getRuntime().freeMemory(), memo));
+							}
+						}
 						cont++;
 						transactionManager.commit(transactionStatus);
 					} catch (Exception e) {

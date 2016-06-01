@@ -18,64 +18,93 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 @Service
 public class SisaterCmd extends _Comando {
 
+	private class Check {
+
+		void baseComando(_Contexto contexto, Map<Object, Object> map) throws Exception {
+			importFacadeBo.sisater(contexto.getUsuario(), map);
+		}
+
+		void empregoComando(_Contexto contexto, Map<Object, Object> map) throws Exception {
+			importFacadeBo.sisaterEmpregado(contexto.getUsuario(), map);
+		}
+
+		@SuppressWarnings("unchecked")
+		void rodar(_Contexto contexto, String importando) throws Exception {
+			int cont = 1;
+			for (DbSater base : DbSater.values()) {
+				if (base.getSigla() == null) {
+					continue;
+				}
+
+				if (logger.isInfoEnabled()) {
+					logger.info(String.format("%s. importando %s [%s]", cont, importando, base.name()));
+				}
+
+				try (Connection con = ConexaoFirebird.getConnection(base)) {
+					try {
+						Map<Object, Object> map = new HashMap<Object, Object>();
+						map.putAll(contexto);
+						map.put("base", base);
+						map.put("conexao", con);
+						map.put("unidadeOrganizacional", unidadeOrganizacionalDao.findOneByPessoaJuridicaAndSigla((PessoaJuridica) contexto.get("emater"), base.getSigla()));
+
+						switch (importando) {
+						case "Emprego":
+							empregoComando(contexto, map);
+							break;
+						case "Base":
+							baseComando(contexto, map);
+							break;
+						}
+
+						if (!con.isClosed()) {
+							con.commit();
+							if (logger.isDebugEnabled()) {
+								logger.debug(String.format("[%s] Commit NO SISATER", base.name()));
+							}
+						}
+					} catch (Exception e) {
+						if (!con.isClosed()) {
+							con.rollback();
+							if (logger.isErrorEnabled()) {
+								logger.error("Rollback NO SISATER");
+							}
+						}
+						throw e;
+					}
+				}
+				// executar o garbage collector
+				System.gc();
+				cont++;
+			}
+
+		}
+	}
+
 	@Autowired
 	private FacadeBoImportar importFacadeBo;
 
 	@Autowired
 	private UnidadeOrganizacionalDao unidadeOrganizacionalDao;
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		if (logger.isInfoEnabled()) {
 			logger.info("INICIO DA IMPORTAÇÃO");
 		}
 
-		int cont = 1;
-		for (DbSater base : DbSater.values()) {
-			if (base.getSigla() == null) {
-				continue;
-			}
+		Check check = new Check();
 
-			if (cont <= 6 || cont > 99) {
-				cont++;
-				continue;
-			}
+		// importar primeiro todos os dados de empregado de todas as bases
+		check.rodar(contexto, "Emprego");
 
-			if (logger.isInfoEnabled()) {
-				logger.info(String.format("%s. importando base [%s]", cont, base.name()));
-			}
+		// importar demais dados
+		check.rodar(contexto, "Base");
 
-			try (Connection con = ConexaoFirebird.getConnection(base)) {
-				try {
-					Map<Object, Object> map = new HashMap<Object, Object>();
-					map.putAll(contexto);
-					map.put("base", base);
-					map.put("conexao", con);
-					map.put("unidadeOrganizacional", unidadeOrganizacionalDao.findOneByPessoaJuridicaAndSigla((PessoaJuridica) contexto.get("emater"), base.getSigla()));
-					importFacadeBo.sisater(contexto.getUsuario(), map);
-					if (!con.isClosed()) {
-						con.commit();
-						if (logger.isDebugEnabled()) {
-							logger.debug(String.format("[%s] Commit NO SISATER", base.name()));
-						}
-					}
-				} catch (Exception e) {
-					if (!con.isClosed()) {
-						con.rollback();
-						logger.error("Rollback NO SISATER");
-					}
-					e.printStackTrace();
-					throw e;
-				}
-			}
-			// executar o garbage collector
-			System.gc();
-			cont++;
-		}
 		if (logger.isInfoEnabled()) {
 			logger.info("FIM DA IMPORTAÇÃO");
 		}
+
 		return false;
 	}
 

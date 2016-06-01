@@ -46,7 +46,7 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoTipo;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 import br.gov.df.emater.aterwebsrv.seguranca.UserAuthentication;
 
-@Service
+@Service("SisaterEmpregadoCmd")
 public class SisaterEmpregadoCmd extends _Comando {
 
 	private static final String SQL = "SELECT * FROM %s WHERE EMNOME <> 'Toda a equipe' ORDER BY IDEMP";

@@ -51,7 +51,6 @@ public enum FormulaProduto {
 		if (variaveis.size() == 0) {
 			return null;
 		}
-		ExecutorService exec = Executors.newFixedThreadPool(1);
 		Expression e = new ExpressionBuilder(this.descricao).variables(new HashSet<String>(variaveis)).build();
 		if (producaoForma.getItemAValor() != null) {
 			e.setVariable("A", producaoForma.getItemAValor().doubleValue());
@@ -62,9 +61,15 @@ public enum FormulaProduto {
 		if (producaoForma.getItemCValor() != null) {
 			e.setVariable("C", producaoForma.getItemCValor().doubleValue());
 		}
-		Future<Double> future = e.evaluateAsync(exec);
+		
 		Double result = null;
+		result = e.evaluate();
+
+		/*
+		ExecutorService exec = Executors.newFixedThreadPool(1);
+		Future<Double> future = e.evaluateAsync(exec);
 		result = future.get();
+		*/
 
 		return new BigDecimal(result, UtilitarioNumero.BIG_DECIMAL_PRECISAO);
 	}

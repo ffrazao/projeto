@@ -99,6 +99,10 @@ public class BasicoInicioImportacaoCmd extends _Comando {
 		contexto.put("transactionManager", transactionManager);
 
 		contexto.put("transactionDefinition", transactionDefinition);
+		
+		if (logger.isInfoEnabled()) {
+			logger.info("Variáveis globais iniciadas e carregadas");
+		}
 
 		return false;
 	}
