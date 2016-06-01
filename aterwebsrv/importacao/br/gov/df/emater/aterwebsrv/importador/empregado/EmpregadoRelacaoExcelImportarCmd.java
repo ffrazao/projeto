@@ -150,8 +150,9 @@ public class EmpregadoRelacaoExcelImportarCmd extends _Comando {
 				Calendar admissao = new GregorianCalendar();
 				admissao.setTime(DateUtil.getJavaDate((double) reg.get("DATA ADMISSÃO")));
 
-				PessoaFisica empregado = pessoaFisicaDao.findOneByNomeAndGenero(nomeExcel, genero);
-				if (empregado == null) {
+				List<PessoaFisica> empregadoList = pessoaFisicaDao.findByNomeIgnoreCaseAndGenero(nomeExcel, genero);
+				PessoaFisica empregado = null;
+				if (empregadoList == null || empregadoList.isEmpty()) {
 					empregado = new PessoaFisica();
 					empregado.setNome(nomeExcel);
 					empregado.setApelidoSigla(nomeExcel.split("\\s")[0]);
@@ -175,6 +176,8 @@ public class EmpregadoRelacaoExcelImportarCmd extends _Comando {
 					empregado.setId((Integer) facadeBo.pessoaSalvar(contexto.getUsuario(), empregado).getResposta());
 					em.detach(empregado);
 					empregado = pessoaFisicaDao.findOne(empregado.getId());
+				} else {
+					empregado = empregadoList.get(0);
 				}
 				// if (true)
 				// continue;

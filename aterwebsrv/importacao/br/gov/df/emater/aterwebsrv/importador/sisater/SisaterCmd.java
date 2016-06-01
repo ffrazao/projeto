@@ -40,7 +40,7 @@ public class SisaterCmd extends _Comando {
 			if (cont <= 6 || cont > 99) {
 				cont++;
 				continue;
-			} 
+			}
 
 			if (logger.isInfoEnabled()) {
 				logger.info(String.format("%s. importando base [%s]", cont, base.name()));

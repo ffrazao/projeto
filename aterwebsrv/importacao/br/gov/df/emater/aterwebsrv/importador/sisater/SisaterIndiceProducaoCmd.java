@@ -30,6 +30,7 @@ import br.gov.df.emater.aterwebsrv.dao.indice_producao.FormaProducaoItemDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.FormaProducaoValorDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.UnidadeMedidaDao;
+import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaDao;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.importador.apoio.ConexaoFirebird.DbSater;
 import br.gov.df.emater.aterwebsrv.importador.apoio.ImpUtil;
@@ -520,6 +521,9 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 			} else {
 				result.setUnidadeOrganizacional(null);
 				result.setPublicoAlvo(publicoAlvoDao.findOneByPessoaId(rs.getInt("CHAVE_ATER_WEB_PESSOA")));
+				if (result.getPublicoAlvo() == null) {
+					result.setPublicoAlvo(publicoAlvoDao.findOneByPessoa(pessoaDao.findOneByChaveSisater(impUtil.chaveBeneficiario(base, rs.getString("IDUND"), rs.getString("IDBEN")))));
+				}
 				if (!OrigemList.IPAN00.equals(tabela)) {
 					result.setPropriedadeRural(propriedadeRuralDao.findOne(rs.getInt("CHAVE_ATER_WEB_PROP")));
 				} else {
@@ -528,7 +532,12 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 					}
 				}
 				if (result.getPropriedadeRural() == null) {
-					throw new BoException("Propriedade Rural não identificada");
+					result.setPropriedadeRural(propriedadeRuralDao.findOneByChaveSisater(impUtil.chavePropriedadeRural(base, rs.getString("IDUND"), rs.getString("IDPRP"))));
+				}
+				if (result.getPropriedadeRural() == null) {
+					logger.error(String.format("Propriedade Rural não identificada [%s][%s][%s][%s][%s]", rs.getString("IDUND"), rs.getString("IDIPA"), rs.getString("SAFRA"), rs.getString("IDBEN"), rs.getString("IDPRP"), rs.getString("DTIPA")));
+					// throw new BoException("Propriedade Rural não
+					// identificada");
 				}
 				result.setChaveSisater(impUtil.chaveProducaoAgricola(base, rs.getString("IDUND"), rs.getInt("IDIPA"), rs.getString("IDBEN"), tabela.equals(OrigemList.IPAN00) ? null : rs.getString("IDPRP"), nomeTabela));
 				salvo = producaoDao.findOneByAnoAndBemAndPublicoAlvoAndPropriedadeRuralAndUnidadeOrganizacionalIsNull(result.getAno(), result.getBem(), result.getPublicoAlvo(), result.getPropriedadeRural());
@@ -698,7 +707,7 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 	private static enum OrigemList {
 		IPAA00("SELECT D.IDUND, D.IDIPA, D3.SAFRA, D.IDBEN, D.IDPRP, D.DTIPA, CULTURA, GRUPO, SUBGRUPO, CULTURA, SISTEMA, PROTECAO, USOAGUA, D.AREA, D1.CHAVE_ATER_WEB AS CHAVE_ATER_WEB_PESSOA, D2.CHAVE_ATER_WEB AS CHAVE_ATER_WEB_PROP, D3.QUANTIDADE, D3.UNIDADE, D.AREA * D3.QUANTIDADE AS PRODUTIVIDADE, D3.PDCUND FROM IPAA01 D, BENEF00 D1, PROP00 D2, IPAA00 D3 WHERE (D.IDBEN = D1.IDBEN) AND (D.IDPRP = D2.IDPRP) AND (D.IDIPA = D3.IDIPA) ORDER BY 1, 2, 3, 4"), IPAF00(
 				"SELECT D.IDUND, D.IDIPA, D3.SAFRA, D.IDBEN, D.IDPRP, D.DTIPA, CULTURA, GRUPO, SUBGRUPO, CULTURA, SISTEMA, PROTECAO, USOAGUA, D.AREA, D1.CHAVE_ATER_WEB AS CHAVE_ATER_WEB_PESSOA, D2.CHAVE_ATER_WEB AS CHAVE_ATER_WEB_PROP, D3.QUANTIDADE, D3.UNIDADE, D.AREA * D3.QUANTIDADE AS PRODUTIVIDADE, D3.PDCUND FROM IPAF01 D, BENEF00 D1, PROP00 D2, IPAF00 D3 WHERE (D.IDBEN = D1.IDBEN) AND (D.IDPRP = D2.IDPRP) AND (D.IDIPA = D3.IDIPA) ORDER BY 1, 2, 3, 4"), IPAN00(
-						"SELECT D.IDUND, D.IDIPA, D2.SAFRA, D.IDBEN, D.DTIPA, PROJETO, CONDICAO, PRODUTO, D.QUANTIDADE, D1.CHAVE_ATER_WEB AS CHAVE_ATER_WEB_PESSOA, D2.UNIDADE FROM IPAN01 D, BENEF00 D1, IPAN00 D2 WHERE (D.IDBEN = D1.IDBEN) AND (D.IDIPA = D2.IDIPA) ORDER BY 1, 2, 3, 4"), IPAP00(
+						"SELECT D.IDUND, D.IDIPA, D2.SAFRA, D.IDBEN, \"\" AS IDPRP, D.DTIPA, PROJETO, CONDICAO, PRODUTO, D.QUANTIDADE, D1.CHAVE_ATER_WEB AS CHAVE_ATER_WEB_PESSOA, D2.UNIDADE FROM IPAN01 D, BENEF00 D1, IPAN00 D2 WHERE (D.IDBEN = D1.IDBEN) AND (D.IDIPA = D2.IDIPA) ORDER BY 1, 2, 3, 4"), IPAP00(
 								"SELECT D.IDUND, D.IDIPA, D3.SAFRA, D.IDBEN, D.IDPRP, D.DTIPA, CULTURA, SISTEMA, EXPLORACAO, D.PROD1AC, D.PROD2AC, D.PROD3AC, D.PROD4AC, D.PROD5AC, D.PROD6AC, D.REBANHO, D.MATRIZES, D1.CHAVE_ATER_WEB AS CHAVE_ATER_WEB_PESSOA, D2.CHAVE_ATER_WEB AS CHAVE_ATER_WEB_PROP, D2.SISTEMA, D3.UNIDADE FROM IPAP01 D, BENEF00 D1, PROP00 D2, IPAP00 D3 WHERE (D.IDBEN = D1.IDBEN) AND (D.IDPRP = D2.IDPRP) AND (D.IDIPA = D3.IDIPA) ORDER BY 1, 2, 3, 4");
 
 		String sql;
@@ -740,6 +749,9 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 	private FormaProducaoValorDao formaProducaoValorDao;
 
 	private ImpUtil impUtil;
+
+	@Autowired
+	private PessoaDao pessoaDao;
 
 	@Autowired
 	private ProducaoDao producaoDao;

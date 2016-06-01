@@ -114,7 +114,7 @@ public class SisaterPublicoAlvoPropriedadeRuralCmd extends _Comando {
 		}
 
 		if (pessoa == null || pessoa.getPublicoAlvo() == null || propriedadeRural == null) {
-			throw new BoException("Pessoa ou Propriedade Rural inexistente [%s] [%s]", pessoaChaveSisater, propriedadeChaveSisater);
+			throw new BoException("Pessoa ou Propriedade Rural inexistente [%s] [%s] [%s] [%s]", pessoaChaveSisater, propriedadeChaveSisater, pessoa, propriedadeRural);
 			// logger.error(String.format("Pessoa ou Propriedade Rural
 			// inexistente"));
 			// return null;

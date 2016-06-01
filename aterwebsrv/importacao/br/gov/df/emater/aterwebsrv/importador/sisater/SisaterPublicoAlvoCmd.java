@@ -790,7 +790,10 @@ public class SisaterPublicoAlvoCmd extends _Comando {
 	private void localNascimentoCaptaEstadoMunicipio(EntidadeBase[] result, String naturalidade, String separador) {
 		if (naturalidade.indexOf(separador) >= 0) {
 			String temp[] = naturalidade.split(separador);
-			String siglaEstado = temp[temp.length - 1];
+			if (temp == null || temp.length == 0) {
+				return;
+			}
+			String siglaEstado = temp[Math.max(0, temp.length - 1)];
 			StringBuilder nomeMunicipio = new StringBuilder();
 			for (int i = 0; i <= temp.length - 2; i++) {
 				if (nomeMunicipio.length() > 0) {

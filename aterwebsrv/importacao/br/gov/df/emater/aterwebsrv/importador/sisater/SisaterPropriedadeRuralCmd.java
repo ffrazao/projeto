@@ -294,6 +294,8 @@ public class SisaterPropriedadeRuralCmd extends _Comando {
 					propriedadeRural.setSituacao(PropriedadeRuralSituacao.A);
 					propriedadeRural.setSituacaoData(agora);
 					propriedadeRural.setArquivoList(captarArquivoList(rs.getString("IDPRP"), propriedadeRural));
+					propriedadeRural.setAlteracaoUsuario(ematerUsuario);
+					propriedadeRural.setInclusaoUsuario(ematerUsuario);
 
 					// salvar no MySQL e no Firebird
 					propriedadeRural.setId((Integer) facadeBo.propriedadeRuralSalvar(contexto.getUsuario(), propriedadeRural).getResposta());
