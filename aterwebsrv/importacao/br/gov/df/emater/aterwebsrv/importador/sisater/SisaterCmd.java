@@ -36,7 +36,7 @@ public class SisaterCmd extends _Comando {
 					continue;
 				}
 				
-				if (base.compareTo(DbSater.ELALG) < 0) {
+				if (base.compareTo(DbSater.ELALG) <= 0) {
 					continue;
 				}
 

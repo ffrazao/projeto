@@ -69,6 +69,9 @@ public class SisaterAcompanhamentoAterIncluirAntes2014Cmd extends _Comando {
 			if (atividade.getAssuntoList() == null) {
 				atividade.setAssuntoList(new ArrayList<AtividadeAssunto>());
 			}
+			if (assunto == null) {
+				return;
+			}
 			for (AtividadeAssunto item : atividade.getAssuntoList()) {
 				if (assunto.getId().equals(item.getAssunto().getId())) {
 					return;
@@ -106,18 +109,19 @@ public class SisaterAcompanhamentoAterIncluirAntes2014Cmd extends _Comando {
 		}
 
 		private void acumulaPessoaExecutor(Pessoa empregado) throws BoException {
-			if (atividade.getPessoaExecutorList() == null) {
+			if (atividade.getPessoaExecutorList() == null || atividade.getPessoaExecutorList().isEmpty()) {
 				atividade.setPessoaExecutorList(new ArrayList<AtividadePessoa>());
 				atividade.getPessoaExecutorList().add(new AtividadePessoa(impUtil.deParaUnidadeOrganizacional(emater, base.getSigla()), null, atividade.getInicio(), AtividadePessoaParticipacao.E, Confirmacao.N));
 			}
-			if (empregado != null) {
-				for (AtividadePessoa item : atividade.getPessoaExecutorList()) {
-					if (item.getPessoa() != null && empregado.getId().equals(item.getPessoa().getId())) {
-						return;
-					}
-				}
-				atividade.getPessoaExecutorList().add(new AtividadePessoa(null, empregado, atividade.getInicio(), AtividadePessoaParticipacao.E, Confirmacao.S));
+			if (empregado == null) {
+				return;
 			}
+			for (AtividadePessoa item : atividade.getPessoaExecutorList()) {
+				if (item.getPessoa() != null && empregado.getId().equals(item.getPessoa().getId())) {
+					return;
+				}
+			}
+			atividade.getPessoaExecutorList().add(new AtividadePessoa(null, empregado, atividade.getInicio(), AtividadePessoaParticipacao.E, Confirmacao.S));
 		}
 
 		void importar(DbSater base, Principal usuario) throws Exception {
@@ -295,6 +299,9 @@ public class SisaterAcompanhamentoAterIncluirAntes2014Cmd extends _Comando {
 	private PlatformTransactionManager transactionManager;
 
 	Assunto assuntoPega(String nome) throws BoException {
+		if (nome == null) {
+			nome = "";
+		}
 		switch (nome) {
 		case "Boas práticas agrícolas - BPA":
 			nome = "Boas Práticas Agropecuárias (BPA)";
@@ -313,19 +320,23 @@ public class SisaterAcompanhamentoAterIncluirAntes2014Cmd extends _Comando {
 			break;
 		}
 		for (Assunto assunto : assuntoList) {
-			if (assunto.getNome().equals("nome")) {
+			if (nome.equals(assunto.getNome())) {
 				return assunto;
 			}
 		}
 		Assunto assunto = assuntoDao.findOneByNome(nome);
 		if (assunto == null) {
-			throw new BoException("Assunto não cadastrado [%s]", nome);
+			logger.error(String.format("Assunto não cadastrado [%s]", nome));
+			return null;
 		}
 		assuntoList.add(assunto);
 		return assunto;
 	}
 
 	private Pessoa empregadoPega(String matricula) throws BoException {
+		if (matricula == null || matricula.trim().length() == 0) {
+			return null;
+		}
 		matricula = matricula.trim().toUpperCase();
 		matricula = UtilitarioString.substituirTudo(matricula, "-", "");
 		matricula = UtilitarioString.substituirTudo(matricula, ".", "");
@@ -338,7 +349,8 @@ public class SisaterAcompanhamentoAterIncluirAntes2014Cmd extends _Comando {
 		List<Emprego> empregoList = empregoDao.findByMatricula(matricula);
 
 		if (empregoList == null || empregoList.size() != 1) {
-			throw new BoException("Empregado não identificado [%s]", matricula);
+			logger.error(String.format("Empregado não identificado [%s]", matricula));
+			return null;
 		}
 
 		Pessoa pessoa = null;
@@ -353,7 +365,8 @@ public class SisaterAcompanhamentoAterIncluirAntes2014Cmd extends _Comando {
 			}
 		}
 		if (pessoa == null) {
-			throw new BoException("Empregado não cadastrado [%s]", matricula);
+			logger.error(String.format("Empregado não cadastrado [%s]", matricula));
+			return null;
 		}
 		return pessoa;
 	}
