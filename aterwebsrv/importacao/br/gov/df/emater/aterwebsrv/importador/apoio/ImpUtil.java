@@ -213,16 +213,16 @@ public class ImpUtil {
 	}
 
 	public void chaveAterWebAtualizar(Connection con, Integer id, Calendar agora, String tabelaSisater, String clausuaWhere, Object... parametroList) throws SQLException {
-		PreparedStatement ps = con.prepareStatement(String.format("UPDATE %s SET CHAVE_ATER_WEB = ?, DATA_ATER_WEB = ? WHERE %s", tabelaSisater, clausuaWhere));
-		ps.setInt(1, id);
-		ps.setDate(2, new Date(agora.getTime().getTime()));
-		int cont = 3;
-		if (parametroList != null) {
-			for (Object parametro : parametroList) {
-				ps.setObject(cont++, parametro);
-			}
-		}
 		try {
+			PreparedStatement ps = con.prepareStatement(String.format("UPDATE %s SET CHAVE_ATER_WEB = ?, DATA_ATER_WEB = ? WHERE %s", tabelaSisater, clausuaWhere));
+			ps.setInt(1, id);
+			ps.setDate(2, new Date(agora.getTime().getTime()));
+			int cont = 3;
+			if (parametroList != null) {
+				for (Object parametro : parametroList) {
+					ps.setObject(cont++, parametro);
+				}
+			}
 			ps.executeUpdate();
 		} catch (Exception e) {
 			// TODO entender o motivo do erro

@@ -58,6 +58,9 @@ public class SalvarPrincipalCmd extends _Comando {
 		if (producao.getUnidadeOrganizacional() == null && producao.getPropriedadeRural() != null) {
 			// verificar se existe a producao principal da regiao esperada
 			PropriedadeRural pr = propriedadeRuralDao.findOne(producao.getPropriedadeRural().getId());
+			if (pr.getComunidade() == null) {
+				return false;
+			}
 			Comunidade cm = comunidadeDao.findOne(pr.getComunidade().getId());
 			UnidadeOrganizacional uo = unidadeOrganizacionalDao.findOne(cm.getUnidadeOrganizacional().getId());
 			Producao principal = dao.findOneByAnoAndBemAndUnidadeOrganizacionalAndPublicoAlvoIsNullAndPropriedadeRuralIsNull(producao.getAno(), producao.getBem(), uo);
