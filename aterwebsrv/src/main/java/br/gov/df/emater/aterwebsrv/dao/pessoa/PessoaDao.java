@@ -14,7 +14,7 @@ public interface PessoaDao extends JpaRepository<Pessoa, Integer>, PessoaDaoCust
 
 	List<Pessoa> findByInscricaoEstadual(String numero);
 
-	List<Pessoa> findByInscricaoEstadualUfAndInscricaoEstadual(String uf, String numero);
+	List<Pessoa> findByInscricaoEstadualAndInscricaoEstadualUf(String numero, String uf);
 
 	Pessoa findByNome(String nome);
 

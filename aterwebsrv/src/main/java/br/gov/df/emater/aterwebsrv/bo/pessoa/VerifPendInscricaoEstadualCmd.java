@@ -31,7 +31,7 @@ public class VerifPendInscricaoEstadualCmd extends VerificarPendenciasCmd {
 		if (uf == null || uf.trim().length() == 0) {
 			salvoList = pessoaDao.findByInscricaoEstadual(numero);
 		} else {
-			salvoList = pessoaDao.findByInscricaoEstadualUfAndInscricaoEstadual(uf, numero);
+			salvoList = pessoaDao.findByInscricaoEstadualAndInscricaoEstadualUf(numero, uf);
 		}
 		if (salvoList != null) {
 			for (Pessoa salvo : salvoList) {

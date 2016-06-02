@@ -35,6 +35,10 @@ public class SisaterCmd extends _Comando {
 				if (base.getSigla() == null) {
 					continue;
 				}
+				
+				if (base.compareTo(DbSater.ELALG) < 0) {
+					continue;
+				}
 
 				if (logger.isInfoEnabled()) {
 					logger.info(String.format("%s. importando %s [%s]", cont, importando, base.name()));
@@ -96,7 +100,7 @@ public class SisaterCmd extends _Comando {
 		Check check = new Check();
 
 		// importar primeiro todos os dados de empregado de todas as bases
-		check.rodar(contexto, "Emprego");
+		// check.rodar(contexto, "Emprego");
 
 		// importar demais dados
 		check.rodar(contexto, "Base");
