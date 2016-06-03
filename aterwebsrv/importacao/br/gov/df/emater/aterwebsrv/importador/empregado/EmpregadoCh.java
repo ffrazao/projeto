@@ -9,11 +9,13 @@ import br.gov.df.emater.aterwebsrv.bo._Cadeia;
 public class EmpregadoCh extends _Cadeia {
 
 	@Autowired
-	public EmpregadoCh(EmpregadoRelacaoExcelCarregarCmd c1, EmpregadoRelacaoExcelImportarCmd c2, EmpregadoContaUsuarioExcelCarregarCmd c3, EmpregadoContaUsuarioExcelImportarCmd c4) {
+	public EmpregadoCh(EmpregadoRelacaoExcelCarregarCmd c1, EmpregadoRelacaoExcelImportarCmd c2, EmpregadoContaUsuarioExcelCarregarCmd c3, EmpregadoContaUsuarioExcelImportarCmd c4, EmpregadoDemitidosExcelCarregarCmd c5, EmpregadoDemitidosExcelImportarCmd c6) {
 		super.addCommand(c1);
 		super.addCommand(c2);
 		super.addCommand(c3);
 		super.addCommand(c4);
+		super.addCommand(c5);
+		super.addCommand(c6);
 	}
 
 }
