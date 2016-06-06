@@ -41,6 +41,39 @@ public class Util {
 		return result;
 	}
 
+	public static boolean codigoAtividadeEhValido(String codigo) {
+		try {
+			int dvInf = Integer.parseInt(codigo.substring(codigo.length() - 1));
+			int dv = codigoAtividadeGerarDv(codigo.substring(0, codigo.length() - 1));
+			return dvInf == dv;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public static String codigoAtividadeFormatar(String codigo) {
+		if (codigo == null || codigo.trim().length() == 0) {
+			return null;
+		}
+		codigo = UtilitarioString.soNumero(UtilitarioString.semAcento(codigo.trim().toUpperCase()), STR_NUMERO_ALFABETO.toCharArray());
+		return Pattern.compile("(\\w{4})(\\w{4})(\\d{1})").matcher(codigo).replaceAll("$1.$2-$3");
+	}
+
+	public static String codigoAtividadeGerar() {
+		StringBuilder sb = new StringBuilder();
+		Random r = new Random();
+		for (int i = 0; i < 8; i++) {
+			int j = r.nextInt(STR_NUMERO_ALFABETO.length());
+			sb.append(STR_NUMERO_ALFABETO.charAt(j));
+		}
+		sb.append(codigoAtividadeGerarDv(sb.toString()));
+		return codigoAtividadeFormatar(sb.toString());
+	}
+
+	public static int codigoAtividadeGerarDv(String codigo) {
+		return modulo10(extraiNumeroProtocolo(codigo));
+	}
+
 	private static String extraiNumeroProtocolo(String numero) {
 		StringBuilder sb = new StringBuilder();
 		for (char c : numero.toCharArray()) {
@@ -49,19 +82,6 @@ public class Util {
 				sb.append(UtilitarioString.zeroEsquerda(pos, 2));
 			}
 		}
-		return sb.toString();
-	}
-
-	public static String gerarCodigoAtividade() {
-		StringBuilder sb = new StringBuilder();
-		Random r = new Random();
-		for (int i = 0; i < 8; i++) {
-			int j = r.nextInt(STR_NUMERO_ALFABETO.length());
-			sb.append(STR_NUMERO_ALFABETO.charAt(j));
-		}
-		sb.append(modulo10(extraiNumeroProtocolo(sb.toString())));
-		sb.insert(4, ".");
-		sb.insert(9, "-");
 		return sb.toString();
 	}
 

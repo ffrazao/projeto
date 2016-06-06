@@ -2,6 +2,8 @@ package br.gov.df.emater.aterwebsrv.modelo.atividade;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -9,6 +11,7 @@ import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 
 @Entity
 @Table(name = "assunto", schema = EntidadeBase.ATIVIDADE_SCHEMA)
@@ -16,6 +19,9 @@ public class Assunto extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
 
+	@Enumerated(EnumType.STRING)
+	private Confirmacao ativo;
+	
 	private String finalidade;
 
 	@Id
@@ -44,6 +50,10 @@ public class Assunto extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.setFinalidade(finalidade);
 	}
 
+	public Confirmacao getAtivo() {
+		return ativo;
+	}
+
 	public String getFinalidade() {
 		return finalidade;
 	}
@@ -59,6 +69,10 @@ public class Assunto extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	public Assunto infoBasica() {
 		return new Assunto(getId(), getNome(), getFinalidade());
+	}
+
+	public void setAtivo(Confirmacao ativo) {
+		this.ativo = ativo;
 	}
 
 	public void setFinalidade(String finalidade) {

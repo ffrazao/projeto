@@ -10,12 +10,14 @@ import javax.persistence.TypedQuery;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import br.gov.df.emater.aterwebsrv.ferramenta.Util;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGeracao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoCategoria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoSegmento;
 import br.gov.df.emater.aterwebsrv.modelo.dto.AtividadeCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.FiltroDto;
+import br.gov.df.emater.aterwebsrv.modelo.dto.TagDto;
 
 public class AtividadeDaoImpl implements AtividadeDaoCustom {
 
@@ -68,19 +70,23 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 		sqlCodigo = new StringBuilder();
 		sqlFiltro = new StringBuilder();
 
-		if (!StringUtils.isEmpty(filtro.getCodigo())) {
-			sqlCodigo.append("(").append("\n");
+		if (!CollectionUtils.isEmpty(filtro.getCodigoList())) {
+			sql.append("and (").append("\n");
 			sqlTemp = new StringBuilder();
-			for (String codigo : filtro.getCodigo().split(FiltroDto.SEPARADOR_CAMPO)) {
+			for (TagDto nome : filtro.getCodigoList()) {
 				if (sqlTemp.length() > 0) {
 					sqlTemp.append(" or ");
 				}
-				params.add(String.format("%s", codigo.toUpperCase().trim()));
-				sqlTemp.append("a.codigo = ?").append(params.size());
+				String n = Util.codigoAtividadeFormatar(nome.getText());
+				if (Util.codigoAtividadeEhValido(n)) {
+					params.add(n);
+					sqlTemp.append(" a.codigo = ?").append(params.size()).append("\n");
+				}
 			}
-			sqlCodigo.append(sqlTemp);
-			sqlCodigo.append(")").append("\n");
+			sql.append(sqlTemp);
+			sql.append(" )").append("\n");
 		}
+
 		if (filtro.getInicio() != null) {
 			params.add(filtro.getInicio());
 			sqlFiltro.append("and a.inicio >= ?").append(params.size()).append("\n");

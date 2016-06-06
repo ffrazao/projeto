@@ -8,14 +8,13 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import br.gov.df.emater.aterwebsrv.modelo.ater.BaciaHidrografica;
 import br.gov.df.emater.aterwebsrv.modelo.ater.Comunidade;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
-import br.gov.df.emater.aterwebsrv.modelo.dto.FiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.PropriedadeRuralCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.modelo.dto.TagDto;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Area;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Endereco;
 
@@ -44,30 +43,32 @@ public class PropriedadeRuralDaoImpl implements PropriedadeRuralDaoCustom {
 		sql.append("left join p.publicoAlvoPropriedadeRuralList vinculados").append("\n");
 		sql.append("where (1 = 1)").append("\n");
 
-		if (!StringUtils.isEmpty(filtro.getPessoaVinculada())) {
+		if (!CollectionUtils.isEmpty(filtro.getPessoaVinculadaList())) {
 			sql.append("and (").append("\n");
 			sqlTemp = new StringBuilder();
-			for (String nome : filtro.getPessoaVinculada().split(FiltroDto.SEPARADOR_CAMPO)) {
+			for (TagDto nome : filtro.getPessoaVinculadaList()) {
 				if (sqlTemp.length() > 0) {
 					sqlTemp.append(" or ");
 				}
-				params.add(String.format("%%%s%%", nome.trim()));
+				String n = nome.getText().replaceAll("\\s", "%");
+				params.add(String.format("%%%s%%", n));
 				sqlTemp.append(" (vinculados.publicoAlvo.pessoa.nome like ?").append(params.size());
-				params.add(String.format("%%%s%%", nome.trim()));
+				params.add(String.format("%%%s%%", n));
 				sqlTemp.append(" or vinculados.publicoAlvo.pessoa.apelidoSigla like ?").append(params.size()).append(")").append("\n");
 			}
 			sql.append(sqlTemp);
 			sql.append(" )").append("\n");
 		}
 
-		if (!StringUtils.isEmpty(filtro.getNomePropriedade())) {
+		if (!CollectionUtils.isEmpty(filtro.getNomePropriedadeList())) {
 			sql.append("and (").append("\n");
 			sqlTemp = new StringBuilder();
-			for (String nome : filtro.getNomePropriedade().split(FiltroDto.SEPARADOR_CAMPO)) {
+			for (TagDto nome : filtro.getNomePropriedadeList()) {
 				if (sqlTemp.length() > 0) {
 					sqlTemp.append(" or ");
 				}
-				params.add(String.format("%%%s%%", nome.trim()));
+				String n = nome.getText().replaceAll("\\s", "%");
+				params.add(String.format("%%%s%%", n));
 				sqlTemp.append(" p.nome like ?").append(params.size()).append("\n");
 			}
 			sql.append(sqlTemp);

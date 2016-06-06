@@ -33,7 +33,7 @@ public class AtividadeCadFiltroDto extends FiltroDtoCustom {
 
 	private Set<PublicoAlvoCategoria> categoria;
 
-	private String codigo;
+	private Set<TagDto> codigoList;
 
 	private List<Comunidade> comunidadeList;
 
@@ -75,8 +75,8 @@ public class AtividadeCadFiltroDto extends FiltroDtoCustom {
 		return categoria;
 	}
 
-	public String getCodigo() {
-		return codigo;
+	public Set<TagDto> getCodigoList() {
+		return codigoList;
 	}
 
 	public List<Comunidade> getComunidadeList() {
@@ -135,8 +135,8 @@ public class AtividadeCadFiltroDto extends FiltroDtoCustom {
 		this.categoria = categoria;
 	}
 
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
+	public void setCodigoList(Set<TagDto> codigoList) {
+		this.codigoList = codigoList;
 	}
 
 	public void setComunidadeList(List<Comunidade> comunidadeList) {

@@ -72,7 +72,7 @@ public class SalvarCmd extends _Comando {
 		List<AtividadePessoa> atividadePessoaDemandList = result.getPessoaDemandanteList();
 		List<AtividadePessoa> atividadePessoaExecList = result.getPessoaExecutorList();
 
-		// FIX-ME
+		// FIX-ME somente para a importação, depois remover esta condição
 		if (atividadePessoaDemandList == null || atividadePessoaExecList == null) {
 			return true;
 		}
@@ -105,6 +105,11 @@ public class SalvarCmd extends _Comando {
 		for (AtividadeChaveSisater c : result.getChaveSisaterList()) {
 			c.setAtividade(result);
 		}
+		
+		// FIX-ME enquanto não for implementado o novo modelo de Atividades, depois remover esta condição
+		result.setPrevisaoConclusao(result.getInicio());
+		result.setConclusao(result.getInicio());
+		result.setPercentualConclusao(5);
 
 		dao.save(result);
 

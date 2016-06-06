@@ -25,11 +25,11 @@ public class PropriedadeRuralCadFiltroDto extends FiltroDtoCustom {
 
 	private List<PessoaJuridica> empresaList;
 
-	private String nomePropriedade;
+	private Set<TagDto> nomePropriedadeList;
 
 	private Set<Confirmacao> outorga;
 
-	private String pessoaVinculada;
+	private Set<TagDto> pessoaVinculadaList;
 
 	private List<PublicoAlvo> publicoAlvoList;
 
@@ -55,16 +55,16 @@ public class PropriedadeRuralCadFiltroDto extends FiltroDtoCustom {
 		return empresaList;
 	}
 
-	public String getNomePropriedade() {
-		return nomePropriedade;
+	public Set<TagDto> getNomePropriedadeList() {
+		return nomePropriedadeList;
 	}
 
 	public Set<Confirmacao> getOutorga() {
 		return outorga;
 	}
 
-	public String getPessoaVinculada() {
-		return pessoaVinculada;
+	public Set<TagDto> getPessoaVinculadaList() {
+		return pessoaVinculadaList;
 	}
 
 	public List<PublicoAlvo> getPublicoAlvoList() {
@@ -99,16 +99,16 @@ public class PropriedadeRuralCadFiltroDto extends FiltroDtoCustom {
 		this.empresaList = empresaList;
 	}
 
-	public void setNomePropriedade(String nomePropriedade) {
-		this.nomePropriedade = nomePropriedade;
+	public void setNomePropriedadeList(Set<TagDto> nomePropriedadeList) {
+		this.nomePropriedadeList = nomePropriedadeList;
 	}
 
 	public void setOutorga(Set<Confirmacao> outorga) {
 		this.outorga = outorga;
 	}
 
-	public void setPessoaVinculada(String pessoaVinculada) {
-		this.pessoaVinculada = pessoaVinculada;
+	public void setPessoaVinculadaList(Set<TagDto> pessoaVinculadaList) {
+		this.pessoaVinculadaList = pessoaVinculadaList;
 	}
 
 	public void setPublicoAlvoList(List<PublicoAlvo> publicoAlvoList) {
