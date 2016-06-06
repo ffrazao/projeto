@@ -228,7 +228,7 @@ public class SisaterAcompanhamentoAterIncluirAntes2014Cmd extends _Comando {
 					ini = c.indexOf("IDATR") + 1 + "IDATR".length();
 					String idAtr = c.substring(ini, c.indexOf("]", ini));
 
-					impUtil.chaveAterWebAtualizar(con, atividade.getId(), agora, TABELA, "IDUND = ? AND IDATR = ?", idUnd, Integer.parseInt(idAtr));
+					impUtil.chaveAterWebAtualizar(base, atividade.getId(), agora, TABELA, "IDUND = ? AND IDATR = ?", idUnd, Integer.parseInt(idAtr));
 				}
 			}
 		}

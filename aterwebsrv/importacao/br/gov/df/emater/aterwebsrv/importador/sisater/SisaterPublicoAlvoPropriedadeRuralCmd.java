@@ -83,7 +83,7 @@ public class SisaterPublicoAlvoPropriedadeRuralCmd extends _Comando {
 					// salvar no MySQL e no Firebird
 					publicoAlvoPropriedadeRural = publicoAlvoPropriedadeRuralDao.save(publicoAlvoPropriedadeRural);
 
-					impUtil.chaveAterWebAtualizar(con, publicoAlvoPropriedadeRural.getId(), agora, SISATER_TABELA, "IDPRP = ? AND IDBEN =  ?", rs.getString("IDPRP"), rs.getString("IDBEN"));
+					impUtil.chaveAterWebAtualizar(base, publicoAlvoPropriedadeRural.getId(), agora, SISATER_TABELA, "IDPRP = ? AND IDBEN =  ?", rs.getString("IDPRP"), rs.getString("IDBEN"));
 
 					if (cont % 500 == 0) {
 						long memo = Runtime.getRuntime().freeMemory();

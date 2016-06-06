@@ -679,7 +679,7 @@ public class SisaterPublicoAlvoCmd extends _Comando {
 					// salvar no MySQL e no Firebird
 					pessoa.setId((Integer) facadeBo.pessoaSalvar(contexto.getUsuario(), pessoa).getResposta());
 
-					impUtil.chaveAterWebAtualizar(con, pessoa.getId(), agora, SISATER_TABELA, "IDUND = ? AND IDBEN =  ?", rs.getString("IDUND"), rs.getString("IDBEN"));
+					impUtil.chaveAterWebAtualizar(base, pessoa.getId(), agora, SISATER_TABELA, "IDUND = ? AND IDBEN =  ?", rs.getString("IDUND"), rs.getString("IDBEN"));
 
 					// identificar último usuario que atualizou o registro
 					Usuario atualizador = impUtil.deParaUsuario(rs.getString("IDEMP"));

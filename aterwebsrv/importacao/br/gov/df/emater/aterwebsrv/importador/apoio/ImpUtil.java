@@ -212,8 +212,10 @@ public class ImpUtil {
 		return result;
 	}
 
-	public void chaveAterWebAtualizar(Connection con, Integer id, Calendar agora, String tabelaSisater, String clausuaWhere, Object... parametroList) throws SQLException {
+	public void chaveAterWebAtualizar(DbSater base, Integer id, Calendar agora, String tabelaSisater, String clausuaWhere, Object... parametroList) throws SQLException {
+		Connection con = ConexaoFirebird.getConnection(base);
 		try {
+			con.setAutoCommit(false);
 			PreparedStatement ps = con.prepareStatement(String.format("UPDATE %s SET CHAVE_ATER_WEB = ?, DATA_ATER_WEB = ? WHERE %s", tabelaSisater, clausuaWhere));
 			ps.setInt(1, id);
 			ps.setDate(2, new Date(agora.getTime().getTime()));
@@ -224,11 +226,13 @@ public class ImpUtil {
 				}
 			}
 			ps.executeUpdate();
+			con.commit();
 		} catch (Exception e) {
 			// TODO entender o motivo do erro
 			// org.firebirdsql.jdbc.FBSQLException: GDS Exception. 335544327.
 			// invalid request handle
 			logger.error(e);
+			con.rollback();
 		}
 	}
 

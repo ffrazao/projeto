@@ -36,7 +36,7 @@ public class SisaterCmd extends _Comando {
 					continue;
 				}
 				
-				if (base.compareTo(DbSater.ELALG) <= 0) {
+				if (base.compareTo(DbSater.ELALG) != 0) {
 					continue;
 				}
 
@@ -96,6 +96,7 @@ public class SisaterCmd extends _Comando {
 		if (logger.isInfoEnabled()) {
 			logger.info("INICIO DA IMPORTAÇÃO");
 		}
+		Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
 
 		Check check = new Check();
 
@@ -108,6 +109,8 @@ public class SisaterCmd extends _Comando {
 		if (logger.isInfoEnabled()) {
 			logger.info("FIM DA IMPORTAÇÃO");
 		}
+		
+		Thread.currentThread().setPriority(Thread.NORM_PRIORITY);
 
 		return false;
 	}

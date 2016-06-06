@@ -242,7 +242,7 @@ public class SisaterAcompanhamentoAterIncluirDepois2014Cmd extends _Comando {
 					ini = c.indexOf("IDACAO") + 1 + "IDACAO".length();
 					String idAcao = c.substring(ini, c.indexOf("]", ini));
 
-					impUtil.chaveAterWebAtualizar(con, atividade.getId(), agora, TABELA, "IDUND = ? AND IDATR = ? AND ATERDT = ? AND IDEMP = ? AND IDMET = ? AND IDTEMA = ? AND IDACAO = ?", idUnd, Integer.parseInt(idAtr),
+					impUtil.chaveAterWebAtualizar(base, atividade.getId(), agora, TABELA, "IDUND = ? AND IDATR = ? AND ATERDT = ? AND IDEMP = ? AND IDMET = ? AND IDTEMA = ? AND IDACAO = ?", idUnd, Integer.parseInt(idAtr),
 							new java.sql.Date(((Calendar) UtilitarioData.getInstance().stringParaData(aterDt)).getTime().getTime()),
 							// aterDt,
 							idEmp, idMet, idTema, idAcao);

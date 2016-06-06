@@ -449,12 +449,12 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 						producao.setId((Integer) facadeBo.indiceProducaoSalvar(usuario, producao).getResposta());
 
 						if (geral == 0) {
-							impUtil.chaveAterWebAtualizar(con, producao.getId(), agora, nomeTabela, "IDUND = ? AND IDIPA = ? AND SAFRA = ?", rs.getString("IDUND"), rs.getInt("IDIPA"), rs.getString("SAFRA"));
+							impUtil.chaveAterWebAtualizar(base, producao.getId(), agora, nomeTabela, "IDUND = ? AND IDIPA = ? AND SAFRA = ?", rs.getString("IDUND"), rs.getInt("IDIPA"), rs.getString("SAFRA"));
 						} else {
 							if (tabela.equals(OrigemList.IPAN00)) {
-								impUtil.chaveAterWebAtualizar(con, producao.getId(), agora, nomeTabela, "IDUND = ? AND IDIPA = ? AND IDBEN = ?", rs.getString("IDUND"), rs.getInt("IDIPA"), rs.getString("IDBEN"));
+								impUtil.chaveAterWebAtualizar(base, producao.getId(), agora, nomeTabela, "IDUND = ? AND IDIPA = ? AND IDBEN = ?", rs.getString("IDUND"), rs.getInt("IDIPA"), rs.getString("IDBEN"));
 							} else {
-								impUtil.chaveAterWebAtualizar(con, producao.getId(), agora, nomeTabela, "IDUND = ? AND IDIPA = ? AND IDBEN = ? AND IDPRP = ?", rs.getString("IDUND"), rs.getInt("IDIPA"), rs.getString("IDBEN"), rs.getString("IDPRP"));
+								impUtil.chaveAterWebAtualizar(base, producao.getId(), agora, nomeTabela, "IDUND = ? AND IDIPA = ? AND IDBEN = ? AND IDPRP = ?", rs.getString("IDUND"), rs.getInt("IDIPA"), rs.getString("IDBEN"), rs.getString("IDPRP"));
 							}
 						}
 						if (cont % 500 == 0) {
@@ -797,9 +797,9 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 		checkProducaoList.init();
 
 		for (OrigemList origem : OrigemList.values()) {
-			if (origem.compareTo(OrigemList.IPAP00) < 0) {
-				continue;
-			}
+//			if (origem.compareTo(OrigemList.IPAP00) < 0) {
+//				continue;
+//			}
 			for (int i = 0; i <= 1; i++) {
 				checkProducaoList.importar(base, contexto.getUsuario(), origem, i);
 			}

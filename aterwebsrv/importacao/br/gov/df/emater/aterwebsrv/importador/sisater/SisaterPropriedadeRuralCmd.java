@@ -300,7 +300,7 @@ public class SisaterPropriedadeRuralCmd extends _Comando {
 					// salvar no MySQL e no Firebird
 					propriedadeRural.setId((Integer) facadeBo.propriedadeRuralSalvar(contexto.getUsuario(), propriedadeRural).getResposta());
 
-					impUtil.chaveAterWebAtualizar(con, propriedadeRural.getId(), agora, SISATER_TABELA, "IDUND = ? AND IDPRP = ?", rs.getString("IDUND"), rs.getString("IDPRP"));
+					impUtil.chaveAterWebAtualizar(base, propriedadeRural.getId(), agora, SISATER_TABELA, "IDUND = ? AND IDPRP = ?", rs.getString("IDUND"), rs.getString("IDPRP"));
 
 					captarDiagnosticoList(rs, propriedadeRural);
 
