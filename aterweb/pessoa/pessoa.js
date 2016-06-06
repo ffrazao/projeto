@@ -612,8 +612,8 @@
                     return;
                 }
 
-                var valid = $scope.cadastro.registro.publicoAlvo.dapValidade instanceof Date ? moment($scope.cadastro.registro.publicoAlvo.dapValidade) : moment($scope.cadastro.registro.publicoAlvo.dapValidade, 'dd/MM/yyyy HH:mm:ss');
-                var hoje = new Date();
+                var valid = $scope.cadastro.registro.publicoAlvo.dapValidade instanceof Date ? moment(moment($scope.cadastro.registro.publicoAlvo.dapValidade).format('DD/MM/YYYY'), 'DD/MM/YYYY') : moment($scope.cadastro.registro.publicoAlvo.dapValidade, 'DD/MM/YYYY');
+                var hoje = moment([moment().year(), moment().month(), moment().date()]);
                 var carencia = moment(hoje).add(2, 'months');
 
                 if (valid.isAfter(carencia)) {
