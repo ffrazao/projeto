@@ -6,15 +6,23 @@
                 <!-- Text input-->
                 <div class="form-group" title="Nome da Propriedade" >
                     <label class="col-md-4 control-label" for="nomePropriedade">Nome da Propriedade</label> 
-                    <div class="col-md-5">
-                        <input id="nomePropriedade" name="nomePropriedade" type="text" placeholder="" class="form-control input-md" ng-model="cadastro.filtro.nomePropriedade">
+                    <div class="col-md-6">
+                        <tags-input id="nomePropriedadeList" name="nomePropriedadeList" ng-model="cadastro.filtro.nomePropriedadeList" placeholder="Digite o nome, ou parte dele, e tecle enter" replace-spaces-with-dashes="false"></tags-input>
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.nomePropriedadeList.$error.required">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Campo Obrigatório
+                        </div>
                     </div>
                 </div>
                 <!-- Text input-->
                 <div class="form-group" title="Pessoa Vinculada" >
                     <label class="col-md-4 control-label" for="pessoaVinculada">Pessoa Vinculada</label> 
-                    <div class="col-md-5">
-                        <input id="pessoaVinculada" name="pessoaVinculada" type="text" placeholder="" class="form-control input-md" ng-model="cadastro.filtro.pessoaVinculada">
+                    <div class="col-md-6">
+                        <tags-input id="pessoaVinculadaList" name="pessoaVinculadaList" ng-model="cadastro.filtro.pessoaVinculadaList" placeholder="Digite o nome, ou parte dele, e tecle enter" replace-spaces-with-dashes="false"></tags-input>
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.pessoaVinculadaList.$error.required">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Campo Obrigatório
+                        </div>
                     </div>
                 </div>
                 <!-- Select Basic -->

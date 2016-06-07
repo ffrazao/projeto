@@ -9,8 +9,8 @@
                         Código da Atividade
                     </label>
                     <div class="col-md-6">
-                        <input type="text" class="form-control" id="codigo" name="codigo" ng-model="cadastro.filtro.codigo">
-                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.codigo.$error.required">
+                        <tags-input id="codigoList" name="codigoList" ng-model="cadastro.filtro.codigoList" placeholder="Digite o nome, ou parte dele, e tecle enter" replace-spaces-with-dashes="false"></tags-input>
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.codigoList.$error.required">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             Campo Obrigatório
                         </div>
