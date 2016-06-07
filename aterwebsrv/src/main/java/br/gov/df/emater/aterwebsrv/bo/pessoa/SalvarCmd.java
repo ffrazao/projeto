@@ -158,12 +158,9 @@ public class SalvarCmd extends _Comando {
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		Pessoa result = (Pessoa) contexto.getRequisicao();
-		if (result.getId() == null) {
-			result.setInclusaoUsuario(getUsuario(contexto.getUsuario() == null ? null : contexto.getUsuario().getName()));
-		} else {
-			result.setInclusaoUsuario(getUsuario(result.getInclusaoUsuario() == null ? null : result.getInclusaoUsuario().getUsername()));
-		}
-		result.setAlteracaoUsuario(getUsuario(contexto.getUsuario() == null ? null : contexto.getUsuario().getName()));
+		
+		// captar o registro de atualização da tabela
+		logAtualizar(result, contexto);
 
 		// ajustar os dados de nascimento da pessoa
 		if (result instanceof PessoaFisica) {

@@ -57,12 +57,9 @@ public class SalvarCmd extends _Comando {
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		PropriedadeRural result = (PropriedadeRural) contexto.getRequisicao();
-		if (result.getId() == null) {
-			result.setInclusaoUsuario(getUsuario(contexto.getUsuario().getName()));
-		} else {
-			result.setInclusaoUsuario(result.getInclusaoUsuario() == null ? null : getUsuario(result.getInclusaoUsuario().getUsername()));
-		}
-		result.setAlteracaoUsuario(contexto.getUsuario() == null ? null : getUsuario(contexto.getUsuario().getName()));
+		
+		// captar o registro de atualização da tabela
+		logAtualizar(result, contexto);
 
 		if (result.getEndereco() == null) {
 			throw new BoException("O campo Endereço é obrigatório");

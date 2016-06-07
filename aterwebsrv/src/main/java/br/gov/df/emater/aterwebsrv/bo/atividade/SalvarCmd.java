@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import br.gov.df.emater.aterwebsrv.dao.atividade.AtividadeAssuntoDao;
 import br.gov.df.emater.aterwebsrv.dao.atividade.AtividadeDao;
 import br.gov.df.emater.aterwebsrv.dao.atividade.AtividadePessoaDao;
 import br.gov.df.emater.aterwebsrv.dao.atividade.OcorrenciaDao;
+import br.gov.df.emater.aterwebsrv.ferramenta.Util;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.Atividade;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.AtividadeAssunto;
@@ -69,6 +71,9 @@ public class SalvarCmd extends _Comando {
 	public boolean executar(_Contexto contexto) throws Exception {
 		Atividade result = (Atividade) contexto.getRequisicao();
 
+		// captar o registro de atualização da tabela
+		logAtualizar(result, contexto);
+
 		List<AtividadePessoa> atividadePessoaDemandList = result.getPessoaDemandanteList();
 		List<AtividadePessoa> atividadePessoaExecList = result.getPessoaExecutorList();
 
@@ -78,17 +83,12 @@ public class SalvarCmd extends _Comando {
 		}
 
 		if (result.getId() == null) {
-			result.setInclusaoUsuario(getUsuario(contexto.getUsuario().getName()));
+			// gerar o código da atividade 
 			result.setCodigo(gerarCodigoAtividade());
-		} else {
-			String username = result.getInclusaoUsuario().getUsername();
-			result.setInclusaoUsuario(null);
-			result.setInclusaoUsuario(getUsuario(username));
 		}
-		result.setAlteracaoUsuario(getUsuario(contexto.getUsuario().getName()));
 
-		if (result.getCodigo() == null) {
-			throw new BoException("Não foi identificado o código da atividade!");
+		if (StringUtils.isBlank(result.getCodigo()) || !Util.codigoAtividadeEhValido(result.getCodigo())) {
+			throw new BoException("O código da atividade é inválido! [%s]", result.getCodigo());
 		}
 
 		// atualizar valores

@@ -46,10 +46,11 @@ public class SalvarCmd extends _Comando {
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		Producao result = (Producao) contexto.getRequisicao();
-		if (result.getId() == null) {
-			result.setInclusaoUsuario(getUsuario(contexto.getUsuario().getName()));
-		}
-		result.setAlteracaoUsuario(getUsuario(contexto.getUsuario().getName()));
+		
+		// captar o registro de atualização da tabela
+		logAtualizar(result, contexto);
+		
+		// restaurar os dados do bem de produção
 		result.setBem(bemDao.findOne(result.getBem().getId()));
 
 		if (result.getPublicoAlvo() != null && result.getPropriedadeRural() != null) {
@@ -92,10 +93,9 @@ public class SalvarCmd extends _Comando {
 				continue;
 			}
 			producaoForma.setProducao(result);
-			if (producaoForma.getId() == null) {
-				producaoForma.setInclusaoUsuario(getUsuario(contexto.getUsuario().getName()));
-			}
-			producaoForma.setAlteracaoUsuario(getUsuario(contexto.getUsuario().getName()));
+
+			// captar o registro de atualização da tabela
+			logAtualizar(producaoForma, contexto);
 
 			try {
 				producaoForma.setVolume(((FormulaProduto) bemClassificacaoDetalhe.get("formulaProduto")).volume(producaoForma));

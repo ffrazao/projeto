@@ -1,5 +1,6 @@
 package br.gov.df.emater.aterwebsrv.bo.usuario;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,10 @@ public class SalvarCmd extends _Comando {
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		Usuario result = (Usuario) contexto.getRequisicao();
+
+		// captar o registro de atualização da tabela
+		logAtualizar(result, contexto);
+		
 		Usuario salvo = null;
 		String enviaEmail = null;
 
@@ -38,22 +43,20 @@ public class SalvarCmd extends _Comando {
 			enviarEmailUsuario = true;
 		}
 
+		if (result.getPessoaEmail() == null || result.getPessoaEmail().getEmail() == null || StringUtils.isBlank(result.getPessoaEmail().getEmail().getEndereco())) {
+			throw new BoException("E-mail do usuário não informado!");
+		}
+		
 		if (result.getId() == null) {
 			// novos usuários
-			result.setInclusaoUsuario(getUsuario(contexto.getUsuario() == null ? null : contexto.getUsuario().getName()));
-			if (result.getPessoaEmail() == null || result.getPessoaEmail().getEmail() == null || result.getPessoaEmail().getEmail().getEndereco() == null || result.getPessoaEmail().getEmail().getEndereco().trim().length() == 0) {
-				throw new BoException("E-mail do usuário não informado!");
-			}
 			enviaEmail = result.getPessoaEmail().getEmail().getEndereco();
 			if (dao.findByPessoaEmailEmailEndereco(enviaEmail) != null) {
-				throw new BoException("O e-mail deste usuário já esta em uso por outra conta do sistema. Utilize um outro e-mail!");
+				throw new BoException("O e-mail [%s] já esta em uso por outro usuário do sistema. Informe um outro e-mail!", result.getPessoaEmail().getEmail().getEndereco());
 			}
 		} else {
 			// usuários existentes
-			result.setInclusaoUsuario(getUsuario(result.getInclusaoUsuario() == null ? null : result.getInclusaoUsuario().getUsername()));
 			salvo = dao.findOne(result.getId());
 		}
-		result.setAlteracaoUsuario(getUsuario(contexto.getUsuario() == null ? null : contexto.getUsuario().getName()));
 
 		// remover os itens descartados
 		if (salvo != null) {
