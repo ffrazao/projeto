@@ -103,7 +103,7 @@ public class SisaterPublicoAlvoCmd extends _Comando {
 			formulario.put("trabalhadorPermanente", rs.getDouble("BFEMPPERM"));
 			formulario.put("salarioMensal", rs.getDouble("BFEMPSALARIO"));
 
-			Coleta coleta = new Coleta(null, impUtil.getFormularioVersao("beneficioSocialForcaTrabalho"), ematerUsuario, agora, Confirmacao.S, pessoa, null, null, new ObjectMapper().writeValueAsString(formulario));
+			Coleta coleta = new Coleta(null, impUtil.getFormularioVersao("beneficioSocialForcaTrabalho"), ematerUsuario, null, ematerUsuario, null, agora, Confirmacao.S, pessoa, null, null, new ObjectMapper().writeValueAsString(formulario));
 			coleta.setChaveSisater(impUtil.chaveColetaFormulario(base, rs.getString("IDUND"), rs.getString("IDBEN"), true, "beneficioSocialForcaTrabalho"));
 			Coleta coletaSalvo = coletaDao.findOneByChaveSisater(coleta.getChaveSisater());
 			if (coletaSalvo != null) {
@@ -192,7 +192,7 @@ public class SisaterPublicoAlvoCmd extends _Comando {
 				formulario.put("outroPatrimonioList", outroPatrimonioList);
 				formulario.put("dividaList", dividaList);
 
-				Coleta coleta = new Coleta(null, impUtil.getFormularioVersao("patrimonioDivida"), ematerUsuario, agora, Confirmacao.S, pessoa, null, null, new ObjectMapper().writeValueAsString(formulario));
+				Coleta coleta = new Coleta(null, impUtil.getFormularioVersao("patrimonioDivida"), ematerUsuario, null, ematerUsuario, null, agora, Confirmacao.S, pessoa, null, null, new ObjectMapper().writeValueAsString(formulario));
 				coleta.setChaveSisater(impUtil.chaveColetaFormulario(base, rs.getString("IDUND"), rs.getString("IDBEN"), true, "patrimonioDivida"));
 				Coleta coletaSalvo = coletaDao.findOneByChaveSisater(coleta.getChaveSisater());
 				if (coletaSalvo != null) {

@@ -27,6 +27,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
+import br.gov.df.emater.aterwebsrv.modelo._LogInclusaoAlteracao;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
@@ -36,7 +37,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 
 @Entity
 @Table(schema = EntidadeBase.FORMULARIO_SCHEMA)
-public class Coleta extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<Coleta> {
+public class Coleta extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<Coleta>, _LogInclusaoAlteracao {
 
 	private static final long serialVersionUID = 1L;
 
@@ -78,7 +79,7 @@ public class Coleta extends EntidadeBase implements _ChavePrimaria<Integer>, Inf
 	@JsonSerialize(using = JsonSerializerData.class)
 	@JsonDeserialize(using = JsonDeserializerData.class)
 	private Calendar inclusaoData;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "inclusao_usuario_id")
 	private Usuario inclusaoUsuario;
@@ -101,7 +102,8 @@ public class Coleta extends EntidadeBase implements _ChavePrimaria<Integer>, Inf
 	public Coleta() {
 	}
 
-	public Coleta(Integer id, FormularioVersao formularioVersao, Usuario usuarioInclusao, Calendar inclusaoData, Usuario alteracaoUsuario, Calendar alteracaoData, Calendar dataColeta, Confirmacao finalizada, Pessoa pessoa, PropriedadeRural propriedadeRural, Object valor, String valorString) {
+	public Coleta(Integer id, FormularioVersao formularioVersao, Usuario usuarioInclusao, Calendar inclusaoData, Usuario alteracaoUsuario, Calendar alteracaoData, Calendar dataColeta, Confirmacao finalizada, Pessoa pessoa, PropriedadeRural propriedadeRural, Object valor,
+			String valorString) {
 		this(id);
 		this.setFormularioVersao(formularioVersao);
 		this.setInclusaoUsuario(inclusaoUsuario);
@@ -175,8 +177,9 @@ public class Coleta extends EntidadeBase implements _ChavePrimaria<Integer>, Inf
 
 	@Override
 	public Coleta infoBasica() {
-		return new Coleta(this.getId(), this.getFormularioVersao() == null ? null : new FormularioVersao(this.getFormularioVersao().getId()), this.getInclusaoUsuario() == null ? null : this.getInclusaoUsuario().infoBasica(), this.getDataColeta(), this.getFinalizada(),
-				this.getPessoa() == null ? null : this.getPessoa().infoBasica(), this.getPropriedadeRural() == null ? null : this.getPropriedadeRural().infoBasica(), this.getValor(), this.getValorString());
+		return new Coleta(this.getId(), this.getFormularioVersao() == null ? null : new FormularioVersao(this.getFormularioVersao().getId()), this.getInclusaoUsuario() == null ? null : this.getInclusaoUsuario().infoBasica(), this.getInclusaoData(),
+				this.getAlteracaoUsuario() == null ? null : this.getInclusaoUsuario().infoBasica(), this.getAlteracaoData(), this.getDataColeta(), this.getFinalizada(), this.getPessoa() == null ? null : this.getPessoa().infoBasica(),
+				this.getPropriedadeRural() == null ? null : this.getPropriedadeRural().infoBasica(), this.getValor(), this.getValorString());
 	}
 
 	public void setAlteracaoData(Calendar alteracaoData) {

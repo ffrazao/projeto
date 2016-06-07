@@ -5,7 +5,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.regex.Pattern;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
@@ -16,7 +18,7 @@ public class UtilitarioString {
 			88, 89, 91, 92, 93, 94, 95, 96, 97, 98, 99 };
 
 	public static String calculaNomeUsuario(String nome) {
-		if (nome == null) {
+		if (StringUtils.isBlank(nome)) {
 			return "";
 		}
 		String[] temp1 = semAcento(nome.toLowerCase()).split("\\s");
@@ -45,7 +47,7 @@ public class UtilitarioString {
 
 	public static String collectionToString(Collection<?> objetos, String delimitador, boolean stringValue, boolean ignoreNull) {
 		StringBuilder result = new StringBuilder();
-		if (objetos == null || objetos.size() == 0) {
+		if (CollectionUtils.isEmpty(objetos)) {
 			if (ignoreNull) {
 				return null;
 			} else {
@@ -78,7 +80,7 @@ public class UtilitarioString {
 	}
 
 	public static String formataCep(String numero) {
-		if (numero == null) {
+		if (StringUtils.isBlank(numero)) {
 			return null;
 		}
 		numero = zeroEsquerda(soNumero(numero.trim()), 8);
@@ -86,7 +88,7 @@ public class UtilitarioString {
 	}
 
 	public static String formataCnpj(String numero) {
-		if (numero == null) {
+		if (StringUtils.isBlank(numero)) {
 			return null;
 		}
 		numero = zeroEsquerda(soNumero(numero.trim()), 14);
@@ -94,7 +96,7 @@ public class UtilitarioString {
 	}
 
 	public static String formataCpf(String numero) {
-		if (numero == null) {
+		if (StringUtils.isBlank(numero)) {
 			return null;
 		}
 		numero = zeroEsquerda(soNumero(numero.trim()), 11);
@@ -102,7 +104,7 @@ public class UtilitarioString {
 	}
 
 	public static String formataEmail(String endereco) {
-		if (endereco == null || endereco.trim().length() == 0) {
+		if (StringUtils.isBlank(endereco)) {
 			return null;
 		}
 		endereco = UtilitarioString.substituirTudo(UtilitarioString.semAcento(endereco.trim().toLowerCase()), " ", "");
@@ -113,7 +115,7 @@ public class UtilitarioString {
 	}
 
 	public static String formataNis(String numero) {
-		if (numero == null) {
+		if (StringUtils.isBlank(numero)) {
 			return null;
 		}
 		numero = zeroEsquerda(soNumero(numero.trim()), 11);
@@ -122,7 +124,7 @@ public class UtilitarioString {
 	}
 
 	public static String formataNomeProprio(String nome) {
-		if (nome == null) {
+		if (StringUtils.isBlank(nome)) {
 			return null;
 		}
 		nome = WordUtils.capitalizeFully(nome.trim(), new char[] { '\'', ' ', '-', '.', '\"', '(' });
@@ -141,7 +143,7 @@ public class UtilitarioString {
 	}
 
 	public static String formataTelefone(String numero) {
-		if (numero == null) {
+		if (StringUtils.isBlank(numero)) {
 			return null;
 		}
 		class Check {
@@ -173,7 +175,6 @@ public class UtilitarioString {
 				}
 				return null;
 			}
-
 			public String[] numeroComDddTudoJunto(String numero) {
 				numero = soNumero(numero);
 				if (numero.startsWith("0") && (numero.length() == 11 || numero.length() == 12) && ArrayUtils.contains(DDD_TELEFONE, Integer.parseInt(numero.substring(1, 3)))) {
@@ -219,11 +220,11 @@ public class UtilitarioString {
 	}
 
 	public static boolean isEmpty(String vlr) {
-		return vlr == null || vlr.trim().length() == 0;
+		return StringUtils.isBlank(vlr);
 	}
 
 	public static String limitarTextoEm(String texto, int tamanho) {
-		if (texto == null) {
+		if (StringUtils.isBlank(texto)) {
 			return null;
 		}
 		String result = null;
@@ -236,6 +237,9 @@ public class UtilitarioString {
 	}
 
 	public static String removeAspas(String valor) {
+		if (StringUtils.isBlank(valor)) {
+			return null;
+		}
 		// remover as aspas da string
 		if (valor.startsWith("\"")) {
 			valor = valor.substring(1);
@@ -247,13 +251,16 @@ public class UtilitarioString {
 	}
 
 	public static String semAcento(String str) {
+		if (StringUtils.isBlank(str)) {
+			return null;
+		}
 		String nfdNormalizedString = Normalizer.normalize(str, Normalizer.Form.NFD);
 		Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
 		return pattern.matcher(nfdNormalizedString).replaceAll("");
 	}
 
 	public static String soNumero(String numero, char... ignorar) {
-		if (numero == null) {
+		if (StringUtils.isBlank(numero)) {
 			return null;
 		}
 		String ignorarStr = new String(ignorar);
@@ -267,6 +274,9 @@ public class UtilitarioString {
 	}
 
 	public static String substituirTudo(String str, String encontrar, String substituir) {
+		if (StringUtils.isBlank(str)) {
+			return null;
+		}
 		while (str.indexOf(encontrar) >= 0) {
 			str = str.replaceAll(encontrar, substituir);
 		}
@@ -274,11 +284,14 @@ public class UtilitarioString {
 	}
 
 	public static boolean temCaractereRepetido(String str) {
+		if (StringUtils.isBlank(str)) {
+			return false;
+		}
 		return temCaractereRepetido(str, 2);
 	}
 
 	public static boolean temCaractereRepetido(String str, int vezes) {
-		if (str == null || str.length() < vezes) {
+		if (StringUtils.isBlank(str) || str.length() < vezes) {
 			return false;
 		}
 		StringBuilder repete = new StringBuilder();
@@ -303,6 +316,9 @@ public class UtilitarioString {
 	}
 
 	public static String zeroDireita(String num, int tam) {
+		if (StringUtils.isBlank(num)) {
+			return null;
+		}
 		StringBuilder sb = new StringBuilder();
 		sb.append(num);
 		sb.append(complemento('0', tam));
@@ -314,6 +330,9 @@ public class UtilitarioString {
 	}
 
 	public static String zeroEsquerda(String num, int tam) {
+		if (StringUtils.isBlank(num)) {
+			return null;
+		}
 		StringBuilder sb = new StringBuilder();
 		sb.append(complemento('0', tam));
 		sb.append(num);

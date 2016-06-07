@@ -3,6 +3,7 @@ package br.gov.df.emater.aterwebsrv.bo.pessoa;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +45,7 @@ public class VerifPendCpfCmd extends VerificarPendenciasCmd {
 		}
 		// TODO fazer verificacao no proprio registro se pf ver em seus relac.
 		// se relac ver principa e outros relacs
-		if (numero == null || numero.trim().length() == 0) {
+		if (StringUtils.isBlank(numero)) {
 			if (pessoaFisica == null) {
 				pessoaRelacionamento.setCpf(null);
 			} else {
@@ -66,7 +67,7 @@ public class VerifPendCpfCmd extends VerificarPendenciasCmd {
 		numero = UtilitarioString.formataCpf(numero);
 
 		// pesquisa de PessoaFisica ou PessoaRelacionamento em PessoaFisica
-		List<PessoaFisica> salvoPessoaFisicaList = pessoaFisicaDao.findByCpf(pessoaRelacionamento == null ? pessoaFisica.getCpf() : pessoaRelacionamento.getCpf());
+		List<PessoaFisica> salvoPessoaFisicaList = pessoaFisicaDao.findByCpf(numero);
 		if (salvoPessoaFisicaList != null) {
 			for (PessoaFisica salvo : salvoPessoaFisicaList) {
 				if (pessoaFisica != null) {
@@ -85,7 +86,7 @@ public class VerifPendCpfCmd extends VerificarPendenciasCmd {
 
 		// pesquisa de PessoaFisica ou PessoaRelacionamento em
 		// PessoaRelacionamento
-		List<PessoaRelacionamento> salvoPessoaRelacionamentoList = pessoaRelacionamentoDao.findByCpf(pessoaRelacionamento == null ? pessoaFisica.getCpf() : pessoaRelacionamento.getCpf());
+		List<PessoaRelacionamento> salvoPessoaRelacionamentoList = pessoaRelacionamentoDao.findByCpf(numero);
 		if (salvoPessoaRelacionamentoList != null) {
 			for (PessoaRelacionamento salvoPessoaRelacionamento : salvoPessoaRelacionamentoList) {
 				Pessoa relacionado = null;

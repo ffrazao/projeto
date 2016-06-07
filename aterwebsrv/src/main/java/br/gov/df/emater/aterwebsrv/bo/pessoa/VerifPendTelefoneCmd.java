@@ -3,6 +3,7 @@ package br.gov.df.emater.aterwebsrv.bo.pessoa;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
@@ -25,7 +26,7 @@ public class VerifPendTelefoneCmd extends VerificarPendenciasCmd {
 					pessoa.getTelefoneList().remove(i);
 				}
 				String informado = pessoa.getTelefoneList().get(i).getTelefone().getNumero();
-				if (informado == null || informado.trim().length() == 0) {
+				if (StringUtils.isBlank(informado)) {
 					pessoa.getTelefoneList().remove(i);
 				}
 				if (!UtilitarioString.soNumero(informado).equals(UtilitarioString.soNumero(UtilitarioString.formataTelefone(informado)))) {

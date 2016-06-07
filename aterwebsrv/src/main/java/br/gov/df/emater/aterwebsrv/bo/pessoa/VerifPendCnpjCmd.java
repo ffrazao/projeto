@@ -2,6 +2,7 @@ package br.gov.df.emater.aterwebsrv.bo.pessoa;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +28,7 @@ public class VerifPendCnpjCmd extends VerificarPendenciasCmd {
 		PessoaJuridica pessoa = (PessoaJuridica) getPendenciavel();
 
 		String numero = pessoa.getCnpj();
-		if (numero == null || numero.trim().length() == 0) {
+		if (StringUtils.isBlank(numero)) {
 			pessoa.setCnpj(null);
 			return null;
 		}
@@ -35,9 +36,13 @@ public class VerifPendCnpjCmd extends VerificarPendenciasCmd {
 			pessoa.setCnpj(null);
 			return String.format("O número de CNPJ informado [%s] é inválido", numero);
 		}
-		pessoa.setCnpj(UtilitarioString.formataCnpj(numero));
+
+		// formatar o número
+		numero = UtilitarioString.formataCnpj(numero);
+		
+		// pesquisa de PessoaJuridica
 		List<PessoaJuridica> salvoList = null;
-		salvoList = dao.findByCnpj(pessoa.getCnpj());
+		salvoList = dao.findByCnpj(numero);
 		if (salvoList != null) {
 			for (PessoaJuridica salvo : salvoList) {
 				if (!salvo.getId().equals(pessoa.getId())) {

@@ -64,7 +64,7 @@ public class SisaterPropriedadeRuralCmd extends _Comando {
 			formulario.put("benfeitoriaList", createBenfeitoriaList());
 			formulario.put("observacoes", rs.getString("PPOBS2"));
 
-			Coleta coleta = new Coleta(null, impUtil.getFormularioVersao("avaliacaoDaPropriedade"), ematerUsuario, agora, Confirmacao.S, null, propriedadeRural, null, new ObjectMapper().writeValueAsString(formulario));
+			Coleta coleta = new Coleta(null, impUtil.getFormularioVersao("avaliacaoDaPropriedade"), ematerUsuario, null, ematerUsuario, null, agora, Confirmacao.S, null, propriedadeRural, null, new ObjectMapper().writeValueAsString(formulario));
 			coleta.setChaveSisater(impUtil.chaveColetaFormulario(base, rs.getString("IDUND"), rs.getString("IDPRP"), false, "avaliacaoDaPropriedade"));
 			Coleta coletaSalvo = coletaDao.findOneByChaveSisater(coleta.getChaveSisater());
 			if (coletaSalvo != null) {

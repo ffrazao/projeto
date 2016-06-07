@@ -1,6 +1,7 @@
 package br.gov.df.emater.aterwebsrv.bo.pessoa;
 
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -471,18 +472,20 @@ public class SalvarCmd extends _Comando {
 		}
 
 		// salvar os formularios de diagnostico
-		if (result.getDiagnosticoList() != null) {
-			for (List<Object> formulario : (List<List<Object>>) result.getDiagnosticoList()) {
-				LinkedHashMap<Object, Object> f = (LinkedHashMap<Object, Object>) formulario.get(9);
-				if (f != null) {
-					List<LinkedHashMap<Object, Object>> c = (List<LinkedHashMap<Object, Object>>) f.get("coletaList");
-					if (c != null) {
-						for (LinkedHashMap<Object, Object> r : c) {
-							Coleta coleta = criarColeta(r);
-							coleta.setPessoa(result);
-							coleta.setPropriedadeRural(null);
-							coleta.setUsuario(getUsuario(contexto.getUsuario().getName()));
-							coletaDao.save(coleta);
+		if (result.getDiagnosticoList() instanceof List && !(CollectionUtils.isEmpty((List<?>) result.getDiagnosticoList()))) {
+			if (!(((List<?>) result.getDiagnosticoList()).get(0) instanceof LinkedHashMap)) {				
+				for (List<Object> formulario : (List<List<Object>>) result.getDiagnosticoList()) {
+					LinkedHashMap<Object, Object> f = (LinkedHashMap<Object, Object>) formulario.get(9);
+					if (f != null) {
+						List<LinkedHashMap<Object, Object>> c = (List<LinkedHashMap<Object, Object>>) f.get("coletaList");
+						if (c != null) {
+							for (LinkedHashMap<Object, Object> r : c) {
+								Coleta coleta = criarColeta(r);
+								logAtualizar(coleta, contexto);
+								coleta.setPessoa(result);
+								coleta.setPropriedadeRural(null);
+								coletaDao.save(coleta);
+							}
 						}
 					}
 				}
