@@ -51,6 +51,11 @@ public class ArquivoDescerCmd extends _Comando implements ArquivoConstantes {
 					diretorio = DIRETORIO_UPLOAD;
 				}
 				File diretorioServidor = new File(request.getServletContext().getRealPath("/").concat(diretorio));
+				
+				if (!diretorioServidor.exists()) {
+					logger.debug(String.format("Diretório de arquivos não encontrado, criando um novo [%s]", diretorioServidor.toString()));
+					diretorioServidor.mkdirs();
+				}
 
 				File arquivoDescer = new File(diretorioServidor, String.format("%s%s", arquivoBanco.getMd5(), arquivoBanco.getExtensao()));
 
