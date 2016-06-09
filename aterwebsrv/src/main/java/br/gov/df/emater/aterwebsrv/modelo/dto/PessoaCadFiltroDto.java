@@ -21,6 +21,8 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 
 	private static final long serialVersionUID = 1L;
 
+	private Set<TagDto> chaveSisaterList;
+
 	private String cnpj;
 
 	private List<Comunidade> comunidadeList;
@@ -31,7 +33,7 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 
 	private List<GrupoSocial> grupoSocialList;
 
-	private Set<TagDto> nomes;
+	private Set<TagDto> nomeList;
 
 	private Set<PessoaGenero> pessoaGenero;
 
@@ -77,6 +79,10 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 
 	private List<UnidadeOrganizacional> unidadeOrganizacionalList;
 
+	public Set<TagDto> getChaveSisaterList() {
+		return chaveSisaterList;
+	}
+
 	public String getCnpj() {
 		return cnpj;
 	}
@@ -97,8 +103,8 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 		return grupoSocialList;
 	}
 
-	public Set<TagDto> getNomes() {
-		return nomes;
+	public Set<TagDto> getNomeList() {
+		return nomeList;
 	}
 
 	public Set<PessoaGenero> getPessoaGenero() {
@@ -189,6 +195,10 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 		return unidadeOrganizacionalList;
 	}
 
+	public void setChaveSisaterList(Set<TagDto> chaveSisaterList) {
+		this.chaveSisaterList = chaveSisaterList;
+	}
+
 	public void setCnpj(String cnpj) {
 		this.cnpj = UtilitarioString.formataCnpj(cnpj);
 	}
@@ -209,8 +219,8 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 		this.grupoSocialList = grupoSocialList;
 	}
 
-	public void setNomes(Set<TagDto> nomes) {
-		this.nomes = nomes;
+	public void setNomeList(Set<TagDto> nomeList) {
+		this.nomeList = nomeList;
 	}
 
 	public void setPessoaGenero(Set<PessoaGenero> pessoaGenero) {

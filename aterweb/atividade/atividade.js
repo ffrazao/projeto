@@ -179,6 +179,18 @@
                 }
             };
 
+            $scope.limpar = function(scp) {
+                var e = scp.navegador.estadoAtual();
+                if ('FILTRANDO' === e) {
+                    $scope.cadastro.apoio.localFiltro = $scope.limparRegistroSelecionado($scope.cadastro.apoio.localList);
+                }
+                var ini = $scope.cadastro.filtro.inicio;
+                var fim = $scope.cadastro.filtro.termino;
+                $rootScope.limpar(scp);
+                $scope.cadastro.filtro.inicio = ini;
+                $scope.cadastro.filtro.termino = fim;
+            };
+
             // fim das operaçoes atribuidas ao navagador
 
             // inicio ações especiais

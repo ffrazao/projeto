@@ -17,15 +17,20 @@ angular.module(pNmModulo).factory(pNmFactory,
                     chamada.success(function(resposta) {
                         if (resposta && resposta.resultado && resposta.resultado.length) {
                             var r = resposta.resultado;
-                            var empresa = angular.copy(token.lotacaoAtual.pessoaJuridica);
+                            var empresa = (token && token.lotacaoAtual && token.lotacaoAtual.pessoaJuridica) ? angular.copy(token.lotacaoAtual.pessoaJuridica) : {};
                             var unid = {id: null}; var comunid = {id: null};
                             for (var i in r) {
                                 if (unid.id !== r[i].unidadeOrganizacional.id) {
                                     unid = angular.copy(r[i].unidadeOrganizacional);
                                     if (!empresa.unidadeList) {
                                         empresa.unidadeList = [];
+                                        if (!empresa.nome) {
+                                            empresa.id = r[i].unidadeOrganizacional.pessoaJuridica.id;
+                                            empresa.nome = r[i].unidadeOrganizacional.pessoaJuridica.nome;
+                                            empresa.sigla = r[i].unidadeOrganizacional.pessoaJuridica.sigla;
+                                        }
                                     }
-                                    if (unid.id === token.lotacaoAtual.id) {
+                                    if (token && token.lotacaoAtual && token.lotacaoAtual.id && unid.id === token.lotacaoAtual.id) {
                                         unid.selecionado = true;
                                     }
                                     empresa.unidadeList.push(unid);

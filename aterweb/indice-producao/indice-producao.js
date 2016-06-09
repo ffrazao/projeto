@@ -204,7 +204,6 @@
                 };
                 filtro.bemClassificacaoList = [];
                 captarBemClassificacaoList($scope.cadastro.apoio.bemClassificacaoList, filtro.bemClassificacaoList);
-
                 var captarFormaProducaoValorList = function(lista, resultado) {
                     if (lista) {
                         var i, j;
@@ -225,6 +224,26 @@
                 captarFormaProducaoValorList($scope.cadastro.apoio.bemClassificacaoList, filtro.formaProducaoValorList);
             };
 
+            $scope.limparRegistroSelecionadoBemClassificacao = function(lista) {
+                for (var i in lista) {
+                    if (lista[i][4]) {
+                        lista[i][4] = false;
+                    }
+                    $scope.limparRegistroSelecionadoBemClassificacao(lista[i][3]);
+                }
+                return '';
+            };
+
+            $scope.limpar = function(scp) {
+                var e = scp.navegador.estadoAtual();
+                if ('FILTRANDO' === e) {
+                    $scope.cadastro.apoio.bemClassificacaoFiltro = $scope.limparRegistroSelecionadoBemClassificacao($scope.cadastro.apoio.bemClassificacaoList);
+                    $scope.cadastro.apoio.localFiltro = $scope.limparRegistroSelecionado($scope.cadastro.apoio.localList);
+                }
+                var ano = $scope.cadastro.filtro.ano;
+                $rootScope.limpar(scp);
+                $scope.cadastro.filtro.ano = ano;
+            };
 
             // fim das operaçoes atribuidas ao navagador
 

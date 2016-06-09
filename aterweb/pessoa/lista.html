@@ -45,13 +45,17 @@
                     <td><a ng-click="modalVerPessoa(item[0])">{{item[1]}}<small ng-if="item[2]" alt="apelido/ sigla"><br><i>{{item[2]}}</i></small></a></td>
                     <td><span ng-show="item[3]==='PF'">Pessoa Física</span><span ng-show="item[3]==='PJ'">Pessoa Jurídica</span></td>
                     <td>{{item[4]}}{{item[5]}}</td>
-                    <td><b ng-show="item[6]==='S'">SIM <img ng-src="{{item[14]}}" width="40px" height="40px" ng-show="item[14]"/></b></td>
+                    <td>
+                        <b ng-show="item[6]==='S'">SIM</b>
+                        <img ng-src="{{item[15]}}" width="40px" height="40px" ng-show="item[15]"/>
+                        <small><br ng-show="item[6]"><i>{{item[11]}}</i></small>
+                    </td>
                 </tr>
                 <tr ng-repeat-end ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)">
-                    <td><small ng-repeat="t in item[11] | filter: filtraFone('FI') | limitTo: 1">{{t[2]}}</small></td>
-                    <td><small ng-repeat="t in item[11] | filter: filtraFone('CE') | limitTo: 1">{{t[2]}}</small></td>
-                    <td><small ng-repeat="t in item[12] | limitTo: 1">{{t[1]}}</small></td>
+                    <td><small ng-repeat="t in item[12] | filter: filtraFone('FI') | limitTo: 1">{{t[2]}}</small></td>
+                    <td><small ng-repeat="t in item[12] | filter: filtraFone('CE') | limitTo: 1">{{t[2]}}</small></td>
                     <td><small ng-repeat="t in item[13] | limitTo: 1">{{t[1]}}</small></td>
+                    <td><small ng-repeat="t in item[14] | limitTo: 1">{{t[1]}}</small></td>
                 </tr>
             </tbody>
         </table>

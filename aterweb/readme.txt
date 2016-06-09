@@ -1,1 +1,1 @@
-Projeto do sistema ATER web - modulo de visão
+Projeto do sistema EMATER web - modulo de visão

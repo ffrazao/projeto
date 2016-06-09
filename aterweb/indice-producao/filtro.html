@@ -44,13 +44,13 @@
                             <input type="text" class="form-control" ng-model="cadastro.apoio.bemClassificacaoFiltro" placeholder="Filtrar por Classificação">
                             <span class="input-group-btn">
                                 <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-default" ng-click="cadastro.apoio.bemClassificacaoFiltro = ''">
+                                    <button type="button" class="btn btn-default" ng-click="cadastro.apoio.bemClassificacaoFiltro = limparRegistroSelecionadoBemClassificacao(cadastro.apoio.bemClassificacaoList)">
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </button>
                                 </div>
                             </span>
                         </div>
-                        <div class="row" style="height: 200px; overflow: scroll;">
+                        <div class="row" style="height: 400px; overflow: scroll;">
                             <script type="text/ng-template" id="nodes_renderer.html">
                                 <div ui-tree-handle>
                                     <a class="btn btn-primary btn-xs Tooltip" nodrag ng-click="toggleChildren(this)" title="Expandir/Recolher" ng-show="node[3].length">
@@ -149,7 +149,7 @@
                             <input type="text" class="form-control" ng-model="cadastro.apoio.localFiltro" placeholder="Filtrar por Comunidade">
                             <span class="input-group-btn">
                                 <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-default" ng-click="cadastro.apoio.localFiltro = ''">
+                                    <button type="button" class="btn btn-default" ng-click="cadastro.apoio.localFiltro = limparRegistroSelecionado(cadastro.apoio.localList)">
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </button>
                                 </div>

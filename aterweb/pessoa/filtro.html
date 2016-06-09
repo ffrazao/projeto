@@ -110,6 +110,18 @@
                     </div>
                 </div>
                 <legend>Beneficiário</legend>
+                <div class="form-group" title="Chave Sisater">
+                    <label class="col-md-4 control-label" for="nome">
+                        Chave Sisater
+                    </label>
+                    <div class="col-md-6">
+                        <tags-input id="chaveSisaterList" name="chaveSisaterList" ng-model="cadastro.filtro.chaveSisaterList" placeholder="Digite o nome, ou parte dele, e tecle enter" replace-spaces-with-dashes="false"></tags-input>
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.chaveSisaterList.$error.required">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Campo Obrigatório
+                        </div>
+                    </div>
+                </div>
                 <!-- Multiple Checkboxes (inline) -->
                 <div class="form-group" title="Segmento">
                     <label class="col-md-4 control-label" for="publicoAlvoSegmento">Segmento</label>
@@ -167,7 +179,7 @@
                             <input type="text" class="form-control" ng-model="cadastro.apoio.localFiltro" placeholder="Filtrar por Comunidade">
                             <span class="input-group-btn">
                                 <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-default" ng-click="cadastro.apoio.localFiltro = ''">
+                                    <button type="button" class="btn btn-default" ng-click="cadastro.apoio.localFiltro = limparRegistroSelecionado(cadastro.apoio.localList)">
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </button>
                                 </div>

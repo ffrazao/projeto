@@ -34,13 +34,13 @@
                         {{$index + 1 + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)}}
                     </td>
                     <td><a ng-click="modalVerPropriedadeRural(item[0])">{{item[1]}}</a></td>
-                    <td><p style="white-space: pre;">{{item[2]}}</p></td>
+                    <td><p style="white-space: pre;">{{item[2]}}</p><small><br ng-show="item[6]"><i>{{item[6]}}</i></small></td>
                     <td>{{item[3]}}</td>
                     <td>{{item[4]}}</td>
                     <td>{{item[5] | number: globalFracaoHectares}}</td>
                     <td>
                         <ul>
-                            <li ng-repeat="publicoAlvo in item[6]">
+                            <li ng-repeat="publicoAlvo in item[7]">
                                 <a ng-click="modalVerPessoa(publicoAlvo[2])">{{publicoAlvo[0]}}</a>
                             </li>
                         </ul>

@@ -58,6 +58,10 @@ public class EsqueciSenhaCmd extends _Comando {
 		texto.append("O prazo final para ativação desta senha se encerra em ");
 		texto.append(UtilitarioData.getInstance().formataDataHora(acessoExpiraEm));
 		texto.append("\n");
+		
+		if (logger.isDebugEnabled()) {			
+			logger.debug(String.format("nova senha [%s, %s]", usuario.getUsername(), novaSenha.toString()));
+		}
 
 		usuario.setPassword(Criptografia.MD5(usuario.getId() + novaSenha.toString()));
 		usuario.setUsuarioStatusConta(UsuarioStatusConta.R);

@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="ATER web" company="EMATER DF" webLink="http://aterweb.emater.df.gov.br" view-date="2015-08-01" view-index="0" gantt-divider-location="540" resource-divider-location="300" version="2.7.1" locale="pt_BR">
-    <description><![CDATA[Gestão de Atividades de ATER]]></description>
+<?xml version="1.0" encoding="UTF-8"?><project name="EMATER web" company="EMATER DF" webLink="http://aterweb.emater.df.gov.br" view-date="2015-08-01" view-index="0" gantt-divider-location="540" resource-divider-location="300" version="2.7.1" locale="pt_BR">
+    <description><![CDATA[Gestão de Atividades da EMATER DF]]></description>
     <view zooming-state="default:11" id="gantt-chart">
         <field id="tpd3" name="Nome" width="44" order="0"/>
         <field id="tpd4" name="Data inicial" width="10" order="1"/>

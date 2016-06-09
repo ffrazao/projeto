@@ -47,16 +47,17 @@ angular.module(pNmModulo).factory(pNmFactory,
                 });
                 if ($rootScope.isAuthenticated()) {
                     var t = $rootScope.token;
-                    if (t && t.lotacaoAtual && t.lotacaoAtual && t.lotacaoAtual.pessoaJuridica) {
-                        scp.cadastro.apoio.localList = [];
-                        var fltr = null;
-                        if (scp.cadastro.apoio.unidadeOrganizacionalSomenteLeitura) {
-                            fltr = {unidadeOrganizacionalList: scp.cadastro.filtro.unidadeOrganizacionalList};
-                        } else {
-                            fltr = {pessoaJuridicaList: [angular.fromJson(t.lotacaoAtual.pessoaJuridica.id)]};
-                        }
-                        ComunidadeSrv.lista(fltr, scp.cadastro.apoio.localList, t);
+
+                    scp.cadastro.apoio.localList = [];
+                    var fltr = null;
+                    if (scp.cadastro.apoio.unidadeOrganizacionalSomenteLeitura) {
+                        fltr = {unidadeOrganizacionalList: scp.cadastro.filtro.unidadeOrganizacionalList};
                     } else {
+                        fltr = {pessoaJuridicaList: (t && t.lotacaoAtual && t.lotacaoAtual.pessoaJuridica) ? [angular.fromJson(t.lotacaoAtual.pessoaJuridica.id)] : null};
+                    }
+                    ComunidadeSrv.lista(fltr, scp.cadastro.apoio.localList, t);
+
+                    if (!t || !t.lotacaoAtual || !t.lotacaoAtual.pessoaJuridica) {
                         toastr.warning('Não foi possível identificar a sua lotação', 'Erro ao carregar os dados');
                     }
                 }

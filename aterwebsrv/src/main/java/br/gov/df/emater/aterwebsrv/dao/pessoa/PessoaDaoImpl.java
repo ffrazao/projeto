@@ -170,6 +170,7 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 		sql.append("     , p.nascimento").append("\n");
 		sql.append("     , p.genero").append("\n");
 		sql.append("     , alvo.id").append("\n");
+		sql.append("     , p.chaveSisater").append("\n");
 		sql.append("from Pessoa p").append("\n");
 		sql.append("left join p.publicoAlvo alvo").append("\n");
 		sql.append("left join p.perfilArquivo perfil").append("\n");
@@ -185,10 +186,10 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 		if (filtrarPublicoAlvo(filtro)) {
 			sql.append("and   p.publicoAlvoConfirmacao = 'S'").append("\n");
 		}
-		if (!CollectionUtils.isEmpty(filtro.getNomes())) {
+		if (!CollectionUtils.isEmpty(filtro.getNomeList())) {
 			sql.append("and (").append("\n");
 			sqlTemp = new StringBuilder();
-			for (TagDto nome : filtro.getNomes()) {
+			for (TagDto nome : filtro.getNomeList()) {
 				if (sqlTemp.length() > 0) {
 					sqlTemp.append(" or ");
 				}
@@ -197,6 +198,20 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 				sqlTemp.append(" (p.nome like ?").append(params.size());
 				params.add(String.format("%%%s%%", n));
 				sqlTemp.append(" or p.apelidoSigla like ?").append(params.size()).append(")").append("\n");
+			}
+			sql.append(sqlTemp);
+			sql.append(" )").append("\n");
+		}
+		if (!CollectionUtils.isEmpty(filtro.getChaveSisaterList())) {
+			sql.append("and (").append("\n");
+			sqlTemp = new StringBuilder();
+			for (TagDto chaveSisater : filtro.getChaveSisaterList()) {
+				if (sqlTemp.length() > 0) {
+					sqlTemp.append(" or ");
+				}
+				String n = chaveSisater.getText().replaceAll("\\s", "%");
+				params.add(String.format("%%%s%%", n));
+				sqlTemp.append(" (p.chaveSisater like ?").append(params.size()).append(")").append("\n");
 			}
 			sql.append(sqlTemp);
 			sql.append(" )").append("\n");

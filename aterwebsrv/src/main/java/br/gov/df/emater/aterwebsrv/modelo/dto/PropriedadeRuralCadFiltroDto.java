@@ -21,6 +21,8 @@ public class PropriedadeRuralCadFiltroDto extends FiltroDtoCustom {
 
 	private AreaUtil areaUtil;
 
+	private Set<TagDto> chaveSisaterList;
+
 	private List<Comunidade> comunidadeList;
 
 	private List<PessoaJuridica> empresaList;
@@ -45,6 +47,10 @@ public class PropriedadeRuralCadFiltroDto extends FiltroDtoCustom {
 
 	public AreaUtil getAreaUtil() {
 		return areaUtil;
+	}
+
+	public Set<TagDto> getChaveSisaterList() {
+		return chaveSisaterList;
 	}
 
 	public List<Comunidade> getComunidadeList() {
@@ -89,6 +95,10 @@ public class PropriedadeRuralCadFiltroDto extends FiltroDtoCustom {
 
 	public void setAreaUtil(AreaUtil areaUtil) {
 		this.areaUtil = areaUtil;
+	}
+
+	public void setChaveSisaterList(Set<TagDto> chaveSisaterList) {
+		this.chaveSisaterList = chaveSisaterList;
 	}
 
 	public void setComunidadeList(List<Comunidade> comunidadeList) {

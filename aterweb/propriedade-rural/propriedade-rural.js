@@ -225,6 +225,17 @@
                 }
             };
 
+            $scope.limpar = function(scp) {
+                var e = scp.navegador.estadoAtual();
+                if ('FILTRANDO' === e) {
+                    $scope.cadastro.apoio.localFiltro = $scope.limparRegistroSelecionado($scope.cadastro.apoio.localList);
+                    $scope.cadastro.apoio.filtro.map.markers = [];
+                    $scope.cadastro.apoio.filtro.map.polys = [];
+                }
+                $rootScope.limpar(scp);
+            };
+
+
             // inicio dos watches
             $scope.$watch('cadastro.registro.id + cadastro.registro.comunidade.id', function(newValue, oldValue) {
                 $scope.tabs[1].visivel = $scope.cadastro.registro.id > 0;

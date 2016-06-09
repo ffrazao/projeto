@@ -83,7 +83,7 @@ public class FiltrarCmd extends _Comando {
 								ProducaoCalculo calculoProdutorConfirmada = new ProducaoCalculo(bemClassificacaoList, "Confirmada");
 								for (ProducaoForma producaoForma : produtorProducao.getProducaoFormaList()) {
 									String composicao = ProducaoCalculo.getComposicao(producaoForma);
-									Integer publicoAlvoId = produtorProducao.getPublicoAlvo().getId();
+									Integer publicoAlvoId = produtorProducao.getPublicoAlvo() == null ? null : produtorProducao.getPublicoAlvo().getId();
 
 									// verificar se há filtro pela forma de
 									// producao

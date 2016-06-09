@@ -38,6 +38,7 @@ public class PropriedadeRuralDaoImpl implements PropriedadeRuralDaoCustom {
 		sql.append("     , p.comunidade").append("\n");
 		sql.append("     , p.baciaHidrografica").append("\n");
 		sql.append("     , p.areaTotal").append("\n");
+		sql.append("     , p.chaveSisater").append("\n");
 		sql.append("     , vinculados").append("\n");
 		sql.append("from PropriedadeRural p").append("\n");
 		sql.append("left join p.publicoAlvoPropriedadeRuralList vinculados").append("\n");
@@ -59,6 +60,22 @@ public class PropriedadeRuralDaoImpl implements PropriedadeRuralDaoCustom {
 			sql.append(sqlTemp);
 			sql.append(" )").append("\n");
 		}
+		
+		if (!CollectionUtils.isEmpty(filtro.getChaveSisaterList())) {
+			sql.append("and (").append("\n");
+			sqlTemp = new StringBuilder();
+			for (TagDto chaveSisater : filtro.getChaveSisaterList()) {
+				if (sqlTemp.length() > 0) {
+					sqlTemp.append(" or ");
+				}
+				String n = chaveSisater.getText().replaceAll("\\s", "%");
+				params.add(String.format("%%%s%%", n));
+				sqlTemp.append(" (p.chaveSisater like ?").append(params.size()).append(")").append("\n");
+			}
+			sql.append(sqlTemp);
+			sql.append(" )").append("\n");
+		}
+
 
 		if (!CollectionUtils.isEmpty(filtro.getNomePropriedadeList())) {
 			sql.append("and (").append("\n");
@@ -180,6 +197,7 @@ public class PropriedadeRuralDaoImpl implements PropriedadeRuralDaoCustom {
 				reg[++c] = Endereco.FORMATA((Endereco) l[c]);
 				reg[++c] = (Comunidade) l[c] == null ? null : ((Comunidade) l[c]).getNome();
 				reg[++c] = (BaciaHidrografica) l[c] == null ? null : ((BaciaHidrografica) l[c]).getNome();
+				reg[++c] = l[c];
 				reg[++c] = l[c];
 				reg[++c] = new ArrayList<Object[]>();
 

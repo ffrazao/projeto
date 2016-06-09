@@ -522,6 +522,22 @@ var TIMEOUT_TEMPO = 200;
                 $state.go('p.casa');
             };
 
+            $rootScope.limparRegistroSelecionado = function(registro, campo) {
+                if (registro && (angular.isArray(registro) || angular.isObject(registro))) {
+                    for (var i in registro) {
+                        if ((registro[i] && (angular.isArray(registro[i]) || angular.isObject(registro[i]))) && (campo ? registro[i][campo] : registro[i].selecionado)) {
+                            if (registro[i][campo] === true) {
+                                registro[i][campo] = false;
+                            } else if (registro[i].selecionado === true) {
+                                registro[i].selecionado = false;
+                            }
+                        }
+                        $rootScope.limparRegistroSelecionado(registro[i], campo);
+                    }
+                }
+                return '';
+            };
+
             // fim funcoes de apoio
 
             // inicio funcoes crud

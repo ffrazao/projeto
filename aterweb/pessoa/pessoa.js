@@ -391,6 +391,14 @@
                 $rootScope.abrir(scp);
             };
 
+            $scope.limpar = function(scp) {
+                var e = scp.navegador.estadoAtual();
+                if ('FILTRANDO' === e) {
+                    $scope.cadastro.apoio.localFiltro = $scope.limparRegistroSelecionado($scope.cadastro.apoio.localList);
+                }
+                $rootScope.limpar(scp);
+            };
+
             // fim das operaçoes atribuidas ao navagador
             // inicio ações especiais
             $scope.filtraFone = function (tipo) {
