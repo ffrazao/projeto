@@ -42,6 +42,7 @@ public class LogAcao extends EntidadeBase implements _ChavePrimaria<Integer> {
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	@JsonSerialize(using = JsonSerializerTimestamp.class)
 	@JsonDeserialize(using = JsonDeserializerTimestamp.class)
+	@Column(name = "data", insertable = false, updatable = false)
 	private Calendar data;
 
 	@Column(name = "data_login")
