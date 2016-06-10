@@ -33,7 +33,7 @@ public class SenhaPassada extends EntidadeBase implements _ChavePrimaria<Integer
 
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "data_troca")
+	@Column(name = "data_troca", insertable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	@JsonSerialize(using = JsonSerializerTimestamp.class)
