@@ -26,9 +26,6 @@ public class LogCmd extends _Comando {
 
 	@Override
 	public boolean executar(_Contexto context) throws Exception {
-		if (1 == 1) {
-			return false;
-		}
 		LogAcao log = new LogAcao();
 		ObjectMapper mapper = new ObjectMapper();
 
