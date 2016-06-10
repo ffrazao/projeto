@@ -48,7 +48,7 @@
                 SegurancaSrv.login({
                     "username": $scope.cadastro.registro.username,
                     "password": $scope.cadastro.registro.password,
-                    "modulo": $scope.cadastro.registro.modulo.id
+                    "modulo": $scope.cadastro.registro.modulo ? $scope.cadastro.registro.modulo.id : null,
                 }).
                 success(function(result, status, headers, config) {
                     $scope.token = null;
