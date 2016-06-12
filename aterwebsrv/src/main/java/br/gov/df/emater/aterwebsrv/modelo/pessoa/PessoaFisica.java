@@ -336,7 +336,7 @@ public class PessoaFisica extends Pessoa implements PessoaFisicaDadosBasicos {
 	}
 
 	@Override
-	public String getNomeMaeConjuge() {
+	public String getNomeMae() {
 		return nomeMaeConjuge;
 	}
 
@@ -496,7 +496,7 @@ public class PessoaFisica extends Pessoa implements PessoaFisicaDadosBasicos {
 	}
 
 	@Override
-	public void setNomeMaeConjuge(String nomeMaeConjuge) {
+	public void setNomeMae(String nomeMaeConjuge) {
 		this.nomeMaeConjuge = nomeMaeConjuge;
 	}
 

@@ -216,8 +216,8 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 			sql.append(sqlTemp);
 			sql.append(" )").append("\n");
 		}
-		if (!CollectionUtils.isEmpty(filtro.getTipoPessoa()) && (PessoaTipo.values().length != (filtro.getTipoPessoa().size()))) {
-			params.add(filtro.getTipoPessoa());
+		if (!CollectionUtils.isEmpty(filtro.getPessoaTipoList()) && (PessoaTipo.values().length != (filtro.getPessoaTipoList().size()))) {
+			params.add(filtro.getPessoaTipoList());
 			sql.append("and p.pessoaTipo in ?").append(params.size()).append("\n");
 		}
 		if (!StringUtils.isEmpty(filtro.getCpf())) {

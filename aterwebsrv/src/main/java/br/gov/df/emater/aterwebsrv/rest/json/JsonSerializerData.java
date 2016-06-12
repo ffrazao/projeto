@@ -15,7 +15,7 @@ public class JsonSerializerData extends JsonSerializer<Calendar> {
 	@Override
 	public void serialize(Calendar date, JsonGenerator gen, SerializerProvider provider) throws IOException, JsonProcessingException {
 		if (date != null) {
-			gen.writeString(UtilitarioData.getInstance().formataDataHora(date));
+			gen.writeString(UtilitarioData.getInstance().formataData(date));
 		}
 	}
 }

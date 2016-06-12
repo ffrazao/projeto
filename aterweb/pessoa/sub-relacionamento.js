@@ -55,81 +55,34 @@ angular.module(pNmModulo).controller(pNmController,
             toastr.info('Operação realizada!', 'Informação');
         }, function () {
             // processar o retorno negativo da modal
-            
+            if ($scope.cadastro.registro.pessoaTipo === 'PF') {
+                captaRelacionamento({});
+            }
         });
     };
 
     var captaRelacionamento = function(reg) {
 
-        var form = 
-            '<div class="modal-body">' +
-            '    <div class="container-fluid">' +
-            '        <div class="row">' +
-            '            <div class="col-md-3 text-right">' +
-            '                <label class="form-label">Relacionador</label>' +
-            '            </div>' +
-            '            <div class="col-md-7">' +
-            '                <div class="form-control">' +
-            '                   {{conteudo.relacionador.nome}}' +
-            '                </div>' +
-            '            </div>' +
-            '        </div>' +
-            '        <div class="row">' +
-            '            <div class="col-md-3 text-right">' +
-            '                <label class="form-label">Relacionado</label>' +
-            '            </div>' +
-            '            <div class="col-md-7">' +
-            '                <div class="form-control">' +
-            '                   {{conteudo.relacionado.nome}}' +
-            '                </div>' +
-            '            </div>' +
-            '        </div>' +
-            '        <div class="row">' +
-            '            <div class="col-md-3 text-right">' +
-            '                <label class="form-label">Tipo de Relacionamento</label>' +
-            '            </div>' +
-            '            <div class="col-md-7">' +
-            '                <select class="form-control" id="relacionamentoTipo" name="relacionamentoTipo"' +
-            '                    ng-model="conteudo.relacionamento.relacionamentoTipo"' +
-            '                    ng-options="item as item.nome for item in apoio.relacionamentoTipoList | orderBy : [\'nome\'] track by item.id"' +
-            '                    ng-required="true">' +
-            '                </select>' +
-            '                <div class="label label-danger" ng-show="confirmacaoFrm.relacionamentoTipo.$error.required">' +
-            '                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' +
-            '                     Campo Obrigatório' +
-            '                </div>' +
-            '            </div>' +
-            '        </div>' +
-            '        <div class="row">' +
-            '            <div class="col-md-3 text-right">' +
-            '                <label class="form-label">Função no Relacionamento</label>' +
-            '            </div>' +
-            '            <div class="col-md-7">' +
-            '                <select class="form-control" id="relacionamentoFuncao" name="relacionamentoFuncao"' +
-            '                    ng-model="conteudo.relacionamentoFuncao"' +
-            '                    ng-options="item as item.nomeSeFeminino for item in apoio.relacionamentoFuncaoList | orderBy : [\'nome\'] track by item.id"' +
-            '                    ng-required="true"' +
-            '                    ng-if="conteudo.relacionado.genero === \'F\'">' +
-            '                </select>' +
-            '                <select class="form-control" id="relacionamentoFuncao" name="relacionamentoFuncao"' +
-            '                    ng-model="conteudo.relacionamentoFuncao"' +
-            '                    ng-options="item as item.nomeSeMasculino for item in apoio.relacionamentoFuncaoList | orderBy : [\'nome\'] track by item.id"' +
-            '                    ng-required="true"' +
-            '                    ng-if="conteudo.relacionado.genero !== \'F\'">' +
-            '                </select>' +
-            '                <div class="label label-danger" ng-show="confirmacaoFrm.relacionamentoFuncao.$error.required">' +
-            '                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' +
-            '                     Campo Obrigatório' +
-            '                </div>' +
-            '            </div>' +
-            '        </div>' +
-            '    </div>' +
-            '</div>';
-
         var item = {relacionador: $scope.cadastro.registro, relacionado: reg.pessoa};
 
         var iniciar = function(scp) {
-            scp.apoio = {relacionamentoTipoList: [], relacionamentoFuncaoList: []};
+            $scope.scp = scp;
+
+            if (!scp.conteudo) {
+                scp.conteudo = {};
+            }
+            if (!scp.apoio) {
+                scp.apoio = {relacionamentoTipoList: [], relacionamentoFuncaoList: []};
+            }
+            scp.apoio.estadoList = angular.copy($scope.cadastro.apoio.estadoList);
+            scp.apoio.generoList = angular.copy($scope.cadastro.apoio.generoList);
+            scp.apoio.paisList = angular.copy($scope.cadastro.apoio.paisList);
+            scp.apoio.nascimentoEstadoList = angular.copy($scope.cadastro.apoio.nascimentoEstadoList);
+            scp.apoio.nascimentoMunicipioList = angular.copy($scope.cadastro.apoio.nascimentoMunicipioList);
+            scp.apoio.regimeCasamentoList = angular.copy($scope.cadastro.apoio.regimeCasamentoList);
+            scp.apoio.escolaridadeList = angular.copy($scope.cadastro.apoio.escolaridadeList);
+            scp.apoio.profissaoList = angular.copy($scope.cadastro.apoio.profissaoList);
+            scp.apoio.escolaridadeList = angular.copy($scope.cadastro.apoio.escolaridadeList);
 
             var relacionamentoTipo = null;
             $scope.cadastro.apoio.relacionamentoConfiguracaoViList.forEach(function(item) {
@@ -137,7 +90,7 @@ angular.module(pNmModulo).controller(pNmController,
                     relacionamentoTipo = item.tipoId;
                     if (
                         item.tipoRelacionador.indexOf($scope.cadastro.registro.pessoaTipo) >= 0 &&
-                        item.tipoRelacionado.indexOf(reg.pessoa.pessoaTipo) >= 0
+                        item.tipoRelacionado.indexOf(reg.pessoa ? reg.pessoa.pessoaTipo : 'PF') >= 0
                         ) {
                         scp.apoio.relacionamentoTipoList.push({id: item.tipoId, nome: item.tipoNome});
                     }
@@ -152,7 +105,7 @@ angular.module(pNmModulo).controller(pNmController,
                         if (newValue.id === item.tipoId) {
                             if (
                                 item.relacionadorPessoaTipo.indexOf($scope.cadastro.registro.pessoaTipo) >= 0 &&
-                                item.relacionadoPessoaTipo.indexOf(reg.pessoa.pessoaTipo) >= 0
+                                item.relacionadoPessoaTipo.indexOf(reg.pessoa ? reg.pessoa.pessoaTipo : 'PF') >= 0
                                 ) {
                                 scp.apoio.relacionamentoFuncaoList.push(item);
                             }
@@ -161,15 +114,120 @@ angular.module(pNmModulo).controller(pNmController,
                 }
 
             });
+
+            scp.$watch('conteudo.nascimento', function(newValue, oldValue) {
+                if (!$scope.scp.conteudo) {
+                    $scope.scp.conteudo = {};
+                }
+                if (!$scope.scp.apoio) {
+                    $scope.scp.apoio = {};
+                }
+                $scope.scp.conteudo.idade = null;
+                $scope.scp.conteudo.geracao = null;
+                $scope.scp.apoio.geracao = null;
+                var nascimento = null;
+                if (!newValue) {
+                    return;
+                }
+                // captar a data de nascimento
+                if(newValue instanceof Date) {
+                    nascimento = newValue;
+                } else {
+                    // converter caso necessario
+                    if (newValue.length < 10) {
+                        return;
+                    }
+                    var partes = newValue.substr(0, 10).split('/');
+                    nascimento = new Date(partes[2],partes[1]-1,partes[0]);
+                }
+                var hoje = new Date();
+                var idade = hoje.getFullYear() - nascimento.getFullYear();
+                if ( new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate()) < 
+                        new Date(hoje.getFullYear(), nascimento.getMonth(), nascimento.getDate()) ) {
+                    idade--;
+                }
+                $scope.scp.conteudo.idade = idade >= 0 ? idade : null;
+                if (idade >= 0 && idade < 12) {
+                    $scope.scp.conteudo.geracao = 'C';
+                    $scope.scp.apoio.geracao = 'Criança';
+                } else if (idade >= 12 && idade < 18) {
+                    $scope.scp.conteudo.geracao = 'J';
+                    $scope.scp.apoio.geracao = 'Jovem';
+                } else if (idade >= 18 && idade < 60) {
+                    $scope.scp.conteudo.geracao = 'A';
+                    $scope.scp.apoio.geracao = 'Adulto';
+                } else if (idade >= 60 && idade < 140) {
+                    $scope.scp.conteudo.geracao = 'I';
+                    $scope.scp.apoio.geracao = 'Idoso';
+                } else {
+                    $scope.scp.apoio.geracao = 'Inválido';
+                }
+            });
+            scp.$watch('conteudo.nascimentoPais.id', function(newValue, oldValue) {
+                if (newValue) {
+                    UtilSrv.dominioLista($scope.scp.apoio.nascimentoEstadoList, {ent:['Estado'], npk: ['pais.id'], vpk: [newValue]});
+                } else {
+                    $scope.scp.apoio.nascimentoEstadoList = [];
+                }
+            });
+            scp.$watch('conteudo.nascimentoEstado.id', function(newValue, oldValue) {
+                if (newValue) {
+                    UtilSrv.dominioLista($scope.scp.apoio.nascimentoMunicipioList, {ent:['Municipio'], npk: ['estado.id'], vpk: [newValue]});
+                } else {
+                    $scope.scp.apoio.nascimentoMunicipioList = [];
+                }
+            });
+            scp.$watch('conteudo.nascimentoPais.id + conteudo.naturalizado', function(newValue, oldValue) {
+                if (!$scope.scp.conteudo) {
+                    $scope.scp.conteudo = {};
+                }
+                if (!$scope.scp.apoio) {
+                    $scope.scp.apoio = {};
+                }
+
+                $scope.scp.conteudo.nacionalidade = null;
+                $scope.scp.apoio.nacionalidade = null;
+                if (!($scope.scp.conteudo.nascimentoPais && $scope.scp.conteudo.nascimentoPais.id)) {
+                    $scope.scp.conteudo.naturalizado = null;
+                    $scope.scp.conteudo.nascimentoEstado = null;
+                    $scope.scp.conteudo.nascimentoMunicipio = null;
+                    return;
+                }
+                if ($scope.scp.conteudo.nascimentoPais && $scope.scp.conteudo.nascimentoPais.padrao === 'S') {
+                    $scope.scp.conteudo.nacionalidade = 'BN'; 
+                    $scope.scp.conteudo.naturalizado = false;
+                } else {
+                    $scope.scp.conteudo.nascimentoEstado = null;
+                    $scope.scp.conteudo.nascimentoMunicipio = null;
+                    $scope.scp.conteudo.nacionalidade = $scope.scp.conteudo.naturalizado ? 'NA' : 'ES';
+                }
+                if ($scope.scp.conteudo.nacionalidade) {
+                    $scope.scp.apoio.nacionalidade = UtilSrv.indiceDePorCampo($scope.scp.apoio.nacionalidadeList, $scope.scp.conteudo.nacionalidade, 'codigo');
+                }
+            });
         };
 
-        mensagemSrv.confirmacao(false, form, null, item, null, jaCadastrado, null, iniciar).then(function (conteudo) {
+        mensagemSrv.confirmacao(true, 'pessoa/sub-relacionamento-form.html', null, item, null, jaCadastrado, null, iniciar).then(function (conteudo) {
             // processar o retorno positivo da modal
             if (!$scope.cadastro.registro.relacionamentoList) {
                 $scope.cadastro.registro.relacionamentoList = [];
                 $scope.pessoaRelacionamentoNvg = new FrzNavegadorParams($scope.cadastro.registro.relacionamentoList, 4);
             }
-            $scope.cadastro.registro.relacionamentoList.push({"pessoa": conteudo.relacionado, "relacionamento": {"@class" : "br.gov.df.emater.aterwebsrv.modelo.pessoa.Relacionamento", "relacionamentoTipo": conteudo.relacionamento.relacionamentoTipo}, "relacionamentoFuncao": conteudo.relacionamentoFuncao});
+            var registro = {
+                "relacionamento": {
+                    "@class" : "br.gov.df.emater.aterwebsrv.modelo.pessoa.Relacionamento", 
+                    "relacionamentoTipo": angular.copy(conteudo.relacionamento.relacionamentoTipo)
+                }, 
+                "relacionamentoFuncao": angular.copy(conteudo.relacionamentoFuncao)
+            };
+            delete conteudo.relacionamento;
+            delete conteudo.relacionamentoFuncao;
+            if (conteudo.relacionado) {
+                registro.pessoa = conteudo.relacionado;
+            } else {
+                registro = angular.extend(conteudo, registro);
+            }
+            $scope.cadastro.registro.relacionamentoList.push(registro);
         }, function () {
             // processar o retorno negativo da modal
             //$log.info('Modal dismissed at: ' + new Date());

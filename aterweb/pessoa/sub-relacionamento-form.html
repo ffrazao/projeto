@@ -1,0 +1,249 @@
+<div class="modal-body">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 text-right">
+                <label class="form-label">Relacionador</label>
+            </div>
+            <div class="col-md-7">
+                <div class="form-control">
+                   {{conteudo.relacionador.nome}}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 text-right">
+                <label class="form-label">Tipo de Relacionamento</label>
+            </div>
+            <div class="col-md-7">
+                <select class="form-control" id="relacionamentoTipo" name="relacionamentoTipo"
+                    ng-model="conteudo.relacionamento.relacionamentoTipo"
+                    ng-options="item as item.nome for item in apoio.relacionamentoTipoList | orderBy : ['nome'] track by item.id"
+                    ng-required="true">
+                </select>
+                <div class="label label-danger" ng-show="confirmacaoFrm.relacionamentoTipo.$error.required">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                     Campo Obrigatório
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 text-right">
+                <label class="form-label">Função no Relacionamento</label>
+            </div>
+            <div class="col-md-7">
+                <select class="form-control" id="relacionamentoFuncao" name="relacionamentoFuncao"
+                    ng-model="conteudo.relacionamentoFuncao"
+                    ng-options="item as item.nomeSeFeminino for item in apoio.relacionamentoFuncaoList | orderBy : ['nome'] track by item.id"
+                    ng-required="true"
+                    ng-if="conteudo.relacionado.genero === 'F'">
+                </select>
+                <select class="form-control" id="relacionamentoFuncao" name="relacionamentoFuncao"
+                    ng-model="conteudo.relacionamentoFuncao"
+                    ng-options="item as item.nomeSeMasculino for item in apoio.relacionamentoFuncaoList | orderBy : ['nome'] track by item.id"
+                    ng-required="true"
+                    ng-if="conteudo.relacionado.genero !== 'F'">
+                </select>
+                <div class="label label-danger" ng-show="confirmacaoFrm.relacionamentoFuncao.$error.required">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                     Campo Obrigatório
+                </div>
+            </div>
+        </div>
+        <div class="row" ng-if="conteudo.relacionado">
+            <div class="col-md-3 text-right">
+                <label class="form-label">Relacionado</label>
+            </div>
+            <div class="col-md-7">
+                <div class="form-control">
+                   <a ng-click="modalVerPessoa(conteudo.relacionado.id)">{{conteudo.relacionado.nome}}</a>
+                </div>
+            </div>
+        </div>
+        <div ng-if="!conteudo.relacionado">
+            <div class="row">
+                  <div class="col-md-3 text-right">
+                        <label class="form-label">Nome Completo</label>
+                  </div>
+                  <div class="col-md-7">
+                        <input id="nome" name="nome" type="text" placeholder="" class="form-control input-md" ng-model="conteudo.nome" ng-required="true">
+                        <div class="label label-danger" ng-show="confirmacaoFrm.nome.$error.required">
+                              <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                              Campo Obrigatório
+                        </div>
+                  </div>
+            </div>
+            <div class="row">
+                  <div class="col-md-3 text-right">
+                        <label class="form-label">Gênero</label>
+                  </div>
+                  <div class="col-md-4">
+                        <div class="form-control" ng-class="{'ng-invalid': confirmacaoFrm.genero.$invalid}">
+                              <label class="radio-inline" for="genero-{{$index}}" ng-repeat="item in apoio.generoList">
+                                  <input type="radio" name="genero" id="genero-{{$index}}" value="{{item.codigo}}" ng-model="conteudo.genero" ng-required="true">
+                                  {{item.descricao}}
+                              </label>
+                        </div>
+                        <div class="label label-danger" ng-show="confirmacaoFrm.genero.$error.required">
+                              <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                              Campo Obrigatório
+                        </div>
+                  </div>
+            </div>
+            <div class="row">
+                  <div class="col-md-3 text-right">
+                        <label class="form-label">Apelido</label>
+                  </div>
+                  <div class="col-md-4">
+                        <input class="form-control" type="text" ng-model="conteudo.apelidoSigla"/>
+                  </div>
+            </div>
+            <div class="row">
+                  <div class="col-md-3 text-right">
+                        <label class="form-label">CPF</label>
+                  </div>
+                  <div class="col-md-3">
+                        <input id="cpf" name="cpf" type="text" placeholder="" class="form-control input-md" ng-model="conteudo.cpf" ui-br-cpf-mask>
+                        <div class="label label-danger" ng-show="confirmacaoFrm.cpf.$error.required">
+                              <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                              Campo Obrigatório
+                        </div>
+                        <div class="label label-danger" ng-show="confirmacaoFrm.cpf.$error.cpf">
+                              <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                              Número inválido!
+                        </div>
+                  </div>
+            </div>
+            <div class="row">
+                  <div class="col-md-3 text-right">
+                        <label class="form-label">RG - Registro Geral</label>
+                  </div>
+                  <fieldset class="form-group col-md-9">
+                        <div class="row">
+                              <div class="col-md-3">
+                                    <label class="control-label">Número</label>
+                                    <input class="form-control" type="text" ng-model="conteudo.rgNumero"/>
+                              </div>
+                              <div class="col-md-3">
+                                    <label class="control-label">Órg. Emis.</label>
+                                    <input class="form-control" type="text" ng-model="conteudo.rgOrgaoEmissor"/>
+                              </div>
+                              <div class="col-md-3">
+                                    <label class="control-label">UF</label>
+                                    <select class="form-control" ng-model="conteudo.rgUf" 
+                                    ng-options="item.sigla as item.sigla for item in apoio.estadoList | orderBy: ['-padrao','-capital','nome']">
+                                    <option value="">-- Não informado --</option>
+                                    </select>
+                              </div>
+                              <div class="col-md-3">
+                                    <label class="control-label">Data</label>
+                                    <input class="form-control" type="text" id="rgDataEmissao" name="rgDataEmissao" ng-model="conteudo.rgDataEmissao" ui-date-mask/>
+                                    <div class="label label-danger" ng-show="confirmacaoFrm.rgDataEmissao.$error.date">
+                                          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                          Valor Inválido!
+                                    </div>
+                              </div>
+                        </div>
+                  </fieldset>
+            </div>
+            <div class="row">
+                  <div class="col-md-3 text-right">
+                        <label class="form-label">Nascimento</label>
+                  </div>
+                  <div class="col-md-9">
+                        <div class="row">
+                              <div class="col-md-4">
+                                    <label class="control-label">Data</label>
+                                    <input class="form-control" type="text" id="nascimento" name="nascimento" ng-model="conteudo.nascimento" ui-date-mask ng-required="false">
+                                    <div class="label label-danger" ng-show="confirmacaoFrm.nascimento.$error.date">
+                                          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                          Valor Inválido!
+                                    </div>
+                                    <div class="label label-danger" ng-show="confirmacaoFrm.nascimento.$error.required">
+                                          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                          Campo Obrigatório
+                                    </div>
+                              </div>
+                              <div class="col-md-4">
+                                    <label class="control-label">Idade</label>
+                                    <input class="form-control" type="text" readonly="true" ng-model="conteudo.idade" />
+                              </div>
+                        </div>
+                        <div class="row">
+                              <div class="col-md-4">
+                                    <label class="control-label">País</label>
+                                    <select class="form-control" ng-model="conteudo.nascimentoPais" ng-options="item as item.nome for item in apoio.paisList | orderBy: ['-padrao','nome'] track by item.id">
+                                          <option value="">-- Não informado --</option>
+                                    </select>
+                              </div>
+                              <div class="col-md-4" ng-if="conteudo.nascimentoPais.padrao === 'S'">
+                                    <label class="control-label">Estado</label>
+                                    <select class="form-control" ng-model="conteudo.nascimentoEstado" ng-options="item as item.nome for item in apoio.nascimentoEstadoList | orderBy: ['-padrao','-capital','nome'] track by item.id" ng-required="conteudo.nascimentoPais.id && conteudo.nascimentoPais.padrao === 'S'">
+                                    </select>
+                                    <div class="label label-danger" ng-show="confirmacaoFrm.nascimentoEstado.$error.required">
+                                          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                          Campo Obrigatório
+                                    </div>
+                              </div>
+                              <div class="col-md-4" ng-if="conteudo.nascimentoPais.padrao === 'S'">
+                                    <label class="control-label">Município</label>
+                                    <select class="form-control" ng-model="conteudo.nascimentoMunicipio" ng-options="item as item.nome for item in apoio.nascimentoMunicipioList | orderBy: ['-padrao','-capital','nome'] track by item.id" ng-required="conteudo.nascimentoPais.id && conteudo.nascimentoPais.padrao === 'S'">
+                                    </select>
+                                    <div class="label label-danger" ng-show="confirmacaoFrm.nascimentoMunicipio.$error.required">
+                                          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                          Campo Obrigatório
+                                    </div>
+                              </div>
+                              <div class="col-md-4" ng-if="conteudo.nascimentoPais.id && conteudo.nascimentoPais.padrao === 'N'">
+                                    <label class="radio-inline" for="naturalizado-1">
+                                          <input type="checkbox" name="naturalizado" id="naturalizado-1" ng-model="conteudo.naturalizado">
+                                          Naturalizado?
+                                    </label>
+                              </div>
+                        </div>
+                  </div>
+            </div>
+            <div class="row">
+                  <div class="col-md-3 text-right">
+                        <label class="form-label">Escolaridade</label>
+                  </div>
+                  <div class="col-md-9">
+                        <select class="form-control" ng-model="conteudo.escolaridade" ng-options="item.codigo as item.descricao for item in apoio.escolaridadeList">
+                              <option value="">-- Não informado --</option>
+                        </select>
+                  </div>
+            </div>
+            <div class="row">
+                  <div class="col-md-3 text-right">
+                        <label class="form-label">Profissão</label>
+                  </div>
+                  <div class="col-md-9">
+                        <select class="form-control" ng-model="conteudo.profissao.id" ng-options="item.id as item.nome for item in apoio.profissaoList">
+                              <option value="">-- Não informado --</option>
+                        </select>
+                  </div>
+            </div>
+            <div class="row">
+                  <div class="col-md-3 text-right">
+                        <label class="form-label">Regime de Casamento</label>
+                  </div>
+                  <div class="col-md-9">
+                        <select class="form-control" ng-model="conteudo.certidaoCasamentoRegime" ng-options="item.codigo as item.descricao for item in apoio.regimeCasamentoList">
+                              <option value="">-- Não informado --</option>
+                        </select>
+                  </div>
+            </div>
+            <div class="row">
+                  <div class="col-md-3 text-right">
+                        <label class="form-label">Nome da Mãe</label>
+                  </div>
+                  <div class="col-md-9">
+                        <input id="nomeMae" name="nomeMae" type="text" placeholder="" class="form-control input-md" ng-model="conteudo.nomeMae">
+                        <div class="label label-danger" ng-show="confirmacaoFrm.nomeMae.$error.required">
+                              <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                              Campo Obrigatório
+                        </div>
+                  </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -22,6 +22,10 @@
     },
     "modules": [
       {
+        "name": "atividade",
+        "file": "atividade\\atividade.js"
+      },
+      {
         "name": "casa",
         "file": "casa\\casa.js"
       },
@@ -30,28 +34,44 @@
         "file": "contrato\\contrato.js"
       },
       {
-        "name": "pessoa",
-        "file": "pessoa\\pessoa.js"
-      },
-      {
-        "name": "propriedadeRural",
-        "file": "propriedade-rural\\propriedade-rural.js"
-      },
-      {
         "name": "formulario",
         "file": "formulario\\formulario.js"
       },
       {
-        "name": "atividade",
-        "file": "atividade\\atividade.js"
-      },
-      {
-        "name": "formulario",
-        "file": "formulario\\formulario.js"
+        "name": "funcionalidade",
+        "file": "funcionalidade\\funcionalidade.js"
       },
       {
         "name": "indice-producao",
         "file": "indice-producao\\indice-producao.js"
+      },
+      {
+        "name": "log-acao",
+        "file": "log-acao\\log-acao.js"
+      },
+      {
+        "name": "login",
+        "file": "login\\login.js"
+      },
+      {
+        "name": "perfil",
+        "file": "perfil\\perfil.js"
+      },
+      {
+        "name": "pessoa",
+        "file": "pessoa\\pessoa.js"
+      },
+      {
+        "name": "propriedade-rural",
+        "file": "propriedade-rural\\propriedade-rural.js"
+      },
+      {
+        "name": "usuario",
+        "file": "usuario\\usuario.js"
+      },
+      {
+        "name": "frz.endereco",
+        "file": "js\\frz-endereco.js"
       },
     ]
   }

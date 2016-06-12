@@ -36,6 +36,7 @@
                         <th>Nome</th>
                         <th>Tipo</th>
                         <th>Relacionamento</th>
+                        <th>Informações Complementares</th>
                         <th>Início</th>
                         <th>Término</th>
                     </tr>
@@ -50,14 +51,47 @@
                             {{$index + 1 + ((pessoaRelacionamentoNvg.paginaAtual-1) * pessoaRelacionamentoNvg.tamanhoPagina)}}
                         </td>
                         <td>
-                            <a ng-click="modalVerPessoa(reg.pessoa.id)">{{reg.pessoa.nome}}</a>
+                            <a ng-click="modalVerPessoa(reg.pessoa.id)" ng-if="reg.pessoa">{{reg.pessoa.nome}}</a>
+                            <span >{{reg.nome}}</span>
+                            <small >{{reg.apelido_sigla}}</small>
                         </td>
                         <td>
                             {{reg.relacionamento.relacionamentoTipo.nome}}
                         </td>
                         <td>
-                            <span ng-if="reg.pessoa.genero === 'F'">{{reg.relacionamentoFuncao.nomeSeFeminino}}</span>
-                            <span ng-if="reg.pessoa.genero !== 'F'">{{reg.relacionamentoFuncao.nomeSeMasculino}}</span>
+                            <span ng-if="reg.pessoa && reg.pessoa.genero === 'F'">{{reg.relacionamentoFuncao.nomeSeFeminino}}</span>
+                            <span ng-if="reg.pessoa && reg.pessoa.genero !== 'F'">{{reg.relacionamentoFuncao.nomeSeMasculino}}</span>
+                            <span ng-if="!reg.pessoa && reg.genero === 'F'">{{reg.relacionamentoFuncao.nomeSeFeminino}}</span>
+                            <span ng-if="!reg.pessoa && reg.genero !== 'F'">{{reg.relacionamentoFuncao.nomeSeMasculino}}</span>
+                        </td>
+                        <td>
+                            <uib-accordion ng-if="!reg.pessoa">
+                                <uib-accordion-group is-open="reg.detalheAberto">
+                                    <uib-accordion-heading>
+                                        <span ng-show="!reg.detalheAberto">ver</span>
+                                        <span ng-show="reg.detalheAberto">esconder</span>
+                                        <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': reg.detalheAberto, 'glyphicon-chevron-right': !reg.detalheAberto}"></i>
+                                    </uib-accordion-heading>
+                                    <table class="table">
+                                        <tr ng-if="reg.apelidoSigla">            <th><small>Apelido</small></th>              <td><small>{{reg.apelidoSigla}}</small></td></tr>
+                                        <tr ng-if="reg.cpf">                     <th><small>CPF</small></th>                  <td><small>{{reg.cpf}}</small></td></tr>
+                                        <tr ng-if="reg.rgNumero">                <th><small>RG Número</small></th>            <td><small>{{reg.rgNumero}}</small></td></tr>
+                                        <tr ng-if="reg.rgOrgaoEmissor">          <th><small>RG Órgão Emissor</small></th>     <td><small>{{reg.rgOrgaoEmissor}}</small></td></tr>
+                                        <tr ng-if="reg.rgUf">                    <th><small>RG UF</small></th>                <td><small>{{reg.rgUf}}</small></td></tr>
+                                        <tr ng-if="reg.rgDataEmissao">           <th><small>RG Data Emissão</small></th>      <td><small>{{reg.rgDataEmissao | date:'dd/MM/yyyy'}}</small></td></tr>
+                                        <tr ng-if="reg.genero">                  <th><small>Gênero</small></th>               <td><small>{{UtilSrv.indiceDePorCampo(cadastro.apoio.generoList, reg.genero, 'codigo').descricao}}</small></td></tr>
+                                        <tr ng-if="reg.nascimento">              <th><small>Data de Nascimento</small></th>   <td><small>{{reg.nascimento | date:'dd/MM/yyyy'}}</small></td></tr>
+                                        <tr ng-if="reg.nacionalidade">           <th><small>Nacionalidade</small></th>        <td><small>{{UtilSrv.indiceDePorCampo(cadastro.apoio.nacionalidadeList, reg.nacionalidade, 'codigo').descricao}}</small></td></tr>
+                                        <tr ng-if="reg.nascimentoPais">          <th><small>Nascimento Pais</small></th>      <td><small>{{reg.nascimentoPais.nome}}</small></td></tr>
+                                        <tr ng-if="reg.nascimentoEstado">        <th><small>Nascimento Estado</small></th>    <td><small>{{reg.nascimentoEstado.nome}}</small></td></tr>
+                                        <tr ng-if="reg.nascimentoMunicipio">     <th><small>Nascimento Município</small></th> <td><small>{{reg.nascimentoMunicipio.nome}}</small></td></tr>
+                                        <tr ng-if="reg.certidaoCasamentoRegime"> <th><small>Regime Casamento</small></th>     <td><small>{{UtilSrv.indiceDePorCampo(cadastro.apoio.regimeCasamentoList, reg.certidaoCasamentoRegime, 'codigo').descricao}}</small></td></tr>
+                                        <tr ng-if="reg.escolaridade">            <th><small>Escolaridade</small></th>         <td><small>{{UtilSrv.indiceDePorCampo(cadastro.apoio.escolaridadeList, reg.escolaridade, 'codigo').descricao}}</small></td></tr>
+                                        <tr ng-if="reg.profissao">               <th><small>Profissão</small></th>            <td><small>{{reg.profissao.nome}}</small></td></tr>
+                                        <tr ng-if="reg.nomeMae">                 <th><small>Nome Mãe</small></th>             <td><small>{{reg.nomeMae}}</small></td></tr>
+                                    </table>
+                                </uib-accordion-group>
+                            </uib-accordion>
                         </td>
                         <td>
                             <input type="text" class="form-control input-sm" id="inicio" name="inicio{{$index}}" ng-model="reg.relacionamento.inicio" ui-date-mask ng-show="['S', 'O'].indexOf(reg.relacionamentoFuncao.configTemporario) >= 0">

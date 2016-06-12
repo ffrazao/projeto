@@ -75,7 +75,7 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 
 	private Set<Confirmacao> publicoAlvoSustentabilidade;
 
-	private Set<PessoaTipo> tipoPessoa;
+	private Set<PessoaTipo> pessoaTipoList;
 
 	private List<UnidadeOrganizacional> unidadeOrganizacionalList;
 
@@ -187,8 +187,8 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 		return publicoAlvoSustentabilidade;
 	}
 
-	public Set<PessoaTipo> getTipoPessoa() {
-		return tipoPessoa;
+	public Set<PessoaTipo> getPessoaTipoList() {
+		return pessoaTipoList;
 	}
 
 	public List<UnidadeOrganizacional> getUnidadeOrganizacionalList() {
@@ -303,8 +303,8 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 		this.publicoAlvoSustentabilidade = publicoAlvoSustentabilidade;
 	}
 
-	public void setTipoPessoa(Set<PessoaTipo> tipoPessoa) {
-		this.tipoPessoa = tipoPessoa;
+	public void setPessoaTipoList(Set<PessoaTipo> pessoaTipoList) {
+		this.pessoaTipoList = pessoaTipoList;
 	}
 
 	public void setUnidadeOrganizacionalList(List<UnidadeOrganizacional> unidadeOrganizacionalList) {

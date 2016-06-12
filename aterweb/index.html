@@ -9,15 +9,15 @@
   <meta name="description" content="Controle de Atividades Operacionais, Táticas e Estratégicas da Emater-DF">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="app.less" type="text/css" rel="stylesheet/less">
-  <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css" />
-  <link rel="stylesheet" type="text/css" href="bower_components/angular-toastr/dist/angular-toastr.css" />
-  <link rel="stylesheet" type="text/css" href="node_modules/ui-navbar/release/css/ui-navbar.css" />
   <link rel="stylesheet" type="text/css" href="css/main.css">
   <link rel="stylesheet" type="text/css" href="css/painel-vidro.css">
+  <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+  <link rel="stylesheet" type="text/css" href="bower_components/angular-toastr/dist/angular-toastr.css" />
   <link rel="stylesheet" type="text/css" href="bower_components/ng-img-crop/compile/unminified/ng-img-crop.css" />
   <link rel="stylesheet" type="text/css" href="bower_components/ng-tags-input/ng-tags-input.css" />
   <link rel="stylesheet" type="text/css" href="bower_components/ng-tags-input/ng-tags-input.bootstrap.css" />
   <link rel="stylesheet" type="text/css" href="bower_components/angular-ui-tree/dist/angular-ui-tree.min.css">
+  <link rel="stylesheet" type="text/css" href="node_modules/ui-navbar/release/css/ui-navbar.css" />
 
   <style type="text/css">
       [ng\:cloak], [ng-cloak], .ng-cloak {
@@ -50,9 +50,6 @@
 
   <!-- Livereload script for development only (stripped during dist build) -->
   <script src="http://localhost:35729/livereload.js" data-concat="false"></script>
-
-  <!-- "//maps.googleapis.com/maps/api/js"
-  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=drawing"></script> -->
 
   <!-- JS from Bower Components -->
   <script src="bower_components/less.js/dist/less.js" data-concat="false"></script>
@@ -103,21 +100,16 @@
   <script src="directive/frz-form/frz-form.js"></script>
   <script src="directive/frz-tabela/frz-tabela.js"></script>
 
-  <!-- Main App JS -->
   <script src="app.js"></script>  
   
-  <!-- tools -->
   <script src="service/mensagem-srv.js"></script>
   <script src="service/seguranca-srv.js"></script>
   <script src="service/util-srv.js"></script>  
 
-  <!-- offline -->
   <script src="offline/app.js"></script>
   
-  <!-- info -->
   <script src="info/info.js"></script>
 
-  <!-- atividade -->
   <script src="atividade/atividade.js"></script>
   <script src="atividade/sub-pessoa.js"></script>
   <script src="atividade/sub-assunto.js"></script>
@@ -125,19 +117,15 @@
   <script src="atividade/sub-plano-acao.js"></script>
   <script src="service/atividade/atividade-srv.js"></script>
 
-  <!-- home -->
   <script src="casa/casa.js"></script>
   <script src="casa/menu.js"></script>
 
-  <!-- contrato -->
   <script src="contrato/contrato.js"></script>
   <script src="contrato/sub-arquivo.js"></script>
 
-  <!-- formulário -->
   <script src="formulario/formulario.js"></script>
   <script src="service/formulario/formulario-srv.js"></script>
 
-  <!-- indice producao -->
   <script src="indice-producao/indice-producao.js"></script>
   <script src="indice-producao/sub-produtores.js"></script>
   <script src="indice-producao/sub-producao-forma.js"></script>
@@ -145,13 +133,11 @@
   <script src="service/indice-producao/bem-producao-srv.js"></script>
   <script src="service/indice-producao/indice-producao-srv.js"></script>
 
-  <!-- login -->
   <script src="login/login.js"></script>
   <script src="login/esqueci-minha-senha.js"></script>
   <script src="login/renove-sua-senha.js"></script>
   <script src="login/visualizar-perfil.js"></script>
   
-  <!-- pessoa -->
   <script src="pessoa/pessoa.js"></script>
   <script src="pessoa/filtro-sub-grupo-social.js"></script>
   <script src="pessoa/sub-arquivo.js"></script>
@@ -172,7 +158,6 @@
   <script src="service/pessoa/pessoa-srv.js"></script>
   <script src="service/endereco/endereco-srv.js"></script>
   
-  <!-- propriedade -->  
   <script src="propriedade-rural/propriedade-rural.js"></script>
   <script src="propriedade-rural/sub-arquivo.js"></script>
   <script src="propriedade-rural/sub-diagnostico-captacao.js"></script>
@@ -183,25 +168,20 @@
   <script src="service/ater/propriedade-rural-srv.js"></script>
   <script src="service/ater/comunidade-srv.js"></script>
 
-  <!-- unidade organizacional -->
   <script src="service/funcional/unidade-organizacional-srv.js"></script>
 
-  <!-- funcionalidade -->
   <script src="funcionalidade/funcionalidade.js"></script>
   <script src="funcionalidade/sub-modulo.js"></script>
   <script src="funcionalidade/sub-comando.js"></script>
   <script src="service/funcionalidade/funcionalidade-srv.js"></script>
 
-  <!-- perfil -->
   <script src="perfil/perfil.js"></script>
   <script src="perfil/sub-perfil-funcionalidade-comando.js"></script>
   <script src="service/perfil/perfil-srv.js"></script>
 
-  <!-- usuario -->
   <script src="usuario/usuario.js"></script>
   <script src="service/usuario/usuario-srv.js"></script>
 
-  <!-- log -->
   <script src="log-acao/log-acao.js"></script>
   <script src="service/log-acao/log-acao-srv.js"></script>
 

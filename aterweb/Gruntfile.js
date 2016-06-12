@@ -133,7 +133,7 @@ module.exports = function (grunt) {
     },
     concat: {
       main: {
-        src: ['<%= dom_munger.data.appjs %>','<%= ngtemplates.main.dest %>'],
+        src: ['<%= dom_munger.data.appjs %>','<%= ngtemplates.main.dest %>', 'js/*.js'],
         dest: 'temp/app.full.js'
       }
     },

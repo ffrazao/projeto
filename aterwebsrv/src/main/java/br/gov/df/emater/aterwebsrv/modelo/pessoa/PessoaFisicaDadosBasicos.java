@@ -31,7 +31,7 @@ public interface PessoaFisicaDadosBasicos {
 
 	public String getNome();
 
-	public String getNomeMaeConjuge();
+	public String getNomeMae();
 
 	public Profissao getProfissao();
 
@@ -65,7 +65,7 @@ public interface PessoaFisicaDadosBasicos {
 
 	public void setNome(String nome);
 
-	public void setNomeMaeConjuge(String nomeMaeConjuge);
+	public void setNomeMae(String nomeMaeConjuge);
 
 	public void setProfissao(Profissao profissao);
 

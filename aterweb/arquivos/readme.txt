@@ -1,1 +1,0 @@
-Pasta local para upload/download de arquivos

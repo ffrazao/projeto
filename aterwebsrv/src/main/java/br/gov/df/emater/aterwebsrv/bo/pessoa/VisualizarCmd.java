@@ -23,7 +23,6 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaPendencia;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaRelacionamento;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaTelefone;
-import br.gov.df.emater.aterwebsrv.modelo.pessoa.Relacionamento;
 
 @Service("PessoaVisualizarCmd")
 public class VisualizarCmd extends _Comando {
@@ -100,23 +99,51 @@ public class VisualizarCmd extends _Comando {
 		}
 		if (result.getRelacionamentoList() != null) {
 			for (PessoaRelacionamento relacionador : result.getRelacionamentoList()) {
-				Relacionamento relacionamento = relacionador.getRelacionamento();
-				Pessoa pessoaRelacionado = null;
-				Integer idRelacionamento = null;
-				// RelacionamentoFuncao relacionadoFuncao = null;
-				for (PessoaRelacionamento relacionado : relacionamento.getPessoaRelacionamentoList()) {
+				for (PessoaRelacionamento relacionado : relacionador.getRelacionamento().getPessoaRelacionamentoList()) {
+					// aqui o registro original vem selecionado como o do
+					// relacionador, ou seja, da pessoa que foi consultada
+					// por isso é necessário inverter os dados com o do
+					// relacionado, para envio a tela, para futuras modificações
 					if (relacionado.getPessoa() != null && !relacionado.getPessoa().getId().equals(result.getId())) {
-						pessoaRelacionado = relacionado.getPessoa().infoBasica();
-						idRelacionamento = relacionado.getId();
-						// relacionadoFuncao =
-						// relacionado.getRelacionamentoFuncao();
+						// informações principais
+						relacionador.setId(relacionado.getId());
+						relacionador.setRelacionamentoFuncao(relacionador.getRelacionamentoFuncao() == null ? null : relacionador.getRelacionamentoFuncao().infoBasica());
+						relacionador.setChaveSisater(relacionado.getChaveSisater());
+
+						// captar os dados do relacionado
+						relacionador.setPessoa(relacionado.getPessoa().infoBasica());
+						break;
+					} else {
+						// informações principais
+						relacionador.setId(relacionado.getId());
+						relacionador.setRelacionamentoFuncao(relacionado.getRelacionamentoFuncao() == null ? null : relacionado.getRelacionamentoFuncao().infoBasica());
+						relacionador.setChaveSisater(relacionado.getChaveSisater());
+
+						// captar os dados do relacionado
+						relacionador.setPessoa(null);
+						relacionador.setApelidoSigla(relacionado.getApelidoSigla());
+						relacionador.setCertidaoCasamentoRegime(relacionado.getCertidaoCasamentoRegime());
+						relacionador.setCpf(relacionado.getCpf());
+						relacionador.setEscolaridade(relacionado.getEscolaridade());
+						relacionador.setGenero(relacionado.getGenero());
+						relacionador.setNacionalidade(relacionado.getNacionalidade());
+						relacionador.setNascimento(relacionado.getNascimento());
+						if (relacionado.getNascimentoMunicipio() != null) {							
+							relacionador.setNascimentoEstado(relacionado.getNascimentoMunicipio().getEstado().infoBasica());
+							relacionador.setNascimentoMunicipio(relacionado.getNascimentoMunicipio().infoBasica());
+						}
+						relacionador.setNascimentoPais(relacionado.getNascimentoPais() == null ? null : relacionado.getNascimentoPais().infoBasica());
+						relacionador.setNome(relacionado.getNome());
+						relacionador.setNomeMae(relacionado.getNomeMae());
+						relacionador.setProfissao(relacionado.getProfissao() == null ? null : relacionado.getProfissao().infoBasica());
+						relacionador.setRgDataEmissao(relacionado.getRgDataEmissao());
+						relacionador.setRgNumero(relacionado.getRgNumero());
+						relacionador.setRgOrgaoEmissor(relacionado.getRgOrgaoEmissor());
+						relacionador.setRgUf(relacionado.getRgUf());
 						break;
 					}
 				}
-				relacionador.setId(idRelacionamento);
 				relacionador.setRelacionamento(relacionador.getRelacionamento().infoBasica());
-				relacionador.setRelacionamentoFuncao(relacionador.getRelacionamentoFuncao() == null ? null : relacionador.getRelacionamentoFuncao().infoBasica());
-				relacionador.setPessoa(pessoaRelacionado);
 			}
 		}
 		if (result.getTelefoneList() != null) {

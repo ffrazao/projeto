@@ -332,7 +332,7 @@ public class SisaterPublicoAlvoCmd extends _Comando {
 				pessoa.setNascimento(nomeCampo[8] == null ? null : impUtil.captaData(rs.getDate(nomeCampo[8])));
 				pessoa.setEscolaridade(nomeCampo[9] == null ? null : impUtil.deParaEscolaridade(rs.getString(nomeCampo[9])));
 				pessoa.setCertidaoCasamentoRegime(nomeCampo[10] == null ? null : impUtil.deParaRegimeCasamento(rs.getString(nomeCampo[10])));
-				pessoa.setNomeMaeConjuge(nomeCampo[11] == null ? null : rs.getString(nomeCampo[11]));
+				pessoa.setNomeMae(nomeCampo[11] == null ? null : rs.getString(nomeCampo[11]));
 			}
 			pessoaRelacionamento(result, relacionamentoFuncao, pessoa, nomeCampo[0]);
 		}

@@ -86,8 +86,8 @@ public class PessoaRelacionamento extends EntidadeBase implements _ChavePrimaria
 
 	private String nome;
 
-	@Column(name = "nome_mae_conjuge")
-	private String nomeMaeConjuge;
+	@Column(name = "nome_mae")
+	private String nomeMae;
 
 	@ManyToOne
 	@JoinColumn(name = "pessoa_id")
@@ -125,7 +125,7 @@ public class PessoaRelacionamento extends EntidadeBase implements _ChavePrimaria
 	}
 
 	public PessoaRelacionamento(Integer id, Relacionamento relacionamento, String nome, String apelido, String cpf, String rgNumero, Calendar rgDataEmissao, String rgOrgaoEmissor, String rgUf, Profissao profissaoId, PessoaGenero genero, PessoaNacionalidade nacionalidade,
-			Municipio nascimentoMunicipio, Pais nascimentoPais, Calendar nascimento, Escolaridade escolaridade, RegimeCasamento regimeCasamento, String nomeMaeConjuge) {
+			Municipio nascimentoMunicipio, Pais nascimentoPais, Calendar nascimento, Escolaridade escolaridade, RegimeCasamento regimeCasamento, String nomeMae) {
 		this.setId(id);
 		this.setRelacionamento(relacionamento);
 		this.setNome(nome);
@@ -143,7 +143,7 @@ public class PessoaRelacionamento extends EntidadeBase implements _ChavePrimaria
 		this.setNascimento(nascimento);
 		this.setEscolaridade(escolaridade);
 		this.setCertidaoCasamentoRegime(regimeCasamento);
-		this.setNomeMaeConjuge(nomeMaeConjuge);
+		this.setNomeMae(nomeMae);
 	}
 
 	public PessoaRelacionamento(Serializable id) {
@@ -222,8 +222,8 @@ public class PessoaRelacionamento extends EntidadeBase implements _ChavePrimaria
 	}
 
 	@Override
-	public String getNomeMaeConjuge() {
-		return nomeMaeConjuge;
+	public String getNomeMae() {
+		return nomeMae;
 	}
 
 	public Pessoa getPessoa() {
@@ -328,8 +328,8 @@ public class PessoaRelacionamento extends EntidadeBase implements _ChavePrimaria
 	}
 
 	@Override
-	public void setNomeMaeConjuge(String nomeMaeConjuge) {
-		this.nomeMaeConjuge = nomeMaeConjuge;
+	public void setNomeMae(String nomeMae) {
+		this.nomeMae = nomeMae;
 	}
 
 	public void setPessoa(Pessoa pessoa) {
@@ -390,7 +390,7 @@ public class PessoaRelacionamento extends EntidadeBase implements _ChavePrimaria
 			pessoa.setNascimento(this.getNascimento());
 			pessoa.setEscolaridade(this.getEscolaridade());
 			pessoa.setCertidaoCasamentoRegime(this.getCertidaoCasamentoRegime());
-			pessoa.setNomeMaeConjuge(this.getNomeMaeConjuge());
+			pessoa.setNomeMae(this.getNomeMae());
 
 			// atribuir os novos dados
 			this.setPessoa(pessoa);
@@ -411,7 +411,7 @@ public class PessoaRelacionamento extends EntidadeBase implements _ChavePrimaria
 			this.setNascimento(null);
 			this.setEscolaridade(null);
 			this.setCertidaoCasamentoRegime(null);
-			this.setNomeMaeConjuge(null);
+			this.setNomeMae(null);
 		} else if (this.getPessoa() != null) {
 			// atribuir os novos dados
 			this.setNome(((PessoaFisica) this.getPessoa()).getNome());
@@ -429,7 +429,7 @@ public class PessoaRelacionamento extends EntidadeBase implements _ChavePrimaria
 			this.setNascimento(((PessoaFisica) this.getPessoa()).getNascimento());
 			this.setEscolaridade(((PessoaFisica) this.getPessoa()).getEscolaridade());
 			this.setCertidaoCasamentoRegime(((PessoaFisica) this.getPessoa()).getCertidaoCasamentoRegime());
-			this.setNomeMaeConjuge(((PessoaFisica) this.getPessoa()).getNomeMaeConjuge());
+			this.setNomeMae(((PessoaFisica) this.getPessoa()).getNomeMae());
 
 			// limpar os dados movidos
 			this.setPessoa(null);
