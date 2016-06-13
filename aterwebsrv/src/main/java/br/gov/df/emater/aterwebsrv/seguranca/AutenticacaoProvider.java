@@ -73,7 +73,7 @@ public class AutenticacaoProvider extends DaoAuthenticationProvider {
 		// Filtrar modulos ativos
 		Map<String, Object> details = (Map<String, Object>) autenticacao.getDetails();
 		
-		details.put("MODULO", identificaModulo((String) details.get("MODULO")));
+		details.put("MODULO", identificaModulo(details.get("MODULO")));
 		
 		if (result.isAuthenticated()) {
 			Usuario u = dao.findOne(((Usuario) result.getPrincipal()).getId());
@@ -90,7 +90,7 @@ public class AutenticacaoProvider extends DaoAuthenticationProvider {
 		return result;
 	}
 
-	private Integer identificaModulo(String moduloId) {
+	private Integer identificaModulo(Object moduloId) {
 		if (moduloId == null) {
 			List<Modulo> moduloList = moduloDao.findByPrincipal(Confirmacao.S);
 			if (moduloList.size() == 1) {
@@ -99,7 +99,11 @@ public class AutenticacaoProvider extends DaoAuthenticationProvider {
 		}
 		Modulo modulo = null;
 		if (moduloId != null) {
-			modulo = moduloDao.findOne(Integer.parseInt(moduloId));
+			if (moduloId instanceof String) {				
+				modulo = moduloDao.findOne(Integer.parseInt((String) moduloId));
+			} else {
+				modulo = moduloDao.findOne((Integer) moduloId);
+			}
 		}
 		if (modulo == null) {
 			throw new BadCredentialsException("Módulo de acesso não identificado!");
