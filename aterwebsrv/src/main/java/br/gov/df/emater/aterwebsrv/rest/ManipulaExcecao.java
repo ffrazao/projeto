@@ -35,6 +35,7 @@ public class ManipulaExcecao {
 		} else {
 			resposta = new Resposta(ex);
 		}
+		ex.printStackTrace();
 		return resposta;
 	}
 }
