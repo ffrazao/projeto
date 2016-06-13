@@ -1,8 +1,9 @@
 <div class="modal-body">
+    <legend>Relacionador</legend>
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-3 text-right">
-                <label class="form-label">Relacionador</label>
+                <label class="form-label">Nome do Relacionador</label>
             </div>
             <div class="col-md-7">
                 <div class="form-control">
@@ -12,50 +13,32 @@
         </div>
         <div class="row">
             <div class="col-md-3 text-right">
-                <label class="form-label">Tipo de Relacionamento</label>
+                <label class="form-label">Tipo de Pessoa</label>
             </div>
             <div class="col-md-7">
-                <select class="form-control" id="relacionamentoTipo" name="relacionamentoTipo"
-                    ng-model="conteudo.relacionamento.relacionamentoTipo"
-                    ng-options="item as item.nome for item in apoio.relacionamentoTipoList | orderBy : ['nome'] track by item.id"
-                    ng-required="true">
-                </select>
-                <div class="label label-danger" ng-show="confirmacaoFrm.relacionamentoTipo.$error.required">
-                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                     Campo Obrigatório
+                <div class="form-control">
+                   {{UtilSrv.indiceDePorCampo(apoio.pessoaTipoList, conteudo.relacionador.pessoaTipo, 'codigo').descricao}}
                 </div>
             </div>
         </div>
-        <div class="row">
+        <legend>Relacionado</legend>
+        <div class="row" ng-if="conteudo.relacionado">
             <div class="col-md-3 text-right">
-                <label class="form-label">Função no Relacionamento</label>
+                <label class="form-label">Nome do Relacionado</label>
             </div>
             <div class="col-md-7">
-                <select class="form-control" id="relacionamentoFuncao" name="relacionamentoFuncao"
-                    ng-model="conteudo.relacionamentoFuncao"
-                    ng-options="item as item.nomeSeFeminino for item in apoio.relacionamentoFuncaoList | orderBy : ['nome'] track by item.id"
-                    ng-required="true"
-                    ng-if="conteudo.relacionado.genero === 'F'">
-                </select>
-                <select class="form-control" id="relacionamentoFuncao" name="relacionamentoFuncao"
-                    ng-model="conteudo.relacionamentoFuncao"
-                    ng-options="item as item.nomeSeMasculino for item in apoio.relacionamentoFuncaoList | orderBy : ['nome'] track by item.id"
-                    ng-required="true"
-                    ng-if="conteudo.relacionado.genero !== 'F'">
-                </select>
-                <div class="label label-danger" ng-show="confirmacaoFrm.relacionamentoFuncao.$error.required">
-                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                     Campo Obrigatório
+                <div class="form-control">
+                   <a ng-click="modalVerPessoa(conteudo.relacionado.id)">{{conteudo.relacionado.nome}}</a>
                 </div>
             </div>
         </div>
         <div class="row" ng-if="conteudo.relacionado">
             <div class="col-md-3 text-right">
-                <label class="form-label">Relacionado</label>
+                <label class="form-label">Tipo de Pessoa</label>
             </div>
             <div class="col-md-7">
                 <div class="form-control">
-                   <a ng-click="modalVerPessoa(conteudo.relacionado.id)">{{conteudo.relacionado.nome}}</a>
+                   {{UtilSrv.indiceDePorCampo(apoio.pessoaTipoList, conteudo.pessoaTipo, 'codigo').descricao}}
                 </div>
             </div>
         </div>
@@ -71,6 +54,16 @@
                               Campo Obrigatório
                         </div>
                   </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 text-right">
+                    <label class="form-label">Tipo de Pessoa</label>
+                </div>
+                <div class="col-md-7">
+                    <div class="form-control">
+                       {{UtilSrv.indiceDePorCampo(apoio.pessoaTipoList, 'PF', 'codigo').descricao}}
+                    </div>
+                </div>
             </div>
             <div class="row">
                   <div class="col-md-3 text-right">
@@ -177,7 +170,7 @@
                               </div>
                               <div class="col-md-4" ng-if="conteudo.nascimentoPais.padrao === 'S'">
                                     <label class="control-label">Estado</label>
-                                    <select class="form-control" ng-model="conteudo.nascimentoEstado" ng-options="item as item.nome for item in apoio.nascimentoEstadoList | orderBy: ['-padrao','-capital','nome'] track by item.id" ng-required="conteudo.nascimentoPais.id && conteudo.nascimentoPais.padrao === 'S'">
+                                    <select class="form-control" id="nascimentoEstado" name="nascimentoEstado" ng-model="conteudo.nascimentoEstado" ng-options="item as item.nome for item in apoio.nascimentoEstadoList | orderBy: ['-padrao','-capital','nome'] track by item.id" ng-required="conteudo.nascimentoPais.id && conteudo.nascimentoPais.padrao === 'S'">
                                     </select>
                                     <div class="label label-danger" ng-show="confirmacaoFrm.nascimentoEstado.$error.required">
                                           <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -186,7 +179,7 @@
                               </div>
                               <div class="col-md-4" ng-if="conteudo.nascimentoPais.padrao === 'S'">
                                     <label class="control-label">Município</label>
-                                    <select class="form-control" ng-model="conteudo.nascimentoMunicipio" ng-options="item as item.nome for item in apoio.nascimentoMunicipioList | orderBy: ['-padrao','-capital','nome'] track by item.id" ng-required="conteudo.nascimentoPais.id && conteudo.nascimentoPais.padrao === 'S'">
+                                    <select class="form-control" id="nascimentoMunicipio" name="nascimentoMunicipio" ng-model="conteudo.nascimentoMunicipio" ng-options="item as item.nome for item in apoio.nascimentoMunicipioList | orderBy: ['-padrao','-capital','nome'] track by item.id" ng-required="conteudo.nascimentoPais.id && conteudo.nascimentoPais.padrao === 'S'">
                                     </select>
                                     <div class="label label-danger" ng-show="confirmacaoFrm.nascimentoMunicipio.$error.required">
                                           <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -217,7 +210,7 @@
                         <label class="form-label">Profissão</label>
                   </div>
                   <div class="col-md-9">
-                        <select class="form-control" ng-model="conteudo.profissao.id" ng-options="item.id as item.nome for item in apoio.profissaoList">
+                        <select class="form-control" ng-model="conteudo.profissao" ng-options="item as item.nome for item in apoio.profissaoList track by item.id">
                               <option value="">-- Não informado --</option>
                         </select>
                   </div>
@@ -243,6 +236,46 @@
                               Campo Obrigatório
                         </div>
                   </div>
+            </div>
+        </div>
+        <legend>Relacionamento</legend>
+        <div class="row">
+            <div class="col-md-3 text-right">
+                <label class="form-label">Tipo de Relacionamento</label>
+            </div>
+            <div class="col-md-7">
+                <select class="form-control" id="relacionamentoTipo" name="relacionamentoTipo"
+                    ng-model="conteudo.relacionamento.relacionamentoTipo"
+                    ng-options="item as item.nome for item in apoio.relacionamentoTipoList | orderBy : ['nome'] track by item.id"
+                    ng-required="true">
+                </select>
+                <div class="label label-danger" ng-show="confirmacaoFrm.relacionamentoTipo.$error.required">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                     Campo Obrigatório
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 text-right">
+                <label class="form-label">Função do(a) Relacionado(a) no Relacionamento</label>
+            </div>
+            <div class="col-md-7">
+                <select class="form-control" id="relacionamentoFuncao" name="relacionamentoFuncao"
+                    ng-model="conteudo.relacionamentoFuncao"
+                    ng-options="item as item.nomeSeFeminino for item in apoio.relacionamentoFuncaoList | orderBy : ['nome'] track by item.id"
+                    ng-required="true"
+                    ng-show="(conteudo.relacionado && conteudo.relacionado.genero === 'F') || (!conteudo.relacionado && conteudo.genero === 'F')">
+                </select>
+                <select class="form-control" id="relacionamentoFuncao" name="relacionamentoFuncao"
+                    ng-model="conteudo.relacionamentoFuncao"
+                    ng-options="item as item.nomeSeMasculino for item in apoio.relacionamentoFuncaoList | orderBy : ['nome'] track by item.id"
+                    ng-required="true"
+                    ng-show="(conteudo.relacionado && conteudo.relacionado.genero !== 'F') || (!conteudo.relacionado && conteudo.genero !== 'F')">
+                </select>
+                <div class="label label-danger" ng-show="confirmacaoFrm.relacionamentoFuncao.$error.required">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                     Campo Obrigatório
+                </div>
             </div>
         </div>
     </div>

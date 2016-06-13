@@ -47,7 +47,7 @@ public class EmailEnviarCmd extends _Comando {
 			helper.setText(texto);
 		}
 
-		//javaMailSender.send(mail);
+		javaMailSender.send(mail);
 
 		return false;
 	}

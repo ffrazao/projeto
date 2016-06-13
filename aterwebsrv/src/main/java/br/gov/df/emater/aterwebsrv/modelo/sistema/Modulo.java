@@ -41,6 +41,9 @@ public class Modulo extends EntidadeBase implements _ChavePrimaria<Integer>, Inf
 
 	private String nome;
 
+	@Enumerated(EnumType.STRING)
+	private Confirmacao principal;
+
 	public Modulo() {
 	}
 
@@ -93,6 +96,10 @@ public class Modulo extends EntidadeBase implements _ChavePrimaria<Integer>, Inf
 		return nome;
 	}
 
+	public Confirmacao getPrincipal() {
+		return principal;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -125,6 +132,10 @@ public class Modulo extends EntidadeBase implements _ChavePrimaria<Integer>, Inf
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public void setPrincipal(Confirmacao principal) {
+		this.principal = principal;
 	}
 
 }

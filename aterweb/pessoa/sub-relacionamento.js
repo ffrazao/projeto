@@ -55,34 +55,41 @@ angular.module(pNmModulo).controller(pNmController,
             toastr.info('Operação realizada!', 'Informação');
         }, function () {
             // processar o retorno negativo da modal
-            if ($scope.cadastro.registro.pessoaTipo === 'PF') {
-                captaRelacionamento({});
-            }
+            captaRelacionamento({});
         });
     };
 
-    var captaRelacionamento = function(reg) {
+    var captaRelacionamento = function(reg, destino) {
+        if (!reg) {
+            reg = {};
+        }
+        var item = angular.copy(reg);
+        if (!item.relacionador) {
+            item.relacionador = angular.copy($scope.cadastro.registro);
+        }
+        if (!item.relacionado) {
+            item.relacionado = angular.copy(reg.pessoa);
+        }
+        var iniciar = function(scpInt) {
+            $scope.scpInt = scpInt;
 
-        var item = {relacionador: $scope.cadastro.registro, relacionado: reg.pessoa};
-
-        var iniciar = function(scp) {
-            $scope.scp = scp;
-
-            if (!scp.conteudo) {
-                scp.conteudo = {};
+            if (!scpInt.conteudo) {
+                scpInt.conteudo = {};
             }
-            if (!scp.apoio) {
-                scp.apoio = {relacionamentoTipoList: [], relacionamentoFuncaoList: []};
+            if (!scpInt.apoio) {
+                scpInt.apoio = {relacionamentoTipoList: [], relacionamentoFuncaoList: []};
             }
-            scp.apoio.estadoList = angular.copy($scope.cadastro.apoio.estadoList);
-            scp.apoio.generoList = angular.copy($scope.cadastro.apoio.generoList);
-            scp.apoio.paisList = angular.copy($scope.cadastro.apoio.paisList);
-            scp.apoio.nascimentoEstadoList = angular.copy($scope.cadastro.apoio.nascimentoEstadoList);
-            scp.apoio.nascimentoMunicipioList = angular.copy($scope.cadastro.apoio.nascimentoMunicipioList);
-            scp.apoio.regimeCasamentoList = angular.copy($scope.cadastro.apoio.regimeCasamentoList);
-            scp.apoio.escolaridadeList = angular.copy($scope.cadastro.apoio.escolaridadeList);
-            scp.apoio.profissaoList = angular.copy($scope.cadastro.apoio.profissaoList);
-            scp.apoio.escolaridadeList = angular.copy($scope.cadastro.apoio.escolaridadeList);
+            scpInt.UtilSrv = UtilSrv;
+            scpInt.apoio.pessoaTipoList = angular.copy($scope.cadastro.apoio.pessoaTipoList);
+            scpInt.apoio.estadoList = angular.copy($scope.cadastro.apoio.estadoList);
+            scpInt.apoio.generoList = angular.copy($scope.cadastro.apoio.generoList);
+            scpInt.apoio.paisList = angular.copy($scope.cadastro.apoio.paisList);
+            scpInt.apoio.nascimentoEstadoList = angular.copy($scope.cadastro.apoio.nascimentoEstadoList);
+            scpInt.apoio.nascimentoMunicipioList = angular.copy($scope.cadastro.apoio.nascimentoMunicipioList);
+            scpInt.apoio.regimeCasamentoList = angular.copy($scope.cadastro.apoio.regimeCasamentoList);
+            scpInt.apoio.escolaridadeList = angular.copy($scope.cadastro.apoio.escolaridadeList);
+            scpInt.apoio.profissaoList = angular.copy($scope.cadastro.apoio.profissaoList);
+            scpInt.apoio.escolaridadeList = angular.copy($scope.cadastro.apoio.escolaridadeList);
 
             var relacionamentoTipo = null;
             $scope.cadastro.apoio.relacionamentoConfiguracaoViList.forEach(function(item) {
@@ -92,13 +99,13 @@ angular.module(pNmModulo).controller(pNmController,
                         item.tipoRelacionador.indexOf($scope.cadastro.registro.pessoaTipo) >= 0 &&
                         item.tipoRelacionado.indexOf(reg.pessoa ? reg.pessoa.pessoaTipo : 'PF') >= 0
                         ) {
-                        scp.apoio.relacionamentoTipoList.push({id: item.tipoId, nome: item.tipoNome});
+                        scpInt.apoio.relacionamentoTipoList.push({id: item.tipoId, nome: item.tipoNome});
                     }
                 }
             });
 
-            scp.$watch('conteudo.relacionamento.relacionamentoTipo', function(newValue, oldValue) {
-                scp.apoio.relacionamentoFuncaoList = [];
+            scpInt.$watch('conteudo.relacionamento.relacionamentoTipo', function(newValue, oldValue) {
+                scpInt.apoio.relacionamentoFuncaoList = [];
 
                 if (newValue) {
                     $scope.cadastro.apoio.relacionamentoConfiguracaoViList.forEach(function(item) {
@@ -107,7 +114,7 @@ angular.module(pNmModulo).controller(pNmController,
                                 item.relacionadorPessoaTipo.indexOf($scope.cadastro.registro.pessoaTipo) >= 0 &&
                                 item.relacionadoPessoaTipo.indexOf(reg.pessoa ? reg.pessoa.pessoaTipo : 'PF') >= 0
                                 ) {
-                                scp.apoio.relacionamentoFuncaoList.push(item);
+                                scpInt.apoio.relacionamentoFuncaoList.push(item);
                             }
                         }
                     });
@@ -115,16 +122,16 @@ angular.module(pNmModulo).controller(pNmController,
 
             });
 
-            scp.$watch('conteudo.nascimento', function(newValue, oldValue) {
-                if (!$scope.scp.conteudo) {
-                    $scope.scp.conteudo = {};
+            scpInt.$watch('conteudo.nascimento', function(newValue, oldValue) {
+                if (!$scope.scpInt.conteudo) {
+                    $scope.scpInt.conteudo = {};
                 }
-                if (!$scope.scp.apoio) {
-                    $scope.scp.apoio = {};
+                if (!$scope.scpInt.apoio) {
+                    $scope.scpInt.apoio = {};
                 }
-                $scope.scp.conteudo.idade = null;
-                $scope.scp.conteudo.geracao = null;
-                $scope.scp.apoio.geracao = null;
+                $scope.scpInt.conteudo.idade = null;
+                $scope.scpInt.conteudo.geracao = null;
+                $scope.scpInt.apoio.geracao = null;
                 var nascimento = null;
                 if (!newValue) {
                     return;
@@ -146,66 +153,67 @@ angular.module(pNmModulo).controller(pNmController,
                         new Date(hoje.getFullYear(), nascimento.getMonth(), nascimento.getDate()) ) {
                     idade--;
                 }
-                $scope.scp.conteudo.idade = idade >= 0 ? idade : null;
+                $scope.scpInt.conteudo.idade = idade >= 0 ? idade : null;
                 if (idade >= 0 && idade < 12) {
-                    $scope.scp.conteudo.geracao = 'C';
-                    $scope.scp.apoio.geracao = 'Criança';
+                    $scope.scpInt.conteudo.geracao = 'C';
+                    $scope.scpInt.apoio.geracao = 'Criança';
                 } else if (idade >= 12 && idade < 18) {
-                    $scope.scp.conteudo.geracao = 'J';
-                    $scope.scp.apoio.geracao = 'Jovem';
+                    $scope.scpInt.conteudo.geracao = 'J';
+                    $scope.scpInt.apoio.geracao = 'Jovem';
                 } else if (idade >= 18 && idade < 60) {
-                    $scope.scp.conteudo.geracao = 'A';
-                    $scope.scp.apoio.geracao = 'Adulto';
+                    $scope.scpInt.conteudo.geracao = 'A';
+                    $scope.scpInt.apoio.geracao = 'Adulto';
                 } else if (idade >= 60 && idade < 140) {
-                    $scope.scp.conteudo.geracao = 'I';
-                    $scope.scp.apoio.geracao = 'Idoso';
+                    $scope.scpInt.conteudo.geracao = 'I';
+                    $scope.scpInt.apoio.geracao = 'Idoso';
                 } else {
-                    $scope.scp.apoio.geracao = 'Inválido';
+                    $scope.scpInt.apoio.geracao = 'Inválido';
                 }
             });
-            scp.$watch('conteudo.nascimentoPais.id', function(newValue, oldValue) {
+            scpInt.$watch('conteudo.nascimentoPais.id', function(newValue, oldValue) {
                 if (newValue) {
-                    UtilSrv.dominioLista($scope.scp.apoio.nascimentoEstadoList, {ent:['Estado'], npk: ['pais.id'], vpk: [newValue]});
+                    UtilSrv.dominioLista($scope.scpInt.apoio.nascimentoEstadoList, {ent:['Estado'], npk: ['pais.id'], vpk: [newValue]});
                 } else {
-                    $scope.scp.apoio.nascimentoEstadoList = [];
+                    $scope.scpInt.apoio.nascimentoEstadoList = [];
                 }
             });
-            scp.$watch('conteudo.nascimentoEstado.id', function(newValue, oldValue) {
+            scpInt.$watch('conteudo.nascimentoEstado.id', function(newValue, oldValue) {
                 if (newValue) {
-                    UtilSrv.dominioLista($scope.scp.apoio.nascimentoMunicipioList, {ent:['Municipio'], npk: ['estado.id'], vpk: [newValue]});
+                    UtilSrv.dominioLista($scope.scpInt.apoio.nascimentoMunicipioList, {ent:['Municipio'], npk: ['estado.id'], vpk: [newValue]});
                 } else {
-                    $scope.scp.apoio.nascimentoMunicipioList = [];
+                    $scope.scpInt.apoio.nascimentoMunicipioList = [];
                 }
             });
-            scp.$watch('conteudo.nascimentoPais.id + conteudo.naturalizado', function(newValue, oldValue) {
-                if (!$scope.scp.conteudo) {
-                    $scope.scp.conteudo = {};
+            scpInt.$watch('conteudo.nascimentoPais.id + conteudo.naturalizado', function(newValue, oldValue) {
+                if (!$scope.scpInt.conteudo) {
+                    $scope.scpInt.conteudo = {};
                 }
-                if (!$scope.scp.apoio) {
-                    $scope.scp.apoio = {};
+                if (!$scope.scpInt.apoio) {
+                    $scope.scpInt.apoio = {};
                 }
 
-                $scope.scp.conteudo.nacionalidade = null;
-                $scope.scp.apoio.nacionalidade = null;
-                if (!($scope.scp.conteudo.nascimentoPais && $scope.scp.conteudo.nascimentoPais.id)) {
-                    $scope.scp.conteudo.naturalizado = null;
-                    $scope.scp.conteudo.nascimentoEstado = null;
-                    $scope.scp.conteudo.nascimentoMunicipio = null;
+                $scope.scpInt.conteudo.nacionalidade = null;
+                $scope.scpInt.apoio.nacionalidade = null;
+                if (!($scope.scpInt.conteudo.nascimentoPais && $scope.scpInt.conteudo.nascimentoPais.id)) {
+                    $scope.scpInt.conteudo.naturalizado = null;
+                    $scope.scpInt.conteudo.nascimentoEstado = null;
+                    $scope.scpInt.conteudo.nascimentoMunicipio = null;
                     return;
                 }
-                if ($scope.scp.conteudo.nascimentoPais && $scope.scp.conteudo.nascimentoPais.padrao === 'S') {
-                    $scope.scp.conteudo.nacionalidade = 'BN'; 
-                    $scope.scp.conteudo.naturalizado = false;
+                if ($scope.scpInt.conteudo.nascimentoPais && $scope.scpInt.conteudo.nascimentoPais.padrao === 'S') {
+                    $scope.scpInt.conteudo.nacionalidade = 'BN'; 
+                    $scope.scpInt.conteudo.naturalizado = false;
                 } else {
-                    $scope.scp.conteudo.nascimentoEstado = null;
-                    $scope.scp.conteudo.nascimentoMunicipio = null;
-                    $scope.scp.conteudo.nacionalidade = $scope.scp.conteudo.naturalizado ? 'NA' : 'ES';
+                    $scope.scpInt.conteudo.nascimentoEstado = null;
+                    $scope.scpInt.conteudo.nascimentoMunicipio = null;
+                    $scope.scpInt.conteudo.nacionalidade = $scope.scpInt.conteudo.naturalizado ? 'NA' : 'ES';
                 }
-                if ($scope.scp.conteudo.nacionalidade) {
-                    $scope.scp.apoio.nacionalidade = UtilSrv.indiceDePorCampo($scope.scp.apoio.nacionalidadeList, $scope.scp.conteudo.nacionalidade, 'codigo');
+                if ($scope.scpInt.conteudo.nacionalidade) {
+                    $scope.scpInt.apoio.nacionalidade = UtilSrv.indiceDePorCampo($scope.scpInt.apoio.nacionalidadeList, $scope.scpInt.conteudo.nacionalidade, 'codigo');
                 }
             });
         };
+
 
         mensagemSrv.confirmacao(true, 'pessoa/sub-relacionamento-form.html', null, item, null, jaCadastrado, null, iniciar).then(function (conteudo) {
             // processar o retorno positivo da modal
@@ -223,11 +231,16 @@ angular.module(pNmModulo).controller(pNmController,
             delete conteudo.relacionamento;
             delete conteudo.relacionamentoFuncao;
             if (conteudo.relacionado) {
-                registro.pessoa = conteudo.relacionado;
+                registro.pessoa = angular.copy(conteudo.relacionado);
             } else {
                 registro = angular.extend(conteudo, registro);
+                delete registro.relacionado;
             }
-            $scope.cadastro.registro.relacionamentoList.push(registro);
+            if (destino) {
+                angular.copy(registro, destino);
+            } else {
+                $scope.cadastro.registro.relacionamentoList.push(registro);
+            }
         }, function () {
             // processar o retorno negativo da modal
             //$log.info('Modal dismissed at: ' + new Date());
@@ -239,23 +252,15 @@ angular.module(pNmModulo).controller(pNmController,
     // inicio das operaçoes atribuidas ao navagador
     $scope.abrir = function() { $scope.pessoaRelacionamentoNvg.mudarEstado('ESPECIAL'); };
     $scope.incluir = function() {
-        var item = {relacionamento: {endereco: null}};
+        var item = {relacionamento: {}};
         editarItem(null, item);
     };
     $scope.editar = function() {
-        var item = null;
-        var i, j;
         if ($scope.pessoaRelacionamentoNvg.selecao.tipo === 'U' && $scope.pessoaRelacionamentoNvg.selecao.item) {
-            item = angular.copy($scope.pessoaRelacionamentoNvg.selecao.item);
-            editarItem($scope.pessoaRelacionamentoNvg.selecao.item, item);
+            captaRelacionamento($scope.pessoaRelacionamentoNvg.selecao.item, $scope.pessoaRelacionamentoNvg.selecao.item);
         } else if ($scope.pessoaRelacionamentoNvg.selecao.items && $scope.pessoaRelacionamentoNvg.selecao.items.length) {
-            for (i in $scope.pessoaRelacionamentoNvg.selecao.items) {
-                for (j in $scope.cadastro.registro.relacionamentoList) {
-                    if (angular.equals($scope.pessoaRelacionamentoNvg.selecao.items[i], $scope.cadastro.registro.relacionamentoList[j])) {
-                        item = angular.copy($scope.cadastro.registro.relacionamentoList[j]);
-                        editarItem($scope.cadastro.registro.relacionamentoList[j], item);
-                    }
-                }
+            for (i = $scope.pessoaRelacionamentoNvg.selecao.items.length -1; i >= 0; i--) {
+                captaRelacionamento($scope.pessoaRelacionamentoNvg.selecao.items[i], $scope.pessoaRelacionamentoNvg.selecao.items[i]);
             }
         }
     };
