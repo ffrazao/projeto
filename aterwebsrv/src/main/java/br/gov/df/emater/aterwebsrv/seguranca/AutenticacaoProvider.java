@@ -73,7 +73,7 @@ public class AutenticacaoProvider extends DaoAuthenticationProvider {
 		// Filtrar modulos ativos
 		Map<String, Object> details = (Map<String, Object>) autenticacao.getDetails();
 		
-		identificaModulo((String) details.get("MODULO"));
+		details.put("MODULO", identificaModulo((String) details.get("MODULO")));
 		
 		if (result.isAuthenticated()) {
 			Usuario u = dao.findOne(((Usuario) result.getPrincipal()).getId());
@@ -90,7 +90,7 @@ public class AutenticacaoProvider extends DaoAuthenticationProvider {
 		return result;
 	}
 
-	private void identificaModulo(String moduloId) {
+	private Integer identificaModulo(String moduloId) {
 		if (moduloId == null) {
 			List<Modulo> moduloList = moduloDao.findByPrincipal(Confirmacao.S);
 			if (moduloList.size() == 1) {
@@ -107,6 +107,7 @@ public class AutenticacaoProvider extends DaoAuthenticationProvider {
 		if (Confirmacao.N.equals(modulo.getAtivo())) {
 			throw new BadCredentialsException("Tentativa de acesso a um módulo inativo!");
 		}
+		return modulo.getId();
 	}
 
 	@Autowired
