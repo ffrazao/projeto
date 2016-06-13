@@ -41,7 +41,14 @@ public class LogCmd extends _Comando {
 			if (usr.getDetails() != null) {
 				dtLogin.setTime(new Date((Long) usr.getDetails().get("DATA")));
 				log.setDataLogin(dtLogin);
-				log.setModuloId(Integer.parseInt((String) usr.getDetails().get("MODULO")));
+				Object modulo = usr.getDetails().get("MODULO");
+				if (modulo != null) {
+					if (modulo instanceof String) {						
+						log.setModuloId(Integer.parseInt((String) modulo));
+					} else {
+						log.setModuloId((Integer) modulo);
+					}
+				}
 				log.setNumeroIp((String) usr.getDetails().get("NUMERO_IP"));
 				log.setBrowser((String) usr.getDetails().get("USER_AGENT"));
 				log.setEnderecoOrigem((String) usr.getDetails().get("ORIGIN"));
