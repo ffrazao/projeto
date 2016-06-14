@@ -1,5 +1,5 @@
 /* jslint evil: true, browser: true, plusplus: true, loopfunc: true */
-/* global criarEstadosPadrao, removerCampo */ 
+/* global criarEstadosPadrao, removerCampo, isUndefOrNull */ 
 
 (function(pNmModulo, pNmController, pNmFormulario, pUrlModulo) {
 
@@ -57,6 +57,8 @@
                 ATIV_PESS_ID : ordem++,
                 ATIV_PESS_PESSOA_ID : ordem++,
                 ATIV_PESS_PESSOA_NOME : ordem++,
+                ATIV_UNIDADE_ORGANIZACIONAL_ID : ordem++,
+                ATIV_UNIDADE_ORGANIZACIONAL_NOME : ordem++,
                 ATIV_PESS_RESPONSAVEL : ordem++,
                 ATIV_PESS_INICIO : ordem++,
                 ATIV_PESS_ATIVO : ordem++,

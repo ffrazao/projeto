@@ -259,7 +259,7 @@ angular.module(pNmModulo).controller(pNmController,
         if ($scope.pessoaRelacionamentoNvg.selecao.tipo === 'U' && $scope.pessoaRelacionamentoNvg.selecao.item) {
             captaRelacionamento($scope.pessoaRelacionamentoNvg.selecao.item, $scope.pessoaRelacionamentoNvg.selecao.item);
         } else if ($scope.pessoaRelacionamentoNvg.selecao.items && $scope.pessoaRelacionamentoNvg.selecao.items.length) {
-            for (i = $scope.pessoaRelacionamentoNvg.selecao.items.length -1; i >= 0; i--) {
+            for (var i = $scope.pessoaRelacionamentoNvg.selecao.items.length -1; i >= 0; i--) {
                 captaRelacionamento($scope.pessoaRelacionamentoNvg.selecao.items[i], $scope.pessoaRelacionamentoNvg.selecao.items[i]);
             }
         }

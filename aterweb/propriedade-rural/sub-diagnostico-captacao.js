@@ -60,10 +60,42 @@ angular.module(pNmModulo).controller(pNmController,
                 },
             },
             {
-                nome: 'Usuario',
-                codigo: 'usuario',
-                tipo: 'string',
+                nome: 'Usuário Inclusão',
+                codigo: 'inclusaoUsuario',
+                tipo: 'objeto_exibe_string',
                 somenteLeitura: 'S',
+                exibirString: function(usuario) {
+                    return usuario != null && usuario.pessoa != null ? usuario.pessoa.nome : "";
+                },
+                ver: function(lista, item) {
+                    console.log(lista, item);
+                },
+                selecionar: function(lista, item) {
+                    console.log(lista, item);
+                },
+                limpar: function(lista, item) {
+                    console.log(lista, item);
+                    //lista[item] = null;
+                },
+            },
+            {
+                nome: 'Usuário Alteração',
+                codigo: 'alteracaoUsuario',
+                tipo: 'objeto_exibe_string',
+                somenteLeitura: 'S',
+                exibirString: function(usuario) {
+                    return usuario != null && usuario.pessoa != null ? usuario.pessoa.nome : "";
+                },
+                ver: function(lista, item) {
+                    console.log(lista, item);
+                },
+                selecionar: function(lista, item) {
+                    console.log(lista, item);
+                },
+                limpar: function(lista, item) {
+                    console.log(lista, item);
+                    //lista[item] = null;
+                },
             },
             {
                 nome: 'Formulário',
@@ -73,10 +105,15 @@ angular.module(pNmModulo).controller(pNmController,
         ],
         funcaoIncluirAntes: function(form, dd) {
             dd.formularioVersao = {id: $scope.propriedadeRuralDiagnosticoCaptacaoNvg.selecao.item[9].id};
+            dd.dataColeta = $scope.hoje();
+            dd.finalizada = 'N';
+            dd.inclusaoUsuario = $scope.token;
+            dd.alteracaoUsuario = $scope.token;
 
             var id = $scope.propriedadeRuralDiagnosticoCaptacaoNvg.selecao.item[0];
             var versao = $scope.propriedadeRuralDiagnosticoCaptacaoNvg.selecao.item[9].versao;
-            var f = this.opcao[4];
+
+            var f = this.opcao[5];
             if (!id || !versao) {
                 toastr.error('Não foi possível identificar o formulário', 'Identificar formulário');
                 return;
@@ -96,13 +133,13 @@ angular.module(pNmModulo).controller(pNmController,
                 eval('x = ' + dd.valorString);
                 // converter string para data
                 x = converterStringParaData(x);
-                console.log(x);
+                //console.log(x);
                 dd.valor = x;
             }
 
             var id = $scope.propriedadeRuralDiagnosticoCaptacaoNvg.selecao.item[0];
             var versao = $scope.propriedadeRuralDiagnosticoCaptacaoNvg.selecao.item[9].versao;
-            var f = this.opcao[4];
+            var f = this.opcao[5];
             if (!id || !versao) {
                 toastr.error('Não foi possível identificar o formulário', 'Identificar formulário');
                 return;

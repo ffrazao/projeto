@@ -72,7 +72,8 @@ public class VisualizarCmd extends _Comando {
 			for (AtividadePessoa r : result.getPessoaExecutorList()) {
 				AtividadePessoa n = new AtividadePessoa();
 				n.setId(r.getId());
-				n.setPessoa(r.getPessoa().infoBasica());
+				n.setPessoa(r.getPessoa() == null ? null : r.getPessoa().infoBasica());
+				n.setUnidadeOrganizacional(r.getUnidadeOrganizacional() == null ? null : r.getUnidadeOrganizacional().infoBasica());
 				n.setResponsavel(r.getResponsavel());
 				n.setInicio(r.getInicio());
 				n.setAtivo(r.getAtivo());

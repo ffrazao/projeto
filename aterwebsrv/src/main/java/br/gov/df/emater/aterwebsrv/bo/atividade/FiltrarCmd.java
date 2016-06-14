@@ -117,8 +117,10 @@ public class FiltrarCmd extends _Comando {
 		for (AtividadePessoa reg : lista) {
 			List<Object> linha = new ArrayList<Object>();
 			linha.add(reg.getId()); // ATIV_PESS_ID
-			linha.add(reg.getPessoa().getId()); // ATIV_PESS_PESSOA_ID
-			linha.add(reg.getPessoa().getNome()); // ATIV_PESS_PESSOA_NOME
+			linha.add(reg.getPessoa() == null ? null : reg.getPessoa().getId()); // ATIV_PESS_PESSOA_ID
+			linha.add(reg.getPessoa() == null ? null : reg.getPessoa().getNome()); // ATIV_PESS_PESSOA_NOME
+			linha.add(reg.getUnidadeOrganizacional() == null ? null : reg.getUnidadeOrganizacional().getId()); // ATIV_UNIDADE_ORGANIZACIONAL_ID
+			linha.add(reg.getUnidadeOrganizacional() == null ? null : reg.getUnidadeOrganizacional().getNome()); // ATIV_UNIDADE_ORGANIZACIONAL_NOME
 			linha.add(reg.getResponsavel()); // ATIV_PESS_RESPONSAVEL
 			linha.add(reg.getInicio()); // ATIV_PESS_INICIO
 			linha.add(reg.getAtivo()); // ATIV_PESS_ATIVO

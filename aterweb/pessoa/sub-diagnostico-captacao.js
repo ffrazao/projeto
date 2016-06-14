@@ -75,7 +75,7 @@ angular.module(pNmModulo).controller(pNmController,
                 },
                 limpar: function(lista, item) {
                     console.log(lista, item);
-                    lista[item] = null;
+                    //lista[item] = null;
                 },
             },
             {
@@ -94,7 +94,7 @@ angular.module(pNmModulo).controller(pNmController,
                 },
                 limpar: function(lista, item) {
                     console.log(lista, item);
-                    lista[item] = null;
+                    //lista[item] = null;
                 },
             },
             {
@@ -105,14 +105,15 @@ angular.module(pNmModulo).controller(pNmController,
         ],
         funcaoIncluirAntes: function(form, dd) {
             dd.formularioVersao = {id: $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[9].id};
-            dd.usuario = $scope.token;
             dd.dataColeta = $scope.hoje();
             dd.finalizada = 'N';
+            dd.inclusaoUsuario = $scope.token;
+            dd.alteracaoUsuario = $scope.token;
 
             var id = $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[0];
             var versao = $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[9].versao;
 
-            var f = this.opcao[4];
+            var f = this.opcao[5];
             if (!id || !versao) {
                 toastr.error('Não foi possível identificar o formulário', 'Identificar formulário');
                 return;
@@ -132,13 +133,13 @@ angular.module(pNmModulo).controller(pNmController,
                 eval('x = ' + dd.valorString);
                 // converter string para data
                 x = converterStringParaData(x);
-                console.log(x);
+                //console.log(x);
                 dd.valor = x;
             }
 
             var id = $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[0];
             var versao = $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[9].versao;
-            var f = this.opcao[4];
+            var f = this.opcao[5];
             if (!id || !versao) {
                 toastr.error('Não foi possível identificar o formulário', 'Identificar formulário');
                 return;

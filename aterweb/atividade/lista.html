@@ -83,19 +83,35 @@
                 <tr ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)" ng-class="classeAtividade(item[CABEC.ATIV_SITUACAO])">
                     <td colspan="2" title="Assunto">
                         <ul>
-                            <li ng-repeat="l in item[CABEC.ATIV_ASSUNTO_LIST[0]] | orderBy: [CABEC.ATIV_ASSUNTO_LIST[1].ATIV_ASSUNTO_ASSUNTO_NOME.toString()]">{{l[CABEC.ATIV_ASSUNTO_LIST[1].ATIV_ASSUNTO_ASSUNTO_NOME]}}</li>
+                            <li ng-repeat="l in item[CABEC.ATIV_ASSUNTO_LIST[0]] | orderBy: [CABEC.ATIV_ASSUNTO_LIST[1].ATIV_ASSUNTO_ASSUNTO_NOME.toString()] | pagina: 1 : 10 | limitTo: 10">
+                                {{l[CABEC.ATIV_ASSUNTO_LIST[1].ATIV_ASSUNTO_ASSUNTO_NOME]}}
+                            </li>
                             <li ng-if="item[CABEC.ATIV_ASSUNTO_LIST[0]].length >= 10"><a>...</a></li>
                         </ul>
                     </td>
                     <td colspan="2" title="Demandante(s)">
                         <ul>
-                            <li ng-repeat="l in item[CABEC.DEMAND_LIST[0]] | orderBy: [CABEC.DEMAND_LIST[1].ATIV_PESS_PESSOA_NOME.toString()]"><a ng-click="modalVerPessoa(l[CABEC.DEMAND_LIST[1].ATIV_PESS_PESSOA_ID])">{{l[CABEC.DEMAND_LIST[1].ATIV_PESS_PESSOA_NOME]}}</a></li>
+                            <li ng-repeat="l in item[CABEC.DEMAND_LIST[0]] | orderBy: [CABEC.DEMAND_LIST[1].ATIV_UNIDADE_ORGANIZACIONAL_NOME.toString(), CABEC.DEMAND_LIST[1].ATIV_PESS_PESSOA_NOME.toString()] | pagina: 1 : 10 | limitTo: 10">
+                                <span ng-if="l[CABEC.DEMAND_LIST[1].ATIV_UNIDADE_ORGANIZACIONAL_ID]">
+                                    {{l[CABEC.DEMAND_LIST[1].ATIV_UNIDADE_ORGANIZACIONAL_NOME]}}
+                                </span>
+                                <a ng-if="l[CABEC.DEMAND_LIST[1].ATIV_PESS_PESSOA_ID]" ng-click="modalVerPessoa(l[CABEC.DEMAND_LIST[1].ATIV_PESS_PESSOA_ID])">
+                                    {{l[CABEC.DEMAND_LIST[1].ATIV_PESS_PESSOA_NOME]}}
+                                </a>
+                            </li>
                             <li ng-if="item[CABEC.DEMAND_LIST[0]].length >= 10"><a>...</a></li>
                         </ul>
                     </td>
                     <td colspan="3" title="Executor(es)">
                         <ul>
-                            <li ng-repeat="l in item[CABEC.EXECUT_LIST[0]] | orderBy: [CABEC.EXECUT_LIST[1].ATIV_PESS_PESSOA_NOME.toString()]"><a ng-click="modalVerPessoa(l[CABEC.EXECUT_LIST[1].ATIV_PESS_PESSOA_ID])">{{l[CABEC.EXECUT_LIST[1].ATIV_PESS_PESSOA_NOME]}}</a></li>
+                            <li ng-repeat="l in item[CABEC.EXECUT_LIST[0]] | orderBy: [CABEC.EXECUT_LIST[1].ATIV_UNIDADE_ORGANIZACIONAL_NOME.toString(), CABEC.EXECUT_LIST[1].ATIV_PESS_PESSOA_NOME.toString()] | pagina: 1 : 10 | limitTo: 10">
+                                <span ng-if="l[CABEC.EXECUT_LIST[1].ATIV_UNIDADE_ORGANIZACIONAL_ID]">
+                                    {{l[CABEC.EXECUT_LIST[1].ATIV_UNIDADE_ORGANIZACIONAL_NOME]}}
+                                </span>
+                                <a ng-if="l[CABEC.EXECUT_LIST[1].ATIV_PESS_PESSOA_ID]" ng-click="modalVerPessoa(l[CABEC.EXECUT_LIST[1].ATIV_PESS_PESSOA_ID])">
+                                    {{l[CABEC.EXECUT_LIST[1].ATIV_PESS_PESSOA_NOME]}}
+                                </a>
+                            </li>
                             <li ng-if="item[CABEC.EXECUT_LIST[0]].length >= 10"><a>...</a></li>
                         </ul>
                     </td>

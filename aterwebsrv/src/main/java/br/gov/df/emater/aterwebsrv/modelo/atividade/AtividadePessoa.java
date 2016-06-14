@@ -128,6 +128,10 @@ public class AtividadePessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		return termino;
 	}
 
+	public UnidadeOrganizacional getUnidadeOrganizacional() {
+		return unidadeOrganizacional;
+	}
+
 	public void setAtividade(Atividade atividade) {
 		this.atividade = atividade;
 	}
@@ -163,6 +167,10 @@ public class AtividadePessoa extends EntidadeBase implements _ChavePrimaria<Inte
 
 	public void setTermino(Calendar termino) {
 		this.termino = termino;
+	}
+
+	public void setUnidadeOrganizacional(UnidadeOrganizacional unidadeOrganizacional) {
+		this.unidadeOrganizacional = unidadeOrganizacional;
 	}
 
 }

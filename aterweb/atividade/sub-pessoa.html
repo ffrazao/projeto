@@ -64,11 +64,14 @@
                         <td>
                             {{$index + 1 + ((atividadePessoaNvg.paginaAtual-1) * atividadePessoaNvg.tamanhoPagina)}}
                         </td>
-                        <td><a ng-click="modalVerPessoa(pessoa.id)">{{reg.pessoa.nome}}</a></td>
+                        <td>
+                            <a ng-click="modalVerPessoa(pessoa.id)" ng-if="reg.pessoa.nome">{{reg.pessoa.nome}}</a>
+                            <span ng-if="reg.unidadeOrganizacional.nome">{{reg.unidadeOrganizacional.nome}}</span>
+                        </td>
                         <td>
                             <div class="radio">
                                 <label for="principal">
-                                    <input type="radio" id="principal{{$index}}" name="principal" ng-model="cadastro.apoio.principal[lista]" ng-value="reg.pessoa" requied="true">
+                                    <input type="radio" id="principal_{{lista}}_{{$index}}" name="principal_{{lista}}" ng-model="cadastro.apoio.principal[lista]" ng-value="reg.pessoa" requied="true" ng-disabled="!reg.pessoa">
                                 </label>
                             </div>
                             <div class="label label-danger" ng-show="navegador.submetido && atividadePessoaListFrm.principal.$error.required">

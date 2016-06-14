@@ -102,7 +102,7 @@ public class Coleta extends EntidadeBase implements _ChavePrimaria<Integer>, Inf
 	public Coleta() {
 	}
 
-	public Coleta(Integer id, FormularioVersao formularioVersao, Usuario usuarioInclusao, Calendar inclusaoData, Usuario alteracaoUsuario, Calendar alteracaoData, Calendar dataColeta, Confirmacao finalizada, Pessoa pessoa, PropriedadeRural propriedadeRural, Object valor,
+	public Coleta(Integer id, FormularioVersao formularioVersao, Usuario inclusaoUsuario, Calendar inclusaoData, Usuario alteracaoUsuario, Calendar alteracaoData, Calendar dataColeta, Confirmacao finalizada, Pessoa pessoa, PropriedadeRural propriedadeRural, Object valor,
 			String valorString) {
 		this(id);
 		this.setFormularioVersao(formularioVersao);
