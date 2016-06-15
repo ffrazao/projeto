@@ -16,7 +16,7 @@ public class DominioCh extends _Cadeia {
 		super.addCommand(c2);
 		super.addCommand(c3);
 		super.addCommand(c4);
-		super.addCommand(c5);
+		// super.addCommand(c5);
 	}
 
 }

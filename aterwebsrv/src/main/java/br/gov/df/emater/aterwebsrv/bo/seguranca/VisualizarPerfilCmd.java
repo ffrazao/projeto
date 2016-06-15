@@ -72,10 +72,13 @@ public class VisualizarPerfilCmd extends _Comando {
 				email.setPessoa(null);
 			}
 		}
-		usuario.setPessoa(usuario.getPessoa().infoBasica());
+		usuario.setPessoa(usuario.getPessoa() == null ? null : usuario.getPessoa().infoBasica());
 		usuario.getPessoa().setEmailList(emailList);
 
 		usuario.setPassword(null);
+
+		usuario.setInclusaoUsuario(usuario.getInclusaoUsuario() == null ? null : usuario.getInclusaoUsuario().infoBasica());
+		usuario.setAlteracaoUsuario(usuario.getAlteracaoUsuario() == null ? null : usuario.getAlteracaoUsuario().infoBasica());
 
 		return usuario;
 	}
@@ -83,7 +86,7 @@ public class VisualizarPerfilCmd extends _Comando {
 	private List<Map<String, Object>> fetchTodos() throws BoException {
 		List<Usuario> usuarioList = usuarioDao.findByPessoaPessoaTipoAndUsuarioAtualizouPerfilOrderByPessoaNome(PessoaTipo.PF, Confirmacao.S);
 		List<Map<String, Object>> result = null;
-		if (usuarioList != null) {
+		if (usuarioList != null && usuarioList.size() > 0) {
 			for (Usuario usuario : usuarioList) {
 				PessoaFisica pessoa = (PessoaFisica) usuario.getPessoa();
 				Lotacao lotacao = null;

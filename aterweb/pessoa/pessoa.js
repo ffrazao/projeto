@@ -1,4 +1,4 @@
-/* global criarEstadosPadrao, moment */
+/* global criarEstadosPadrao, moment, removerCampo */
 
 (function(pNmModulo, pNmController, pNmFormulario, pUrlModulo) {
     'use strict';
@@ -221,6 +221,7 @@
                 }
             };
             $scope.visualizarDepois = function(registro) {
+                removerCampo($scope.cadastro.apoio.relacionamentoConfiguracaoViList, ['@jsonId']);
                 if (registro && registro.relacionamentoList && $scope.cadastro.apoio.relacionamentoConfiguracaoViList) {
                     registro.relacionamentoList.forEach(function(relacionamento) {
                         relacionamento.relacionamentoFuncao = UtilSrv.indiceDePorCampo($scope.cadastro.apoio.relacionamentoConfiguracaoViList, relacionamento.relacionamentoFuncao.id, 'id');

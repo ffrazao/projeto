@@ -65,7 +65,13 @@ angular.module(pNmModulo).controller(pNmController,
         }
         var item = angular.copy(reg);
         if (!item.relacionador) {
-            item.relacionador = angular.copy($scope.cadastro.registro);
+            item.relacionador = {
+                "@class": angular.copy($scope.cadastro.registro["@class"]),
+                "id": angular.copy($scope.cadastro.registro["id"]),
+                "pessoaTipo": angular.copy($scope.cadastro.registro["pessoaTipo"]),
+                "nome": angular.copy($scope.cadastro.registro["nome"]),
+                "apelidoSigla": angular.copy($scope.cadastro.registro["apelidoSigla"]),
+            }
         }
         if (!item.relacionado) {
             item.relacionado = angular.copy(reg.pessoa);
@@ -222,11 +228,16 @@ angular.module(pNmModulo).controller(pNmController,
                 $scope.pessoaRelacionamentoNvg = new FrzNavegadorParams($scope.cadastro.registro.relacionamentoList, 4);
             }
             var registro = {
+                "id": angular.copy(conteudo.id),
                 "relacionamento": {
                     "@class" : "br.gov.df.emater.aterwebsrv.modelo.pessoa.Relacionamento", 
-                    "relacionamentoTipo": angular.copy(conteudo.relacionamento.relacionamentoTipo)
+                    "id": angular.copy(conteudo.relacionamento.id),
+                    "relacionamentoTipo": angular.copy(conteudo.relacionamento.relacionamentoTipo),
+                    "inicio": angular.copy(conteudo.relacionamento.inicio),
+                    "termino": angular.copy(conteudo.relacionamento.termino),
                 }, 
-                "relacionamentoFuncao": angular.copy(conteudo.relacionamentoFuncao)
+                "relacionamentoFuncao": angular.copy(conteudo.relacionamentoFuncao),
+                "chaveSisater": angular.copy(conteudo.chaveSisater),
             };
             delete conteudo.relacionamento;
             delete conteudo.relacionamentoFuncao;

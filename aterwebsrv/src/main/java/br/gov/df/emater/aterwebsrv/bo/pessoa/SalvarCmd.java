@@ -4,6 +4,9 @@ import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -17,6 +20,7 @@ import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoDao;
 import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoPropriedadeRuralDao;
 import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoSetorDao;
 import br.gov.df.emater.aterwebsrv.dao.formulario.ColetaDao;
+import br.gov.df.emater.aterwebsrv.dao.funcional.EmpregoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.ArquivoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.EmailDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.EnderecoDao;
@@ -44,6 +48,7 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.Coleta;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.FormularioVersao;
+import br.gov.df.emater.aterwebsrv.modelo.funcional.Emprego;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Arquivo;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Email;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Endereco;
@@ -75,9 +80,15 @@ public class SalvarCmd extends _Comando {
 
 	@Autowired
 	private PessoaDao dao;
+	
+	@Autowired
+	private EntityManager em;
 
 	@Autowired
 	private EmailDao emailDao;
+
+	@Autowired
+	private EmpregoDao empregoDao;
 
 	@Autowired
 	private EnderecoDao enderecoDao;
@@ -389,12 +400,21 @@ public class SalvarCmd extends _Comando {
 						}
 					} else {
 						Relacionamento salvo = relacionamentoDao.findById(relacionamento.getId());
-						salvo.getPessoaRelacionamentoList().size();
-						relacionamento.setPessoaRelacionamentoList(salvo.getPessoaRelacionamentoList());
+						List<PessoaRelacionamento> prList = salvo.getPessoaRelacionamentoList();
+						prList.size();
+						BeanUtils.copyProperties(salvo, relacionamento);
+						relacionamento = salvo;
+						relacionamento.setPessoaRelacionamentoList(prList);
+						em.detach(salvo);
+						salvo = null;
 					}
 					relacionamento.setInicio(pessoaRelacionamento.getRelacionamento().getInicio());
 					relacionamento.setTermino(pessoaRelacionamento.getRelacionamento().getTermino());
-					relacionamento = relacionamentoDao.save(relacionamento);
+					if (relacionamento instanceof Emprego) {
+						relacionamento = empregoDao.save((Emprego) relacionamento);
+					} else {						
+						relacionamento = relacionamentoDao.save(relacionamento);
+					}
 
 					// salvar o relacionado
 					pessoaRelacionamento.setRelacionamento(relacionamento);

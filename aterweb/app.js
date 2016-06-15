@@ -1,8 +1,8 @@
 /* global moment, isUndefOrNull, escape */
 /* jslint loopfunc: true */
 
-var IDLE_TEMPO = 5;
-var TIMEOUT_TEMPO = 200;
+var IDLE_TEMPO = 15 * 60;
+var TIMEOUT_TEMPO = 5 * 60;
 
 (function(pNmModulo, pNmController, pNmFormulario) {
 
@@ -264,7 +264,7 @@ var TIMEOUT_TEMPO = 200;
                     var min = scope.$eval(attr.ngValorMin) || 0;
                     if (isEmpty(value) || value < min) {
                         ctrl.$setValidity('ngValorMin', false);
-                        return undefined;
+                        return value;
                     } else {
                         ctrl.$setValidity('ngValorMin', true);
                         return value;
@@ -300,7 +300,7 @@ var TIMEOUT_TEMPO = 200;
                     }
                     if (!isEmpty(value) && value > max) {
                         ctrl.$setValidity('ngValorMax', false);
-                        return undefined;
+                        return value;
                     } else {
                         ctrl.$setValidity('ngValorMax', true);
                         return value;
@@ -411,7 +411,7 @@ var TIMEOUT_TEMPO = 200;
                 var authenticated = ($rootScope.token !== null && $rootScope.token.username !== null && $rootScope.token.username.length > 0) && ((!username) || (username && username === $rootScope.token.username));
                 if (authenticated) {
                     if (!Idle.running()) {
-                        //Idle.watch();
+                        Idle.watch();
                     }
                 } else {
                     if (Idle.running()) {
@@ -775,7 +775,7 @@ var TIMEOUT_TEMPO = 200;
                     if (apoio && apoio.voceConhece) {
                         var data = apoio.voceConhece.data ? moment(apoio.voceConhece.data, 'DD/MM/YYYY') : moment(new Date(), 'DD/MM/YYYY').subtract(1, 'days');
                         var lista = apoio.voceConhece.lista ? apoio.voceConhece.lista : [];
-                        if (data.isBefore(moment())) {
+                        if (data.isBefore(moment()) || !lista.length) {
                             armazenarDescansoTela();
                         } else {
                             $rootScope.voceConheceList = lista;
@@ -796,7 +796,15 @@ var TIMEOUT_TEMPO = 200;
                         '</div>' +
                         '<div class="modal-body">' +
                         '    <div class="container-fluid">' +
-                        '        <div class="row">' +
+                        '        <div class="row" ng-show="!voceConheceList.length">' +
+                        '            <div class="col-xs-4">' +
+                        '               <img src="img/logo-transparente.png" alt="EMATER web" width="50%">' +
+                        '            </div>' +
+                        '            <div class="col-xs-8">' +
+                        '               <p>Espaço reservado a exibição dos perfis dos usuários do sistema EMATER web, atualize seu perfil e ele será exibido aqui!</p>' +
+                        '            </div>' +
+                        '        </div>' +
+                        '        <div class="row" ng-show="voceConheceList.length">' +
                         '            <div class="col-xs-4">' +
                         '               <img ng-src="{{servicoUrl}}/arquivo-descer?arquivo={{voceConheceList[indice].imagem}}" class="img-responsive" style="margin:auto;" height="200px" width="200px">' +
                         '            </div>' +

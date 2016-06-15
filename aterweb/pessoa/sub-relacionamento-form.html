@@ -38,7 +38,7 @@
             </div>
             <div class="col-md-7">
                 <div class="form-control">
-                   {{UtilSrv.indiceDePorCampo(apoio.pessoaTipoList, conteudo.pessoaTipo, 'codigo').descricao}}
+                   {{UtilSrv.indiceDePorCampo(apoio.pessoaTipoList, conteudo.relacionado.pessoaTipo, 'codigo').descricao}}
                 </div>
             </div>
         </div>
@@ -247,7 +247,8 @@
                 <select class="form-control" id="relacionamentoTipo" name="relacionamentoTipo"
                     ng-model="conteudo.relacionamento.relacionamentoTipo"
                     ng-options="item as item.nome for item in apoio.relacionamentoTipoList | orderBy : ['nome'] track by item.id"
-                    ng-required="true">
+                    ng-required="true"
+                    ng-disabled="conteudo.id">
                 </select>
                 <div class="label label-danger" ng-show="confirmacaoFrm.relacionamentoTipo.$error.required">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
