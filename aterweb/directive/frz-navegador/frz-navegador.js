@@ -209,8 +209,10 @@
             var ordem = 0;
             for (var botao2 in $scope.estados[estadoAtual].botoes) {
                 var b2 = $scope.botao($scope.estados[estadoAtual].botoes[botao2]);
-                b2['ordem'] = ++ordem;
-                b2['visivel'] = true;
+                if (b2) {
+                    b2['ordem'] = ++ordem;
+                    b2['visivel'] = true;
+                }
             }
             var info = '0/' + $scope.ngModel.dados.length;
             if ($scope.ngModel.selecao.tipo === 'U') {

@@ -37,7 +37,8 @@
     "angular-ui-tree": "~2",
     "ng-idle": "~1",
     "angular-filter": "~0",
-    "angular-qr-scanner": "^0.1.0"
+    "angular-qr-scanner": "^0.1.0",
+    "webcam": "webcam-directive#^3.1.1"
   },
   "devDependencies": {
     "angular-google-maps": "~2"

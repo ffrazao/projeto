@@ -20,7 +20,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                             var empresa = (token && token.lotacaoAtual && token.lotacaoAtual.pessoaJuridica) ? angular.copy(token.lotacaoAtual.pessoaJuridica) : {};
                             var unid = {id: null}; var comunid = {id: null};
                             for (var i in r) {
-                                if (unid.id !== r[i].unidadeOrganizacional.id) {
+                                if (r[i].unidadeOrganizacional && unid.id !== r[i].unidadeOrganizacional.id) {
                                     unid = angular.copy(r[i].unidadeOrganizacional);
                                     if (!empresa.unidadeList) {
                                         empresa.unidadeList = [];
