@@ -71,7 +71,7 @@ angular.module(pNmModulo).controller(pNmController,
                 "pessoaTipo": angular.copy($scope.cadastro.registro["pessoaTipo"]),
                 "nome": angular.copy($scope.cadastro.registro["nome"]),
                 "apelidoSigla": angular.copy($scope.cadastro.registro["apelidoSigla"]),
-            }
+            };
         }
         if (!item.relacionado) {
             item.relacionado = angular.copy(reg.pessoa);
