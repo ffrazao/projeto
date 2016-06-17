@@ -52,6 +52,9 @@ CACHE:
 ../bower_components/ng-img-crop/compile/unminified/ng-img-crop.js
 ../bower_components/ng-tags-input/ng-tags-input.js
 ../bower_components/angular-ui-tree/dist/angular-ui-tree.js
+../bower_components/angular-qr-scanner/qr-scanner.js
+../bower_components/angular-qr-scanner/src/jsqrcode-combined.min.js
+../bower_components/webcam/app/scripts/webcam.js
 
 ../js/frz-painel-vidro.js
 ../js/latinise.js

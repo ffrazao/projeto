@@ -10,7 +10,7 @@ var TIMEOUT_TEMPO = 5 * 60;
 
     angular.module(pNmModulo, ['ui.bootstrap', 'ui.utils', 'ui.router', 'ngSanitize', 'ngAnimate', 'toastr', 'sticky',
         'ui.mask', 'ui.utils.masks', 'ui.navbar', 'ngCookies', 'uiGmapgoogle-maps', 'ngFileUpload', 'ngTagsInput', 'ui.tree',
-        'ngIdle', 'angular.filter', 'qrScanner',
+        'ngIdle', 'angular.filter', 'qrScanner', 'webcam',
         'mensagemSrv', 'segurancaSrv', 'utilSrv', 'frz.form', 'frz.tabela', 'frz.arquivo', 'frz.endereco', 'frz.painel.vidro', 'frz.navegador',
         'casa', 'contrato', 'info', 'offline', 'pessoa', 'formulario', 'propriedadeRural', 'atividade', 'indiceProducao', 
         'funcionalidade', 'perfil', 'usuario', 'logAcao',

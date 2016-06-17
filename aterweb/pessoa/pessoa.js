@@ -8,15 +8,7 @@
     }]);
     angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'PessoaSrv', '$rootScope', '$interval',
         function($scope, toastr, FrzNavegadorParams, $state, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, PessoaSrv, $rootScope, $interval) {
-            $scope.onSuccess = function(data) {
-                console.log(data);
-            };
-            $scope.onError = function(error) {
-                console.log(error);
-            };
-            $scope.onVideoError = function(error) {
-                console.log(error);
-            };
+
             // inicializacao
             $scope.crudInit($scope, $state, modalCadastro, pNmFormulario, PessoaSrv);
 

@@ -6,6 +6,7 @@
 
     angular.module(pNmModulo, ['ui.bootstrap', 'ui.utils', 'ui.router', 'ngSanitize', 'ngAnimate', 'toastr', 'sticky',
         'ui.mask', 'ui.utils.masks', 'ui.navbar', 'ngCookies', 'uiGmapgoogle-maps', 'ngFileUpload', 'ngTagsInput', 'ui.tree',
+        'qrScanner', 'webcam', 
         'mensagemSrv', 'utilSrv']);
 
     angular.module(pNmModulo).config(['$stateProvider', '$sceDelegateProvider', function($stateProvider, $sceDelegateProvider) {
@@ -27,6 +28,16 @@
 
     angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', '$state', '$uibModal', '$log', '$uibModalInstance', 'UtilSrv', 'mensagemSrv', '$rootScope', '$http', '$sce',
         function($scope, toastr, $state, $uibModal, $log, $uibModalInstance, UtilSrv, mensagemSrv, $rootScope, $http, $sce) {
+
+            $scope.onSuccess = function(data) {
+                console.log(data);
+            };
+            $scope.onError = function(error) {
+                //console.log(error);
+            };
+            $scope.onVideoError = function(error) {
+                //console.log(error);
+            };
 
             $rootScope.globalLocalizacao = "pt-br";
 

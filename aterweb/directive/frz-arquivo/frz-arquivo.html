@@ -29,21 +29,63 @@
 
     <div class="container" ng-if="tipo === 'PERFIL'">
         <div class="row">
-            <div class="col-md-8">
-                <button class="btn btn-info" ngf-select ng-model="picFile" accept="image/*">
-                    Selecione uma imagem
-                </button>
+            <div class="col-md-12">
+                <div class="btn-group" ng-init="webcamAtiva = 'A'">
+                    <label class="btn btn-primary" ng-model="webcamAtiva" uib-btn-radio="'A'" ng-click="ativaWebcam()">
+                        <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Origem Arquivo
+                    </label>
+                    <label class="btn btn-primary" ng-model="webcamAtiva" uib-btn-radio="'W'" ng-click="ativaWebcam()">
+                        <span class="glyphicon glyphicon-camera" aria-hidden="true"></span> Origem Webcam
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row" ng-if="webcamAtiva === 'A'">
+            <div class="col-md-7">
+                <label class="label-control">Arquivo</label>
                 <div ngf-drop ng-model="picFile" ngf-pattern="image/*" class="cropArea center-block">
                     <img-crop class="center-block" image="picFile | ngfDataUrl" result-image="croppedDataUrl" ng-init="croppedDataUrl=''">
                     </img-crop>
                 </div>
+                <button class="btn btn-info" ngf-select ng-model="picFile" accept="image/*">
+                    Selecione uma imagem
+                </button>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <ng-form name="dadosFrm">
                     <label class="label-control">Foto Recortada</label>
                     <img class="displayed center-block" ng-src="{{croppedDataUrl}}">
-                    <button class="btn btn-warning" ng-click="upload(croppedDataUrl)" ng-show="picFile">Enviar</button>
-                    <input type="hidden" id="nomeArquivo" name="nomeArquivo" ng-model="ngModel" required="true">
+                    <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                        <div class="btn-group" role="group">
+                            <button class="btn btn-warning" ng-click="upload(croppedDataUrl)" ng-show="picFile">Enviar</button>
+                            <input type="hidden" id="nomeArquivo" name="nomeArquivo" ng-model="ngModel" required="true">
+                        </div>
+                    </div>
+                    <div class="label label-danger" ng-show="dadosFrm.nomeArquivo.$error.required">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        O Envio da Imagem é Obrigatório!
+                    </div>
+                </ng-form>
+            </div>
+        </div>
+        <div class="row" ng-if="webcamAtiva === 'W'">
+            <div class="col-md-7">
+                <label class="label-control">Webcam</label>
+                <webcam channel="channel" on-streaming="onSuccess()" on-error="onError(err)" on-stream="onStream(stream)" class="cropArea center-block"></webcam>
+            </div>
+            <div class="col-md-4">
+                <ng-form name="dadosFrm">
+                    <label class="label-control">Foto Tirada</label>
+                    <canvas id="snapshot" width="240" height="240" class="displayed center-block"></canvas>
+                    <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                        <div class="btn-group" role="group">
+                            <button class="btn btn-info" ng-click="makeSnapshot()">Tirar Foto</button>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button class="btn btn-warning" ng-click="upload(snapshotData)" ng-show="snapshotData">Enviar</button>
+                            <input type="hidden" id="nomeArquivo" name="nomeArquivo" ng-model="ngModel" required="true">
+                        </div>
+                    </div>
                     <div class="label label-danger" ng-show="dadosFrm.nomeArquivo.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         O Envio da Imagem é Obrigatório!
