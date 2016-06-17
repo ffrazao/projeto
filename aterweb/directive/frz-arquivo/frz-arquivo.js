@@ -43,7 +43,9 @@
         $scope.makeSnapshot = function() {
             if (_video) {
                 var patCanvas = document.querySelector('#snapshot');
-                if (!patCanvas) return;
+                if (!patCanvas) {
+                    return;
+                }
 
                 patCanvas.width = 240;//_video.width;
                 patCanvas.height = 240;//_video.height;
