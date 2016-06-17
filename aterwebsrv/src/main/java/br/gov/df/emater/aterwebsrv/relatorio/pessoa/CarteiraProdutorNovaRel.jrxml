@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.2.1.final using JasperReports Library version 6.2.1  -->
+<!-- 2016-06-17T10:27:27 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RelatorioTeste" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" uuid="74a58a1f-20c1-4882-a004-63331c202191">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<import value="br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica"/>
+	<parameter name="RelatorioNome" class="java.lang.String">
+		<parameterDescription><![CDATA[Nome do Relatório]]></parameterDescription>
+		<defaultValueExpression><![CDATA[$P{RelatorioNome}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Usuario" class="br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario">
+		<parameterDescription><![CDATA[Usuário Autenticado pelo no Sistema]]></parameterDescription>
+		<defaultValueExpression><![CDATA[$P{Usuario}.getUsername()]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="comunidade" class="br.gov.df.emater.aterwebsrv.modelo.ater.Comunidade">
+		<fieldDescription><![CDATA[comunidade]]></fieldDescription>
+	</field>
+	<field name="publicoAlvo" class="br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo">
+		<fieldDescription><![CDATA[publicoAlvo]]></fieldDescription>
+	</field>
+	<field name="propriedadeRural" class="br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural">
+		<fieldDescription><![CDATA[propriedadeRural]]></fieldDescription>
+	</field>
+	<field name="area" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[area]]></fieldDescription>
+	</field>
+	<field name="vinculo" class="br.gov.df.emater.aterwebsrv.modelo.dominio.PropriedadeRuralVinculoTipo">
+		<fieldDescription><![CDATA[vinculo]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="15" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<image hAlign="Right">
+				<reportElement x="510" y="0" width="45" height="15" uuid="387fa0b0-79d7-4988-a114-c587ff1b81e2"/>
+				<imageExpression><![CDATA["src/main/java/br/gov/df/emater/aterwebsrv/relatorio/imagens/logo-transparente.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="70" y="0" width="440" height="15" uuid="d28a3c09-c4c2-4b15-aad0-5cacb24a7a54"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{RelatorioNome}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="0" y="0" width="70" height="15" uuid="d535549c-9550-4ea7-ae63-0ab85777f476">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<imageExpression><![CDATA["src/main/java/br/gov/df/emater/aterwebsrv/relatorio/imagens/logo-emater-df.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="256" splitType="Stretch">
+			<image hAlign="Center">
+				<reportElement x="0" y="5" width="555" height="186" uuid="fd18ad58-7c27-4968-9031-56474f21ff0c">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<imageExpression><![CDATA["src/main/java/br/gov/df/emater/aterwebsrv/relatorio/imagens/modelo-carteira.png"]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement x="20" y="19" width="190" height="15" uuid="be2ce65f-cbbe-45f3-a54e-d728eb84bb2b"/>
+				<textFieldExpression><![CDATA[$F{propriedadeRural}.getNome()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="226" y="19" width="43" height="15" uuid="e0c30968-0971-48c4-acf0-c36bc6e11693"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{area}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement isPrintRepeatedValues="false" x="20" y="61" width="130" height="15" uuid="ecfe199f-0318-468a-8de3-78a6e5fd868c"/>
+				<textFieldExpression><![CDATA[$F{propriedadeRural}.getSituacaoFundiaria().toString()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="166" y="61" width="102" height="15" uuid="9c96772d-5d3e-44b5-85b0-ab391beefec0"/>
+				<textFieldExpression><![CDATA[$F{vinculo}.toString()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement isPrintRepeatedValues="false" x="20" y="99" width="130" height="15" uuid="17e43b8a-d273-460d-816a-382863d3d927"/>
+				<textFieldExpression><![CDATA[$F{comunidade}.getNome()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="166" y="99" width="102" height="15" uuid="3bea7a66-aec0-491e-b4ce-e7c9bca47a66"/>
+				<textFieldExpression><![CDATA[$F{comunidade}.getUnidadeOrganizacional().getNome()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement isPrintRepeatedValues="false" x="20" y="136" width="130" height="15" uuid="5e64ee1c-48ee-4821-900e-a37dd137a601"/>
+				<textFieldExpression><![CDATA[$F{comunidade}.getCidade().getNome()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="287" y="43" width="160" height="15" uuid="997ddbcf-a7ad-4e8f-8995-eb59e4dde866">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{publicoAlvo}.getPessoa().getNome()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="455" y="43" width="80" height="15" uuid="fd5de7d0-0036-4b2c-a02c-76f6c6007f52">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{publicoAlvo}.getPessoa().getClass().asSubclass(PessoaFisica.class).cast($F{publicoAlvo}.getPessoa()).getCpf()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="" x="368" y="74" width="80" height="10" uuid="42800aab-d877-4e1f-9225-34fdaa2e3fc4">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{publicoAlvo}.getCategoria() + " " + $F{publicoAlvo}.getSegmento()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="455" y="72" width="80" height="15" uuid="cc362e03-12c6-49a1-8933-8bec11f97ed6">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{comunidade}.getId()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="" x="365" y="97" width="100" height="15" uuid="ba27e4d6-f0bb-4297-a22d-7509bd8bb683">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yy").format($F{publicoAlvo}.getCarteiraProdutorEmissao().getTime()) + " " + new SimpleDateFormat("dd/MM/yy").format($F{publicoAlvo}.getCarteiraProdutorExpiracao().getTime())]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="474" y="97" width="62" height="15" uuid="4e308dae-8559-46c5-ace1-dcf36f096f47"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{publicoAlvo}.getPessoa().getClass().asSubclass(PessoaFisica.class).cast($F{publicoAlvo}.getPessoa()).getNisNumero()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="" x="366" y="125" width="165" height="15" uuid="b32c03cb-5a6a-436e-8b21-a0a479cc1755">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{publicoAlvo}.getDapNumero()]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Blank">
+				<reportElement x="287" y="66" width="73" height="74" uuid="fefbb7e5-3e76-4a91-a08a-ac9c47c4e120"/>
+				<imageExpression><![CDATA[javax.imageio.ImageIO.read(new java.io.ByteArrayInputStream($F{publicoAlvo}.getPessoa().getPerfilArquivo().getConteudo()))]]></imageExpression>
+			</image>
+			<componentElement>
+				<reportElement x="477" y="193" width="67" height="59" uuid="303bceb8-369f-4216-ab3e-754ca7383ab2"/>
+				<jr:QRCode xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" margin="0" errorCorrectionLevel="H">
+					<jr:codeExpression><![CDATA[$F{publicoAlvo}.getPessoa().getClass().asSubclass(PessoaFisica.class).cast($F{publicoAlvo}.getPessoa()).getCpf()]]></jr:codeExpression>
+				</jr:QRCode>
+			</componentElement>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="29" splitType="Stretch">
+			<textField>
+				<reportElement x="185" y="8" width="185" height="15" uuid="e4ed5d83-9f01-434a-a2fb-7ba7f72f6c96"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date())]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="555" height="5" uuid="b5ddb1d5-a6e6-45df-bb7b-d74e876ec733"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="414" y="8" width="76" height="15" uuid="96a3064c-1e07-4689-9765-80c88398fbf6"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="490" y="8" width="64" height="15" uuid="23dc9088-3be9-4160-83e1-daa538a9b68f"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[" de " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="8" width="200" height="15" uuid="16be048c-710c-4108-88bd-17ef96f76886"/>
+				<textFieldExpression><![CDATA[$P{Usuario}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
