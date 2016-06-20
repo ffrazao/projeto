@@ -279,6 +279,11 @@ public class FacadeBo implements BeanFactoryAware {
 		return this._executar(usuario, "LogAcaoNovoCh", logAcao);
 	}
 
+	@Transactional()
+	public _Contexto relatorioCompilar(Principal usuario, String nome) throws Exception {
+		return this._executar(usuario, "RelatorioCompilarCh", nome);
+	}
+
 	@Transactional
 	public _Contexto logAcaoSalvar(Principal usuario, LogAcao logAcao) throws Exception {
 		return this._executar(usuario, "LogAcaoSalvarCh", logAcao);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.1.final using JasperReports Library version 6.2.1  -->
-<!-- 2016-06-17T15:50:11 -->
+<!-- 2016-06-17T18:55:08 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RelatorioTeste" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" uuid="74a58a1f-20c1-4882-a004-63331c202191">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -50,7 +50,7 @@
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<image hAlign="Right">
 				<reportElement x="510" y="0" width="45" height="15" uuid="387fa0b0-79d7-4988-a114-c587ff1b81e2"/>
-				<imageExpression><![CDATA["../imagens/logo-transparente.png"]]></imageExpression>
+				<imageExpression><![CDATA["jasper/imagens/logo-transparente.png"]]></imageExpression>
 			</image>
 			<textField>
 				<reportElement x="70" y="0" width="440" height="15" uuid="d28a3c09-c4c2-4b15-aad0-5cacb24a7a54"/>
@@ -66,7 +66,7 @@
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
-				<imageExpression><![CDATA["../imagens/logo-emater-df.jpg"]]></imageExpression>
+				<imageExpression><![CDATA["jasper/imagens/logo-emater-df.jpg"]]></imageExpression>
 			</image>
 		</band>
 	</pageHeader>
@@ -79,7 +79,7 @@
 				<reportElement x="0" y="5" width="555" height="186" uuid="fd18ad58-7c27-4968-9031-56474f21ff0c">
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
-				<imageExpression><![CDATA["../imagens/modelo-carteira.png"]]></imageExpression>
+				<imageExpression><![CDATA["jasper/imagens/modelo-carteira.png"]]></imageExpression>
 			</image>
 			<textField isBlankWhenNull="true">
 				<reportElement x="20" y="19" width="190" height="15" uuid="be2ce65f-cbbe-45f3-a54e-d728eb84bb2b"/>
