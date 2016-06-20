@@ -146,7 +146,7 @@ angular.module(pNmModulo).controller(pNmController,
             }
             FormularioSrv.visualizar(id).success(function (resposta) {
                 if (resposta.mensagem === 'OK') {
-                    var formulario = FormularioSrv.montar($scope, resposta.resultado, versao);
+                    var formulario = FormularioSrv.montar($scope, resposta.resultado.formulario, versao);
                     f.opcao = formulario.opcao;
                 }
             });

@@ -54,7 +54,7 @@ public class CarteiraProdutorRelCmd extends _Comando {
 		parametros.put("Usuario", getUsuario(contexto.getUsuario().getName()));
 		parametros.put("RelatorioNome", "CARTÃO DO PRODUTOR RURAL");
 
-		byte[] result = relatorio.imprimir("pessoa/CarteiraProdutorNovaRel", parametros, lista);
+		byte[] result = relatorio.imprimir("pessoa/CarteiraProdutorRel", parametros, lista);
 
 		contexto.setResposta(result);
 

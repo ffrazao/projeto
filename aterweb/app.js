@@ -921,8 +921,8 @@ var TIMEOUT_TEMPO = 5 * 60;
                             scp.navegador.folhaAtual = scp.navegador.selecao.items.length;
                             scp.navegador.selecao.items.push(scp.cadastro.registro);
                         }
+                        scp.navegador.voltar(scp);
                         scp.navegador.refresh();
-
                         toastr.info('Operação realizada!', 'Informação');
                         $rootScope.visualizar(scp, resposta.resultado);
                     } else {
@@ -951,6 +951,8 @@ var TIMEOUT_TEMPO = 5 * 60;
 
                 scp.servico.editar(registro).success(function(resposta) {
                     if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {
+                        scp.navegador.voltar(scp);
+                        scp.navegador.refresh();
                         toastr.info('Operação realizada!', 'Informação');
                         $rootScope.visualizar(scp, resposta.resultado);
                     } else {
