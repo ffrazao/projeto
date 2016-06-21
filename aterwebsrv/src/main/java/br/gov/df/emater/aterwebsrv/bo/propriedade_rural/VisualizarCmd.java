@@ -1,6 +1,7 @@
 package br.gov.df.emater.aterwebsrv.bo.propriedade_rural;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.gov.df.emater.aterwebsrv.bo.BoException;
+import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.ater.PropriedadeRuralDao;
@@ -17,6 +19,7 @@ import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRuralArquivo;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRuralFormaUtilizacaoEspacoRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRuralPendencia;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
+import br.gov.df.emater.aterwebsrv.modelo.dto.IndiceProducaoCadFiltroDto;
 
 @Service("PropriedadeRuralVisualizarCmd")
 public class VisualizarCmd extends _Comando {
@@ -26,7 +29,11 @@ public class VisualizarCmd extends _Comando {
 
 	@Autowired
 	private EntityManager em;
+	
+	@Autowired
+	private FacadeBo facadeBo;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		Integer id = (Integer) contexto.getRequisicao();
@@ -65,6 +72,12 @@ public class VisualizarCmd extends _Comando {
 				a.getId();
 			}
 		}
+		
+		IndiceProducaoCadFiltroDto filtro = new IndiceProducaoCadFiltroDto();
+		Calendar hoje = Calendar.getInstance();
+		filtro.setAno(hoje.get(Calendar.YEAR));
+		filtro.setPropriedadeRural(result);
+		result.setIndiceProducaoList((List<Object>) facadeBo.indiceProducaoFiltroProducaoPublicoAlvo(contexto.getUsuario(), filtro).getResposta());
 
 		if (result.getPendenciaList() != null) {
 			for (PropriedadeRuralPendencia propriedadeRuralPendencia : result.getPendenciaList()) {

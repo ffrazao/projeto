@@ -541,8 +541,8 @@
                     return;
                 }
                 array.push(item);
-                if (item[9]) {
-                    pai(array, item[9]);
+                if (item[10]) {
+                    pai(array, item[10]);
                 }
             };
             $scope.$watch('cadastro.apoio.bemClassificacao', function(novo) {
@@ -658,7 +658,7 @@
 
             // quebra galho para funcionar a inclusao externa
             if (modalCadastro) {
-                $rootScope.abrir($scope);
+                //$rootScope.abrir($scope);
                 $scope.modalCadastro = true;
             }
         }

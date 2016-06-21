@@ -76,6 +76,7 @@ angular.module(pNmModulo).controller(pNmController,
                     cad.apoio.estadoInicial = 'form';
                     cad.apoio.unidadeOrganizacional = $scope.cadastro.registro.comunidade.unidadeOrganizacional;
 //                    cad.registro.propriedadeRural = $scope.cadastro.registro;
+                    cad.registro.id = destino ? destino[0] : null;
                     cad.registro.propriedadeRural = {'id': $scope.cadastro.registro.id, 'nome': $scope.cadastro.registro.nome};
 
                     //cad.apoio.unidadeOrganizacional = {id: $scope.navegador.selecao.item[$scope.PRODUCAO_UNID_ORG_ID], nome: $scope.navegador.selecao.item[$scope.PRODUCAO_UNID_ORG_NOME], sigla: $scope.navegador.selecao.item[$scope.PRODUCAO_UNID_ORG_SIGLA]};
@@ -126,13 +127,13 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.editar = function() {
         var item = null;
         var i, j;
-        if ($scope.producaoFormaNvg.selecao.tipo === 'U' && $scope.producaoFormaNvg.selecao.item) {
-            item = angular.copy($scope.producaoFormaNvg.selecao.item);
-            editarItem($scope.producaoFormaNvg.selecao.item, item);
-        } else if ($scope.producaoFormaNvg.selecao.items && $scope.producaoFormaNvg.selecao.items.length) {
-            for (i in $scope.producaoFormaNvg.selecao.items) {
+        if ($scope.indiceProducaoNvg.selecao.tipo === 'U' && $scope.indiceProducaoNvg.selecao.item) {
+            item = angular.copy($scope.indiceProducaoNvg.selecao.item);
+            editarItem($scope.indiceProducaoNvg.selecao.item, item);
+        } else if ($scope.indiceProducaoNvg.selecao.items && $scope.indiceProducaoNvg.selecao.items.length) {
+            for (i in $scope.indiceProducaoNvg.selecao.items) {
                 for (j in $scope.cadastro.registro.producaoFormaList) {
-                    if (angular.equals($scope.producaoFormaNvg.selecao.items[i], $scope.cadastro.registro.producaoFormaList[j])) {
+                    if (angular.equals($scope.indiceProducaoNvg.selecao.items[i], $scope.cadastro.registro.producaoFormaList[j])) {
                         item = angular.copy($scope.cadastro.registro.producaoFormaList[j]);
                         editarItem($scope.cadastro.registro.producaoFormaList[j], item, i);
                         break;

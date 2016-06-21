@@ -18,9 +18,9 @@
                     <div class="col-md-4" title="Ano da Produção">
                         <div class="form-group">
                             <label class="control-label" for="ano">Ano da Produção</label>
-                            <select id="ano" name="ano" class="form-control" ng-model="cadastro.registro.ano" ng-options="item as item for item in cadastro.apoio.anoList track by item" required="true">
+                            <select id="ano" name="ano" class="form-control" ng-model="cadastro.registro.ano" ng-options="item as item for item in cadastro.apoio.anoList track by item" ng-required="true">
                             </select>
-                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.XXX.$error.required">
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.ano.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
@@ -80,7 +80,7 @@
                     <div class="col-md-6" title="Bens de Produção">
                         <div class="form-group">
                             <label class="control-label" for="bem">Bens de Produção</label>
-                            <select id="bem" name="bem" class="form-control" ng-model="cadastro.registro.bem" ng-options="item as item.nome for item in cadastro.apoio.bemList track by item.id" required="true"
+                            <select id="bem" name="bem" class="form-control" ng-model="cadastro.registro.bem" ng-options="item as item.nome for item in cadastro.apoio.bemList track by item.id" ng-required="true"
                                 ng-disabled="cadastro.registro.producaoFormaList.length">
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.bem.$error.required">
@@ -95,9 +95,9 @@
                             <div class="form-control" ng-if="!cadastro.apoio.producaoUnidadeOrganizacional && !modalCadastro">
                                 {{cadastro.apoio.unidadeOrganizacional.nome}}
                             </div>
-                            <select id="unidadeOrganizacional" name="unidadeOrganizacional" class="form-control" ng-model="cadastro.registro.unidadeOrganizacional" ng-options="item as item.nome for item in cadastro.apoio.unidadeOrganizacionalList | orderBy:'nome' track by item.id" required="true" ng-if="cadastro.apoio.producaoUnidadeOrganizacional && !modalCadastro">
+                            <select id="unidadeOrganizacional" name="unidadeOrganizacional" class="form-control" ng-model="cadastro.registro.unidadeOrganizacional" ng-options="item as item.nome for item in cadastro.apoio.unidadeOrganizacionalList | orderBy:'nome' track by item.id" ng-required="true" ng-if="cadastro.apoio.producaoUnidadeOrganizacional && !modalCadastro">
                             </select>
-                            <select id="unidadeOrganizacional" name="unidadeOrganizacional" class="form-control" ng-model="cadastro.apoio.unidadeOrganizacional" ng-options="item as item.nome for item in cadastro.apoio.unidadeOrganizacionalList | orderBy:'nome' track by item.id" required="true" ng-if="modalCadastro && !cadastro.apoio.porProdutor" ng-disabled="cadastro.registro.propriedadeRural.id">
+                            <select id="unidadeOrganizacional" name="unidadeOrganizacional" class="form-control" ng-model="cadastro.apoio.unidadeOrganizacional" ng-options="item as item.nome for item in cadastro.apoio.unidadeOrganizacionalList | orderBy:'nome' track by item.id" ng-required="false" ng-if="modalCadastro && !cadastro.apoio.porProdutor" ng-disabled="cadastro.registro.propriedadeRural.id">
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.unidadeOrganizacional.$error.required" ng-if="cadastro.apoio.producaoUnidadeOrganizacional">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -111,7 +111,7 @@
                         <div class="form-group">
                             <label class="control-label" for="publicoAlvo" ng-click="cadastro.apoio.producaoUnidadeOrganizacional = !cadastro.apoio.producaoUnidadeOrganizacional">Produtor</label>
                             <div class="input-group">
-                                <input id="publicoAlvo" name="publicoAlvo" class="form-control" placeholder="" type="text" required ng-model="cadastro.registro.publicoAlvo.pessoa.nome" readonly>
+                                <input id="publicoAlvo" name="publicoAlvo" class="form-control" placeholder="" type="text" ng-model="cadastro.registro.publicoAlvo.pessoa.nome" readonly>
                                 <span class="input-group-btn">
                                     <div class="btn-group" role="group">
                                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ng-disabled="cadastro.registro.producaoFormaList.length > 0">
@@ -133,7 +133,7 @@
                     <div class="col-md-6" title="Propriedade Rural" ng-if="!cadastro.apoio.producaoUnidadeOrganizacional">
                         <div class="form-group">
                             <label class="control-label" for="propriedadeRural">Propriedade Rural</label>
-                            <select id="propriedadeRural" name="propriedadeRural" class="form-control" ng-model="cadastro.registro.propriedadeRural" ng-options="item as item.nome for item in cadastro.apoio.propriedadeRuralList | orderBy:'nome' track by item.id" required="true" ng-disabled="cadastro.registro.producaoFormaList.length > 0">
+                            <select id="propriedadeRural" name="propriedadeRural" class="form-control" ng-model="cadastro.registro.propriedadeRural" ng-options="item as item.nome for item in cadastro.apoio.propriedadeRuralList | orderBy:'nome' track by item.id" ng-required="true" ng-disabled="cadastro.registro.producaoFormaList.length > 0">
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.propriedadeRural.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -147,7 +147,7 @@
                         <div class="form-group">
                             <label class="control-label" for="propriedadeRural">Propriedade Rural</label>
                             <div class="input-group">
-                                <input id="propriedadeRural" name="propriedadeRural" class="form-control" placeholder="" type="text" required ng-model="cadastro.registro.propriedadeRural.nome" readonly>
+                                <input id="propriedadeRural" name="propriedadeRural" class="form-control" placeholder="" type="text" ng-required="true" ng-model="cadastro.registro.propriedadeRural.nome" readonly>
                                 <span class="input-group-btn">
                                     <div class="btn-group" role="group">
                                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ng-disabled="cadastro.registro.producaoFormaList.length > 0">
@@ -169,7 +169,7 @@
                     <div class="col-md-6" title="Produtor" ng-if="!cadastro.apoio.producaoUnidadeOrganizacional">
                         <div class="form-group">
                             <label class="control-label" for="publicoAlvo" ng-click="cadastro.apoio.producaoUnidadeOrganizacional = !cadastro.apoio.producaoUnidadeOrganizacional">Produtor</label>
-                            <select id="publicoAlvo" name="publicoAlvo" class="form-control" ng-model="cadastro.registro.publicoAlvo" ng-options="item as item.pessoa.nome for item in cadastro.apoio.publicoAlvoList | orderBy:'pessoa.nome' track by item.id" required="true" ng-disabled="cadastro.registro.producaoFormaList.length > 0">
+                            <select id="publicoAlvo" name="publicoAlvo" class="form-control" ng-model="cadastro.registro.publicoAlvo" ng-options="item as item.pessoa.nome for item in cadastro.apoio.publicoAlvoList | orderBy:'pessoa.nome' track by item.id" ng-required="true" ng-disabled="cadastro.registro.producaoFormaList.length > 0">
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.publicoAlvo.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -185,12 +185,43 @@
 
                             <ng-include src="'indice-producao/sub-producao-forma.html'" ng-controller="ProducaoFormaCtrl"></ng-include>
 
-                            <input type="hidden" id="producaoFormaList" name="producaoFormaList" ng-model="cadastro.registro.producaoFormaList.length" ng-valor-min="1" required="true">
+                            <input type="hidden" id="producaoFormaList" name="producaoFormaList" ng-model="cadastro.registro.producaoFormaList.length" ng-valor-min="1" ng-required="true">
 
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.producaoFormaList.$error.ngValorMin">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <span>&nbsp;</span>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group col-md-8">
+                            <label class="control-label">Resp. Inclusão</label>
+                            <input class="form-control" type="text" readonly="true" ng-model="cadastro.registro.inclusaoUsuario.pessoa.apelidoSigla"/>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label class="control-label">Dt. Inclusão</label>
+                            <input class="form-control" type="text" readonly="true" ng-model="cadastro.registro.inclusaoData"/>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label class="control-label">Resp. Atualização</label>
+                            <input class="form-control" type="text" readonly="true"  ng-model="cadastro.registro.alteracaoUsuario.pessoa.apelidoSigla"/>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label class="control-label">Dt. Atualização</label>
+                            <input class="form-control" type="text" readonly="true" ng-model="cadastro.registro.alteracaoData"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Chave Sisater</label>
+                            <input class="form-control" type="text" readonly="true" ng-model="cadastro.registro.chaveSisater"/>
                         </div>
                     </div>
                 </div>

@@ -91,7 +91,7 @@
                         <td>{{formula(cadastro.apoio.producaoForma.formula, produtor.itemAValor, produtor.itemBValor, produtor.itemCValor) | number: 5}}</td>
                         <td>{{cadastro.apoio.producaoForma.unidadeMedida}}</td>
                         <td>
-                            <input class="form-control input-sm text-right" id="valorUnitario" name="valorUnitario" ng-model="produtor.valorUnitario" ng-required="true" ui-money-mask="2" style="min-width: 75px;">
+                            <input class="form-control input-sm text-right" id="valorUnitario" name="valorUnitario" ng-model="produtor.valorUnitario" ng-required="false" ui-money-mask="2" style="min-width: 75px;">
                             <div class="label label-danger" ng-show="navegador.submetido && producaoFormaFrm.valorUnitario.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório

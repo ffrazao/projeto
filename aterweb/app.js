@@ -1236,10 +1236,10 @@ var TIMEOUT_TEMPO = 5 * 60;
                         id = scp.navegador.selecao.items[scp.navegador.folhaAtual].id;
                     }
                 }
-                if (id === null) {
+                if (!id) {
                     id = idInf;
                 }
-                if (id === null) {
+                if (!id) {
                     scp.incluir(scp);
                 } else {
                     scp.servico.visualizar(id).success(function(resposta) {

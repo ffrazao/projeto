@@ -20,6 +20,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -90,6 +91,9 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
+
+	@Transient
+	private List<Object> indiceProducaoList;
 
 	@ManyToOne
 	@JoinColumn(name = "organizacao_tipo_id")
@@ -162,6 +166,10 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 		return id;
 	}
 
+	public List<Object> getIndiceProducaoList() {
+		return indiceProducaoList;
+	}
+
 	public OrganizacaoTipo getOrganizacaoTipo() {
 		return organizacaoTipo;
 	}
@@ -226,6 +234,10 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 	@Override
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public void setIndiceProducaoList(List<Object> indiceProducaoList) {
+		this.indiceProducaoList = indiceProducaoList;
 	}
 
 	public void setOrganizacaoTipo(OrganizacaoTipo organizacaoTipo) {

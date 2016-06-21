@@ -239,7 +239,7 @@ angular.module(pNmModulo).controller(pNmController,
             '                <label class="form-label">Valor Unitário</label>' +
             '            </div>' +
             '            <div class="col-md-3">' +
-            '                <input class="form-control text-right" id="valorUnitario" name="valorUnitario" ng-model="conteudo.valorUnitario" ng-required="true" ui-money-mask="2">' +
+            '                <input class="form-control text-right" id="valorUnitario" name="valorUnitario" ng-model="conteudo.valorUnitario" ng-required="false" ui-money-mask="2">' +
             '                <div class="label label-danger" ng-show="confirmacaoFrm.valorUnitario.$error.required">' +
             '                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' +
             '                     Campo Obrigatório' +

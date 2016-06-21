@@ -2,7 +2,7 @@
     <div class="panel-heading container-fluid">
         <frz-navegador
             ng-model="indiceProducaoNvg" exibe-nome-botao="false"
-            dados="cadastro.registro.indiceProducaoList"
+            dados="cadastro.registro.publicoAlvo.indiceProducaoList"
             acoes-especiais="acoesEspeciais"
             on-abrir = "abrir()"
             on-agir = "agir()"
@@ -21,13 +21,13 @@
             >
         </frz-navegador>
     </div>
-    <div class="painel-body"  ng-hide="cadastro.registro.indiceProducaoList.length">
+    <div class="painel-body"  ng-hide="cadastro.registro.publicoAlvo.indiceProducaoList.length">
         <div class="alert alert-warning" style="margin: 0px;" role="alert">
             <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
             Nenhum registro localizado!
         </div>
     </div>
-    <div class="table-responsive" ng-show="cadastro.registro.indiceProducaoList.length > 0">
+    <div class="table-responsive" ng-show="cadastro.registro.publicoAlvo.indiceProducaoList.length > 0">
         <ng-form name="indiceProducaoFrm">
             <table class="table table-hover table-striped">
                 <thead>
@@ -125,7 +125,7 @@
                     </tr> 
                 </tfoot>
             </table>
-            <input type="hidden" id="indiceProducaoList" name="indiceProducaoList" ng-model="cadastro.registro.indiceProducaoList.length">
+            <input type="hidden" id="indiceProducaoList" name="indiceProducaoList" ng-model="cadastro.registro.publicoAlvo.indiceProducaoList.length">
 
         </ng-form>
     </div>

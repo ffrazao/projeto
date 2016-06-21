@@ -32,23 +32,27 @@ public class VisualizarCmd extends _Comando {
 		}
 
 		// limpar dados
-		result.setAlteracaoUsuario(null);
-		result.setAlteracaoData(null);
-		result.setInclusaoUsuario(null);
-		result.setInclusaoData(null);
-
-		if (result.getUnidadeOrganizacional() != null) {
-			result.setUnidadeOrganizacional(result.getUnidadeOrganizacional() == null ? null : result.getUnidadeOrganizacional().infoBasica());
+		if (result.getInclusaoUsuario() != null) {
+			result.setInclusaoUsuario(result.getInclusaoUsuario().infoBasica());
 		}
-		result.setPropriedadeRural(result.getPropriedadeRural() != null ? result.getPropriedadeRural().infoBasica() : null);
-		result.setPublicoAlvo(result.getPublicoAlvo() != null ? result.getPublicoAlvo().infoBasica() : null);
+		if (result.getAlteracaoUsuario() != null) {
+			result.setAlteracaoUsuario(result.getAlteracaoUsuario().infoBasica());
+		}
+
+		result.setUnidadeOrganizacional(result.getUnidadeOrganizacional() == null ? null : result.getUnidadeOrganizacional().infoBasica());
+		result.setPropriedadeRural(result.getPropriedadeRural() == null ? null : result.getPropriedadeRural().infoBasica());
+		result.setPublicoAlvo(result.getPublicoAlvo() == null ? null : result.getPublicoAlvo().infoBasica());
+
 		result.setBem(result.getBem().infoBasica());
+		
 		if (result.getProducaoFormaList() != null) {
 			for (ProducaoForma pf : result.getProducaoFormaList()) {
-				pf.setAlteracaoUsuario(null);
-				pf.setAlteracaoData(null);
-				pf.setInclusaoUsuario(null);
-				pf.setInclusaoData(null);
+				if (pf.getInclusaoUsuario() != null) {
+					pf.setInclusaoUsuario(pf.getInclusaoUsuario().infoBasica());
+				}
+				if (pf.getAlteracaoUsuario() != null) {
+					pf.setAlteracaoUsuario(pf.getAlteracaoUsuario().infoBasica());
+				}
 				pf.setProducao(null);
 				if (pf.getProducaoFormaComposicaoList() != null) {
 					for (ProducaoFormaComposicao pfc : pf.getProducaoFormaComposicaoList()) {

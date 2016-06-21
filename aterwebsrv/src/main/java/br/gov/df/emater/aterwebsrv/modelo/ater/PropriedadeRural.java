@@ -21,6 +21,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -54,7 +55,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<PropriedadeRural>, Pendenciavel<PropriedadeRuralPendencia>, _LogInclusaoAlteracao {
 
 	private static final long serialVersionUID = 1L;
-
+	
 	@Column(name = "alteracao_data", insertable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
@@ -75,14 +76,6 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 	// @IndexedEmbedded
 	private List<PropriedadeRuralArquivo> arquivoList;
 
-	// @NumberFormat(style = Style.CURRENCY)
-	// @JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	// private BigDecimal benfeitoria;
-	//
-	// @OneToMany(mappedBy = "propriedadeRural")
-	// // @IndexedEmbedded
-	// private List<Benfeitoria> benfeitoriaList;
-
 	// @NotNull
 	@ManyToOne
 	@JoinColumn(name = "bacia_hidrografica_id")
@@ -97,6 +90,14 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 
 	@Column(name = "cartorio_informacao")
 	private String cartorioInformacao;
+
+	// @NumberFormat(style = Style.CURRENCY)
+	// @JsonDeserialize(using = JsonFormatarBigDecimal.class)
+	// private BigDecimal benfeitoria;
+	//
+	// @OneToMany(mappedBy = "propriedadeRural")
+	// // @IndexedEmbedded
+	// private List<Benfeitoria> benfeitoriaList;
 
 	@Column(name = "chave_sisater")
 	private String chaveSisater;
@@ -129,6 +130,9 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 	@ManyToOne
 	@JoinColumn(name = "inclusao_usuario_id")
 	private Usuario inclusaoUsuario;
+
+	@Transient
+	private List<Object> indiceProducaoList;
 
 	private String nome;
 
@@ -282,6 +286,10 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 		return inclusaoUsuario;
 	}
 
+	public List<Object> getIndiceProducaoList() {
+		return indiceProducaoList;
+	}
+
 	public String getNome() {
 		return nome;
 	}
@@ -411,6 +419,10 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 	@Override
 	public void setInclusaoUsuario(Usuario inclusaoUsuario) {
 		this.inclusaoUsuario = inclusaoUsuario;
+	}
+
+	public void setIndiceProducaoList(List<Object> indiceProducaoList) {
+		this.indiceProducaoList = indiceProducaoList;
 	}
 
 	public void setNome(String nome) {

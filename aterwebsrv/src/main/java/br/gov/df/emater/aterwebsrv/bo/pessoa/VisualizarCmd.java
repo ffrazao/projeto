@@ -1,11 +1,15 @@
 package br.gov.df.emater.aterwebsrv.bo.pessoa;
 
+import java.util.Calendar;
+import java.util.List;
+
 import javax.persistence.EntityManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.gov.df.emater.aterwebsrv.bo.BoException;
+import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaDao;
@@ -13,6 +17,7 @@ import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoSetor;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
+import br.gov.df.emater.aterwebsrv.modelo.dto.IndiceProducaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaArquivo;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaEmail;
@@ -31,8 +36,12 @@ public class VisualizarCmd extends _Comando {
 	private PessoaDao dao;
 
 	@Autowired
+	private FacadeBo facadeBo;
+
+	@Autowired
 	private EntityManager em;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		Integer id = (Integer) contexto.getRequisicao();
@@ -72,6 +81,12 @@ public class VisualizarCmd extends _Comando {
 					publicoAlvoSetor.setPublicoAlvo(null);
 				}
 			}
+			// captar o índice de produção do produtor
+			IndiceProducaoCadFiltroDto filtro = new IndiceProducaoCadFiltroDto();
+			Calendar hoje = Calendar.getInstance();
+			filtro.setAno(hoje.get(Calendar.YEAR));
+			filtro.setPublicoAlvo(publicoAlvo);
+			publicoAlvo.setIndiceProducaoList((List<Object>) facadeBo.indiceProducaoFiltroProducaoPublicoAlvo(contexto.getUsuario(), filtro).getResposta());
 		}
 
 		// fetch nas tabelas de apoio

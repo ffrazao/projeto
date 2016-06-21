@@ -9,10 +9,10 @@ angular.module(pNmModulo).controller(pNmController,
 
     // inicializacao
     var init = function() {
-        if (!angular.isObject($scope.cadastro.registro.indiceProducaoList)) {
-            $scope.cadastro.registro.indiceProducaoList = [];
+        if (!angular.isObject($scope.cadastro.registro.publicoAlvo.indiceProducaoList)) {
+            $scope.cadastro.registro.publicoAlvo.indiceProducaoList = [];
         }
-        $scope.indiceProducaoNvg = new FrzNavegadorParams($scope.cadastro.registro.indiceProducaoList, 4);
+        $scope.indiceProducaoNvg = new FrzNavegadorParams($scope.cadastro.registro.publicoAlvo.indiceProducaoList, 4);
     };
     if (!$uibModalInstance) { init(); }
 
@@ -74,6 +74,7 @@ angular.module(pNmModulo).controller(pNmController,
                     var cad = $scope.cadastroBase();
                     cad.apoio.producaoUnidadeOrganizacional = false;
                     cad.apoio.estadoInicial = 'form';
+                    cad.registro.id = destino ? destino[0] : null;
                     cad.registro.publicoAlvo = {'id': $scope.cadastro.registro.publicoAlvo.id, 'pessoa': {'nome': $scope.cadastro.registro.nome, 'pessoaTipo': $scope.cadastro.registro.pessoaTipo}};
                     $scope.preparaClassePessoa(cad.registro.publicoAlvo.pessoa);
                     cad.apoio.porProdutor = true;
@@ -123,13 +124,13 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.editar = function() {
         var item = null;
         var i, j;
-        if ($scope.producaoFormaNvg.selecao.tipo === 'U' && $scope.producaoFormaNvg.selecao.item) {
-            item = angular.copy($scope.producaoFormaNvg.selecao.item);
-            editarItem($scope.producaoFormaNvg.selecao.item, item);
-        } else if ($scope.producaoFormaNvg.selecao.items && $scope.producaoFormaNvg.selecao.items.length) {
-            for (i in $scope.producaoFormaNvg.selecao.items) {
+        if ($scope.indiceProducaoNvg.selecao.tipo === 'U' && $scope.indiceProducaoNvg.selecao.item) {
+            item = angular.copy($scope.indiceProducaoNvg.selecao.item);
+            editarItem($scope.indiceProducaoNvg.selecao.item, item);
+        } else if ($scope.indiceProducaoNvg.selecao.items && $scope.indiceProducaoNvg.selecao.items.length) {
+            for (i in $scope.indiceProducaoNvg.selecao.items) {
                 for (j in $scope.cadastro.registro.producaoFormaList) {
-                    if (angular.equals($scope.producaoFormaNvg.selecao.items[i], $scope.cadastro.registro.producaoFormaList[j])) {
+                    if (angular.equals($scope.indiceProducaoNvg.selecao.items[i], $scope.cadastro.registro.producaoFormaList[j])) {
                         item = angular.copy($scope.cadastro.registro.producaoFormaList[j]);
                         editarItem($scope.cadastro.registro.producaoFormaList[j], item, i);
                         break;
@@ -142,22 +143,22 @@ angular.module(pNmModulo).controller(pNmController,
         mensagemSrv.confirmacao(false, 'Confirme a exclusão').then(function (conteudo) {
             var i, j;
             if ($scope.indiceProducaoNvg.selecao.tipo === 'U' && $scope.indiceProducaoNvg.selecao.item) {
-                for (j = $scope.cadastro.registro.indiceProducaoList.length -1; j >= 0; j--) {
-                    if (angular.equals($scope.cadastro.registro.indiceProducaoList[j], $scope.indiceProducaoNvg.selecao.item)) {
+                for (j = $scope.cadastro.registro.publicoAlvo.indiceProducaoList.length -1; j >= 0; j--) {
+                    if (angular.equals($scope.cadastro.registro.publicoAlvo.indiceProducaoList[j], $scope.indiceProducaoNvg.selecao.item)) {
                         $scope.marcarParaExclusao($scope, 'producaoFormaList', j);
-                        //$scope.cadastro.registro.indiceProducaoList.splice(j, 1);
-                        //$scope.cadastro.registro.indiceProducaoList[j].cadastroAcao = 'E';
+                        //$scope.cadastro.registro.publicoAlvo.indiceProducaoList.splice(j, 1);
+                        //$scope.cadastro.registro.publicoAlvo.indiceProducaoList[j].cadastroAcao = 'E';
                     }
                 }
                 $scope.indiceProducaoNvg.selecao.item = null;
                 $scope.indiceProducaoNvg.selecao.selecionado = false;
             } else if ($scope.indiceProducaoNvg.selecao.items && $scope.indiceProducaoNvg.selecao.items.length) {
-                for (j = $scope.cadastro.registro.indiceProducaoList.length-1; j >= 0; j--) {
+                for (j = $scope.cadastro.registro.publicoAlvo.indiceProducaoList.length-1; j >= 0; j--) {
                     for (i in $scope.indiceProducaoNvg.selecao.items) {
-                        if (angular.equals($scope.cadastro.registro.indiceProducaoList[j], $scope.indiceProducaoNvg.selecao.items[i])) {
+                        if (angular.equals($scope.cadastro.registro.publicoAlvo.indiceProducaoList[j], $scope.indiceProducaoNvg.selecao.items[i])) {
                             $scope.marcarParaExclusao($scope, 'producaoFormaList', j);
-                            //$scope.cadastro.registro.indiceProducaoList.splice(j, 1);
-                            //$scope.cadastro.registro.indiceProducaoList[j].cadastroAcao = 'E';
+                            //$scope.cadastro.registro.publicoAlvo.indiceProducaoList.splice(j, 1);
+                            //$scope.cadastro.registro.publicoAlvo.indiceProducaoList[j].cadastroAcao = 'E';
                             break;
                         }
                     }
@@ -300,7 +301,7 @@ angular.module(pNmModulo).controller(pNmController,
 
             IndiceProducaoSrv.filtrarProducaoPorPublicoAlvo(conteudo.cadastro.filtro).success(function(resposta) {
                 if (resposta.mensagem === 'OK') {
-                    $scope.cadastro.registro.indiceProducaoList = resposta.resultado;
+                    $scope.cadastro.registro.publicoAlvo.indiceProducaoList = resposta.resultado;
                     init();
                 }
             }).error(function(erro){
