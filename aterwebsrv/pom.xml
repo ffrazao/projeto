@@ -15,10 +15,14 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
 
+		<barcode4j.version>2.1</barcode4j.version>
 		<commons-chain.version>1.2</commons-chain.version>
+		<commons-compress.version>1.11</commons-compress.version>
 		<commons-fileupload.version>1.3.1</commons-fileupload.version>
 		<commons-io.version>2.4</commons-io.version>
+		<commons-lang3.version>3.3.2</commons-lang3.version>
 		<exp4j.version>0.4.5</exp4j.version>
+		<hadoop-core.version>1.0.0</hadoop-core.version>
 		<hibernate-search-orm.version>4.4.6.Final</hibernate-search-orm.version>
 		<hibernate-spatial.version>4.3</hibernate-spatial.version>
 		<imgscalr-lib.version>4.2</imgscalr-lib.version>
@@ -26,13 +30,16 @@
 		<jasperreports.version>6.2.1</jasperreports.version>
 		<jstl.version>1.2</jstl.version>
 		<neo4j-cypher-compiler-2.1.version>2.1.5</neo4j-cypher-compiler-2.1.version>
+		<neo4j-cypher-compiler-2.2.version>2.2.5</neo4j-cypher-compiler-2.2.version>
+		<org-apache-batik-all.version>1.7-201003011305</org-apache-batik-all.version>
+		<poi.version>3.14</poi.version>
 		<scala-library.version>2.12.0-M2</scala-library.version>
 	</properties>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.3.3.RELEASE</version>
+		<version>1.3.5.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
@@ -80,10 +87,12 @@
 			<artifactId>commons-chain</artifactId>
 			<version>${commons-chain.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>commons-digester</groupId>
 			<artifactId>commons-digester</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
@@ -95,6 +104,7 @@
 			<artifactId>commons-fileupload</artifactId>
 			<version>${commons-fileupload.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
@@ -115,6 +125,7 @@
 			<groupId>org.jboss.logging</groupId> <artifactId>jboss-logging</artifactId> 
 			</exclusion> <exclusion> <groupId>org.jboss.logging</groupId> <artifactId>jboss-logging-annotations</artifactId> 
 			</exclusion> </exclusions> </dependency> -->
+
 		<dependency>
 			<groupId>org.scala-lang</groupId>
 			<artifactId>scala-library</artifactId>
@@ -154,10 +165,12 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-jpamodelgen</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-client</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.neo4j</groupId>
 			<artifactId>neo4j-cypher-compiler-2.1</artifactId>
@@ -191,31 +204,31 @@
 		<dependency>
 			<groupId>net.sf.barcode4j</groupId>
 			<artifactId>barcode4j</artifactId>
-			<version>2.1</version>
+			<version>${barcode4j.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.kenai.nbpwr</groupId>
 			<artifactId>org-apache-batik-all</artifactId>
-			<version>1.7-201003011305</version>
+			<version>${org-apache-batik-all.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-compress</artifactId>
-			<version>1.11</version>
+			<version>${commons-compress.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
-			<version>3.14</version>
+			<version>${poi.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
-			<version>3.14</version>
+			<version>${poi.version}</version>
 		</dependency>
 
 		<dependency>
@@ -226,18 +239,21 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>3.3.2</version>
+			<version>${commons-lang3.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.neo4j</groupId>
 			<artifactId>neo4j-cypher-compiler-2.2</artifactId>
-			<version>2.2.5</version>
+			<version>${neo4j-cypher-compiler-2.2.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.apache.hadoop</groupId>
 			<artifactId>hadoop-core</artifactId>
-			<version>1.0.0</version>
+			<version>${hadoop-core.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.jooq</groupId>
 			<artifactId>jooq-meta</artifactId>
@@ -260,7 +276,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>1.3.5.RELEASE</version>
 				<executions>
 					<execution>
 						<goals>
