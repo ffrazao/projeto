@@ -16,11 +16,25 @@
         function ($scope, UtilSrv, PessoaSrv, toastr) {
         $scope.apoio = {estadoList:[], municipioList: [], cidadeList: []};
 
-        UtilSrv.dominio({ent: ['Estado'], npk: 'pais.id', vpk: $scope.conteudo.pais.id}).success(function(resposta) {
-            if (resposta && resposta.resultado) {
-                $scope.apoio.estadoList = resposta.resultado[0];
-            }
-        });
+        if ($scope.conteudo.pais && $scope.conteudo.pais.id) {
+            UtilSrv.dominio({ent: ['Estado'], npk: 'pais.id', vpk: $scope.conteudo.pais.id}).success(function(resposta) {
+                if (resposta && resposta.resultado) {
+                    $scope.apoio.estadoList = resposta.resultado[0];
+                }
+            });
+        } else {
+            UtilSrv.dominio({ent: ['Pais'], npk: 'padrao', vpk: 'S', nomeEnum: 'Confirmacao'}).success(function(resposta) {
+                if (resposta && resposta.resultado) {
+                    $scope.conteudo.pais = resposta.resultado[0][0];
+                    UtilSrv.dominio({ent: ['Estado'], npk: 'pais.id', vpk: $scope.conteudo.pais.id}).success(function(resposta) {
+                        if (resposta && resposta.resultado) {
+                            $scope.apoio.estadoList = resposta.resultado[0];
+                        }
+                    });
+                }
+            });
+        }
+
 
         $scope.$watch('conteudo.estado', function(newValue, oldValue) {
             if (newValue && newValue.id) {

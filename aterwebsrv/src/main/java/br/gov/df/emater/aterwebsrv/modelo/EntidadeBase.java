@@ -1,14 +1,18 @@
 package br.gov.df.emater.aterwebsrv.modelo;
 
 import java.io.Serializable;
+import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import br.gov.df.emater.aterwebsrv.modelo.dominio.CadastroAcao;
+import br.gov.df.emater.aterwebsrv.rest.json.ExcluidoMapDeserializer;
 
 // para marcar esta classe como o topo de hierarquia de entidades, porém não
 // persiste informação
@@ -22,10 +26,6 @@ public abstract class EntidadeBase implements Serializable {
 	public static final String ATER_SCHEMA = "ater";
 
 	public static final String ATIVIDADE_SCHEMA = "atividade";
-
-	public static final String CAD_GERAL_SCHEMA = "cad_geral";
-
-	public static final String ENQUETE_SCHEMA = "enquete";
 
 	public static final String FORMULARIO_SCHEMA = "formulario";
 
@@ -41,6 +41,10 @@ public abstract class EntidadeBase implements Serializable {
 
 	@Transient
 	private CadastroAcao cadastroAcao;
+
+	@Transient
+	@JsonDeserialize(using = ExcluidoMapDeserializer.class)
+	private Map<String, Set<Serializable>> excluidoMap;
 
 	public EntidadeBase() {
 
@@ -64,6 +68,10 @@ public abstract class EntidadeBase implements Serializable {
 		return cadastroAcao;
 	}
 
+	public Map<String, Set<Serializable>> getExcluidoMap() {
+		return excluidoMap;
+	}
+
 	@Override
 	public int hashCode() {
 		return super.hashCode();
@@ -71,6 +79,10 @@ public abstract class EntidadeBase implements Serializable {
 
 	public void setCadastroAcao(CadastroAcao cadastroAcao) {
 		this.cadastroAcao = cadastroAcao;
+	}
+
+	public void setExcluidoMap(Map<String, Set<Serializable>> excluidoMap) {
+		this.excluidoMap = excluidoMap;
 	}
 
 }

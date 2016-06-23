@@ -73,7 +73,7 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.abrir = function() {
         $scope.pessoaArquivoNvg.mudarEstado('ESPECIAL'); 
         // desabilitar a edição de arquivos
-        $scope.pessoaArquivoNvg.botao('edicao').visivel = false;
+        $scope.pessoaArquivoNvg.botao('edicao').exibir = function() {return false;};
     };
     $scope.incluir = function() {
         var item = {};

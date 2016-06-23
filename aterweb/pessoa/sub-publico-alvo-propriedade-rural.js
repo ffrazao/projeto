@@ -1,4 +1,4 @@
-/* global StringMask:false */
+/* global StringMask:false, removerCampo */
 
 (function(pNmModulo, pNmController, pNmFormulario) {
 
@@ -22,22 +22,19 @@ angular.module(pNmModulo).controller(pNmController,
 
     // inicio rotinas de apoio
     var jaCadastrado = function(conteudo) {
-        for (var j in $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList) {
-            if (angular.equals($scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList[j].publicoAlvoPropriedadeRural.endereco, conteudo.publicoAlvoPropriedadeRural.endereco)) {
-                if ($scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList[j].cadastroAcao === 'E') {
-                    return true;
-                } else {
-                    toastr.error('Registro já cadastrado');
-                    return false;
-                }
+        var i, id, propriedadeRural;
+        for (i in $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList) {
+            id = $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList[i].id;
+            propriedadeRural = $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList[i].propriedadeRural ? $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList[i].propriedadeRural : null;
+            if (!angular.equals(id, conteudo.id) && (propriedadeRural && angular.equals(propriedadeRural.id, conteudo.propriedadeRural.id))) {
+                toastr.error(propriedadeRural ? propriedadeRural.nome : '', 'Registro já cadastrado');
+                return false;
             }
         }
         return true;
     };
     var editarItem = function (destino, item) {
-        $scope.modalSelecinarPropriedadeRural();
-    };
-    $scope.modalSelecinarPropriedadeRural = function (size) {
+
         // abrir a modal
         var modalInstance = $uibModal.open({
             animation: true,
@@ -52,38 +49,75 @@ angular.module(pNmModulo).controller(pNmController,
         });
         // processar retorno da modal
         modalInstance.result.then(function (resultado) {
+            init();
             // processar o retorno positivo da modal
-            var reg = null;
+            var reg = angular.extend({}, destino);
+
+
             if (resultado.selecao.tipo === 'U') {
-                reg = {propriedadeRural: {id: resultado.selecao.item[0], nome: resultado.selecao.item[1], areaTotal: resultado.selecao.item[5], comunidade: {nome: resultado.selecao.item[3]}}};
-                if (!$scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList) {
-                    $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList = [];
-                    $scope.publicoAlvoPropriedadeRuralNvg.setDados($scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList);
+                reg.propriedadeRural = {id: resultado.selecao.item[0], nome: resultado.selecao.item[1], areaTotal: resultado.selecao.item[5], comunidade: {nome: resultado.selecao.item[3]}};
+                reg.comunidade = reg.propriedadeRural.comunidade;
+                if (!destino) {
+                    reg = $scope.criarElemento($scope.cadastro.registro.publicoAlvo, 'publicoAlvoPropriedadeRuralList', reg);
+                } else {
+                    reg = $scope.editarElemento(reg);
                 }
-                $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList.push(reg);
+                if (!jaCadastrado(reg)) {
+                    return;
+                }
+                if (destino) {
+                    destino.propriedadeRural = reg.propriedadeRural;
+                    destino = $scope.editarElemento(destino);
+                } else {
+                    $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList.push(reg);
+                }
             } else {
                 for (var i in resultado.selecao.items) {
-                    reg = {propriedadeRural: {id: resultado.selecao.items[i][0], nome: resultado.selecao.items[i][1], areaTotal: resultado.selecao.item[i][5], comunidade: {nome: resultado.selecao.items[i][3]}}};
-                    if (!$scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList) {
-                        $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList = [];
-                        $scope.publicoAlvoPropriedadeRuralNvg.setDados($scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList);
+                    reg.propriedadeRural = {id: resultado.selecao.items[i][0], nome: resultado.selecao.items[i][1], areaTotal: resultado.selecao.items[i][5], comunidade: {nome: resultado.selecao.items[i][3]}};
+                    reg.comunidade = reg.propriedadeRural.comunidade;
+                    if (!destino) {
+                        reg = $scope.criarElemento($scope.cadastro.registro.publicoAlvo, 'publicoAlvoPropriedadeRuralList', reg);
+                    } else {
+                        reg = $scope.editarElemento(reg);
                     }
-                    $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList.push(reg);
+                    if (jaCadastrado(reg)) {
+                        if (destino) {
+                            destino.propriedadeRural = reg.propriedadeRural;
+                            destino = $scope.editarElemento(destino);
+                            break;
+                        } else {
+                            $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList.push(reg);
+                        }
+                    }
                 }
             }
             toastr.info('Operação realizada!', 'Informação');
         }, function () {
             // processar o retorno negativo da modal
-            
         });
     };
     // fim rotinas de apoio
 
     // inicio das operaçoes atribuidas ao navagador
-    $scope.abrir = function() { $scope.publicoAlvoPropriedadeRuralNvg.mudarEstado('ESPECIAL'); };
+    $scope.abrir = function() {
+        $scope.publicoAlvoPropriedadeRuralNvg.mudarEstado('ESPECIAL');
+        $scope.publicoAlvoPropriedadeRuralNvg.botao('edicao').exibir = function() {
+            if ($scope.publicoAlvoPropriedadeRuralNvg.selecao.tipo === 'U' && $scope.publicoAlvoPropriedadeRuralNvg.selecao.item) {
+                return !$scope.publicoAlvoPropriedadeRuralNvg.selecao.item.propriedadeRural || !$scope.publicoAlvoPropriedadeRuralNvg.selecao.item.propriedadeRural.id;
+            }
+            return false;
+        };
+    };
     $scope.incluir = function() {
-        var item = {publicoAlvoPropriedadeRural: {endereco: null}};
-        editarItem(null, item);
+        if ($scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList) {
+            for (var i = 0; i < $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList.length; i++) {
+                if (!$scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList[i].propriedadeRural || !$scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList[i].propriedadeRural.id) {
+                    toastr.error('Antes de vincular uma nova propriedade, atualize primeiro o registro cuja propriedade não foi informada!');
+                    return;
+                }
+            }
+        }
+        editarItem(null, null);
     };
     $scope.editar = function() {
         var item = null;
@@ -105,38 +139,17 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.excluir = function() {
         mensagemSrv.confirmacao(false, 'confirme a exclusão').then(function (conteudo) {
             var i, j;
+            removerCampo($scope.cadastro.registro.publicoAlvo, ['@jsonId']);
             if ($scope.publicoAlvoPropriedadeRuralNvg.selecao.tipo === 'U' && $scope.publicoAlvoPropriedadeRuralNvg.selecao.item) {
-                for (j = $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList.length -1; j >= 0; j--) {
-
-                    delete $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList[j].publicoAlvoPropriedadeRural['@jsonId'];
-                    delete $scope.publicoAlvoPropriedadeRuralNvg.selecao.item.publicoAlvoPropriedadeRural['@jsonId'];
-
-
-                    if (angular.equals($scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList[j].publicoAlvoPropriedadeRural, $scope.publicoAlvoPropriedadeRuralNvg.selecao.item.publicoAlvoPropriedadeRural)) {
-                        //$scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList.splice(j, 1);
-                        $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList[j].cadastroAcao = 'E';
-                    }
-                }
-                $scope.publicoAlvoPropriedadeRuralNvg.selecao.item = null;
-                $scope.publicoAlvoPropriedadeRuralNvg.selecao.selecionado = false;
+                $scope.excluirElemento($scope, $scope.cadastro.registro.publicoAlvo, 'publicoAlvoPropriedadeRuralList', $scope.publicoAlvoPropriedadeRuralNvg.selecao.item);
             } else if ($scope.publicoAlvoPropriedadeRuralNvg.selecao.items && $scope.publicoAlvoPropriedadeRuralNvg.selecao.items.length) {
-                for (j = $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList.length-1; j >= 0; j--) {
-                    for (i in $scope.publicoAlvoPropriedadeRuralNvg.selecao.items) {
-
-                        delete $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList[j].publicoAlvoPropriedadeRural['@jsonId'];
-                        delete $scope.publicoAlvoPropriedadeRuralNvg.selecao.items[i].publicoAlvoPropriedadeRural['@jsonId'];
-
-                        if (angular.equals($scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList[j].publicoAlvoPropriedadeRural, $scope.publicoAlvoPropriedadeRuralNvg.selecao.items[i].publicoAlvoPropriedadeRural)) {
-                            //$scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList.splice(j, 1);
-                            $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList[j].cadastroAcao = 'E';
-                            break;
-                        }
-                    }
-                }
-                for (i = $scope.publicoAlvoPropriedadeRuralNvg.selecao.items.length -1; i >= 0; i--) {
-                    $scope.publicoAlvoPropriedadeRuralNvg.selecao.items.splice(i, 1);
+                for (i in $scope.publicoAlvoPropriedadeRuralNvg.selecao.items) {
+                    $scope.excluirElemento($scope, $scope.cadastro.registro.publicoAlvo, 'publicoAlvoPropriedadeRuralList', $scope.publicoAlvoPropriedadeRuralNvg.selecao.items[i]);
                 }
             }
+            $scope.publicoAlvoPropriedadeRuralNvg.selecao.item = null;
+            $scope.publicoAlvoPropriedadeRuralNvg.selecao.items = [];
+            $scope.publicoAlvoPropriedadeRuralNvg.selecao.selecionado = false;
         }, function () {
         });
     };

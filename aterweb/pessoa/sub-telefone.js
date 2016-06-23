@@ -1,4 +1,4 @@
-/* global StringMask:false */
+/* global StringMask:false, removerCampo */
 
 (function(pNmModulo, pNmController, pNmFormulario) {
 
@@ -19,35 +19,27 @@ angular.module(pNmModulo).controller(pNmController,
 
     // inicio rotinas de apoio
     var jaCadastrado = function(conteudo) {
+        var i, id, numero;
         conteudo.telefone.numero = formataTelefone(conteudo.telefone.numero);
-        var j;
-        for (j in $scope.cadastro.registro.telefoneList) {
-            if (angular.equals($scope.cadastro.registro.telefoneList[j].telefone.numero, conteudo.telefone.numero)) {
-                if ($scope.cadastro.registro.telefoneList[j].cadastroAcao === 'E') {
-                    return true;
-                } else {
-                    toastr.error('Registro já cadastrado');
-                    return false;
-                }
+        for (i in $scope.cadastro.registro.telefoneList) {
+            id = $scope.cadastro.registro.telefoneList[i].id;
+            numero = formataTelefone($scope.cadastro.registro.telefoneList[i].telefone.numero);
+            if (!angular.equals(id, conteudo.id) && angular.equals(numero, conteudo.telefone.numero)) {
+                toastr.error('Registro já cadastrado');
+                return false;
             }
         }
         return true;
     };
     var editarItem = function (destino, item) {
         mensagemSrv.confirmacao(true, 'pessoa-telefone-frm.html', null, item, null, jaCadastrado).then(function (conteudo) {
+            init();
             // processar o retorno positivo da modal
+            conteudo = $scope.editarElemento(conteudo);
             conteudo.telefone.numero = formataTelefone(conteudo.telefone.numero);
             if (destino) {
-                if (destino['cadastroAcao'] && destino['cadastroAcao'] !== 'I') {
-                    destino['cadastroAcao'] = 'A';
-                }
                 destino.telefone.numero = angular.copy(conteudo.telefone.numero);
             } else {
-                conteudo['cadastroAcao'] = 'I';
-                if (!$scope.cadastro.registro.telefoneList) {
-                    $scope.cadastro.registro.telefoneList = [];
-                    $scope.pessoaTelefoneNvg.setDados($scope.cadastro.registro.telefoneList);
-                }
                 $scope.cadastro.registro.telefoneList.push(conteudo);
             }
         }, function () {
@@ -73,8 +65,11 @@ angular.module(pNmModulo).controller(pNmController,
 
     // inicio das operaçoes atribuidas ao navagador
     $scope.abrir = function() { $scope.pessoaTelefoneNvg.mudarEstado('ESPECIAL'); };
+
     $scope.incluir = function() {
+        init();
         var item = {telefone: {numero: '61'}};
+        item = $scope.criarElemento($scope.cadastro.registro, 'telefoneList', item);
         editarItem(null, item);
     };
     $scope.editar = function() {
@@ -97,29 +92,17 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.excluir = function() {
         mensagemSrv.confirmacao(false, 'confirme a exclusão').then(function (conteudo) {
             var i, j;
+            removerCampo($scope.cadastro.registro.telefoneList, ['@jsonId']);
             if ($scope.pessoaTelefoneNvg.selecao.tipo === 'U' && $scope.pessoaTelefoneNvg.selecao.item) {
-                for (j = $scope.cadastro.registro.telefoneList.length -1; j >= 0; j--) {
-                    if (angular.equals($scope.cadastro.registro.telefoneList[j].telefone.numero, $scope.pessoaTelefoneNvg.selecao.item.telefone.numero)) {
-                        //$scope.cadastro.registro.telefoneList.splice(j, 1);
-                        $scope.cadastro.registro.telefoneList[j].cadastroAcao = 'E';
-                    }
-                }
-                $scope.pessoaTelefoneNvg.selecao.item = null;
-                $scope.pessoaTelefoneNvg.selecao.selecionado = false;
+                $scope.excluirElemento($scope, $scope.cadastro.registro, 'telefoneList', $scope.pessoaTelefoneNvg.selecao.item);
             } else if ($scope.pessoaTelefoneNvg.selecao.items && $scope.pessoaTelefoneNvg.selecao.items.length) {
-                for (j = $scope.cadastro.registro.telefoneList.length-1; j >= 0; j--) {
-                    for (i in $scope.pessoaTelefoneNvg.selecao.items) {
-                        if (angular.equals($scope.cadastro.registro.telefoneList[j].telefone.numero, $scope.pessoaTelefoneNvg.selecao.items[i].telefone.numero)) {
-                            //$scope.cadastro.registro.telefoneList.splice(j, 1);
-                            $scope.cadastro.registro.telefoneList[j].cadastroAcao = 'E';
-                            break;
-                        }
-                    }
-                }
-                for (i = $scope.pessoaTelefoneNvg.selecao.items.length -1; i >= 0; i--) {
-                    $scope.pessoaTelefoneNvg.selecao.items.splice(i, 1);
+                for (i in $scope.pessoaTelefoneNvg.selecao.items) {
+                    $scope.excluirElemento($scope, $scope.cadastro.registro, 'telefoneList', $scope.pessoaTelefoneNvg.selecao.items[i]);
                 }
             }
+            $scope.pessoaTelefoneNvg.selecao.item = null;
+            $scope.pessoaTelefoneNvg.selecao.items = [];
+            $scope.pessoaTelefoneNvg.selecao.selecionado = false;
         }, function () {
         });
     };

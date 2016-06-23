@@ -3,10 +3,10 @@ package br.gov.df.emater.aterwebsrv.modelo;
 import java.io.Serializable;
 
 /**
- * Interface que define m�todos padr�o para uso de chave prim�ria em entidades.
+ * Interface que define métodos padrão para uso de chave primária em entidades.
  * 
  * @param <CP>
- *            tipo de chave prim�ria, deve ser serializ�vel
+ *            tipo de chave primária, deve ser serializável
  * 
  * @author frazao
  * @since 1.0
@@ -19,17 +19,17 @@ public interface _ChavePrimaria<CP extends Serializable> extends Serializable {
 	String P_ID = "id";
 
 	/**
-	 * Get da chave primaria.
+	 * Get da chave primária.
 	 * 
-	 * @return Chave Primaria
+	 * @return Chave Primária
 	 */
 	CP getId();
 
 	/**
-	 * Set da chave prim�ria.
+	 * Set da chave primária.
 	 * 
 	 * @param id
-	 *            chave prim�ria
+	 *            chave primária
 	 */
 	void setId(CP id);
 }

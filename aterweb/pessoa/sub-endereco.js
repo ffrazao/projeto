@@ -1,4 +1,4 @@
-/* global StringMask:false */
+/* global StringMask:false, removerCampo, isUndefOrNull */
 
 (function(pNmModulo, pNmController, pNmFormulario) {
 
@@ -25,19 +25,21 @@ angular.module(pNmModulo).controller(pNmController,
         return str.latinise().replace(/[^a-zA-Z0-9]/g,'').trim().toUpperCase();
     };
     var jaCadastrado = function(conteudo) {
-        var j, end;
-        for (j in $scope.cadastro.registro.enderecoList) {
-            end = $scope.cadastro.registro.enderecoList[j].endereco;
-            if (end.estado !== null && conteudo.estado !== null && end.estado.id === conteudo.estado.id &&
-                end.municipio !== null && conteudo.municipio !== null && end.municipio.id === conteudo.municipio.id && 
-                end.cidade !== null && conteudo.cidade.id && end.cidade.id === conteudo.cidade.id &&
-                end.logradouro !== null && conteudo.logradouro !== null && limpa(end.logradouro) === limpa(conteudo.logradouro) &&
-                end.complemento !== null && conteudo.complemento !== null && limpa(end.complemento) === limpa(conteudo.complemento) &&
-                end.numero !== null && conteudo.numero != null && limpa(end.numero) === limpa(conteudo.numero)) {
-
-                if ($scope.cadastro.registro.enderecoList[j].cadastroAcao === 'E') {
-                    return true;
-                } else {
+        var i, id, end, igual;
+        for (i in $scope.cadastro.registro.enderecoList) {
+            id = $scope.cadastro.registro.enderecoList[i].id;
+            end = $scope.cadastro.registro.enderecoList[i].endereco;
+            if (!end || !conteudo) {
+                toastr.error('As informações estão incompletas!');
+                return false;
+            }
+            if (!angular.equals(id, conteudo.id)) {
+                if (    (  (isUndefOrNull(end.estado)      && isUndefOrNull(conteudo.estado))      || (end.estado.id === conteudo.estado.id)) &&
+                        (  (isUndefOrNull(end.municipio)   && isUndefOrNull(conteudo.municipio))   || (end.municipio.id === conteudo.municipio.id)) &&
+                        (  (isUndefOrNull(end.cidade)      && isUndefOrNull(conteudo.cidade))      || (end.cidade.id === conteudo.cidade.id)) &&
+                        (  (isUndefOrNull(end.logradouro)  && isUndefOrNull(conteudo.logradouro))  || (limpa(end.logradouro) === limpa(conteudo.logradouro))) &&
+                        (  (isUndefOrNull(end.complemento) && isUndefOrNull(conteudo.complemento)) || (limpa(end.complemento) === limpa(conteudo.complemento))) &&
+                        (  (isUndefOrNull(end.numero)      && isUndefOrNull(conteudo.numero))      || (limpa(end.numero) === limpa(conteudo.numero)))) {
                     toastr.error('Registro já cadastrado');
                     return false;
                 }
@@ -47,19 +49,13 @@ angular.module(pNmModulo).controller(pNmController,
     };
     var editarItem = function (destino, item) {
         mensagemSrv.confirmacao(false, '<frz-endereco conteudo="conteudo"/>', null, item.endereco, null, jaCadastrado).then(function (conteudo) {
+            init();
             // processar o retorno positivo da modal
-            //conteudo.endereco.numero = formataEndereco(conteudo.endereco.numero);
             if (destino) {
-                if (destino['cadastroAcao'] && destino['cadastroAcao'] !== 'I') {
-                    destino['cadastroAcao'] = 'A';
-                }
+                conteudo = $scope.editarElemento(conteudo);
                 destino.endereco = angular.copy(conteudo);
             } else {
-                conteudo['cadastroAcao'] = 'I';
-                if (!$scope.cadastro.registro.enderecoList) {
-                    $scope.cadastro.registro.enderecoList = [];
-                    $scope.pessoaEnderecoNvg.setDados($scope.cadastro.registro.enderecoList);
-                }
+                conteudo = $scope.criarElemento($scope.cadastro.registro, 'enderecoList', conteudo);
                 $scope.cadastro.registro.enderecoList.push({endereco: conteudo});
             }
         }, function () {
@@ -111,29 +107,17 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.excluir = function() {
         mensagemSrv.confirmacao(false, 'confirme a exclusão').then(function (conteudo) {
             var i, j;
+            removerCampo($scope.cadastro.registro.enderecoList, ['@jsonId']);
             if ($scope.pessoaEnderecoNvg.selecao.tipo === 'U' && $scope.pessoaEnderecoNvg.selecao.item) {
-                for (j = $scope.cadastro.registro.enderecoList.length -1; j >= 0; j--) {
-                    if (angular.equals($scope.cadastro.registro.enderecoList[j].endereco.numero, $scope.pessoaEnderecoNvg.selecao.item.endereco.numero)) {
-                        //$scope.cadastro.registro.enderecoList.splice(j, 1);
-                        $scope.cadastro.registro.enderecoList[j].cadastroAcao = 'E';
-                    }
-                }
-                $scope.pessoaEnderecoNvg.selecao.item = null;
-                $scope.pessoaEnderecoNvg.selecao.selecionado = false;
+                $scope.excluirElemento($scope, $scope.cadastro.registro, 'enderecoList', $scope.pessoaEnderecoNvg.selecao.item);
             } else if ($scope.pessoaEnderecoNvg.selecao.items && $scope.pessoaEnderecoNvg.selecao.items.length) {
-                for (j = $scope.cadastro.registro.enderecoList.length-1; j >= 0; j--) {
-                    for (i in $scope.pessoaEnderecoNvg.selecao.items) {
-                        if (angular.equals($scope.cadastro.registro.enderecoList[j].endereco.numero, $scope.pessoaEnderecoNvg.selecao.items[i].endereco.numero)) {
-                            //$scope.cadastro.registro.enderecoList.splice(j, 1);
-                            $scope.cadastro.registro.enderecoList[j].cadastroAcao = 'E';
-                            break;
-                        }
-                    }
-                }
-                for (i = $scope.pessoaEnderecoNvg.selecao.items.length -1; i >= 0; i--) {
-                    $scope.pessoaEnderecoNvg.selecao.items.splice(i, 1);
+                for (i in $scope.pessoaEnderecoNvg.selecao.items) {
+                    $scope.excluirElemento($scope, $scope.cadastro.registro, 'enderecoList', $scope.pessoaEnderecoNvg.selecao.items[i]);
                 }
             }
+            $scope.pessoaEnderecoNvg.selecao.item = null;
+            $scope.pessoaEnderecoNvg.selecao.items = [];
+            $scope.pessoaEnderecoNvg.selecao.selecionado = false;
         }, function () {
         });
     };

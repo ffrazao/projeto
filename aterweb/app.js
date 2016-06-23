@@ -486,13 +486,8 @@ var TIMEOUT_TEMPO = 5 * 60;
             };
             $rootScope.pegarRegistroMarcadoExclusao = function(scp) {
                 var result = angular.copy(scp.cadastro.registro);
-                for (var i in result) {
-                    for (var j in scp.cadastro.excluido) {
-                        if (i === j) {
-                            result[i] = result[i].concat(scp.cadastro.excluido[j]);
-                            break;
-                        }
-                    }
+                if (scp.cadastro.excluidoMap && scp.cadastro.excluidoMap.length > 0) {
+                    result['excluidoMap'] = angular.copy(scp.cadastro.excluidoMap);
                 }
                 return result;
             };
@@ -608,7 +603,7 @@ var TIMEOUT_TEMPO = 5 * 60;
                     registro: {},
                     original: {},
                     apoio: {},
-                    excluido: {}
+                    excluidoMap: [],
                 };
             };
             $rootScope.crudInit = function(scope, state, cadastro, nomeFormulario, servico) {
@@ -856,6 +851,52 @@ var TIMEOUT_TEMPO = 5 * 60;
                     $rootScope.descansoTela.close();
                 }
                 $rootScope.descansoTela = null;
+            };
+
+            // funções para controle de elementos de listas dos objetos CRUD
+            $rootScope.criarElemento = function (lista, nomeLista, elemento) {
+                 if (!lista || !nomeLista || !lista[nomeLista]) {
+                    var msgErro = 'A lista não foi construída corretamente!';
+                    toastr.error(msgErro, 'Erro!');
+                    throw msgErro;
+                 }
+                 var id = -1;
+                 if (!lista[nomeLista + 'Cont']) {
+                    lista[nomeLista + 'Cont'] = id;
+                 } else {
+                    id = --lista[nomeLista + 'Cont'];
+                 }
+                 return angular.extend({}, elemento, {'id': id, 'cadastroAcao': 'I'});
+            };
+
+            $rootScope.editarElemento = function (elemento) {
+                if (!elemento) {
+                    var msgErro = 'Elemento não identificado!';
+                    toastr.error(msgErro, 'Erro!');
+                    throw msgErro;
+                }
+                if (elemento['cadastroAcao'] && elemento['cadastroAcao'] === 'I') {
+                    return elemento;
+                }
+                return angular.extend({}, elemento, {'cadastroAcao': 'A'});
+            };
+
+            $rootScope.excluirElemento = function (scp, lista, nomeLista, elemento) {
+                if (!scp || !lista || !nomeLista || !lista[nomeLista] || !elemento || !elemento['id']) {
+                    var msgErro = 'Erro ao tentar excluir, informações incompletas!';
+                    toastr.error(msgErro, 'Erro!');
+                    throw msgErro;
+                }
+                for (var i = lista[nomeLista].length - 1; i >= 0; i--) {
+                    if (lista[nomeLista][i]['id'] === elemento['id']) {
+                        lista[nomeLista].splice(i, 1);
+                    }
+                }
+                if (elemento['id'] > 0) {
+                    var obj = {};
+                    obj[nomeLista] = elemento['id'];
+                    scp.cadastro.excluidoMap.push(obj);
+                }
             };
 
             $rootScope.abrir = function(scp) {
@@ -1150,6 +1191,7 @@ var TIMEOUT_TEMPO = 5 * 60;
                 scp.navegador.mudarEstado('EDITANDO');
                 scp.crudVaiPara(scp, scp.stt, 'form');
                 scp.crudVerRegistro(scp);
+                scp.cadastro.excluidoMap = [];
                 scp.navegador.submetido = false;
             };
             $rootScope.excluir = function(scp) {
@@ -1182,9 +1224,11 @@ var TIMEOUT_TEMPO = 5 * 60;
                     scp.cadastro.original = objeto;
                     scp.cadastro.registro = angular.copy(scp.cadastro.original);
                     scp.navegador.submetido = false;
+                    scp.cadastro.excluidoMap = [];
                     return;
                 }
                 scp.servico.novo(modelo).success(function(resposta) {
+                    scp.cadastro.excluidoMap = [];
                     if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {
                         scp.navegador.mudarEstado('INCLUINDO');
                         scp.crudVaiPara(scp, scp.stt, 'form');
@@ -1210,6 +1254,7 @@ var TIMEOUT_TEMPO = 5 * 60;
                 } else {
                     scp.cadastro.registro = {};
                 }
+                scp.cadastro.excluidoMap = [];
             };
             $rootScope.paginarAnterior = function(scp) {};
             $rootScope.paginarPrimeiro = function(scp) {};
@@ -1217,6 +1262,7 @@ var TIMEOUT_TEMPO = 5 * 60;
             $rootScope.paginarUltimo = function(scp) {};
             $rootScope.restaurar = function(scp) {
                 angular.copy(scp.cadastro.original, scp.cadastro.registro);
+                scp.cadastro.excluidoMap = [];
                 $rootScope.limparRegistroMarcadoExclusao(scp);
             };
             $rootScope.visualizar = function(scp, idInf) {
@@ -1240,6 +1286,7 @@ var TIMEOUT_TEMPO = 5 * 60;
                     id = idInf;
                 }
                 if (!id) {
+                    scp.cadastro.excluidoMap = [];
                     scp.incluir(scp);
                 } else {
                     scp.servico.visualizar(id).success(function(resposta) {

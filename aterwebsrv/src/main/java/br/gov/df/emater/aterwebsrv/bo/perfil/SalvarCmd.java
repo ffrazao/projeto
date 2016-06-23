@@ -3,15 +3,15 @@ package br.gov.df.emater.aterwebsrv.bo.perfil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
+import br.gov.df.emater.aterwebsrv.bo._SalvarCmd;
 import br.gov.df.emater.aterwebsrv.dao.sistema.PerfilDao;
 import br.gov.df.emater.aterwebsrv.dao.sistema.PerfilFuncionalidadeComandoDao;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Perfil;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.PerfilFuncionalidadeComando;
 
 @Service("PerfilSalvarCmd")
-public class SalvarCmd extends _Comando {
+public class SalvarCmd extends _SalvarCmd {
 
 	@Autowired
 	private PerfilDao dao;

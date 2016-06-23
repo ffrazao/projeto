@@ -44,7 +44,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="reg in cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList | filter: {cadastroAcao: '!E'}">
+                    <tr ng-repeat="reg in cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList | orderBy: ['comunidade.nome', 'propriedadeRural.nome'] track by reg.id">
                         <td>
                             <input type="radio" ng-show="publicoAlvoPropriedadeRuralNvg.selecao.tipo === 'U'" ng-model="publicoAlvoPropriedadeRuralNvg.selecao.item" ng-value="reg"/>
                             <input type="checkbox" ng-show="publicoAlvoPropriedadeRuralNvg.selecao.tipo === 'M'" checklist-model="publicoAlvoPropriedadeRuralNvg.selecao.items" checklist-value="reg"/>

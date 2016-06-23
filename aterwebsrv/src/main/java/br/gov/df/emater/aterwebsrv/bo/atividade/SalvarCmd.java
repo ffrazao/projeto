@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.gov.df.emater.aterwebsrv.bo.BoException;
-import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
+import br.gov.df.emater.aterwebsrv.bo._SalvarCmd;
 import br.gov.df.emater.aterwebsrv.dao.atividade.AtividadeAssuntoDao;
 import br.gov.df.emater.aterwebsrv.dao.atividade.AtividadeDao;
 import br.gov.df.emater.aterwebsrv.dao.atividade.AtividadePessoaDao;
@@ -29,7 +29,7 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 
 @Service("AtividadeSalvarCmd")
-public class SalvarCmd extends _Comando {
+public class SalvarCmd extends _SalvarCmd {
 
 	private static final String CODIGO_ATIVIDADE_CARACTERES = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";;
 
@@ -83,7 +83,7 @@ public class SalvarCmd extends _Comando {
 		}
 
 		if (result.getId() == null) {
-			// gerar o código da atividade 
+			// gerar o código da atividade
 			result.setCodigo(gerarCodigoAtividade());
 		}
 
@@ -105,8 +105,9 @@ public class SalvarCmd extends _Comando {
 		for (AtividadeChaveSisater c : result.getChaveSisaterList()) {
 			c.setAtividade(result);
 		}
-		
-		// FIX-ME enquanto não for implementado o novo modelo de Atividades, depois remover esta condição
+
+		// FIX-ME enquanto não for implementado o novo modelo de Atividades,
+		// depois remover esta condição
 		result.setPrevisaoConclusao(result.getInicio());
 		result.setConclusao(result.getInicio());
 		result.setPercentualConclusao(5);

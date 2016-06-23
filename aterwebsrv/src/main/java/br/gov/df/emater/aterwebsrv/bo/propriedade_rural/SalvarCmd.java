@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.gov.df.emater.aterwebsrv.bo.BoException;
-import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
+import br.gov.df.emater.aterwebsrv.bo._SalvarCmd;
 import br.gov.df.emater.aterwebsrv.dao.ater.PropriedadeRuralArquivoDao;
 import br.gov.df.emater.aterwebsrv.dao.ater.PropriedadeRuralDao;
 import br.gov.df.emater.aterwebsrv.dao.ater.PropriedadeRuralFormaUtilizacaoEspacoRuralDao;
@@ -25,7 +25,7 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Arquivo;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Endereco;
 
 @Service("PropriedadeRuralSalvarCmd")
-public class SalvarCmd extends _Comando {
+public class SalvarCmd extends _SalvarCmd {
 
 	@Autowired
 	private AreaDao areaDao;
@@ -57,7 +57,7 @@ public class SalvarCmd extends _Comando {
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		PropriedadeRural result = (PropriedadeRural) contexto.getRequisicao();
-		
+
 		// captar o registro de atualização da tabela
 		logAtualizar(result, contexto);
 

@@ -8,8 +8,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import br.gov.df.emater.aterwebsrv.bo.BoException;
-import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
+import br.gov.df.emater.aterwebsrv.bo._SalvarCmd;
 import br.gov.df.emater.aterwebsrv.dao.ferramenta.UtilDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.BemDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoDao;
@@ -23,7 +23,7 @@ import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoForma;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoFormaComposicao;
 
 @Service("IndiceProducaoSalvarCmd")
-public class SalvarCmd extends _Comando {
+public class SalvarCmd extends _SalvarCmd {
 
 	@Autowired
 	private BemDao bemDao;
@@ -46,10 +46,10 @@ public class SalvarCmd extends _Comando {
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		Producao result = (Producao) contexto.getRequisicao();
-		
+
 		// captar o registro de atualização da tabela
 		logAtualizar(result, contexto);
-		
+
 		// restaurar os dados do bem de produção
 		result.setBem(bemDao.findOne(result.getBem().getId()));
 

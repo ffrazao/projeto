@@ -41,7 +41,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat-start="reg in cadastro.registro.telefoneList | filter: {cadastroAcao: '!E'}">
+                    <tr ng-repeat-start="reg in cadastro.registro.telefoneList | orderBy: 'telefone.numero' track by reg.id">
                         <td rowspan="2">
                             <input type="radio" ng-show="pessoaTelefoneNvg.selecao.tipo === 'U'" ng-model="pessoaTelefoneNvg.selecao.item" ng-value="reg"/>
                             <input type="checkbox" ng-show="pessoaTelefoneNvg.selecao.tipo === 'M'" checklist-model="pessoaTelefoneNvg.selecao.items" checklist-value="reg"/>

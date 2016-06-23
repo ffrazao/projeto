@@ -41,7 +41,7 @@
                 </tr>
             </thead>
             <tbody ng-if="cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList">
-                <tr ng-repeat="reg in cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList | filter: {cadastroAcao: '!E'}">
+                <tr ng-repeat="reg in cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList | orderBy: ['comunidade.nome', 'propriedadeRural.nome'] track by reg.id">
                     <td>{{reg.comunidade.nome}}</td>
                     <td><a ng-click="modalVerPropriedadeRural(reg.propriedadeRural.id)">{{reg.propriedadeRural.nome}}</a></td>
                     <td>{{reg.propriedadeRural.endereco.logradouro}}</td>
@@ -89,7 +89,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat-start="reg in cadastro.registro.enderecoList | filter: {cadastroAcao: '!E'}">
+                    <tr ng-repeat-start="reg in cadastro.registro.enderecoList | orderBy: ['endereco.logradouro', 'endereco.complemento', 'reg.endereco.numero', 'reg.endereco.bairro', 'reg.endereco.cep', 'endereco.cidade.nome', 'endereco.municipio.nome', 'endereco.estado.sigla'] track by reg.id">
                         <td rowspan="2">
                             <input type="radio" ng-show="pessoaEnderecoNvg.selecao.tipo === 'U'" ng-model="pessoaEnderecoNvg.selecao.item" ng-value="reg"/>
                             <input type="checkbox" ng-show="pessoaEnderecoNvg.selecao.tipo === 'M'" checklist-model="pessoaEnderecoNvg.selecao.items" checklist-value="reg"/>

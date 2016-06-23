@@ -5,21 +5,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.gov.df.emater.aterwebsrv.bo.BoException;
-import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
+import br.gov.df.emater.aterwebsrv.bo._SalvarCmd;
 import br.gov.df.emater.aterwebsrv.dao.sistema.UsuarioDao;
 import br.gov.df.emater.aterwebsrv.dao.sistema.UsuarioPerfilDao;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.UsuarioPerfil;
 
 @Service("UsuarioSalvarCmd")
-public class SalvarCmd extends _Comando {
+public class SalvarCmd extends _SalvarCmd {
 
 	@Autowired
 	private UsuarioDao dao;
 
-//	@Autowired
-//	private FacadeBo facadeBo;
+	// @Autowired
+	// private FacadeBo facadeBo;
 
 	@Autowired
 	private UsuarioPerfilDao usuarioPerfilDao;
@@ -33,7 +33,7 @@ public class SalvarCmd extends _Comando {
 
 		// captar o registro de atualização da tabela
 		logAtualizar(result, contexto);
-		
+
 		Usuario salvo = null;
 		String enviaEmail = null;
 
@@ -46,7 +46,7 @@ public class SalvarCmd extends _Comando {
 		if (result.getPessoaEmail() == null || result.getPessoaEmail().getEmail() == null || StringUtils.isBlank(result.getPessoaEmail().getEmail().getEndereco())) {
 			throw new BoException("E-mail do usuário não informado!");
 		}
-		
+
 		if (result.getId() == null) {
 			// novos usuários
 			enviaEmail = result.getPessoaEmail().getEmail().getEndereco();

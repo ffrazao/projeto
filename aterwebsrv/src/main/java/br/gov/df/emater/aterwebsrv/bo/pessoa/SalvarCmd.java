@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -14,8 +15,10 @@ import org.springframework.util.CollectionUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.gov.df.emater.aterwebsrv.bo.BoException;
-import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
+import br.gov.df.emater.aterwebsrv.bo._SalvarCmd;
+import br.gov.df.emater.aterwebsrv.dao.ater.ComunidadeDao;
+import br.gov.df.emater.aterwebsrv.dao.ater.PropriedadeRuralDao;
 import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoDao;
 import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoPropriedadeRuralDao;
 import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoSetorDao;
@@ -43,7 +46,6 @@ import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoSetor;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.CadastroAcao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.Coleta;
@@ -52,8 +54,6 @@ import br.gov.df.emater.aterwebsrv.modelo.funcional.Emprego;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Arquivo;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Email;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Endereco;
-import br.gov.df.emater.aterwebsrv.modelo.pessoa.Estado;
-import br.gov.df.emater.aterwebsrv.modelo.pessoa.Municipio;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaArquivo;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaEmail;
@@ -70,7 +70,7 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoFuncao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Telefone;
 
 @Service("PessoaSalvarCmd")
-public class SalvarCmd extends _Comando {
+public class SalvarCmd extends _SalvarCmd {
 
 	@Autowired
 	private ArquivoDao arquivoDao;
@@ -79,8 +79,14 @@ public class SalvarCmd extends _Comando {
 	private ColetaDao coletaDao;
 
 	@Autowired
+	private ComunidadeDao comunidadeDao;
+
+	@Autowired
+	private PropriedadeRuralDao propriedadeRuralDao;
+
+	@Autowired
 	private PessoaDao dao;
-	
+
 	@Autowired
 	private EntityManager em;
 
@@ -169,40 +175,40 @@ public class SalvarCmd extends _Comando {
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		Pessoa result = (Pessoa) contexto.getRequisicao();
-		
+
 		// captar o registro de atualização da tabela
 		logAtualizar(result, contexto);
+
+		// limpar chaves primárias para futura inclusão do registro
+		if (result.getPublicoAlvo() != null) {
+			limparChavePrimaria(result.getPublicoAlvo().getPublicoAlvoPropriedadeRuralList());
+		}
+		limparChavePrimaria(result.getTelefoneList());
+		limparChavePrimaria(result.getEnderecoList());
 
 		// ajustar os dados de nascimento da pessoa
 		if (result instanceof PessoaFisica) {
 			PessoaFisica pf = (PessoaFisica) result;
-
 			pf.setCpf(UtilitarioString.formataCpf(pf.getCpf()));
 
-			if (pf.getNascimentoPais() != null && pf.getNascimentoPais().getId() != null) {
-				pf.setNascimentoPais(paisDao.findOne(pf.getNascimentoPais().getId()));
-			} else {
-				pf.setNascimentoPais(null);
-			}
-			if (pf.getNascimentoPais() != null && pf.getNascimentoEstado() != null && pf.getNascimentoEstado().getId() != null) {
-				Estado estado = estadoDao.findOne(pf.getNascimentoEstado().getId());
-				if (estado.getPais().getId() != pf.getNascimentoPais().getId()) {
-					pf.setNascimentoEstado(null);
-				} else {
-					pf.setNascimentoEstado(estado);
-				}
-			} else {
-				pf.setNascimentoEstado(null);
-			}
-			if (pf.getNascimentoEstado() != null && pf.getNascimentoMunicipio() != null && pf.getNascimentoMunicipio().getId() != null) {
-				Municipio municipio = municipioDao.findOne(pf.getNascimentoMunicipio().getId());
-				if (municipio.getEstado().getId() != pf.getNascimentoEstado().getId()) {
-					pf.setNascimentoMunicipio(null);
-				} else {
-					pf.setNascimentoMunicipio(municipio);
-				}
+			// ajustar dados do local de nascimento
+			if (pf.getNascimentoMunicipio() != null && pf.getNascimentoMunicipio().getId() != null) {
+				pf.setNascimentoMunicipio(municipioDao.findOne(pf.getNascimentoMunicipio().getId()));
+				pf.setNascimentoEstado(pf.getNascimentoMunicipio().getEstado());
+				pf.setNascimentoPais(pf.getNascimentoEstado().getPais());
 			} else {
 				pf.setNascimentoMunicipio(null);
+				if (pf.getNascimentoEstado() != null && pf.getNascimentoEstado().getId() != null) {
+					pf.setNascimentoEstado(estadoDao.findOne(pf.getNascimentoEstado().getId()));
+					pf.setNascimentoPais(pf.getNascimentoEstado().getPais());
+				} else {
+					pf.setNascimentoEstado(null);
+					if (pf.getNascimentoEstado() != null && pf.getNascimentoEstado().getId() != null) {
+						pf.setNascimentoPais(paisDao.findOne(pf.getNascimentoPais().getId()));
+					} else {
+						pf.setNascimentoPais(null);
+					}
+				}
 			}
 		} else {
 			PessoaJuridica pj = (PessoaJuridica) result;
@@ -227,17 +233,18 @@ public class SalvarCmd extends _Comando {
 		// publico alvo
 		if (Confirmacao.S.equals(result.getPublicoAlvoConfirmacao())) {
 			if (publicoAlvo == null) {
-				throw new BoException("Informações sobre o público alvo não informadas");
+				throw new BoException("Informações sobre o público alvo não foram informadas!");
 			}
 			publicoAlvo.setPessoa(result);
 			if (publicoAlvo.getId() == null) {
-				PublicoAlvo salvo = publicoAlvoDao.findOneByPessoa(publicoAlvo.getPessoa());
+				// tentar recuperar ID pela pessoa
+				PublicoAlvo salvo = publicoAlvoDao.findOneByPessoa(result);
 				if (salvo != null) {
 					publicoAlvo.setId(salvo.getId());
 				}
 			}
 			// ajustar o setor
-			if (publicoAlvo.getPublicoAlvoSetorList() != null) {
+			if (!CollectionUtils.isEmpty(publicoAlvo.getPublicoAlvoSetorList())) {
 				for (PublicoAlvoSetor publicoAlvoSetor : publicoAlvo.getPublicoAlvoSetorList()) {
 					publicoAlvoSetor.setPublicoAlvo(publicoAlvo);
 					if (publicoAlvo.getId() != null) {
@@ -251,248 +258,231 @@ public class SalvarCmd extends _Comando {
 			if (publicoAlvo.getDapNumero() != null) {
 				publicoAlvo.setDapNumero(publicoAlvo.getDapNumero().toUpperCase());
 			}
+			// salvar público alvo
 			publicoAlvoDao.save(publicoAlvo);
 
+			// excluir as propriedades vinculadas ao publico alvo
+			excluirRegistros(result, "publicoAlvoPropriedadeRuralList", publicoAlvoPropriedadeRuralDao);
+
 			// salvar as propriedades vinculadas ao publico alvo
-			if (publicoAlvo.getPublicoAlvoPropriedadeRuralList() != null) {
-				// tratar a exclusao de registros
+			if (!CollectionUtils.isEmpty(publicoAlvo.getPublicoAlvoPropriedadeRuralList())) {
+				// tratar a insersão de registros
+				int tot = 0;
+				boolean comunidade = false;
 				for (PublicoAlvoPropriedadeRural publicoAlvoPropriedadeRural : publicoAlvo.getPublicoAlvoPropriedadeRuralList()) {
-					if (publicoAlvoPropriedadeRural == null) {
+					if (publicoAlvoPropriedadeRural == null || publicoAlvoPropriedadeRural.getCadastroAcao() == null) {
 						continue;
 					}
-					if (CadastroAcao.E.equals(publicoAlvoPropriedadeRural.getCadastroAcao())) {
-						publicoAlvoPropriedadeRuralDao.delete(publicoAlvoPropriedadeRural);
+
+					tot++;
+					publicoAlvoPropriedadeRural.setPublicoAlvo(publicoAlvo);
+					if (publicoAlvoPropriedadeRural.getPropriedadeRural() == null) {
+						if (publicoAlvoPropriedadeRural.getComunidade() == null) {
+							throw new BoException("Não foi possível identificar a comunidade!");
+						}
+						publicoAlvoPropriedadeRural.setComunidade(comunidadeDao.findOne(publicoAlvoPropriedadeRural.getComunidade().getId()));
+						comunidade = true;
+					} else {
+						publicoAlvoPropriedadeRural.setPropriedadeRural(propriedadeRuralDao.findOne(publicoAlvoPropriedadeRural.getPropriedadeRural().getId()));
+						publicoAlvoPropriedadeRural.setComunidade(publicoAlvoPropriedadeRural.getPropriedadeRural().getComunidade());
 					}
+					publicoAlvoPropriedadeRuralDao.save(publicoAlvoPropriedadeRural);
 				}
-				// tratar a insersao de registros
-				for (PublicoAlvoPropriedadeRural publicoAlvoPropriedadeRural : publicoAlvo.getPublicoAlvoPropriedadeRuralList()) {
-					if (publicoAlvoPropriedadeRural == null) {
-						continue;
-					}
-					if (!CadastroAcao.E.equals(publicoAlvoPropriedadeRural.getCadastroAcao())) {
-						publicoAlvoPropriedadeRural.setPublicoAlvo(publicoAlvo);
-						publicoAlvoPropriedadeRuralDao.save(publicoAlvoPropriedadeRural);
-					}
+				if (comunidade && tot > 1) {
+					throw new BoException("Só é possível um vínculo com uma comunidade. Cadastre a propriedade rural ao invés!");
 				}
 			}
 		}
+
+		// tratar a exclusao de registros
+		excluirRegistros(result, "enderecoList", pessoaEnderecoDao);
 
 		// salvar enderecos
-		if (result.getEnderecoList() != null) {
-			// tratar a exclusao de registros
-			for (PessoaEndereco pessoaEndereco : result.getEnderecoList()) {
-				if (CadastroAcao.E.equals(pessoaEndereco.getCadastroAcao())) {
-					pessoaEnderecoDao.delete(pessoaEndereco);
-				}
-			}
+		if (!CollectionUtils.isEmpty(result.getEnderecoList())) {
 			// tratar a insersao de registros
 			Integer ordem = 0;
 			for (PessoaEndereco pessoaEndereco : result.getEnderecoList()) {
-				if (!CadastroAcao.E.equals(pessoaEndereco.getCadastroAcao())) {
-
-					Endereco endereco = pessoaEndereco.getEndereco();
-					List<Endereco> pesquisa = enderecoDao.procurar(endereco);
-					if (CollectionUtils.isEmpty(pesquisa)) {
-						endereco.setId(null);
-					}
-					if (endereco.getPropriedadeRuralConfirmacao() == null) {
-						endereco.setPropriedadeRuralConfirmacao(Confirmacao.N);
-					}
-					endereco.setCep(UtilitarioString.formataCep(endereco.getCep()));
-					endereco = enderecoDao.save(endereco);
-
-					PessoaEndereco salvo = pessoaEnderecoDao.findOneByPessoaAndEndereco(result, endereco);
-					if (salvo != null) {
-						pessoaEndereco.setId(salvo.getId());
-					}
-					pessoaEndereco.setEndereco(endereco);
-					pessoaEndereco.setPessoa(result);
-					pessoaEndereco.setOrdem(++ordem);
-					pessoaEnderecoDao.save(pessoaEndereco);
+				if (pessoaEndereco.getCadastroAcao() == null) {
+					continue;
 				}
+				Endereco endereco = pessoaEndereco.getEndereco();
+				List<Endereco> pesquisa = enderecoDao.procurar(endereco);
+				if (CollectionUtils.isEmpty(pesquisa)) {
+					endereco.setId(null);
+				}
+				if (endereco.getPropriedadeRuralConfirmacao() == null) {
+					endereco.setPropriedadeRuralConfirmacao(Confirmacao.N);
+				}
+				endereco.setCep(UtilitarioString.formataCep(endereco.getCep()));
+				endereco = enderecoDao.save(endereco);
+
+				PessoaEndereco salvo = pessoaEnderecoDao.findOneByPessoaAndEndereco(result, endereco);
+				if (salvo != null) {
+					pessoaEndereco.setId(salvo.getId());
+				}
+				pessoaEndereco.setPessoa(result);
+				pessoaEndereco.setEndereco(endereco);
+				pessoaEndereco.setOrdem(++ordem);
+				pessoaEnderecoDao.save(pessoaEndereco);
+
 			}
 		}
+
+		// tratar a exclusao de registros
+		excluirRegistros(result, "telefoneList", pessoaTelefoneDao);
 
 		// salvar telefones
-		if (result.getTelefoneList() != null) {
-			// tratar a exclusao de registros
-			for (PessoaTelefone pessoaTelefone : result.getTelefoneList()) {
-				if (CadastroAcao.E.equals(pessoaTelefone.getCadastroAcao())) {
-					pessoaTelefoneDao.delete(pessoaTelefone);
-				}
-			}
-			// tratar a insersao de registros
+		if (!CollectionUtils.isEmpty(result.getTelefoneList())) {
 			Integer ordem = 0;
 			for (PessoaTelefone pessoaTelefone : result.getTelefoneList()) {
-				if (!CadastroAcao.E.equals(pessoaTelefone.getCadastroAcao())) {
-					if (pessoaTelefone.getTelefone() == null || pessoaTelefone.getTelefone().getNumero() == null || pessoaTelefone.getTelefone().getNumero().trim().length() == 0) {
-						throw new BoException("Telefone não informado");
-					}
-					Telefone telefone = telefoneDao.findByNumero(pessoaTelefone.getTelefone().getNumero());
-					if (telefone == null) {
-						telefone = pessoaTelefone.getTelefone();
-						telefone.setId(null);
-						telefone = telefoneDao.save(telefone);
-					}
-					PessoaTelefone salvo = pessoaTelefoneDao.findOneByPessoaAndTelefone(result, telefone);
-					if (salvo != null) {
-						pessoaTelefone.setId(salvo.getId());
-					}
-					pessoaTelefone.setTelefone(telefone);
-					pessoaTelefone.setPessoa(result);
-					pessoaTelefone.setOrdem(++ordem);
-					pessoaTelefoneDao.save(pessoaTelefone);
+				if (pessoaTelefone.getTelefone() == null || StringUtils.isBlank(pessoaTelefone.getTelefone().getNumero())) {
+					throw new BoException("Telefone não informado");
 				}
+				Telefone telefone = telefoneDao.findByNumero(pessoaTelefone.getTelefone().getNumero());
+				if (telefone == null) {
+					telefone = pessoaTelefone.getTelefone();
+					telefone.setId(null);
+					telefone = telefoneDao.save(telefone);
+				}
+				PessoaTelefone salvo = pessoaTelefoneDao.findOneByPessoaAndTelefone(result, telefone);
+				if (salvo != null) {
+					pessoaTelefone.setId(salvo.getId());
+				}
+				pessoaTelefone.setPessoa(result);
+				pessoaTelefone.setTelefone(telefone);
+				pessoaTelefone.setOrdem(++ordem);
+				pessoaTelefoneDao.save(pessoaTelefone);
 			}
 		}
+
+		// tratar a exclusao de registros
+		excluirRegistros(result, "emailList", pessoaEmailDao);
 
 		// salvar emails
-		if (result.getEmailList() != null) {
-			// tratar a exclusao de registros
-			for (PessoaEmail pessoaEmail : result.getEmailList()) {
-				if (CadastroAcao.E.equals(pessoaEmail.getCadastroAcao())) {
-					pessoaEmailDao.delete(pessoaEmail);
-				}
-			}
+		if (!CollectionUtils.isEmpty(result.getEmailList())) {
 			// tratar a insersao de registros
 			Integer ordem = 0;
 			for (PessoaEmail pessoaEmail : result.getEmailList()) {
-				if (!CadastroAcao.E.equals(pessoaEmail.getCadastroAcao())) {
-					if (pessoaEmail.getEmail() == null || pessoaEmail.getEmail().getEndereco() == null || pessoaEmail.getEmail().getEndereco().trim().length() == 0) {
-						throw new BoException("E-mail não informado");
-					}
-					Email email = emailDao.findByEndereco(pessoaEmail.getEmail().getEndereco());
-					if (email == null) {
-						email = pessoaEmail.getEmail();
-						email.setId(null);
-						email.setEndereco(email.getEndereco().trim().toLowerCase());
-						email = emailDao.save(email);
-					}
-					PessoaEmail salvo = pessoaEmailDao.findOneByPessoaAndEmail(result, email);
-					if (salvo != null) {
-						pessoaEmail.setId(salvo.getId());
-					}
-					pessoaEmail.setEmail(email);
-					pessoaEmail.setPessoa(result);
-					pessoaEmail.setOrdem(++ordem);
-					pessoaEmailDao.save(pessoaEmail);
+				if (pessoaEmail.getEmail() == null || StringUtils.isBlank(pessoaEmail.getEmail().getEndereco())) {
+					throw new BoException("E-mail não informado");
 				}
+				Email email = emailDao.findByEndereco(pessoaEmail.getEmail().getEndereco());
+				if (email == null) {
+					email = pessoaEmail.getEmail();
+					email.setId(null);
+					email.setEndereco(email.getEndereco().trim().toLowerCase());
+					email = emailDao.save(email);
+				}
+				PessoaEmail salvo = pessoaEmailDao.findOneByPessoaAndEmail(result, email);
+				if (salvo != null) {
+					pessoaEmail.setId(salvo.getId());
+				}
+				pessoaEmail.setPessoa(result);
+				pessoaEmail.setEmail(email);
+				pessoaEmail.setOrdem(++ordem);
+				pessoaEmailDao.save(pessoaEmail);
 			}
 		}
+
+		// tratar a exclusao de registros
+		excluirRegistros(result, "relacionamentoList", pessoaRelacionamentoDao);
 
 		// salvar relacionamentos
-		if (result.getRelacionamentoList() != null) {
+		if (!CollectionUtils.isEmpty(result.getRelacionamentoList())) {
 			for (PessoaRelacionamento pessoaRelacionamento : result.getRelacionamentoList()) {
-				if (CadastroAcao.E.equals(pessoaRelacionamento.getCadastroAcao())) {
-					relacionamentoDao.delete(pessoaRelacionamento.getRelacionamento());
+				Relacionamento relacionamento = pessoaRelacionamento.getRelacionamento();
+
+				if (relacionamento == null || relacionamento.getId() == null) {
+					if (relacionamento == null) {
+						relacionamento = new Relacionamento();
+					}
+					if (relacionamento.getRelacionamentoTipo() == null) {
+						relacionamento.setRelacionamentoTipo(pessoaRelacionamento.getRelacionamento().getRelacionamentoTipo());
+					}
+				} else {
+					Relacionamento salvo = relacionamentoDao.findById(relacionamento.getId());
+					List<PessoaRelacionamento> prList = salvo.getPessoaRelacionamentoList();
+					prList.size();
+					BeanUtils.copyProperties(salvo, relacionamento);
+					relacionamento = salvo;
+					relacionamento.setPessoaRelacionamentoList(prList);
+					em.detach(salvo);
+					salvo = null;
 				}
-			}
-			for (PessoaRelacionamento pessoaRelacionamento : result.getRelacionamentoList()) {
-				if (!CadastroAcao.E.equals(pessoaRelacionamento.getCadastroAcao())) {
-					Relacionamento relacionamento = pessoaRelacionamento.getRelacionamento();
-
-					if (relacionamento == null || relacionamento.getId() == null) {
-						if (relacionamento == null) {
-							relacionamento = new Relacionamento();
-						}
-						if (relacionamento.getRelacionamentoTipo() == null) {
-							relacionamento.setRelacionamentoTipo(pessoaRelacionamento.getRelacionamento().getRelacionamentoTipo());
-						}
-					} else {
-						Relacionamento salvo = relacionamentoDao.findById(relacionamento.getId());
-						List<PessoaRelacionamento> prList = salvo.getPessoaRelacionamentoList();
-						prList.size();
-						BeanUtils.copyProperties(salvo, relacionamento);
-						relacionamento = salvo;
-						relacionamento.setPessoaRelacionamentoList(prList);
-						em.detach(salvo);
-						salvo = null;
-					}
-					relacionamento.setInicio(pessoaRelacionamento.getRelacionamento().getInicio());
-					relacionamento.setTermino(pessoaRelacionamento.getRelacionamento().getTermino());
-					if (relacionamento instanceof Emprego) {
-						relacionamento = empregoDao.save((Emprego) relacionamento);
-					} else {						
-						relacionamento = relacionamentoDao.save(relacionamento);
-					}
-
-					// salvar o relacionado
-					pessoaRelacionamento.setRelacionamento(relacionamento);
-					pessoaRelacionamentoDao.save(pessoaRelacionamento);
-
-					RelacionamentoConfiguracaoVi relacionamentoConfiguracaoVi = relacionamentoConfiguracaoViDao.findByTipoIdAndRelacionadorId(pessoaRelacionamento.getRelacionamento().getRelacionamentoTipo().getId(), pessoaRelacionamento.getRelacionamentoFuncao().getId());
-
-					// salvar o relacionador
-					PessoaRelacionamento relacionador = null;
-					boolean encontrou = false;
-					if (relacionamento.getPessoaRelacionamentoList() != null) {
-						for (PessoaRelacionamento rel : relacionamento.getPessoaRelacionamentoList()) {
-							if (rel.getPessoa() != null && rel.getPessoa().getId().equals(result.getId())) {
-								relacionador = rel;
-								encontrou = true;
-								break;
-							}
-						}
-					}
-					if (!encontrou) {
-						relacionador = new PessoaRelacionamento();
-						relacionador.setPessoa(result);
-						relacionador.setRelacionamento(relacionamento);
-					}
-					relacionador.setRelacionamentoFuncao(new RelacionamentoFuncao(relacionamentoConfiguracaoVi.getRelacionadoId()));
-					pessoaRelacionamentoDao.save(relacionador);
+				relacionamento.setInicio(pessoaRelacionamento.getRelacionamento().getInicio());
+				relacionamento.setTermino(pessoaRelacionamento.getRelacionamento().getTermino());
+				if (relacionamento instanceof Emprego) {
+					relacionamento = empregoDao.save((Emprego) relacionamento);
+				} else {
+					relacionamento = relacionamentoDao.save(relacionamento);
 				}
+
+				// salvar o relacionado
+				pessoaRelacionamento.setRelacionamento(relacionamento);
+				pessoaRelacionamentoDao.save(pessoaRelacionamento);
+
+				RelacionamentoConfiguracaoVi relacionamentoConfiguracaoVi = relacionamentoConfiguracaoViDao.findByTipoIdAndRelacionadorId(pessoaRelacionamento.getRelacionamento().getRelacionamentoTipo().getId(), pessoaRelacionamento.getRelacionamentoFuncao().getId());
+
+				// salvar o relacionador
+				PessoaRelacionamento relacionador = null;
+				boolean encontrou = false;
+				if (relacionamento.getPessoaRelacionamentoList() != null) {
+					for (PessoaRelacionamento rel : relacionamento.getPessoaRelacionamentoList()) {
+						if (rel.getPessoa() != null && rel.getPessoa().getId().equals(result.getId())) {
+							relacionador = rel;
+							encontrou = true;
+							break;
+						}
+					}
+				}
+				if (!encontrou) {
+					relacionador = new PessoaRelacionamento();
+					relacionador.setPessoa(result);
+					relacionador.setRelacionamento(relacionamento);
+				}
+				relacionador.setRelacionamentoFuncao(new RelacionamentoFuncao(relacionamentoConfiguracaoVi.getRelacionadoId()));
+				pessoaRelacionamentoDao.save(relacionador);
 			}
 		}
+
+		// tratar a exclusao de registros
+		excluirRegistros(result, "grupoSocialList", pessoaGrupoSocialDao);
 
 		// salvar grupos sociais
-		if (result.getGrupoSocialList() != null) {
-			// tratar a exclusao de registros
-			for (PessoaGrupoSocial pessoaGrupoSocial : result.getGrupoSocialList()) {
-				if (CadastroAcao.E.equals(pessoaGrupoSocial.getCadastroAcao())) {
-					pessoaGrupoSocialDao.delete(pessoaGrupoSocial);
-				}
-			}
+		if (!CollectionUtils.isEmpty(result.getGrupoSocialList())) {
 			// tratar a insersao de registros
 			for (PessoaGrupoSocial pessoaGrupoSocial : result.getGrupoSocialList()) {
-				if (!CadastroAcao.E.equals(pessoaGrupoSocial.getCadastroAcao())) {
-					pessoaGrupoSocial.setPessoa(result);
-					pessoaGrupoSocialDao.save(pessoaGrupoSocial);
-				}
+				pessoaGrupoSocial.setPessoa(result);
+				pessoaGrupoSocialDao.save(pessoaGrupoSocial);
 			}
 		}
 
+		// tratar a exclusao de registros
+		excluirRegistros(result, "arquivoList", pessoaArquivoDao);
+
 		// salvar arquivos vinculados
-		if (result.getArquivoList() != null) {
-			// tratar a exclusao de registros
-			for (PessoaArquivo pessoaArquivo : result.getArquivoList()) {
-				if (CadastroAcao.E.equals(pessoaArquivo.getCadastroAcao()) && pessoaArquivo.getId() != null) {
-					pessoaArquivoDao.delete(pessoaArquivo);
-				}
-			}
+		if (!CollectionUtils.isEmpty(result.getArquivoList())) {
 			// tratar a insersao de registros
 			for (PessoaArquivo pessoaArquivo : result.getArquivoList()) {
-				if (!CadastroAcao.E.equals(pessoaArquivo.getCadastroAcao())) {
-					Arquivo arquivo = pessoaArquivo.getArquivo();
-					arquivo = arquivoDao.findByMd5(arquivo.getMd5());
-					if (arquivo != null) {
-						arquivo.setNomeOriginal(pessoaArquivo.getArquivo().getNomeOriginal());
-						arquivo.setDataUpload(pessoaArquivo.getArquivo().getDataUpload());
-						arquivo.setExtensao(pessoaArquivo.getArquivo().getExtensao());
-						arquivo.setTamanho(pessoaArquivo.getArquivo().getTamanho());
-						arquivo.setTipo(pessoaArquivo.getArquivo().getTipo());
-					}
-					arquivoDao.save(arquivo);
-					pessoaArquivo.setArquivo(arquivo);
-					pessoaArquivo.setPessoa(result);
-					pessoaArquivoDao.save(pessoaArquivo);
+				Arquivo arquivo = pessoaArquivo.getArquivo();
+				arquivo = arquivoDao.findByMd5(arquivo.getMd5());
+				if (arquivo != null) {
+					arquivo.setNomeOriginal(pessoaArquivo.getArquivo().getNomeOriginal());
+					arquivo.setDataUpload(pessoaArquivo.getArquivo().getDataUpload());
+					arquivo.setExtensao(pessoaArquivo.getArquivo().getExtensao());
+					arquivo.setTamanho(pessoaArquivo.getArquivo().getTamanho());
+					arquivo.setTipo(pessoaArquivo.getArquivo().getTipo());
 				}
+				arquivoDao.save(arquivo);
+				pessoaArquivo.setPessoa(result);
+				pessoaArquivo.setArquivo(arquivo);
+				pessoaArquivoDao.save(pessoaArquivo);
 			}
 		}
 
 		// salvar os formularios de diagnostico
 		if (result.getDiagnosticoList() instanceof List && !(CollectionUtils.isEmpty((List<?>) result.getDiagnosticoList()))) {
-			if (!(((List<?>) result.getDiagnosticoList()).get(0) instanceof LinkedHashMap)) {				
+			if (!(((List<?>) result.getDiagnosticoList()).get(0) instanceof LinkedHashMap)) {
 				for (List<Object> formulario : (List<List<Object>>) result.getDiagnosticoList()) {
 					LinkedHashMap<Object, Object> f = (LinkedHashMap<Object, Object>) formulario.get(9);
 					if (f != null) {
@@ -511,20 +501,15 @@ public class SalvarCmd extends _Comando {
 			}
 		}
 
+		// tratar a exclusao de registros
+		excluirRegistros(result, "pendenciaList", pessoaPendenciaDao);
+
 		// salvar pendencias do cadastro
-		if (result.getPendenciaList() != null) {
-			// tratar a exclusao de registros
-			for (PessoaPendencia pendencia : result.getPendenciaList()) {
-				if (CadastroAcao.E.equals(pendencia.getCadastroAcao())) {
-					pessoaPendenciaDao.delete(pendencia);
-				}
-			}
+		if (!CollectionUtils.isEmpty(result.getPendenciaList())) {
 			// tratar a insersao de registros
 			for (PessoaPendencia pendencia : result.getPendenciaList()) {
-				if (!CadastroAcao.E.equals(pendencia.getCadastroAcao())) {
-					pendencia.setPessoa(result);
-					pessoaPendenciaDao.save(pendencia);
-				}
+				pendencia.setPessoa(result);
+				pessoaPendenciaDao.save(pendencia);
 			}
 		}
 

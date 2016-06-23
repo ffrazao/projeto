@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
+import br.gov.df.emater.aterwebsrv.bo._SalvarCmd;
 import br.gov.df.emater.aterwebsrv.dao.formulario.ElementoDao;
 import br.gov.df.emater.aterwebsrv.dao.formulario.FormularioDao;
 import br.gov.df.emater.aterwebsrv.dao.formulario.FormularioVersaoDao;
@@ -19,7 +19,7 @@ import br.gov.df.emater.aterwebsrv.modelo.formulario.FormularioVersaoElemento;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.Observar;
 
 @Service("FormularioSalvarCmd")
-public class SalvarCmd extends _Comando {
+public class SalvarCmd extends _SalvarCmd {
 
 	@Autowired
 	private FormularioDao dao;
