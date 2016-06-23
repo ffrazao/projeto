@@ -20,9 +20,9 @@
     "angular-sanitize": "~1.5",
     "angular-toastr": "~1",
     "angular-ui-mask": "~1",
-    "angular-ui-router": "~0",
+    "angular-ui-router": "~0.3.1",
     "angular-ui-utils": "~3.0",
-    "bootstrap": "~3",
+    "bootstrap": "~3.3.6",
     "font-awesome": "~4",
     "jquery": "~3.0",
     "less.js": "~2",
@@ -38,9 +38,15 @@
     "ng-idle": "~1",
     "angular-filter": "~0",
     "angular-qr-scanner": "^0.1.0",
-    "webcam": "webcam-directive#^3.1.1"
+    "webcam": "webcam-directive#^3.1.1",
+    "br-validations": "~0.3.0",
+    "string-mask": "~0.3.0"
   },
   "devDependencies": {
     "angular-google-maps": "~2"
+  },
+  "resolutions": {
+    "br-validations": "~0.3.0",
+    "string-mask": "~0.3.0"
   }
 }
