@@ -10,6 +10,13 @@ angular.module(pNmModulo, ['ui.bootstrap', 'ui.router', 'ngSanitize', 'ngAnimate
 
 angular.module(pNmModulo).factory(pNmFactory, ['$rootScope', '$http', 'toastr', 'Upload', '$timeout',
     function($rootScope, $http, toastr, Upload, $timeout) {
+        var erroInterno = function(data) {
+            if (data && data.mensagem) {
+                toastr.error('error', 'Erro ao Recuperar Informações', data.mensagem);
+            } else {
+                document.write(data);
+            }
+        };
         var sucessoInterno = function (ls, cb) {
             return function(data) {
                 if (data && data.mensagem && data.mensagem === "OK") {
@@ -28,13 +35,6 @@ angular.module(pNmModulo).factory(pNmFactory, ['$rootScope', '$http', 'toastr', 
                     erroInterno(data);
                 }
             };
-        };
-        var erroInterno = function(data) {
-            if (data && data.mensagem) {
-                toastr.error('error', 'Erro ao Recuperar Informações', data.mensagem);
-            } else {
-                document.write(data);
-            }
         };
         var UtilSrv = {
             indiceDe : function(arr, item) {

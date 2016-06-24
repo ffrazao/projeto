@@ -18,6 +18,20 @@ angular.module(pNmModulo).controller(pNmController,
     if (!$uibModalInstance) { init(); }
 
     // inicio rotinas de apoio
+    var formataTelefone = function(numero) {
+        if (!numero) {
+            return null;
+        }
+        var phoneMask8D = new StringMask('(00) 0000-0000'),
+            phoneMask9D = new StringMask('(00) 00000-0000');
+        var result = numero.toString().replace(/[^0-9]/g, '').slice(0, 11);
+        if (result.length < 11){
+            result = phoneMask8D.apply(result) || '';
+        } else{
+            result = phoneMask9D.apply(result);
+        }
+        return result;
+    };
     var jaCadastrado = function(conteudo) {
         var i, id, numero;
         conteudo.telefone.numero = formataTelefone(conteudo.telefone.numero);
@@ -46,20 +60,6 @@ angular.module(pNmModulo).controller(pNmController,
             // processar o retorno negativo da modal
             //$log.info('Modal dismissed at: ' + new Date());
         });
-    };
-    var formataTelefone = function(numero) {
-        if (!numero) {
-            return null;
-        }
-        var phoneMask8D = new StringMask('(00) 0000-0000'),
-            phoneMask9D = new StringMask('(00) 00000-0000');
-        var result = numero.toString().replace(/[^0-9]/g, '').slice(0, 11);
-        if (result.length < 11){
-            result = phoneMask8D.apply(result) || '';
-        } else{
-            result = phoneMask9D.apply(result);
-        }
-        return result;
     };
     // fim rotinas de apoio
 

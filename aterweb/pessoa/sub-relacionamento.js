@@ -24,41 +24,6 @@ angular.module(pNmModulo).controller(pNmController,
     var editarItem = function (destino, item) {
         $scope.modalSelecinarRelacionado();
     };
-    $scope.modalSelecinarRelacionado = function (size) {
-        // abrir a modal
-        var modalInstance = $uibModal.open({
-            animation: true,
-            templateUrl: 'pessoa/pessoa-modal.html',
-            controller: 'PessoaCtrl',
-            size: 'lg',
-            resolve: {
-                modalCadastro: function() {
-                    return $scope.cadastroBase();
-                }
-            }
-        });
-        // processar retorno da modal
-        modalInstance.result.then(function (resultado) {
-            // processar o retorno positivo da modal
-            var reg = null;
-            if (resultado.selecao.tipo === 'U') {
-                reg = {pessoa: {id: resultado.selecao.item[0], nome: resultado.selecao.item[1], pessoaTipo: resultado.selecao.item[3], genero: resultado.selecao.item[9]}};
-                $scope.preparaClassePessoa(reg.pessoa);
-                captaRelacionamento(reg);
-            } else {
-                for (var i in resultado.selecao.items) {
-                    reg = {pessoa: {id: resultado.selecao.items[i][0], nome: resultado.selecao.items[i][1], pessoaTipo: resultado.selecao.items[i][3], genero: resultado.selecao.items[i][9]}};
-                    $scope.preparaClassePessoa(reg.pessoa);
-                    captaRelacionamento(reg);
-                }
-            }
-            toastr.info('Operação realizada!', 'Informação');
-        }, function () {
-            // processar o retorno negativo da modal
-            captaRelacionamento({});
-        });
-    };
-
     var captaRelacionamento = function(reg, destino) {
         if (!reg) {
             reg = {};
@@ -255,6 +220,40 @@ angular.module(pNmModulo).controller(pNmController,
         }, function () {
             // processar o retorno negativo da modal
             //$log.info('Modal dismissed at: ' + new Date());
+        });
+    };
+    $scope.modalSelecinarRelacionado = function (size) {
+        // abrir a modal
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'pessoa/pessoa-modal.html',
+            controller: 'PessoaCtrl',
+            size: 'lg',
+            resolve: {
+                modalCadastro: function() {
+                    return $scope.cadastroBase();
+                }
+            }
+        });
+        // processar retorno da modal
+        modalInstance.result.then(function (resultado) {
+            // processar o retorno positivo da modal
+            var reg = null;
+            if (resultado.selecao.tipo === 'U') {
+                reg = {pessoa: {id: resultado.selecao.item[0], nome: resultado.selecao.item[1], pessoaTipo: resultado.selecao.item[3], genero: resultado.selecao.item[9]}};
+                $scope.preparaClassePessoa(reg.pessoa);
+                captaRelacionamento(reg);
+            } else {
+                for (var i in resultado.selecao.items) {
+                    reg = {pessoa: {id: resultado.selecao.items[i][0], nome: resultado.selecao.items[i][1], pessoaTipo: resultado.selecao.items[i][3], genero: resultado.selecao.items[i][9]}};
+                    $scope.preparaClassePessoa(reg.pessoa);
+                    captaRelacionamento(reg);
+                }
+            }
+            toastr.info('Operação realizada!', 'Informação');
+        }, function () {
+            // processar o retorno negativo da modal
+            captaRelacionamento({});
         });
     };
 

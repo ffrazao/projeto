@@ -285,10 +285,6 @@ var TIMEOUT_TEMPO = 5 * 60;
                 function isEmpty(value) {
                     return angular.isUndefined(value) || value === '' || value === null || value !== value;
                 }
-                scope.$watch(attr.ngValorMax, function() {
-                    ctrl.$setViewValue(ctrl.$viewValue);
-                    maxValidator(ctrl.$viewValue);
-                });
                 var maxValidator = function(value) {
                     var max = scope.$eval(attr.ngValorMax) || Infinity;
                     // if (typeof value === 'string' || value instanceof String) {
@@ -306,6 +302,10 @@ var TIMEOUT_TEMPO = 5 * 60;
                         return value;
                     }
                 };
+                scope.$watch(attr.ngValorMax, function() {
+                    ctrl.$setViewValue(ctrl.$viewValue);
+                    maxValidator(ctrl.$viewValue);
+                });
 
                 ctrl.$parsers.push(maxValidator);
                 ctrl.$formatters.push(maxValidator);
@@ -725,22 +725,6 @@ var TIMEOUT_TEMPO = 5 * 60;
                 });
             };
 
-            $rootScope.idleTempo = IDLE_TEMPO;
-            $rootScope.timeoutTempo = TIMEOUT_TEMPO;
-
-            $rootScope.$on('IdleStart', function() {
-                inicializaDescansoTela();
-                $rootScope.exibeDescansoTela();
-            });
-            $rootScope.$on('IdleEnd', function() {
-                $rootScope.escondeDescansoTela();
-            });
-            $rootScope.$on('IdleTimeout', function() {
-                $rootScope.escondeDescansoTela();
-                toastr.warning('Tempo esgotado', 'Sessão Encerrada!');
-                $rootScope.executarLogout();
-            });
-
             var armazenarDescansoTela = function () {
                 SegurancaSrv.descansoTela().success(function(resposta) {
                     var apoio = localStorage.getItem('apoio');
@@ -781,6 +765,22 @@ var TIMEOUT_TEMPO = 5 * 60;
                 }
             };
             
+            $rootScope.idleTempo = IDLE_TEMPO;
+            $rootScope.timeoutTempo = TIMEOUT_TEMPO;
+
+            $rootScope.$on('IdleStart', function() {
+                inicializaDescansoTela();
+                $rootScope.exibeDescansoTela();
+            });
+            $rootScope.$on('IdleEnd', function() {
+                $rootScope.escondeDescansoTela();
+            });
+            $rootScope.$on('IdleTimeout', function() {
+                $rootScope.escondeDescansoTela();
+                toastr.warning('Tempo esgotado', 'Sessão Encerrada!');
+                $rootScope.executarLogout();
+            });
+
             inicializaDescansoTela();
 
             $rootScope.exibeDescansoTela = function() {

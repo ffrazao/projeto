@@ -21,74 +21,6 @@ angular.module(pNmModulo).controller(pNmController,
     if (!$uibModalInstance) { init(); }
 
     // inicio rotinas de apoio
-
-    $scope.modalSelecinarPropriedadeRural = function (size) {
-        // abrir a modal
-        var modalInstance = $uibModal.open({
-            animation: true,
-            templateUrl: 'pessoa/pessoa-modal.html',
-            controller: 'PessoaCtrl',
-            size: 'lg',
-            resolve: {
-                modalCadastro: function() {
-                    var cadastro = $scope.cadastroBase();
-                    cadastro.filtro.unidadeOrganizacionalList = [$scope.navegador.selecao.item[$scope.PRODUCAO_UNID_ORG_ID]];
-                    cadastro.apoio.unidadeOrganizacionalSomenteLeitura = true;
-                    return cadastro;
-                }
-            }
-        });
-        // processar retorno da modal
-        modalInstance.result.then(function (resultado) {
-            // processar o retorno positivo da modal
-            var reg = null, pessoa = null;
-            $scope.cadastro.apoio.publicoAlvoList = [];
-            if (resultado.selecao.tipo === 'U') {
-                $scope.cadastro.apoio.publicoAlvoList.push({id: resultado.selecao.item[10]});
-            } else {
-                for (var i in resultado.selecao.items) {
-                    $scope.cadastro.apoio.publicoAlvoList.push({id: resultado.selecao.items[i][10]});
-                }
-            }
-            if (!$scope.cadastro.apoio.publicoAlvoList.length) {
-                toastr.error('Nenhum registro selecionado');
-            } else {
-                IndiceProducaoSrv.filtrarPropriedadeRuralPorPublicoAlvo(
-                    {  
-                        empresaList: resultado.cadastro.filtro.empresaList,
-                        unidadeOrganizacionalList: resultado.cadastro.filtro.unidadeOrganizacionalList,
-                        comunidadeList: resultado.cadastro.filtro.comunidadeList,
-                        publicoAlvoList: $scope.cadastro.apoio.publicoAlvoList,
-                    }).success(function(resposta) {
-                    if (resposta.mensagem === 'OK') {
-                        // ano: $scope.navegador.selecao.item[$scope.PRODUCAO_ANO],
-                        // bem: {id: $scope.navegador.selecao.item[$scope.PRODUCAO_BEM_ID]},
-                        if (resposta.resultado && resposta.resultado.length) {
-                            var i, j, k;
-                            // percorrer todas as propriedades
-                            for (i in resposta.resultado) {
-                                // percorrer o publico alvo
-                                for (j in $scope.cadastro.apoio.publicoAlvoList) {
-                                    for (k in resposta.resultado[i][6]) {
-                                        if (resposta.resultado[i][6][k][1] === $scope.cadastro.apoio.publicoAlvoList[j].id) {
-                                            editarItem($scope.navegador.selecao.item[7], resposta.resultado[i]);
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }).error(function(erro){
-                    toastr.error(erro, 'Erro ao selecionar propriedades');
-                });
-            }
-        }, function () {
-            // processar o retorno negativo da modal
-            
-        });
-    };
-
     var jaCadastrado = function(conteudo, modalInstance) {
         var acao = null;
         if (!conteudo.id) {
@@ -108,21 +40,7 @@ angular.module(pNmModulo).controller(pNmController,
         });
         return false;
     };
-    var editarItem = function (destino, item) {
-        if (item.id) {
-            IndiceProducaoSrv.visualizar(item.id).success(function(resposta) {
-                if (resposta.mensagem && resposta.mensagem === 'OK') {
-                    exibirItem(destino, resposta.resultado);
-                } else {
-                    toastr.error(resposta.mensagem, 'Erro ao editar');
-                }
-            }).error(function(erro){
-                toastr.error(erro, 'Erro ao editar');
-            });
-        } else {
-            exibirItem(destino, item);
-        }
-    };
+
     var exibirItem = function (destino, item) {
         //console.log($scope.navegador.selecao.item);
         var form = 
@@ -228,6 +146,90 @@ angular.module(pNmModulo).controller(pNmController,
             //$log.info('Modal dismissed at: ' + new Date());
         });
     };
+
+    var editarItem = function (destino, item) {
+        if (item.id) {
+            IndiceProducaoSrv.visualizar(item.id).success(function(resposta) {
+                if (resposta.mensagem && resposta.mensagem === 'OK') {
+                    exibirItem(destino, resposta.resultado);
+                } else {
+                    toastr.error(resposta.mensagem, 'Erro ao editar');
+                }
+            }).error(function(erro){
+                toastr.error(erro, 'Erro ao editar');
+            });
+        } else {
+            exibirItem(destino, item);
+        }
+    };
+    
+    $scope.modalSelecinarPropriedadeRural = function (size) {
+        // abrir a modal
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'pessoa/pessoa-modal.html',
+            controller: 'PessoaCtrl',
+            size: 'lg',
+            resolve: {
+                modalCadastro: function() {
+                    var cadastro = $scope.cadastroBase();
+                    cadastro.filtro.unidadeOrganizacionalList = [$scope.navegador.selecao.item[$scope.PRODUCAO_UNID_ORG_ID]];
+                    cadastro.apoio.unidadeOrganizacionalSomenteLeitura = true;
+                    return cadastro;
+                }
+            }
+        });
+        // processar retorno da modal
+        modalInstance.result.then(function (resultado) {
+            // processar o retorno positivo da modal
+            var reg = null, pessoa = null;
+            $scope.cadastro.apoio.publicoAlvoList = [];
+            if (resultado.selecao.tipo === 'U') {
+                $scope.cadastro.apoio.publicoAlvoList.push({id: resultado.selecao.item[10]});
+            } else {
+                for (var i in resultado.selecao.items) {
+                    $scope.cadastro.apoio.publicoAlvoList.push({id: resultado.selecao.items[i][10]});
+                }
+            }
+            if (!$scope.cadastro.apoio.publicoAlvoList.length) {
+                toastr.error('Nenhum registro selecionado');
+            } else {
+                IndiceProducaoSrv.filtrarPropriedadeRuralPorPublicoAlvo(
+                    {  
+                        empresaList: resultado.cadastro.filtro.empresaList,
+                        unidadeOrganizacionalList: resultado.cadastro.filtro.unidadeOrganizacionalList,
+                        comunidadeList: resultado.cadastro.filtro.comunidadeList,
+                        publicoAlvoList: $scope.cadastro.apoio.publicoAlvoList,
+                    }).success(function(resposta) {
+                    if (resposta.mensagem === 'OK') {
+                        // ano: $scope.navegador.selecao.item[$scope.PRODUCAO_ANO],
+                        // bem: {id: $scope.navegador.selecao.item[$scope.PRODUCAO_BEM_ID]},
+                        if (resposta.resultado && resposta.resultado.length) {
+                            var i, j, k;
+                            // percorrer todas as propriedades
+                            for (i in resposta.resultado) {
+                                // percorrer o publico alvo
+                                for (j in $scope.cadastro.apoio.publicoAlvoList) {
+                                    for (k in resposta.resultado[i][6]) {
+                                        if (resposta.resultado[i][6][k][1] === $scope.cadastro.apoio.publicoAlvoList[j].id) {
+                                            editarItem($scope.navegador.selecao.item[7], resposta.resultado[i]);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }).error(function(erro){
+                    toastr.error(erro, 'Erro ao selecionar propriedades');
+                });
+            }
+        }, function () {
+            // processar o retorno negativo da modal
+            
+        });
+    };
+
     $scope.UtilSrv = UtilSrv;
 
     // fim rotinas de apoio
