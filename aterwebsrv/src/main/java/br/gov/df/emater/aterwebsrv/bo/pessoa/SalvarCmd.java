@@ -183,8 +183,10 @@ public class SalvarCmd extends _SalvarCmd {
 		if (result.getPublicoAlvo() != null) {
 			limparChavePrimaria(result.getPublicoAlvo().getPublicoAlvoPropriedadeRuralList());
 		}
-		limparChavePrimaria(result.getTelefoneList());
 		limparChavePrimaria(result.getEnderecoList());
+		limparChavePrimaria(result.getTelefoneList());
+		limparChavePrimaria(result.getEmailList());
+		limparChavePrimaria(result.getRelacionamentoList());
 
 		// ajustar os dados de nascimento da pessoa
 		if (result instanceof PessoaFisica) {
@@ -385,7 +387,13 @@ public class SalvarCmd extends _SalvarCmd {
 		}
 
 		// tratar a exclusao de registros
-		excluirRegistros(result, "relacionamentoList", pessoaRelacionamentoDao);
+		//excluirRegistros(result, "relacionamentoList", pessoaRelacionamentoDao);
+		if (result.getExcluidoMap() != null && result.getExcluidoMap().get("relacionamentoList") != null) {
+			result.getExcluidoMap().get("relacionamentoList").forEach((registro) -> {
+				PessoaRelacionamento pr = pessoaRelacionamentoDao.findOne((Integer) registro);
+				relacionamentoDao.delete(pr.getRelacionamento());
+			});
+		}
 
 		// salvar relacionamentos
 		if (!CollectionUtils.isEmpty(result.getRelacionamentoList())) {

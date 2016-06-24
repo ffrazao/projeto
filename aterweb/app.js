@@ -875,10 +875,13 @@ var TIMEOUT_TEMPO = 5 * 60;
                     toastr.error(msgErro, 'Erro!');
                     throw msgErro;
                 }
-                if (elemento['cadastroAcao'] && elemento['cadastroAcao'] === 'I') {
-                    return elemento;
+                if (!elemento) {
+                    elemento = {};
                 }
-                return angular.extend({}, elemento, {'cadastroAcao': 'A'});
+                if (!elemento['cadastroAcao'] || !elemento['cadastroAcao'] === 'I') {
+                    elemento['cadastroAcao'] = 'A';
+                }
+                return elemento;
             };
 
             $rootScope.excluirElemento = function (scp, lista, nomeLista, elemento) {

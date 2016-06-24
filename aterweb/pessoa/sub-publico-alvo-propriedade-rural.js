@@ -128,7 +128,7 @@ angular.module(pNmModulo).controller(pNmController,
         } else if ($scope.publicoAlvoPropriedadeRuralNvg.selecao.items && $scope.publicoAlvoPropriedadeRuralNvg.selecao.items.length) {
             for (i in $scope.publicoAlvoPropriedadeRuralNvg.selecao.items) {
                 for (j in $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList) {
-                    if (angular.equals($scope.publicoAlvoPropriedadeRuralNvg.selecao.items[i], $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList[j])) {
+                    if (angular.equals($scope.publicoAlvoPropriedadeRuralNvg.selecao.items[i].id, $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList[j].id)) {
                         item = angular.copy($scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList[j]);
                         editarItem($scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList[j], item);
                     }

@@ -81,7 +81,7 @@ angular.module(pNmModulo).controller(pNmController,
         } else if ($scope.pessoaTelefoneNvg.selecao.items && $scope.pessoaTelefoneNvg.selecao.items.length) {
             for (i in $scope.pessoaTelefoneNvg.selecao.items) {
                 for (j in $scope.cadastro.registro.telefoneList) {
-                    if (angular.equals($scope.pessoaTelefoneNvg.selecao.items[i], $scope.cadastro.registro.telefoneList[j])) {
+                    if (angular.equals($scope.pessoaTelefoneNvg.selecao.items[i].id, $scope.cadastro.registro.telefoneList[j].id)) {
                         item = angular.copy($scope.cadastro.registro.telefoneList[j]);
                         editarItem($scope.cadastro.registro.telefoneList[j], item);
                     }

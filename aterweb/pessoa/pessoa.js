@@ -70,7 +70,7 @@
                     '    </div>' + 
                     '</div>';
                 mensagemSrv.confirmacao(false, conf, null, {
-                    tipoPessoa: null
+                    tipoPessoa: 'PF'
                 }).then(function(conteudo) {
                     // processar o retorno positivo da modal
                     var pa = 'N';

@@ -42,7 +42,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="reg in cadastro.registro.relacionamentoList | filter: {cadastroAcao: '!E'}">
+                    <tr ng-repeat="reg in cadastro.registro.relacionamentoList | orderBy: ['relacionamento.relacionamentoTipo.nome', 'pessoa.nome', 'reg.nome'] track by reg.id">
                         <td>
                             <input type="radio" ng-show="pessoaRelacionamentoNvg.selecao.tipo === 'U'" ng-model="pessoaRelacionamentoNvg.selecao.item" ng-value="reg"/>
                             <input type="checkbox" ng-show="pessoaRelacionamentoNvg.selecao.tipo === 'M'" checklist-model="pessoaRelacionamentoNvg.selecao.items" checklist-value="reg"/>

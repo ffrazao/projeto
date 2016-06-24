@@ -248,7 +248,7 @@
                     ng-model="conteudo.relacionamento.relacionamentoTipo"
                     ng-options="item as item.nome for item in apoio.relacionamentoTipoList | orderBy : ['nome'] track by item.id"
                     ng-required="true"
-                    ng-disabled="conteudo.id">
+                    ng-disabled="conteudo.id > 0">
                 </select>
                 <div class="label label-danger" ng-show="confirmacaoFrm.relacionamentoTipo.$error.required">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>

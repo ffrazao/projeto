@@ -22,7 +22,16 @@ angular.module(pNmModulo).controller(pNmController,
         if (!str) {
             return null;
         }
-        return str.latinise().replace(/[^a-zA-Z0-9]/g,'').trim().toUpperCase();
+        return str.latinise().replace(/[^a-zA-Z0-9]/g,'').trim().toLowerCase();
+    };
+    var formataCep = function(numero) {
+        if (!numero) {
+            return null;
+        }
+        var cep = new StringMask('00000-000');
+        var result = numero.toString().replace(/[^0-9]/g, '').slice(0, 11);
+        result = cep.apply(result) || '';
+        return result;
     };
     var jaCadastrado = function(conteudo) {
         var i, id, end, igual;
@@ -33,10 +42,10 @@ angular.module(pNmModulo).controller(pNmController,
                 toastr.error('As informações estão incompletas!');
                 return false;
             }
-            if (!angular.equals(id, conteudo.id)) {
-                if (    (  (isUndefOrNull(end.estado)      && isUndefOrNull(conteudo.estado))      || (end.estado.id === conteudo.estado.id)) &&
-                        (  (isUndefOrNull(end.municipio)   && isUndefOrNull(conteudo.municipio))   || (end.municipio.id === conteudo.municipio.id)) &&
-                        (  (isUndefOrNull(end.cidade)      && isUndefOrNull(conteudo.cidade))      || (end.cidade.id === conteudo.cidade.id)) &&
+            if (!angular.equals(id, conteudo.chavePrincipal)) {
+                if (    (  (isUndefOrNull(end.estado)      && isUndefOrNull(conteudo.estado))      || (end.estado && conteudo.estado && end.estado.id === conteudo.estado.id)) &&
+                        (  (isUndefOrNull(end.municipio)   && isUndefOrNull(conteudo.municipio))   || (end.municipio && conteudo.municipio && end.municipio.id === conteudo.municipio.id)) &&
+                        (  (isUndefOrNull(end.cidade)      && isUndefOrNull(conteudo.cidade))      || (end.cidade && conteudo.cidade && end.cidade.id === conteudo.cidade.id)) &&
                         (  (isUndefOrNull(end.logradouro)  && isUndefOrNull(conteudo.logradouro))  || (limpa(end.logradouro) === limpa(conteudo.logradouro))) &&
                         (  (isUndefOrNull(end.complemento) && isUndefOrNull(conteudo.complemento)) || (limpa(end.complemento) === limpa(conteudo.complemento))) &&
                         (  (isUndefOrNull(end.numero)      && isUndefOrNull(conteudo.numero))      || (limpa(end.numero) === limpa(conteudo.numero)))) {
@@ -48,42 +57,35 @@ angular.module(pNmModulo).controller(pNmController,
         return true;
     };
     var editarItem = function (destino, item) {
-        mensagemSrv.confirmacao(false, '<frz-endereco conteudo="conteudo"/>', null, item.endereco, null, jaCadastrado).then(function (conteudo) {
+        var endereco = angular.extend({}, item.endereco, {'chavePrincipal': item.id});
+        if (endereco.cep) {
+            endereco.cep = endereco.cep.toString().replace(/[^0-9]/g, '').slice(0, 11);
+        }
+        mensagemSrv.confirmacao(false, '<frz-endereco conteudo="conteudo"/>', null, endereco, null, jaCadastrado).then(function (conteudo) {
             init();
             // processar o retorno positivo da modal
+            conteudo.cep = formataCep(conteudo.cep);
             if (destino) {
-                conteudo = $scope.editarElemento(conteudo);
+                destino = $scope.editarElemento(destino);
                 destino.endereco = angular.copy(conteudo);
             } else {
-                conteudo = $scope.criarElemento($scope.cadastro.registro, 'enderecoList', conteudo);
-                $scope.cadastro.registro.enderecoList.push({endereco: conteudo});
+                item.endereco = angular.copy(conteudo);
+                $scope.cadastro.registro.enderecoList.push(item);
             }
         }, function () {
             // processar o retorno negativo da modal
             //$log.info('Modal dismissed at: ' + new Date());
         });
     };
-    var formataEndereco = function(numero) {
-        /*if (!numero) {
-            return null;
-        }
-        var phoneMask8D = new StringMask('(00) 0000-0000'),
-            phoneMask9D = new StringMask('(00) 00000-0000');
-        var result = numero.toString().replace(/[^0-9]/g, '').slice(0, 11);
-        if (result.length < 11){
-            result = phoneMask8D.apply(result) || '';
-        } else{
-            result = phoneMask9D.apply(result);
-        }
-        return result;*/
-    };
     // fim rotinas de apoio
 
     // inicio das operaçoes atribuidas ao navagador
     $scope.abrir = function() { $scope.pessoaEnderecoNvg.mudarEstado('ESPECIAL'); };
     $scope.incluir = function() {
+        init();
         EnderecoSrv.novo().success(function (resposta) {
             var item = {endereco: resposta.resultado};
+            item = $scope.criarElemento($scope.cadastro.registro, 'enderecoList', item);
             editarItem(null, item);
         });
     };
@@ -96,7 +98,7 @@ angular.module(pNmModulo).controller(pNmController,
         } else if ($scope.pessoaEnderecoNvg.selecao.items && $scope.pessoaEnderecoNvg.selecao.items.length) {
             for (i in $scope.pessoaEnderecoNvg.selecao.items) {
                 for (j in $scope.cadastro.registro.enderecoList) {
-                    if (angular.equals($scope.pessoaEnderecoNvg.selecao.items[i], $scope.cadastro.registro.enderecoList[j])) {
+                    if (angular.equals($scope.pessoaEnderecoNvg.selecao.items[i].id, $scope.cadastro.registro.enderecoList[j].id)) {
                         item = angular.copy($scope.cadastro.registro.enderecoList[j]);
                         editarItem($scope.cadastro.registro.enderecoList[j], item);
                     }

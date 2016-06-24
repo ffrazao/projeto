@@ -40,7 +40,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat-start="reg in cadastro.registro.emailList | filter: {cadastroAcao: '!E'}">
+                    <tr ng-repeat-start="reg in cadastro.registro.emailList | orderBy: ['email.endereco'] track by reg.id">
                         <td rowspan="2">
                             <input type="radio" ng-show="pessoaEmailNvg.selecao.tipo === 'U'" ng-model="pessoaEmailNvg.selecao.item" ng-value="reg"/>
                             <input type="checkbox" ng-show="pessoaEmailNvg.selecao.tipo === 'M'" checklist-model="pessoaEmailNvg.selecao.items" checklist-value="reg"/>

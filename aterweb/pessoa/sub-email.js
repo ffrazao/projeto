@@ -19,32 +19,26 @@ angular.module(pNmModulo).controller(pNmController,
 
     // inicio rotinas de apoio
     var jaCadastrado = function(conteudo) {
-        for (var j in $scope.cadastro.registro.emailList) {
-            if (angular.equals($scope.cadastro.registro.emailList[j].email.endereco, conteudo.email.endereco)) {
-                if ($scope.cadastro.registro.emailList[j].cadastroAcao === 'E') {
-                    return true;
-                } else {
-                    toastr.error('Registro já cadastrado');
-                    return false;
-                }
+        var i, id, endereco;
+        for (i in $scope.cadastro.registro.emailList) {
+            id = $scope.cadastro.registro.emailList[i].id;
+            endereco = $scope.cadastro.registro.emailList[i].email.endereco;
+            if (!angular.equals(id, conteudo.id) && angular.equals(endereco, conteudo.email.endereco)) {
+                toastr.error('Registro já cadastrado');
+                return false;
             }
         }
         return true;
     };
     var editarItem = function (destino, item) {
         mensagemSrv.confirmacao(true, 'pessoa-email-frm.html', null, item, null, jaCadastrado).then(function (conteudo) {
+            init();
             // processar o retorno positivo da modal
+            conteudo = $scope.editarElemento(conteudo);
+            conteudo.email.endereco = conteudo.email.endereco.toLowerCase();
             if (destino) {
-                if (destino['cadastroAcao'] && destino['cadastroAcao'] !== 'I') {
-                    destino['cadastroAcao'] = 'A';
-                }
                 destino.email.endereco = angular.copy(conteudo.email.endereco);
             } else {
-                conteudo['cadastroAcao'] = 'I';
-                if (!$scope.cadastro.registro.emailList) {
-                    $scope.cadastro.registro.emailList = [];
-                    $scope.pessoaEmailNvg.setDados($scope.cadastro.registro.emailList);
-                }
                 $scope.cadastro.registro.emailList.push(conteudo);
             }
         }, function () {
@@ -57,19 +51,21 @@ angular.module(pNmModulo).controller(pNmController,
     // inicio das operaçoes atribuidas ao navagador
     $scope.abrir = function() { $scope.pessoaEmailNvg.mudarEstado('ESPECIAL'); };
     $scope.incluir = function() {
+        init();
         var item = {email: {endereco: null}};
+        item = $scope.criarElemento($scope.cadastro.registro, 'emailList', item);
         editarItem(null, item);
     };
     $scope.editar = function() {
         var item = null;
-        var i, j;
+        var j, i;
         if ($scope.pessoaEmailNvg.selecao.tipo === 'U' && $scope.pessoaEmailNvg.selecao.item) {
             item = angular.copy($scope.pessoaEmailNvg.selecao.item);
             editarItem($scope.pessoaEmailNvg.selecao.item, item);
         } else if ($scope.pessoaEmailNvg.selecao.items && $scope.pessoaEmailNvg.selecao.items.length) {
             for (i in $scope.pessoaEmailNvg.selecao.items) {
-                for (j in $scope.cadastro.registro.emailList) {
-                    if (angular.equals($scope.pessoaEmailNvg.selecao.items[i], $scope.cadastro.registro.emailList[j])) {
+                for (j in $scope.cadastro.registro.EmailList) {
+                    if (angular.equals($scope.pessoaEmailNvg.selecao.items[i].id, $scope.cadastro.registro.emailList[j].id)) {
                         item = angular.copy($scope.cadastro.registro.emailList[j]);
                         editarItem($scope.cadastro.registro.emailList[j], item);
                     }
@@ -80,29 +76,17 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.excluir = function() {
         mensagemSrv.confirmacao(false, 'confirme a exclusão').then(function (conteudo) {
             var i, j;
+            removerCampo($scope.cadastro.registro.emailList, ['@jsonId']);
             if ($scope.pessoaEmailNvg.selecao.tipo === 'U' && $scope.pessoaEmailNvg.selecao.item) {
-                for (j = $scope.cadastro.registro.emailList.length -1; j >= 0; j--) {
-                    if (angular.equals($scope.cadastro.registro.emailList[j].email.endereco, $scope.pessoaEmailNvg.selecao.item.email.endereco)) {
-                        //$scope.cadastro.registro.emailList.splice(j, 1);
-                        $scope.cadastro.registro.emailList[j].cadastroAcao = 'E';
-                    }
-                }
-                $scope.pessoaEmailNvg.selecao.item = null;
-                $scope.pessoaEmailNvg.selecao.selecionado = false;
+                $scope.excluirElemento($scope, $scope.cadastro.registro, 'emailList', $scope.pessoaEmailNvg.selecao.item);
             } else if ($scope.pessoaEmailNvg.selecao.items && $scope.pessoaEmailNvg.selecao.items.length) {
-                for (j = $scope.cadastro.registro.emailList.length-1; j >= 0; j--) {
-                    for (i in $scope.pessoaEmailNvg.selecao.items) {
-                        if (angular.equals($scope.cadastro.registro.emailList[j].email.endereco, $scope.pessoaEmailNvg.selecao.items[i].email.endereco)) {
-                            //$scope.cadastro.registro.emailList.splice(j, 1);
-                            $scope.cadastro.registro.emailList[j].cadastroAcao = 'E';
-                            break;
-                        }
-                    }
-                }
-                for (i = $scope.pessoaEmailNvg.selecao.items.length -1; i >= 0; i--) {
-                    $scope.pessoaEmailNvg.selecao.items.splice(i, 1);
+                for (i in $scope.pessoaEmailNvg.selecao.items) {
+                    $scope.excluirElemento($scope, $scope.cadastro.registro, 'emailList', $scope.pessoaEmailNvg.selecao.items[i]);
                 }
             }
+            $scope.pessoaEmailNvg.selecao.item = null;
+            $scope.pessoaEmailNvg.selecao.items = [];
+            $scope.pessoaEmailNvg.selecao.selecionado = false;
         }, function () {
         });
     };

@@ -22,13 +22,51 @@ angular.module(pNmModulo).controller(pNmController,
         return true;
     };
     var editarItem = function (destino, item) {
-        $scope.modalSelecinarRelacionado();
+        // abrir a modal
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'pessoa/pessoa-modal.html',
+            controller: 'PessoaCtrl',
+            size: 'lg',
+            resolve: {
+                modalCadastro: function() {
+                    return $scope.cadastroBase();
+                }
+            }
+        });
+        // processar retorno da modal
+        modalInstance.result.then(function (resultado) {
+            // processar o retorno positivo da modal
+            var pessoa = null;
+            if (resultado.selecao.tipo === 'U') {
+                pessoa = {
+                    id: resultado.selecao.item[0],
+                    nome: resultado.selecao.item[1],
+                    pessoaTipo: resultado.selecao.item[3],
+                    genero: resultado.selecao.item[9],
+                };
+                $scope.preparaClassePessoa(pessoa);
+                item.pessoa = pessoa;
+                captaRelacionamento(destino, item);
+            } else {
+                for (var i in resultado.selecao.items) {
+                    pessoa = {
+                        id: resultado.selecao.items[i][0],
+                        nome: resultado.selecao.items[i][1],
+                        pessoaTipo: resultado.selecao.items[i][3],
+                        genero: resultado.selecao.items[i][9],
+                    };
+                    $scope.preparaClassePessoa(pessoa);
+                    item.pessoa = pessoa;
+                    captaRelacionamento(destino, item);
+                }
+            }
+            toastr.info('Operação realizada!', 'Informação');
+        }, function () {
+            captaRelacionamento(destino, item);
+        });
     };
-    var captaRelacionamento = function(reg, destino) {
-        if (!reg) {
-            reg = {};
-        }
-        var item = angular.copy(reg);
+    var captaRelacionamento = function(destino, item) {
         if (!item.relacionador) {
             item.relacionador = {
                 "@class": angular.copy($scope.cadastro.registro["@class"]),
@@ -39,7 +77,7 @@ angular.module(pNmModulo).controller(pNmController,
             };
         }
         if (!item.relacionado) {
-            item.relacionado = angular.copy(reg.pessoa);
+            item.relacionado = angular.copy(item.pessoa);
         }
         var iniciar = function(scpInt) {
             $scope.scpInt = scpInt;
@@ -68,7 +106,7 @@ angular.module(pNmModulo).controller(pNmController,
                     relacionamentoTipo = item.tipoId;
                     if (
                         item.tipoRelacionador.indexOf($scope.cadastro.registro.pessoaTipo) >= 0 &&
-                        item.tipoRelacionado.indexOf(reg.pessoa ? reg.pessoa.pessoaTipo : 'PF') >= 0
+                        item.tipoRelacionado.indexOf(item.pessoa ? item.pessoa.pessoaTipo : 'PF') >= 0
                         ) {
                         scpInt.apoio.relacionamentoTipoList.push({id: item.tipoId, nome: item.tipoNome});
                     }
@@ -81,10 +119,8 @@ angular.module(pNmModulo).controller(pNmController,
                 if (newValue) {
                     $scope.cadastro.apoio.relacionamentoConfiguracaoViList.forEach(function(item) {
                         if (newValue.id === item.tipoId) {
-                            if (
-                                item.relacionadorPessoaTipo.indexOf($scope.cadastro.registro.pessoaTipo) >= 0 &&
-                                item.relacionadoPessoaTipo.indexOf(reg.pessoa ? reg.pessoa.pessoaTipo : 'PF') >= 0
-                                ) {
+                            if (item.relacionadorPessoaTipo.indexOf($scope.cadastro.registro.pessoaTipo) >= 0 &&
+                                item.relacionadoPessoaTipo.indexOf(item.pessoa ? item.pessoa.pessoaTipo : 'PF') >= 0) {
                                 scpInt.apoio.relacionamentoFuncaoList.push(item);
                             }
                         }
@@ -120,8 +156,7 @@ angular.module(pNmModulo).controller(pNmController,
                 }
                 var hoje = new Date();
                 var idade = hoje.getFullYear() - nascimento.getFullYear();
-                if ( new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate()) < 
-                        new Date(hoje.getFullYear(), nascimento.getMonth(), nascimento.getDate()) ) {
+                if ( new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate()) < new Date(hoje.getFullYear(), nascimento.getMonth(), nascimento.getDate()) ) {
                     idade--;
                 }
                 $scope.scpInt.conteudo.idade = idade >= 0 ? idade : null;
@@ -185,7 +220,6 @@ angular.module(pNmModulo).controller(pNmController,
             });
         };
 
-
         mensagemSrv.confirmacao(true, 'pessoa/sub-relacionamento-form.html', null, item, null, jaCadastrado, null, iniciar).then(function (conteudo) {
             // processar o retorno positivo da modal
             if (!$scope.cadastro.registro.relacionamentoList) {
@@ -222,47 +256,14 @@ angular.module(pNmModulo).controller(pNmController,
             //$log.info('Modal dismissed at: ' + new Date());
         });
     };
-    $scope.modalSelecinarRelacionado = function (size) {
-        // abrir a modal
-        var modalInstance = $uibModal.open({
-            animation: true,
-            templateUrl: 'pessoa/pessoa-modal.html',
-            controller: 'PessoaCtrl',
-            size: 'lg',
-            resolve: {
-                modalCadastro: function() {
-                    return $scope.cadastroBase();
-                }
-            }
-        });
-        // processar retorno da modal
-        modalInstance.result.then(function (resultado) {
-            // processar o retorno positivo da modal
-            var reg = null;
-            if (resultado.selecao.tipo === 'U') {
-                reg = {pessoa: {id: resultado.selecao.item[0], nome: resultado.selecao.item[1], pessoaTipo: resultado.selecao.item[3], genero: resultado.selecao.item[9]}};
-                $scope.preparaClassePessoa(reg.pessoa);
-                captaRelacionamento(reg);
-            } else {
-                for (var i in resultado.selecao.items) {
-                    reg = {pessoa: {id: resultado.selecao.items[i][0], nome: resultado.selecao.items[i][1], pessoaTipo: resultado.selecao.items[i][3], genero: resultado.selecao.items[i][9]}};
-                    $scope.preparaClassePessoa(reg.pessoa);
-                    captaRelacionamento(reg);
-                }
-            }
-            toastr.info('Operação realizada!', 'Informação');
-        }, function () {
-            // processar o retorno negativo da modal
-            captaRelacionamento({});
-        });
-    };
-
     // fim rotinas de apoio
 
     // inicio das operaçoes atribuidas ao navagador
     $scope.abrir = function() { $scope.pessoaRelacionamentoNvg.mudarEstado('ESPECIAL'); };
     $scope.incluir = function() {
+        init();
         var item = {relacionamento: {}};
+        item = $scope.criarElemento($scope.cadastro.registro, 'relacionamentoList', item);
         editarItem(null, item);
     };
     $scope.editar = function() {
@@ -277,6 +278,19 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.excluir = function() {
         mensagemSrv.confirmacao(false, 'confirme a exclusão').then(function (conteudo) {
             var i, j;
+            removerCampo($scope.cadastro.registro.relacionamentoList, ['@jsonId']);
+            if ($scope.pessoaRelacionamentoNvg.selecao.tipo === 'U' && $scope.pessoaRelacionamentoNvg.selecao.item) {
+                $scope.excluirElemento($scope, $scope.cadastro.registro, 'relacionamentoList', $scope.pessoaRelacionamentoNvg.selecao.item);
+            } else if ($scope.pessoaRelacionamentoNvg.selecao.items && $scope.pessoaRelacionamentoNvg.selecao.items.length) {
+                for (i in $scope.pessoaRelacionamentoNvg.selecao.items) {
+                    $scope.excluirElemento($scope, $scope.cadastro.registro, 'relacionamentoList', $scope.pessoaRelacionamentoNvg.selecao.items[i]);
+                }
+            }
+            $scope.pessoaRelacionamentoNvg.selecao.item = null;
+            $scope.pessoaRelacionamentoNvg.selecao.items = [];
+            $scope.pessoaRelacionamentoNvg.selecao.selecionado = false;
+
+            /*var i, j;
             if ($scope.pessoaRelacionamentoNvg.selecao.tipo === 'U' && $scope.pessoaRelacionamentoNvg.selecao.item) {
                 for (j = $scope.cadastro.registro.relacionamentoList.length -1; j >= 0; j--) {
                     if (angular.equals($scope.cadastro.registro.relacionamentoList[j].relacionamento.endereco, $scope.pessoaRelacionamentoNvg.selecao.item.relacionamento.endereco)) {
@@ -299,7 +313,7 @@ angular.module(pNmModulo).controller(pNmController,
                 for (i = $scope.pessoaRelacionamentoNvg.selecao.items.length -1; i >= 0; i--) {
                     $scope.pessoaRelacionamentoNvg.selecao.items.splice(i, 1);
                 }
-            }
+            }*/
         }, function () {
         });
     };
