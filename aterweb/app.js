@@ -878,7 +878,7 @@ var TIMEOUT_TEMPO = 5 * 60;
                 if (!elemento) {
                     elemento = {};
                 }
-                if (!elemento['cadastroAcao'] || !elemento['cadastroAcao'] === 'I') {
+                if (!elemento['cadastroAcao'] || elemento['cadastroAcao'] !== 'I') {
                     elemento['cadastroAcao'] = 'A';
                 }
                 return elemento;

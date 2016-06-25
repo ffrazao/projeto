@@ -13,7 +13,9 @@ angular.module(pNmModulo).controller(pNmController,
         if (!angular.isObject($scope.cadastro.registro.telefoneList)) {
             $scope.cadastro.registro.telefoneList = [];
         }
-        $scope.pessoaTelefoneNvg = new FrzNavegadorParams($scope.cadastro.registro.telefoneList, 4);
+        if (!$scope.pessoaTelefoneNvg) {
+            $scope.pessoaTelefoneNvg = new FrzNavegadorParams($scope.cadastro.registro.telefoneList, 4);
+        }
     };
     if (!$uibModalInstance) { init(); }
 

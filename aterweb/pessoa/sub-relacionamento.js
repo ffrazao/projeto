@@ -1,4 +1,4 @@
-/* global StringMask:false */
+/* global StringMask:false, removerCampo */
 
 (function(pNmModulo, pNmController, pNmFormulario) {
 
@@ -13,7 +13,9 @@ angular.module(pNmModulo).controller(pNmController,
         if (!angular.isObject($scope.cadastro.registro.relacionamentoList)) {
             $scope.cadastro.registro.relacionamentoList = [];
         }
-        $scope.pessoaRelacionamentoNvg = new FrzNavegadorParams($scope.cadastro.registro.relacionamentoList, 4);
+        if (!$scope.pessoaRelacionamentoNvg) {
+            $scope.pessoaRelacionamentoNvg = new FrzNavegadorParams($scope.cadastro.registro.relacionamentoList, 4);
+        }
     };
     if (!$uibModalInstance) { init(); }
 

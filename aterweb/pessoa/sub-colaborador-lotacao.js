@@ -10,7 +10,9 @@
                 if (!angular.isObject($scope.cadastro.registro.colaboradorLotacaoList)) {
                     $scope.cadastro.registro.colaboradorLotacaoList = [];
                 }
-                $scope.pessoaColaboradorLotacaoNvg = new FrzNavegadorParams($scope.cadastro.registro.colaboradorLotacaoList, 5);
+                if (!$scope.pessoaColaboradorLotacaoNvg) {
+                    $scope.pessoaColaboradorLotacaoNvg = new FrzNavegadorParams($scope.cadastro.registro.colaboradorLotacaoList, 5);
+                }
             };
             if (!$uibModalInstance) {
                 init();

@@ -11,7 +11,9 @@ angular.module(pNmModulo).controller(pNmController,
         if (!angular.isObject($scope.cadastro.registro.lotacaoList)) {
             $scope.cadastro.registro.lotacaoList = [];
         }
-        $scope.pessoaLotacaoNvg = new FrzNavegadorParams($scope.cadastro.registro.lotacaoList, 5);
+        if (!$scope.pessoaLotacaoNvg) {
+            $scope.pessoaLotacaoNvg = new FrzNavegadorParams($scope.cadastro.registro.lotacaoList, 5);
+        }
     };
     if (!$uibModalInstance) { init(); }
 

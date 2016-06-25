@@ -11,7 +11,9 @@ angular.module(pNmModulo).controller(pNmController,
         if (!angular.isObject($scope.cadastro.registro.pendenciaList)) {
             $scope.cadastro.registro.pendenciaList = [];
         }
-        $scope.pessoaPendenciaNvg = new FrzNavegadorParams($scope.cadastro.registro.pendenciaList, 5);
+        if (!$scope.pessoaPendenciaNvg) {
+            $scope.pessoaPendenciaNvg = new FrzNavegadorParams($scope.cadastro.registro.pendenciaList, 5);
+        }
     };
     if (!$uibModalInstance) { init(); }
 
@@ -32,7 +34,30 @@ angular.module(pNmModulo).controller(pNmController,
     // fim rotinas de apoio
 
     // inicio das operaçoes atribuidas ao navagador
-    $scope.abrir = function() { $scope.pessoaPendenciaNvg.mudarEstado('ESPECIAL'); };
+    $scope.abrir = function() { 
+        $scope.pessoaPendenciaNvg.mudarEstado('ESPECIAL'); 
+        // desabilitar a edição de arquivos
+        $scope.pessoaPendenciaNvg.botao('inclusao').exibir = function() {return false;};
+        $scope.pessoaPendenciaNvg.botao('edicao').exibir = function() {return false;};
+    };
+
+    $scope.excluir = function() {
+        mensagemSrv.confirmacao(false, 'confirme a exclusão').then(function (conteudo) {
+            var i, j;
+            removerCampo($scope.cadastro.registro.pendenciaList, ['@jsonId']);
+            if ($scope.pessoaPendenciaNvg.selecao.tipo === 'U' && $scope.pessoaPendenciaNvg.selecao.item) {
+                $scope.excluirElemento($scope, $scope.cadastro.registro, 'pendenciaList', $scope.pessoaPendenciaNvg.selecao.item);
+            } else if ($scope.pessoaPendenciaNvg.selecao.items && $scope.pessoaPendenciaNvg.selecao.items.length) {
+                for (i in $scope.pessoaPendenciaNvg.selecao.items) {
+                    $scope.excluirElemento($scope, $scope.cadastro.registro, 'pendenciaList', $scope.pessoaPendenciaNvg.selecao.items[i]);
+                }
+            }
+            $scope.pessoaPendenciaNvg.selecao.item = null;
+            $scope.pessoaPendenciaNvg.selecao.items = [];
+            $scope.pessoaPendenciaNvg.selecao.selecionado = false;
+        }, function () {
+        });
+    };
 
     $scope.agir = function() {};
     $scope.ajudar = function() {};
@@ -47,7 +72,6 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.confirmarExcluir = function() {};
     $scope.confirmarFiltrar = function() {};
     $scope.confirmarIncluir = function() {};
-    $scope.excluir = function() {};
     $scope.filtrar = function() {};
     $scope.folhearAnterior = function() {};
     $scope.folhearPrimeiro = function() {};

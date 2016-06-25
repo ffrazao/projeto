@@ -16,7 +16,9 @@ angular.module(pNmModulo).controller(pNmController,
         if (!angular.isObject($scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList)) {
             $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList = [];
         }
-        $scope.publicoAlvoPropriedadeRuralNvg = new FrzNavegadorParams($scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList, 4);
+        if (!$scope.publicoAlvoPropriedadeRuralNvg) {
+            $scope.publicoAlvoPropriedadeRuralNvg = new FrzNavegadorParams($scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList, 4);
+        }
     };
     if (!$uibModalInstance) { init(); }
 

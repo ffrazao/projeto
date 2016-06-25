@@ -187,6 +187,9 @@ public class SalvarCmd extends _SalvarCmd {
 		limparChavePrimaria(result.getTelefoneList());
 		limparChavePrimaria(result.getEmailList());
 		limparChavePrimaria(result.getRelacionamentoList());
+		limparChavePrimaria(result.getGrupoSocialList());
+		limparChavePrimaria(result.getArquivoList());
+		limparChavePrimaria(result.getPendenciaList());
 
 		// ajustar os dados de nascimento da pessoa
 		if (result instanceof PessoaFisica) {

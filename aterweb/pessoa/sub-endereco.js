@@ -13,7 +13,9 @@ angular.module(pNmModulo).controller(pNmController,
         if (!angular.isObject($scope.cadastro.registro.enderecoList)) {
             $scope.cadastro.registro.enderecoList = [];
         }
-        $scope.pessoaEnderecoNvg = new FrzNavegadorParams($scope.cadastro.registro.enderecoList, 4);
+        if (!$scope.pessoaEnderecoNvg) {
+            $scope.pessoaEnderecoNvg = new FrzNavegadorParams($scope.cadastro.registro.enderecoList, 4);
+        }
     };
     if (!$uibModalInstance) { init(); }
 

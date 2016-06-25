@@ -37,7 +37,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="reg in cadastro.registro.grupoSocialList | filter: {cadastroAcao: '!E'}">
+                    <tr ng-repeat="reg in cadastro.registro.grupoSocialList | orderBy: ['grupoSocial.nome'] track by reg.id">
                         <td>
                             <input type="radio" ng-show="pessoaGrupoSocialNvg.selecao.tipo === 'U'" ng-model="pessoaGrupoSocialNvg.selecao.item" ng-value="reg"/>
                             <input type="checkbox" ng-show="pessoaGrupoSocialNvg.selecao.tipo === 'M'" checklist-model="pessoaGrupoSocialNvg.selecao.items" checklist-value="reg"/>
@@ -61,7 +61,7 @@
                 <div class="row">
                     <div class="col-md-8">
                         <label class="form-label">Programa Social</label>
-                        <select class="form-control" id="grupoSocial"  name="grupoSocial" ng-model="conteudo.grupoSocial.id" required="true" ng-options="item.id as item.nome for item in conteudo.grupoSocialList">
+                        <select class="form-control" id="grupoSocial"  name="grupoSocial" ng-model="conteudo.grupoSocial" required="true" ng-options="item as item.nome for item in conteudo.grupoSocialList track by item.id">
                         </select>
                         <div class="label label-danger" ng-show="confirmacaoFrm.grupoSocial.$error.required">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>

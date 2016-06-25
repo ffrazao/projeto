@@ -13,7 +13,9 @@ angular.module(pNmModulo).controller(pNmController,
         if (!angular.isObject($scope.cadastro.registro.emailList)) {
             $scope.cadastro.registro.emailList = [];
         }
-        $scope.pessoaEmailNvg = new FrzNavegadorParams($scope.cadastro.registro.emailList, 4);
+        if (!$scope.pessoaEmailNvg) {
+            $scope.pessoaEmailNvg = new FrzNavegadorParams($scope.cadastro.registro.emailList, 4);
+        }
     };
     if (!$uibModalInstance) { init(); }
 

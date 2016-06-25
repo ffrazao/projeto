@@ -197,7 +197,9 @@ angular.module(pNmModulo).controller(pNmController,
         if (!angular.isObject($scope.cadastro.registro.diagnosticoList)) {
             $scope.cadastro.registro.diagnosticoList = [];
         }
-        $scope.pessoaDiagnosticoCaptacaoNvg = new FrzNavegadorParams($scope.cadastro.registro.diagnosticoList, 4);
+        if (!$scope.pessoaDiagnosticoCaptacaoNvg) {
+            $scope.pessoaDiagnosticoCaptacaoNvg = new FrzNavegadorParams($scope.cadastro.registro.diagnosticoList, 4);
+        }
     };
     if (!$uibModalInstance) { init(); }
 

@@ -38,7 +38,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="item in cadastro.registro.pendenciaList" ng-class="{vermelho: item.tipo === 'E'}">
+                <tr ng-repeat="item in cadastro.registro.pendenciaList | orderBy: ['codigo'] track by reg.id" ng-class="{vermelho: item.tipo === 'E'}">
                     <td>
                         <input type="radio" ng-show="pessoaPendenciaNvg.selecao.tipo === 'U'" ng-model="pessoaPendenciaNvg.selecao.item" ng-value="item"/>
                         <input type="checkbox" ng-show="pessoaPendenciaNvg.selecao.tipo === 'M'" checklist-model="pessoaPendenciaNvg.selecao.items" checklist-value="item"/>

@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
@@ -69,14 +70,14 @@ public class VisualizarCmd extends _Comando {
 
 		if (Confirmacao.S.equals(result.getPublicoAlvoConfirmacao())) {
 			PublicoAlvo publicoAlvo = result.getPublicoAlvo();
-			if (publicoAlvo.getPublicoAlvoPropriedadeRuralList() != null) {
+			if (!CollectionUtils.isEmpty(publicoAlvo.getPublicoAlvoPropriedadeRuralList())) {
 				for (PublicoAlvoPropriedadeRural publicoAlvoPropriedadeRural : publicoAlvo.getPublicoAlvoPropriedadeRuralList()) {
 					publicoAlvoPropriedadeRural.setPublicoAlvo(publicoAlvoPropriedadeRural.getPublicoAlvo().infoBasica());
 					publicoAlvoPropriedadeRural.setComunidade(publicoAlvoPropriedadeRural.getComunidade().infoBasica());
 					publicoAlvoPropriedadeRural.setPropriedadeRural(publicoAlvoPropriedadeRural.getPropriedadeRural() != null ? publicoAlvoPropriedadeRural.getPropriedadeRural().infoBasica() : null);
 				}
 			}
-			if (publicoAlvo.getPublicoAlvoSetorList() != null) {
+			if (!CollectionUtils.isEmpty(publicoAlvo.getPublicoAlvoSetorList())) {
 				for (PublicoAlvoSetor publicoAlvoSetor : publicoAlvo.getPublicoAlvoSetorList()) {
 					publicoAlvoSetor.setPublicoAlvo(null);
 				}
@@ -90,45 +91,39 @@ public class VisualizarCmd extends _Comando {
 		}
 
 		// fetch nas tabelas de apoio
-		if (result.getArquivoList() != null) {
+		if (!CollectionUtils.isEmpty(result.getArquivoList())) {
 			for (PessoaArquivo pessoaArquivo : result.getArquivoList()) {
 				pessoaArquivo.setPessoa(null);
 				pessoaArquivo.setArquivo(pessoaArquivo.getArquivo() == null ? null : pessoaArquivo.getArquivo().infoBasica());
 			}
 		}
-		if (result.getEmailList() != null) {
+		if (!CollectionUtils.isEmpty(result.getEmailList())) {
 			for (PessoaEmail pessoaEmail : result.getEmailList()) {
 				pessoaEmail.setPessoa(null);
 			}
 		}
-		if (result.getEnderecoList() != null) {
+		if (!CollectionUtils.isEmpty(result.getEnderecoList())) {
 			for (PessoaEndereco pessoaEndereco : result.getEnderecoList()) {
 				pessoaEndereco.setEndereco(pessoaEndereco.getEndereco().infoBasica());
 				pessoaEndereco.setPessoa(null);
 			}
 		}
-		if (result.getGrupoSocialList() != null) {
+		if (!CollectionUtils.isEmpty(result.getGrupoSocialList())) {
 			for (PessoaGrupoSocial pessoaGrupoSocial : result.getGrupoSocialList()) {
 				pessoaGrupoSocial.setPessoa(null);
 			}
 		}
-		if (result.getRelacionamentoList() != null) {
+		if (!CollectionUtils.isEmpty(result.getRelacionamentoList())) {
 			for (PessoaRelacionamento relacionador : result.getRelacionamentoList()) {
 				for (PessoaRelacionamento relacionado : relacionador.getRelacionamento().getPessoaRelacionamentoList()) {
 					// aqui o registro original vem selecionado como o do
 					// relacionador, ou seja, da pessoa que foi consultada
 					// por isso é necessário inverter os dados com o do
 					// relacionado, para envio a tela, para futuras modificações
-					if (relacionado.getPessoa() != null && !relacionado.getPessoa().getId().equals(result.getId())) {
-						// informações principais
-						relacionador.setId(relacionado.getId());
-						relacionador.setRelacionamentoFuncao(relacionador.getRelacionamentoFuncao() == null ? null : relacionador.getRelacionamentoFuncao().infoBasica());
-						relacionador.setChaveSisater(relacionado.getChaveSisater());
-
-						// captar os dados do relacionado
-						relacionador.setPessoa(relacionado.getPessoa().infoBasica());
-						break;
-					} else {
+					if (relacionado.getPessoa() != null && result.getId().equals(relacionado.getPessoa().getId())) {
+						continue;
+					}
+					if (relacionado.getPessoa() == null) {
 						// informações principais
 						relacionador.setId(relacionado.getId());
 						relacionador.setRelacionamentoFuncao(relacionado.getRelacionamentoFuncao() == null ? null : relacionado.getRelacionamentoFuncao().infoBasica());
@@ -156,18 +151,27 @@ public class VisualizarCmd extends _Comando {
 						relacionador.setRgOrgaoEmissor(relacionado.getRgOrgaoEmissor());
 						relacionador.setRgUf(relacionado.getRgUf());
 						break;
+					} else {
+						// informações principais
+						relacionador.setId(relacionado.getId());
+						relacionador.setRelacionamentoFuncao(relacionador.getRelacionamentoFuncao() == null ? null : relacionador.getRelacionamentoFuncao().infoBasica());
+						relacionador.setChaveSisater(relacionado.getChaveSisater());
+
+						// captar os dados do relacionado
+						relacionador.setPessoa(relacionado.getPessoa().infoBasica());
+						break;
 					}
 				}
 				relacionador.setRelacionamento(relacionador.getRelacionamento().infoBasica());
 			}
 		}
-		if (result.getTelefoneList() != null) {
+		if (!CollectionUtils.isEmpty(result.getTelefoneList())) {
 			for (PessoaTelefone pessoaTelefone : result.getTelefoneList()) {
 				pessoaTelefone.setPessoa(null);
 			}
 		}
 
-		if (result.getPendenciaList() != null) {
+		if (!CollectionUtils.isEmpty(result.getPendenciaList())) {
 			for (PessoaPendencia pessoaPendencia : result.getPendenciaList()) {
 				pessoaPendencia.setPessoa(null);
 			}

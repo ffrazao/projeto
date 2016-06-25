@@ -41,7 +41,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="reg in cadastro.registro.arquivoList | filter: {cadastroAcao: '!E'}">
+                    <tr ng-repeat="reg in cadastro.registro.arquivoList | orderBy: ['arquivo.nomeOriginal'] track by reg.id">
                         <td>
                             <input type="radio" ng-show="pessoaArquivoNvg.selecao.tipo === 'U'" ng-model="pessoaArquivoNvg.selecao.item" ng-value="reg"/>
                             <input type="checkbox" ng-show="pessoaArquivoNvg.selecao.tipo === 'M'" checklist-model="pessoaArquivoNvg.selecao.items" checklist-value="reg"/>

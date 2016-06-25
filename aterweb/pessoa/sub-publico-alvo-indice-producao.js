@@ -12,7 +12,9 @@ angular.module(pNmModulo).controller(pNmController,
         if (!angular.isObject($scope.cadastro.registro.publicoAlvo.indiceProducaoList)) {
             $scope.cadastro.registro.publicoAlvo.indiceProducaoList = [];
         }
-        $scope.indiceProducaoNvg = new FrzNavegadorParams($scope.cadastro.registro.publicoAlvo.indiceProducaoList, 4);
+        if (!$scope.indiceProducaoNvg) {
+            $scope.indiceProducaoNvg = new FrzNavegadorParams($scope.cadastro.registro.publicoAlvo.indiceProducaoList, 4);
+        }
     };
     if (!$uibModalInstance) { init(); }
 

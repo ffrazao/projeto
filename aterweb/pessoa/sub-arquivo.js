@@ -13,20 +13,21 @@ angular.module(pNmModulo).controller(pNmController,
         if (!angular.isObject($scope.cadastro.registro.arquivoList)) {
             $scope.cadastro.registro.arquivoList = [];
         }
-        $scope.pessoaArquivoNvg = new FrzNavegadorParams($scope.cadastro.registro.arquivoList, 4);
+        if (!$scope.pessoaArquivoNvg) {
+            $scope.pessoaArquivoNvg = new FrzNavegadorParams($scope.cadastro.registro.arquivoList, 4);
+        }
     };
     if (!$uibModalInstance) { init(); }
 
     // inicio rotinas de apoio
     var jaCadastrado = function(conteudo) {
-        for (var j in $scope.cadastro.registro.arquivoList) {
-            if (angular.equals($scope.cadastro.registro.arquivoList[j].arquivo.md5, conteudo.arquivo.md5)) {
-                if ($scope.cadastro.registro.arquivoList[j].cadastroAcao === 'E') {
-                    return true;
-                } else {
-                    toastr.error('Registro já cadastrado');
-                    return false;
-                }
+        var i, id, md5;
+        for (i in $scope.cadastro.registro.arquivoList) {
+            id = $scope.cadastro.registro.arquivoList[i].id;
+            md5 = $scope.cadastro.registro.arquivoList[i].arquivo.md5;
+            if (!angular.equals(id, conteudo.id) && angular.equals(md5, conteudo.arquivo.md5)) {
+                toastr.error('Registro já cadastrado');
+                return false;
             }
         }
         return true;
@@ -58,9 +59,10 @@ angular.module(pNmModulo).controller(pNmController,
                         continue novo;
                     }
                 }
-                $scope.cadastro.registro.arquivoList.push(
-                    {arquivo: conteudo.nomeArquivo[i]}
-                );
+                var item = {};
+                item.arquivo = conteudo.nomeArquivo[i]; 
+                item = $scope.criarElemento($scope.cadastro.registro, 'arquivoList', item);
+                $scope.cadastro.registro.arquivoList.push(item);
             }
         }, function() {
             // processar o retorno negativo da modal
@@ -76,6 +78,7 @@ angular.module(pNmModulo).controller(pNmController,
         $scope.pessoaArquivoNvg.botao('edicao').exibir = function() {return false;};
     };
     $scope.incluir = function() {
+        init();
         var item = {};
         editarItem(null, item);
     };
@@ -99,29 +102,17 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.excluir = function() {
         mensagemSrv.confirmacao(false, 'confirme a exclusão').then(function (conteudo) {
             var i, j;
+            removerCampo($scope.cadastro.registro.arquivoList, ['@jsonId']);
             if ($scope.pessoaArquivoNvg.selecao.tipo === 'U' && $scope.pessoaArquivoNvg.selecao.item) {
-                for (j = $scope.cadastro.registro.arquivoList.length -1; j >= 0; j--) {
-                    if (angular.equals($scope.cadastro.registro.arquivoList[j].arquivo.md5, $scope.pessoaArquivoNvg.selecao.item.arquivo.md5)) {
-                        //$scope.cadastro.registro.arquivoList.splice(j, 1);
-                        $scope.cadastro.registro.arquivoList[j].cadastroAcao = 'E';
-                    }
-                }
-                $scope.pessoaArquivoNvg.selecao.item = null;
-                $scope.pessoaArquivoNvg.selecao.selecionado = false;
+                $scope.excluirElemento($scope, $scope.cadastro.registro, 'arquivoList', $scope.pessoaArquivoNvg.selecao.item);
             } else if ($scope.pessoaArquivoNvg.selecao.items && $scope.pessoaArquivoNvg.selecao.items.length) {
-                for (j = $scope.cadastro.registro.arquivoList.length-1; j >= 0; j--) {
-                    for (i in $scope.pessoaArquivoNvg.selecao.items) {
-                        if (angular.equals($scope.cadastro.registro.arquivoList[j].arquivo.md5, $scope.pessoaArquivoNvg.selecao.items[i].arquivo.md5)) {
-                            //$scope.cadastro.registro.arquivoList.splice(j, 1);
-                            $scope.cadastro.registro.arquivoList[j].cadastroAcao = 'E';
-                            break;
-                        }
-                    }
-                }
-                for (i = $scope.pessoaArquivoNvg.selecao.items.length -1; i >= 0; i--) {
-                    $scope.pessoaArquivoNvg.selecao.items.splice(i, 1);
+                for (i in $scope.pessoaArquivoNvg.selecao.items) {
+                    $scope.excluirElemento($scope, $scope.cadastro.registro, 'arquivoList', $scope.pessoaArquivoNvg.selecao.items[i]);
                 }
             }
+            $scope.pessoaArquivoNvg.selecao.item = null;
+            $scope.pessoaArquivoNvg.selecao.items = [];
+            $scope.pessoaArquivoNvg.selecao.selecionado = false;
         }, function () {
         });
     };

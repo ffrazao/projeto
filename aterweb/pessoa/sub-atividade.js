@@ -10,7 +10,9 @@
                 if (!angular.isObject($scope.cadastro.registro.pessoaAtividadeList)) {
                     $scope.cadastro.registro.pessoaAtividadeList = [];
                 }
-                $scope.pessoaAtividadeNvg = new FrzNavegadorParams($scope.cadastro.registro.pessoaAtividadeList, 5);
+                if (!$scope.pessoaAtividadeNvg) {
+                    $scope.pessoaAtividadeNvg = new FrzNavegadorParams($scope.cadastro.registro.pessoaAtividadeList, 5);
+                }
             };
             if (!$uibModalInstance) {
                 init();

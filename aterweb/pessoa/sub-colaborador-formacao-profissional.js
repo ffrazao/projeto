@@ -10,7 +10,9 @@
                 if (!angular.isObject($scope.cadastro.registro.colaboradorFormacaoProfissionalList)) {
                     $scope.cadastro.registro.colaboradorFormacaoProfissionalList = [];
                 }
-                $scope.pessoaColaboradorFormacaoProfissionalNvg = new FrzNavegadorParams($scope.cadastro.registro.colaboradorFormacaoProfissionalList, 5);
+                if (!$scope.pessoaColaboradorFormacaoProfissionalNvg) {
+                    $scope.pessoaColaboradorFormacaoProfissionalNvg = new FrzNavegadorParams($scope.cadastro.registro.colaboradorFormacaoProfissionalList, 5);
+                }
             };
             if (!$uibModalInstance) {
                 init();
