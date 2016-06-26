@@ -1,4 +1,4 @@
-/* global StringMask:false */
+/* global StringMask:false, removerCampo */
 
 (function(pNmModulo, pNmController, pNmFormulario) {
 

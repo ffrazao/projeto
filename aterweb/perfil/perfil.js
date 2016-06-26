@@ -79,6 +79,19 @@
                 }
                 $scope.$broadcast('visualizarDepois');
             };
+
+            var confirmarSalvarAntes = function(cadastro) {
+                cadastro.registro.perfilFuncionalidadeComandoList = angular.copy($scope.cadastro.apoio.funcionalidadeComandoList);
+            };
+            
+            $scope.confirmarIncluirAntes = function(cadastro) {
+                confirmarSalvarAntes(cadastro);
+            };
+            
+            $scope.confirmarEditarAntes = function(cadastro) {
+                confirmarSalvarAntes(cadastro);
+            };
+            
             // fim das operaçoes atribuidas ao navagador
 
             // inicio ações especiais

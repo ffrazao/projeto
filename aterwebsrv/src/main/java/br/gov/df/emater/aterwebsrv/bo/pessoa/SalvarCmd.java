@@ -275,10 +275,6 @@ public class SalvarCmd extends _SalvarCmd {
 				int tot = 0;
 				boolean comunidade = false;
 				for (PublicoAlvoPropriedadeRural publicoAlvoPropriedadeRural : publicoAlvo.getPublicoAlvoPropriedadeRuralList()) {
-					if (publicoAlvoPropriedadeRural == null || publicoAlvoPropriedadeRural.getCadastroAcao() == null) {
-						continue;
-					}
-
 					tot++;
 					publicoAlvoPropriedadeRural.setPublicoAlvo(publicoAlvo);
 					if (publicoAlvoPropriedadeRural.getPropriedadeRural() == null) {
@@ -307,9 +303,6 @@ public class SalvarCmd extends _SalvarCmd {
 			// tratar a insersao de registros
 			Integer ordem = 0;
 			for (PessoaEndereco pessoaEndereco : result.getEnderecoList()) {
-				if (pessoaEndereco.getCadastroAcao() == null) {
-					continue;
-				}
 				Endereco endereco = pessoaEndereco.getEndereco();
 				List<Endereco> pesquisa = enderecoDao.procurar(endereco);
 				if (CollectionUtils.isEmpty(pesquisa)) {

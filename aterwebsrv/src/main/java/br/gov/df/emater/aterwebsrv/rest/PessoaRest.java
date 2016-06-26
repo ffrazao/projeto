@@ -39,6 +39,11 @@ public class PessoaRest {
 		return new Resposta(facadeBo.pessoaCarteiraProdutorVerificar(usuario, filtro).getResposta());
 	}
 
+	@RequestMapping(value = "/excluir", method = RequestMethod.DELETE)
+	public Resposta excluir(@RequestParam Integer id, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.pessoaExcluir(usuario, id).getResposta());
+	}
+
 	@RequestMapping(value = "/editar", method = RequestMethod.POST)
 	public Resposta editar(@RequestBody Pessoa pessoa, Principal usuario) throws Exception {
 		return salvar(pessoa, usuario);

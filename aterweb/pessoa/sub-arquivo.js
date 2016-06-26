@@ -1,4 +1,4 @@
-/* global StringMask:false, humanFileSize */
+/* global StringMask:false, humanFileSize, removerCampo */
 
 (function(pNmModulo, pNmController, pNmFormulario) {
 

@@ -1,3 +1,5 @@
+/* global removerCampo */
+
 (function(pNmModulo, pNmController, pNmFormulario) {
 
 'use strict';

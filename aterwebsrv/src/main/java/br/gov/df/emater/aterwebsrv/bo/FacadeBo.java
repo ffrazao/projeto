@@ -67,7 +67,7 @@ public class FacadeBo implements BeanFactoryAware {
 		return result;
 	}
 
-	@Transactional(readOnly=false, propagation=Propagation.REQUIRES_NEW)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public void _logAcaoSalvar(LogAcao logAcao) throws Exception {
 		_logAcaoDao.save(logAcao);
 	}
@@ -279,11 +279,6 @@ public class FacadeBo implements BeanFactoryAware {
 		return this._executar(usuario, "LogAcaoNovoCh", logAcao);
 	}
 
-	@Transactional()
-	public _Contexto relatorioCompilar(Principal usuario, String nome) throws Exception {
-		return this._executar(usuario, "RelatorioCompilarCh", nome);
-	}
-
 	@Transactional
 	public _Contexto logAcaoSalvar(Principal usuario, LogAcao logAcao) throws Exception {
 		return this._executar(usuario, "LogAcaoSalvarCh", logAcao);
@@ -298,7 +293,7 @@ public class FacadeBo implements BeanFactoryAware {
 	public _Contexto logAcaoSalvarModulo(Principal usuario, Modulo modulo) throws Exception {
 		return this._executar(usuario, "LogAcaoSalvarModuloCh", modulo);
 	}
-	
+
 	@Transactional(readOnly = true)
 	public _Contexto logAcaoVisualizar(Principal usuario, Integer id) throws Exception {
 		return this._executar(usuario, "LogAcaoVisualizarCh", id);
@@ -359,6 +354,11 @@ public class FacadeBo implements BeanFactoryAware {
 		return this._executar(usuario, "PessoaCarteiraProdutorVerificarCmd", filtro);
 	}
 
+	@Transactional
+	public _Contexto pessoaExcluir(Principal usuario, Integer id) throws Exception {
+		return this._executar(usuario, "PessoaExcluirCh", id);
+	}
+
 	@Transactional(readOnly = true)
 	public _Contexto pessoaFiltroExecutar(Principal usuario, PessoaCadFiltroDto filtro) throws Exception {
 		return this._executar(usuario, "PessoaFiltroExecutarCh", filtro);
@@ -412,6 +412,11 @@ public class FacadeBo implements BeanFactoryAware {
 	@Transactional(readOnly = true)
 	public _Contexto propriedadeRuralVisualizar(Principal usuario, Integer id) throws Exception {
 		return this._executar(usuario, "PropriedadeRuralVisualizarCh", id);
+	}
+
+	@Transactional()
+	public _Contexto relatorioCompilar(Principal usuario, String nome) throws Exception {
+		return this._executar(usuario, "RelatorioCompilarCh", nome);
 	}
 
 	@Transactional
