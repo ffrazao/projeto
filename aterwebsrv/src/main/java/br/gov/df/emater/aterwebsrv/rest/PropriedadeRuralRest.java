@@ -28,6 +28,11 @@ public class PropriedadeRuralRest {
 	public Resposta editar(@RequestBody PropriedadeRural propriedadeRural, Principal usuario) throws Exception {
 		return salvar(propriedadeRural, usuario);
 	}
+	
+	@RequestMapping(value = "/excluir", method = RequestMethod.DELETE)
+	public Resposta excluir(@RequestParam Integer id, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.propriedadeRuralExcluir(usuario, id).getResposta());
+	}
 
 	@RequestMapping(value = "/filtro-publico-alvo-propriedade-rural-comunidade", method = RequestMethod.POST)
 	public Resposta filtrarPorPublicoAlvoPropriedadeRuralComunidade(@RequestBody PublicoAlvoPropriedadeRuralCadFiltroDto filtro, Principal usuario) throws Exception {

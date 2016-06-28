@@ -36,7 +36,6 @@ angular.module(pNmModulo).controller(pNmController,
         return true;
     };
     var editarItem = function (destino, item) {
-
         // abrir a modal
         var modalInstance = $uibModal.open({
             animation: true,

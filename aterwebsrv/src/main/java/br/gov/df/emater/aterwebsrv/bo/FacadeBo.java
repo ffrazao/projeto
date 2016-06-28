@@ -358,12 +358,12 @@ public class FacadeBo implements BeanFactoryAware {
 	public _Contexto pessoaExcluir(Principal usuario, Integer id) throws Exception {
 		return this._executar(usuario, "PessoaExcluirCh", id);
 	}
-
+	
 	@Transactional(readOnly = true)
 	public _Contexto pessoaFiltroExecutar(Principal usuario, PessoaCadFiltroDto filtro) throws Exception {
 		return this._executar(usuario, "PessoaFiltroExecutarCh", filtro);
 	}
-
+	
 	@Transactional(readOnly = true)
 	public _Contexto pessoaFiltroNovo(Principal usuario) throws Exception {
 		return this._executar(usuario, "PessoaFiltroNovoCmd");
@@ -382,6 +382,11 @@ public class FacadeBo implements BeanFactoryAware {
 	@Transactional(readOnly = true)
 	public _Contexto pessoaVisualizar(Principal usuario, Integer id) throws Exception {
 		return this._executar(usuario, "PessoaVisualizarCh", id);
+	}
+
+	@Transactional
+	public _Contexto propriedadeRuralExcluir(Principal usuario, Integer id) throws Exception {
+		return this._executar(usuario, "PropriedadeRuralExcluirCh", id);
 	}
 
 	@Transactional(readOnly = true)

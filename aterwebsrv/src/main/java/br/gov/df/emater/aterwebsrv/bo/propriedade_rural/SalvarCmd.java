@@ -2,6 +2,7 @@ package br.gov.df.emater.aterwebsrv.bo.propriedade_rural;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
@@ -9,6 +10,7 @@ import br.gov.df.emater.aterwebsrv.bo._SalvarCmd;
 import br.gov.df.emater.aterwebsrv.dao.ater.PropriedadeRuralArquivoDao;
 import br.gov.df.emater.aterwebsrv.dao.ater.PropriedadeRuralDao;
 import br.gov.df.emater.aterwebsrv.dao.ater.PropriedadeRuralFormaUtilizacaoEspacoRuralDao;
+import br.gov.df.emater.aterwebsrv.dao.ater.PropriedadeRuralPendenciaDao;
 import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoDao;
 import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoPropriedadeRuralDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.AreaDao;
@@ -17,6 +19,7 @@ import br.gov.df.emater.aterwebsrv.dao.pessoa.EnderecoDao;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRuralArquivo;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRuralFormaUtilizacaoEspacoRural;
+import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRuralPendencia;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.CadastroAcao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
@@ -38,6 +41,9 @@ public class SalvarCmd extends _SalvarCmd {
 
 	@Autowired
 	private EnderecoDao enderecoDao;
+	
+	@Autowired
+	private PropriedadeRuralPendenciaDao propriedadeRuralPendenciaDao;
 
 	@Autowired
 	private PropriedadeRuralArquivoDao propriedadeRuralArquivoDao;
@@ -60,6 +66,10 @@ public class SalvarCmd extends _SalvarCmd {
 
 		// captar o registro de atualização da tabela
 		logAtualizar(result, contexto);
+		
+		limparChavePrimaria(result.getPublicoAlvoPropriedadeRuralList());
+		limparChavePrimaria(result.getArquivoList());
+		limparChavePrimaria(result.getPendenciaList());
 
 		if (result.getEndereco() == null) {
 			throw new BoException("O campo Endereço é obrigatório");
@@ -109,6 +119,9 @@ public class SalvarCmd extends _SalvarCmd {
 
 		dao.save(result);
 
+		// excluir as propriedades vinculadas ao publico alvo
+		excluirRegistros(result, "publicoAlvoPropriedadeRuralList", publicoAlvoPropriedadeRuralDao);
+		
 		if (result.getPublicoAlvoPropriedadeRuralList() != null) {
 			for (PublicoAlvoPropriedadeRural papr : result.getPublicoAlvoPropriedadeRuralList()) {
 				papr.setPropriedadeRural(result);
@@ -117,6 +130,9 @@ public class SalvarCmd extends _SalvarCmd {
 			}
 		}
 
+		// tratar a exclusao de registros
+		excluirRegistros(result, "arquivoList", propriedadeRuralArquivoDao);
+		
 		if (result.getArquivoList() != null) {
 			// tratar a exclusao de registros
 			for (PropriedadeRuralArquivo pessoaArquivo : result.getArquivoList()) {
@@ -149,6 +165,19 @@ public class SalvarCmd extends _SalvarCmd {
 				}
 			}
 		}
+		
+		// tratar a exclusao de registros
+		excluirRegistros(result, "pendenciaList", propriedadeRuralPendenciaDao);
+
+		// salvar pendencias do cadastro
+		if (!CollectionUtils.isEmpty(result.getPendenciaList())) {
+			// tratar a insersao de registros
+			for (PropriedadeRuralPendencia pendencia : result.getPendenciaList()) {
+				pendencia.setPropriedadeRural(result);
+				propriedadeRuralPendenciaDao.save(pendencia);
+			}
+		}
+
 		dao.flush();
 
 		contexto.setResposta(result.getId());

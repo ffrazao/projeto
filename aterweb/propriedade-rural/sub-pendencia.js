@@ -1,3 +1,5 @@
+/* global removerCampo */
+
 (function(pNmModulo, pNmController, pNmFormulario) {
 
 'use strict';
@@ -11,27 +13,41 @@ angular.module(pNmModulo).controller(pNmController,
         if (!angular.isObject($scope.cadastro.registro.pendenciaList)) {
             $scope.cadastro.registro.pendenciaList = [];
         }
-        $scope.propriedadeRuralPendenciaNvg = new FrzNavegadorParams($scope.cadastro.registro.pendenciaList, 5);
+        if (!$scope.propriedadeRuralPendenciaNvg) {
+            $scope.propriedadeRuralPendenciaNvg = new FrzNavegadorParams($scope.cadastro.registro.pendenciaList, 5);
+        }
     };
     if (!$uibModalInstance) { init(); }
 
-
-    /*if ($uibModalInstance === null) {
-        $scope.navegador.dados[0].pendenciaList = [];
-        for (var i = 0; i < 11; i++) {
-            $scope.navegador.dados[0].pendenciaList.push({id: i, nome: 'nome ' + i, cpf: (333*i), tpExploracao: 'P', ha :(2.7*i), situacao : 'S' });
-        }
-        $scope.propriedadeRuralPendenciaNvg.setDados($scope.navegador.dados[0].pendenciaList);
-    } */
-
-
     // inicio rotinas de apoio
-    // $scope.seleciona = function(propriedadeRuralPendenciaNvg, item) { };
-    // $scope.mataClick = function(propriedadeRuralPendenciaNvg, event, item){ };
+
     // fim rotinas de apoio
 
     // inicio das operaçoes atribuidas ao navagador
-    $scope.abrir = function() { $scope.propriedadeRuralPendenciaNvg.mudarEstado('ESPECIAL'); };
+    $scope.abrir = function() { 
+        $scope.propriedadeRuralPendenciaNvg.mudarEstado('ESPECIAL'); 
+        // desabilitar a edição de arquivos
+        $scope.propriedadeRuralPendenciaNvg.botao('inclusao').exibir = function() {return false;};
+        $scope.propriedadeRuralPendenciaNvg.botao('edicao').exibir = function() {return false;};
+    };
+
+    $scope.excluir = function() {
+        mensagemSrv.confirmacao(false, 'confirme a exclusão').then(function (conteudo) {
+            var i, j;
+            removerCampo($scope.cadastro.registro.pendenciaList, ['@jsonId']);
+            if ($scope.propriedadeRuralPendenciaNvg.selecao.tipo === 'U' && $scope.propriedadeRuralPendenciaNvg.selecao.item) {
+                $scope.excluirElemento($scope, $scope.cadastro.registro, 'pendenciaList', $scope.propriedadeRuralPendenciaNvg.selecao.item);
+            } else if ($scope.propriedadeRuralPendenciaNvg.selecao.items && $scope.propriedadeRuralPendenciaNvg.selecao.items.length) {
+                for (i in $scope.propriedadeRuralPendenciaNvg.selecao.items) {
+                    $scope.excluirElemento($scope, $scope.cadastro.registro, 'pendenciaList', $scope.propriedadeRuralPendenciaNvg.selecao.items[i]);
+                }
+            }
+            $scope.propriedadeRuralPendenciaNvg.selecao.item = null;
+            $scope.propriedadeRuralPendenciaNvg.selecao.items = [];
+            $scope.propriedadeRuralPendenciaNvg.selecao.selecionado = false;
+        }, function () {
+        });
+    };
 
     $scope.agir = function() {};
     $scope.ajudar = function() {};
@@ -46,7 +62,6 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.confirmarExcluir = function() {};
     $scope.confirmarFiltrar = function() {};
     $scope.confirmarIncluir = function() {};
-    $scope.excluir = function() {};
     $scope.filtrar = function() {};
     $scope.folhearAnterior = function() {};
     $scope.folhearPrimeiro = function() {};

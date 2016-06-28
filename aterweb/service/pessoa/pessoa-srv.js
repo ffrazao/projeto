@@ -146,9 +146,9 @@ angular.module(pNmModulo).factory(pNmFactory,
                 SegurancaSrv.acesso(this.funcionalidade, 'EDITAR');
                 return $http.post(this.endereco + '/editar', pessoa);
             },
-            excluir : function(obj) {
+            excluir : function(pessoa) {
                 SegurancaSrv.acesso(this.funcionalidade, 'EXCLUIR');
-                return $http.delete(this.endereco + '/excluir', {params: {'id': obj.id}});
+                return $http.delete(this.endereco + '/excluir', {params: {'id': pessoa.id}});
             },
             // funcoes especiais
             formularioFiltrarComColeta : function(filtro) {

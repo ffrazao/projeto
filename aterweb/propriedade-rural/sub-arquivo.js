@@ -13,20 +13,21 @@ angular.module(pNmModulo).controller(pNmController,
         if (!angular.isObject($scope.cadastro.registro.arquivoList)) {
             $scope.cadastro.registro.arquivoList = [];
         }
-        $scope.propriedadeRuralArquivoNvg = new FrzNavegadorParams($scope.cadastro.registro.arquivoList, 4);
+        if (!$scope.propriedadeRuralArquivoNvg) {
+            $scope.propriedadeRuralArquivoNvg = new FrzNavegadorParams($scope.cadastro.registro.arquivoList, 4);
+        }
     };
     if (!$uibModalInstance) { init(); }
 
     // inicio rotinas de apoio
     var jaCadastrado = function(conteudo) {
-        for (var j in $scope.cadastro.registro.arquivoList) {
-            if (angular.equals($scope.cadastro.registro.arquivoList[j].arquivo.md5, conteudo.arquivo.md5)) {
-                if ($scope.cadastro.registro.arquivoList[j].cadastroAcao === 'E') {
-                    return true;
-                } else {
-                    toastr.error('Registro já cadastrado');
-                    return false;
-                }
+        var i, id, md5;
+        for (i in $scope.cadastro.registro.arquivoList) {
+            id = $scope.cadastro.registro.arquivoList[i].id;
+            md5 = $scope.cadastro.registro.arquivoList[i].arquivo.md5;
+            if (!angular.equals(id, conteudo.id) && angular.equals(md5, conteudo.arquivo.md5)) {
+                toastr.error('Registro já cadastrado');
+                return false;
             }
         }
         return true;
@@ -58,9 +59,10 @@ angular.module(pNmModulo).controller(pNmController,
                         continue novo;
                     }
                 }
-                $scope.cadastro.registro.arquivoList.push(
-                    {arquivo: conteudo.nomeArquivo[i]}
-                );
+                var item = {};
+                item.arquivo = conteudo.nomeArquivo[i]; 
+                item = $scope.criarElemento($scope.cadastro.registro, 'arquivoList', item);
+                $scope.cadastro.registro.arquivoList.push(item);
             }
         }, function() {
             // processar o retorno negativo da modal
@@ -73,9 +75,10 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.abrir = function() {
         $scope.propriedadeRuralArquivoNvg.mudarEstado('ESPECIAL'); 
         // desabilitar a edição de arquivos
-        $scope.propriedadeRuralArquivoNvg.botao('edicao').visivel = false;
+        $scope.propriedadeRuralArquivoNvg.botao('edicao').exibir = function() {return false;};
     };
     $scope.incluir = function() {
+        init();
         var item = {};
         editarItem(null, item);
     };
@@ -99,29 +102,17 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.excluir = function() {
         mensagemSrv.confirmacao(false, 'confirme a exclusão').then(function (conteudo) {
             var i, j;
+            removerCampo($scope.cadastro.registro.arquivoList, ['@jsonId']);
             if ($scope.propriedadeRuralArquivoNvg.selecao.tipo === 'U' && $scope.propriedadeRuralArquivoNvg.selecao.item) {
-                for (j = $scope.cadastro.registro.arquivoList.length -1; j >= 0; j--) {
-                    if (angular.equals($scope.cadastro.registro.arquivoList[j].arquivo.md5, $scope.propriedadeRuralArquivoNvg.selecao.item.arquivo.md5)) {
-                        //$scope.cadastro.registro.arquivoList.splice(j, 1);
-                        $scope.cadastro.registro.arquivoList[j].cadastroAcao = 'E';
-                    }
-                }
-                $scope.propriedadeRuralArquivoNvg.selecao.item = null;
-                $scope.propriedadeRuralArquivoNvg.selecao.selecionado = false;
+                $scope.excluirElemento($scope, $scope.cadastro.registro, 'arquivoList', $scope.propriedadeRuralArquivoNvg.selecao.item);
             } else if ($scope.propriedadeRuralArquivoNvg.selecao.items && $scope.propriedadeRuralArquivoNvg.selecao.items.length) {
-                for (j = $scope.cadastro.registro.arquivoList.length-1; j >= 0; j--) {
-                    for (i in $scope.propriedadeRuralArquivoNvg.selecao.items) {
-                        if (angular.equals($scope.cadastro.registro.arquivoList[j].arquivo.md5, $scope.propriedadeRuralArquivoNvg.selecao.items[i].arquivo.md5)) {
-                            //$scope.cadastro.registro.arquivoList.splice(j, 1);
-                            $scope.cadastro.registro.arquivoList[j].cadastroAcao = 'E';
-                            break;
-                        }
-                    }
-                }
-                for (i = $scope.propriedadeRuralArquivoNvg.selecao.items.length -1; i >= 0; i--) {
-                    $scope.propriedadeRuralArquivoNvg.selecao.items.splice(i, 1);
+                for (i in $scope.propriedadeRuralArquivoNvg.selecao.items) {
+                    $scope.excluirElemento($scope, $scope.cadastro.registro, 'arquivoList', $scope.propriedadeRuralArquivoNvg.selecao.items[i]);
                 }
             }
+            $scope.propriedadeRuralArquivoNvg.selecao.item = null;
+            $scope.propriedadeRuralArquivoNvg.selecao.items = [];
+            $scope.propriedadeRuralArquivoNvg.selecao.selecionado = false;
         }, function () {
         });
     };

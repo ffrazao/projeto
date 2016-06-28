@@ -46,6 +46,9 @@ public class VisualizarCmd extends _Comando {
 		result.setInclusaoUsuario(result.getInclusaoUsuario() == null ? null : result.getInclusaoUsuario().infoBasica());
 		result.setAlteracaoUsuario(result.getAlteracaoUsuario() == null ? null : result.getAlteracaoUsuario().infoBasica());
 		result.setEndereco(result.getEndereco().infoBasica());
+		result.setBaciaHidrografica(result.getBaciaHidrografica().infoBasica());
+		result.setComunidade(result.getComunidade().infoBasica());
+		result.setEndereco(result.getEndereco().infoBasica());
 
 		if (result.getPublicoAlvoPropriedadeRuralList() != null) {
 			List<PublicoAlvoPropriedadeRural> paprList = new ArrayList<PublicoAlvoPropriedadeRural>();
@@ -65,25 +68,30 @@ public class VisualizarCmd extends _Comando {
 		if (result.getFormaUtilizacaoEspacoRuralList() != null) {
 			for (PropriedadeRuralFormaUtilizacaoEspacoRural formaUtilizacaoEspacoRural : result.getFormaUtilizacaoEspacoRuralList()) {
 				formaUtilizacaoEspacoRural.setPropriedadeRural(null);
-			}
-		}
-		if (result.getArquivoList() != null) {
-			for (PropriedadeRuralArquivo a : result.getArquivoList()) {
-				a.getId();
+				formaUtilizacaoEspacoRural.setFormaUtilizacaoEspacoRural(formaUtilizacaoEspacoRural.getFormaUtilizacaoEspacoRural().infoBasica());
 			}
 		}
 		
-		IndiceProducaoCadFiltroDto filtro = new IndiceProducaoCadFiltroDto();
-		Calendar hoje = Calendar.getInstance();
-		filtro.setAno(hoje.get(Calendar.YEAR));
-		filtro.setPropriedadeRural(result);
-		result.setIndiceProducaoList((List<Object>) facadeBo.indiceProducaoFiltroProducaoPublicoAlvo(contexto.getUsuario(), filtro).getResposta());
-
+		if (result.getArquivoList() != null) {
+			for (PropriedadeRuralArquivo a : result.getArquivoList()) {
+				a.getId();
+				a.setArquivo(a.getArquivo().infoBasica());
+				a.setPropriedadeRural(null);
+			}
+		}
+		
 		if (result.getPendenciaList() != null) {
 			for (PropriedadeRuralPendencia propriedadeRuralPendencia : result.getPendenciaList()) {
 				propriedadeRuralPendencia.setPropriedadeRural(null);
 			}
 		}
+
+		// carregar o indice de producao da propriedade
+		IndiceProducaoCadFiltroDto filtro = new IndiceProducaoCadFiltroDto();
+		Calendar hoje = Calendar.getInstance();
+		filtro.setAno(hoje.get(Calendar.YEAR));
+		filtro.setPropriedadeRural(result);
+		result.setIndiceProducaoList((List<Object>) facadeBo.indiceProducaoFiltroProducaoPublicoAlvo(contexto.getUsuario(), filtro).getResposta());
 
 		em.detach(result);
 		contexto.setResposta(result);

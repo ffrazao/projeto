@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 
 /**
@@ -16,7 +17,7 @@ import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 @Entity
 @Table(name = "forma_utilizacao_espaco_rural", schema = EntidadeBase.ATER_SCHEMA)
 // @Indexed
-public class FormaUtilizacaoEspacoRural extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class FormaUtilizacaoEspacoRural extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<FormaUtilizacaoEspacoRural> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -30,6 +31,11 @@ public class FormaUtilizacaoEspacoRural extends EntidadeBase implements _ChavePr
 	public FormaUtilizacaoEspacoRural() {
 	}
 
+	public FormaUtilizacaoEspacoRural(Integer id, String nome) {
+		setId(id);
+		setNome(nome);
+	}
+
 	@Override
 	public Integer getId() {
 		return id;
@@ -37,6 +43,11 @@ public class FormaUtilizacaoEspacoRural extends EntidadeBase implements _ChavePr
 
 	public String getNome() {
 		return nome;
+	}
+
+	@Override
+	public FormaUtilizacaoEspacoRural infoBasica() {
+		return new FormaUtilizacaoEspacoRural(getId(), getNome());
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-/* global criarEstadosPadrao, isUndefOrNull */
+/* global criarEstadosPadrao, isUndefOrNull, removerCampo */
 
 (function(pNmModulo, pNmController, pNmFormulario, pUrlModulo) {
     'use strict';
@@ -388,6 +388,7 @@
                 }, registro, 500);
             };
             $scope.confirmarEditarAntes = function(cadastro) {
+                removerCampo($scope.cadastro.registro, ['@jsonId']);
                 return $scope.confirmarIncluirAntes(cadastro);
             };
             $scope.confirmarIncluirAntes = function(cadastro) {
