@@ -192,7 +192,7 @@
                         <div class="row" style="height: 200px; overflow: scroll;">
                             <div ui-tree drag-enabled="false">
                                 <ol ui-tree-nodes="" ng-model="cadastro.apoio.localList">
-                                    <li ng-repeat="item in cadastro.apoio.localList" ui-tree-node>
+                                    <li ng-repeat="item in cadastro.apoio.localList | orderBy: 'nome' track by item.id" ui-tree-node>
                                         <div ui-tree-handle>
                                             <a class="btn btn-primary btn-xs Tooltip" data-nodrag data-ng-click="toggleChildren(this)" title="Expandir/Recolher">
                                                 <span class="glyphicon glyphicon-chevron-right" data-ng-show="collapsed"></span>
@@ -204,7 +204,7 @@
                                             </label>
                                         </div>
                                         <ol ui-tree-nodes="" ng-model="item.unidadeList" ng-class="{hidden: collapsed}">
-                                            <li ng-repeat="subItem in item.unidadeList" ui-tree-node>
+                                            <li ng-repeat="subItem in item.unidadeList | unidadeOrganizacionalComunidadeFltr:cadastro.apoio.localFiltro | orderBy: ['nome'] track by subItem.id" ui-tree-node>
                                                 <div ui-tree-handle>
                                                     <a class="btn btn-primary btn-xs Tooltip" data-nodrag data-ng-click="toggleChildren(this)" title="Expandir/Recolher">
                                                         <span class="glyphicon glyphicon-chevron-right" data-ng-show="collapsed"></span>
@@ -216,7 +216,7 @@
                                                     </label>
                                                 </div>
                                                 <ol ui-tree-nodes="" ng-model="subItem.comunidadeList" ng-class="{hidden: collapsed}">
-                                                    <li ng-repeat="subSubItem in subItem.comunidadeList" ui-tree-node ng-show="visible(subSubItem)">
+                                                    <li ng-repeat="subSubItem in subItem.comunidadeList | orderBy: 'nome' track by subSubItem.id" ui-tree-node ng-show="visible(subSubItem)">
                                                         <div ui-tree-handle>
                                                             <label>
                                                                 <input type="checkbox" ng-model="subSubItem.selecionado" ng-true-value="true" ng-false-value="false">

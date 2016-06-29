@@ -248,6 +248,35 @@ var TIMEOUT_TEMPO = 5 * 60;
         };
     });
 
+    angular.module(pNmModulo).filter('unidadeOrganizacionalComunidadeFltr', [function() {
+        var isVisivel = function (item, filtro) {
+            return !(filtro && filtro.length > 0 && item.nome.trim().toLowerCase().latinize().indexOf(filtro.trim().toLowerCase().latinize()) === -1);
+        };
+        return function (unidadeOrganizacionalList, filtro) {
+            var result = [], i, encontrou;
+            if (unidadeOrganizacionalList) {
+                angular.forEach(unidadeOrganizacionalList, function(unidadeOrganizacional) {
+                    if (unidadeOrganizacional.comunidadeList) {
+                        encontrou = false;
+                        for (i = 0; i < unidadeOrganizacional.comunidadeList.length; i++) {
+                            if (isVisivel(unidadeOrganizacional.comunidadeList[i], filtro)) {
+                                encontrou = true;
+                                result.push(unidadeOrganizacional);
+                                break;
+                            }
+                        }
+                        if (!encontrou) {
+                            if (isVisivel(unidadeOrganizacional, filtro)) {
+                                result.push(unidadeOrganizacional);
+                            }
+                        }
+                    }
+                });
+            }
+            return result;
+        };
+    }]);
+
     angular.module(pNmModulo).directive('ngValorMin', function() {
         return {
             restrict: 'A',
