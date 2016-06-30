@@ -23,51 +23,6 @@ angular.module(pNmModulo).controller(pNmController,
     var jaCadastrado = function(conteudo) {
         return true;
     };
-    var editarItem = function (destino, item) {
-        // abrir a modal
-        var modalInstance = $uibModal.open({
-            animation: true,
-            templateUrl: 'pessoa/pessoa-modal.html',
-            controller: 'PessoaCtrl',
-            size: 'lg',
-            resolve: {
-                modalCadastro: function() {
-                    return $scope.cadastroBase();
-                }
-            }
-        });
-        // processar retorno da modal
-        modalInstance.result.then(function (resultado) {
-            // processar o retorno positivo da modal
-            var pessoa = null;
-            if (resultado.selecao.tipo === 'U') {
-                pessoa = {
-                    id: resultado.selecao.item[0],
-                    nome: resultado.selecao.item[1],
-                    pessoaTipo: resultado.selecao.item[3],
-                    genero: resultado.selecao.item[9],
-                };
-                $scope.preparaClassePessoa(pessoa);
-                item.pessoa = pessoa;
-                captaRelacionamento(destino, item);
-            } else {
-                for (var i in resultado.selecao.items) {
-                    pessoa = {
-                        id: resultado.selecao.items[i][0],
-                        nome: resultado.selecao.items[i][1],
-                        pessoaTipo: resultado.selecao.items[i][3],
-                        genero: resultado.selecao.items[i][9],
-                    };
-                    $scope.preparaClassePessoa(pessoa);
-                    item.pessoa = pessoa;
-                    captaRelacionamento(destino, item);
-                }
-            }
-            toastr.info('Operação realizada!', 'Informação');
-        }, function () {
-            captaRelacionamento(destino, item);
-        });
-    };
     var captaRelacionamento = function(destino, item) {
         if (!item.relacionador) {
             item.relacionador = {
@@ -256,6 +211,51 @@ angular.module(pNmModulo).controller(pNmController,
         }, function () {
             // processar o retorno negativo da modal
             //$log.info('Modal dismissed at: ' + new Date());
+        });
+    };
+    var editarItem = function (destino, item) {
+        // abrir a modal
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'pessoa/pessoa-modal.html',
+            controller: 'PessoaCtrl',
+            size: 'lg',
+            resolve: {
+                modalCadastro: function() {
+                    return $scope.cadastroBase();
+                }
+            }
+        });
+        // processar retorno da modal
+        modalInstance.result.then(function (resultado) {
+            // processar o retorno positivo da modal
+            var pessoa = null;
+            if (resultado.selecao.tipo === 'U') {
+                pessoa = {
+                    id: resultado.selecao.item[0],
+                    nome: resultado.selecao.item[1],
+                    pessoaTipo: resultado.selecao.item[3],
+                    genero: resultado.selecao.item[9],
+                };
+                $scope.preparaClassePessoa(pessoa);
+                item.pessoa = pessoa;
+                captaRelacionamento(destino, item);
+            } else {
+                for (var i in resultado.selecao.items) {
+                    pessoa = {
+                        id: resultado.selecao.items[i][0],
+                        nome: resultado.selecao.items[i][1],
+                        pessoaTipo: resultado.selecao.items[i][3],
+                        genero: resultado.selecao.items[i][9],
+                    };
+                    $scope.preparaClassePessoa(pessoa);
+                    item.pessoa = pessoa;
+                    captaRelacionamento(destino, item);
+                }
+            }
+            toastr.info('Operação realizada!', 'Informação');
+        }, function () {
+            captaRelacionamento(destino, item);
         });
     };
     // fim rotinas de apoio
