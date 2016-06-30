@@ -2,13 +2,7 @@ package br.gov.df.emater.aterwebsrv.rest;
 
 import java.util.List;
 
-import org.apache.catalina.Context;
-import org.apache.catalina.connector.Connector;
-import org.apache.tomcat.util.descriptor.web.SecurityCollection;
-import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
 import org.springframework.boot.context.embedded.FilterRegistrationBean;
-import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -48,15 +42,18 @@ public class _RestConfig extends WebMvcConfigurerAdapter {
 		builder.failOnEmptyBeans(false);
 		builder.failOnUnknownProperties(false);
 		builder.indentOutput(true).dateFormat(new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss"));
-		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter(builder.build());
+
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.setSerializationInclusion(Include.NON_NULL);
 		mapper.setSerializationInclusion(Include.NON_EMPTY);
 		mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
 		Hibernate4Module hibernate4Module = new Hibernate4Module();
 		hibernate4Module.configure(Feature.USE_TRANSIENT_ANNOTATION, false);
 		mapper.registerModule(hibernate4Module);
+
+		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter(builder.build());
 		converter.setObjectMapper(mapper);
 
 		converters.add(converter);
@@ -68,47 +65,51 @@ public class _RestConfig extends WebMvcConfigurerAdapter {
 	public FilterRegistrationBean filterRegistrationBean() {
 		// cuidado com o filtro a seguir, pode causar problemas com o spring
 		// security
-		FilterRegistrationBean registrationBean = new FilterRegistrationBean();
 		CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+		characterEncodingFilter.setBeanName("CharacterEncodingFilter");
 		characterEncodingFilter.setEncoding("UTF-8");
 		characterEncodingFilter.setForceEncoding(true);
-		characterEncodingFilter.setBeanName("CharacterEncodingFilter");
+
+		FilterRegistrationBean registrationBean = new FilterRegistrationBean();
 		registrationBean.setFilter(characterEncodingFilter);
 		return registrationBean;
 	}
 
-	private Connector initiateHttpConnector() {
-		// inicio redirecionamento http para https
-		Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
-		connector.setScheme("http");
-		connector.setPort(8080);
-		connector.setSecure(false);
-		connector.setRedirectPort(8443);
-		// fim redirecionamento http para https
+	// private Connector initiateHttpConnector() {
+	// // inicio redirecionamento http para https
+	// Connector connector = new
+	// Connector("org.apache.coyote.http11.Http11NioProtocol");
+	// connector.setScheme("http");
+	// connector.setPort(8080);
+	// connector.setSecure(false);
+	// connector.setRedirectPort(8443);
+	// // fim redirecionamento http para https
+	//
+	// return connector;
+	// }
 
-		return connector;
-	}
+	// @Bean
+	// public EmbeddedServletContainerFactory servletContainer() {
+	// // inicio redirecionamento http para https
+	// TomcatEmbeddedServletContainerFactory tomcat = null;
 
-	@Bean
-	public EmbeddedServletContainerFactory servletContainer() {
-		// inicio redirecionamento http para https
-		TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory() {
-			@Override
-			protected void postProcessContext(Context context) {
-				SecurityConstraint securityConstraint = new SecurityConstraint();
-				securityConstraint.setUserConstraint("CONFIDENTIAL");
-				SecurityCollection collection = new SecurityCollection();
-				collection.addPattern("/*");
-				securityConstraint.addCollection(collection);
-				context.addConstraint(securityConstraint);
-			}
-		};
+	// as linhas a seguir foram comentadas para desligar o https
+	// tomcat = new TomcatEmbeddedServletContainerFactory() {
+	// @Override
+	// protected void postProcessContext(Context context) {
+	// SecurityConstraint securityConstraint = new SecurityConstraint();
+	// securityConstraint.setUserConstraint("CONFIDENTIAL");
+	// SecurityCollection collection = new SecurityCollection();
+	// collection.addPattern("/*");
+	// securityConstraint.addCollection(collection);
+	// context.addConstraint(securityConstraint);
+	// }
+	// };
+	// tomcat.addAdditionalTomcatConnectors(initiateHttpConnector());
 
-		tomcat.addAdditionalTomcatConnectors(initiateHttpConnector());
-
-		// fim redirecionamento http para https
-		return tomcat;
-	}
+	// fim redirecionamento http para https
+	// return tomcat;
+	// }
 
 	@Bean(name = "multipartResolver")
 	public CommonsMultipartResolver setupCommonsMultipartResolver() {

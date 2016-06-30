@@ -43,7 +43,7 @@ public class _SegurancaConfig extends WebSecurityConfigurerAdapter {
 
 	// @Bean(name = "customAuthenticationProvider")
 	// public CustomAuthenticationProvider getCustomAuthenticationProvider() {
-	// // Customiza��o da autentica��o do usu�rio
+	// // Customização da autenticação do usuário
 	// CustomAuthenticationProvider result = new CustomAuthenticationProvider();
 	// result.setUserDetailsService(userDetailsService);
 	// result.setSaltSource(null);
