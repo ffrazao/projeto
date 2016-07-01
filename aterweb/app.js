@@ -26,7 +26,7 @@ var TIMEOUT_TEMPO = 5 * 60;
     // fim: codigo para habilitar o modal recursivo
 
     // inicio: modulo de autenticação
-    angular.module(pNmModulo).factory('TokenStorage', function($cookieStore) {
+    angular.module(pNmModulo).factory('TokenStorage', ['$cookieStore', function($cookieStore) {
         var storageKey = 'auth_token';
         var extrairToken = function(t) {
             return t && t.length ? angular.fromJson(decodeURIComponent(escape(atob(t.split('.')[0])))) : null;
@@ -62,19 +62,19 @@ var TIMEOUT_TEMPO = 5 * 60;
                 },
             };
         }
-    });
-    angular.module(pNmModulo).factory('TokenAuthInterceptor', function($q, TokenStorage) {
+    }]);
+    angular.module(pNmModulo).factory('TokenAuthInterceptor', ['$q', 'TokenStorage', function($q, TokenStorage) {
         return {
             request: function(config) {
                 //config.headers['AddType'] = 'text/cache-manifest .appcache';
 
-                if (config.url === "info/info.html") {
+                if (config.url === 'info/info.html') {
                     return config;
                 }
                 var authToken = TokenStorage.retrieve();
                 if (authToken) {
                     config.headers['X-AUTH-TOKEN'] = authToken;
-                    config.headers["X-Requested-With"] = 'XMLHttpRequest';
+                    config.headers['X-Requested-With'] = 'XMLHttpRequest';
                 }
                 return config;
             },
@@ -85,7 +85,7 @@ var TIMEOUT_TEMPO = 5 * 60;
                 return $q.reject(error);
             }
         };
-    });
+    }]);
     // fim: modulo de autenticação
 
     // inicio: utilitarios
@@ -131,9 +131,7 @@ var TIMEOUT_TEMPO = 5 * 60;
     });
     // fim : utilitarios
 
-    angular.module(pNmModulo).config(['$stateProvider', '$urlRouterProvider', 'toastrConfig', '$locationProvider',
-        'uiGmapGoogleMapApiProvider', '$httpProvider', 'IdleProvider', 'KeepaliveProvider',
-        function($stateProvider, $urlRouterProvider, toastrConfig, $locationProvider, uiGmapGoogleMapApiProvider, $httpProvider,
+    angular.module(pNmModulo).config(['$stateProvider', '$urlRouterProvider', 'toastrConfig', '$locationProvider', 'uiGmapGoogleMapApiProvider', '$httpProvider', 'IdleProvider', 'KeepaliveProvider', function($stateProvider, $urlRouterProvider, toastrConfig, $locationProvider, uiGmapGoogleMapApiProvider, $httpProvider,
             IdleProvider, KeepaliveProvider) {
 
             IdleProvider.idle(IDLE_TEMPO);
@@ -223,8 +221,7 @@ var TIMEOUT_TEMPO = 5 * 60;
                 libraries: 'weather,geometry,visualization,drawing,places'
             });
 
-        }
-    ]);
+        }]);
 
     angular.module(pNmModulo).filter('filtrarInseridos', function() {
         return function(item, listaApoio, campo, campoLista) {
@@ -234,11 +231,11 @@ var TIMEOUT_TEMPO = 5 * 60;
 
             for (var i in listaApoio) {
                 valor = angular.fromJson(listaApoio[i]);
-                for (j in campoLista.split(".")) {
-                    if (!valor[campoLista.split(".")[j]]) {
+                for (j in campoLista.split('.')) {
+                    if (!valor[campoLista.split('.')[j]]) {
                         return false;
                     }
-                    valor = angular.fromJson(valor[campoLista.split(".")[j]]);
+                    valor = angular.fromJson(valor[campoLista.split('.')[j]]);
                 }
                 if (item[campo] === valor) {
                     return true;
@@ -248,7 +245,7 @@ var TIMEOUT_TEMPO = 5 * 60;
         };
     });
 
-    angular.module(pNmModulo).filter('unidadeOrganizacionalComunidadeFltr', [function() {
+    angular.module(pNmModulo).filter('unidadeOrganizacionalComunidadeFltr', function() {
         var isVisivel = function (item, filtro) {
             return !(filtro && filtro.length > 0 && item.nome.trim().toLowerCase().latinize().indexOf(filtro.trim().toLowerCase().latinize()) === -1);
         };
@@ -275,7 +272,7 @@ var TIMEOUT_TEMPO = 5 * 60;
             }
             return result;
         };
-    }]);
+    });
 
     angular.module(pNmModulo).directive('ngValorMin', function() {
         return {
@@ -344,7 +341,7 @@ var TIMEOUT_TEMPO = 5 * 60;
 
     angular.module(pNmModulo).directive('ngMesmoValorQue', function() {
         return {
-            require: "ngModel",
+            require: 'ngModel',
             scope: {
                 ngMesmoValorQue: '='
             },
@@ -375,7 +372,7 @@ var TIMEOUT_TEMPO = 5 * 60;
 
     angular.module(pNmModulo).directive('ngValorDiferenteDe', function() {
         return {
-            require: "ngModel",
+            require: 'ngModel',
             scope: {
                 ngValorDiferenteDe: '='
             },
@@ -417,11 +414,9 @@ var TIMEOUT_TEMPO = 5 * 60;
             );};
     }]);
 
-    angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 'toastr', 'UtilSrv', '$stateParams', '$timeout', 'TokenStorage', '$state', 'CestaDeValores', 'SegurancaSrv',
-        'Idle',
-        function($rootScope, $uibModal, FrzNavegadorParams, toastr, UtilSrv, $stateParams, $timeout, TokenStorage, $state, CestaDeValores, SegurancaSrv,
+    angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 'toastr', 'UtilSrv', '$stateParams', '$timeout', 'TokenStorage', '$state', 'CestaDeValores', 'SegurancaSrv', 'Idle', function($rootScope, $uibModal, FrzNavegadorParams, toastr, UtilSrv, $stateParams, $timeout, TokenStorage, $state, CestaDeValores, SegurancaSrv,
             Idle) {
-            $rootScope.servicoUrl = "http://localhost:8080";
+            $rootScope.servicoUrl = 'http://localhost:8080';
             $rootScope.token = null;
             $rootScope.isAuthenticated = function(username) {
                 if (!$rootScope.token) {
@@ -485,9 +480,9 @@ var TIMEOUT_TEMPO = 5 * 60;
                 modalInstance.result.then(function(registro) {}, function() {});
             };
 
-            $rootScope.globalLocalizacao = "pt-br";
-            $rootScope.globalFracaoHectares = "3";
-            $rootScope.globalFracaoSem = "0";
+            $rootScope.globalLocalizacao = 'pt-br';
+            $rootScope.globalFracaoHectares = '3';
+            $rootScope.globalFracaoSem = '0';
             $rootScope.safeApply = function(fn) {
                 var phase = $rootScope.$$phase;
                 if (phase === '$apply' || phase === '$digest') {
@@ -815,51 +810,51 @@ var TIMEOUT_TEMPO = 5 * 60;
             $rootScope.exibeDescansoTela = function() {
                 $rootScope.descansoTela = $uibModal.open({
                     controller: 'DescansoCtrl',
-                    template: '<div class="modal-header">' +
+                    template: '<div class=\"modal-header\">' +
                         '    <h3>E ai! Você conhece!</h3>' +
                         '</div>' +
-                        '<div class="modal-body">' +
-                        '    <div class="container-fluid">' +
-                        '        <div class="row" ng-show="!voceConheceList.length">' +
-                        '            <div class="col-xs-4">' +
-                        '               <img src="img/logo-transparente.png" alt="EMATER web" width="50%">' +
+                        '<div class=\"modal-body\">' +
+                        '    <div class=\"container-fluid\">' +
+                        '        <div class=\"row\" ng-show=\"!voceConheceList.length\">' +
+                        '            <div class=\"col-xs-4\">' +
+                        '               <img src=\"img/logo-transparente.png\" alt=\"EMATER web\" width=\"50%\">' +
                         '            </div>' +
-                        '            <div class="col-xs-8">' +
+                        '            <div class=\"col-xs-8\">' +
                         '               <p>Espaço reservado a exibição dos perfis dos usuários do sistema EMATER web, atualize seu perfil e ele será exibido aqui!</p>' +
                         '            </div>' +
                         '        </div>' +
-                        '        <div class="row" ng-show="voceConheceList.length">' +
-                        '            <div class="col-xs-4">' +
-                        '               <img ng-src="{{servicoUrl}}/arquivo-descer?arquivo={{voceConheceList[indice].imagem}}" class="img-responsive" style="margin:auto;" height="200px" width="200px">' +
+                        '        <div class=\"row\" ng-show=\"voceConheceList.length\">' +
+                        '            <div class=\"col-xs-4\">' +
+                        '               <img ng-src=\"{{servicoUrl}}/arquivo-descer?arquivo={{voceConheceList[indice].imagem}}\" class=\"img-responsive\" style=\"margin:auto;\" height=\"200px\" width=\"200px\">' +
                         '            </div>' +
-                        '            <div class="col-xs-8">' +
-                        '               <table class="table table-bordered table-striped">' +
+                        '            <div class=\"col-xs-8\">' +
+                        '               <table class=\"table table-bordered table-striped\">' +
                         '                   <tr>' +
                         '                       <td>Nome</td>' +
                         '                       <th>{{voceConheceList[indice].nome}}</br>' +
                         '                       <small>{{voceConheceList[indice].apelidoSigla}}</small></th>' +
                         '                   </tr>' +
-                        '                   <tr ng-show="voceConheceList[indice].nascimentoLocal">' +
+                        '                   <tr ng-show=\"voceConheceList[indice].nascimentoLocal\">' +
                         '                       <td>Local de Nascimento</td>' +
                         '                       <th>{{voceConheceList[indice].nascimentoLocal}}</th>' +
                         '                   </tr>' +
-                        '                   <tr ng-show="voceConheceList[indice].nascimentoData">' +
+                        '                   <tr ng-show=\"voceConheceList[indice].nascimentoData\">' +
                         '                       <td>Data de Nascimento</td>' +
                         '                       <th>{{voceConheceList[indice].nascimentoData}}</th>' +
                         '                   </tr>' +
-                        '                   <tr ng-show="voceConheceList[indice].cargo">' +
+                        '                   <tr ng-show=\"voceConheceList[indice].cargo\">' +
                         '                       <td>Cargo</td>' +
                         '                       <th>{{voceConheceList[indice].cargo}}</th>' +
                         '                   </tr>' +
-                        '                   <tr ng-show="voceConheceList[indice].admissao">' +
+                        '                   <tr ng-show=\"voceConheceList[indice].admissao\">' +
                         '                       <td>Admissão</td>' +
                         '                       <th>{{voceConheceList[indice].admissao}}</th>' +
                         '                   </tr>' +
-                        '                   <tr ng-show="voceConheceList[indice].lotacao">' +
+                        '                   <tr ng-show=\"voceConheceList[indice].lotacao\">' +
                         '                       <td>Lotação</td>' +
                         '                       <th>{{voceConheceList[indice].lotacao}}</th>' +
                         '                   </tr>' +
-                        '                   <tr ng-show="voceConheceList[indice].informacaoSobreUsuario">' +
+                        '                   <tr ng-show=\"voceConheceList[indice].informacaoSobreUsuario\">' +
                         '                       <td>Sobre</td>' +
                         '                       <th>{{voceConheceList[indice].informacaoSobreUsuario}}</th>' +
                         '                   </tr>' +
@@ -868,8 +863,8 @@ var TIMEOUT_TEMPO = 5 * 60;
                         '        </div>' +
                         '    </div>' +
                         '</div>' +
-                        '<div class="modal-footer" idle-countdown="countdown" ng-init="countdown=timeoutTempo">' +
-                        '    <uib-progressbar max="timeoutTempo" value="countdown" animate="true" class="progress-striped active" type="warning">{{countdown}} segundo(s) para o término dessa sessão.</uib-progressbar>' +
+                        '<div class=\"modal-footer\" idle-countdown=\"countdown\" ng-init=\"countdown=timeoutTempo\">' +
+                        '    <uib-progressbar max=\"timeoutTempo\" value=\"countdown\" animate=\"true\" class=\"progress-striped active\" type=\"warning\">{{countdown}} segundo(s) para o término dessa sessão.</uib-progressbar>' +
                         '</div>',
                     windowClass: 'modal-warning',
                     size: 'lg',
@@ -1381,11 +1376,9 @@ var TIMEOUT_TEMPO = 5 * 60;
 
 
             // fim funcoes crud
-        }
-    ]);
+        }]);
 
-    angular.module(pNmModulo).controller('DescansoCtrl', ['$scope', '$interval',
-        function($scope, $interval) {
+    angular.module(pNmModulo).controller('DescansoCtrl', ['$scope', '$interval', function($scope, $interval) {
             $scope.exibidoList = [];
 
             $scope.geraIntervalo = function() {
@@ -1409,11 +1402,9 @@ var TIMEOUT_TEMPO = 5 * 60;
             $scope.geraIntervalo();
 
             $scope.geraIntervaloInterval = $interval($scope.geraIntervalo, 7000);
-        }
-    ]);
+        }]);
 
-    angular.module(pNmModulo).controller('AuthCtrl', ['$scope', '$rootScope', '$http', 'TokenStorage', 'mensagemSrv', '$uibModal', '$uibModalInstance', '$state',
-            function($scope, $rootScope, $http, TokenStorage, mensagemSrv, $uibModal, $uibModalInstance, $state) {
+    angular.module(pNmModulo).controller('AuthCtrl', ['$scope', '$rootScope', '$http', 'TokenStorage', 'mensagemSrv', '$uibModal', '$uibModalInstance', '$state', function($scope, $rootScope, $http, TokenStorage, mensagemSrv, $uibModal, $uibModalInstance, $state) {
                 $rootScope.token = null; // For display purposes only
 
                 $scope.exibeLogin = function() {
@@ -1431,8 +1422,7 @@ var TIMEOUT_TEMPO = 5 * 60;
                         //$log.info('Modal dismissed at: ' + new Date());
                     });
                 };
-            }
-    ]);
+            }]);
 
 })('principal', null, 'Módulo Principal do Sistema');
 

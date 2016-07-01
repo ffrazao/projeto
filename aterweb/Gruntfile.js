@@ -138,6 +138,9 @@ module.exports = function (grunt) {
       }
     },
     ngAnnotate: {
+      options: {
+        singleQuotes: true
+      },
       main: {
         src:'temp/app.full.js',
         dest: 'temp/app.full.js'
