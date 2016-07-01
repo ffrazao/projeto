@@ -14,6 +14,7 @@
 
     frzEnderecoModule.controller('FrzEnderecoCtrl', ['$scope', 'UtilSrv', 'PessoaSrv', 'toastr',
         function ($scope, UtilSrv, PessoaSrv, toastr) {
+        'ngInject';
         $scope.apoio = {estadoList:[], municipioList: [], cidadeList: []};
 
         if ($scope.conteudo.pais && $scope.conteudo.pais.id) {
@@ -82,8 +83,9 @@
         };
     }]);
 
-    frzEnderecoModule.directive('frzEndereco', [
+    frzEnderecoModule.directive('frzEndereco', [         
         function() {
+            'ngInject';
 
             return {
                 restrict : 'E',

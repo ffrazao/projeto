@@ -5,6 +5,7 @@
 angular.module(pNmModulo).controller(pNmController,
     ['$scope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv', 'mensagemSrv', '$log',
     function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv, $log) {
+    'ngInject';
 
     // inicio rotinas de apoio
     var jaCadastrado = function(conteudo) {
@@ -178,6 +179,8 @@ angular.module(pNmModulo).controller(pNmController,
 angular.module(pNmModulo).controller('Demandante' + pNmController,
     ['$scope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv', 'mensagemSrv', '$log',
     function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv, $log) {
+    'ngInject';
+
     // inicializacao
 
     $scope.lista = 'pessoaDemandanteList';
@@ -222,6 +225,8 @@ angular.module(pNmModulo).controller('Demandante' + pNmController,
 angular.module(pNmModulo).controller('Executor' + pNmController,
     ['$scope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv', 'mensagemSrv', '$log',
     function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv, $log) {
+    'ngInject';
+    
     // inicializacao
 
     $scope.lista = 'pessoaExecutorList';

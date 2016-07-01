@@ -7,6 +7,7 @@
 angular.module(pNmModulo).controller(pNmController,
     ['$scope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv', 'mensagemSrv', 'IndiceProducaoSrv', '$rootScope',
     function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv, IndiceProducaoSrv, $rootScope) {
+    'ngInject';
 
     // inicializacao
     var init = function() {

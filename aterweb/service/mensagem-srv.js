@@ -10,6 +10,7 @@ angular.module(pNmModulo, ['ui.bootstrap', 'ui.router', 'ngSanitize', 'ngAnimate
 angular.module(pNmModulo).controller(pNmController,
     ['$scope', '$uibModalInstance', 'conteudo', 'funcaoOk', 'funcaoCancelar', 'funcaoIncializar',
     function($scope, $uibModalInstance, conteudo, funcaoOk, funcaoCancelar, funcaoIncializar) {
+        'ngInject';
         $scope.conteudo = conteudo;
         $scope.modalOk = function () {
             // Retorno da modal
@@ -34,6 +35,8 @@ angular.module(pNmModulo).controller(pNmController,
 angular.module(pNmModulo).factory(pNmFactory,
   ['$uibModal',
     function($uibModal) {
+        'ngInject';
+        
         var formModal =  function (tipo, url, mensagem, titulo, conteudo, tamanho, funcaoOk, funcaoCancelar, funcaoIncializar) {
             var botaoCancelar = null;
             if ('alerta' === tipo) {

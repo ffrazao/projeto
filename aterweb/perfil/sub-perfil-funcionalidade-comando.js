@@ -5,7 +5,8 @@
 angular.module(pNmModulo).controller(pNmController,
     ['$scope', '$rootScope', 'toastr', 'UtilSrv', 'PerfilSrv',
     function($scope, $rootScope, toastr, UtilSrv, PerfilSrv) {
-
+    'ngInject';
+    
     // inicio rotinas de apoio
     $scope.exibeConceder = function (indice, elemento) {
         var campo = 'funcionalidadeComando_' + indice + '_' + elemento;

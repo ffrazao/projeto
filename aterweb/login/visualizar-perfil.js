@@ -6,7 +6,8 @@
 
 angular.module(pNmModulo).controller(pNmController, ['$scope', '$uibModalInstance', 'toastr', 'mensagemSrv', 'SegurancaSrv',
 function ($scope, $uibModalInstance, toastr, mensagemSrv, SegurancaSrv) {
-
+        'ngInject';
+        
         $scope.iniciar = function() {
             SegurancaSrv.visualizarPerfil().success(function(resposta) {
                 if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {

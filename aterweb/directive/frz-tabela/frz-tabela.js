@@ -22,6 +22,8 @@
 
     // controller para a barra de navegacao
     FrzTabelaModule.controller('FrzTabelaCtrl', ['$scope', 'FrzNavegadorParams', 'mensagemSrv', 'UtilSrv', function($scope, FrzNavegadorParams, mensagemSrv, UtilSrv) {
+        'ngInject';
+
         $scope.navegadorFrm = new FrzNavegadorParams([]);
         var abrirForm = function (form, dd, acao) {
             verificaDados($scope);
@@ -202,6 +204,8 @@
 
     // diretiva da barra de navegação de dados
     FrzTabelaModule.directive('frzTabela', ['FrzNavegadorParams', function(FrzNavegadorParams) {
+        'ngInject';
+        
         return {
             require: ['^ngModel'],
             restrict: 'E', 

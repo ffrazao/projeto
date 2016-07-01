@@ -7,6 +7,8 @@
 angular.module(pNmModulo).factory(pNmFactory,
   ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams', 'mensagemSrv', 'ComunidadeSrv', 'BemProducaoSrv', 'BemClassificacaoSrv', 'PropriedadeRuralSrv',
     function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams, mensagemSrv, ComunidadeSrv, BemProducaoSrv, BemClassificacaoSrv, PropriedadeRuralSrv) {
+        'ngInject';
+        
         var IndiceProducaoSrv = {
             funcionalidade: 'INDICE_PRODUCAO',
             endereco: $rootScope.servicoUrl + '/indice-producao',

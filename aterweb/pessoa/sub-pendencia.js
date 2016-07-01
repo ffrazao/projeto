@@ -7,7 +7,8 @@
 angular.module(pNmModulo).controller(pNmController,
     ['$scope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv', 'mensagemSrv', '$sce',
     function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv, $sce) {
-
+    'ngInject';
+    
     // inicializacao
     var init = function() {
         if (!angular.isObject($scope.cadastro.registro.pendenciaList)) {

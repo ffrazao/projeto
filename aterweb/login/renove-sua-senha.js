@@ -5,7 +5,8 @@
 angular.module(pNmModulo).controller(pNmController,
     ['$scope', '$uibModalInstance', 'toastr', 'registroOrig', 'CestaDeValores', 'SegurancaSrv',
     function ($scope, $uibModalInstance, toastr, registroOrig,  CestaDeValores, SegurancaSrv) {
-
+        'ngInject';
+        
         $scope.reiniciar = function() {
             $scope.submitted = false;
             $scope.registro = {};

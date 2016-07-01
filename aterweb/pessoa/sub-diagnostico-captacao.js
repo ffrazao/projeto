@@ -7,6 +7,7 @@
 angular.module(pNmModulo).controller(pNmController,
     ['$scope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv', 'mensagemSrv', 'PessoaSrv', 'FormularioSrv',
     function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv, PessoaSrv, FormularioSrv) {
+    'ngInject';
 
     $scope.cadastro.apoio.tecnicoUnidadeList = [
         {username: 'a', nome: 'Jose',},

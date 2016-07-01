@@ -4,10 +4,14 @@
     'use strict';
     angular.module(pNmModulo, ['ui.bootstrap', 'ui.utils', 'ui.router', 'ngAnimate', 'frz.navegador']);
     angular.module(pNmModulo).config(['$stateProvider', function($stateProvider) {
+        'ngInject';
+
         criarEstadosPadrao($stateProvider, pNmModulo, pNmController, pUrlModulo);
     }]);
     angular.module(pNmModulo).factory('ponteControllerSrv', [
         function() {
+            'ngInject';
+
             var factory = {
                 scp: null,
                 getScp: function() {
@@ -26,7 +30,7 @@
         function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance,
             modalCadastro, UtilSrv, mensagemSrv, PropriedadeRuralSrv, EnderecoSrv, uiGmapGoogleMapApi, uiGmapIsReady,
             ponteControllerSrv, $interval) {
-
+            'ngInject';
             // inicializacao
             $scope.crudInit($scope, $state, null, pNmFormulario, PropriedadeRuralSrv);
 
@@ -777,6 +781,8 @@
     // inicio: mapa formulario
     angular.module(pNmModulo).controller('MapaCtrl', ['$scope', 'ponteControllerSrv',
         function($scope, ponteControllerSrv) {
+            'ngInject';
+
             $scope.removeElemento = function(local) {
                 if (local === 'form') {
                     ponteControllerSrv.getScp().cadastro.apoio.form.removeElemento();
@@ -804,6 +810,7 @@
 
     angular.module(pNmModulo).run(['$templateCache', 'uiGmapLogger',
         function($templateCache, Logger) {
+            'ngInject';
             Logger.doLog = true;
             $templateCache.put('form.control.tpl.html', '<button class=\"btn btn-sm btn-danger\" ng-click=\"removeElemento(\'form\')\" ng-show=\"selecionado(\'form\')\">Excluir</button>');
             $templateCache.put('form.searchBox.tpl.html', '<input type=\"text\" ng-model=\"enderecoPesquisa\" placeholder=\"Procurar\" ng-dblclick=\"enderecoPesquisa = \'\'\" style="width: 80%;"/>');

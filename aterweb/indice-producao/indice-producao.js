@@ -5,11 +5,14 @@
     'use strict';
     angular.module(pNmModulo, ['ui.bootstrap', 'ui.utils', 'ui.router', 'ngAnimate', 'frz.navegador', 'frz.form', 'ngSanitize']);
     angular.module(pNmModulo).config(['$stateProvider', function($stateProvider) {
+        'ngInject';
+
         criarEstadosPadrao($stateProvider, pNmModulo, pNmController, pUrlModulo);
     }]);
     angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'IndiceProducaoSrv', 'PropriedadeRuralSrv',
         function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, IndiceProducaoSrv,  PropriedadeRuralSrv) {
-
+            'ngInject';
+            
             // inicializacao
             $scope.crudInit($scope, $state, modalCadastro, pNmFormulario, IndiceProducaoSrv);
 

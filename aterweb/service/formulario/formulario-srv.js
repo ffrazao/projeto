@@ -7,6 +7,8 @@
 angular.module(pNmModulo).factory(pNmFactory,
   ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams', 'mensagemSrv',
     function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams, mensagemSrv) {
+        'ngInject';
+        
         var FormularioSrv = {
             funcionalidade: 'FORMULARIO',
             endereco: $rootScope.servicoUrl + '/formulario',

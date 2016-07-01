@@ -7,6 +7,8 @@
 
     // controller para a barra de navegacao
     frzFormModule.controller('FrzFormCtrl', ['$scope', 'mensagemSrv', function($scope, mensagemSrv) {
+        'ngInject';
+
         $scope.abrirDetalhe = function(form, dd) {
             if (!dd) {
                 dd = {};
@@ -30,6 +32,7 @@
 
     // diretiva da barra de navegação de dados
     frzFormModule.directive('frzForm', ['$timeout', function($timeout) {
+        'ngInject';
         return {
             require: ['^ngModel'],
             restrict: 'E', 

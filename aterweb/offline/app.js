@@ -10,6 +10,7 @@
         'mensagemSrv', 'utilSrv']);
 
     angular.module(pNmModulo).config(['$stateProvider', '$sceDelegateProvider', function($stateProvider, $sceDelegateProvider) {
+        'ngInject';
 
         $stateProvider.state('offline', {
           url: '/offline',
@@ -20,15 +21,18 @@
     }]);
 
     angular.module(pNmModulo).factory('$uibModalInstance', function () {
+      'ngInject';
       return null;
     });
     angular.module(pNmModulo).factory('modalCadastro', function () {
+      'ngInject';
       return null;
     });
 
     angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', '$state', '$uibModal', '$log', '$uibModalInstance', 'UtilSrv', 'mensagemSrv', '$rootScope', '$http', '$sce',
         function($scope, toastr, $state, $uibModal, $log, $uibModalInstance, UtilSrv, mensagemSrv, $rootScope, $http, $sce) {
-
+            'ngInject';
+            
             $scope.onSuccess = function(data) {
                 console.log(data);
             };

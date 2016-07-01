@@ -9,6 +9,8 @@ angular.module(pNmModulo, ['ui.bootstrap', 'ui.router', 'ngSanitize', 'ngAnimate
 angular.module(pNmModulo).factory(pNmFactory,
     ['$rootScope', '$http', 'toastr', '$state', '$location',
     function($rootScope, $http, toastr, $state, $location) {
+        'ngInject';
+        
         var SegurancaSrv = {
             acesso : function(funcionalidade, comando) {
                 $http.get($rootScope.servicoUrl + '/api/acesso', {params: {funcionalidade: funcionalidade, comando: comando}})

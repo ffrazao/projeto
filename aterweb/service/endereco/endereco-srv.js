@@ -5,6 +5,8 @@
 angular.module(pNmModulo).factory(pNmFactory,
   ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams',
     function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams) {
+        'ngInject';
+        
         var EnderecoSrv = {
             endereco: $rootScope.servicoUrl + '/endereco',
             novo : function() {

@@ -4,6 +4,8 @@
     var frzNavegadorModule = angular.module('frz.navegador', []);
 
     frzNavegadorModule.factory('FrzNavegadorParams', function() {
+        'ngInject';
+
         var FrzNavegadorParams = function (dados, tamanhoPadrao) {
             this.scopeNavegador = null;
             this.scopeSeletor = null;
@@ -72,6 +74,8 @@
 
     // filtro para promover a paginação
     frzNavegadorModule.filter('pagina', function() {
+        'ngInject';
+
         return function(lista, pagina, tamanho) {
             if (!angular.isObject(lista)) {
                 return;
@@ -83,6 +87,8 @@
 
     // diretiva para multiselecao
     frzNavegadorModule.directive('checklistModel', ['$parse', '$compile', function($parse, $compile) {
+        'ngInject';
+        
         // contains
         function contains(arr, item, comparator) {
             if (angular.isArray(arr)) {
@@ -182,6 +188,7 @@
 
     // controller para a barra de navegacao
     frzNavegadorModule.controller('FrzNavegadorCtrl', ['$scope', 'FrzNavegadorParams', function($scope, FrzNavegadorParams) {
+        'ngInject';
 
         // a saber: $scope.ngModel é um objeto do tipo FrzNavegadorParams
         if ($scope.ngModel && !$scope.ngModel.hasOwnProperty('scopeNavegador')) {
@@ -351,6 +358,8 @@
 
     // diretiva da barra de navegação de dados
     frzNavegadorModule.directive('frzNavegador', ['$rootScope', function($rootScope) {
+        'ngInject';
+
         return {
             require: ['^ngModel'],
             restrict: 'E', 
@@ -785,6 +794,8 @@
     }]);
 
     frzNavegadorModule.directive('frzSeletor', ['FrzNavegadorParams', function(FrzNavegadorParams) {
+        'ngInject';
+
         return {
             template: 
             '<span>' +

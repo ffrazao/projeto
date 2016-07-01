@@ -7,6 +7,8 @@
 angular.module(pNmModulo).factory(pNmFactory,
   ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams',
     function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams) {
+        'ngInject';
+        
         var LogAcaoSrv = {
             funcionalidade: 'LOG_ACAO',
             endereco: $rootScope.servicoUrl + '/log-acao',

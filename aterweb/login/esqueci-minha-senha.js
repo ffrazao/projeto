@@ -5,6 +5,8 @@
 angular.module(pNmModulo).controller(pNmController,
       ['$scope', '$uibModalInstance', 'toastr', 'SegurancaSrv',
     function ($scope, $uibModalInstance, toastr, SegurancaSrv) {
+    'ngInject';
+    
     $scope.iniciar = function() {
       $scope.registroOrig = {};
       $scope.reiniciar();

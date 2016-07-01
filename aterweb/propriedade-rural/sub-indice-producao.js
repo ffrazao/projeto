@@ -6,7 +6,8 @@
 angular.module(pNmModulo).controller(pNmController,
     ['$scope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv', 'mensagemSrv', 'BemClassificacaoSrv', 'IndiceProducaoSrv', '$log',
     function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv, BemClassificacaoSrv, IndiceProducaoSrv, $log) {
-
+    'ngInject';
+    
     // inicializacao
     var init = function() {
         if (!angular.isObject($scope.cadastro.registro.indiceProducaoList)) {

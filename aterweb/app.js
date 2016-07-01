@@ -18,15 +18,18 @@ var TIMEOUT_TEMPO = 5 * 60;
 
     // inicio: codigo para habilitar o modal recursivo
     angular.module(pNmModulo).factory('$uibModalInstance', function() {
+        'ngInject';
         return null;
     });
     angular.module(pNmModulo).factory('modalCadastro', function() {
+        'ngInject';
         return null;
     });
     // fim: codigo para habilitar o modal recursivo
 
     // inicio: modulo de autenticação
     angular.module(pNmModulo).factory('TokenStorage', ['$cookieStore', function($cookieStore) {
+        'ngInject';
         var storageKey = 'auth_token';
         var extrairToken = function(t) {
             return t && t.length ? angular.fromJson(decodeURIComponent(escape(atob(t.split('.')[0])))) : null;
@@ -64,6 +67,7 @@ var TIMEOUT_TEMPO = 5 * 60;
         }
     }]);
     angular.module(pNmModulo).factory('TokenAuthInterceptor', ['$q', 'TokenStorage', function($q, TokenStorage) {
+        'ngInject';
         return {
             request: function(config) {
                 //config.headers['AddType'] = 'text/cache-manifest .appcache';
@@ -90,6 +94,7 @@ var TIMEOUT_TEMPO = 5 * 60;
 
     // inicio: utilitarios
     angular.module(pNmModulo).factory('CestaDeValores', function() {
+        'ngInject';
         var valores = [];
         var cestaDeValoresSrv = {};
         cestaDeValoresSrv.pegaIndiceValor = function(nome) {
@@ -131,8 +136,11 @@ var TIMEOUT_TEMPO = 5 * 60;
     });
     // fim : utilitarios
 
-    angular.module(pNmModulo).config(['$stateProvider', '$urlRouterProvider', 'toastrConfig', '$locationProvider', 'uiGmapGoogleMapApiProvider', '$httpProvider', 'IdleProvider', 'KeepaliveProvider', function($stateProvider, $urlRouterProvider, toastrConfig, $locationProvider, uiGmapGoogleMapApiProvider, $httpProvider,
-            IdleProvider, KeepaliveProvider) {
+    angular.module(pNmModulo).config(['$stateProvider', '$urlRouterProvider', 'toastrConfig', '$locationProvider', 'uiGmapGoogleMapApiProvider', 
+           '$httpProvider', 'IdleProvider', 'KeepaliveProvider', 
+            function($stateProvider, $urlRouterProvider, toastrConfig, $locationProvider, uiGmapGoogleMapApiProvider, $httpProvider, IdleProvider, 
+                KeepaliveProvider) {
+            'ngInject';
 
             IdleProvider.idle(IDLE_TEMPO);
             IdleProvider.timeout(TIMEOUT_TEMPO);
@@ -224,6 +232,7 @@ var TIMEOUT_TEMPO = 5 * 60;
         }]);
 
     angular.module(pNmModulo).filter('filtrarInseridos', function() {
+        'ngInject';
         return function(item, listaApoio, campo, campoLista) {
             var j, valor;
             item = angular.fromJson(item);
@@ -246,6 +255,7 @@ var TIMEOUT_TEMPO = 5 * 60;
     });
 
     angular.module(pNmModulo).filter('unidadeOrganizacionalComunidadeFltr', function() {
+        'ngInject';
         var isVisivel = function (item, filtro) {
             return !(filtro && filtro.length > 0 && item.nome.trim().toLowerCase().latinize().indexOf(filtro.trim().toLowerCase().latinize()) === -1);
         };
@@ -275,6 +285,7 @@ var TIMEOUT_TEMPO = 5 * 60;
     });
 
     angular.module(pNmModulo).directive('ngValorMin', function() {
+        'ngInject';
         return {
             restrict: 'A',
             require: 'ngModel',
@@ -304,6 +315,7 @@ var TIMEOUT_TEMPO = 5 * 60;
     });
 
     angular.module(pNmModulo).directive('ngValorMax', function() {
+        'ngInject';
         return {
             restrict: 'A',
             require: 'ngModel',
@@ -340,6 +352,7 @@ var TIMEOUT_TEMPO = 5 * 60;
     });
 
     angular.module(pNmModulo).directive('ngMesmoValorQue', function() {
+        'ngInject';
         return {
             require: 'ngModel',
             scope: {
@@ -371,6 +384,7 @@ var TIMEOUT_TEMPO = 5 * 60;
     });
 
     angular.module(pNmModulo).directive('ngValorDiferenteDe', function() {
+        'ngInject';
         return {
             require: 'ngModel',
             scope: {
@@ -402,6 +416,7 @@ var TIMEOUT_TEMPO = 5 * 60;
     });
 
     angular.module(pNmModulo).directive('compile', ['$compile', function ($compile) {
+        'ngInject';
         return function(scope, element, attrs) {
             scope.$watch(
                 function(scope) {
@@ -416,6 +431,7 @@ var TIMEOUT_TEMPO = 5 * 60;
 
     angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 'toastr', 'UtilSrv', '$stateParams', '$timeout', 'TokenStorage', '$state', 'CestaDeValores', 'SegurancaSrv', 'Idle', function($rootScope, $uibModal, FrzNavegadorParams, toastr, UtilSrv, $stateParams, $timeout, TokenStorage, $state, CestaDeValores, SegurancaSrv,
             Idle) {
+            'ngInject';
             $rootScope.servicoUrl = 'http://localhost:8080';
             $rootScope.token = null;
             $rootScope.isAuthenticated = function(username) {
@@ -1379,6 +1395,7 @@ var TIMEOUT_TEMPO = 5 * 60;
         }]);
 
     angular.module(pNmModulo).controller('DescansoCtrl', ['$scope', '$interval', function($scope, $interval) {
+            'ngInject';
             $scope.exibidoList = [];
 
             $scope.geraIntervalo = function() {
@@ -1405,6 +1422,7 @@ var TIMEOUT_TEMPO = 5 * 60;
         }]);
 
     angular.module(pNmModulo).controller('AuthCtrl', ['$scope', '$rootScope', '$http', 'TokenStorage', 'mensagemSrv', '$uibModal', '$uibModalInstance', '$state', function($scope, $rootScope, $http, TokenStorage, mensagemSrv, $uibModal, $uibModalInstance, $state) {
+                'ngInject';
                 $rootScope.token = null; // For display purposes only
 
                 $scope.exibeLogin = function() {

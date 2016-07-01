@@ -4,7 +4,8 @@
 
   angular.module(pNmModulo).controller(pNmController, ['$scope', '$rootScope', 'SegurancaSrv', '$state', 
     function ($scope, $rootScope, SegurancaSrv, $state) {
-
+    'ngInject';
+    
     $scope.init = function () {
         SegurancaSrv.usuarioLogado()
         .success(function(user) {

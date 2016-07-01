@@ -7,6 +7,7 @@
 
     // controller para a barra de navegacao
     frzArquivoModule.controller('FrzArquivoCtrl', ['$scope', function($scope) {
+        'ngInject';
 
         var _video = null, patData = null;
 
@@ -107,6 +108,7 @@
 
     // diretiva da barra de navegação de dados
     frzArquivoModule.directive('frzArquivo', ['$timeout', 'UtilSrv', function($timeout, UtilSrv) {
+        'ngInject';
         return {
             require: ['^ngModel'],
             restrict: 'E', 

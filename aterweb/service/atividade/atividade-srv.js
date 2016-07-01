@@ -7,6 +7,8 @@
 angular.module(pNmModulo).factory(pNmFactory,
   ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams', 'ComunidadeSrv',
     function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams, ComunidadeSrv) {
+        'ngInject';
+        
         var AtividadeSrv = {
             funcionalidade: 'ATIVIDADE',
             endereco: $rootScope.servicoUrl + '/atividade',

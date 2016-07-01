@@ -6,6 +6,7 @@ angular.module(pNmModulo).controller(pNmController,
     ['$scope', '$rootScope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv', 'mensagemSrv', '$log', 'FuncionalidadeSrv',
     '$timeout',
     function($scope, $rootScope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv, $log, FuncionalidadeSrv, $timeout) {
+    'ngInject';
 
     // inicio rotinas de apoio
     var jaCadastrado = function(conteudo) {

@@ -7,7 +7,7 @@
 
     angular.module(pNmModulo, ['ui.bootstrap', 'ui.utils', 'ui.router', 'ngAnimate', 'frz.navegador', 'frz.form', 'ngSanitize']);
     angular.module(pNmModulo).config(['$stateProvider', function($stateProvider) {
-
+        'ngInject';
         $stateProvider.state('p.' + pNmModulo, {
             abstract: true,
             controller: pNmController,
@@ -31,6 +31,7 @@
 
     angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'AtividadeSrv',
         function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, AtividadeSrv) {
+            'ngInject';
 
             if (!$state.params.opcao || !$state.params.opcao.length || ['executar', 'demandar'].indexOf($state.params.opcao) < 0) {
                 $state.go('p.atividade.filtro', {opcao: 'executar'}, {location: true});

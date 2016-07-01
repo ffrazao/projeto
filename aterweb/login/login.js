@@ -5,6 +5,8 @@
     angular.module(pNmModulo).controller(pNmController, ['$scope', '$location', '$uibModal', 'toastr', '$state', 'TokenStorage', '$cookies', '$uibModalInstance', 'CestaDeValores', 'UtilSrv', 'SegurancaSrv',
 
         function($scope, $location, $uibModal, toastr, $state, TokenStorage, $cookies, $uibModalInstance, CestaDeValores, UtilSrv, SegurancaSrv) {
+            'ngInject';
+            
             $scope.cadastro = $scope.cadastroBase();
 
             $scope.iniciar = function() {
