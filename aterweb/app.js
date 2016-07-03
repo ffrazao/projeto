@@ -1430,7 +1430,7 @@ var TIMEOUT_TEMPO = 5 * 60;
                         animation: true,
                         controller: 'LoginCtrl',
                         size: 'lg',
-                        templateUrl: '/login/login.html',
+                        templateUrl: 'login/login.html',
                     });
                     modalInstance.result.then(function(conteudo) {
                         // processar o retorno positivo da modal

@@ -35,7 +35,7 @@
     // aqui está a diretiva em si
     angular.module('frz.painel.vidro').directive('frzPainelVidro', function () {
         return {
-            restrict: 'M',
+            restrict: 'E',
             replace: true,
             template: '<div class="painel-vidro"><div class="carregando"></div></div>', 
             link: function (scope, element) {

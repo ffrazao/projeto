@@ -95,8 +95,7 @@ module.exports = function (grunt) {
       main: {
         files: [
           {src: ['img/**'], dest: 'dist/'},
-          {src: ['bower_components/font-awesome/fonts/**'], dest: 'dist/',filter:'isFile',expand:true},
-          {src: ['bower_components/bootstrap/fonts/**'], dest: 'dist/',filter:'isFile',expand:true}
+          {src: ['bower_components/font-awesome/fonts/*', 'bower_components/bootstrap/fonts/*'], dest: 'dist/fonts/', filter: 'isFile', expand: true, flatten: true}
           //{src: ['bower_components/angular-ui-utils/ui-utils-ieshiv.min.js'], dest: 'dist/'},
           //{src: ['bower_components/select2/*.png','bower_components/select2/*.gif'], dest:'dist/css/',flatten:true,expand:true},
           //{src: ['bower_components/angular-mocks/angular-mocks.js'], dest: 'dist/'}
@@ -173,15 +172,15 @@ module.exports = function (grunt) {
     // - "npm install grunt-contrib-imagemin"
     // - Comment in this section
     // - Add the "imagemin" task after the "htmlmin" task in the build task alias
-    // imagemin: {
-    //   main:{
-    //     files: [{
-    //       expand: true, cwd:'dist/',
-    //       src:['**/{*.png,*.jpg}'],
-    //       dest: 'dist/'
-    //     }]
-    //   }
-    // },
+    imagemin: {
+      main:{
+        files: [{
+          expand: true, cwd:'dist/',
+          src:['**/{*.png,*.jpg}'],
+          dest: 'dist/'
+        }]
+      }
+    },
     karma: {
       options: {
         frameworks: ['jasmine'],
@@ -204,7 +203,9 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.registerTask('build',['jshint','clean:before','less','dom_munger','ngtemplates','cssmin','concat','ngAnnotate','uglify','copy','htmlmin','clean:after']);
+  grunt.loadNpmTasks('grunt-contrib-imagemin');
+
+  grunt.registerTask('b',['jshint','clean:before','less','dom_munger','ngtemplates','cssmin','concat','ngAnnotate','uglify','copy','htmlmin','imagemin','clean:after']);
   grunt.registerTask('serve', ['dom_munger:read','jshint','connect', 'watch']);
   grunt.registerTask('test',['dom_munger:read','karma:all_tests']);
 
