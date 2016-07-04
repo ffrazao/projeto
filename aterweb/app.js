@@ -432,7 +432,7 @@ var TIMEOUT_TEMPO = 5 * 60;
     angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 'toastr', 'UtilSrv', '$stateParams', '$timeout', 'TokenStorage', '$state', 'CestaDeValores', 'SegurancaSrv', 'Idle', function($rootScope, $uibModal, FrzNavegadorParams, toastr, UtilSrv, $stateParams, $timeout, TokenStorage, $state, CestaDeValores, SegurancaSrv,
             Idle) {
             'ngInject';
-            $rootScope.servicoUrl = 'http://localhost:8080';
+            $rootScope.servicoUrl = 'http://homologa.emater.df.gov.br:8080/aterwebsrv';
             $rootScope.token = null;
             $rootScope.isAuthenticated = function(username) {
                 if (!$rootScope.token) {
