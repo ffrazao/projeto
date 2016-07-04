@@ -240,7 +240,7 @@
                         <div class="form-group">
                             <label class="control-label" for="previsaoConclusao">Previsão Conclusão</label>
                             
-                            <input class="form-control" type="text" id="previsaoConclusao" name="previsaoConclusao" ng-model="cadastro.registro.inicio" ng-required="!cadastro.registro.duracaoEstimada" ui-date-mask ng-disabled="true"></input>
+                            <input class="form-control" type="text" id="previsaoConclusao" name="previsaoConclusao" ng-model="cadastro.registro.inicio" ng-required="true" ui-date-mask ng-disabled="true"></input>
                             
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.previsaoConclusao.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -291,7 +291,7 @@
                         <div class="form-group">
                             <label class="control-label" for="duracaoEstimada">Duração Estimada (horas)</label>
                             
-                            <input class="form-control text-right" type="text" id="duracaoEstimada" name="duracaoEstimada" ng-model="cadastro.registro.duracaoEstimada" ng-required="!cadastro.registro.previsaoConclusao" ui-number-mask="0" ng-disabled="true"></input>
+                            <input class="form-control text-right" type="text" id="duracaoEstimada" name="duracaoEstimada" ng-model="cadastro.registro.duracaoEstimada" ng-required="false" ui-number-mask="0" ng-disabled="true"></input>
 
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.duracaoEstimada.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
