@@ -1,14 +1,25 @@
 package br.gov.df.emater.aterwebsrv;
 
+import org.apache.commons.beanutils.BeanUtilsBean;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
+import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class AterWebApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(AterWebApplication.class, args);
+	}
+
+	@Bean
+	CommandLineRunner init() {
+		return (String[] args) -> {
+			BeanUtilsBean.getInstance().getConvertUtils().register(false, false, 0);
+			System.out.println("BeanUtilsBean.getInstance().getConvertUtils().register(false, false, 0);");
+		};
 	}
 
 	// @Bean
