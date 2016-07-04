@@ -5,7 +5,7 @@
 angular.module(pNmModulo, ['ui.bootstrap','ui.utils','ui.router','ngAnimate']);
 
 angular.module(pNmModulo).config(['$stateProvider', function($stateProvider) {
-	'ngInject';
+    'ngInject';
     /* Add New States Above */
 
 }]);
@@ -13,7 +13,7 @@ angular.module(pNmModulo).config(['$stateProvider', function($stateProvider) {
 angular.module(pNmModulo).controller(pNmController,
     ['$state', 'toastr', 
     function($state, toastr) {
-    	'ngInject';
+        'ngInject';
         if ($state.params.mensagem) {
             toastr.error($state.params.mensagem, 'Erro');
         }
