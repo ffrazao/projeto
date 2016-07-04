@@ -443,7 +443,7 @@
                     'visivel': false,
                     'indice': indice++,
                     'ativo': false,
-                },*/ 
+                }, 
                 {
                     'nome': 'Diagnósticos',
                     'include': 'pessoa/tab-diagnostico.html',
@@ -453,7 +453,7 @@
                     'selecao': function() {
                         $scope.$broadcast ('abaDiagnosticoAtivada');
                     },
-                },
+                },*/
                 {
                     'nome': 'Programas Sociais',
                     'include': 'pessoa/tab-grupo-social.html',
