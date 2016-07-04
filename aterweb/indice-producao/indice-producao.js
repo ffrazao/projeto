@@ -1,18 +1,20 @@
 /* jslint evil: true, browser: true, plusplus: true, loopfunc: true */
-/* global criarEstadosPadrao, removerCampo, isUndefOrNull */ 
+/* global criarEstadosPadrao, removerCampo, isUndefOrNull */
 
 (function(pNmModulo, pNmController, pNmFormulario, pUrlModulo) {
     'use strict';
     angular.module(pNmModulo, ['ui.bootstrap', 'ui.utils', 'ui.router', 'ngAnimate', 'frz.navegador', 'frz.form', 'ngSanitize']);
-    angular.module(pNmModulo).config(['$stateProvider', function($stateProvider) {
-        'ngInject';
-
-        criarEstadosPadrao($stateProvider, pNmModulo, pNmController, pUrlModulo);
-    }]);
-    angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'IndiceProducaoSrv', 'PropriedadeRuralSrv',
-        function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, IndiceProducaoSrv,  PropriedadeRuralSrv) {
+    angular.module(pNmModulo).config(['$stateProvider',
+        function($stateProvider) {
             'ngInject';
-            
+
+            criarEstadosPadrao($stateProvider, pNmModulo, pNmController, pUrlModulo);
+        }
+    ]);
+    angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'IndiceProducaoSrv', 'PropriedadeRuralSrv',
+        function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, IndiceProducaoSrv, PropriedadeRuralSrv) {
+            'ngInject';
+
             // inicializacao
             $scope.crudInit($scope, $state, modalCadastro, pNmFormulario, IndiceProducaoSrv);
 
@@ -23,10 +25,16 @@
             // inicio: atividades do Modal
             $scope.modalOk = function() {
                 // Retorno da modal
-                $uibModalInstance.close({cadastro: angular.copy($scope.cadastro), selecao: angular.copy($scope.navegador.selecao)});
+                $uibModalInstance.close({
+                    cadastro: angular.copy($scope.cadastro),
+                    selecao: angular.copy($scope.navegador.selecao)
+                });
             };
             $scope.modalSalvarOk = function() {
                 // Retorno da modal
+                if ($scope.cadastro.registro.publicoAlvo && $scope.cadastro.registro.publicoAlvo.pessoa) {
+                    $scope.preparaClassePessoa($scope.cadastro.registro.publicoAlvo.pessoa);
+                }
                 if (!$scope.cadastro.registro.id) {
                     $scope.confirmarIncluir($scope);
                 } else {
@@ -68,33 +76,35 @@
             // inicio das operaçoes atribuidas ao navagador
             $scope.abrir = function(scp) {
                 // ajustar o menu das acoes especiais
-                $scope.navegador.botao('acao', 'acao')['subFuncoes'] = [
-                    {
-                        nome: 'Exibir/Esconder Detalhes',
-                        descricao: 'Exibe ou esconde os detalhes da produção',
-                        acao: function() {
-                            if (!$scope.cadastro.apoio.escondeDetalhe) {
-                                $scope.cadastro.apoio.escondeDetalhe = false;
-                            }
-                            $scope.cadastro.apoio.escondeDetalhe = !$scope.cadastro.apoio.escondeDetalhe;
-                        },
-                        exibir: function() {
-                            var estado = $scope.navegador.estadoAtual();
-                            return estado === 'LISTANDO';
-                        },
+                $scope.navegador.botao('acao', 'acao')['subFuncoes'] = [{
+                    nome: 'Exibir/Esconder Detalhes',
+                    descricao: 'Exibe ou esconde os detalhes da produção',
+                    acao: function() {
+                        if (!$scope.cadastro.apoio.escondeDetalhe) {
+                            $scope.cadastro.apoio.escondeDetalhe = false;
+                        }
+                        $scope.cadastro.apoio.escondeDetalhe = !$scope.cadastro.apoio.escondeDetalhe;
                     },
-                ];
+                    exibir: function() {
+                        var estado = $scope.navegador.estadoAtual();
+                        return estado === 'LISTANDO';
+                    },
+                }, ];
                 $rootScope.abrir(scp);
             };
             $scope.incluir = function(scp, modelo) {
                 if (scp.cadastro.apoio.porProdutor === true || scp.cadastro.apoio.porPropriedadeRural === true) {
-                    $rootScope.incluir(scp, $scope.cadastro.registro);
+                    var reg = angular.copy($scope.cadastro.registro);
+                    reg.id = null;
+                    reg.bem = null;
+                    reg.producaoFormaList = null;
+                    $rootScope.incluir(scp, reg);
                 } else {
                     $rootScope.incluir(scp, modelo ? modelo : {});
                 }
             };
 
-            $scope.incluirDepois = function (objeto) {
+            $scope.incluirDepois = function(objeto) {
                 var t = $scope.token;
                 if (t && t.lotacaoAtual) {
                     objeto.unidadeOrganizacional = t.lotacaoAtual;
@@ -109,15 +119,14 @@
                 if (!scp.confirmar(scp)) {
                     return;
                 }
-                var reg = angular.copy(scp.cadastro.registro);
-                removerCampo(reg, ['@jsonId', 'formula', 'bemClassificacao']);
-
                 if (scp.cadastro.registro.publicoAlvo && scp.cadastro.registro.publicoAlvo.pessoa) {
                     $scope.preparaClassePessoa(scp.cadastro.registro.publicoAlvo.pessoa);
                 }
+                var reg = angular.copy(scp.cadastro.registro);
+                removerCampo(reg, ['@jsonId', 'formula', 'bemClassificacao']);
 
                 // preparar composicao da forma de producao
-                scp.servico.incluir(reg).success(function (resposta) {
+                scp.servico.incluir(reg).success(function(resposta) {
                     if (resposta.mensagem && resposta.mensagem === 'OK') {
                         scp.navegador.voltar(scp);
                         scp.navegador.mudarEstado('VISUALIZANDO');
@@ -133,15 +142,15 @@
                         scp.navegador.refresh();
 
                         toastr.info('Operação realizada!', 'Informação');
-                            
+
                     } else {
                         toastr.error(resposta.mensagem, 'Erro ao incluir');
                     }
-                }).error(function (erro) {
+                }).error(function(erro) {
                     toastr.error(erro, 'Erro ao incluir');
                 });
             };
-            $scope.encontraBemClassificacao = function (id, lista) {
+            $scope.encontraBemClassificacao = function(id, lista) {
                 if (!lista) {
                     lista = $scope.cadastro.apoio.bemClassificacaoList;
                 }
@@ -158,11 +167,13 @@
                 }
                 return result;
             };
-            $scope.visualizarDepois = function (registro) {
+            $scope.visualizarDepois = function(registro) {
                 $scope.cadastro.apoio.bemClassificacao = $scope.encontraBemClassificacao(registro.bem.bemClassificacao.id);
                 $scope.cadastro.apoio.unidadeOrganizacional = angular.copy(registro.unidadeOrganizacional);
             };
-            $scope.cadastro.apoio.producaoForma = {composicao: []};
+            $scope.cadastro.apoio.producaoForma = {
+                composicao: []
+            };
 
             $scope.confirmarFiltrarAntes = function(filtro) {
                 filtro.empresaList = [];
@@ -172,23 +183,30 @@
                 for (i in $scope.cadastro.apoio.localList) {
                     // filtrar as empressas
                     if ($scope.cadastro.apoio.localList[i].selecionado) {
-                        filtro.empresaList.push({id: $scope.cadastro.apoio.localList[i].id, '@class': 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica'});
+                        filtro.empresaList.push({
+                            id: $scope.cadastro.apoio.localList[i].id,
+                            '@class': 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica'
+                        });
                     } else {
                         for (j in $scope.cadastro.apoio.localList[i].unidadeList) {
                             // filtrar as unidades organizacionais
                             if ($scope.cadastro.apoio.localList[i].unidadeList[j].selecionado) {
-                                filtro.unidadeOrganizacionalList.push({id: $scope.cadastro.apoio.localList[i].unidadeList[j].id});
+                                filtro.unidadeOrganizacionalList.push({
+                                    id: $scope.cadastro.apoio.localList[i].unidadeList[j].id
+                                });
                             } else {
                                 for (k in $scope.cadastro.apoio.localList[i].unidadeList[j].comunidadeList) {
                                     // filtrar as unidades organizacionais
                                     if ($scope.cadastro.apoio.localList[i].unidadeList[j].comunidadeList[k].selecionado) {
-                                        filtro.comunidadeList.push({id: $scope.cadastro.apoio.localList[i].unidadeList[j].comunidadeList[k].id});
+                                        filtro.comunidadeList.push({
+                                            id: $scope.cadastro.apoio.localList[i].unidadeList[j].comunidadeList[k].id
+                                        });
                                     }
                                 }
                             }
                         }
                     }
-                }                
+                }
                 if ($scope.cadastro.apoio.unidadeOrganizacionalSomenteLeitura && !$scope.cadastro.filtro.unidadeOrganizacionalList.length && !$scope.cadastro.filtro.comunidadeList.length) {
                     toastr.error('Informe pelo menos uma comunidade', 'Erro ao filtrar');
                     throw 'Informe pelo menos uma comunidade';
@@ -198,7 +216,9 @@
                     if (lista) {
                         for (var i in lista) {
                             if (lista[i][4] === true) {
-                                resultado.push({id: lista[i][0]});
+                                resultado.push({
+                                    id: lista[i][0]
+                                });
                             } else {
                                 captarBemClassificacaoList(lista[i][3], resultado);
                             }
@@ -215,7 +235,9 @@
                             if (lista[i][2]) {
                                 for (j in lista[i][2]) {
                                     if (lista[i][2][j][3] && lista[i][2][j][3] !== null) {
-                                        resultado.push({id : lista[i][2][j][3]});
+                                        resultado.push({
+                                            id: lista[i][2][j][3]
+                                        });
                                         lista[i][2][j][3] = null;
                                     }
                                 }
@@ -255,7 +277,7 @@
             // nomes dos campos para listagem
             var idx = [];
 
-            idx[0]=0;
+            idx[0] = 0;
             $scope.PRODUCAO_ID = idx[0]++;
             $scope.PRODUCAO_ANO = idx[0]++;
             $scope.PRODUCAO_BEM_ID = idx[0]++;
@@ -277,26 +299,26 @@
             $scope.PRODUCAO_COMUNIDADE_ID = idx[0]++;
             $scope.PRODUCAO_COMUNIDADE_NOME = idx[0]++;
             $scope.PRODUCAO_FORMA_LIST = idx[0]++;
-                idx[1]=0;
-                $scope.FORMA_COMPOSICAO_LIST = idx[1]++;
-                    idx[2]=0;
-                    $scope.COMPOSICAO_FORMA_PRODUCAO_VALOR_ID = idx[2]++;
-                    $scope.COMPOSICAO_FORMA_PRODUCAO_VALOR_ITEM_NOME = idx[2]++;
-                    $scope.COMPOSICAO_FORMA_PRODUCAO_VALOR_NOME = idx[2]++;
-                    $scope.COMPOSICAO_ORDEM = idx[2]++;
-                $scope.FORMA_VALOR_ITEM_A = idx[1]++;
-                $scope.FORMA_VALOR_ITEM_B = idx[1]++;
-                $scope.FORMA_VALOR_ITEM_C = idx[1]++;
-                $scope.FORMA_VOLUME = idx[1]++;
-                $scope.FORMA_VLR_UNIT = idx[1]++;
-                $scope.FORMA_VLR_TOTAL = idx[1]++;
-                $scope.FORMA_QTD_PRODUTORES = idx[1]++;
-                $scope.FORMA_DATA_CONFIRMACAO = idx[1]++;
-                $scope.FORMA_INCLUSAO_NOME = idx[1]++;
-                $scope.FORMA_INCLUSAO_DATA = idx[1]++;
-                $scope.FORMA_ALTERACAO_NOME = idx[1]++;
-                $scope.FORMA_ALTERACAO_DATA = idx[1]++;
-                $scope.FORMA_NOME_CALCULO = idx[1]++;
+            idx[1] = 0;
+            $scope.FORMA_COMPOSICAO_LIST = idx[1]++;
+            idx[2] = 0;
+            $scope.COMPOSICAO_FORMA_PRODUCAO_VALOR_ID = idx[2]++;
+            $scope.COMPOSICAO_FORMA_PRODUCAO_VALOR_ITEM_NOME = idx[2]++;
+            $scope.COMPOSICAO_FORMA_PRODUCAO_VALOR_NOME = idx[2]++;
+            $scope.COMPOSICAO_ORDEM = idx[2]++;
+            $scope.FORMA_VALOR_ITEM_A = idx[1]++;
+            $scope.FORMA_VALOR_ITEM_B = idx[1]++;
+            $scope.FORMA_VALOR_ITEM_C = idx[1]++;
+            $scope.FORMA_VOLUME = idx[1]++;
+            $scope.FORMA_VLR_UNIT = idx[1]++;
+            $scope.FORMA_VLR_TOTAL = idx[1]++;
+            $scope.FORMA_QTD_PRODUTORES = idx[1]++;
+            $scope.FORMA_DATA_CONFIRMACAO = idx[1]++;
+            $scope.FORMA_INCLUSAO_NOME = idx[1]++;
+            $scope.FORMA_INCLUSAO_DATA = idx[1]++;
+            $scope.FORMA_ALTERACAO_NOME = idx[1]++;
+            $scope.FORMA_ALTERACAO_DATA = idx[1]++;
+            $scope.FORMA_NOME_CALCULO = idx[1]++;
             $scope.PRODUCAO_INCLUSAO_NOME = idx[0]++;
             $scope.PRODUCAO_INCLUSAO_DATA = idx[0]++;
             $scope.PRODUCAO_ALTERACAO_NOME = idx[0]++;
@@ -308,11 +330,11 @@
                     return null;
                 }
                 switch (UtilSrv.indiceDePorCampo($scope.cadastro.apoio.quantitativoList, item, 'nome').resultado) {
-                    case 'S': 
+                    case 'S':
                         return $scope.soma(array, campo);
-                    case 'M': 
+                    case 'M':
                         return $scope.media(array, campo);
-                    case 'N': 
+                    case 'N':
                         return null;
                 }
             };
@@ -346,25 +368,25 @@
                 }
                 return result;
             };
-            $scope.toggleChildren = function (scope) {
+            $scope.toggleChildren = function(scope) {
                 scope.toggle();
             };
-            $scope.selecionou = function (item, selecao) {
+            $scope.selecionou = function(item, selecao) {
                 item.selecionado = selecao.selected;
             };
 
-            $scope.visible = function (item) {
-                return !($scope.cadastro.apoio.localFiltro && 
-                    $scope.cadastro.apoio.localFiltro.length > 0 && 
+            $scope.visible = function(item) {
+                return !($scope.cadastro.apoio.localFiltro &&
+                    $scope.cadastro.apoio.localFiltro.length > 0 &&
                     item.nome.trim().toLowerCase().latinize().indexOf($scope.cadastro.apoio.localFiltro.trim().toLowerCase().latinize()) === -1);
             };
 
-            $scope.visivel = function (filtro, no, folha) {
+            $scope.visivel = function(filtro, no, folha) {
                 if (!folha) {
                     return true;
                 }
-                return !(filtro && 
-                    filtro.length > 0 && 
+                return !(filtro &&
+                    filtro.length > 0 &&
                     no.trim().toLowerCase().latinize().indexOf(filtro.trim().toLowerCase().latinize()) === -1);
             };
 
@@ -379,7 +401,7 @@
                 };
                 var montarClassificacao = function(a) {
                     var result = null;
-                    for (var i = a.length -1; i>=0; i--) {
+                    for (var i = a.length - 1; i >= 0; i--) {
                         if (result != null) {
                             result += '/';
                         } else {
@@ -389,21 +411,27 @@
                     }
                     return result;
                 };
-                return IndiceProducaoSrv.tagBem($query).then(function(response) { 
-                    var retorno = {data: []};
+                return IndiceProducaoSrv.tagBem($query).then(function(response) {
+                    var retorno = {
+                        data: []
+                    };
                     var classificacao;
                     for (var i in response.data.resultado) {
                         classificacao = [];
                         carregarClassificacao(classificacao, response.data.resultado[i][2]);
-                        retorno.data.push({id: response.data.resultado[i][0], nome: response.data.resultado[i][1], classificacao: montarClassificacao(classificacao)});
+                        retorno.data.push({
+                            id: response.data.resultado[i][0],
+                            nome: response.data.resultado[i][1],
+                            classificacao: montarClassificacao(classificacao)
+                        });
                     }
                     return retorno;
                 });
             };
-            
+
             $scope.UtilSrv = UtilSrv;
 
-            $scope.modalSelecinarPublicoAlvo = function (size) {
+            $scope.modalSelecinarPublicoAlvo = function(size) {
                 // abrir a modal
                 var modalInstance = $uibModal.open({
                     animation: true,
@@ -411,47 +439,45 @@
                     controller: 'PessoaCtrl',
                     size: size,
                     resolve: {
-                        modalCadastro: function () {
+                        modalCadastro: function() {
                             return $scope.cadastroBase();
                         }
                     }
                 });
                 // processar retorno da modal
-                modalInstance.result.then(function (resultado) {
+                modalInstance.result.then(function(resultado) {
                     // processar o retorno positivo da modal
                     var pessoa = null;
                     if (resultado.selecao.tipo === 'U') {
                         pessoa = {
-                            id: resultado.selecao.item[0], 
-                            nome: resultado.selecao.item[1], 
+                            id: resultado.selecao.item[0],
+                            nome: resultado.selecao.item[1],
                             pessoaTipo: resultado.selecao.item[3],
                         };
                         $scope.preparaClassePessoa(pessoa);
-                        $scope.cadastro.registro.publicoAlvo = 
-                            {
-                                id: resultado.selecao.item[10], 
-                                pessoa: pessoa,
-                            };
+                        $scope.cadastro.registro.publicoAlvo = {
+                            id: resultado.selecao.item[10],
+                            pessoa: pessoa,
+                        };
                     } else {
                         pessoa = {
-                            id: resultado.selecao.items[0][0], 
-                            nome: resultado.selecao.items[0][1], 
+                            id: resultado.selecao.items[0][0],
+                            nome: resultado.selecao.items[0][1],
                             pessoaTipo: resultado.selecao.items[0][3],
                         };
                         $scope.preparaClassePessoa(pessoa);
-                        $scope.cadastro.registro.publicoAlvo = 
-                            {
-                                id: resultado.selecao.items[0][10], 
-                                pessoa: pessoa,
-                            };
+                        $scope.cadastro.registro.publicoAlvo = {
+                            id: resultado.selecao.items[0][10],
+                            pessoa: pessoa,
+                        };
                     }
-                }, function () {
+                }, function() {
                     // processar o retorno negativo da modal
                     $log.info('Modal dismissed at: ' + new Date());
                 });
             };
 
-            $scope.modalVerPublicoAlvo = function (size) {
+            $scope.modalVerPublicoAlvo = function(size) {
                 // abrir a modal
                 var modalInstance = $uibModal.open({
                     animation: true,
@@ -459,23 +485,29 @@
                     controller: 'PessoaCtrl',
                     size: size,
                     resolve: {
-                        modalCadastro: function () {
-                            var cadastro = {registro: angular.copy($scope.cadastro.registro.publicoAlvo.pessoa), filtro: {}, lista: [], original: {}, apoio: [],};
+                        modalCadastro: function() {
+                            var cadastro = {
+                                registro: angular.copy($scope.cadastro.registro.publicoAlvo.pessoa),
+                                filtro: {},
+                                lista: [],
+                                original: {},
+                                apoio: [],
+                            };
                             return cadastro;
                         }
                     }
                 });
                 // processar retorno da modal
-                modalInstance.result.then(function (cadastroModificado) {
+                modalInstance.result.then(function(cadastroModificado) {
                     // processar o retorno positivo da modal
 
-                }, function () {
+                }, function() {
                     // processar o retorno negativo da modal
                     $log.info('Modal dismissed at: ' + new Date());
                 });
             };
 
-            $scope.modalSelecinarPropriedadeRural = function (size) {
+            $scope.modalSelecinarPropriedadeRural = function(size) {
                 // abrir a modal
                 var modalInstance = $uibModal.open({
                     animation: true,
@@ -483,34 +515,32 @@
                     controller: 'PropriedadeRuralCtrl',
                     size: size,
                     resolve: {
-                        modalCadastro: function () {
+                        modalCadastro: function() {
                             return $scope.cadastroBase();
                         }
                     }
                 });
                 // processar retorno da modal
-                modalInstance.result.then(function (resultado) {
+                modalInstance.result.then(function(resultado) {
                     // processar o retorno positivo da modal
                     if (resultado.selecao.tipo === 'U') {
-                        $scope.cadastro.registro.propriedadeRural = 
-                            {
-                                id: resultado.selecao.item[0],
-                                nome: resultado.selecao.item[1],
-                            };
+                        $scope.cadastro.registro.propriedadeRural = {
+                            id: resultado.selecao.item[0],
+                            nome: resultado.selecao.item[1],
+                        };
                     } else {
-                        $scope.cadastro.registro.propriedadeRural = 
-                            {
-                                id: resultado.selecao.items[0][0],
-                                nome: resultado.selecao.items[0][1],
-                            };
+                        $scope.cadastro.registro.propriedadeRural = {
+                            id: resultado.selecao.items[0][0],
+                            nome: resultado.selecao.items[0][1],
+                        };
                     }
-                }, function () {
+                }, function() {
                     // processar o retorno negativo da modal
                     $log.info('Modal dismissed at: ' + new Date());
                 });
             };
 
-            $scope.modalVerPropriedadeRural = function (size) {
+            $scope.modalVerPropriedadeRural = function(size) {
                 // abrir a modal
                 var modalInstance = $uibModal.open({
                     animation: true,
@@ -518,17 +548,23 @@
                     controller: 'PropriedadeRuralCtrl',
                     size: size,
                     resolve: {
-                        modalCadastro: function () {
-                            var cadastro = {registro: angular.copy($scope.cadastro.registro.propriedadeRural), filtro: {}, lista: [], original: {}, apoio: [],};
+                        modalCadastro: function() {
+                            var cadastro = {
+                                registro: angular.copy($scope.cadastro.registro.propriedadeRural),
+                                filtro: {},
+                                lista: [],
+                                original: {},
+                                apoio: [],
+                            };
                             return cadastro;
                         }
                     }
                 });
                 // processar retorno da modal
-                modalInstance.result.then(function (cadastroModificado) {
+                modalInstance.result.then(function(cadastroModificado) {
                     // processar o retorno positivo da modal
 
-                }, function () {
+                }, function() {
                     // processar o retorno negativo da modal
                     $log.info('Modal dismissed at: ' + new Date());
                 });
@@ -553,11 +589,13 @@
                 if (!novo) {
                     return;
                 }
-                UtilSrv.dominio({ent: [
+                UtilSrv.dominio({
+                    ent: [
                         'Bem',
-                    ], 
-                    npk: 'bemClassificacao.id', 
-                    vpk: novo[0]}).success(function(resposta) {
+                    ],
+                    npk: 'bemClassificacao.id',
+                    vpk: novo[0]
+                }).success(function(resposta) {
                     if (resposta && resposta.mensagem === "OK") {
                         $scope.cadastro.apoio.bemList = resposta.resultado[0];
                     }
@@ -617,12 +655,17 @@
                     $scope.cadastro.registro.publicoAlvo && $scope.cadastro.registro.publicoAlvo.id) {
 
                     PropriedadeRuralSrv.filtrarPorPublicoAlvoUnidadeOrganizacionalComunidade({
-                        publicoAlvoList: [{id: $scope.cadastro.registro.publicoAlvo.id}],
-                    }).success(function (resposta) {
+                        publicoAlvoList: [{
+                            id: $scope.cadastro.registro.publicoAlvo.id
+                        }],
+                    }).success(function(resposta) {
                         if (resposta && resposta.mensagem === "OK") {
                             $scope.cadastro.apoio.propriedadeRuralList = [];
                             for (var i in resposta.resultado) {
-                                $scope.cadastro.apoio.propriedadeRuralList.push({id: resposta.resultado[i][0], nome: resposta.resultado[i][1]});
+                                $scope.cadastro.apoio.propriedadeRuralList.push({
+                                    id: resposta.resultado[i][0],
+                                    nome: resposta.resultado[i][1]
+                                });
                             }
                             if ($scope.cadastro.apoio.propriedadeRuralList.length === 1) {
                                 $scope.cadastro.registro.propriedadeRural = $scope.cadastro.apoio.propriedadeRuralList[0];
@@ -639,16 +682,26 @@
                     $scope.cadastro.registro.propriedadeRural && $scope.cadastro.registro.propriedadeRural.id) {
 
                     PropriedadeRuralSrv.filtrarPorPublicoAlvoUnidadeOrganizacionalComunidade({
-                        unidadeOrganizacionalList: [{id: $scope.cadastro.apoio.unidadeOrganizacional.id}],
-                        propriedadeRuralList: [{id: $scope.cadastro.registro.propriedadeRural.id}],
-                    }).success(function (resposta) {
+                        unidadeOrganizacionalList: [{
+                            id: $scope.cadastro.apoio.unidadeOrganizacional.id
+                        }],
+                        propriedadeRuralList: [{
+                            id: $scope.cadastro.registro.propriedadeRural.id
+                        }],
+                    }).success(function(resposta) {
                         if (resposta && resposta.mensagem === "OK") {
                             $scope.cadastro.apoio.publicoAlvoList = [];
                             for (var i in resposta.resultado) {
-                                var pessoa = {id: resposta.resultado[i][0], pessoa: {nome: resposta.resultado[i][1], pessoaTipo: resposta.resultado[i][2]}};
+                                var pessoa = {
+                                    id: resposta.resultado[i][0],
+                                    pessoa: {
+                                        nome: resposta.resultado[i][1],
+                                        pessoaTipo: resposta.resultado[i][2]
+                                    }
+                                };
                                 $scope.preparaClassePessoa(pessoa);
                                 $scope.cadastro.apoio.publicoAlvoList.push(pessoa);
-                            }                        
+                            }
                             if ($scope.cadastro.apoio.publicoAlvoList.length === 1) {
                                 $scope.cadastro.registro.publicoAlvo = $scope.cadastro.apoio.publicoAlvoList[0];
                             }
@@ -663,6 +716,9 @@
             if (modalCadastro) {
                 //$rootScope.abrir($scope);
                 $scope.modalCadastro = true;
+                if (!$scope.cadastro.registro.id) {
+                    $scope.incluir($scope, $scope.cadastro.registro);
+                }
             }
         }
     ]);
