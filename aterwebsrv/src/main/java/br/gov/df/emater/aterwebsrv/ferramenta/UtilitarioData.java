@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import org.joda.time.Interval;
 import org.joda.time.Period;
@@ -131,6 +132,22 @@ public class UtilitarioData {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTimeInMillis(date.getTime());
 		return calendar;
+	}
+
+	public Calendar ajustaInicioDia(Calendar data) {
+		if (data == null) {
+			return null;
+		}
+		Calendar result = new GregorianCalendar(data.get(Calendar.YEAR), data.get(Calendar.MONTH), data.get(Calendar.DATE));
+		return result;
+	}
+
+	public Calendar ajustaFinalDia(Calendar data) {
+		if (data == null) {
+			return null;
+		}
+		Calendar result = new GregorianCalendar(data.get(Calendar.YEAR), data.get(Calendar.MONTH), data.get(Calendar.DATE), 23, 59, 59);
+		return result;
 	}
 
 	public Object stringParaData(Object string) throws ParseException {

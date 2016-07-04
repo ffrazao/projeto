@@ -97,11 +97,10 @@ angular.module(pNmModulo).controller(pNmController,
                     pessoaTipo: resultado.selecao.item[3],
                 };
                 $scope.preparaClassePessoa(pessoa);
-                $scope.cadastro.registro.publicoAlvo = 
-                    {
-                        id: resultado.selecao.item[10], 
-                        pessoa: pessoa,
-                    };
+                $scope.cadastro.registro.publicoAlvo = {
+                    id: resultado.selecao.item[10], 
+                    pessoa: pessoa,
+                };
             } else {
                 pessoa = {
                     id: resultado.selecao.items[0][0], 
@@ -109,15 +108,12 @@ angular.module(pNmModulo).controller(pNmController,
                     pessoaTipo: resultado.selecao.items[0][3],
                 };
                 $scope.preparaClassePessoa(pessoa);
-                $scope.cadastro.registro.publicoAlvo = 
-                    {
-                        id: resultado.selecao.items[0][10], 
-                        pessoa: pessoa,
-                    };
+                $scope.cadastro.registro.publicoAlvo = {
+                    id: resultado.selecao.items[0][10], 
+                    pessoa: pessoa,
+                };
             }
         }, function () {
-            // processar o retorno negativo da modal
-            $log.info('Modal dismissed at: ' + new Date());
         });
     };
 

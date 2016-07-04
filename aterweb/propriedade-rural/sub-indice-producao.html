@@ -46,7 +46,7 @@
                     </tr> 
                 </thead>
                 <tbody>
-                    <tr ng-repeat-start="item in indiceProducaoNvg.dados | orderBy: [PRODUCAO_PUBLICO_ALVO_NOME] | orderBy: [PRODUCAO_PROPRIEDADE_RURAL_NOME] | orderBy: [PRODUCAO_COMUNIDADE_NOME] | pagina: indiceProducaoNvg.paginaAtual : indiceProducaoNvg.tamanhoPagina | limitTo: indiceProducaoNvg.tamanhoPagina" ng-click="indiceProducaoNvg.folhaAtual = $index + ((indiceProducaoNvg.paginaAtual-1) * indiceProducaoNvg.tamanhoPagina)"
+                    <tr ng-repeat-start="item in indiceProducaoNvg.dados | orderBy: [PRODUCAO_PUBLICO_ALVO_NOME, PRODUCAO_COMUNIDADE_NOME, PRODUCAO_PROPRIEDADE_RURAL_NOME] | pagina: indiceProducaoNvg.paginaAtual : indiceProducaoNvg.tamanhoPagina | limitTo: indiceProducaoNvg.tamanhoPagina" ng-click="indiceProducaoNvg.folhaAtual = $index + ((indiceProducaoNvg.paginaAtual-1) * indiceProducaoNvg.tamanhoPagina)"
                          title="Cadastrado por: {{item[PRODUCAO_INCLUSAO_NOME]}} em {{item[PRODUCAO_INCLUSAO_DATA] | date: 'dd/MM/yyyy'}}, alterado por: {{item[PRODUCAO_ALTERACAO_NOME]}} em {{item[PRODUCAO_ALTERACAO_DATA] | date: 'dd/MM/yyyy'}}">
                         <td width="30px" rowspan="2">
                             <input type="radio" ng-show="indiceProducaoNvg.selecao.tipo === 'U'" ng-model="indiceProducaoNvg.selecao.item" ng-value="item"/>

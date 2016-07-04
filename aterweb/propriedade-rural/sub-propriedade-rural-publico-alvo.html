@@ -43,7 +43,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="reg in cadastro.registro.publicoAlvoPropriedadeRuralList | orderBy: ['reg.publicoAlvo.pessoa.nome', 'inicio', 'termino'] track by reg.id">
+                    <tr ng-repeat="reg in cadastro.registro.publicoAlvoPropriedadeRuralList | orderBy: ['publicoAlvo.pessoa.nome', 'inicio', 'termino'] track by reg.id">
                         <td>
                             <input type="radio" ng-show="publicoAlvoPropriedadeRuralNvg.selecao.tipo === 'U'" ng-model="publicoAlvoPropriedadeRuralNvg.selecao.item" ng-value="reg"/>
                             <input type="checkbox" ng-show="publicoAlvoPropriedadeRuralNvg.selecao.tipo === 'M'" checklist-model="publicoAlvoPropriedadeRuralNvg.selecao.items" checklist-value="reg"/>

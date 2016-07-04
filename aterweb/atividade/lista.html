@@ -43,7 +43,7 @@
                 </tr> 
             </thead>
             <tbody>
-                <tr ng-repeat-start="item in navegador.dados | pagina: navegador.paginaAtual : navegador.tamanhoPagina | limitTo: navegador.tamanhoPagina" ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)" title="Cadastrado por: {{item[CABEC.CABEC.ATIV_INCLUSAO_USUARIO]}} em {{item[CABEC.ATIV_INCLUSAO_DATA] | date: 'dd/MM/yyyy'}}, alterado por: {{item[CABEC.ATIV_ALTERACAO_USUARIO]}} em {{item[CABEC.ATIV_ALTERACAO_DATA] | date: 'dd/MM/yyyy'}}"
+                <tr ng-repeat-start="item in navegador.dados | orderBy: ordenarLista | pagina: navegador.paginaAtual : navegador.tamanhoPagina | limitTo: navegador.tamanhoPagina" ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)" title="Cadastrado por: {{item[CABEC.CABEC.ATIV_INCLUSAO_USUARIO]}} em {{item[CABEC.ATIV_INCLUSAO_DATA] | date: 'dd/MM/yyyy'}}, alterado por: {{item[CABEC.ATIV_ALTERACAO_USUARIO]}} em {{item[CABEC.ATIV_ALTERACAO_DATA] | date: 'dd/MM/yyyy'}}"
                     ng-class="classeAtividade(item[CABEC.ATIV_SITUACAO])">
                     <td width="30px" rowspan="4">
                         <input type="radio" ng-show="navegador.selecao.tipo === 'U'" ng-model="navegador.selecao.item" ng-value="item"/>

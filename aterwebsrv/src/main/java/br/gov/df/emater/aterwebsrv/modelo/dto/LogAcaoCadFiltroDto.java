@@ -11,8 +11,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerTimestamp;
-import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerTimestamp;
+import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
+import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 
 public class LogAcaoCadFiltroDto extends FiltroDtoCustom {
 
@@ -20,14 +20,15 @@ public class LogAcaoCadFiltroDto extends FiltroDtoCustom {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
-	@JsonSerialize(using = JsonSerializerTimestamp.class)
-	@JsonDeserialize(using = JsonDeserializerTimestamp.class)
+	@JsonSerialize(using = JsonSerializerData.class)
+	@JsonDeserialize(using = JsonDeserializerData.class)
+
 	private Calendar inicio;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
-	@JsonSerialize(using = JsonSerializerTimestamp.class)
-	@JsonDeserialize(using = JsonDeserializerTimestamp.class)
+	@JsonSerialize(using = JsonSerializerData.class)
+	@JsonDeserialize(using = JsonDeserializerData.class)
 	private Calendar termino;
 
 	private Set<TagDto> usuario;

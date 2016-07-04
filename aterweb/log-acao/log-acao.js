@@ -61,6 +61,20 @@
                     $log.info('Modal dismissed at: ' + new Date());
                 });
             };
+
+            $scope.limpar = function(scp) {
+                var e = $scope.navegador.estadoAtual();
+                if ('FILTRANDO' === e) {
+                    var velho = $scope.cadastro.filtro;
+                    $scope.cadastro.filtro = {};
+                    $scope.cadastro.filtro.inicio = velho.inicio;
+                    $scope.cadastro.filtro.termino = velho.termino;
+                } else {
+                    $scope.cadastro.registro = {};
+                }
+                scp.cadastro.excluidoMap = [];
+            };
+
             // fim: atividades do Modal
 
             // inicio das operaçoes atribuidas ao navagador

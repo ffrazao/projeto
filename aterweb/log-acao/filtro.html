@@ -25,6 +25,10 @@
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             Campo Obrigatório
                         </div>
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.inicio.$error.date">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Data Inválida!
+                        </div>
                     </div>
                 </div>
                 <div class="form-group" title="Término do Log no Sistema">
@@ -36,6 +40,10 @@
                         <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.termino.$error.required">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             Campo Obrigatório
+                        </div>
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.termino.$error.date">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Data Inválida!
                         </div>
                     </div>
                 </div>

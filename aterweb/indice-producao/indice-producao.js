@@ -11,8 +11,8 @@
             criarEstadosPadrao($stateProvider, pNmModulo, pNmController, pUrlModulo);
         }
     ]);
-    angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'IndiceProducaoSrv', 'PropriedadeRuralSrv',
-        function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, IndiceProducaoSrv, PropriedadeRuralSrv) {
+    angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'IndiceProducaoSrv', 'PropriedadeRuralSrv', '$timeout',
+        function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, IndiceProducaoSrv, PropriedadeRuralSrv, $timeout) {
             'ngInject';
 
             // inicializacao
@@ -67,7 +67,7 @@
                     $scope.navegador.setDados(cadastroModificado.lista);
                 }, function() {
                     // processar o retorno negativo da modal
-                    $log.info('Modal dismissed at: ' + new Date());
+                    //$log.info('Modal dismissed at: ' + new Date());
                 });
             };
 
@@ -169,6 +169,11 @@
             };
             $scope.visualizarDepois = function(registro) {
                 $scope.cadastro.apoio.bemClassificacao = $scope.encontraBemClassificacao(registro.bem.bemClassificacao.id);
+                if (!$scope.cadastro.apoio.bemClassificacao) {
+                    $timeout(function() {
+                        $scope.cadastro.apoio.bemClassificacao = $scope.encontraBemClassificacao(registro.bem.bemClassificacao.id);
+                    }, 2000);
+                }
                 $scope.cadastro.apoio.unidadeOrganizacional = angular.copy(registro.unidadeOrganizacional);
             };
             $scope.cadastro.apoio.producaoForma = {
@@ -718,6 +723,8 @@
                 $scope.modalCadastro = true;
                 if (!$scope.cadastro.registro.id) {
                     $scope.incluir($scope, $scope.cadastro.registro);
+                //} else {
+                    //$scope.visualizar($scope, $scope.cadastro.registro.id);
                 }
             }
         }

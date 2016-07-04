@@ -193,10 +193,12 @@
                 $scope.cadastro.filtro.inicio = ini;
                 $scope.cadastro.filtro.termino = fim;
             };
-
             // fim das operaçoes atribuidas ao navagador
 
             // inicio ações especiais
+            $scope.ordenarLista = function(item) {
+                return -item[$scope.CABEC.ATIV_INICIO];
+            };
 
             // nomes dos campos para listagem
 

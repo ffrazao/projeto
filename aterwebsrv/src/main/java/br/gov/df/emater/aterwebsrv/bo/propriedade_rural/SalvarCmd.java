@@ -19,9 +19,6 @@ import br.gov.df.emater.aterwebsrv.dao.pessoa.EnderecoDao;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRuralArquivo;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRuralFormaUtilizacaoEspacoRural;
-import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRuralPendencia;
-import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.CadastroAcao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Area;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Arquivo;
@@ -41,7 +38,7 @@ public class SalvarCmd extends _SalvarCmd {
 
 	@Autowired
 	private EnderecoDao enderecoDao;
-	
+
 	@Autowired
 	private PropriedadeRuralPendenciaDao propriedadeRuralPendenciaDao;
 
@@ -66,7 +63,7 @@ public class SalvarCmd extends _SalvarCmd {
 
 		// captar o registro de atualização da tabela
 		logAtualizar(result, contexto);
-		
+
 		limparChavePrimaria(result.getPublicoAlvoPropriedadeRuralList());
 		limparChavePrimaria(result.getArquivoList());
 		limparChavePrimaria(result.getPendenciaList());
@@ -79,12 +76,12 @@ public class SalvarCmd extends _SalvarCmd {
 
 		if (result.getEndereco().getId() != null) {
 			Endereco enderecoSalvo = enderecoDao.findOne(result.getEndereco().getId());
-			if (enderecoSalvo != null && enderecoSalvo.getAreaList() != null) {
-				for (Area areaSalvo : enderecoSalvo.getAreaList()) {
+			if (enderecoSalvo != null && !CollectionUtils.isEmpty(enderecoSalvo.getAreaList())) {
+				enderecoSalvo.getAreaList().forEach((areaSalvo) -> {
 					boolean encontrou = false;
-					if (endereco.getAreaList() != null) {
+					if (!CollectionUtils.isEmpty(endereco.getAreaList())) {
 						for (Area area : endereco.getAreaList()) {
-							if (area.getId().equals(areaSalvo.getId())) {
+							if (areaSalvo.getId().equals(area.getId())) {
 								encontrou = true;
 								break;
 							}
@@ -93,20 +90,19 @@ public class SalvarCmd extends _SalvarCmd {
 					if (!encontrou) {
 						areaDao.delete(areaSalvo);
 					}
-				}
+				});
 			}
 		}
 
-		if (endereco.getAreaList() != null) {
-			for (Area area : endereco.getAreaList()) {
-				area.setEndereco(endereco);
-			}
+		// atualizar chave do endereço das áreas
+		if (!CollectionUtils.isEmpty(endereco.getAreaList())) {
+			endereco.getAreaList().forEach((area) -> area.setEndereco(endereco));
 		}
 		enderecoDao.save(endereco);
 
 		// ajustar o setor
-		if (result.getFormaUtilizacaoEspacoRuralList() != null) {
-			for (PropriedadeRuralFormaUtilizacaoEspacoRural formaUtilizacaoEspacoRural : result.getFormaUtilizacaoEspacoRuralList()) {
+		if (!CollectionUtils.isEmpty(result.getFormaUtilizacaoEspacoRuralList())) {
+			result.getFormaUtilizacaoEspacoRuralList().forEach((formaUtilizacaoEspacoRural) -> {
 				formaUtilizacaoEspacoRural.setPropriedadeRural(result);
 				if (result.getId() != null) {
 					PropriedadeRuralFormaUtilizacaoEspacoRural salvo = propriedadeRuralFormaUtilizacaoEspacoRuralDao.findOneByPropriedadeRuralAndFormaUtilizacaoEspacoRural(result, formaUtilizacaoEspacoRural.getFormaUtilizacaoEspacoRural());
@@ -114,68 +110,61 @@ public class SalvarCmd extends _SalvarCmd {
 						formaUtilizacaoEspacoRural.setId(salvo.getId());
 					}
 				}
-			}
+			});
 		}
 
 		dao.save(result);
 
 		// excluir as propriedades vinculadas ao publico alvo
 		excluirRegistros(result, "publicoAlvoPropriedadeRuralList", publicoAlvoPropriedadeRuralDao);
-		
-		if (result.getPublicoAlvoPropriedadeRuralList() != null) {
-			for (PublicoAlvoPropriedadeRural papr : result.getPublicoAlvoPropriedadeRuralList()) {
+
+		// atualizar vinculo de publico alvo e propriedade rural
+		if (!CollectionUtils.isEmpty(result.getPublicoAlvoPropriedadeRuralList())) {
+			result.getPublicoAlvoPropriedadeRuralList().forEach((papr) -> {
 				papr.setPropriedadeRural(result);
 				papr.setPublicoAlvo(publicoAlvoDao.findOneByPessoa(papr.getPublicoAlvo().getPessoa()));
 				publicoAlvoPropriedadeRuralDao.save(papr);
-			}
+			});
 		}
 
 		// tratar a exclusao de registros
 		excluirRegistros(result, "arquivoList", propriedadeRuralArquivoDao);
-		
-		if (result.getArquivoList() != null) {
-			// tratar a exclusao de registros
-			for (PropriedadeRuralArquivo pessoaArquivo : result.getArquivoList()) {
-				if (CadastroAcao.E.equals(pessoaArquivo.getCadastroAcao())) {
-					propriedadeRuralArquivoDao.delete(pessoaArquivo);
-				}
-			}
-			// tratar a insersao de registros
-			for (PropriedadeRuralArquivo propriedadeRuralArquivo : result.getArquivoList()) {
-				if (!CadastroAcao.E.equals(propriedadeRuralArquivo.getCadastroAcao())) {
-					Arquivo arquivo = propriedadeRuralArquivo.getArquivo();
-					arquivo = arquivoDao.findByMd5(arquivo.getMd5());
-					if (arquivo != null) {
-						arquivo.setMd5(propriedadeRuralArquivo.getArquivo().getMd5());
-						arquivo.setNomeOriginal(propriedadeRuralArquivo.getArquivo().getNomeOriginal());
-						arquivo.setDataUpload(propriedadeRuralArquivo.getArquivo().getDataUpload());
-						arquivo.setExtensao(propriedadeRuralArquivo.getArquivo().getExtensao());
-						arquivo.setTamanho(propriedadeRuralArquivo.getArquivo().getTamanho());
-						arquivo.setTipo(propriedadeRuralArquivo.getArquivo().getTipo());
-					}
-					arquivo = arquivoDao.save(arquivo);
-					propriedadeRuralArquivo.setArquivo(arquivo);
-					propriedadeRuralArquivo.setPropriedadeRural(result);
 
-					PropriedadeRuralArquivo propriedadeRuralArquivoSalvo = propriedadeRuralArquivoDao.findOneByPropriedadeRuralAndArquivo(result, arquivo);
-					if (propriedadeRuralArquivoSalvo != null) {
-						propriedadeRuralArquivo.setId(propriedadeRuralArquivoSalvo.getId());
-					}
-					propriedadeRuralArquivoDao.save(propriedadeRuralArquivo);
+		if (!CollectionUtils.isEmpty(result.getArquivoList())) {
+			// tratar a insersao de registros
+			result.getArquivoList().forEach((propriedadeRuralArquivo) -> {
+				Arquivo arquivo = propriedadeRuralArquivo.getArquivo();
+				arquivo = arquivoDao.findByMd5(arquivo.getMd5());
+				if (arquivo != null) {
+					arquivo.setMd5(propriedadeRuralArquivo.getArquivo().getMd5());
+					arquivo.setNomeOriginal(propriedadeRuralArquivo.getArquivo().getNomeOriginal());
+					arquivo.setDataUpload(propriedadeRuralArquivo.getArquivo().getDataUpload());
+					arquivo.setExtensao(propriedadeRuralArquivo.getArquivo().getExtensao());
+					arquivo.setTamanho(propriedadeRuralArquivo.getArquivo().getTamanho());
+					arquivo.setTipo(propriedadeRuralArquivo.getArquivo().getTipo());
 				}
-			}
+				arquivo = arquivoDao.save(arquivo);
+				propriedadeRuralArquivo.setArquivo(arquivo);
+				propriedadeRuralArquivo.setPropriedadeRural(result);
+
+				PropriedadeRuralArquivo propriedadeRuralArquivoSalvo = propriedadeRuralArquivoDao.findOneByPropriedadeRuralAndArquivo(result, arquivo);
+				if (propriedadeRuralArquivoSalvo != null) {
+					propriedadeRuralArquivo.setId(propriedadeRuralArquivoSalvo.getId());
+				}
+				propriedadeRuralArquivoDao.save(propriedadeRuralArquivo);
+			});
 		}
-		
+
 		// tratar a exclusao de registros
 		excluirRegistros(result, "pendenciaList", propriedadeRuralPendenciaDao);
 
 		// salvar pendencias do cadastro
 		if (!CollectionUtils.isEmpty(result.getPendenciaList())) {
 			// tratar a insersao de registros
-			for (PropriedadeRuralPendencia pendencia : result.getPendenciaList()) {
+			result.getPendenciaList().forEach((pendencia) -> {
 				pendencia.setPropriedadeRural(result);
 				propriedadeRuralPendenciaDao.save(pendencia);
-			}
+			});
 		}
 
 		dao.flush();

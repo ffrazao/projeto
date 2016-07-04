@@ -11,6 +11,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import br.gov.df.emater.aterwebsrv.ferramenta.Util;
+import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGeracao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoCategoria;
@@ -88,11 +89,11 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 		}
 
 		if (filtro.getInicio() != null) {
-			params.add(filtro.getInicio());
+			params.add(UtilitarioData.getInstance().ajustaInicioDia(filtro.getInicio()));
 			sqlFiltro.append("and a.inicio >= ?").append(params.size()).append("\n");
 		}
 		if (filtro.getTermino() != null) {
-			params.add(filtro.getTermino());
+			params.add(UtilitarioData.getInstance().ajustaFinalDia(filtro.getTermino()));
 			sqlFiltro.append("and a.inicio <= ?").append(params.size()).append("\n");
 		}
 		if (filtro.getMetodo() != null) {
@@ -291,7 +292,7 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 			sql.append("and (1 = 1 ").append(sqlFiltro).append(")\n");
 		}
 
-		sql.append("order by a.inicio").append("\n");
+		sql.append("order by a.inicio desc").append("\n");
 		sql.append("       , a.metodo.nome").append("\n");
 
 		// criar a query

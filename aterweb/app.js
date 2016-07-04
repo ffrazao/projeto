@@ -429,10 +429,23 @@ var TIMEOUT_TEMPO = 5 * 60;
             );};
     }]);
 
-    angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 'toastr', 'UtilSrv', '$stateParams', '$timeout', 'TokenStorage', '$state', 'CestaDeValores', 'SegurancaSrv', 'Idle', function($rootScope, $uibModal, FrzNavegadorParams, toastr, UtilSrv, $stateParams, $timeout, TokenStorage, $state, CestaDeValores, SegurancaSrv,
-            Idle) {
+    angular.module(pNmModulo).run(['$rootScope', '$uibModal', 'FrzNavegadorParams', 'toastr', 'UtilSrv', '$stateParams', '$timeout', 'TokenStorage', '$state', 'CestaDeValores', 'SegurancaSrv', 'Idle', 
+        function($rootScope, $uibModal, FrzNavegadorParams, toastr, UtilSrv, $stateParams, $timeout, TokenStorage, $state, CestaDeValores, SegurancaSrv, Idle) {
             'ngInject';
+
+            // definir o servidor padrão
             $rootScope.servicoUrl = 'http://homologa.emater.df.gov.br:8080/aterwebsrv';
+
+            // verificar se tem um servidor alternativo
+            var servicoUrl = $.ajax({
+                type: "GET",
+                url: "servidor.url",
+                async: false
+            }).responseText;
+            if (servicoUrl) {
+                $rootScope.servicoUrl = servicoUrl;
+            }
+
             $rootScope.token = null;
             $rootScope.isAuthenticated = function(username) {
                 if (!$rootScope.token) {

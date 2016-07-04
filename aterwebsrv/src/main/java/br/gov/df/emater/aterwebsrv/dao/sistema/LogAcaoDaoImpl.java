@@ -9,6 +9,7 @@ import javax.persistence.Query;
 
 import org.springframework.util.CollectionUtils;
 
+import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
 import br.gov.df.emater.aterwebsrv.modelo.dto.LogAcaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.TagDto;
 
@@ -51,11 +52,11 @@ public class LogAcaoDaoImpl implements LogAcaoDaoCustom {
 			sql.append(" )").append("\n");
 		}
 		if (filtro.getInicio() != null) {
-			params.add(filtro.getInicio());
+			params.add(UtilitarioData.getInstance().ajustaInicioDia(filtro.getInicio()));
 			sql.append("and a.data >= ?").append(params.size()).append("\n");
 		}
 		if (filtro.getTermino() != null) {
-			params.add(filtro.getTermino());
+			params.add(UtilitarioData.getInstance().ajustaFinalDia(filtro.getTermino()));
 			sql.append("and a.data <= ?").append(params.size()).append("\n");
 		}
 		sql.append("order by              a.nome_usuario").append("\n");
