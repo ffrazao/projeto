@@ -442,7 +442,7 @@ var TIMEOUT_TEMPO = 5 * 60;
                 url: "servidor.url",
                 async: false
             }).responseText;
-            if (servicoUrl) {
+            if (servicoUrl && servicoUrl.startsWith("http")) {
                 $rootScope.servicoUrl = servicoUrl;
             }
 
