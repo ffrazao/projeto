@@ -41,7 +41,7 @@ public class EsqueciSenhaCmd extends _Comando {
 		novaSenha.append(UtilitarioString.zeroEsquerda((int) (9999 * Math.random()), 4));
 
 		Calendar acessoExpiraEm = Calendar.getInstance();
-		acessoExpiraEm.roll(Calendar.DATE, 1);
+		acessoExpiraEm.add(Calendar.DATE, 1);
 
 		StringBuilder texto = new StringBuilder();
 		texto.append("Senha de acesso ao sistema ATER web. Para tal:").append("\n");
