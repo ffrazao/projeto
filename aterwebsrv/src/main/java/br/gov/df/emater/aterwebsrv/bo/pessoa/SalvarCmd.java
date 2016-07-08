@@ -227,6 +227,9 @@ public class SalvarCmd extends _SalvarCmd {
 		if (result.getSituacao() == null) {
 			result.setSituacao(PessoaSituacao.A);
 		}
+		if (result.getSituacaoData() == null) {
+			result.setSituacaoData(Calendar.getInstance());
+		}
 
 		// guardar os dados do publico alvo
 		PublicoAlvo publicoAlvo = result.getPublicoAlvo();
