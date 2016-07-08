@@ -38,7 +38,6 @@
                 </tr>
             </thead>
             <tbody>
-                [{{cadastro.registro.pendenciaList}}]
                 <tr ng-repeat="item in cadastro.registro.pendenciaList | orderBy: ['codigo'] track by item.id" ng-class="{vermelho: item.tipo === 'E'}">
                     <td>
                         <input type="radio" ng-show="pessoaPendenciaNvg.selecao.tipo === 'U'" ng-model="pessoaPendenciaNvg.selecao.item" ng-value="item"/>

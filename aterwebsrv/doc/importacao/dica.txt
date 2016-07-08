@@ -1,0 +1,16 @@
+## exportar
+mysqldump -uemater -pemater --default-character-set=utf8 ater      > ater.sql
+mysqldump -uemater -pemater --default-character-set=utf8 enquete   > enquete.sql
+mysqldump -uemater -pemater --default-character-set=utf8 funcional > funcional.sql
+mysqldump -uemater -pemater --default-character-set=utf8 pessoa    > pessoa.sql
+mysqldump -uemater -pemater --default-character-set=utf8 seguranca > seguranca.sql
+mysqldump -uemater -pemater --default-character-set=utf8 sistema   > sistema.sql
+
+
+## importar
+mysql -uemater -pemater --default-character-set=utf8 ater      < ater.sql
+mysql -uemater -pemater --default-character-set=utf8 enquete   < enquete.sql
+mysql -uemater -pemater --default-character-set=utf8 funcional < funcional.sql
+mysql -uemater -pemater --default-character-set=utf8 pessoa    < pessoa.sql
+mysql -uemater -pemater --default-character-set=utf8 seguranca < seguranca.sql
+mysql -uemater -pemater --default-character-set=utf8 sistema   < sistema.sql

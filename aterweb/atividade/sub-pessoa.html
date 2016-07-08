@@ -72,7 +72,6 @@
                             <div class="radio">
                                 <label for="principal_{{lista}}">
                                     <input type="radio" id="principal_{{lista}}_{{$index}}" name="principal_{{lista}}" ng-click="definirResponsavel(cadastro.registro[lista], reg)" ng-checked="reg.responsavel === 'S'" requied="true" ng-disabled="!reg.pessoa">
-                                    [{{reg}}]
                                 </label>
                             </div>
                             <div class="label label-danger" ng-show="navegador.submetido && atividadePessoaListFrm.principal.$error.required">

@@ -8,6 +8,7 @@ import java.util.Random;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
@@ -19,10 +20,7 @@ import br.gov.df.emater.aterwebsrv.dao.atividade.OcorrenciaDao;
 import br.gov.df.emater.aterwebsrv.ferramenta.Util;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.Atividade;
-import br.gov.df.emater.aterwebsrv.modelo.atividade.AtividadeAssunto;
-import br.gov.df.emater.aterwebsrv.modelo.atividade.AtividadeChaveSisater;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.AtividadePessoa;
-import br.gov.df.emater.aterwebsrv.modelo.atividade.Ocorrencia;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.AtividadeFinalidade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.AtividadePessoaParticipacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
@@ -78,9 +76,10 @@ public class SalvarCmd extends _SalvarCmd {
 		List<AtividadePessoa> atividadePessoaExecList = result.getPessoaExecutorList();
 
 		// FIX-ME somente para a importação, depois remover esta condição
-		if (atividadePessoaDemandList == null || atividadePessoaExecList == null) {
-			return true;
-		}
+		// if (atividadePessoaDemandList == null || atividadePessoaExecList ==
+		// null) {
+		// return true;
+		// }
 
 		if (result.getId() == null) {
 			// gerar o código da atividade
@@ -102,9 +101,7 @@ public class SalvarCmd extends _SalvarCmd {
 			result.setPublicoEstimado(null);
 		}
 
-		for (AtividadeChaveSisater c : result.getChaveSisaterList()) {
-			c.setAtividade(result);
-		}
+		result.getChaveSisaterList().forEach((chave) -> chave.setAtividade(result));
 
 		// FIX-ME enquanto não for implementado o novo modelo de Atividades,
 		// depois remover esta condição
@@ -114,66 +111,24 @@ public class SalvarCmd extends _SalvarCmd {
 
 		dao.save(result);
 
-		for (AtividadeAssunto assunto : result.getAssuntoList()) {
+		result.getAssuntoList().forEach((assunto) -> {
 			assunto.setAtividade(result);
 			atividadeAssuntoDao.save(assunto);
-		}
+		});
 
-		Pessoa responsavel = null;
-		List<Integer> demandanteList = new ArrayList<Integer>();
-		for (AtividadePessoa ativPess : atividadePessoaDemandList) {
-			if (demandanteList.contains(ativPess.getPessoa().getId())) {
-				throw new BoException("Demandante vinculado mais de uma vez à Atividade");
-			} else {
-				demandanteList.add(ativPess.getPessoa().getId());
-			}
-			ativPess.setAtividade(result);
-			ativPess.setParticipacao(AtividadePessoaParticipacao.D);
-			criticaAtividadePessoa(ativPess);
+		List<Integer> demandanteList = salvarAtividadePessoaList(result, atividadePessoaDemandList, AtividadePessoaParticipacao.D);
 
-			if (Confirmacao.S.equals(ativPess.getResponsavel())) {
-				responsavel = ativPess.getPessoa();
-			}
-			atividadePessoaDao.save(ativPess);
-		}
-		if (responsavel == null) {
-			// throw new BoException("Demandante Responsável não foi
-			// identificado");
-		}
+		List<Integer> executorList = salvarAtividadePessoaList(result, atividadePessoaExecList, AtividadePessoaParticipacao.E);
 
-		responsavel = null;
-		List<Integer> executorList = new ArrayList<Integer>();
-		for (AtividadePessoa ativPess : atividadePessoaExecList) {
-			if (ativPess.getPessoa() != null) {
-				if (executorList.contains(ativPess.getPessoa().getId())) {
-					throw new BoException("Executor vinculado mais de uma vez à Atividade");
-				} else {
-					executorList.add(ativPess.getPessoa().getId());
-				}
-			}
-			ativPess.setAtividade(result);
-			ativPess.setParticipacao(AtividadePessoaParticipacao.E);
-			criticaAtividadePessoa(ativPess);
-
-			if (Confirmacao.S.equals(ativPess.getResponsavel())) {
-				responsavel = ativPess.getPessoa();
-			}
-			atividadePessoaDao.save(ativPess);
-		}
-		if (responsavel == null) {
-			// throw new BoException("Executor Responsável não foi
-			// identificado");
-		}
-
-		if (executorList.size() > 0 && demandanteList.containsAll(executorList)) {
+		if (executorList.size() > 0 && CollectionUtils.containsAny(executorList, demandanteList)) {
 			throw new BoException("Demandante também vinculado como executor à atividade");
 		}
 
 		if (result.getOcorrenciaList() != null) {
-			for (Ocorrencia ocorrencia : result.getOcorrenciaList()) {
+			result.getOcorrenciaList().forEach((ocorrencia) -> {
 				ocorrencia.setAtividade(result);
 				ocorrenciaDao.save(ocorrencia);
-			}
+			});
 		}
 
 		dao.flush();
@@ -261,5 +216,32 @@ public class SalvarCmd extends _SalvarCmd {
 
 		// retorna o digito verificador
 		return dv;
+	}
+
+	private List<Integer> salvarAtividadePessoaList(Atividade atividade, List<AtividadePessoa> atividadePessoaList, AtividadePessoaParticipacao participacao) throws BoException {
+		Pessoa responsavel = null;
+		List<Integer> result = new ArrayList<Integer>();
+		for (AtividadePessoa ativPess : atividadePessoaList) {
+			if (ativPess.getPessoa() != null) {
+				if (result.contains(ativPess.getPessoa().getId())) {
+					throw new BoException("O %s (%s) vinculado mais de uma vez à Atividade", participacao.toString(), ativPess.getPessoa().getNome());
+				} else {
+					result.add(ativPess.getPessoa().getId());
+				}
+			}
+			ativPess.setAtividade(atividade);
+			ativPess.setParticipacao(participacao);
+			criticaAtividadePessoa(ativPess);
+			if (responsavel == null && Confirmacao.S.equals(ativPess.getResponsavel())) {
+				responsavel = ativPess.getPessoa();
+			} else {
+				ativPess.setResponsavel(Confirmacao.N);
+			}
+			atividadePessoaDao.save(ativPess);
+		}
+		if (responsavel == null) {
+			throw new BoException("O %s responsável não foi identificado", participacao.toString());
+		}
+		return result;
 	}
 }
