@@ -70,8 +70,9 @@
                         </td>
                         <td>
                             <div class="radio">
-                                <label for="principal">
-                                    <input type="radio" id="principal_{{lista}}_{{$index}}" name="principal_{{lista}}" ng-model="cadastro.apoio.principal[lista]" ng-value="reg.pessoa" requied="true" ng-disabled="!reg.pessoa">
+                                <label for="principal_{{lista}}">
+                                    <input type="radio" id="principal_{{lista}}_{{$index}}" name="principal_{{lista}}" ng-click="definirResponsavel(cadastro.registro[lista], reg)" ng-checked="reg.responsavel === 'S'" requied="true" ng-disabled="!reg.pessoa">
+                                    [{{reg}}]
                                 </label>
                             </div>
                             <div class="label label-danger" ng-show="navegador.submetido && atividadePessoaListFrm.principal.$error.required">
@@ -115,7 +116,8 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <b>Responsável</b> <a ng-click="modalVerPessoa(cadastro.apoio.principal[lista].id)">{{cadastro.apoio.principal[lista].nome}}</a>
+                                        <b>Responsável</b>
+                                        <a ng-click="modalVerPessoa(exibirResponsavel(cadastro.registro[lista]).pessoa.id)">{{exibirResponsavel(cadastro.registro[lista]).pessoa.nome}}</a>
                                     </div>
                                 </div>
                             </div>

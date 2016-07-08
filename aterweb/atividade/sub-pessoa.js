@@ -172,6 +172,28 @@ angular.module(pNmModulo).controller(pNmController,
         }
     };
 
+    $scope.definirResponsavel = function (lista, reg) {
+        if (!lista || !reg) {
+            return;
+        }
+        lista.forEach(function(r) {
+            r.responsavel = angular.equals(reg, r) ? 'S': 'N';
+        });
+    };
+
+    $scope.exibirResponsavel = function (lista) {
+        if (!lista) {
+            return;
+        }
+        var result = null;
+        lista.forEach(function(r) {
+            if (r.responsavel === 'S') {
+                result = r;
+            }
+        });
+        return result;
+    };
+
 } // fim função
 ]);
 
