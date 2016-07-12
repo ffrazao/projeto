@@ -38,7 +38,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="reg in cadastro.registro.assuntoList | filter: {cadastroAcao: '!E'} | pagina: atividadeAssuntoNvg.paginaAtual : atividadeAssuntoNvg.tamanhoPagina | limitTo: atividadeAssuntoNvg.tamanhoPagina | orderBy: ['assunto.nome']">
+                    <tr ng-repeat="reg in cadastro.registro.assuntoList  | orderBy: ['assunto.nome'] track by reg.id">
                         <td>
                             <input type="radio" ng-show="atividadeAssuntoNvg.selecao.tipo === 'U'" ng-model="atividadeAssuntoNvg.selecao.item" ng-value="reg"/>
                             <input type="checkbox" ng-show="atividadeAssuntoNvg.selecao.tipo === 'M'" checklist-model="atividadeAssuntoNvg.selecao.items" checklist-value="reg"/>
@@ -47,14 +47,12 @@
                             {{$index + 1 + ((atividadeAssuntoNvg.paginaAtual-1) * atividadeAssuntoNvg.tamanhoPagina)}}
                         </td>
                         <td>
-                            <span ng-if="cadastro.registro.id">{{reg.assunto.nome}}</span>
-                            <select class="form-control input-sm" id="assunto" name="assunto{{$index}}" ng-model="reg.assunto.id" ng-required="true"  ng-if="!reg.id">
-                                <option ng-repeat="item in cadastro.apoio.assuntoList | filter: {finalidade: cadastro.registro.finalidade, ativo: 'S'} | orderBy: 'nome'" 
-                                    ng-value="{{item.id}}" 
-                                    ng-selected="item.id === reg.assunto.id"
-                                    ng-disabled="item | filtrarInseridos:cadastro.registro.assuntoList:'id':'assunto.id'">
-                                    {{item.nome}}
-                                </option>
+                            <select class="form-control input-sm" 
+                                id="assunto" 
+                                name="assunto{{$index}}" 
+                                ng-model="reg.assunto" 
+                                ng-required="true" 
+                                ng-options="item as item.nome disable when desabilitarAssunto(cadastro.registro.assuntoList, reg, item) for item in cadastro.apoio.assuntoList | filter: {finalidade: cadastro.registro.finalidade, ativo: 'S'} | orderBy: ['nome'] track by item.id">
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && assuntoListFrm.assunto{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>

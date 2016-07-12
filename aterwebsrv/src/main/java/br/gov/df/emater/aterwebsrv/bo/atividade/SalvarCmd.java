@@ -71,6 +71,8 @@ public class SalvarCmd extends _SalvarCmd {
 
 		// captar o registro de atualização da tabela
 		logAtualizar(result, contexto);
+		
+		limparChavePrimaria(result.getAssuntoList());
 
 		List<AtividadePessoa> atividadePessoaDemandList = result.getPessoaDemandanteList();
 		List<AtividadePessoa> atividadePessoaExecList = result.getPessoaExecutorList();
@@ -111,10 +113,15 @@ public class SalvarCmd extends _SalvarCmd {
 
 		dao.save(result);
 
-		result.getAssuntoList().forEach((assunto) -> {
-			assunto.setAtividade(result);
-			atividadeAssuntoDao.save(assunto);
-		});
+		// tratar a exclusão de registros
+		excluirRegistros(result, "assuntoList", atividadeAssuntoDao);
+
+		if (!CollectionUtils.isEmpty(result.getAssuntoList())) {
+			result.getAssuntoList().forEach((assunto) -> {
+				assunto.setAtividade(result);
+				atividadeAssuntoDao.save(assunto);
+			});
+		}
 
 		List<Integer> demandanteList = salvarAtividadePessoaList(result, atividadePessoaDemandList, AtividadePessoaParticipacao.D);
 
