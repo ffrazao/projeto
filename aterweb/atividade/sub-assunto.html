@@ -38,7 +38,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="reg in cadastro.registro.assuntoList  | orderBy: ['assunto.nome'] track by reg.id">
+                    <tr ng-repeat="reg in cadastro.registro.assuntoList | orderBy: ['assunto.nome'] track by reg.id">
                         <td>
                             <input type="radio" ng-show="atividadeAssuntoNvg.selecao.tipo === 'U'" ng-model="atividadeAssuntoNvg.selecao.item" ng-value="reg"/>
                             <input type="checkbox" ng-show="atividadeAssuntoNvg.selecao.tipo === 'M'" checklist-model="atividadeAssuntoNvg.selecao.items" checklist-value="reg"/>

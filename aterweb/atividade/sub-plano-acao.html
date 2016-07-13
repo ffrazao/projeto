@@ -38,7 +38,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="reg in cadastro.registro.planoAcaoList | filter: {cadastroAcao: '!E'} | pagina: atividadePlanoAcaoNvg.paginaAtual : atividadePlanoAcaoNvg.tamanhoPagina | limitTo: atividadePlanoAcaoNvg.tamanhoPagina">
+                    <tr ng-repeat="reg in cadastro.registro.planoAcaoList | orderBy: ['planoAcao.nome'] track by reg.id">
                         <td>
                             <input type="radio" ng-show="atividadePlanoAcaoNvg.selecao.tipo === 'U'" ng-model="atividadePlanoAcaoNvg.selecao.item" ng-value="reg"/>
                             <input type="checkbox" ng-show="atividadePlanoAcaoNvg.selecao.tipo === 'M'" checklist-model="atividadePlanoAcaoNvg.selecao.items" checklist-value="reg"/>

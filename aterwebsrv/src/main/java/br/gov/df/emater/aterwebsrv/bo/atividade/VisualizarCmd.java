@@ -91,7 +91,7 @@ public class VisualizarCmd extends _Comando {
 				n.setId(r.getId());
 				n.setUsuario(r.getUsuario().infoBasica());
 				n.setRegistro(r.getRegistro());
-				n.setRelato(n.getRelato());
+				n.setRelato(r.getRelato());
 				n.setIncidente(r.getIncidente());
 				n.setAutomatico(r.getAutomatico());
 				l.add(n);

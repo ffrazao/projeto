@@ -56,7 +56,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="reg in cadastro.registro[lista] | filter: cadastro.apoio[lista].filtro | filter: {cadastroAcao: '!E'} | pagina: atividadePessoaNvg.paginaAtual : atividadePessoaNvg.tamanhoPagina | limitTo: atividadePessoaNvg.tamanhoPagina | orderBy: ['pessoa.nome']">
+                    <tr ng-repeat="reg in cadastro.registro[lista] | orderBy: ['pessoa.nome'] track by reg.id">
                         <td>
                             <input type="radio" ng-show="atividadePessoaNvg.selecao.tipo === 'U'" ng-model="atividadePessoaNvg.selecao.item" ng-value="reg"/>
                             <input type="checkbox" ng-show="atividadePessoaNvg.selecao.tipo === 'M'" checklist-model="atividadePessoaNvg.selecao.items" checklist-value="reg"/>

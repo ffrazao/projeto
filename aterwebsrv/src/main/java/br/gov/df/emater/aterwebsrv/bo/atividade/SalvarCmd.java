@@ -73,6 +73,9 @@ public class SalvarCmd extends _SalvarCmd {
 		logAtualizar(result, contexto);
 		
 		limparChavePrimaria(result.getAssuntoList());
+		limparChavePrimaria(result.getPessoaDemandanteList());
+		limparChavePrimaria(result.getPessoaExecutorList());
+		limparChavePrimaria(result.getOcorrenciaList());
 
 		List<AtividadePessoa> atividadePessoaDemandList = result.getPessoaDemandanteList();
 		List<AtividadePessoa> atividadePessoaExecList = result.getPessoaExecutorList();
@@ -134,6 +137,7 @@ public class SalvarCmd extends _SalvarCmd {
 		if (result.getOcorrenciaList() != null) {
 			result.getOcorrenciaList().forEach((ocorrencia) -> {
 				ocorrencia.setAtividade(result);
+				ocorrencia.setUsuario(getUsuario(ocorrencia.getUsuario().getUsername()));
 				ocorrenciaDao.save(ocorrencia);
 			});
 		}
@@ -226,6 +230,8 @@ public class SalvarCmd extends _SalvarCmd {
 	}
 
 	private List<Integer> salvarAtividadePessoaList(Atividade atividade, List<AtividadePessoa> atividadePessoaList, AtividadePessoaParticipacao participacao) throws BoException {
+		// tratar a exclusão de registros
+		excluirRegistros(atividade, participacao.equals(AtividadePessoaParticipacao.D) ? "pessoaDemandanteList" : "pessoaExecutorList" , atividadePessoaDao);
 		Pessoa responsavel = null;
 		List<Integer> result = new ArrayList<Integer>();
 		for (AtividadePessoa ativPess : atividadePessoaList) {

@@ -41,7 +41,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="reg in cadastro.registro.ocorrenciaList | filter: {cadastroAcao: '!E'} | pagina: atividadeOcorrenciaNvg.paginaAtual : atividadeOcorrenciaNvg.tamanhoPagina | limitTo: atividadeOcorrenciaNvg.tamanhoPagina | orderBy: '-registro'">
+                    <tr ng-repeat="reg in cadastro.registro.ocorrenciaList | orderBy:ordenarLista:true track by reg.id">
                         <td>
                             <input type="radio" ng-show="atividadeOcorrenciaNvg.selecao.tipo === 'U'" ng-model="atividadeOcorrenciaNvg.selecao.item" ng-value="reg"/>
                             <input type="checkbox" ng-show="atividadeOcorrenciaNvg.selecao.tipo === 'M'" checklist-model="atividadeOcorrenciaNvg.selecao.items" checklist-value="reg"/>
@@ -51,14 +51,14 @@
                         </td>
                         <td><a ng-click="modalVerPessoa(reg.usuario.pessoa.id)">{{reg.usuario.pessoa.nome}}</a></td>
                         <td>
-                            <input type="text" class="form-control input-sm" id="registro" name="registro{{$index}}" ng-model="reg.registro" required="true" ui-date-mask>
+                            <input type="text" class="form-control input-sm" id="registro" name="registro{{$index}}" ng-model="reg.registro" ng-required="true" ui-date-mask ng-disabled="reg.automatico==='S' || reg.usuario.username !== token.username">
                             <div class="label label-danger" ng-show="navegador.submetido && atividadePessoaListFrm.registro{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
                         </td>
                         <td>
-                            <textarea class="form-control input-sm" id="relato" name="relato{{$index}}" ng-model="reg.relato"></textarea>
+                            <textarea class="form-control input-sm" id="relato" name="relato{{$index}}" ng-model="reg.relato" ng-required="true" ng-disabled="reg.automatico==='S' || reg.usuario.username !== token.username"></textarea>
                             <div class="label label-danger" ng-show="navegador.submetido && atividadePessoaListFrm.relato{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
@@ -76,7 +76,7 @@
                         <td>
                             <div class="checkbox">
                                 <label for="incidente{{$index}}">
-                                    <input type="checkbox" id="incidente" name="incidente{{$index}}" ng-model="reg.incidente" ng-true-value="'S'" ng-false-value="'N'" ng-disabled="reg.automatico === 'S'">
+                                    <input type="checkbox" id="incidente" name="incidente{{$index}}" ng-model="reg.incidente" ng-true-value="'S'" ng-false-value="'N'" ng-disabled="reg.automatico === 'S' || reg.usuario.username !== token.username">
                                 </label>
                             </div>
                             <div class="label label-danger" ng-show="navegador.submetido && atividadePessoaListFrm.incidente{{$index}}.$error.required">

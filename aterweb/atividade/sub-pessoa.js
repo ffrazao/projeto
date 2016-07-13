@@ -1,3 +1,5 @@
+/* global removerCampo */
+
 (function(pNmModulo, pNmController, pNmFormulario) {
 
 'use strict';
@@ -10,13 +12,9 @@ angular.module(pNmModulo).controller(pNmController,
     // inicio rotinas de apoio
     var jaCadastrado = function(conteudo) {
         for (var j in conteudo) {
-            if (angular.equals($scope.getList()[j].pessoa.id, conteudo.pessoa.id)) {
-                if ($scope.getList()[j].cadastroAcao === 'E') {
-                    return true;
-                } else {
-                    toastr.error('Registro já cadastrado');
-                    return false;
-                }
+            if (!angular.equals($scope.getList()[j].id, conteudo.id) && angular.equals($scope.getList()[j].pessoa.id, conteudo.pessoa.id)) {
+                toastr.error('Registro já cadastrado');
+                return false;
             }
         }
         return true;
@@ -56,6 +54,7 @@ angular.module(pNmModulo).controller(pNmController,
                     reg.responsavel = 'S';
                     $scope.cadastro.apoio.principal[destino] = reg.pessoa;
                 }
+                reg = $scope.criarElemento($scope.$parent.cadastro.registro, destino, reg);
                 $scope.$parent.cadastro.registro[destino].push(reg);
             } else {
                 for (var i in resultado.selecao.items) {
@@ -73,6 +72,7 @@ angular.module(pNmModulo).controller(pNmController,
                         reg.responsavel = 'S';
                         $scope.cadastro.apoio.principal[destino] = reg.pessoa;
                     }
+                    reg = $scope.criarElemento($scope.$parent.cadastro.registro, destino, reg);
                     $scope.$parent.cadastro.registro[destino].push(reg);
                 }
             }
@@ -87,7 +87,8 @@ angular.module(pNmModulo).controller(pNmController,
     // inicio das operaçoes atribuidas ao navagador
     $scope.abrir = function(nvg) { 
         nvg.mudarEstado('ESPECIAL'); 
-        nvg.botao('edicao').visivel = false;
+        // desabilitar a edição
+        nvg.botao('edicao').exibir = function() {return false;};
     };
     $scope.incluir = function(destino) {
         if (!angular.isArray($scope.$parent.cadastro.registro[destino])) {
@@ -96,39 +97,20 @@ angular.module(pNmModulo).controller(pNmController,
         $scope.modalSelecinarPessoa(destino);
     };
     $scope.editar = function() {};
-    $scope.excluir = function(nvg, dados) {
+    $scope.excluir = function(nvg, destino) {
         mensagemSrv.confirmacao(false, 'confirme a exclusão').then(function (conteudo) {
             var i, j;
+            removerCampo($scope.$parent.cadastro.registro[destino], ['@jsonId']);
             if (nvg.selecao.tipo === 'U' && nvg.selecao.item) {
-                for (j = $scope.cadastro.registro[dados].length -1; j >= 0; j--) {
-
-                    delete $scope.cadastro.registro[dados][j].publicoAlvoPropriedadeRural['@jsonId'];
-                    delete nvg.selecao.item.publicoAlvoPropriedadeRural['@jsonId'];
-
-
-                    if (angular.equals($scope.cadastro.registro[dados][j].publicoAlvoPropriedadeRural, nvg.selecao.item.publicoAlvoPropriedadeRural)) {
-                        $scope.cadastro.registro[dados][j].cadastroAcao = 'E';
-                    }
-                }
-                nvg.selecao.item = null;
-                nvg.selecao.selecionado = false;
+                $scope.excluirElemento($scope, $scope.cadastro.registro, destino, nvg.selecao.item);
             } else if (nvg.selecao.items && nvg.selecao.items.length) {
-                for (j = $scope.cadastro.registro[dados].length-1; j >= 0; j--) {
-                    for (i in nvg.selecao.items) {
-
-                        delete $scope.cadastro.registro[dados][j].publicoAlvoPropriedadeRural['@jsonId'];
-                        delete nvg.selecao.items[i].publicoAlvoPropriedadeRural['@jsonId'];
-
-                        if (angular.equals($scope.cadastro.registro[dados][j].publicoAlvoPropriedadeRural, nvg.selecao.items[i].publicoAlvoPropriedadeRural)) {
-                            $scope.cadastro.registro[dados][j].cadastroAcao = 'E';
-                            break;
-                        }
-                    }
-                }
-                for (i = nvg.selecao.items.length -1; i >= 0; i--) {
-                    nvg.selecao.items.splice(i, 1);
+                for (i in nvg.selecao.items) {
+                    $scope.excluirElemento($scope, $scope.cadastro.registro, destino, nvg.selecao.items[i]);
                 }
             }
+            nvg.selecao.item = null;
+            nvg.selecao.items = [];
+            nvg.selecao.selecionado = false;
         }, function () {
         });
     };

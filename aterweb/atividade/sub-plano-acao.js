@@ -1,3 +1,5 @@
+/* global removerCampo */
+
 (function(pNmModulo, pNmController, pNmFormulario) {
 
 'use strict';
@@ -6,122 +8,58 @@ angular.module(pNmModulo).controller(pNmController,
     ['$scope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv', 'mensagemSrv', '$log',
     function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv, $log) {
     'ngInject';
+
     // inicio rotinas de apoio
-    var jaCadastrado = function(conteudo) {
-        for (var j in conteudo) {
-            if (angular.equals($scope.getList()[j].pessoa.id, conteudo.pessoa.id)) {
-                if ($scope.getList()[j].cadastroAcao === 'E') {
-                    return true;
-                } else {
-                    toastr.error('Registro já cadastrado');
-                    return false;
-                }
-            }
-        }
-        return true;
-    };
-
-    $scope.modalSelecinarPessoa = function (destino) {
-        // abrir a modal
-        var modalInstance = $uibModal.open({
-            animation: true,
-            templateUrl: 'pessoa/pessoa-modal.html',
-            controller: 'PessoaCtrl',
-            size: 'lg',
-            resolve: {
-                modalCadastro: function() {
-                    return $scope.cadastroBase();
-                }
-            }
-        });
-        // processar retorno da modal
-        modalInstance.result.then(function (resultado) {
-            // processar o retorno positivo da modal
-            var reg = null;
-            if (resultado.selecao.tipo === 'U') {
-                reg = {
-                    pessoa: {
-                        id: resultado.selecao.item[0], 
-                        nome: resultado.selecao.item[1],
-                        pessoaTipo: resultado.selecao.item[3],
-                    },
-                };
-                $scope.preparaClassePessoa(reg.pessoa);
-                destino.push(reg);
-            } else {
-                for (var i in resultado.selecao.items) {
-                    reg = {
-                        pessoa: {
-                            id: resultado.selecao.items[i][0], 
-                            nome: resultado.selecao.items[i][1],
-                            pessoaTipo: resultado.selecao.items[i][3],
-                        },
-                    };
-                    $scope.preparaClassePessoa(reg.pessoa);
-                    destino.push(reg);
-                }
-            }
-            toastr.info('Operação realizada!', 'Informação');
-        }, function () {
-            // processar o retorno negativo da modal
-            
-        });
-    };
-    // fim rotinas de apoio
-
-    // inicio das operaçoes atribuidas ao navagador
     var init = function() {
         if (!angular.isArray($scope.cadastro.registro.planoAcaoList)) {
             $scope.cadastro.registro.planoAcaoList = [];
         }
-        $scope.atividadePlanoAcaoNvg = new FrzNavegadorParams($scope.cadastro.registro.planoAcaoList, 4);
+        if (!$scope.atividadePlanoAcaoNvg) {
+            $scope.atividadePlanoAcaoNvg = new FrzNavegadorParams($scope.cadastro.registro.planoAcaoList, 4);
+        }
     };
     init();
 
+    var jaCadastrado = function(conteudo) {
+        var i, id, planoAcao;
+        for (i in $scope.cadastro.registro.planoAcaoList) {
+            id = $scope.cadastro.registro.planoAcaoList[i].id;
+            planoAcao = $scope.cadastro.registro.planoAcaoList[i].planoAcao;
+            if (!angular.equals(id, conteudo.id) && angular.equals(planoAcao.id, conteudo.planoAcao.id)) {
+                toastr.error('Registro já cadastrado');
+                return false;
+            }
+        }
+        return true;
+    };
+    // fim rotinas de apoio
+
+    // inicio das operaçoes atribuidas ao navagador
+
     $scope.abrir = function() { 
         $scope.atividadePlanoAcaoNvg.mudarEstado('ESPECIAL'); 
-        $scope.atividadePlanoAcaoNvg.botao('edicao').visivel = false;
+        // desabilitar a edição
+        $scope.atividadePlanoAcaoNvg.botao('edicao').exibir = function() {return false;};
     };
     $scope.incluir = function() {
-        if (!angular.isArray($scope.cadastro.registro.planoAcaoList)) {
-            $scope.cadastro.registro.planoAcaoList = [];
-        }
-        $scope.cadastro.registro.planoAcaoList.push({});
+        init();
+        $scope.cadastro.registro.planoAcaoList.push($scope.criarElemento($scope.cadastro.registro, 'planoAcaoList', {}));
     };
     $scope.editar = function() {};
-    $scope.excluir = function(nvg, dados) {
+    $scope.excluir = function() {
         mensagemSrv.confirmacao(false, 'confirme a exclusão').then(function (conteudo) {
             var i, j;
-            if (nvg.selecao.tipo === 'U' && nvg.selecao.item) {
-                for (j = $scope.cadastro.registro[dados].length -1; j >= 0; j--) {
-
-                    delete $scope.cadastro.registro[dados][j].publicoAlvoPropriedadeRural['@jsonId'];
-                    delete nvg.selecao.item.publicoAlvoPropriedadeRural['@jsonId'];
-
-
-                    if (angular.equals($scope.cadastro.registro[dados][j].publicoAlvoPropriedadeRural, nvg.selecao.item.publicoAlvoPropriedadeRural)) {
-                        $scope.cadastro.registro[dados][j].cadastroAcao = 'E';
-                    }
-                }
-                nvg.selecao.item = null;
-                nvg.selecao.selecionado = false;
-            } else if (nvg.selecao.items && nvg.selecao.items.length) {
-                for (j = $scope.cadastro.registro[dados].length-1; j >= 0; j--) {
-                    for (i in nvg.selecao.items) {
-
-                        delete $scope.cadastro.registro[dados][j].publicoAlvoPropriedadeRural['@jsonId'];
-                        delete nvg.selecao.items[i].publicoAlvoPropriedadeRural['@jsonId'];
-
-                        if (angular.equals($scope.cadastro.registro[dados][j].publicoAlvoPropriedadeRural, nvg.selecao.items[i].publicoAlvoPropriedadeRural)) {
-                            $scope.cadastro.registro[dados][j].cadastroAcao = 'E';
-                            break;
-                        }
-                    }
-                }
-                for (i = nvg.selecao.items.length -1; i >= 0; i--) {
-                    nvg.selecao.items.splice(i, 1);
+            removerCampo($scope.cadastro.registro.planoAcaoList, ['@jsonId']);
+            if ($scope.atividadePlanoAcaoNvg.selecao.tipo === 'U' && $scope.atividadePlanoAcaoNvg.selecao.item) {
+                $scope.excluirElemento($scope, $scope.cadastro.registro, 'planoAcaoList', $scope.atividadePlanoAcaoNvg.selecao.item);
+            } else if ($scope.atividadePlanoAcaoNvg.selecao.items && $scope.atividadePlanoAcaoNvg.selecao.items.length) {
+                for (i in $scope.atividadePlanoAcaoNvg.selecao.items) {
+                    $scope.excluirElemento($scope, $scope.cadastro.registro, 'planoAcaoList', $scope.atividadePlanoAcaoNvg.selecao.items[i]);
                 }
             }
+            $scope.atividadePlanoAcaoNvg.selecao.item = null;
+            $scope.atividadePlanoAcaoNvg.selecao.items = [];
+            $scope.atividadePlanoAcaoNvg.selecao.selecionado = false;
         }, function () {
         });
     };
