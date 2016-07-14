@@ -46,8 +46,8 @@
                         visivel: true,
                     },
                     {
-                        name: 'Dashboard',
-                        link: 'info({"nome": "Dashboard", "endereco": "http://extranet.emater.df.gov.br/painelresultados/"})',
+                        name: 'Painel de Resultados',
+                        link: 'info({"nome": "Painel de Resultados", "endereco": "http://extranet.emater.df.gov.br/painelresultados/"})',
                         visivel: true,
                     },
                 ],

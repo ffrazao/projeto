@@ -191,44 +191,6 @@
                     item.nome.trim().toLowerCase().latinize().indexOf($scope.cadastro.apoio.localFiltro.trim().toLowerCase().latinize()) === -1);
             };
 
-            $scope.confirmarFiltrarAntes = function(filtro) {
-                filtro.empresaList = [];
-                filtro.unidadeOrganizacionalList = [];
-                filtro.comunidadeList = [];
-                var i, j, k;
-                for (i in $scope.cadastro.apoio.localList) {
-                    // filtrar as empressas
-                    if ($scope.cadastro.apoio.localList[i].selecionado) {
-                        filtro.empresaList.push({
-                            id: $scope.cadastro.apoio.localList[i].id,
-                            '@class': 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica'
-                        });
-                    } else {
-                        for (j in $scope.cadastro.apoio.localList[i].unidadeList) {
-                            // filtrar as unidades organizacionais
-                            if ($scope.cadastro.apoio.localList[i].unidadeList[j].selecionado) {
-                                filtro.unidadeOrganizacionalList.push({
-                                    id: $scope.cadastro.apoio.localList[i].unidadeList[j].id
-                                });
-                            } else {
-                                for (k in $scope.cadastro.apoio.localList[i].unidadeList[j].comunidadeList) {
-                                    // filtrar as unidades organizacionais
-                                    if ($scope.cadastro.apoio.localList[i].unidadeList[j].comunidadeList[k].selecionado) {
-                                        filtro.comunidadeList.push({
-                                            id: $scope.cadastro.apoio.localList[i].unidadeList[j].comunidadeList[k].id
-                                        });
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                if ($scope.cadastro.apoio.unidadeOrganizacionalSomenteLeitura && !$scope.cadastro.filtro.unidadeOrganizacionalList.length && !$scope.cadastro.filtro.comunidadeList.length) {
-                    toastr.error('Informe pelo menos uma comunidade', 'Erro ao filtrar');
-                    throw 'Informe pelo menos uma comunidade';
-                }
-            };
-
             $scope.limpar = function(scp) {
                 var e = scp.navegador.estadoAtual();
                 if ('FILTRANDO' === e) {
@@ -607,6 +569,43 @@
             $scope.cadastro.apoio.filtro.elementoId = angular.extend(0, 0, $scope.cadastro.apoio.filtro.elementoId);
 
             $scope.confirmarFiltrarAntes = function(filtro) {
+
+                filtro.empresaList = [];
+                filtro.unidadeOrganizacionalList = [];
+                filtro.comunidadeList = [];
+                var i, j, k;
+                for (i in $scope.cadastro.apoio.localList) {
+                    // filtrar as empressas
+                    if ($scope.cadastro.apoio.localList[i].selecionado) {
+                        filtro.empresaList.push({
+                            id: $scope.cadastro.apoio.localList[i].id,
+                            '@class': 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica'
+                        });
+                    } else {
+                        for (j in $scope.cadastro.apoio.localList[i].unidadeList) {
+                            // filtrar as unidades organizacionais
+                            if ($scope.cadastro.apoio.localList[i].unidadeList[j].selecionado) {
+                                filtro.unidadeOrganizacionalList.push({
+                                    id: $scope.cadastro.apoio.localList[i].unidadeList[j].id
+                                });
+                            } else {
+                                for (k in $scope.cadastro.apoio.localList[i].unidadeList[j].comunidadeList) {
+                                    // filtrar as unidades organizacionais
+                                    if ($scope.cadastro.apoio.localList[i].unidadeList[j].comunidadeList[k].selecionado) {
+                                        filtro.comunidadeList.push({
+                                            id: $scope.cadastro.apoio.localList[i].unidadeList[j].comunidadeList[k].id
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                if ($scope.cadastro.apoio.unidadeOrganizacionalSomenteLeitura && !$scope.cadastro.filtro.unidadeOrganizacionalList.length && !$scope.cadastro.filtro.comunidadeList.length) {
+                    toastr.error('Informe pelo menos uma comunidade', 'Erro ao filtrar');
+                    throw 'Informe pelo menos uma comunidade';
+                }
 
                 if ($scope.cadastro.apoio.filtro.map && $scope.cadastro.apoio.filtro.map.polys && $scope.cadastro.apoio.filtro.map.polys.length) {
                     filtro.areaList = [];

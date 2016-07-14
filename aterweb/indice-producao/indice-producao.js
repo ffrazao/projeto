@@ -110,6 +110,9 @@
                     objeto.unidadeOrganizacional = t.lotacaoAtual;
                 }
                 $scope.cadastro.apoio.producaoUnidadeOrganizacional = true;
+                if ($scope.modalCadastro) {
+                    $scope.cadastro.apoio.producaoUnidadeOrganizacional = false;
+                }
                 // delete $scope.cadastro.apoio.unidadeOrganizacional;
                 // delete $scope.cadastro.apoio.porProdutor;
             };
@@ -720,6 +723,7 @@
             if (modalCadastro) {
                 //$rootScope.abrir($scope);
                 $scope.modalCadastro = true;
+                $scope.cadastro.apoio.producaoUnidadeOrganizacional = false;
                 if (!$scope.cadastro.registro.id) {
                     $scope.incluir($scope, $scope.cadastro.registro);
                 //} else {

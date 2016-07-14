@@ -431,6 +431,13 @@
                     'ativo': false,
                 }, 
                 {
+                    'nome': 'Índice de Produção',
+                    'include': 'pessoa/tab-publico-alvo-indice-producao.html',
+                    'visivel': false,
+                    'indice': indice++,
+                    'ativo': false,
+                }, 
+                {
                     'nome': 'Dados Básicos',
                     'include': 'pessoa/tab-principal.html',
                     'visivel': true,
@@ -443,7 +450,7 @@
                     'visivel': false,
                     'indice': indice++,
                     'ativo': false,
-                }, 
+                }, */
                 {
                     'nome': 'Diagnósticos',
                     'include': 'pessoa/tab-diagnostico.html',
@@ -453,7 +460,7 @@
                     'selecao': function() {
                         $scope.$broadcast ('abaDiagnosticoAtivada');
                     },
-                },*/
+                },
                 {
                     'nome': 'Programas Sociais',
                     'include': 'pessoa/tab-grupo-social.html',
@@ -492,6 +499,7 @@
             };
             $scope.tabVisivelPublicoAlvo = function(visivel) {
                 $scope.tabVisivel('Beneficiário', visivel);
+                $scope.tabVisivel('Índice de Produção', visivel);
                 var outro = $scope.tabVisivel('Colaborador');
                 $scope.tabVisivel('Diagnósticos', visivel || outro);
             };
