@@ -101,12 +101,12 @@ public class ProducaoForma extends EntidadeBase implements _ChavePrimaria<Intege
 
 	public ProducaoForma(ProducaoForma producaoForma) {
 		if (producaoForma.getProducaoFormaComposicaoList() != null) {
-			for (ProducaoFormaComposicao pfc : producaoForma.getProducaoFormaComposicaoList()) {
+			producaoForma.getProducaoFormaComposicaoList().forEach((pfc) -> {
 				if (this.producaoFormaComposicaoList == null) {
 					this.producaoFormaComposicaoList = new ArrayList<ProducaoFormaComposicao>();
 				}
 				this.producaoFormaComposicaoList.add(new ProducaoFormaComposicao(pfc));
-			}
+			});
 		}
 	}
 

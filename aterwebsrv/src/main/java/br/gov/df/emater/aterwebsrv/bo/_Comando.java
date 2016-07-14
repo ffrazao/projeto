@@ -46,7 +46,7 @@ public abstract class _Comando implements Command {
 		if (((_ChavePrimaria) result).getId() == null) {
 			result.setInclusaoUsuario(getUsuario(contexto.getUsuario() == null ? null : contexto.getUsuario().getName()));
 		} else {
-			result.setInclusaoUsuario(getUsuario(result.getInclusaoUsuario() == null ? null : result.getInclusaoUsuario().getUsername()));
+			result.setInclusaoUsuario(getUsuario(result.getInclusaoUsuario() == null ? contexto.getUsuario() == null ? null : contexto.getUsuario().getName() : result.getInclusaoUsuario().getUsername()));
 		}
 		result.setAlteracaoUsuario(getUsuario(contexto.getUsuario() == null ? null : contexto.getUsuario().getName()));
 	}

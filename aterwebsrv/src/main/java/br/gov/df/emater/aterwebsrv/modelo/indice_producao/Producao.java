@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -101,16 +102,11 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer>, _
 		this.propriedadeRural = producao.getPropriedadeRural();
 		this.publicoAlvo = producao.getPublicoAlvo();
 		this.unidadeOrganizacional = producao.getUnidadeOrganizacional();
-
-		if (producao.getProducaoFormaList() != null) {
-
-			for (ProducaoForma producaoForma : producao.getProducaoFormaList()) {
-				ProducaoForma pf = new ProducaoForma(producaoForma);
-				if (this.producaoFormaList == null) {
-					this.producaoFormaList = new ArrayList<ProducaoForma>();
-				}
-				this.producaoFormaList.add(pf);
+		if (!CollectionUtils.isEmpty(producao.getProducaoFormaList())) {
+			if (this.producaoFormaList == null) {
+				this.producaoFormaList = new ArrayList<>();
 			}
+			producao.getProducaoFormaList().forEach((p) -> this.producaoFormaList.add(new ProducaoForma(p)));
 		}
 	}
 

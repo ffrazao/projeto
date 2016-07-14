@@ -91,13 +91,13 @@
                     </div>
                     <div class="col-md-6" title="Unidade Organizacional">
                         <div class="form-group">
-                            <label class="control-label" for="unidadeOrganizacional" ng-if="!cadastro.apoio.porProdutor">Unidade Organizacional</label>
+                            <label class="control-label" for="unidadeOrganizacional" ng-if="cadastro.apoio.producaoUnidadeOrganizacional || !cadastro.apoio.porProdutor">Unidade Organizacional</label>
                             <div class="form-control" ng-if="!cadastro.apoio.producaoUnidadeOrganizacional && !modalCadastro">
                                 {{cadastro.apoio.unidadeOrganizacional.nome}}
                             </div>
-                            <select id="unidadeOrganizacional" name="unidadeOrganizacional" class="form-control" ng-model="cadastro.registro.unidadeOrganizacional" ng-options="item as item.nome for item in cadastro.apoio.unidadeOrganizacionalList | orderBy:'nome' track by item.id" ng-required="true" ng-if="cadastro.apoio.producaoUnidadeOrganizacional && !modalCadastro">
+                            <select id="unidadeOrganizacional" name="unidadeOrganizacional" class="form-control" ng-model="cadastro.registro.unidadeOrganizacional" ng-options="item as item.nome for item in cadastro.apoio.unidadeOrganizacionalList | filter: {'classificacao': 'OP'} | orderBy:'nome' track by item.id" ng-required="true" ng-if="cadastro.apoio.producaoUnidadeOrganizacional && !modalCadastro">
                             </select>
-                            <select id="unidadeOrganizacional" name="unidadeOrganizacional" class="form-control" ng-model="cadastro.apoio.unidadeOrganizacional" ng-options="item as item.nome for item in cadastro.apoio.unidadeOrganizacionalList | orderBy:'nome' track by item.id" ng-required="false" ng-if="modalCadastro && !cadastro.apoio.porProdutor" ng-disabled="cadastro.registro.propriedadeRural.id">
+                            <select id="unidadeOrganizacional" name="unidadeOrganizacional" class="form-control" ng-model="cadastro.apoio.unidadeOrganizacional" ng-options="item as item.nome for item in cadastro.apoio.unidadeOrganizacionalList | filter: {'classificacao': 'OP'} | orderBy:'nome' track by item.id" ng-required="false" ng-if="modalCadastro && !cadastro.apoio.porProdutor" ng-disabled="cadastro.registro.propriedadeRural.id">
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.unidadeOrganizacional.$error.required" ng-if="cadastro.apoio.producaoUnidadeOrganizacional">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>

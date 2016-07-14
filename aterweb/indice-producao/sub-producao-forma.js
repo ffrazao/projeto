@@ -14,7 +14,9 @@ angular.module(pNmModulo).controller(pNmController,
         if (!angular.isObject($scope.cadastro.registro.producaoFormaList)) {
             $scope.cadastro.registro.producaoFormaList = [];
         }
-        $scope.producaoFormaNvg = new FrzNavegadorParams($scope.cadastro.registro.producaoFormaList, 4);
+        if (!$scope.producaoFormaNvg) {
+            $scope.producaoFormaNvg = new FrzNavegadorParams($scope.cadastro.registro.producaoFormaList, 4);
+        }
     };
     if (!$uibModalInstance) { init(); }
 
@@ -285,15 +287,11 @@ angular.module(pNmModulo).controller(pNmController,
             // processar o retorno positivo da modal
             delete conteudo['formula'];
             if (destino) {
-                if (!conteudo['cadastroAcao'] || (conteudo['cadastroAcao'] && conteudo['cadastroAcao'] !== 'I')) {
-                    conteudo['cadastroAcao'] = 'A';
-                }
                 destino = angular.copy(conteudo,destino);
                 if (selecaoId) {
                     $scope.producaoFormaNvg.selecao.items[selecaoId] = destino;
                 }
             } else {
-                conteudo['cadastroAcao'] = 'I';
                 if (!$scope.cadastro.registro.producaoFormaList) {
                     $scope.cadastro.registro.producaoFormaList = [];
                     $scope.producaoFormaNvg.setDados($scope.cadastro.registro.producaoFormaList);
@@ -320,8 +318,8 @@ angular.module(pNmModulo).controller(pNmController,
     // inicio das operaçoes atribuidas ao navagador
     $scope.abrir = function() { $scope.producaoFormaNvg.mudarEstado('ESPECIAL'); };
     $scope.incluir = function() {
-        var item = {};
-        editarItem(null, item);
+        init();
+        editarItem(null, $scope.criarElemento($scope.cadastro.registro, 'producaoFormaList', {}));
     };
     $scope.editar = function() {
         var item = null;
@@ -344,31 +342,17 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.excluir = function() {
         mensagemSrv.confirmacao(false, 'Confirme a exclusão').then(function (conteudo) {
             var i, j;
+            removerCampo($scope.cadastro.registro.producaoFormaList, ['@jsonId']);
             if ($scope.producaoFormaNvg.selecao.tipo === 'U' && $scope.producaoFormaNvg.selecao.item) {
-                for (j = $scope.cadastro.registro.producaoFormaList.length -1; j >= 0; j--) {
-                    if (angular.equals($scope.cadastro.registro.producaoFormaList[j], $scope.producaoFormaNvg.selecao.item)) {
-                        $scope.marcarParaExclusao($scope, 'producaoFormaList', j);
-                        //$scope.cadastro.registro.producaoFormaList.splice(j, 1);
-                        //$scope.cadastro.registro.producaoFormaList[j].cadastroAcao = 'E';
-                    }
-                }
-                $scope.producaoFormaNvg.selecao.item = null;
-                $scope.producaoFormaNvg.selecao.selecionado = false;
+                $scope.excluirElemento($scope, $scope.cadastro.registro, 'producaoFormaList', $scope.producaoFormaNvg.selecao.item);
             } else if ($scope.producaoFormaNvg.selecao.items && $scope.producaoFormaNvg.selecao.items.length) {
-                for (j = $scope.cadastro.registro.producaoFormaList.length-1; j >= 0; j--) {
-                    for (i in $scope.producaoFormaNvg.selecao.items) {
-                        if (angular.equals($scope.cadastro.registro.producaoFormaList[j], $scope.producaoFormaNvg.selecao.items[i])) {
-                            $scope.marcarParaExclusao($scope, 'producaoFormaList', j);
-                            //$scope.cadastro.registro.producaoFormaList.splice(j, 1);
-                            //$scope.cadastro.registro.producaoFormaList[j].cadastroAcao = 'E';
-                            break;
-                        }
-                    }
-                }
-                for (i = $scope.producaoFormaNvg.selecao.items.length -1; i >= 0; i--) {
-                    $scope.producaoFormaNvg.selecao.items.splice(i, 1);
+                for (i in $scope.producaoFormaNvg.selecao.items) {
+                    $scope.excluirElemento($scope, $scope.cadastro.registro, 'producaoFormaList', $scope.producaoFormaNvg.selecao.items[i]);
                 }
             }
+            $scope.producaoFormaNvg.selecao.item = null;
+            $scope.producaoFormaNvg.selecao.items = [];
+            $scope.producaoFormaNvg.selecao.selecionado = false;
         }, function () {
         });
     };

@@ -9,6 +9,7 @@ import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoDao;
+import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoFormaComposicaoDao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoForma;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoFormaComposicao;
@@ -18,6 +19,9 @@ public class VisualizarCmd extends _Comando {
 
 	@Autowired
 	private ProducaoDao dao;
+	
+	@Autowired
+	private ProducaoFormaComposicaoDao producaoFormaComposicaoDao;
 
 	@Autowired
 	private EntityManager em;
@@ -55,6 +59,7 @@ public class VisualizarCmd extends _Comando {
 				}
 				pf.setProducao(null);
 				if (pf.getProducaoFormaComposicaoList() != null) {
+					pf.setProducaoFormaComposicaoList(producaoFormaComposicaoDao.findAllByProducaoForma(pf));
 					for (ProducaoFormaComposicao pfc : pf.getProducaoFormaComposicaoList()) {
 						pfc.setProducaoForma(null);
 						pfc.setFormaProducaoValor(pfc.getFormaProducaoValor().infoBasica());

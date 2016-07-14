@@ -1323,24 +1323,27 @@ var TIMEOUT_TEMPO = 5 * 60;
             };
             $rootScope.visualizar = function(scp, idInf) {
                 var id = null;
-                if ($stateParams.id) {
-                    id = $stateParams.id;
-                } else if (scp.navegador.selecao.tipo === 'U' && scp.navegador.selecao.item) {
-                    if (scp.navegador.selecao.item[0]) {
-                        id = scp.navegador.selecao.item[0];
-                    } else if (scp.navegador.selecao.item.id) {
-                        id = scp.navegador.selecao.item.id;
-                    }
-                } else if (scp.navegador.selecao.tipo === 'M' && scp.navegador.selecao.items) {
-                    if (scp.navegador.selecao.items[scp.navegador.folhaAtual][0]) {
-                        id = scp.navegador.selecao.items[scp.navegador.folhaAtual][0];
-                    } else if (scp.navegador.selecao.items[scp.navegador.folhaAtual].id) {
-                        id = scp.navegador.selecao.items[scp.navegador.folhaAtual].id;
-                    }
-                }
-                if (!id) {
+
+                if (idInf) {
                     id = idInf;
+                } else {
+                    if ($stateParams.id) {
+                        id = $stateParams.id;
+                    } else if (scp.navegador.selecao.tipo === 'U' && scp.navegador.selecao.item) {
+                        if (scp.navegador.selecao.item[0]) {
+                            id = scp.navegador.selecao.item[0];
+                        } else if (scp.navegador.selecao.item.id) {
+                            id = scp.navegador.selecao.item.id;
+                        }
+                    } else if (scp.navegador.selecao.tipo === 'M' && scp.navegador.selecao.items) {
+                        if (scp.navegador.selecao.items[scp.navegador.folhaAtual][0]) {
+                            id = scp.navegador.selecao.items[scp.navegador.folhaAtual][0];
+                        } else if (scp.navegador.selecao.items[scp.navegador.folhaAtual].id) {
+                            id = scp.navegador.selecao.items[scp.navegador.folhaAtual].id;
+                        }
+                    }
                 }
+
                 if (!id) {
                     scp.cadastro.excluidoMap = [];
                     scp.incluir(scp);

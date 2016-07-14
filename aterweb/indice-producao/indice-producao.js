@@ -109,9 +109,7 @@
                 if (t && t.lotacaoAtual) {
                     objeto.unidadeOrganizacional = t.lotacaoAtual;
                 }
-                if (isUndefOrNull($scope.cadastro.apoio.producaoUnidadeOrganizacional)) {
-                    $scope.cadastro.apoio.producaoUnidadeOrganizacional = true;
-                }
+                $scope.cadastro.apoio.producaoUnidadeOrganizacional = true;
                 // delete $scope.cadastro.apoio.unidadeOrganizacional;
                 // delete $scope.cadastro.apoio.porProdutor;
             };
@@ -174,6 +172,7 @@
                         $scope.cadastro.apoio.bemClassificacao = $scope.encontraBemClassificacao(registro.bem.bemClassificacao.id);
                     }, 2000);
                 }
+                $scope.cadastro.apoio.producaoUnidadeOrganizacional = (registro.unidadeOrganizacional && registro.unidadeOrganizacional.id);
                 $scope.cadastro.apoio.unidadeOrganizacional = angular.copy(registro.unidadeOrganizacional);
             };
             $scope.cadastro.apoio.producaoForma = {

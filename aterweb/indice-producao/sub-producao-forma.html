@@ -58,7 +58,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="produtor in cadastro.registro.producaoFormaList | orderBy: 'nome' | pagina: producaoFormaNvg.paginaAtual : producaoFormaNvg.tamanhoPagina | limitTo: producaoFormaNvg.tamanhoPagina" ng-click="producaoFormaNvg.folhaAtual = $index + ((producaoFormaNvg.paginaAtual-1) * producaoFormaNvg.tamanhoPagina)">
+                    <tr ng-repeat="produtor in cadastro.registro.producaoFormaList | orderBy: 'nome' track by produtor.id" ng-click="producaoFormaNvg.folhaAtual = $index + ((producaoFormaNvg.paginaAtual-1) * producaoFormaNvg.tamanhoPagina)">
                         <td width="30px">
                             <input type="radio" ng-show="producaoFormaNvg.selecao.tipo === 'U'" ng-model="producaoFormaNvg.selecao.item" ng-value="produtor"/>
                             <input type="checkbox" ng-show="producaoFormaNvg.selecao.tipo === 'M'" checklist-model="producaoFormaNvg.selecao.items" checklist-value="produtor" ng-click="crudMataClick(scp, $event);"/>

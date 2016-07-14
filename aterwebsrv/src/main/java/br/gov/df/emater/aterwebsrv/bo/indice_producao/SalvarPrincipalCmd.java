@@ -1,11 +1,13 @@
 package br.gov.df.emater.aterwebsrv.bo.indice_producao;
 
+import static br.gov.df.emater.aterwebsrv.bo.indice_producao.IndiceProducaoUtil.getComposicaoValorId;
+
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,13 +18,11 @@ import br.gov.df.emater.aterwebsrv.dao.ater.ComunidadeDao;
 import br.gov.df.emater.aterwebsrv.dao.ater.PropriedadeRuralDao;
 import br.gov.df.emater.aterwebsrv.dao.funcional.UnidadeOrganizacionalDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoDao;
-import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.ater.Comunidade;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoForma;
-import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoFormaComposicao;
 
 @Service("IndiceProducaoSalvarPrincipalCmd")
 public class SalvarPrincipalCmd extends _Comando {
@@ -61,61 +61,48 @@ public class SalvarPrincipalCmd extends _Comando {
 			if (pr.getComunidade() == null) {
 				return false;
 			}
-			Comunidade cm = comunidadeDao.findOne(pr.getComunidade().getId());
-			UnidadeOrganizacional uo = unidadeOrganizacionalDao.findOne(cm.getUnidadeOrganizacional().getId());
-			Producao principal = dao.findOneByAnoAndBemAndUnidadeOrganizacionalAndPublicoAlvoIsNullAndPropriedadeRuralIsNull(producao.getAno(), producao.getBem(), uo);
-			if (principal == null) {
+			Comunidade comunidade = comunidadeDao.findOne(pr.getComunidade().getId());
+			UnidadeOrganizacional unidadeOrganizacional = unidadeOrganizacionalDao.findOne(comunidade.getUnidadeOrganizacional().getId());
+			Producao producaoPrincipal = dao.findOneByAnoAndBemAndUnidadeOrganizacionalAndPublicoAlvoIsNullAndPropriedadeRuralIsNull(producao.getAno(), producao.getBem(), unidadeOrganizacional);
+			if (producaoPrincipal == null) {
 				// se nao existe entao criar com base no registro atual
-				principal = new Producao(producao);
-				principal.setPropriedadeRural(null);
-				principal.setPublicoAlvo(null);
-				principal.setUnidadeOrganizacional(uo);
-
+				producaoPrincipal = new Producao(producao);
+				producaoPrincipal.setUnidadeOrganizacional(unidadeOrganizacional);
+				producaoPrincipal.setPropriedadeRural(null);
+				producaoPrincipal.setPublicoAlvo(null);
 			} else {
 				// se existir, verificar se todas as formas de produção foram
 				// previstas
-				List<ProducaoForma> novo = null;
+				final List<ProducaoForma> producaoFormaNovoList = new ArrayList<>();
 				for (ProducaoForma producaoForma : producao.getProducaoFormaList()) {
 					boolean encontrou = false;
-					String composicao = getComposicao(producaoForma);
-					if (principal.getProducaoFormaList() != null) {
-						for (ProducaoForma producaoFormaPrincipal : principal.getProducaoFormaList()) {
-							if (composicao.equals(getComposicao(producaoFormaPrincipal))) {
+					final String composicao = getComposicaoValorId(producaoForma);
+					if (!CollectionUtils.isEmpty(producaoPrincipal.getProducaoFormaList())) {
+						for (ProducaoForma producaoFormaPrincipal : producaoPrincipal.getProducaoFormaList()) {
+							if (getComposicaoValorId(producaoFormaPrincipal).equals(composicao)) {
 								encontrou = true;
 								break;
 							}
 						}
 					}
 					if (!encontrou) {
-						if (novo == null) {
-							novo = new ArrayList<ProducaoForma>();
-						}
-						novo.add(new ProducaoForma(producaoForma));
+						producaoFormaNovoList.add(new ProducaoForma(producaoForma));
 					}
 				}
 				// se houveram novas formas de produção
-				if (novo != null) {
+				if (!CollectionUtils.isEmpty(producaoFormaNovoList)) {
 					// inserir na producao principal
-					for (ProducaoForma pf : principal.getProducaoFormaList()) {
-						novo.add(pf);
-					}
-					principal.setProducaoFormaList(novo);
+					producaoPrincipal.getProducaoFormaList().forEach((producaoForma)->producaoFormaNovoList.add(producaoForma));
+					producaoPrincipal.setProducaoFormaList(producaoFormaNovoList);
 				}
 			}
-			em.detach(principal);
-			facadeBo.indiceProducaoSalvar(contexto.getUsuario(), principal);
+			em.detach(producaoPrincipal);
+			facadeBo.indiceProducaoSalvar(contexto.getUsuario(), producaoPrincipal);
 		}
+		
+		contexto.setResposta(id);
 
 		return false;
-	}
-
-	private String getComposicao(ProducaoForma producaoForma) {
-		List<Integer> idList = new ArrayList<Integer>();
-		for (ProducaoFormaComposicao composicao : producaoForma.getProducaoFormaComposicaoList()) {
-			idList.add(composicao.getFormaProducaoValor().getId());
-		}
-		Collections.sort(idList);
-		return UtilitarioString.collectionToString(idList);
 	}
 
 }

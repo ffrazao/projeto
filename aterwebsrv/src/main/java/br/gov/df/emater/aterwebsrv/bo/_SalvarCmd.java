@@ -2,6 +2,7 @@ package br.gov.df.emater.aterwebsrv.bo;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,7 +23,7 @@ public abstract class _SalvarCmd extends _Comando {
 		if (CollectionUtils.isEmpty(lista)) {
 			return;
 		}
-		lista.stream().filter(e -> e.getId() != null && ((Integer) e.getId()) < 0).forEach(e -> e.setId(null));
+		lista.stream().filter(e -> e.getId() != null && ((Integer) e.getId()) < 0).collect(Collectors.toList()).forEach(e -> e.setId(null));
 	}
 
 }
