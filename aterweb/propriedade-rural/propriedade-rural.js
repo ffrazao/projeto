@@ -404,11 +404,13 @@
             uiGmapGoogleMapApi.then(function(maps) {
 
                 $scope.cadastro.apoio.form.map = angular.extend({}, {
-                    bounds: {},
                     center: {
                         latitude: -15.732687616157767,
                         longitude: -47.90378594955473,
+                        lat: -15.732687616157767,
+                        lng: -47.90378594955473,
                     },
+                    bounds: {},
                     controle: {},
                     events: {},
                     maps: maps,
@@ -416,6 +418,8 @@
                     options: {
                         disableDefaultUI: false,
                         scrollwheel: true,
+                        mapTypeId: google.maps.MapTypeId.SATELLITE,
+                        label: true,
                     },
                     pan: true,
                     polys: [],
@@ -642,6 +646,8 @@
                     center: {
                         latitude: -15.732687616157767,
                         longitude: -47.90378594955473,
+                        lat: -15.732687616157767,
+                        lng: -47.90378594955473
                     },
                     controle: {},
                     events: {},
@@ -650,6 +656,8 @@
                     options: {
                         disableDefaultUI: false,
                         scrollwheel: true,
+                        mapTypeId: google.maps.MapTypeId.SATELLITE,
+                        label: true,
                     },
                     pan: true,
                     polys: [],

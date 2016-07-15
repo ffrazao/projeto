@@ -79,10 +79,10 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 					sqlTemp.append(" or ");
 				}
 				String n = Util.codigoAtividadeFormatar(nome.getText());
-				if (Util.codigoAtividadeEhValido(n)) {
-					params.add(n);
-					sqlTemp.append(" a.codigo = ?").append(params.size()).append("\n");
-				}
+				// if (Util.codigoAtividadeEhValido(n)) {
+				params.add(n);
+				sqlTemp.append(" a.codigo = ?").append(params.size()).append("\n");
+				// }
 			}
 			sql.append(sqlTemp);
 			sql.append(" )").append("\n");
