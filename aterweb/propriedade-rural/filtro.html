@@ -24,6 +24,20 @@
                         </div>
                     </div>
                 </div>
+                <!-- Multiple Checkboxes (inline) -->
+                <div class="form-group" title="Pendência">
+                    <label class="col-md-4 control-label" for="pendencia">Com pendências do tipo</label>
+                    <div class="col-md-6">
+                        <label class="checkbox-inline" for="pendencia-{{$index}}" ng-repeat="item in cadastro.apoio.pendenciaTipoList">
+                            <input type="checkbox" name="pendencia" id="pendencia-{{$index}}" checklist-model="cadastro.filtro.pendencia" checklist-value="item.codigo">
+                            {{item.descricao}}
+                        </label>
+                    </div>
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.pendencia.$error.required">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        Campo Obrigatório
+                    </div>
+                </div>
                 <!-- Text input-->
                 <div class="form-group" title="Chave Sisater">
                     <label class="col-md-4 control-label" for="nome">
@@ -147,7 +161,7 @@
                             control="cadastro.apoio.filtro.map.controle"
                             center="{latitude: -15.732687616157767, longitude: -47.90378594955473}"
                             pan="cadastro.apoio.filtro.map.pan"
-                            zoom="cadastro.apoio.filtro.map.zoom"
+                            zoom="15"
                             refresh="cadastro.apoio.filtro.map.refresh"
                             options="cadastro.apoio.filtro.map.options"
                             events="cadastro.apoio.filtro.map.events"

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.springframework.util.CollectionUtils;
@@ -23,6 +24,23 @@ public class PropriedadeRuralDaoImpl implements PropriedadeRuralDaoCustom {
 	@PersistenceContext
 	private EntityManager em;
 
+	private String pendenciaQryStr;
+
+	public PropriedadeRuralDaoImpl() {
+		StringBuilder sql;
+
+		sql = new StringBuilder();
+		sql.append("select  (select   count(*)").append("\n");
+		sql.append("         from     ater.propriedade_rural_pendencia p").append("\n");
+		sql.append("         where    p.propriedade_rural_id = ?1").append("\n");
+		sql.append("         and      p.tipo = 'E') as erro,").append("\n");
+		sql.append("        (select   count(*)").append("\n");
+		sql.append("         from     ater.propriedade_rural_pendencia p").append("\n");
+		sql.append("         where    p.propriedade_rural_id = ?1").append("\n");
+		sql.append("         and      p.tipo = 'A') as aviso").append("\n");
+		pendenciaQryStr = sql.toString();
+	}
+
 	@Override
 	public List<Object[]> filtrar(PropriedadeRuralCadFiltroDto filtro) {
 		// objetos de trabalho
@@ -40,8 +58,12 @@ public class PropriedadeRuralDaoImpl implements PropriedadeRuralDaoCustom {
 		sql.append("     , p.areaTotal").append("\n");
 		sql.append("     , p.chaveSisater").append("\n");
 		sql.append("     , vinculados").append("\n");
+		sql.append("     , p.situacao").append("\n");
 		sql.append("from PropriedadeRural p").append("\n");
 		sql.append("left join p.publicoAlvoPropriedadeRuralList vinculados").append("\n");
+		if (!CollectionUtils.isEmpty(filtro.getPendencia())) {
+			sql.append("join p.pendenciaList pendencia").append("\n");
+		}
 		sql.append("where (1 = 1)").append("\n");
 
 		if (!CollectionUtils.isEmpty(filtro.getPessoaVinculadaList())) {
@@ -60,7 +82,7 @@ public class PropriedadeRuralDaoImpl implements PropriedadeRuralDaoCustom {
 			sql.append(sqlTemp);
 			sql.append(" )").append("\n");
 		}
-		
+
 		if (!CollectionUtils.isEmpty(filtro.getChaveSisaterList())) {
 			sql.append("and (").append("\n");
 			sqlTemp = new StringBuilder();
@@ -75,7 +97,6 @@ public class PropriedadeRuralDaoImpl implements PropriedadeRuralDaoCustom {
 			sql.append(sqlTemp);
 			sql.append(" )").append("\n");
 		}
-
 
 		if (!CollectionUtils.isEmpty(filtro.getNomePropriedadeList())) {
 			sql.append("and (").append("\n");
@@ -123,6 +144,11 @@ public class PropriedadeRuralDaoImpl implements PropriedadeRuralDaoCustom {
 				params.add(filtro.getAreaUtil().getAte());
 				sql.append("and p.areaTotal <= ?").append(params.size()).append("\n");
 			}
+		}
+
+		if (!CollectionUtils.isEmpty(filtro.getPendencia())) {
+			params.add(filtro.getPendencia());
+			sql.append("and pendencia.tipo in ?").append(params.size()).append("\n");
 		}
 
 		if (!CollectionUtils.isEmpty(filtro.getOutorga()) && (Confirmacao.values().length != (filtro.getOutorga().size()))) {
@@ -181,16 +207,19 @@ public class PropriedadeRuralDaoImpl implements PropriedadeRuralDaoCustom {
 		}
 		List<Object[]> result = new ArrayList<Object[]>();
 
+		Query pendenciaQry = em.createNativeQuery(pendenciaQryStr);
+
 		Integer id = null;
 		Object[] reg = null;
 		int c = 0;
+		List<Object> pendenciaRes = null;
 		for (Object lin : lista) {
 			Object[] l = (Object[]) lin;
 			if (!((Integer) l[0]).equals(id)) {
 				if (reg != null) {
 					result.add(reg);
 				}
-				reg = new Object[l.length];
+				reg = new Object[l.length + 2];
 				c = 0;
 				reg[c] = l[c];
 				reg[++c] = l[c];
@@ -200,12 +229,19 @@ public class PropriedadeRuralDaoImpl implements PropriedadeRuralDaoCustom {
 				reg[++c] = l[c];
 				reg[++c] = l[c];
 				reg[++c] = new ArrayList<Object[]>();
+				reg[++c] = l[c];
 
 				id = (Integer) reg[0];
+
+				pendenciaQry.setParameter(1, id);
+				pendenciaRes = pendenciaQry.getResultList();
+
+				reg[c + 1] = ((Object[]) pendenciaRes.get(0))[0];
+				reg[c + 2] = ((Object[]) pendenciaRes.get(0))[1];
 			}
-			PublicoAlvoPropriedadeRural papr = (PublicoAlvoPropriedadeRural) l[c];
+			PublicoAlvoPropriedadeRural papr = (PublicoAlvoPropriedadeRural) l[c - 1];
 			if (papr != null) {
-				((List<Object[]>) reg[c]).add(new Object[] { papr.getPublicoAlvo().getPessoa().getNome(), papr.getPublicoAlvo().getId(), papr.getPublicoAlvo().getPessoa().getId() });
+				((List<Object[]>) reg[c - 1]).add(new Object[] { papr.getPublicoAlvo().getPessoa().getNome(), papr.getPublicoAlvo().getId(), papr.getPublicoAlvo().getPessoa().getId() });
 			}
 		}
 		if (reg != null) {

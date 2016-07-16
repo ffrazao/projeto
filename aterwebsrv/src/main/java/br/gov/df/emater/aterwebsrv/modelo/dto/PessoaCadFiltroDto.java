@@ -6,6 +6,7 @@ import java.util.Set;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.ater.Comunidade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.PendenciaTipo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGeracao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
@@ -35,11 +36,15 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 
 	private Set<TagDto> nomeList;
 
+	private Set<PendenciaTipo> pendencia;
+
 	private Set<PessoaGenero> pessoaGenero;
 
 	private Set<PessoaGeracao> pessoaGeracao;
 
 	private Set<PessoaSituacao> pessoaSituacao;
+
+	private Set<PessoaTipo> pessoaTipoList;
 
 	private Set<Confirmacao> publicoAlvoAtepa;
 
@@ -75,8 +80,6 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 
 	private Set<Confirmacao> publicoAlvoSustentabilidade;
 
-	private Set<PessoaTipo> pessoaTipoList;
-
 	private List<UnidadeOrganizacional> unidadeOrganizacionalList;
 
 	public Set<TagDto> getChaveSisaterList() {
@@ -107,6 +110,10 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 		return nomeList;
 	}
 
+	public Set<PendenciaTipo> getPendencia() {
+		return pendencia;
+	}
+
 	public Set<PessoaGenero> getPessoaGenero() {
 		return pessoaGenero;
 	}
@@ -117,6 +124,10 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 
 	public Set<PessoaSituacao> getPessoaSituacao() {
 		return pessoaSituacao;
+	}
+
+	public Set<PessoaTipo> getPessoaTipoList() {
+		return pessoaTipoList;
 	}
 
 	public Set<Confirmacao> getPublicoAlvoAtepa() {
@@ -187,10 +198,6 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 		return publicoAlvoSustentabilidade;
 	}
 
-	public Set<PessoaTipo> getPessoaTipoList() {
-		return pessoaTipoList;
-	}
-
 	public List<UnidadeOrganizacional> getUnidadeOrganizacionalList() {
 		return unidadeOrganizacionalList;
 	}
@@ -223,6 +230,10 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 		this.nomeList = nomeList;
 	}
 
+	public void setPendencia(Set<PendenciaTipo> pendencia) {
+		this.pendencia = pendencia;
+	}
+
 	public void setPessoaGenero(Set<PessoaGenero> pessoaGenero) {
 		this.pessoaGenero = pessoaGenero;
 	}
@@ -233,6 +244,10 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 
 	public void setPessoaSituacao(Set<PessoaSituacao> pessoaSituacao) {
 		this.pessoaSituacao = pessoaSituacao;
+	}
+
+	public void setPessoaTipoList(Set<PessoaTipo> pessoaTipoList) {
+		this.pessoaTipoList = pessoaTipoList;
 	}
 
 	public void setPublicoAlvoAtepa(Set<Confirmacao> publicoAlvoAtepa) {
@@ -301,10 +316,6 @@ public class PessoaCadFiltroDto extends FiltroDtoCustom {
 
 	public void setPublicoAlvoSustentabilidade(Set<Confirmacao> publicoAlvoSustentabilidade) {
 		this.publicoAlvoSustentabilidade = publicoAlvoSustentabilidade;
-	}
-
-	public void setPessoaTipoList(Set<PessoaTipo> pessoaTipoList) {
-		this.pessoaTipoList = pessoaTipoList;
 	}
 
 	public void setUnidadeOrganizacionalList(List<UnidadeOrganizacional> unidadeOrganizacionalList) {

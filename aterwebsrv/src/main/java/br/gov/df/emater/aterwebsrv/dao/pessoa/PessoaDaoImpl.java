@@ -39,6 +39,8 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 
 	private String telefoneQryStr;
 
+	private String pendenciaQryStr;
+
 	public PessoaDaoImpl() {
 		StringBuilder sql;
 
@@ -89,6 +91,17 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 		sql.append("and     pa.categoria = 'E'").append("\n");
 		sql.append("and     pa.segmento = 'F'").append("\n");
 		dapQryStr = sql.toString();
+
+		sql = new StringBuilder();
+		sql.append("select  (select   count(*)").append("\n");
+		sql.append("         from     pessoa.pessoa_pendencia p").append("\n");
+		sql.append("         where    p.pessoa_id = ?1").append("\n");
+		sql.append("         and      p.tipo = 'E') as erro,").append("\n");
+		sql.append("        (select   count(*)").append("\n");
+		sql.append("         from     pessoa.pessoa_pendencia p").append("\n");
+		sql.append("         where    p.pessoa_id = ?1").append("\n");
+		sql.append("         and      p.tipo = 'A') as aviso").append("\n");
+		pendenciaQryStr = sql.toString();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -97,6 +110,7 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 		Query emailQry = em.createNativeQuery(emailQryStr);
 		Query comunidadeQry = em.createNativeQuery(comunidadeQryStr);
 		Query dapQry = em.createNativeQuery(dapQryStr);
+		Query pendenciaQry = em.createNativeQuery(pendenciaQryStr);
 		List<Object[]> result = new ArrayList<Object[]>();
 		for (Object[] linha : lista) {
 			List<Object> registro = new ArrayList<Object>(Arrays.asList(linha));
@@ -105,6 +119,7 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 			emailQry.setParameter(1, registro.get(0));
 			comunidadeQry.setParameter(1, registro.get(10));
 			dapQry.setParameter(1, registro.get(0));
+			pendenciaQry.setParameter(1, registro.get(0));
 
 			registro.add(telefoneQry.getResultList());
 			registro.add(emailQry.getResultList());
@@ -144,6 +159,14 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 					}
 				}
 			}
+			List<Object> pendenciaRes = pendenciaQry.getResultList();
+			if (CollectionUtils.isEmpty(pendenciaRes)) {
+				registro.add(null);
+				registro.add(null);
+			} else {
+				registro.add(((Object[]) pendenciaRes.get(0))[0]);
+				registro.add(((Object[]) pendenciaRes.get(0))[1]);
+			}
 
 			result.add(registro.toArray());
 		}
@@ -171,6 +194,7 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 		sql.append("     , p.genero").append("\n");
 		sql.append("     , alvo.id").append("\n");
 		sql.append("     , p.chaveSisater").append("\n");
+		sql.append("     , p.situacao").append("\n");
 		sql.append("from Pessoa p").append("\n");
 		sql.append("left join p.publicoAlvo alvo").append("\n");
 		sql.append("left join p.perfilArquivo perfil").append("\n");
@@ -181,6 +205,9 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 			if (!CollectionUtils.isEmpty(filtro.getEmpresaList()) || !CollectionUtils.isEmpty(filtro.getUnidadeOrganizacionalList()) || !CollectionUtils.isEmpty(filtro.getComunidadeList())) {
 				sql.append("left join alvo.publicoAlvoPropriedadeRuralList paPropriedadeRural").append("\n");
 			}
+		}
+		if (!CollectionUtils.isEmpty(filtro.getPendencia())) {
+			sql.append("join p.pendenciaList pendencia").append("\n");
 		}
 		sql.append("where (1 = 1)").append("\n");
 		if (filtrarPublicoAlvo(filtro)) {
@@ -280,6 +307,10 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 			// params.add(filtro.getPublicoAlvoPropriedadeUtilizacaoEspacoRural().getId());
 			// sql.append("and paSetor.setor.id =
 			// ?").append(params.size()).append("\n");
+		}
+		if (!CollectionUtils.isEmpty(filtro.getPendencia())) {
+			params.add(filtro.getPendencia());
+			sql.append("and pendencia.tipo in ?").append(params.size()).append("\n");
 		}
 		sql.append("order by p.nome, p.apelidoSigla").append("\n");
 

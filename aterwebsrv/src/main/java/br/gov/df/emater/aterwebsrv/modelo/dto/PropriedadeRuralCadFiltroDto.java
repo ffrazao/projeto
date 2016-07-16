@@ -8,6 +8,7 @@ import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 import br.gov.df.emater.aterwebsrv.modelo.ater.SistemaProducao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.AreaUtil;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.PendenciaTipo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.SituacaoFundiaria;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Area;
@@ -30,6 +31,8 @@ public class PropriedadeRuralCadFiltroDto extends FiltroDtoCustom {
 	private Set<TagDto> nomePropriedadeList;
 
 	private Set<Confirmacao> outorga;
+
+	private Set<PendenciaTipo> pendencia;
 
 	private Set<TagDto> pessoaVinculadaList;
 
@@ -67,6 +70,10 @@ public class PropriedadeRuralCadFiltroDto extends FiltroDtoCustom {
 
 	public Set<Confirmacao> getOutorga() {
 		return outorga;
+	}
+
+	public Set<PendenciaTipo> getPendencia() {
+		return pendencia;
 	}
 
 	public Set<TagDto> getPessoaVinculadaList() {
@@ -115,6 +122,10 @@ public class PropriedadeRuralCadFiltroDto extends FiltroDtoCustom {
 
 	public void setOutorga(Set<Confirmacao> outorga) {
 		this.outorga = outorga;
+	}
+
+	public void setPendencia(Set<PendenciaTipo> pendencia) {
+		this.pendencia = pendencia;
 	}
 
 	public void setPessoaVinculadaList(Set<TagDto> pessoaVinculadaList) {
