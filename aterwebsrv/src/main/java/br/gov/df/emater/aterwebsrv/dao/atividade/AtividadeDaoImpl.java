@@ -104,37 +104,41 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 			params.add(filtro.getAssunto());
 			sqlFiltro.append("and ass.assunto = ?").append(params.size()).append("\n");
 		}
-		if (!StringUtils.isEmpty(filtro.getDemandante())) {
-			sqlFiltro.append("and (").append("\n");
+		
+		if (!CollectionUtils.isEmpty(filtro.getDemandanteList())) {
+			sql.append("and (").append("\n");
 			sqlTemp = new StringBuilder();
-			for (String nome : filtro.getDemandante().split(FiltroDto.SEPARADOR_CAMPO)) {
+			for (TagDto nome : filtro.getDemandanteList()) {
 				if (sqlTemp.length() > 0) {
 					sqlTemp.append(" or ");
 				}
-				params.add(String.format("%%%s%%", nome.trim()));
+				String n = nome.getText().replaceAll("\\s", "%");
+				params.add(String.format("%%%s%%", n));
 				sqlTemp.append(" (deman.pessoa.nome like ?").append(params.size());
-				params.add(String.format("%%%s%%", nome.trim()));
+				params.add(String.format("%%%s%%", n));
 				sqlTemp.append(" or deman.pessoa.apelidoSigla like ?").append(params.size()).append(")").append("\n");
 			}
-			sqlFiltro.append(sqlTemp);
-			sqlFiltro.append(" )").append("\n");
+			sql.append(sqlTemp);
+			sql.append(" )").append("\n");
 		}
-		if (!StringUtils.isEmpty(filtro.getExecutor())) {
-			sqlFiltro.append("and (").append("\n");
+
+		if (!CollectionUtils.isEmpty(filtro.getExecutorList())) {
+			sql.append("and (").append("\n");
 			sqlTemp = new StringBuilder();
-			for (String nome : filtro.getExecutor().split(FiltroDto.SEPARADOR_CAMPO)) {
+			for (TagDto nome : filtro.getExecutorList()) {
 				if (sqlTemp.length() > 0) {
 					sqlTemp.append(" or ");
 				}
-				params.add(String.format("%%%s%%", nome.trim()));
+				String n = nome.getText().replaceAll("\\s", "%");
+				params.add(String.format("%%%s%%", n));
 				sqlTemp.append(" (exec.pessoa.nome like ?").append(params.size());
-				params.add(String.format("%%%s%%", nome.trim()));
+				params.add(String.format("%%%s%%", n));
 				sqlTemp.append(" or exec.pessoa.apelidoSigla like ?").append(params.size()).append(")").append("\n");
 			}
-			sqlFiltro.append(sqlTemp);
-			sqlFiltro.append(" )").append("\n");
+			sql.append(sqlTemp);
+			sql.append(" )").append("\n");
 		}
-
+		
 		// filtro de beneficiario
 		boolean benef = false;
 		if (!CollectionUtils.isEmpty(filtro.getSegmento()) && (PublicoAlvoSegmento.values().length != (filtro.getSegmento().size()))) {

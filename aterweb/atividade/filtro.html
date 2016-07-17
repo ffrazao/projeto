@@ -9,7 +9,7 @@
                         Demandante
                     </label>
                     <div class="col-md-6">
-                        <input type="text" class="form-control" id="demandante" name="demandante" ng-model="cadastro.filtro.demandante">
+                        <tags-input id="demandanteList" name="demandanteList" ng-model="cadastro.filtro.demandanteList" placeholder="Digite o nome, ou parte dele, e tecle enter" replace-spaces-with-dashes="false"></tags-input>
                         <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.demandante.$error.required">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             Campo Obrigatório
@@ -21,7 +21,7 @@
                         Executor
                     </label>
                     <div class="col-md-6">
-                        <input type="text" class="form-control" id="executor" name="executor" ng-model="cadastro.filtro.executor">
+                        <tags-input id="executorList" name="executorList" ng-model="cadastro.filtro.executorList" placeholder="Digite o nome, ou parte dele, e tecle enter" replace-spaces-with-dashes="false"></tags-input>
                         <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.executor.$error.required">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             Campo Obrigatório
@@ -42,7 +42,7 @@
                 </div>
                 <div class="form-group" title="Período">
                     <label class="col-md-4 control-label" for="inicio">
-                        Período
+                        Período entre
                     </label>
                     <div class="col-md-4">
                         <div class="row">
