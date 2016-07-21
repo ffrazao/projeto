@@ -1,0 +1,173 @@
+<div>
+    <div class="col-sm-9" style="padding-left: 2px; padding-right: 2px;">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <frz-navegador
+                    ng-model="receitaDespesaNvg" exibe-nome-botao="false"
+                    dados="cadastro.registro.projetoCreditoRural[lista]"
+                    acoes-especiais="acoesEspeciais"
+                    on-abrir = "abrir()"
+                    on-agir = "agir()"
+                    on-editar = "editar()"
+                    on-especial = "especial()"
+                    on-excluir = "excluir()"
+                    on-filtrar = "filtrar()"
+                    on-incluir = "incluir()"
+                    on-listar = "listar()"
+                    on-navegar-primeiro = "navegarPrimeiro()"
+                    on-navegar-anterior = "navegarAnterior()"
+                    on-navegar-proximo = "navegarPosterior()"
+                    on-navegar-ultimo = "navegarUltimo()"
+                    on-proxima-pagina="proximaPagina()"
+                    on-ultima-pagina="ultimaPagina()"
+                    ></frz-navegador>
+            </div>
+            <div class="painel-body"  ng-hide="cadastro.registro.projetoCreditoRural[lista].length">
+                <div class="alert alert-warning" style="margin: 0px;" role="alert">
+                    <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                    Nenhum registro localizado!
+                </div>
+            </div>
+            <div class="table-responsive" ng-show="cadastro.registro.projetoCreditoRural[lista].length > 0">
+                <ng-form name="receitaDespesaListFrm">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th><frz-seletor ng-model="receitaDespesaNvg" dados="cadastro.registro.projetoCreditoRural[lista]"></frz-seletor></th>
+                                <th>#</th>
+                                <th>Ano</th>
+                                <th>Descrição</th>
+                                <th>Quantidade</th>
+                                <th>Unidade</th>
+                                <th>Valor Unitário</th>
+                                <th>Valor Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="reg in cadastro.registro.projetoCreditoRural[lista] | orderBy: ['ano', 'descricao'] track by reg.id">
+                                <td>
+                                    <input type="radio" ng-show="receitaDespesaNvg.selecao.tipo === 'U'" ng-model="receitaDespesaNvg.selecao.item" ng-value="reg"/>
+                                    <input type="checkbox" ng-show="receitaDespesaNvg.selecao.tipo === 'M'" checklist-model="receitaDespesaNvg.selecao.items" checklist-value="reg"/>
+                                </td>
+                                <td>
+                                    {{$index + 1 + ((receitaDespesaNvg.paginaAtual-1) * receitaDespesaNvg.tamanhoPagina)}}
+                                </td>
+                                <td width="100">
+                                    <select class="form-control input-sm" id="ano{{$index}}" name="ano{{$index}}" ng-model="reg.ano" ng-required="true" ng-options="item.codigo as item.descricao for item in cadastro.apoio.anoList">
+                                    </select>
+                                    <div class="label label-danger" ng-show="navegador.submetido && receitaDespesaListFrm['ano' + $index].$error.required">
+                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                        Campo Obrigatório
+                                    </div>
+                                </td>
+                                <td>
+                                    <input class="form-control input-sm" id="descricao{{$index}}" name="descricao{{$index}}" ng-model="reg.descricao" ng-required="true" ng-model-options="{ updateOn: 'blur'}">
+                                    <div class="label label-danger" ng-show="navegador.submetido && receitaDespesaListFrm['descricao' + $index].$error.required">
+                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                        Campo Obrigatório
+                                    </div>
+                                </td>
+                                <td>
+                                    <input class="form-control input-sm text-right" id="quantidade{{$index}}" name="quantidade{{$index}}" ng-model="reg.quantidade" ui-number-mask="3" ng-required="true">
+                                    <div class="label label-danger" ng-show="navegador.submetido && receitaDespesaListFrm['quantidade' + $index].$error.required">
+                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                        Campo Obrigatório
+                                    </div>
+                                </td>
+                                <td>
+                                    <input class="form-control input-sm" id="unidade{{$index}}" name="unidade{{$index}}" ng-model="reg.unidade" ng-required="true">
+                                    <div class="label label-danger" ng-show="navegador.submetido && receitaDespesaListFrm['unidade' + $index].$error.required">
+                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                        Campo Obrigatório
+                                    </div>
+                                </td>
+                                <td>
+                                    <input class="form-control input-sm text-right" id="valorUnitario{{$index}}" name="valorUnitario{{$index}}" ng-model="reg.valorUnitario" ui-number-mask="2" ng-required="true">
+                                    <div class="label label-danger" ng-show="navegador.submetido && receitaDespesaListFrm['valorUnitario' + $index].$error.required">
+                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                        Campo Obrigatório
+                                    </div>
+                                </td>
+                                <td>
+                                    <input class="form-control input-sm text-right" id="valorTotal{{$index}}" name="valorTotal{{$index}}" ng-model="reg.valorTotal" ui-number-mask="2" ng-required="true" ng-readonly="true">
+                                    <div class="label label-danger" ng-show="navegador.submetido && receitaDespesaListFrm['valorTotal' + $index].$error.required">
+                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                        Campo Obrigatório
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+                </ng-form>
+            </div>
+            <div class="panel-footer" ng-show="cadastro.registro.projetoCreditoRural[lista].length">
+                <div class="row" style="padding: 2px;">
+                    <div class="col-sm-6 text-right">
+                        <label class="control-label">&nbsp;</label>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label" for="{{lista}}">Valor Bruto Total</label>
+                            <input type="text" class="form-control text-right" id="{{lista}}" name="{{lista}}" ng-readonly="true" ng-model="cadastro.apoio.financiamento[lista]['valorTotal']" ui-number-mask="2">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3" style="padding-left: 2px; padding-right: 2px;">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Totalizadores
+            </div>
+            <div class="painel-body" ng-hide="cadastro.apoio.financiamento[lista]['anoList'].length">
+                <div class="alert alert-warning" style="margin: 0px;" role="alert">
+                    <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                    Nenhum registro localizado!
+                </div>
+            </div>
+            <div class="table-responsive" ng-show="cadastro.apoio.financiamento[lista]['anoList'].length > 0">
+                <ng-form name="receitaDespesaListFrm">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Ano</th>
+                                <th>Valor Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="reg in cadastro.apoio.financiamento[lista]['anoList'] | orderBy: ['ano'] track by reg.ano">
+                                <td>
+                                    {{$index + 1 + ((receitaDespesaNvg.paginaAtual-1) * receitaDespesaNvg.tamanhoPagina)}}
+                                </td>
+                                <td>
+                                    {{UtilSrv.indiceDePorCampo(cadastro.apoio.anoList, reg.ano, 'codigo').descricao}}
+                                </td>
+                                <td class="text-right">
+                                    {{reg.valorTotal | number: 2}}
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+                </ng-form>
+            </div>
+            <div class="panel-footer">
+                <table class="table table-striped" ng-show="cadastro.apoio.financiamento[lista]['anoList'].length > 0">
+                    <tr class="warning" ng-class="{azul: lista === 'receitaList', vermelho: lista === 'despesaList'}">
+                        <th>Média Mensal</th>
+                        <td class="text-right">{{(cadastro.apoio.financiamento[lista]['valorTotal'] / cadastro.apoio.financiamento[lista]['anoList'].length) / 12 | number: 2}}</td>
+                    </tr>
+                    <tr class="warning" ng-class="{azul: lista === 'receitaList', vermelho: lista === 'despesaList'}">
+                        <th>Média Anual</th>
+                        <td class="text-right">{{(cadastro.apoio.financiamento[lista]['valorTotal'] / cadastro.apoio.financiamento[lista]['anoList'].length) | number: 2}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,141 @@
+<div class="panel panel-default">
+    <div class="panel-heading container-fluid">
+        <frz-navegador
+            ng-model="financiamentoNvg" exibe-nome-botao="false"
+            dados="cadastro.registro.projetoCreditoRural[lista]"
+            acoes-especiais="acoesEspeciais"
+            on-abrir = "abrir()"
+            on-agir = "agir()"
+            on-editar = "editar()"
+            on-especial = "especial()"
+            on-excluir = "excluir()"
+            on-filtrar = "filtrar()"
+            on-incluir = "incluir()"
+            on-listar = "listar()"
+            on-navegar-primeiro = "navegarPrimeiro()"
+            on-navegar-anterior = "navegarAnterior()"
+            on-navegar-proximo = "navegarPosterior()"
+            on-navegar-ultimo = "navegarUltimo()"
+            on-proxima-pagina="proximaPagina()"
+            on-ultima-pagina="ultimaPagina()"
+            ></frz-navegador>
+    </div>
+    <div class="painel-body"  ng-hide="cadastro.registro.projetoCreditoRural[lista].length">
+        <div class="alert alert-warning" style="margin: 0px;" role="alert">
+            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+            Nenhum registro localizado!
+        </div>
+    </div>
+    <div class="table-responsive" ng-show="cadastro.registro.projetoCreditoRural[lista].length > 0">
+        <ng-form name="financiamentoListFrm">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th><frz-seletor ng-model="financiamentoNvg" dados="cadastro.registro.projetoCreditoRural[lista]"></frz-seletor></th>
+                        <th>#</th>
+                        <th>Descrição</th>
+                        <th>Quantidade</th>
+                        <th>Unidade</th>
+                        <th>Valor Unitário</th>
+                        <th>Valor Orçado</th>
+                        <th>Valor Próprio</th>
+                        <th>% Próprio</th>
+                        <th>Valor Financiado</th>
+                        <th>Época Liberação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="reg in cadastro.registro.projetoCreditoRural[lista] | orderBy: ['descricao'] track by reg.id">
+                        <td>
+                            <input type="radio" ng-show="financiamentoNvg.selecao.tipo === 'U'" ng-model="financiamentoNvg.selecao.item" ng-value="reg"/>
+                            <input type="checkbox" ng-show="financiamentoNvg.selecao.tipo === 'M'" checklist-model="financiamentoNvg.selecao.items" checklist-value="reg"/>
+                        </td>
+                        <td>
+                            {{$index + 1 + ((financiamentoNvg.paginaAtual-1) * financiamentoNvg.tamanhoPagina)}}
+                        </td>
+                        <td>
+                            <input class="form-control input-sm" id="descricao{{$index}}" name="descricao{{$index}}" ng-model="reg.descricao" ng-required="true" ng-model-options="{ updateOn: 'blur'}">
+                            <div class="label label-danger" ng-show="navegador.submetido && financiamentoListFrm['descricao' + $index].$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                        <td>
+                            <input class="form-control input-sm text-right" id="quantidade{{$index}}" name="quantidade{{$index}}" ng-model="reg.quantidade" ui-number-mask="3" ng-required="true">
+                            <div class="label label-danger" ng-show="navegador.submetido && financiamentoListFrm['quantidade' + $index].$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                        <td>
+                            <input class="form-control input-sm" id="unidade{{$index}}" name="unidade{{$index}}" ng-model="reg.unidade" ng-required="true">
+                            <div class="label label-danger" ng-show="navegador.submetido && financiamentoListFrm['unidade' + $index].$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                        <td>
+                            <input class="form-control input-sm text-right" id="valorUnitario{{$index}}" name="valorUnitario{{$index}}" ng-model="reg.valorUnitario" ui-number-mask="2" ng-required="true">
+                            <div class="label label-danger" ng-show="navegador.submetido && financiamentoListFrm['valorUnitario' + $index].$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                        <td>
+                            <input class="form-control input-sm text-right" id="valorOrc{{$index}}" name="valorOrc{{$index}}" ng-model="reg.valorOrc" ui-number-mask="2" ng-required="true" ng-readonly="true">
+                            <div class="label label-danger" ng-show="navegador.submetido && financiamentoListFrm['valorOrc' + $index].$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                        <td>
+                            <input class="form-control input-sm text-right" id="valorProprio{{$index}}" name="valorProprio{{$index}}" ng-model="reg.valorProprio" ui-number-mask="2" ng-required="true" ng-readonly="!reg.valorOrc">
+                            <div class="label label-danger" ng-show="navegador.submetido && financiamentoListFrm['valorProprio' + $index].$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                        <td>
+                            <input class="form-control input-sm text-right" id="percentualProprio{{$index}}" name="percentualProprio{{$index}}" ng-model="reg.percentualProprio" ui-number-mask="3" ng-required="true" ng-readonly="!reg.valorOrc">
+                            <div class="label label-danger" ng-show="navegador.submetido && financiamentoListFrm['percentualProprio' + $index].$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                        <td>
+                            <input class="form-control input-sm text-right" id="valorFinanciado{{$index}}" name="valorFinanciado{{$index}}" ng-model="reg.valorFinanciado" ui-number-mask="2" ng-required="true" ng-readonly="true">
+                            <div class="label label-danger" ng-show="navegador.submetido && financiamentoListFrm['valorFinanciado' + $index].$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                        <td>
+                            <input class="form-control input-sm" id="epocaLiberacao{{$index}}" name="epocaLiberacao{{$index}}" ng-model="reg.epocaLiberacao" ng-required="true">
+                            <div class="label label-danger" ng-show="navegador.submetido && financiamentoListFrm['epocaLiberacao' + $index].$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+        </ng-form>
+    </div>
+    <div class="panel-footer">
+        <div class="container-fluid" ng-show="cadastro.registro.projetoCreditoRural[lista].length">
+            <div class="row">
+                <div class="col-sm-3 text-right">
+                    <label class="control-label">Totais</label>
+                </div>
+                <div class="col-sm-3" ng-repeat="idx in [{codigo: 'valorOrc', descricao: 'Valor Orçado'},{codigo: 'valorProprio', descricao: 'Valor Próprio'},{codigo: 'valorFinanciado', descricao: 'Valor Financiado'}]">
+                    <div class="form-group">
+                        <label class="control-label" for="{{lista}}{{idx.codigo}}">{{idx.descricao}}</label>
+                        <input type="text" class="form-control text-right" id="{{lista}}{{idx.codigo}}" name="{{lista}}{{idx.codigo}}" ng-readonly="true" ng-model="cadastro.apoio.financiamento[lista][idx.codigo + 'Total']" ui-number-mask="2">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

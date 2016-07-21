@@ -1,0 +1,89 @@
+<div class="panel panel-default">
+    <div class="panel-heading container-fluid">
+        <frz-navegador
+            ng-model="parecerTecnicoNvg" exibe-nome-botao="false"
+            dados="cadastro.registro.projetoCreditoRural.parecerTecnicoList"
+            acoes-especiais="acoesEspeciais"
+            on-abrir = "abrir()"
+            on-agir = "agir()"
+            on-editar = "editar()"
+            on-especial = "especial()"
+            on-excluir = "excluir()"
+            on-filtrar = "filtrar()"
+            on-incluir = "incluir()"
+            on-listar = "listar()"
+            on-navegar-primeiro = "navegarPrimeiro()"
+            on-navegar-anterior = "navegarAnterior()"
+            on-navegar-proximo = "navegarPosterior()"
+            on-navegar-ultimo = "navegarUltimo()"
+            on-proxima-pagina="proximaPagina()"
+            on-ultima-pagina="ultimaPagina()"
+            ></frz-navegador>
+    </div>
+    <div class="painel-body"  ng-hide="cadastro.registro.projetoCreditoRural.parecerTecnicoList.length">
+        <div class="alert alert-warning" style="margin: 0px;" role="alert">
+            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+            Nenhum registro localizado!
+        </div>
+    </div>
+    <div class="table-responsive" ng-show="cadastro.registro.projetoCreditoRural.parecerTecnicoList.length > 0">
+        <ng-form name="parecerTecnicoListFrm">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th><frz-seletor ng-model="parecerTecnicoNvg" dados="cadastro.registro.projetoCreditoRural.parecerTecnicoList"></frz-seletor></th>
+                        <th>#</th>
+                        <th>Data</th>
+                        <th>Modelo</th>
+                        <th>Responsável</th>
+                        <th>Parecer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="reg in cadastro.registro.projetoCreditoRural.parecerTecnicoList | orderBy: ['data', 'codigo'] track by reg.id">
+                        <td>
+                            <input type="radio" ng-show="parecerTecnicoNvg.selecao.tipo === 'U'" ng-model="parecerTecnicoNvg.selecao.item" ng-value="reg"/>
+                            <input type="checkbox" ng-show="parecerTecnicoNvg.selecao.tipo === 'M'" checklist-model="parecerTecnicoNvg.selecao.items" checklist-value="reg"/>
+                        </td>
+                        <td>
+                            {{$index + 1 + ((parecerTecnicoNvg.paginaAtual-1) * parecerTecnicoNvg.tamanhoPagina)}}
+                        </td>
+                        <td>
+                            <input class="form-control input-sm" id="data{{$index}}" name="data{{$index}}" ng-model="reg.data" ui-date-mask ng-required="true">
+                            <div class="label label-danger" ng-show="navegador.submetido && parecerTecnicoListFrm['data' + $index].$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                            <div class="label label-danger" ng-show="navegador.submetido && parecerTecnicoListFrm['data' + $index].$error.date">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Data Inválida!
+                            </div>
+                        </td>
+                        <td>
+                            <select class="form-control input-sm" id="codigo{{$index}}" name="codigo{{$index}}" ng-model="reg.codigo" ng-required="true">
+                            </select>
+                            <div class="label label-danger" ng-show="navegador.submetido && parecerTecnicoListFrm['codigo' + $index].$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                        <td>
+                            {{reg.usuario.nome}}
+                        </td>
+                        <td>
+                            <textarea class="form-control input-sm" id="parecer{{$index}}" name="parecer{{$index}}" ng-model="reg.parecer" ng-required="true"></textarea>
+                            <div class="label label-danger" ng-show="navegador.submetido && parecerTecnicoListFrm['parecer' + $index].$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+        </ng-form>
+    </div>
+    <div class="panel-footer">
+    </div>
+</div>

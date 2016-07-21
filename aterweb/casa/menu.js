@@ -116,6 +116,12 @@
                         link: 'login',
                         funcionalidade: 'AGENDA',
                         visivel: false,
+                    },
+                    {
+                        name: 'Projeto de Crédito Rural',
+                        link: 'p.projetoCreditoRural.filtro',
+                        funcionalidade: 'PROJETO_CREDITO_RURAL',
+                        visivel: false,
                     }
                 ]
             },

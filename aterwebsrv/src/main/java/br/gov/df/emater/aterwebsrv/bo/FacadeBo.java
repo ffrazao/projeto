@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import br.gov.df.emater.aterwebsrv.dao.sistema.LogAcaoDao;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.Atividade;
+import br.gov.df.emater.aterwebsrv.modelo.credito_rural.ProjetoCreditoRural;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.ArquivoTipo;
 import br.gov.df.emater.aterwebsrv.modelo.dto.AtividadeCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.BemClassificacaoCadFiltroDto;
@@ -33,6 +34,8 @@ import br.gov.df.emater.aterwebsrv.modelo.dto.IndiceProducaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.LogAcaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.PerfilCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.PessoaCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.modelo.dto.ProjetoCreditoRuralCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.modelo.dto.ProjetoCreditoRuralCronogramaDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.PropriedadeRuralCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.PublicoAlvoPropriedadeRuralCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.UnidadeOrganizacionalCadFiltroDto;
@@ -358,12 +361,12 @@ public class FacadeBo implements BeanFactoryAware {
 	public _Contexto pessoaExcluir(Principal usuario, Integer id) throws Exception {
 		return this._executar(usuario, "PessoaExcluirCh", id);
 	}
-	
+
 	@Transactional(readOnly = true)
 	public _Contexto pessoaFiltroExecutar(Principal usuario, PessoaCadFiltroDto filtro) throws Exception {
 		return this._executar(usuario, "PessoaFiltroExecutarCh", filtro);
 	}
-	
+
 	@Transactional(readOnly = true)
 	public _Contexto pessoaFiltroNovo(Principal usuario) throws Exception {
 		return this._executar(usuario, "PessoaFiltroNovoCmd");
@@ -382,6 +385,41 @@ public class FacadeBo implements BeanFactoryAware {
 	@Transactional(readOnly = true)
 	public _Contexto pessoaVisualizar(Principal usuario, Integer id) throws Exception {
 		return this._executar(usuario, "PessoaVisualizarCh", id);
+	}
+
+	@Transactional
+	public _Contexto projetoCreditoRuralExcluir(Principal usuario, ProjetoCreditoRural projetoCredito) throws Exception {
+		return this._executar(usuario, "ProjetoCreditoExcluirCh", projetoCredito);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto projetoCreditoRuralFiltroExecutar(Principal usuario, ProjetoCreditoRuralCadFiltroDto filtro) throws Exception {
+		return this._executar(usuario, "ProjetoCreditoFiltroExecutarCh", filtro);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto projetoCreditoRuralFiltroNovo(Principal usuario) throws Exception {
+		return this._executar(usuario, "ProjetoCreditoFiltroNovoCmd");
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto projetoCreditoRuralNovo(Principal usuario, ProjetoCreditoRural projetoCredito) throws Exception {
+		return this._executar(usuario, "ProjetoCreditoNovoCh", projetoCredito);
+	}
+
+	@Transactional
+	public _Contexto projetoCreditoRuralCalcularCronograma(Principal usuario, ProjetoCreditoRuralCronogramaDto projetoCredito) throws Exception {
+		return this._executar(usuario, "ProjetoCreditoRuralCalcularCronogramaCh", projetoCredito);
+	}
+
+	@Transactional
+	public _Contexto projetoCreditoRuralSalvar(Principal usuario, ProjetoCreditoRural projetoCredito) throws Exception {
+		return this._executar(usuario, "ProjetoCreditoSalvarCh", projetoCredito);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto projetoCreditoRuralVisualizar(Principal usuario, Integer id) throws Exception {
+		return this._executar(usuario, "ProjetoCreditoVisualizarCh", id);
 	}
 
 	@Transactional

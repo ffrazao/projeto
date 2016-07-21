@@ -1,0 +1,16 @@
+<div ng-controller="ProjetoCreditoRuralCronogramaCtrl">
+    <uib-tabset>
+        <uib-tab>
+            <uib-tab-heading>
+                1 Cronograma de Reembolso do Investimento<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            </uib-tab-heading>
+            <ng-include src="'projeto-credito-rural/sub-cronograma.html'" ng-controller="ProjetoCreditoRuralCronogramaInvestimentoCtrl"></ng-include>
+        </uib-tab>
+        <uib-tab>
+            <uib-tab-heading>
+                2 Cronograma de Reembolso do Custeio<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            </uib-tab-heading>
+            <ng-include src="'projeto-credito-rural/sub-cronograma.html'" ng-controller="ProjetoCreditoRuralCronogramaCusteioCtrl"></ng-include>
+        </uib-tab>
+    </uib-tabset>
+</div>

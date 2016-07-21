@@ -10,18 +10,23 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.AssuntoCodigo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 
 @Entity
 @Table(name = "assunto", schema = EntidadeBase.ATIVIDADE_SCHEMA)
-public class Assunto extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class Assunto extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<Assunto> {
 
 	private static final long serialVersionUID = 1L;
 
 	@Enumerated(EnumType.STRING)
 	private Confirmacao ativo;
-	
+
+	@Enumerated(EnumType.STRING)
+	private AssuntoCodigo codigo;
+
 	private String finalidade;
 
 	@Id
@@ -44,6 +49,13 @@ public class Assunto extends EntidadeBase implements _ChavePrimaria<Integer> {
 		setNome(nome);
 	}
 
+	public Assunto(Integer id, String nome, AssuntoCodigo codigo, Confirmacao ativo, String finalidade) {
+		this(id, nome);
+		setCodigo(codigo);
+		setAtivo(ativo);
+		setFinalidade(finalidade);
+	}
+
 	public Assunto(Integer id, String nome, String finalidade) {
 		this.setId(id);
 		this.setNome(nome);
@@ -52,6 +64,10 @@ public class Assunto extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	public Confirmacao getAtivo() {
 		return ativo;
+	}
+
+	public AssuntoCodigo getCodigo() {
+		return codigo;
 	}
 
 	public String getFinalidade() {
@@ -67,12 +83,17 @@ public class Assunto extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return nome;
 	}
 
+	@Override
 	public Assunto infoBasica() {
-		return new Assunto(getId(), getNome(), getFinalidade());
+		return new Assunto(getId(), getNome(), getCodigo(), getAtivo(), getFinalidade());
 	}
 
 	public void setAtivo(Confirmacao ativo) {
 		this.ativo = ativo;
+	}
+
+	public void setCodigo(AssuntoCodigo codigo) {
+		this.codigo = codigo;
 	}
 
 	public void setFinalidade(String finalidade) {

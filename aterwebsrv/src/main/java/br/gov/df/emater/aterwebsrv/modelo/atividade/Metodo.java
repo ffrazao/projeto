@@ -10,17 +10,22 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.MetodoCodigo;
 
 @Entity
 @Table(name = "metodo", schema = EntidadeBase.ATIVIDADE_SCHEMA)
-public class Metodo extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class Metodo extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<Metodo> {
 
 	private static final long serialVersionUID = 1L;
 
 	@Enumerated(EnumType.STRING)
 	private Confirmacao ativo;
+
+	@Enumerated(EnumType.STRING)
+	private MetodoCodigo codigo;
 
 	private String finalidade;
 
@@ -44,8 +49,19 @@ public class Metodo extends EntidadeBase implements _ChavePrimaria<Integer> {
 		setNome(nome);
 	}
 
+	public Metodo(Integer id, String nome, MetodoCodigo codigo, Confirmacao ativo, String finalidade) {
+		this(id, nome);
+		setCodigo(codigo);
+		setAtivo(ativo);
+		setFinalidade(finalidade);
+	}
+
 	public Confirmacao getAtivo() {
 		return ativo;
+	}
+
+	public MetodoCodigo getCodigo() {
+		return codigo;
 	}
 
 	public String getFinalidade() {
@@ -61,8 +77,17 @@ public class Metodo extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return nome;
 	}
 
+	@Override
+	public Metodo infoBasica() {
+		return new Metodo(getId(), getNome(), getCodigo(), getAtivo(), getFinalidade());
+	}
+
 	public void setAtivo(Confirmacao ativo) {
 		this.ativo = ativo;
+	}
+
+	public void setCodigo(MetodoCodigo codigo) {
+		this.codigo = codigo;
 	}
 
 	public void setFinalidade(String finalidade) {

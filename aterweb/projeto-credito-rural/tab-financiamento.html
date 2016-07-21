@@ -1,0 +1,115 @@
+<div ng-controller="ProjetoCreditoRuralFinanciamentoCtrl">
+    <div class="row">
+        <div class="form-group col-sm-12">
+            <label class="control-label">Investimento</label>
+            <ng-include src="'projeto-credito-rural/sub-financiamento.html'" ng-controller="ProjetoCreditoRuralInvestimentoCtrl"></ng-include>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-sm-12">
+            <label class="control-label">Custeio</label>
+            <ng-include src="'projeto-credito-rural/sub-financiamento.html'" ng-controller="ProjetoCreditoRuralCusteioCtrl"></ng-include>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 text-right">
+            <label class="control-label">Totais das Inversões (Investimento + Custeio)</label>
+        </div>
+        <div class="col-sm-3" ng-repeat="idx in [{codigo: 'valorOrc', descricao: 'Valor Orçado'},{codigo: 'valorProprio', descricao: 'Valor Próprio'},{codigo: 'valorFinanciado', descricao: 'Valor Financiado'}]">
+            <div class="form-group">
+                <label class="control-label" for="{{idx.codigo}}">{{idx.descricao}}</label>
+                <div type="text" class="form-control text-right">
+                    {{cadastro.apoio.financiamento[idx.codigo + 'Total'] | number: 2}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped">
+                    <tbody>
+                        <tr>
+                            <td>
+                                Total das inversões (investimento+custeio)
+                            </td>
+                            <td>
+                                <div type="text" class="form-control text-right">
+                                    {{cadastro.apoio.financiamento['valorFinanciadoTotal'] | number: 2}}
+                                </div>
+                            </td>
+                            <td>
+                                Receita Líquida Anual
+                            </td>
+                            <td>
+                                <div type="text" class="form-control text-right">
+                                    {{cadastro.apoio.financiamento.rendimentoLiquidoTotal | number: 2}}
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Recursos próprios
+                            </td>
+                            <td>
+                                <div type="text" class="form-control text-right">
+                                    {{cadastro.apoio.financiamento['valorProprioTotal'] | number: 2}}
+                                </div>
+                            </td>
+                            <td>
+                                Receita Líquida Mensal
+                            </td>
+                            <td>
+                                <div type="text" class="form-control text-right">
+                                    {{cadastro.apoio.financiamento.rendimentoLiquidoTotal / 12 | number: 2}}
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Total Anual (Fontes de recursos)
+                            </td>
+                            <td>
+                                <div type="text" class="form-control text-right">
+                                    {{ (cadastro.apoio.financiamento['valorFinanciadoTotal'] + cadastro.apoio.financiamento['receitaList'].mediaTotal +cadastro.apoio.financiamento['valorProprioTotal']) - cadastro.apoio.financiamento['despesaList'].mediaTotal | number: 2 }}
+                                </div>
+                            </td>
+                            <td colspan="2">
+                                <table class="table table-hover table-striped">
+                                    <tr class="warning">
+                                        <td class="azul"><label class="control-label primary">RECEITAS MENSAL</label></td>
+                                        <td class="azul">
+                                            <div type="text" class="form-control text-right">
+                                               {{cadastro.apoio.financiamento['receitaList'].mediaTotal / 12 | number: 2}}
+                                            </div>
+                                        </td>
+                                        <td class="azul"><label class="control-label primary">ANUAL</label></td>
+                                        <td class="azul">
+                                            <div type="text" class="form-control text-right">
+                                                {{cadastro.apoio.financiamento['receitaList'].mediaTotal | number: 2}}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="danger">
+                                        <td class="vermelho"><label class="control-label danger">CUSTOS MENSAL</label></td>
+                                        <td class="vermelho">
+                                            <div type="text" class="form-control text-right">
+                                                {{cadastro.apoio.financiamento['despesaList'].mediaTotal / 12 | number: 2}}
+                                            </div>
+                                        </td>
+                                        <td class="vermelho"><label class="control-label danger">ANUAL</label></td>
+                                        <td class="vermelho">
+                                            <div type="text" class="form-control text-right">
+                                                {{cadastro.apoio.financiamento['despesaList'].mediaTotal | number: 2}}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

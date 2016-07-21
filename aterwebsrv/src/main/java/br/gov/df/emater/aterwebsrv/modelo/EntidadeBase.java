@@ -27,6 +27,8 @@ public abstract class EntidadeBase implements Serializable {
 
 	public static final String ATIVIDADE_SCHEMA = "atividade";
 
+	public static final String CREDITO_RURAL_SCHEMA = "credito_rural";
+
 	public static final String FORMULARIO_SCHEMA = "formulario";
 
 	public static final String FUNCIONAL_SCHEMA = "funcional";

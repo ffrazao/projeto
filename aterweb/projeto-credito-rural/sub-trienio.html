@@ -1,0 +1,98 @@
+<div class="panel panel-default">
+    <div class="panel-heading container-fluid">
+        <frz-navegador
+            ng-model="trienioNvg" exibe-nome-botao="false"
+            dados="cadastro.registro.projetoCreditoRural.trienioList"
+            acoes-especiais="acoesEspeciais"
+            on-abrir = "abrir()"
+            on-agir = "agir()"
+            on-editar = "editar()"
+            on-especial = "especial()"
+            on-excluir = "excluir()"
+            on-filtrar = "filtrar()"
+            on-incluir = "incluir()"
+            on-listar = "listar()"
+            on-navegar-primeiro = "navegarPrimeiro()"
+            on-navegar-anterior = "navegarAnterior()"
+            on-navegar-proximo = "navegarPosterior()"
+            on-navegar-ultimo = "navegarUltimo()"
+            on-proxima-pagina="proximaPagina()"
+            on-ultima-pagina="ultimaPagina()"
+            ></frz-navegador>
+    </div>
+    <div class="painel-body"  ng-hide="cadastro.registro.projetoCreditoRural.trienioList.length">
+        <div class="alert alert-warning" style="margin: 0px;" role="alert">
+            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+            Nenhum registro localizado!
+        </div>
+    </div>
+    <div class="table-responsive" ng-show="cadastro.registro.projetoCreditoRural.trienioList.length > 0">
+        <ng-form name="trienioListFrm">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th><frz-seletor ng-model="trienioNvg" dados="cadastro.registro.projetoCreditoRural.trienioList"></frz-seletor></th>
+                        <th>#</th>
+                        <th>Descrição (Exploração ...)</th>
+                        <th>Receita Ano-3 (R$)</th>
+                        <th>Receita Ano-2 (R$)</th>
+                        <th>Receita Ano-1 (R$)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="reg in cadastro.registro.projetoCreditoRural.trienioList | orderBy: ['descricao'] track by reg.id">
+                        <td>
+                            <input type="radio" ng-show="trienioNvg.selecao.tipo === 'U'" ng-model="trienioNvg.selecao.item" ng-value="reg"/>
+                            <input type="checkbox" ng-show="trienioNvg.selecao.tipo === 'M'" checklist-model="trienioNvg.selecao.items" checklist-value="reg"/>
+                        </td>
+                        <td>
+                            {{$index + 1 + ((trienioNvg.paginaAtual-1) * trienioNvg.tamanhoPagina)}}
+                        </td>
+                        <td>
+                            <input class="form-control input-sm" id="descricao{{$index}}" name="descricao{{$index}}" ng-model="reg.descricao" ng-required="true" ng-model-options="{ updateOn: 'blur'}">
+                            <div class="label label-danger" ng-show="navegador.submetido && trienioListFrm['descricao' + $index].$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                        <td ng-repeat="idx in [3, 2, 1]">
+                            <input class="form-control input-sm text-right" id="ano{{idx}}_{{$parent.$index}}" name="ano{{idx}}_{{$parent.$index}}" ng-model="reg['ano' + idx]" ui-number-mask="2" ng-required="true">
+                            <div class="label label-danger" ng-show="navegador.submetido && trienioListFrm['ano' + idx + '_' + $parent.$index].$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+        </ng-form>
+    </div>
+    <div class="panel-footer">
+        <div class="container-fluid" ng-show="cadastro.registro.projetoCreditoRural.trienioList.length">
+            <div class="row">
+                <div class="col-sm-3 text-right">
+                    <label class="control-label">Totais</label>
+                </div>
+                <div class="col-sm-3" ng-repeat="idx in [3, 2, 1]">
+                    <div class="form-group">
+                        <label class="control-label" for="ano{{idx}}_{{$index}}">Ano-{{idx}} (R$)</label>
+                        <input type="text" class="form-control text-right" id="ano{{idx}}_{{$index}}" name="ano{{idx}}_{{$index}}" ng-readonly="true" ng-model="cadastro.apoio.trienio['ano' + idx + 'Total']" ui-number-mask="2">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3 text-right">
+                    &nbsp;
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">Média Geral (R$)</label>
+                        <input type="text" class="form-control text-right" ng-readonly="true" ng-model="cadastro.apoio.trienio.mediaGeral" ui-number-mask="2">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

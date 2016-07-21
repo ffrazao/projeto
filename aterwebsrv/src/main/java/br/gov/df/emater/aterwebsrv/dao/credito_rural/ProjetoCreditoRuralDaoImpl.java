@@ -1,4 +1,4 @@
-package br.gov.df.emater.aterwebsrv.dao.atividade;
+package br.gov.df.emater.aterwebsrv.dao.credito_rural;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,16 +15,16 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGeracao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoCategoria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoSegmento;
-import br.gov.df.emater.aterwebsrv.modelo.dto.AtividadeCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.modelo.dto.ProjetoCreditoRuralCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.TagDto;
 
-public class AtividadeDaoImpl implements AtividadeDaoCustom {
+public class ProjetoCreditoRuralDaoImpl implements ProjetoCreditoRuralDaoCustom {
 
 	@PersistenceContext
 	private EntityManager em;
 
 	@Override
-	public List<Object[]> filtrar(AtividadeCadFiltroDto filtro) {
+	public List<Object[]> filtrar(ProjetoCreditoRuralCadFiltroDto filtro) {
 		// objetos de trabalho
 		List<Object[]> result = null;
 		List<Object> params = new ArrayList<Object>();

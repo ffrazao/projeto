@@ -1,0 +1,86 @@
+<div class="panel panel-default">
+    <div class="panel-heading container-fluid">
+        <frz-navegador
+            ng-model="garantiaNvg" exibe-nome-botao="false"
+            dados="cadastro.registro.projetoCreditoRural.garantiaList"
+            acoes-especiais="acoesEspeciais"
+            on-abrir = "abrir()"
+            on-agir = "agir()"
+            on-editar = "editar()"
+            on-especial = "especial()"
+            on-excluir = "excluir()"
+            on-filtrar = "filtrar()"
+            on-incluir = "incluir()"
+            on-listar = "listar()"
+            on-navegar-primeiro = "navegarPrimeiro()"
+            on-navegar-anterior = "navegarAnterior()"
+            on-navegar-proximo = "navegarPosterior()"
+            on-navegar-ultimo = "navegarUltimo()"
+            on-proxima-pagina="proximaPagina()"
+            on-ultima-pagina="ultimaPagina()"
+            ></frz-navegador>
+    </div>
+    <div class="painel-body"  ng-hide="cadastro.registro.projetoCreditoRural.garantiaList.length">
+        <div class="alert alert-warning" style="margin: 0px;" role="alert">
+            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+            Nenhum registro localizado!
+        </div>
+    </div>
+    <div class="table-responsive" ng-show="cadastro.registro.projetoCreditoRural.garantiaList.length > 0">
+        <ng-form name="garantiaListFrm">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th><frz-seletor ng-model="garantiaNvg" dados="cadastro.registro.projetoCreditoRural.garantiaList"></frz-seletor></th>
+                        <th>#</th>
+                        <th>Pessoa</th>
+                        <th>Participação</th>
+                        <th>Profissão</th>
+                        <th>Renda Líquida (R$)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="reg in cadastro.registro.projetoCreditoRural.garantiaList | orderBy: ['data', 'participacao'] track by reg.id">
+                        <td>
+                            <input type="radio" ng-show="garantiaNvg.selecao.tipo === 'U'" ng-model="garantiaNvg.selecao.item" ng-value="reg"/>
+                            <input type="checkbox" ng-show="garantiaNvg.selecao.tipo === 'M'" checklist-model="garantiaNvg.selecao.items" checklist-value="reg"/>
+                        </td>
+                        <td>
+                            {{$index + 1 + ((garantiaNvg.paginaAtual-1) * garantiaNvg.tamanhoPagina)}}
+                        </td>
+                        <td>
+                            {{reg.pessoa.nome}}
+                        </td>
+                        <td>
+                            <select class="form-control input-sm" id="participacao{{$index}}" name="participacao{{$index}}" ng-model="reg.participacao" ng-required="true">
+                            </select>
+                            <div class="label label-danger" ng-show="navegador.submetido && garantiaListFrm['participacao' + $index].$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                        <td>
+                            <select class="form-control input-sm" id="profissao{{$index}}" name="profissao{{$index}}" ng-model="reg.profissao" ng-required="true">
+                            </select>
+                            <div class="label label-danger" ng-show="navegador.submetido && garantiaListFrm['profissao' + $index].$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                        <td>
+                            <input class="form-control input-sm text-right" id="rendaLiquida_{{$index}}" name="rendaLiquida_{{$index}}" ng-model="reg.rendaLiquida" ui-number-mask="2" ng-required="true">
+                            <div class="label label-danger" ng-show="navegador.submetido && garantiaListFrm['data' + $index].$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+        </ng-form>
+    </div>
+    <div class="panel-footer">
+    </div>
+</div>
