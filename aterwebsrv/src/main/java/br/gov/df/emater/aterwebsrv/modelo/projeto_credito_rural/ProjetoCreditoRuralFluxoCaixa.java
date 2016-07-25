@@ -1,4 +1,4 @@
-package br.gov.df.emater.aterwebsrv.modelo.credito_rural;
+package br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -17,7 +17,7 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.FluxoCaixaTipo;
 
 @Entity
 @Table(name = "fluxo_caixa", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
-public class FluxoCaixa extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class ProjetoCreditoRuralFluxoCaixa extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -36,16 +36,16 @@ public class FluxoCaixa extends EntidadeBase implements _ChavePrimaria<Integer> 
 
 	@ManyToOne
 	@JoinColumn(name = "projeto_credito_id")
-	private ProjetoCreditoRural projetoCredito;
+	private ProjetoCreditoRural projetoCreditoRural;
 
 	@Enumerated(EnumType.STRING)
 	private FluxoCaixaTipo tipo;
-	
-	public FluxoCaixa() {
+
+	public ProjetoCreditoRuralFluxoCaixa() {
 		super();
 	}
 
-	public FluxoCaixa(Integer id) {
+	public ProjetoCreditoRuralFluxoCaixa(Integer id) {
 		super(id);
 	}
 
@@ -70,8 +70,8 @@ public class FluxoCaixa extends EntidadeBase implements _ChavePrimaria<Integer> 
 		return ordem;
 	}
 
-	public ProjetoCreditoRural getProjetoCredito() {
-		return projetoCredito;
+	public ProjetoCreditoRural getProjetoCreditoRural() {
+		return projetoCreditoRural;
 	}
 
 	public FluxoCaixaTipo getTipo() {
@@ -99,8 +99,8 @@ public class FluxoCaixa extends EntidadeBase implements _ChavePrimaria<Integer> 
 		this.ordem = ordem;
 	}
 
-	public void setProjetoCredito(ProjetoCreditoRural projetoCredito) {
-		this.projetoCredito = projetoCredito;
+	public void setProjetoCreditoRural(ProjetoCreditoRural projetoCreditoRural) {
+		this.projetoCreditoRural = projetoCreditoRural;
 	}
 
 	public void setTipo(FluxoCaixaTipo tipo) {

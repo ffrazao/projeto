@@ -1,4 +1,4 @@
-package br.gov.df.emater.aterwebsrv.modelo.credito_rural;
+package br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural;
 
 import java.math.BigDecimal;
 
@@ -16,7 +16,7 @@ import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 
 @Entity
 @Table(name = "historico_receita", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
-public class HistoricoReceita extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class ProjetoCreditoRuralHistoricoReceita extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -28,7 +28,7 @@ public class HistoricoReceita extends EntidadeBase implements _ChavePrimaria<Int
 
 	@ManyToOne
 	@JoinColumn(name = "projeto_credito_id")
-	private ProjetoCreditoRural projetoCredito;
+	private ProjetoCreditoRural projetoCreditoRural;
 
 	@Column(name = "receita_ano_1")
 	private BigDecimal receitaAno1;
@@ -39,11 +39,11 @@ public class HistoricoReceita extends EntidadeBase implements _ChavePrimaria<Int
 	@Column(name = "receita_ano_3")
 	private BigDecimal receitaAno3;
 
-	public HistoricoReceita() {
+	public ProjetoCreditoRuralHistoricoReceita() {
 		super();
 	}
 
-	public HistoricoReceita(Integer id) {
+	public ProjetoCreditoRuralHistoricoReceita(Integer id) {
 		super(id);
 	}
 
@@ -56,8 +56,8 @@ public class HistoricoReceita extends EntidadeBase implements _ChavePrimaria<Int
 		return id;
 	}
 
-	public ProjetoCreditoRural getProjetoCredito() {
-		return projetoCredito;
+	public ProjetoCreditoRural getProjetoCreditoRural() {
+		return projetoCreditoRural;
 	}
 
 	public BigDecimal getReceitaAno1() {
@@ -81,8 +81,8 @@ public class HistoricoReceita extends EntidadeBase implements _ChavePrimaria<Int
 		this.id = id;
 	}
 
-	public void setProjetoCredito(ProjetoCreditoRural projetoCredito) {
-		this.projetoCredito = projetoCredito;
+	public void setProjetoCreditoRural(ProjetoCreditoRural projetoCreditoRural) {
+		this.projetoCreditoRural = projetoCreditoRural;
 	}
 
 	public void setReceitaAno1(BigDecimal receitaAno1) {

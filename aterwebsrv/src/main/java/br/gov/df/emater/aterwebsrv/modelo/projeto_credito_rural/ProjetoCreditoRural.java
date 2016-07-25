@@ -1,7 +1,8 @@
-package br.gov.df.emater.aterwebsrv.modelo.credito_rural;
+package br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,20 +14,25 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.Atividade;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.ProjetoCreditoStatus;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.FinanciamentoTipo;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.ProjetoCreditoRuralStatus;
+import br.gov.df.emater.aterwebsrv.modelo.dto.ProjetoCreditoRuralCronogramaDto;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 
@@ -45,6 +51,12 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 	@ManyToOne
 	@JoinColumn(name = "atividade_id")
 	private Atividade atividade;
+
+	@Transient
+	private FinanciamentoTipo calculoTipo;
+
+	@OneToMany(mappedBy = "projetoCreditoRural")
+	private List<ProjetoCreditoRuralCronogramaPagamento> cronogramaPagamentoList;
 
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
@@ -67,27 +79,39 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 	@Column(name = "custeio_data_primeira_parcela")
 	private Calendar custeioDataPrimeiraParcela;
 
-	@Column(name = "custeio_juro_anual")
-	private BigDecimal custeioJuroAnual;
-
 	@Column(name = "custeio_periodicidade")
 	private Integer custeioPeriodicidade;
 
-	@Column(name = "custeio_quantidade_parcela")
-	private Integer custeioQuantidadeParcela;
+	@Column(name = "custeio_quantidade_parcelas")
+	private Integer custeioQuantidadeParcelas;
 
-	@Column(name = "custeio_total_juros")
-	private BigDecimal custeioTotalJuros;
-
-	@Column(name = "custeio_total_parcela")
-	private Integer custeioTotalParcela;
+	@Column(name = "custeio_taxa_juros_anual")
+	private BigDecimal custeioTaxaJurosAnual;
 
 	@Column(name = "custeio_valor_financiamento")
 	private BigDecimal custeioValorFinanciamento;
 
+	@Column(name = "custeio_valor_total_juros")
+	private BigDecimal custeioValorTotalJuros;
+
+	@Column(name = "custeio_valor_total_parcelas")
+	private BigDecimal custeioValorTotalParcelas;
+
+	@OneToMany(mappedBy = "projetoCreditoRural")
+	private List<ProjetoCreditoRuralFinanciamento> financiamentoList;
+
+	@OneToMany(mappedBy = "projetoCreditoRural")
+	private List<ProjetoCreditoRuralFluxoCaixa> fluxoCaixaList;
+
+	@OneToMany(mappedBy = "projetoCreditoRural")
+	private List<ProjetoCreditoRuralGarantia> garantiaList;
+
 	@Column(name = "garantia_real")
 	@Lob
 	private String garantiaReal;
+
+	@OneToMany(mappedBy = "projetoCreditoRural")
+	private List<ProjetoCreditoRuralHistoricoReceita> historicoReceitaList;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -114,23 +138,23 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 	@Column(name = "investimento_data_primeira_parcela")
 	private Calendar investimentoDataPrimeiraParcela;
 
-	@Column(name = "investimento_juro_anual")
-	private BigDecimal investimentoJuroAnual;
-
 	@Column(name = "investimento_periodicidade")
 	private Integer investimentoPeriodicidade;
 
 	@Column(name = "investimento_quantidade_parcela")
-	private Integer investimentoQuantidadeParcela;
+	private Integer investimentoQuantidadeParcelas;
 
-	@Column(name = "investimento_total_juros")
-	private BigDecimal investimentoTotalJuros;
-
-	@Column(name = "investimento_total_parcela")
-	private Integer investimentoTotalParcela;
+	@Column(name = "investimento_taxa_juros_anual")
+	private BigDecimal investimentoTaxaJurosAnual;
 
 	@Column(name = "investimento_valor_financiamento")
 	private BigDecimal investimentoValorFinanciamento;
+
+	@Column(name = "investimento_valor_total_juros")
+	private BigDecimal investimentoValorTotalJuros;
+
+	@Column(name = "investimento_valor_total_parcelas")
+	private BigDecimal investimentoValorTotalParcelas;
 
 	@ManyToOne
 	@JoinColumn(name = "linha_credito_id")
@@ -141,12 +165,18 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 	@Column(name = "numero_cedula")
 	private String numeroCedula;
 
+	@OneToMany(mappedBy = "projetoCreditoRural")
+	private List<ProjetoCreditoRuralParecerTecnico> parecerTecnicoList;
+
 	@ManyToOne
 	@JoinColumn(name = "propriedade_rural_id")
 	private PropriedadeRural propriedadeRural;
 
+	@OneToMany(mappedBy = "projetoCreditoRural")
+	private List<ProjetoCreditoRuralReceitaDespesa> receitaDespesaList;
+
 	@Enumerated(EnumType.STRING)
-	private ProjetoCreditoStatus status;
+	private ProjetoCreditoRuralStatus status;
 
 	public ProjetoCreditoRural() {
 		super();
@@ -168,6 +198,45 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 		return atividade;
 	}
 
+	public FinanciamentoTipo getCalculoTipo() {
+		return calculoTipo;
+	}
+
+	public ProjetoCreditoRuralCronogramaDto getCronograma() throws BoException {
+		ProjetoCreditoRuralCronogramaDto result = new ProjetoCreditoRuralCronogramaDto();
+		switch (getCalculoTipo()) {
+		case C:
+			result.setPeriodicidade(this.custeioPeriodicidade);
+			result.setDataContratacao(this.custeioDataContratacao);
+			result.setValorFinanciamento(this.custeioValorFinanciamento);
+			result.setTaxaJurosAnual(this.custeioTaxaJurosAnual);
+			result.setQuantidadeParcelas(this.custeioQuantidadeParcelas);
+			result.setDataFinalCarencia(this.custeioDataFinalCarencia);
+			result.setDataPrimeiraParcela(this.custeioDataPrimeiraParcela);
+			result.setValorTotalJuros(this.custeioValorTotalJuros);
+			result.setValorTotalParcelas(this.custeioValorFinanciamento);
+			break;
+		case I:
+			result.setPeriodicidade(this.investimentoPeriodicidade);
+			result.setDataContratacao(this.investimentoDataContratacao);
+			result.setValorFinanciamento(this.investimentoValorFinanciamento);
+			result.setTaxaJurosAnual(this.investimentoTaxaJurosAnual);
+			result.setQuantidadeParcelas(this.investimentoQuantidadeParcelas);
+			result.setDataFinalCarencia(this.investimentoDataFinalCarencia);
+			result.setDataPrimeiraParcela(this.investimentoDataPrimeiraParcela);
+			result.setValorTotalJuros(this.investimentoValorTotalJuros);
+			result.setValorTotalParcelas(this.investimentoValorFinanciamento);
+			break;
+		default:
+			throw new BoException("Tipo de cronograma de projeto de crédito rural inválido");
+		}
+		return result;
+	}
+
+	public List<ProjetoCreditoRuralCronogramaPagamento> getCronogramaPagamentoList() {
+		return cronogramaPagamentoList;
+	}
+
 	public Calendar getCusteioDataContratacao() {
 		return custeioDataContratacao;
 	}
@@ -180,32 +249,48 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 		return custeioDataPrimeiraParcela;
 	}
 
-	public BigDecimal getCusteioJuroAnual() {
-		return custeioJuroAnual;
-	}
-
 	public Integer getCusteioPeriodicidade() {
 		return custeioPeriodicidade;
 	}
 
-	public Integer getCusteioQuantidadeParcela() {
-		return custeioQuantidadeParcela;
+	public Integer getCusteioQuantidadeParcelas() {
+		return custeioQuantidadeParcelas;
 	}
 
-	public BigDecimal getCusteioTotalJuros() {
-		return custeioTotalJuros;
-	}
-
-	public Integer getCusteioTotalParcela() {
-		return custeioTotalParcela;
+	public BigDecimal getCusteioTaxaJurosAnual() {
+		return custeioTaxaJurosAnual;
 	}
 
 	public BigDecimal getCusteioValorFinanciamento() {
 		return custeioValorFinanciamento;
 	}
 
+	public BigDecimal getCusteioValorTotalJuros() {
+		return custeioValorTotalJuros;
+	}
+
+	public BigDecimal getCusteioValorTotalParcelas() {
+		return custeioValorTotalParcelas;
+	}
+
+	public List<ProjetoCreditoRuralFinanciamento> getFinanciamentoList() {
+		return financiamentoList;
+	}
+
+	public List<ProjetoCreditoRuralFluxoCaixa> getFluxoCaixaList() {
+		return fluxoCaixaList;
+	}
+
+	public List<ProjetoCreditoRuralGarantia> getGarantiaList() {
+		return garantiaList;
+	}
+
 	public String getGarantiaReal() {
 		return garantiaReal;
+	}
+
+	public List<ProjetoCreditoRuralHistoricoReceita> getHistoricoReceitaList() {
+		return historicoReceitaList;
 	}
 
 	@Override
@@ -225,28 +310,28 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 		return investimentoDataPrimeiraParcela;
 	}
 
-	public BigDecimal getInvestimentoJuroAnual() {
-		return investimentoJuroAnual;
-	}
-
 	public Integer getInvestimentoPeriodicidade() {
 		return investimentoPeriodicidade;
 	}
 
-	public Integer getInvestimentoQuantidadeParcela() {
-		return investimentoQuantidadeParcela;
+	public Integer getInvestimentoQuantidadeParcelas() {
+		return investimentoQuantidadeParcelas;
 	}
 
-	public BigDecimal getInvestimentoTotalJuros() {
-		return investimentoTotalJuros;
-	}
-
-	public Integer getInvestimentoTotalParcela() {
-		return investimentoTotalParcela;
+	public BigDecimal getInvestimentoTaxaJurosAnual() {
+		return investimentoTaxaJurosAnual;
 	}
 
 	public BigDecimal getInvestimentoValorFinanciamento() {
 		return investimentoValorFinanciamento;
+	}
+
+	public BigDecimal getInvestimentoValorTotalJuros() {
+		return investimentoValorTotalJuros;
+	}
+
+	public BigDecimal getInvestimentoValorTotalParcelas() {
+		return investimentoValorTotalParcelas;
 	}
 
 	public LinhaCredito getLinhaCredito() {
@@ -261,11 +346,19 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 		return numeroCedula;
 	}
 
+	public List<ProjetoCreditoRuralParecerTecnico> getParecerTecnicoList() {
+		return parecerTecnicoList;
+	}
+
 	public PropriedadeRural getPropriedadeRural() {
 		return propriedadeRural;
 	}
 
-	public ProjetoCreditoStatus getStatus() {
+	public List<ProjetoCreditoRuralReceitaDespesa> getReceitaDespesaList() {
+		return receitaDespesaList;
+	}
+
+	public ProjetoCreditoRuralStatus getStatus() {
 		return status;
 	}
 
@@ -281,6 +374,14 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 		this.atividade = atividade;
 	}
 
+	public void setCalculoTipo(FinanciamentoTipo calculoTipo) {
+		this.calculoTipo = calculoTipo;
+	}
+
+	public void setCronogramaPagamentoList(List<ProjetoCreditoRuralCronogramaPagamento> cronogramaPagamentoList) {
+		this.cronogramaPagamentoList = cronogramaPagamentoList;
+	}
+
 	public void setCusteioDataContratacao(Calendar custeioDataContratacao) {
 		this.custeioDataContratacao = custeioDataContratacao;
 	}
@@ -293,32 +394,48 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 		this.custeioDataPrimeiraParcela = custeioDataPrimeiraParcela;
 	}
 
-	public void setCusteioJuroAnual(BigDecimal custeioJuroAnual) {
-		this.custeioJuroAnual = custeioJuroAnual;
-	}
-
 	public void setCusteioPeriodicidade(Integer custeioPeriodicidade) {
 		this.custeioPeriodicidade = custeioPeriodicidade;
 	}
 
-	public void setCusteioQuantidadeParcela(Integer custeioQuantidadeParcela) {
-		this.custeioQuantidadeParcela = custeioQuantidadeParcela;
+	public void setCusteioQuantidadeParcelas(Integer custeioQuantidadeParcelas) {
+		this.custeioQuantidadeParcelas = custeioQuantidadeParcelas;
 	}
 
-	public void setCusteioTotalJuros(BigDecimal custeioTotalJuros) {
-		this.custeioTotalJuros = custeioTotalJuros;
-	}
-
-	public void setCusteioTotalParcela(Integer custeioTotalParcela) {
-		this.custeioTotalParcela = custeioTotalParcela;
+	public void setCusteioTaxaJurosAnual(BigDecimal custeioTaxaJurosAnual) {
+		this.custeioTaxaJurosAnual = custeioTaxaJurosAnual;
 	}
 
 	public void setCusteioValorFinanciamento(BigDecimal custeioValorFinanciamento) {
 		this.custeioValorFinanciamento = custeioValorFinanciamento;
 	}
 
+	public void setCusteioValorTotalJuros(BigDecimal custeioValorTotalJuros) {
+		this.custeioValorTotalJuros = custeioValorTotalJuros;
+	}
+
+	public void setCusteioValorTotalParcelas(BigDecimal custeioValorTotalParcelas) {
+		this.custeioValorTotalParcelas = custeioValorTotalParcelas;
+	}
+
+	public void setFinanciamentoList(List<ProjetoCreditoRuralFinanciamento> financiamentoList) {
+		this.financiamentoList = financiamentoList;
+	}
+
+	public void setFluxoCaixaList(List<ProjetoCreditoRuralFluxoCaixa> fluxoCaixaList) {
+		this.fluxoCaixaList = fluxoCaixaList;
+	}
+
+	public void setGarantiaList(List<ProjetoCreditoRuralGarantia> garantiaList) {
+		this.garantiaList = garantiaList;
+	}
+
 	public void setGarantiaReal(String garantiaReal) {
 		this.garantiaReal = garantiaReal;
+	}
+
+	public void setHistoricoReceitaList(List<ProjetoCreditoRuralHistoricoReceita> historicoReceitaList) {
+		this.historicoReceitaList = historicoReceitaList;
 	}
 
 	@Override
@@ -329,30 +446,39 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 	public void setInvestimentoDataContratacao(Calendar investimentoDataContratacao) {
 		this.investimentoDataContratacao = investimentoDataContratacao;
 	}
+
 	public void setInvestimentoDataFinalCarencia(Calendar investimentoDataFinalCarencia) {
 		this.investimentoDataFinalCarencia = investimentoDataFinalCarencia;
 	}
+
 	public void setInvestimentoDataPrimeiraParcela(Calendar investimentoDataPrimeiraParcela) {
 		this.investimentoDataPrimeiraParcela = investimentoDataPrimeiraParcela;
 	}
-	public void setInvestimentoJuroAnual(BigDecimal investimentoJuroAnual) {
-		this.investimentoJuroAnual = investimentoJuroAnual;
-	}
+
 	public void setInvestimentoPeriodicidade(Integer investimentoPeriodicidade) {
 		this.investimentoPeriodicidade = investimentoPeriodicidade;
 	}
-	public void setInvestimentoQuantidadeParcela(Integer investimentoQuantidadeParcela) {
-		this.investimentoQuantidadeParcela = investimentoQuantidadeParcela;
+
+	public void setInvestimentoQuantidadeParcelas(Integer investimentoQuantidadeParcelas) {
+		this.investimentoQuantidadeParcelas = investimentoQuantidadeParcelas;
 	}
-	public void setInvestimentoTotalJuros(BigDecimal investimentoTotalJuros) {
-		this.investimentoTotalJuros = investimentoTotalJuros;
+
+	public void setInvestimentoTaxaJurosAnual(BigDecimal investimentoTaxaJurosAnual) {
+		this.investimentoTaxaJurosAnual = investimentoTaxaJurosAnual;
 	}
-	public void setInvestimentoTotalParcela(Integer investimentoTotalParcela) {
-		this.investimentoTotalParcela = investimentoTotalParcela;
-	}
+
 	public void setInvestimentoValorFinanciamento(BigDecimal investimentoValorFinanciamento) {
 		this.investimentoValorFinanciamento = investimentoValorFinanciamento;
 	}
+
+	public void setInvestimentoValorTotalJuros(BigDecimal investimentoValorTotalJuros) {
+		this.investimentoValorTotalJuros = investimentoValorTotalJuros;
+	}
+
+	public void setInvestimentoValorTotalParcelas(BigDecimal investimentoValorTotalParcelas) {
+		this.investimentoValorTotalParcelas = investimentoValorTotalParcelas;
+	}
+
 	public void setLinhaCredito(LinhaCredito linhaCredito) {
 		this.linhaCredito = linhaCredito;
 	}
@@ -360,13 +486,24 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+
 	public void setNumeroCedula(String numeroCedula) {
 		this.numeroCedula = numeroCedula;
 	}
+
+	public void setParecerTecnicoList(List<ProjetoCreditoRuralParecerTecnico> parecerTecnicoList) {
+		this.parecerTecnicoList = parecerTecnicoList;
+	}
+
 	public void setPropriedadeRural(PropriedadeRural propriedadeRural) {
 		this.propriedadeRural = propriedadeRural;
 	}
-	public void setStatus(ProjetoCreditoStatus status) {
+
+	public void setReceitaDespesaList(List<ProjetoCreditoRuralReceitaDespesa> receitaDespesaList) {
+		this.receitaDespesaList = receitaDespesaList;
+	}
+
+	public void setStatus(ProjetoCreditoRuralStatus status) {
 		this.status = status;
 	}
 

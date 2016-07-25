@@ -1,4 +1,4 @@
-package br.gov.df.emater.aterwebsrv.modelo.credito_rural;
+package br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural;
 
 import java.math.BigDecimal;
 
@@ -20,7 +20,7 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 
 @Entity
 @Table(name = "garantia", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
-public class Garantia extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class ProjetoCreditoRuralGarantia extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -37,16 +37,16 @@ public class Garantia extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	@ManyToOne
 	@JoinColumn(name = "projeto_credito_id")
-	private ProjetoCreditoRural projetoCredito;
+	private ProjetoCreditoRural projetoCreditoRural;
 
 	@Column(name = "renda_liquida")
 	private BigDecimal rendaLiquida;
 
-	public Garantia() {
+	public ProjetoCreditoRuralGarantia() {
 		super();
 	}
 
-	public Garantia(Integer id) {
+	public ProjetoCreditoRuralGarantia(Integer id) {
 		super(id);
 	}
 
@@ -63,8 +63,8 @@ public class Garantia extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return pessoa;
 	}
 
-	public ProjetoCreditoRural getProjetoCredito() {
-		return projetoCredito;
+	public ProjetoCreditoRural getProjetoCreditoRural() {
+		return projetoCreditoRural;
 	}
 
 	public BigDecimal getRendaLiquida() {
@@ -84,9 +84,10 @@ public class Garantia extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.pessoa = pessoa;
 	}
 
-	public void setProjetoCredito(ProjetoCreditoRural projetoCredito) {
-		this.projetoCredito = projetoCredito;
+	public void setProjetoCreditoRural(ProjetoCreditoRural projetoCreditoRural) {
+		this.projetoCreditoRural = projetoCreditoRural;
 	}
+
 	public void setRendaLiquida(BigDecimal rendaLiquida) {
 		this.rendaLiquida = rendaLiquida;
 	}

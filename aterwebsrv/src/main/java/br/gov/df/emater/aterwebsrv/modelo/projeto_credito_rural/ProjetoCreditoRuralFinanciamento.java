@@ -1,4 +1,4 @@
-package br.gov.df.emater.aterwebsrv.modelo.credito_rural;
+package br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural;
 
 import java.math.BigDecimal;
 
@@ -19,7 +19,7 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.FinanciamentoTipo;
 
 @Entity
 @Table(name = "financiamento", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
-public class Financiamento extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class ProjetoCreditoRuralFinanciamento extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -37,7 +37,7 @@ public class Financiamento extends EntidadeBase implements _ChavePrimaria<Intege
 
 	@ManyToOne
 	@JoinColumn(name = "projeto_credito_id")
-	private ProjetoCreditoRural projetoCredito;
+	private ProjetoCreditoRural projetoCreditoRural;
 
 	@Column(name = "quantidade")
 	private BigDecimal quantidade;
@@ -59,11 +59,11 @@ public class Financiamento extends EntidadeBase implements _ChavePrimaria<Intege
 	@Column(name = "valor_unitario")
 	private BigDecimal valorUnitario;
 
-	public Financiamento() {
+	public ProjetoCreditoRuralFinanciamento() {
 		super();
 	}
 
-	public Financiamento(Integer id) {
+	public ProjetoCreditoRuralFinanciamento(Integer id) {
 		super(id);
 	}
 
@@ -84,8 +84,8 @@ public class Financiamento extends EntidadeBase implements _ChavePrimaria<Intege
 		return percentualProprio;
 	}
 
-	public ProjetoCreditoRural getProjetoCredito() {
-		return projetoCredito;
+	public ProjetoCreditoRural getProjetoCreditoRural() {
+		return projetoCreditoRural;
 	}
 
 	public BigDecimal getQuantidade() {
@@ -133,8 +133,8 @@ public class Financiamento extends EntidadeBase implements _ChavePrimaria<Intege
 		this.percentualProprio = percentualProprio;
 	}
 
-	public void setProjetoCredito(ProjetoCreditoRural projetoCredito) {
-		this.projetoCredito = projetoCredito;
+	public void setProjetoCreditoRural(ProjetoCreditoRural projetoCreditoRural) {
+		this.projetoCreditoRural = projetoCreditoRural;
 	}
 
 	public void setQuantidade(BigDecimal quantidade) {

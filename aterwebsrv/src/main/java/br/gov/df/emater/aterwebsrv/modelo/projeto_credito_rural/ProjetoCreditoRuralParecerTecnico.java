@@ -1,4 +1,4 @@
-package br.gov.df.emater.aterwebsrv.modelo.credito_rural;
+package br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural;
 
 import java.util.Calendar;
 
@@ -29,7 +29,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 
 @Entity
 @Table(name = "parecer_tecnico", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
-public class ParecerTecnico extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class ProjetoCreditoRuralParecerTecnico extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -51,17 +51,17 @@ public class ParecerTecnico extends EntidadeBase implements _ChavePrimaria<Integ
 
 	@ManyToOne
 	@JoinColumn(name = "projeto_credito_id")
-	private ProjetoCreditoRural projetoCredito;
+	private ProjetoCreditoRural projetoCreditoRural;
 
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
 
-	public ParecerTecnico() {
+	public ProjetoCreditoRuralParecerTecnico() {
 		super();
 	}
 
-	public ParecerTecnico(Integer id) {
+	public ProjetoCreditoRuralParecerTecnico(Integer id) {
 		super(id);
 	}
 
@@ -82,8 +82,8 @@ public class ParecerTecnico extends EntidadeBase implements _ChavePrimaria<Integ
 		return id;
 	}
 
-	public ProjetoCreditoRural getProjetoCredito() {
-		return projetoCredito;
+	public ProjetoCreditoRural getProjetoCreditoRural() {
+		return projetoCreditoRural;
 	}
 
 	public Usuario getUsuario() {
@@ -101,13 +101,16 @@ public class ParecerTecnico extends EntidadeBase implements _ChavePrimaria<Integ
 	public void setData(Calendar data) {
 		this.data = data;
 	}
+
 	@Override
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public void setProjetoCredito(ProjetoCreditoRural projetoCredito) {
-		this.projetoCredito = projetoCredito;
+
+	public void setProjetoCreditoRural(ProjetoCreditoRural projetoCreditoRural) {
+		this.projetoCreditoRural = projetoCreditoRural;
 	}
+
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}

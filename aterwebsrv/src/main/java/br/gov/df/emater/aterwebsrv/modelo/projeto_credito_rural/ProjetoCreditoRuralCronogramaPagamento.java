@@ -1,4 +1,4 @@
-package br.gov.df.emater.aterwebsrv.modelo.credito_rural;
+package br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural;
 
 import java.math.BigDecimal;
 
@@ -18,7 +18,7 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.FinanciamentoTipo;
 
 @Entity
 @Table(name = "cronograma_pagamento", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
-public class CronogramaPagamento extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class ProjetoCreditoRuralCronogramaPagamento extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -40,18 +40,18 @@ public class CronogramaPagamento extends EntidadeBase implements _ChavePrimaria<
 
 	@ManyToOne
 	@JoinColumn(name = "projeto_credito_id")
-	private ProjetoCreditoRural projetoCredito;
+	private ProjetoCreditoRural projetoCreditoRural;
 
 	private BigDecimal saldo;
 
 	@Enumerated(EnumType.STRING)
 	private FinanciamentoTipo tipo;
 
-	public CronogramaPagamento() {
+	public ProjetoCreditoRuralCronogramaPagamento() {
 		super();
 	}
 
-	public CronogramaPagamento(Integer id) {
+	public ProjetoCreditoRuralCronogramaPagamento(Integer id) {
 		super(id);
 	}
 
@@ -82,10 +82,6 @@ public class CronogramaPagamento extends EntidadeBase implements _ChavePrimaria<
 
 	public BigDecimal getPrincipal() {
 		return principal;
-	}
-
-	public ProjetoCreditoRural getProjetoCredito() {
-		return projetoCredito;
 	}
 
 	public BigDecimal getSaldo() {
@@ -125,8 +121,12 @@ public class CronogramaPagamento extends EntidadeBase implements _ChavePrimaria<
 		this.principal = principal;
 	}
 
-	public void setProjetoCredito(ProjetoCreditoRural projetoCredito) {
-		this.projetoCredito = projetoCredito;
+	public ProjetoCreditoRural getProjetoCreditoRural() {
+		return projetoCreditoRural;
+	}
+
+	public void setProjetoCreditoRural(ProjetoCreditoRural projetoCreditoRural) {
+		this.projetoCreditoRural = projetoCreditoRural;
 	}
 
 	public void setSaldo(BigDecimal saldo) {

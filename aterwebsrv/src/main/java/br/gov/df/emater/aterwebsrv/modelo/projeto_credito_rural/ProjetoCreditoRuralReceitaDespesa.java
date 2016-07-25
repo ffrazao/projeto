@@ -1,4 +1,4 @@
-package br.gov.df.emater.aterwebsrv.modelo.credito_rural;
+package br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural;
 
 import java.math.BigDecimal;
 
@@ -19,7 +19,7 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.FluxoCaixaTipo;
 
 @Entity
 @Table(name = "receita_despesa", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
-public class ReceitaDespesa extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class ProjetoCreditoRuralReceitaDespesa extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -33,7 +33,7 @@ public class ReceitaDespesa extends EntidadeBase implements _ChavePrimaria<Integ
 
 	@ManyToOne
 	@JoinColumn(name = "projeto_credito_id")
-	private ProjetoCreditoRural projetoCredito;
+	private ProjetoCreditoRural projetoCreditoRural;
 
 	@Column(name = "quantidade")
 	private BigDecimal quantidade;
@@ -49,11 +49,11 @@ public class ReceitaDespesa extends EntidadeBase implements _ChavePrimaria<Integ
 	@Column(name = "valor_unitario")
 	private BigDecimal valorUnitario;
 
-	public ReceitaDespesa() {
+	public ProjetoCreditoRuralReceitaDespesa() {
 		super();
 	}
 
-	public ReceitaDespesa(Integer id) {
+	public ProjetoCreditoRuralReceitaDespesa(Integer id) {
 		super(id);
 	}
 
@@ -68,10 +68,6 @@ public class ReceitaDespesa extends EntidadeBase implements _ChavePrimaria<Integ
 	@Override
 	public Integer getId() {
 		return id;
-	}
-
-	public ProjetoCreditoRural getProjetoCredito() {
-		return projetoCredito;
 	}
 
 	public BigDecimal getQuantidade() {
@@ -101,25 +97,28 @@ public class ReceitaDespesa extends EntidadeBase implements _ChavePrimaria<Integ
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
+
 	@Override
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public void setProjetoCredito(ProjetoCreditoRural projetoCredito) {
-		this.projetoCredito = projetoCredito;
-	}
+
 	public void setQuantidade(BigDecimal quantidade) {
 		this.quantidade = quantidade;
 	}
+
 	public void setTipo(FluxoCaixaTipo tipo) {
 		this.tipo = tipo;
 	}
+
 	public void setUnidade(String unidade) {
 		this.unidade = unidade;
 	}
+
 	public void setValorTotal(BigDecimal valorTotal) {
 		this.valorTotal = valorTotal;
 	}
+
 	public void setValorUnitario(BigDecimal valorUnitario) {
 		this.valorUnitario = valorUnitario;
 	}
