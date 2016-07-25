@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.bo._SalvarCmd;
-import br.gov.df.emater.aterwebsrv.dao.credito_rural.ProjetoCreditoRuralDao;
-import br.gov.df.emater.aterwebsrv.modelo.credito_rural.ProjetoCreditoRural;
+import br.gov.df.emater.aterwebsrv.dao.projeto_credito_rural.ProjetoCreditoRuralDao;
+import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRural;
 
 @Service("ProjetoCreditoRuralSalvarCmd")
 public class SalvarCmd extends _SalvarCmd {
