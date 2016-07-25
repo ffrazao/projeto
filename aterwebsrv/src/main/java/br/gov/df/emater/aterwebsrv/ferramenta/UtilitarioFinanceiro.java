@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
+
 // Singleton utilitario para cálculos financeiros
 public class UtilitarioFinanceiro {
 
@@ -23,9 +25,12 @@ public class UtilitarioFinanceiro {
 	}
 
 	public static void main(String[] args) {
-		for (Map<String, Object> l : UtilitarioFinanceiro.getInstance().tabelaPriceCalculaParcelas("1000", "3", 4)) {
+		for (Map<String, Object> l : UtilitarioFinanceiro.getInstance().tabelaPriceCalculaParcelas("109047.62", "2", 5)) {
 			for (Map.Entry<String, Object> c : l.entrySet()) {
 				System.out.format("[%s = %s]", c.getKey(), c.getValue());
+				// if (c.getKey().equals("amortizacao")) {
+				// System.out.format("%f", c.getValue());
+				// }
 			}
 			System.out.format("\n");
 		}
@@ -42,20 +47,23 @@ public class UtilitarioFinanceiro {
 			return null;
 		}
 
-		BigDecimal taxaJuros = new BigDecimal(taxaJurosStr, MathContext.UNLIMITED).divide(new BigDecimal("100", MathContext.UNLIMITED), 10, RoundingMode.HALF_UP);
-		BigDecimal saldoDevedor = new BigDecimal(valorPresenteStr, MathContext.UNLIMITED);
-		BigDecimal juros = new BigDecimal("0", MathContext.UNLIMITED);
-		BigDecimal amortizacao = new BigDecimal("0", MathContext.UNLIMITED);
+		BigDecimal taxaJuros = big(taxaJurosStr).divide(big("100"), 10, RoundingMode.HALF_UP);
+		BigDecimal saldoDevedor = big(valorPresenteStr);
+		BigDecimal saldoDevedorAnterior;
+		BigDecimal juros = big();
+		BigDecimal amortizacao = big();
 
 		for (int parcela = 0; parcela < totalParcelas; parcela++) {
-			juros = saldoDevedor.multiply(taxaJuros);
+			juros = saldoDevedor.multiply(taxaJuros).setScale(2, BigDecimal.ROUND_HALF_UP);
 			amortizacao = valorParcela.subtract(juros, MathContext.UNLIMITED);
+			saldoDevedorAnterior = saldoDevedor;
 			saldoDevedor = saldoDevedor.subtract(amortizacao);
 			if (result == null) {
 				result = new ArrayList<>();
 			}
 			Map<String, Object> linha = new HashMap<>();
 			linha.put("parcela", parcela + 1);
+			linha.put("saldoDevedorAnterior", saldoDevedorAnterior);
 			linha.put("saldoDevedor", saldoDevedor);
 			linha.put("valorParcela", valorParcela);
 			linha.put("juros", juros);
@@ -63,25 +71,35 @@ public class UtilitarioFinanceiro {
 			result.add(linha);
 		}
 
+		// jogar o eventual resquício do saldo devedor para a última parcela
+		if (!CollectionUtils.isEmpty(result) && !saldoDevedor.equals(big())) {
+			result.get(result.size() - 1).put("amortizacao", ((BigDecimal) result.get(result.size() - 1).get("amortizacao")).add(saldoDevedor));
+			result.get(result.size() - 1).put("saldoDevedor", big());
+		}
+
 		return result;
 	}
 
+	private BigDecimal big() {
+		return big(null);
+	}
+
+	private BigDecimal big(String valor) {
+		return new BigDecimal(valor == null ? "0" : valor, MathContext.UNLIMITED);
+	}
+
 	public BigDecimal tabelaPriceCalculaValorParcela(String valorPresenteStr, String taxaJurosStr, Integer totalParcelas) {
-		if (valorPresenteStr == null || taxaJurosStr == null || totalParcelas == null) {
+		if (valorPresenteStr == null || taxaJurosStr == null || totalParcelas == null || totalParcelas < 1) {
 			return null;
 		}
 
-		BigDecimal taxaJuros = new BigDecimal(taxaJurosStr, MathContext.UNLIMITED);
-		taxaJuros = taxaJuros.divide(new BigDecimal("100", MathContext.UNLIMITED), 10, RoundingMode.HALF_UP);
+		BigDecimal taxaJuros = big(taxaJurosStr);
+		taxaJuros = taxaJuros.divide(big("100"), 10, RoundingMode.HALF_UP);
 
-		// BigDecimal result = valorPresente * ((Math.pow(1 + taxaJuros,
-		// totalParcelas) * taxaJuros) / (Math.pow(1 + taxaJuros, totalParcelas)
-		// - 1));
+		BigDecimal multiplicador = big("1").add(taxaJuros).pow(totalParcelas);
 
-		BigDecimal multiplicador = new BigDecimal("1", MathContext.UNLIMITED).add(taxaJuros).pow(totalParcelas);
+		BigDecimal result = big(valorPresenteStr).multiply((multiplicador.multiply(taxaJuros)).divide(multiplicador.subtract(big("1")), 10, RoundingMode.HALF_UP));
 
-		BigDecimal result = new BigDecimal(valorPresenteStr, MathContext.UNLIMITED).multiply((multiplicador.multiply(taxaJuros)).divide(multiplicador.subtract(new BigDecimal("1", MathContext.UNLIMITED)), 10, RoundingMode.HALF_UP));
-
-		return result;
+		return result.setScale(2, BigDecimal.ROUND_HALF_UP);
 	}
 }
