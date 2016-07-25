@@ -1,6 +1,6 @@
 package br.gov.df.emater.aterwebsrv.modelo.dominio;
 
-public enum ProjetoCreditoStatus {
+public enum ProjetoCreditoRuralStatus {
 
 	CA("", 1), CO("", 1), EA("", 1), EE("", 1), LI("", 1), NC("", 1), NE("", 1), PR("", 1);
 
@@ -8,7 +8,7 @@ public enum ProjetoCreditoStatus {
 
 	private Integer ordem;
 
-	private ProjetoCreditoStatus(String descricao, Integer ordem) {
+	private ProjetoCreditoRuralStatus(String descricao, Integer ordem) {
 		this.descricao = descricao;
 		this.ordem = ordem;
 	}

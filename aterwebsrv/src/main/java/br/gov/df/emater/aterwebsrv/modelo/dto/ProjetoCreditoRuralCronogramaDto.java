@@ -1,5 +1,6 @@
 package br.gov.df.emater.aterwebsrv.modelo.dto;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 
 import javax.persistence.Temporal;
@@ -29,13 +30,23 @@ public class ProjetoCreditoRuralCronogramaDto implements Dto {
 	@JsonDeserialize(using = JsonDeserializerData.class)
 	private Calendar dataFinalCarencia;
 
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@JsonSerialize(using = JsonSerializerData.class)
+	@JsonDeserialize(using = JsonDeserializerData.class)
+	private Calendar dataPrimeiraParcela;
+
 	private Integer periodicidade;
 
-	private String taxaJurosStr;
+	private Integer quantidadeParcelas;
 
-	private Integer totalParcelas;
+	private BigDecimal taxaJurosAnual;
 
-	private String valorPresenteStr;
+	private BigDecimal valorFinanciamento;
+
+	private BigDecimal valorTotalJuros;
+	
+	private BigDecimal valorTotalParcelas;
 
 	public Calendar getDataContratacao() {
 		return dataContratacao;
@@ -45,20 +56,32 @@ public class ProjetoCreditoRuralCronogramaDto implements Dto {
 		return dataFinalCarencia;
 	}
 
+	public Calendar getDataPrimeiraParcela() {
+		return dataPrimeiraParcela;
+	}
+
 	public Integer getPeriodicidade() {
 		return periodicidade;
 	}
 
-	public String getTaxaJurosStr() {
-		return taxaJurosStr;
+	public Integer getQuantidadeParcelas() {
+		return quantidadeParcelas;
 	}
 
-	public Integer getTotalParcelas() {
-		return totalParcelas;
+	public BigDecimal getTaxaJurosAnual() {
+		return taxaJurosAnual;
 	}
 
-	public String getValorPresenteStr() {
-		return valorPresenteStr;
+	public BigDecimal getValorFinanciamento() {
+		return valorFinanciamento;
+	}
+
+	public BigDecimal getValorTotalJuros() {
+		return valorTotalJuros;
+	}
+
+	public BigDecimal getValorTotalParcelas() {
+		return valorTotalParcelas;
 	}
 
 	public void setDataContratacao(Calendar dataContratacao) {
@@ -69,20 +92,32 @@ public class ProjetoCreditoRuralCronogramaDto implements Dto {
 		this.dataFinalCarencia = dataFinalCarencia;
 	}
 
+	public void setDataPrimeiraParcela(Calendar dataPrimeiraParcela) {
+		this.dataPrimeiraParcela = dataPrimeiraParcela;
+	}
+
 	public void setPeriodicidade(Integer periodicidade) {
 		this.periodicidade = periodicidade;
 	}
 
-	public void setTaxaJurosStr(String taxaJurosStr) {
-		this.taxaJurosStr = taxaJurosStr;
+	public void setQuantidadeParcelas(Integer quantidadeParcelas) {
+		this.quantidadeParcelas = quantidadeParcelas;
 	}
 
-	public void setTotalParcelas(Integer totalParcelas) {
-		this.totalParcelas = totalParcelas;
+	public void setTaxaJurosAnual(BigDecimal taxaJurosAnual) {
+		this.taxaJurosAnual = taxaJurosAnual;
 	}
 
-	public void setValorPresenteStr(String valorPresenteStr) {
-		this.valorPresenteStr = valorPresenteStr;
+	public void setValorFinanciamento(BigDecimal valorFinanciamento) {
+		this.valorFinanciamento = valorFinanciamento;
+	}
+
+	public void setValorTotalJuros(BigDecimal valorTotalJuros) {
+		this.valorTotalJuros = valorTotalJuros;
+	}
+
+	public void setValorTotalParcelas(BigDecimal valorTotalParcelas) {
+		this.valorTotalParcelas = valorTotalParcelas;
 	}
 
 }
