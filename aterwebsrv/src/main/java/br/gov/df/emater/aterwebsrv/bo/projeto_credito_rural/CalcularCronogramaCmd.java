@@ -31,7 +31,7 @@ public class CalcularCronogramaCmd extends _SalvarCmd {
 
 		ProjetoCreditoRuralCronogramaDto cronograma = result.getCronograma();
 
-		// validar a quantidade máxima de parcelas
+		// criticar parâmetros
 		if (cronograma.getPeriodicidade() == null) {
 			throw new BoException("O campo [%s] não foi informado", "Periodicidade");
 		}
@@ -60,6 +60,11 @@ public class CalcularCronogramaCmd extends _SalvarCmd {
 			throw new BoException("A data final da carência deve ser superior ou igual a data de contratação");
 		}
 
+		// variáveis produzidas para a resposta do calculo
+		List<ProjetoCreditoRuralCronogramaPagamento> cronogramaPagamentoList = new ArrayList<>();
+		ProjetoCreditoRuralCronogramaPagamento cronogramaPagamento;
+		Integer id = 0;
+
 		// calcular a data da primeira parcela
 		Calendar dataPrimeiraParcela = new GregorianCalendar();
 		dataPrimeiraParcela.setTime(cronograma.getDataFinalCarencia().getTime());
@@ -68,20 +73,33 @@ public class CalcularCronogramaCmd extends _SalvarCmd {
 		cronograma.setValorTotalJuros(new BigDecimal("0"));
 		cronograma.setValorTotalParcelas(new BigDecimal("0"));
 
-		List<ProjetoCreditoRuralCronogramaPagamento> cronogramaPagamentoList = new ArrayList<>();
-
-		ProjetoCreditoRuralCronogramaPagamento cronogramaPagamento;
-
-		// ajustar a taxa de juros conforme a periodicidade dos juros anuais escolhida
-		BigDecimal taxaJurosAnualAjustada = cronograma.getTaxaJurosAnual().multiply(new BigDecimal(Integer.toString(cronograma.getPeriodicidade().getTotalMesesPeriodo())).divide(new BigDecimal("12"), 10, RoundingMode.HALF_UP));
+		// ajustar a taxa de juros conforme a periodicidade dos juros anuais
+		// escolhida
+		BigDecimal taxaJurosAnualAjustada = cronograma.getTaxaJurosAnual().divide(new BigDecimal("100"), 10, RoundingMode.HALF_UP);
+		switch (cronograma.getPeriodicidade()) {
+		case A:
+			taxaJurosAnualAjustada = UtilitarioFinanceiro.getInstance().converteTempoTaxa(taxaJurosAnualAjustada, cronograma.getPeriodicidade().getUtilitarioFinanceiroPeriodicidade().getFatorEmAnos());
+			break;
+		case M:
+			taxaJurosAnualAjustada = UtilitarioFinanceiro.getInstance().converteTempoTaxa(taxaJurosAnualAjustada, cronograma.getPeriodicidade().getUtilitarioFinanceiroPeriodicidade().getFatorEmMeses());
+			break;
+		case S:
+			taxaJurosAnualAjustada = UtilitarioFinanceiro.getInstance().converteTempoTaxa(taxaJurosAnualAjustada, cronograma.getPeriodicidade().getUtilitarioFinanceiroPeriodicidade().getFatorEmSemestres());
+			break;
+		case T:
+			taxaJurosAnualAjustada = UtilitarioFinanceiro.getInstance().converteTempoTaxa(taxaJurosAnualAjustada, cronograma.getPeriodicidade().getUtilitarioFinanceiroPeriodicidade().getFatorEmTrimestres());
+			break;
+		}
 
 		// inserir os juros da carência
-		Integer id = 0;
-		BigDecimal diasCarencia = new BigDecimal(Long.toString(TimeUnit.DAYS.convert(cronograma.getDataFinalCarencia().getTimeInMillis() - cronograma.getDataContratacao().getTimeInMillis(), TimeUnit.MILLISECONDS)));
 		BigDecimal jurosCarencia = new BigDecimal("0");
-
-		if (diasCarencia.compareTo(new BigDecimal("1")) >= 0) {
-			jurosCarencia = cronograma.getValorFinanciamento().multiply(taxaJurosAnualAjustada.multiply(diasCarencia.divide(new BigDecimal("365"), 10, RoundingMode.HALF_UP)).divide(new BigDecimal("100"), 10, RoundingMode.HALF_UP));
+		Long diasCarencia = TimeUnit.DAYS.convert(cronograma.getDataFinalCarencia().getTimeInMillis() - cronograma.getDataContratacao().getTimeInMillis(), TimeUnit.MILLISECONDS);
+		if (diasCarencia.compareTo(new Long("1")) >= 0) {
+			// transformar a taxa de juros para "ao dia"
+			BigDecimal taxaJurosCarenciaEmDias = UtilitarioFinanceiro.getInstance().converteTempoTaxa(cronograma.getTaxaJurosAnual().divide(new BigDecimal("100"), 10, RoundingMode.HALF_UP), UtilitarioFinanceiro.Periodicidade.AO_ANO.getFatorEmDias());
+			// aplicar os juros diários fonte:
+			// http://www.somatematica.com.br/emedio/finan3.php
+			jurosCarencia = (cronograma.getValorFinanciamento().multiply((new BigDecimal("1").add(taxaJurosCarenciaEmDias)).pow(diasCarencia.intValue()))).subtract(cronograma.getValorFinanciamento());
 
 			cronogramaPagamento = new ProjetoCreditoRuralCronogramaPagamento();
 			cronogramaPagamento.setId(--id);
@@ -147,169 +165,5 @@ public class CalcularCronogramaCmd extends _SalvarCmd {
 
 		return false;
 	}
-
-	// public boolean executarVelho(_Contexto contexto) throws Exception {
-	// ProjetoCreditoRural result = (ProjetoCreditoRural)
-	// contexto.getRequisicao();
-	//
-	// ProjetoCreditoRuralCronogramaDto cronograma = result.getCronograma();
-	//
-	// // validar a quantidade máxima de parcelas
-	// if (cronograma.getPeriodicidade() == null) {
-	// throw new BoException("O campo [%s] não foi informado", "Periodicidade");
-	// }
-	// if (cronograma.getDataContratacao() == null) {
-	// throw new BoException("O campo [%s] não foi informado", "Data da
-	// Contratação");
-	// }
-	// if (cronograma.getValorFinanciamento() == null) {
-	// throw new BoException("O campo [%s] não foi informado", "Valor do
-	// Financiamento");
-	// }
-	// if (cronograma.getTaxaJurosAnual() == null) {
-	// throw new BoException("O campo [%s] não foi informado", "Juros Anual
-	// (%)");
-	// }
-	// if (cronograma.getQuantidadeParcelas() == null) {
-	// throw new BoException("O campo [%s] não foi informado", "Quantidade de
-	// Parcelas");
-	// }
-	// if (cronograma.getDataFinalCarencia() == null) {
-	// throw new BoException("O campo [%s] não foi informado", "Data Final de
-	// Carência");
-	// }
-	//
-	// if (cronograma.getQuantidadeParcelas() == null ||
-	// cronograma.getQuantidadeParcelas() < 1) {
-	// throw new BoException("Quantidade mínima de parcelas ultrapassada [1]");
-	// }
-	//
-	// if
-	// (cronograma.getPeriodicidade().ultrapassaQuantidadeMaximaParcelas(cronograma.getQuantidadeParcelas()))
-	// {
-	// throw new BoException("Quantidade máxima de parcelas ultrapassada [%d]",
-	// cronograma.getPeriodicidade().getMaxParcelas());
-	// }
-	//
-	// if
-	// (cronograma.getDataFinalCarencia().before(cronograma.getDataContratacao()))
-	// {
-	// throw new BoException("A data final da carência deve ser superior ou
-	// igual a data de contratação");
-	// }
-	//
-	// // calcular a data da primeira parcela
-	// Calendar dataPrimeiraParcela = new GregorianCalendar();
-	// dataPrimeiraParcela.setTime(cronograma.getDataFinalCarencia().getTime());
-	// dataPrimeiraParcela.add(Calendar.DATE,
-	// cronograma.getPeriodicidade().getTotalDiasPeriodo());
-	// cronograma.setDataPrimeiraParcela(dataPrimeiraParcela);
-	//
-	// cronograma.setValorTotalJuros(new BigDecimal("0"));
-	// cronograma.setValorTotalParcelas(new BigDecimal("0"));
-	//
-	// Long diasCarencia =
-	// TimeUnit.DAYS.convert(cronograma.getDataFinalCarencia().getTimeInMillis()
-	// - cronograma.getDataContratacao().getTimeInMillis(),
-	// TimeUnit.MILLISECONDS);
-	//
-	// BigDecimal Fexp1 = new BigDecimal(diasCarencia.toString()).divide(new
-	// BigDecimal("30").multiply(new
-	// BigDecimal(cronograma.getPeriodicidade().getTotalMesesPeriodo().toString())),
-	// 10, RoundingMode.HALF_UP);
-	//
-	// BigDecimal Fexp1_1 = cronograma.getTaxaJurosAnual().divide(new
-	// BigDecimal("1200"), 10, RoundingMode.HALF_UP).multiply(new
-	// BigDecimal(cronograma.getPeriodicidade().getTotalMesesPeriodo()));
-	//
-	// BigDecimal Fexp2 = new BigDecimal("1").add(Fexp1_1);
-	//
-	// BigDecimal Fexp3 = Fexp2.pow(Fexp1.intValue());
-	//
-	// BigDecimal Form1 = Fexp2.pow(cronograma.getQuantidadeParcelas());
-	//
-	// BigDecimal Form2 = Form1.multiply(Fexp1_1);
-	//
-	// BigDecimal Form3 = Form1.subtract(new BigDecimal("1"));
-	//
-	// BigDecimal Form4 = Form2.divide(Form3, 10, RoundingMode.HALF_UP);
-	//
-	// BigDecimal CoefJur = Form2.divide(Form4, 10, RoundingMode.HALF_UP);
-	//
-	// BigDecimal CDSCRED00FINCOEFJUR = Form2.divide(CoefJur, 10,
-	// RoundingMode.HALF_UP);
-	//
-	// BigDecimal Juros = cronograma.getValorFinanciamento().multiply(Fexp1_1);
-	// Juros =
-	// Juros.add(Fexp3.multiply(cronograma.getValorFinanciamento()).subtract(cronograma.getValorFinanciamento()).multiply(new
-	// BigDecimal("1").add(Fexp1_1)));
-	//
-	// BigDecimal Parcela =
-	// cronograma.getValorFinanciamento().multiply(Fexp3).multiply(CDSCRED00FINCOEFJUR);
-	//
-	// BigDecimal saldo = cronograma.getValorFinanciamento();
-	//
-	// int Contador = 1;
-	// int ContAno = 1;
-	// int ContEpoca = 0;
-	// List<ProjetoCreditoRuralCronogramaPagamento> cronogramaPagamentoList =
-	// new ArrayList<>();
-	// do {
-	// ProjetoCreditoRuralCronogramaPagamento cronogramaPagamento = new
-	// ProjetoCreditoRuralCronogramaPagamento();
-	//
-	// cronogramaPagamento.setId(Contador * -1);
-	// cronogramaPagamento.setTipo(cronograma.getTipo());
-	// cronogramaPagamento.setParcela(Contador);
-	//
-	// if (Contador == 1) {
-	// cronogramaPagamento.setAno(ContAno);
-	// }
-	//
-	// if ((++ContEpoca) <= cronograma.getPeriodicidade().getMaxEpoca()) {
-	// cronogramaPagamento.setEpoca(ContEpoca);
-	// } else {
-	// ContEpoca = 1;
-	// cronogramaPagamento.setAno(++ContAno);
-	// cronogramaPagamento.setEpoca(ContEpoca);
-	// }
-	// cronogramaPagamento.setPrestacao(Parcela);
-	// cronogramaPagamento.setSaldo(saldo);
-	// cronogramaPagamento.setJuros(cronogramaPagamento.getSaldo().multiply(Fexp1_1));
-	// cronogramaPagamento.setPrincipal(cronogramaPagamento.getPrestacao().subtract(cronogramaPagamento.getJuros()));
-	//
-	//
-	// cronograma.setValorTotalJuros(cronograma.getValorTotalJuros().add(cronogramaPagamento.getJuros()));
-	// cronograma.setValorTotalParcelas(cronograma.getValorTotalParcelas().add(cronogramaPagamento.getPrestacao()));
-	//
-	// saldo = saldo.subtract(cronogramaPagamento.getPrincipal());
-	//
-	// cronogramaPagamentoList.add(cronogramaPagamento);
-	// } while (++Contador <= cronograma.getQuantidadeParcelas());
-	//
-	// // List<Map<String, Object>> tabelaPrice =
-	// //
-	// UtilitarioFinanceiro.getInstance().tabelaPriceCalculaParcelas(cronograma.getValorFinanciamento(),
-	// // cronograma.getTaxaJurosAnual(), cronograma.getQuantidadeParcelas());
-	//
-	// switch (cronograma.getTipo()) {
-	// case I:
-	// result.setInvestimentoDataPrimeiraParcela(cronograma.getDataPrimeiraParcela());
-	// result.setInvestimentoValorTotalJuros(cronograma.getValorTotalJuros());
-	// result.setInvestimentoValorTotalParcelas(cronograma.getValorTotalParcelas());
-	// result.setCronogramaInvestimentoList(cronogramaPagamentoList);
-	// break;
-	// case C:
-	// result.setCusteioDataPrimeiraParcela(cronograma.getDataPrimeiraParcela());
-	// result.setCusteioValorTotalJuros(cronograma.getValorTotalJuros());
-	// result.setCusteioValorTotalParcelas(cronograma.getValorTotalParcelas());
-	// result.setCronogramaCusteioList(cronogramaPagamentoList);
-	// break;
-	// }
-	//
-	// contexto.setResposta(result);
-	//
-	// return false;
-	// }
 
 }

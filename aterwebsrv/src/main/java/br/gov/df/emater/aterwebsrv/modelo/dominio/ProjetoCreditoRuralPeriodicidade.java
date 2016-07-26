@@ -1,8 +1,11 @@
 package br.gov.df.emater.aterwebsrv.modelo.dominio;
 
+import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioFinanceiro;
+
 public enum ProjetoCreditoRuralPeriodicidade {
 
-	A("Anual", 4, 12, 365), M("Mensal", 1, 1, 30), S("Semestral", 3, 6, 182), T("Trimestral", 2, 3, 91);
+	A("Anual", 4, 12, 365, UtilitarioFinanceiro.Periodicidade.AO_ANO), M("Mensal", 1, 1, 30, UtilitarioFinanceiro.Periodicidade.AO_MES), S("Semestral", 3, 6, 182, UtilitarioFinanceiro.Periodicidade.AO_SEMESTRE), T("Trimestral", 2, 3, 91,
+			UtilitarioFinanceiro.Periodicidade.AO_TRIMESTRE);
 
 	public final static int _QUANTIDADE_MAXIMA_PARCELA_EM_MESES = 120;
 
@@ -18,13 +21,17 @@ public enum ProjetoCreditoRuralPeriodicidade {
 
 	private Integer totalMesesPeriodo;
 
-	private ProjetoCreditoRuralPeriodicidade(String descricao, Integer ordem, Integer totalMesesPeriodo, Integer totalDiasPeriodo) {
+	private UtilitarioFinanceiro.Periodicidade utilitarioFinanceiroPeriodicidade;
+
+	private ProjetoCreditoRuralPeriodicidade(String descricao, Integer ordem, Integer totalMesesPeriodo, Integer totalDiasPeriodo, UtilitarioFinanceiro.Periodicidade utilitarioFinanceiroPeriodicidade) {
 		this.descricao = descricao;
 		this.ordem = ordem;
 		this.totalMesesPeriodo = totalMesesPeriodo;
 		this.totalDiasPeriodo = totalDiasPeriodo;
 		this.maxParcelas = _QUANTIDADE_MAXIMA_PARCELA_EM_MESES / this.totalMesesPeriodo;
 		this.maxEpoca = 12 / this.totalMesesPeriodo;
+
+		this.utilitarioFinanceiroPeriodicidade = utilitarioFinanceiroPeriodicidade;
 	}
 
 	public Integer getMaxEpoca() {
@@ -45,6 +52,10 @@ public enum ProjetoCreditoRuralPeriodicidade {
 
 	public Integer getTotalMesesPeriodo() {
 		return totalMesesPeriodo;
+	}
+
+	public UtilitarioFinanceiro.Periodicidade getUtilitarioFinanceiroPeriodicidade() {
+		return utilitarioFinanceiroPeriodicidade;
 	}
 
 	@Override

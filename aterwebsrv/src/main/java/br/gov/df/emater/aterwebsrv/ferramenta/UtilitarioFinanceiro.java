@@ -11,9 +11,86 @@ import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
 
 // Singleton utilitario para cálculos financeiros
+// fonte: https://pt.wikipedia.org/wiki/Tabela_Price
 public class UtilitarioFinanceiro {
 
 	private static volatile UtilitarioFinanceiro instance;
+
+	public static enum Periodicidade {
+		AO_DIA(1, new BigDecimal("1").divide(new BigDecimal("1"), 10, RoundingMode.HALF_UP), new BigDecimal("7").divide(new BigDecimal("1"), 10, RoundingMode.HALF_UP), new BigDecimal("30").divide(new BigDecimal("1"), 10, RoundingMode.HALF_UP),
+				new BigDecimal("60").divide(new BigDecimal("1"), 10, RoundingMode.HALF_UP), new BigDecimal("90").divide(new BigDecimal("1"), 10, RoundingMode.HALF_UP), new BigDecimal("180").divide(new BigDecimal("1"), 10, RoundingMode.HALF_UP),
+				new BigDecimal("360").divide(new BigDecimal("1"), 10, RoundingMode.HALF_UP)), A_SEMANA(2, new BigDecimal("1").divide(new BigDecimal("7"), 10, RoundingMode.HALF_UP), new BigDecimal("1").divide(new BigDecimal("1"), 10, RoundingMode.HALF_UP),
+						new BigDecimal("30").divide(new BigDecimal("7"), 10, RoundingMode.HALF_UP), new BigDecimal("60").divide(new BigDecimal("7"), 10, RoundingMode.HALF_UP), new BigDecimal("90").divide(new BigDecimal("7"), 10, RoundingMode.HALF_UP),
+						new BigDecimal("180").divide(new BigDecimal("7"), 10, RoundingMode.HALF_UP), new BigDecimal("360").divide(new BigDecimal("7"), 10, RoundingMode.HALF_UP)), AO_MES(3, new BigDecimal("1").divide(new BigDecimal("30"), 10, RoundingMode.HALF_UP),
+								new BigDecimal("7").divide(new BigDecimal("30"), 10, RoundingMode.HALF_UP), new BigDecimal("1").divide(new BigDecimal("1"), 10, RoundingMode.HALF_UP), new BigDecimal("2").divide(new BigDecimal("1"), 10, RoundingMode.HALF_UP),
+								new BigDecimal("3").divide(new BigDecimal("1"), 10, RoundingMode.HALF_UP), new BigDecimal("6").divide(new BigDecimal("1"), 10, RoundingMode.HALF_UP),
+								new BigDecimal("12").divide(new BigDecimal("1"), 10, RoundingMode.HALF_UP)), AO_BIMESTRE(4, new BigDecimal("1").divide(new BigDecimal("60"), 10, RoundingMode.HALF_UP), new BigDecimal("7").divide(new BigDecimal("60"), 10, RoundingMode.HALF_UP),
+										new BigDecimal("1").divide(new BigDecimal("2"), 10, RoundingMode.HALF_UP), new BigDecimal("1").divide(new BigDecimal("1"), 10, RoundingMode.HALF_UP), new BigDecimal("3").divide(new BigDecimal("2"), 10, RoundingMode.HALF_UP),
+										new BigDecimal("3").divide(new BigDecimal("1"), 10, RoundingMode.HALF_UP), new BigDecimal("6").divide(new BigDecimal("1"), 10, RoundingMode.HALF_UP)), AO_TRIMESTRE(5,
+												new BigDecimal("1").divide(new BigDecimal("90"), 10, RoundingMode.HALF_UP), new BigDecimal("7").divide(new BigDecimal("90"), 10, RoundingMode.HALF_UP), new BigDecimal("1").divide(new BigDecimal("3"), 10, RoundingMode.HALF_UP),
+												new BigDecimal("2").divide(new BigDecimal("3"), 10, RoundingMode.HALF_UP), new BigDecimal("1").divide(new BigDecimal("1"), 10, RoundingMode.HALF_UP), new BigDecimal("2").divide(new BigDecimal("1"), 10, RoundingMode.HALF_UP),
+												new BigDecimal("4").divide(new BigDecimal("1"), 10, RoundingMode.HALF_UP)), AO_SEMESTRE(6, new BigDecimal("1").divide(new BigDecimal("180"), 10, RoundingMode.HALF_UP),
+														new BigDecimal("1").divide(new BigDecimal("26"), 10, RoundingMode.HALF_UP), new BigDecimal("1").divide(new BigDecimal("6"), 10, RoundingMode.HALF_UP),
+														new BigDecimal("1").divide(new BigDecimal("3"), 10, RoundingMode.HALF_UP), new BigDecimal("1").divide(new BigDecimal("2"), 10, RoundingMode.HALF_UP), new BigDecimal("1").divide(new BigDecimal("1"), 10, RoundingMode.HALF_UP),
+														new BigDecimal("2").divide(new BigDecimal("1"), 10, RoundingMode.HALF_UP)), AO_ANO(7, new BigDecimal("1").divide(new BigDecimal("360"), 10, RoundingMode.HALF_UP),
+																new BigDecimal("1").divide(new BigDecimal("52"), 10, RoundingMode.HALF_UP), new BigDecimal("1").divide(new BigDecimal("12"), 10, RoundingMode.HALF_UP),
+																new BigDecimal("1").divide(new BigDecimal("6"), 10, RoundingMode.HALF_UP), new BigDecimal("1").divide(new BigDecimal("4"), 10, RoundingMode.HALF_UP),
+																new BigDecimal("1").divide(new BigDecimal("2"), 10, RoundingMode.HALF_UP), new BigDecimal("1").divide(new BigDecimal("1"), 10, RoundingMode.HALF_UP));
+
+		private int ordem;
+
+		private BigDecimal fatorEmDias;
+		private BigDecimal fatorEmSemanas;
+		private BigDecimal fatorEmMeses;
+		private BigDecimal fatorEmBimestres;
+		private BigDecimal fatorEmTrimestres;
+		private BigDecimal fatorEmSemestres;
+		private BigDecimal fatorEmAnos;
+
+		private Periodicidade(int ordem, BigDecimal totalEmDias, BigDecimal totalEmSemanas, BigDecimal totalEmMeses, BigDecimal totalEmBimestres, BigDecimal totalEmTrimestres, BigDecimal totalEmSemestres, BigDecimal totalEmAnos) {
+			this.ordem = ordem;
+			this.fatorEmDias = totalEmDias;
+			this.fatorEmSemanas = totalEmSemanas;
+			this.fatorEmMeses = totalEmMeses;
+			this.fatorEmBimestres = totalEmBimestres;
+			this.fatorEmTrimestres = totalEmTrimestres;
+			this.fatorEmSemestres = totalEmSemestres;
+			this.fatorEmAnos = totalEmAnos;
+		}
+
+		public int getOrdem() {
+			return ordem;
+		}
+
+		public BigDecimal getFatorEmDias() {
+			return fatorEmDias;
+		}
+
+		public BigDecimal getFatorEmSemanas() {
+			return fatorEmSemanas;
+		}
+
+		public BigDecimal getFatorEmMeses() {
+			return fatorEmMeses;
+		}
+
+		public BigDecimal getFatorEmBimestres() {
+			return fatorEmBimestres;
+		}
+
+		public BigDecimal getFatorEmTrimestres() {
+			return fatorEmTrimestres;
+		}
+
+		public BigDecimal getFatorEmSemestres() {
+			return fatorEmSemestres;
+		}
+
+		public BigDecimal getFatorEmAnos() {
+			return fatorEmAnos;
+		}
+
+	};
 
 	public static final UtilitarioFinanceiro getInstance() {
 		if (instance == null) {
@@ -81,8 +158,11 @@ public class UtilitarioFinanceiro {
 
 		// jogar o eventual resquício do saldo devedor para a última parcela
 		if (!CollectionUtils.isEmpty(result) && !saldoDevedor.equals(big())) {
-			//result.get(result.size() - 1).put("amortizacao", amortizacao.add(saldoDevedor).setScale(2, RoundingMode.HALF_UP));
-//			result.get(result.size() - 1).put("saldoDevedorAnterior", saldoDevedorAnterior.add(saldoDevedor).setScale(2, RoundingMode.HALF_UP));
+			// result.get(result.size() - 1).put("amortizacao",
+			// amortizacao.add(saldoDevedor).setScale(2, RoundingMode.HALF_UP));
+			// result.get(result.size() - 1).put("saldoDevedorAnterior",
+			// saldoDevedorAnterior.add(saldoDevedor).setScale(2,
+			// RoundingMode.HALF_UP));
 			result.get(result.size() - 1).put("saldoDevedor", big().setScale(2, RoundingMode.HALF_UP));
 		}
 
@@ -109,5 +189,18 @@ public class UtilitarioFinanceiro {
 
 	public BigDecimal tabelaPriceCalculaValorParcela(String valorPresenteStr, String taxaJurosStr, Integer totalParcelas) {
 		return tabelaPriceCalculaValorParcela(big(valorPresenteStr), big(taxaJurosStr), totalParcelas);
+	}
+
+	/**
+	 * Converte o tempo da taxa fonte:
+	 * http://fazaconta.com/taxa-mensal-vs-anual.htm
+	 * 
+	 * @param taxaJuros
+	 * @param fatorConversao
+	 * @return
+	 */
+	public BigDecimal converteTempoTaxa(BigDecimal taxaJuros, BigDecimal fatorConversao) {
+		BigDecimal result = new BigDecimal(Math.pow(new BigDecimal("1").add(taxaJuros).doubleValue(), fatorConversao.doubleValue()), MathContext.DECIMAL64);
+		return result;
 	}
 }
