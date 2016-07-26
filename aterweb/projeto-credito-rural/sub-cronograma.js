@@ -48,10 +48,16 @@ angular.module(pNmModulo).controller(pNmController,
     };
 
     $scope.calcular = function (lista) {
-        ProjetoCreditoRuralSrv.calcularCronograma({ valorPresenteStr: "1000", taxaJurosStr: "3", totalParcelas: 4, }).success(function(resposta) {
-            console.log(resposta);
+        removerCampo($scope.$parent.cadastro.registro.projetoCreditoRural, ['@jsonId']);
+        $scope.cadastro.registro.projetoCreditoRural.calculoTipo = lista === 'cronogramaCusteioList' ? 'C' : 'I';
+        ProjetoCreditoRuralSrv.calcularCronograma($scope.cadastro.registro.projetoCreditoRural).success(function(resposta) {
+            if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {
+                $scope.cadastro.registro.projetoCreditoRural = resposta.resultado;
+            } else {
+                toastr.error(resposta && resposta.mensagem ? resposta.mensagem : resposta, 'Erro ao calcular dados');
+            }
         }).error(function(erro) {
-            toastr.error(erro, 'Erro ao iniciar filtro');
+            toastr.error(erro, 'Erro ao calcular dados');
         });
     };
 

@@ -11,6 +11,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import br.gov.df.emater.aterwebsrv.modelo.dominio.FinanciamentoTipo;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.ProjetoCreditoRuralPeriodicidade;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 
@@ -36,16 +38,18 @@ public class ProjetoCreditoRuralCronogramaDto implements Dto {
 	@JsonDeserialize(using = JsonDeserializerData.class)
 	private Calendar dataPrimeiraParcela;
 
-	private Integer periodicidade;
+	private ProjetoCreditoRuralPeriodicidade periodicidade;
 
 	private Integer quantidadeParcelas;
 
 	private BigDecimal taxaJurosAnual;
 
+	private FinanciamentoTipo tipo;
+
 	private BigDecimal valorFinanciamento;
 
 	private BigDecimal valorTotalJuros;
-	
+
 	private BigDecimal valorTotalParcelas;
 
 	public Calendar getDataContratacao() {
@@ -60,7 +64,7 @@ public class ProjetoCreditoRuralCronogramaDto implements Dto {
 		return dataPrimeiraParcela;
 	}
 
-	public Integer getPeriodicidade() {
+	public ProjetoCreditoRuralPeriodicidade getPeriodicidade() {
 		return periodicidade;
 	}
 
@@ -70,6 +74,10 @@ public class ProjetoCreditoRuralCronogramaDto implements Dto {
 
 	public BigDecimal getTaxaJurosAnual() {
 		return taxaJurosAnual;
+	}
+
+	public FinanciamentoTipo getTipo() {
+		return this.tipo;
 	}
 
 	public BigDecimal getValorFinanciamento() {
@@ -96,7 +104,7 @@ public class ProjetoCreditoRuralCronogramaDto implements Dto {
 		this.dataPrimeiraParcela = dataPrimeiraParcela;
 	}
 
-	public void setPeriodicidade(Integer periodicidade) {
+	public void setPeriodicidade(ProjetoCreditoRuralPeriodicidade periodicidade) {
 		this.periodicidade = periodicidade;
 	}
 
@@ -106,6 +114,10 @@ public class ProjetoCreditoRuralCronogramaDto implements Dto {
 
 	public void setTaxaJurosAnual(BigDecimal taxaJurosAnual) {
 		this.taxaJurosAnual = taxaJurosAnual;
+	}
+
+	public void setTipo(FinanciamentoTipo tipo) {
+		this.tipo = tipo;
 	}
 
 	public void setValorFinanciamento(BigDecimal valorFinanciamento) {

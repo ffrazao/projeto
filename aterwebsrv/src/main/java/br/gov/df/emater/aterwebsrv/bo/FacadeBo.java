@@ -34,7 +34,6 @@ import br.gov.df.emater.aterwebsrv.modelo.dto.LogAcaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.PerfilCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.PessoaCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.ProjetoCreditoRuralCadFiltroDto;
-import br.gov.df.emater.aterwebsrv.modelo.dto.ProjetoCreditoRuralCronogramaDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.PropriedadeRuralCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.PublicoAlvoPropriedadeRuralCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dto.UnidadeOrganizacionalCadFiltroDto;
@@ -408,7 +407,7 @@ public class FacadeBo implements BeanFactoryAware {
 	}
 
 	@Transactional
-	public _Contexto projetoCreditoRuralCalcularCronograma(Principal usuario, ProjetoCreditoRuralCronogramaDto projetoCredito) throws Exception {
+	public _Contexto projetoCreditoRuralCalcularCronograma(Principal usuario, ProjetoCreditoRural projetoCredito) throws Exception {
 		return this._executar(usuario, "ProjetoCreditoRuralCalcularCronogramaCh", projetoCredito);
 	}
 

@@ -82,21 +82,21 @@
                             </div>
                         </td>
                         <td>
-                            <input class="form-control input-sm text-right" id="valorOrc{{$index}}" name="valorOrc{{$index}}" ng-model="reg.valorOrc" ui-number-mask="2" ng-required="true" ng-readonly="true">
-                            <div class="label label-danger" ng-show="navegador.submetido && financiamentoListFrm['valorOrc' + $index].$error.required">
+                            <input class="form-control input-sm text-right" id="valorOrcado{{$index}}" name="valorOrcado{{$index}}" ng-model="reg.valorOrcado" ui-number-mask="2" ng-required="true" ng-readonly="true">
+                            <div class="label label-danger" ng-show="navegador.submetido && financiamentoListFrm['valorOrcado' + $index].$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
                         </td>
                         <td>
-                            <input class="form-control input-sm text-right" id="valorProprio{{$index}}" name="valorProprio{{$index}}" ng-model="reg.valorProprio" ui-number-mask="2" ng-required="true" ng-readonly="!reg.valorOrc">
+                            <input class="form-control input-sm text-right" id="valorProprio{{$index}}" name="valorProprio{{$index}}" ng-model="reg.valorProprio" ui-number-mask="2" ng-required="true" ng-readonly="!reg.valorOrcado">
                             <div class="label label-danger" ng-show="navegador.submetido && financiamentoListFrm['valorProprio' + $index].$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
                         </td>
                         <td>
-                            <input class="form-control input-sm text-right" id="percentualProprio{{$index}}" name="percentualProprio{{$index}}" ng-model="reg.percentualProprio" ui-number-mask="3" ng-required="true" ng-readonly="!reg.valorOrc">
+                            <input class="form-control input-sm text-right" id="percentualProprio{{$index}}" name="percentualProprio{{$index}}" ng-model="reg.percentualProprio" ui-number-mask="3" ng-required="true" ng-readonly="!reg.valorOrcado">
                             <div class="label label-danger" ng-show="navegador.submetido && financiamentoListFrm['percentualProprio' + $index].$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
@@ -129,7 +129,7 @@
                 <div class="col-sm-3 text-right">
                     <label class="control-label">Totais</label>
                 </div>
-                <div class="col-sm-3" ng-repeat="idx in [{codigo: 'valorOrc', descricao: 'Valor Orçado'},{codigo: 'valorProprio', descricao: 'Valor Próprio'},{codigo: 'valorFinanciado', descricao: 'Valor Financiado'}]">
+                <div class="col-sm-3" ng-repeat="idx in [{codigo: 'valorOrcado', descricao: 'Valor Orçado'},{codigo: 'valorProprio', descricao: 'Valor Próprio'},{codigo: 'valorFinanciado', descricao: 'Valor Financiado'}]">
                     <div class="form-group">
                         <label class="control-label" for="{{lista}}{{idx.codigo}}">{{idx.descricao}}</label>
                         <input type="text" class="form-control text-right" id="{{lista}}{{idx.codigo}}" name="{{lista}}{{idx.codigo}}" ng-readonly="true" ng-model="cadastro.apoio.financiamento[lista][idx.codigo + 'Total']" ui-number-mask="2">

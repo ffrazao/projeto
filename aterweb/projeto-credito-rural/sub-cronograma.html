@@ -30,16 +30,16 @@
                 <div class="col-sm-3">
                     <div class="form-group">
                         <label class="control-label" for="{{parte}}ValorFinanciamento">Financiamento (R$)</label>
-                        <input class="form-control input-sm text-right" id="{{parte}}ValorFinanciamento" name="{{parte}}ValorFinanciamento" ng-model="cadastro.registro.projetoCreditoRural[parte + 'ValorFinanciamento']" ui-number-mask="3" ng-required="true" ng-readonly="true">
+                        <input class="form-control input-sm text-right" id="{{parte}}ValorFinanciamento" name="{{parte}}ValorFinanciamento" ng-model="cadastro.registro.projetoCreditoRural[parte + 'ValorFinanciamento']" ui-number-mask="2" ng-required="true" ng-readonly="true">
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-3">
                     <div class="form-group">
-                        <label class="control-label" for="{{parte}}JuroAnual">Juro anual (%)</label>
-                        <input class="form-control input-sm text-right" id="{{parte}}JuroAnual" name="{{parte}}JuroAnual" ng-model="cadastro.registro.projetoCreditoRural[parte + 'JuroAnual']" ui-number-mask="3" ng-required="true">
-                        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario[parte + 'JuroAnual'].$error.required">
+                        <label class="control-label" for="{{parte}}TaxaJurosAnual">Juros anual (%)</label>
+                        <input class="form-control input-sm text-right" id="{{parte}}TaxaJurosAnual" name="{{parte}}TaxaJurosAnual" ng-model="cadastro.registro.projetoCreditoRural[parte + 'TaxaJurosAnual']" ui-number-mask="3" ng-required="true">
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario[parte + 'TaxaJurosAnual'].$error.required">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             Campo Obrigatório
                         </div>
@@ -47,9 +47,9 @@
                 </div>
                 <div class="col-sm-3">
                     <div class="form-group">
-                        <label class="control-label" for="{{parte}}QuantidadeParcela">Quantidade de parcelas</label>
-                        <input class="form-control input-sm text-right" id="{{parte}}QuantidadeParcela" name="{{parte}}QuantidadeParcela" ng-model="cadastro.registro.projetoCreditoRural[parte + 'QuantidadeParcela']" ui-number-mask="0" ng-required="true">
-                        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario[parte + 'QuantidadeParcela'].$error.required">
+                        <label class="control-label" for="{{parte}}QuantidadeParcelas">Quantidade de parcelas</label>
+                        <input class="form-control input-sm text-right" id="{{parte}}QuantidadeParcelas" name="{{parte}}QuantidadeParcelas" ng-model="cadastro.registro.projetoCreditoRural[parte + 'QuantidadeParcelas']" ui-number-mask="0" ng-required="true">
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario[parte + 'QuantidadeParcelas'].$error.required">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             Campo Obrigatório
                         </div>
@@ -72,21 +72,21 @@
                 <div class="col-sm-3">
                     <div class="form-group">
                         <label class="control-label" for="{{parte}}DataPrimeiraParcela">Data Pag. 1ª parcela</label>
-                        <input class="form-control input-sm text-right" id="{{parte}}DataPrimeiraParcela" name="{{parte}}DataPrimeiraParcela" ng-model="cadastro.registro.projetoCreditoRural[parte + 'DataPrimeiraParcela']" ui-number-mask="3" ng-required="true" ng-readonly="true">
+                        <input class="form-control input-sm text-right" id="{{parte}}DataPrimeiraParcela" name="{{parte}}DataPrimeiraParcela" ng-model="cadastro.registro.projetoCreditoRural[parte + 'DataPrimeiraParcela']" ui-date-mask ng-required="true" ng-readonly="true">
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-3">
                     <div class="form-group">
-                        <label class="control-label" for="{{parte}}TotalJuros">Total de Juros</label>
-                        <input class="form-control input-sm text-right" id="{{parte}}TotalJuros" name="{{parte}}TotalJuros" ng-model="cadastro.registro.projetoCreditoRural[parte + 'TotalJuros']" ui-number-mask="3" ng-required="true" ng-readonly="true">
+                        <label class="control-label" for="{{parte}}ValorTotalJuros">Total de Juros</label>
+                        <input class="form-control input-sm text-right" id="{{parte}}ValorTotalJuros" name="{{parte}}ValorTotalJuros" ng-model="cadastro.registro.projetoCreditoRural[parte + 'ValorTotalJuros']" ui-number-mask="2" ng-required="true" ng-readonly="true">
                     </div>
                 </div>
                 <div class="col-sm-3">
                     <div class="form-group">
-                        <label class="control-label" for="{{parte}}TotalParcela">Total das Parcelas</label>
-                        <input class="form-control input-sm text-right" id="{{parte}}TotalParcela" name="{{parte}}TotalParcela" ng-model="cadastro.registro.projetoCreditoRural[parte + 'TotalParcela']" ui-number-mask="3" ng-required="true" ng-readonly="true">
+                        <label class="control-label" for="{{parte}}ValorTotalParcelas">Total das Parcelas</label>
+                        <input class="form-control input-sm text-right" id="{{parte}}ValorTotalParcelas" name="{{parte}}ValorTotalParcelas" ng-model="cadastro.registro.projetoCreditoRural[parte + 'ValorTotalParcelas']" ui-number-mask="2" ng-required="true" ng-readonly="true">
                     </div>
                 </div>
                 <div class="col-sm-3">
@@ -113,38 +113,37 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th><frz-seletor ng-model="cronogramaNvg" dados="cadastro.registro.projetoCreditoRural[lista]"></frz-seletor></th>
                                 <th>#</th>
                                 <th>Ano</th>
-                                <th>Descrição</th>
-                                <th>Unidade</th>
-                                <th>Quantidade</th>
-                                <th>Valor Unitário</th>
-                                <th>Valor Total</th>
+                                <th>Época</th>
+                                <th>Saldo (R$)</th>
+                                <th>Juros (R$)</th>
+                                <th>Principal (R$)</th>
+                                <th>Prestação (R$)</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="reg in cadastro.registro.projetoCreditoRural[lista] | orderBy: ['descricao'] track by reg.id">
                                 <td>
-                                    <input type="radio" ng-show="cronogramaNvg.selecao.tipo === 'U'" ng-model="cronogramaNvg.selecao.item" ng-value="reg"/>
-                                    <input type="checkbox" ng-show="cronogramaNvg.selecao.tipo === 'M'" checklist-model="cronogramaNvg.selecao.items" checklist-value="reg"/>
-                                </td>
-                                <td>
                                     {{$index + 1 + ((cronogramaNvg.paginaAtual-1) * cronogramaNvg.tamanhoPagina)}}
                                 </td>
                                 <td>
-                                    <input type="text">
+                                    {{reg.ano | number: 0}}
                                 </td>
                                 <td>
-                                    <input type="text">
+                                    {{reg.epoca | number: 0}}
                                 </td>
-                                <td>
+                                <td class="text-right">
+                                    {{reg.saldo | number: 2}}
                                 </td>
-                                <td>
+                                <td class="text-right">
+                                    {{reg.juros | number: 2}}
                                 </td>
-                                <td>
+                                <td class="text-right">
+                                    {{reg.principal | number: 2}}
                                 </td>
-                                <td>
+                                <td class="text-right">
+                                    {{reg.prestacao | number: 2}}
                                 </td>
                             </tr>
                         </tbody>

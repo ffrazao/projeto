@@ -84,6 +84,10 @@ public class ProjetoCreditoRuralCronogramaPagamento extends EntidadeBase impleme
 		return principal;
 	}
 
+	public ProjetoCreditoRural getProjetoCreditoRural() {
+		return projetoCreditoRural;
+	}
+
 	public BigDecimal getSaldo() {
 		return saldo;
 	}
@@ -119,10 +123,6 @@ public class ProjetoCreditoRuralCronogramaPagamento extends EntidadeBase impleme
 
 	public void setPrincipal(BigDecimal principal) {
 		this.principal = principal;
-	}
-
-	public ProjetoCreditoRural getProjetoCreditoRural() {
-		return projetoCreditoRural;
 	}
 
 	public void setProjetoCreditoRural(ProjetoCreditoRural projetoCreditoRural) {

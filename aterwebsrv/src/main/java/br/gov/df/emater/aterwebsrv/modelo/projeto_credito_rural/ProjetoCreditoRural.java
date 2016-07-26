@@ -20,6 +20,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -31,6 +32,7 @@ import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.Atividade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FinanciamentoTipo;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.ProjetoCreditoRuralPeriodicidade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.ProjetoCreditoRuralStatus;
 import br.gov.df.emater.aterwebsrv.modelo.dto.ProjetoCreditoRuralCronogramaDto;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
@@ -56,7 +58,12 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 	private FinanciamentoTipo calculoTipo;
 
 	@OneToMany(mappedBy = "projetoCreditoRural")
-	private List<ProjetoCreditoRuralCronogramaPagamento> cronogramaPagamentoList;
+	@Where(clause = "tipo = 'C'")
+	private List<ProjetoCreditoRuralCronogramaPagamento> cronogramaCusteioList;
+
+	@OneToMany(mappedBy = "projetoCreditoRural")
+	@Where(clause = "tipo = 'I'")
+	private List<ProjetoCreditoRuralCronogramaPagamento> cronogramaInvestimentoList;
 
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
@@ -79,8 +86,13 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 	@Column(name = "custeio_data_primeira_parcela")
 	private Calendar custeioDataPrimeiraParcela;
 
+	@OneToMany(mappedBy = "projetoCreditoRural")
+	@Where(clause = "tipo = 'C'")
+	private List<ProjetoCreditoRuralFinanciamento> custeioList;
+
 	@Column(name = "custeio_periodicidade")
-	private Integer custeioPeriodicidade;
+	@Enumerated(EnumType.STRING)
+	private ProjetoCreditoRuralPeriodicidade custeioPeriodicidade;
 
 	@Column(name = "custeio_quantidade_parcelas")
 	private Integer custeioQuantidadeParcelas;
@@ -98,7 +110,8 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 	private BigDecimal custeioValorTotalParcelas;
 
 	@OneToMany(mappedBy = "projetoCreditoRural")
-	private List<ProjetoCreditoRuralFinanciamento> financiamentoList;
+	@Where(clause = "tipo = 'D'")
+	private List<ProjetoCreditoRuralReceitaDespesa> despesaList;
 
 	@OneToMany(mappedBy = "projetoCreditoRural")
 	private List<ProjetoCreditoRuralFluxoCaixa> fluxoCaixaList;
@@ -109,9 +122,6 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 	@Column(name = "garantia_real")
 	@Lob
 	private String garantiaReal;
-
-	@OneToMany(mappedBy = "projetoCreditoRural")
-	private List<ProjetoCreditoRuralHistoricoReceita> historicoReceitaList;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -138,8 +148,13 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 	@Column(name = "investimento_data_primeira_parcela")
 	private Calendar investimentoDataPrimeiraParcela;
 
+	@OneToMany(mappedBy = "projetoCreditoRural")
+	@Where(clause = "tipo = 'I'")
+	private List<ProjetoCreditoRuralFinanciamento> investimentoList;
+
 	@Column(name = "investimento_periodicidade")
-	private Integer investimentoPeriodicidade;
+	@Enumerated(EnumType.STRING)
+	private ProjetoCreditoRuralPeriodicidade investimentoPeriodicidade;
 
 	@Column(name = "investimento_quantidade_parcela")
 	private Integer investimentoQuantidadeParcelas;
@@ -173,10 +188,14 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 	private PropriedadeRural propriedadeRural;
 
 	@OneToMany(mappedBy = "projetoCreditoRural")
-	private List<ProjetoCreditoRuralReceitaDespesa> receitaDespesaList;
+	@Where(clause = "tipo = 'R'")
+	private List<ProjetoCreditoRuralReceitaDespesa> receitaList;
 
 	@Enumerated(EnumType.STRING)
 	private ProjetoCreditoRuralStatus status;
+
+	@OneToMany(mappedBy = "projetoCreditoRural")
+	private List<ProjetoCreditoRuralHistoricoReceita> trienioList;
 
 	public ProjetoCreditoRural() {
 		super();
@@ -204,7 +223,9 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 
 	public ProjetoCreditoRuralCronogramaDto getCronograma() throws BoException {
 		ProjetoCreditoRuralCronogramaDto result = new ProjetoCreditoRuralCronogramaDto();
-		switch (getCalculoTipo()) {
+		result.setTipo(getCalculoTipo());
+
+		switch (result.getTipo()) {
 		case C:
 			result.setPeriodicidade(this.custeioPeriodicidade);
 			result.setDataContratacao(this.custeioDataContratacao);
@@ -213,8 +234,8 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 			result.setQuantidadeParcelas(this.custeioQuantidadeParcelas);
 			result.setDataFinalCarencia(this.custeioDataFinalCarencia);
 			result.setDataPrimeiraParcela(this.custeioDataPrimeiraParcela);
-			result.setValorTotalJuros(this.custeioValorTotalJuros);
-			result.setValorTotalParcelas(this.custeioValorFinanciamento);
+			//result.setValorTotalJuros(this.custeioValorTotalJuros);
+			//result.setValorTotalParcelas(this.custeioValorTotalParcelas);
 			break;
 		case I:
 			result.setPeriodicidade(this.investimentoPeriodicidade);
@@ -224,8 +245,8 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 			result.setQuantidadeParcelas(this.investimentoQuantidadeParcelas);
 			result.setDataFinalCarencia(this.investimentoDataFinalCarencia);
 			result.setDataPrimeiraParcela(this.investimentoDataPrimeiraParcela);
-			result.setValorTotalJuros(this.investimentoValorTotalJuros);
-			result.setValorTotalParcelas(this.investimentoValorFinanciamento);
+			//result.setValorTotalJuros(this.investimentoValorTotalJuros);
+			//result.setValorTotalParcelas(this.investimentoValorTotalParcelas);
 			break;
 		default:
 			throw new BoException("Tipo de cronograma de projeto de crédito rural inválido");
@@ -233,8 +254,12 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 		return result;
 	}
 
-	public List<ProjetoCreditoRuralCronogramaPagamento> getCronogramaPagamentoList() {
-		return cronogramaPagamentoList;
+	public List<ProjetoCreditoRuralCronogramaPagamento> getCronogramaCusteioList() {
+		return cronogramaCusteioList;
+	}
+
+	public List<ProjetoCreditoRuralCronogramaPagamento> getCronogramaInvestimentoList() {
+		return cronogramaInvestimentoList;
 	}
 
 	public Calendar getCusteioDataContratacao() {
@@ -249,7 +274,11 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 		return custeioDataPrimeiraParcela;
 	}
 
-	public Integer getCusteioPeriodicidade() {
+	public List<ProjetoCreditoRuralFinanciamento> getCusteioList() {
+		return custeioList;
+	}
+
+	public ProjetoCreditoRuralPeriodicidade getCusteioPeriodicidade() {
 		return custeioPeriodicidade;
 	}
 
@@ -273,8 +302,8 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 		return custeioValorTotalParcelas;
 	}
 
-	public List<ProjetoCreditoRuralFinanciamento> getFinanciamentoList() {
-		return financiamentoList;
+	public List<ProjetoCreditoRuralReceitaDespesa> getDespesaList() {
+		return despesaList;
 	}
 
 	public List<ProjetoCreditoRuralFluxoCaixa> getFluxoCaixaList() {
@@ -287,10 +316,6 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 
 	public String getGarantiaReal() {
 		return garantiaReal;
-	}
-
-	public List<ProjetoCreditoRuralHistoricoReceita> getHistoricoReceitaList() {
-		return historicoReceitaList;
 	}
 
 	@Override
@@ -310,7 +335,11 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 		return investimentoDataPrimeiraParcela;
 	}
 
-	public Integer getInvestimentoPeriodicidade() {
+	public List<ProjetoCreditoRuralFinanciamento> getInvestimentoList() {
+		return investimentoList;
+	}
+
+	public ProjetoCreditoRuralPeriodicidade getInvestimentoPeriodicidade() {
 		return investimentoPeriodicidade;
 	}
 
@@ -354,12 +383,16 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 		return propriedadeRural;
 	}
 
-	public List<ProjetoCreditoRuralReceitaDespesa> getReceitaDespesaList() {
-		return receitaDespesaList;
+	public List<ProjetoCreditoRuralReceitaDespesa> getReceitaList() {
+		return receitaList;
 	}
 
 	public ProjetoCreditoRuralStatus getStatus() {
 		return status;
+	}
+
+	public List<ProjetoCreditoRuralHistoricoReceita> getTrienioList() {
+		return trienioList;
 	}
 
 	public void setAgencia(String agencia) {
@@ -378,8 +411,12 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 		this.calculoTipo = calculoTipo;
 	}
 
-	public void setCronogramaPagamentoList(List<ProjetoCreditoRuralCronogramaPagamento> cronogramaPagamentoList) {
-		this.cronogramaPagamentoList = cronogramaPagamentoList;
+	public void setCronogramaCusteioList(List<ProjetoCreditoRuralCronogramaPagamento> cronogramaCusteioList) {
+		this.cronogramaCusteioList = cronogramaCusteioList;
+	}
+
+	public void setCronogramaInvestimentoList(List<ProjetoCreditoRuralCronogramaPagamento> cronogramaInvestimentoList) {
+		this.cronogramaInvestimentoList = cronogramaInvestimentoList;
 	}
 
 	public void setCusteioDataContratacao(Calendar custeioDataContratacao) {
@@ -394,7 +431,11 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 		this.custeioDataPrimeiraParcela = custeioDataPrimeiraParcela;
 	}
 
-	public void setCusteioPeriodicidade(Integer custeioPeriodicidade) {
+	public void setCusteioList(List<ProjetoCreditoRuralFinanciamento> custeioList) {
+		this.custeioList = custeioList;
+	}
+
+	public void setCusteioPeriodicidade(ProjetoCreditoRuralPeriodicidade custeioPeriodicidade) {
 		this.custeioPeriodicidade = custeioPeriodicidade;
 	}
 
@@ -418,8 +459,8 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 		this.custeioValorTotalParcelas = custeioValorTotalParcelas;
 	}
 
-	public void setFinanciamentoList(List<ProjetoCreditoRuralFinanciamento> financiamentoList) {
-		this.financiamentoList = financiamentoList;
+	public void setDespesaList(List<ProjetoCreditoRuralReceitaDespesa> despesaList) {
+		this.despesaList = despesaList;
 	}
 
 	public void setFluxoCaixaList(List<ProjetoCreditoRuralFluxoCaixa> fluxoCaixaList) {
@@ -432,10 +473,6 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 
 	public void setGarantiaReal(String garantiaReal) {
 		this.garantiaReal = garantiaReal;
-	}
-
-	public void setHistoricoReceitaList(List<ProjetoCreditoRuralHistoricoReceita> historicoReceitaList) {
-		this.historicoReceitaList = historicoReceitaList;
 	}
 
 	@Override
@@ -455,7 +492,11 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 		this.investimentoDataPrimeiraParcela = investimentoDataPrimeiraParcela;
 	}
 
-	public void setInvestimentoPeriodicidade(Integer investimentoPeriodicidade) {
+	public void setInvestimentoList(List<ProjetoCreditoRuralFinanciamento> investimentoList) {
+		this.investimentoList = investimentoList;
+	}
+
+	public void setInvestimentoPeriodicidade(ProjetoCreditoRuralPeriodicidade investimentoPeriodicidade) {
 		this.investimentoPeriodicidade = investimentoPeriodicidade;
 	}
 
@@ -499,12 +540,16 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 		this.propriedadeRural = propriedadeRural;
 	}
 
-	public void setReceitaDespesaList(List<ProjetoCreditoRuralReceitaDespesa> receitaDespesaList) {
-		this.receitaDespesaList = receitaDespesaList;
+	public void setReceitaList(List<ProjetoCreditoRuralReceitaDespesa> receitaList) {
+		this.receitaList = receitaList;
 	}
 
 	public void setStatus(ProjetoCreditoRuralStatus status) {
 		this.status = status;
+	}
+
+	public void setTrienioList(List<ProjetoCreditoRuralHistoricoReceita> trienioList) {
+		this.trienioList = trienioList;
 	}
 
 }

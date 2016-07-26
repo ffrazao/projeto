@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
 import br.gov.df.emater.aterwebsrv.modelo.dto.ProjetoCreditoRuralCadFiltroDto;
-import br.gov.df.emater.aterwebsrv.modelo.dto.ProjetoCreditoRuralCronogramaDto;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRural;
 
 @RestController
@@ -25,7 +24,7 @@ public class ProjetoCreditoRuralRest {
 	}
 
 	@RequestMapping(value = "/calcular-cronograma", method = RequestMethod.POST)
-	public Resposta calcularCronograma(@RequestBody ProjetoCreditoRuralCronogramaDto projetoCredito, Principal usuario) throws Exception {
+	public Resposta calcularCronograma(@RequestBody ProjetoCreditoRural projetoCredito, Principal usuario) throws Exception {
 		return new Resposta(facadeBo.projetoCreditoRuralCalcularCronograma(usuario, projetoCredito).getResposta());
 	}
 

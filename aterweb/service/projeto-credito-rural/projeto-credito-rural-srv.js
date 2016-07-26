@@ -16,7 +16,7 @@ angular.module(pNmModulo).factory(pNmFactory,
               
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
                 UtilSrv.dominio({ent: [
-                   'PessoaGenero',
+                   'ProjetoCreditoRuralPeriodicidade',
                    'PessoaGeracao',
                    'PessoaSituacao',
                    'PublicoAlvoSegmento',
@@ -31,7 +31,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                    'Confirmacao',
                 ]}).success(function(resposta) {
                     if (resposta && resposta.resultado) {
-                        scp.cadastro.apoio.generoList = resposta.resultado[0];
+                        scp.cadastro.apoio.periodicidadeList = resposta.resultado[0];
                         scp.cadastro.apoio.pessoaGeracaoList = resposta.resultado[1];
                         scp.cadastro.apoio.pessoaSituacaoList = resposta.resultado[2];
                         scp.cadastro.apoio.publicoAlvoSegmentoList = resposta.resultado[3];
@@ -72,8 +72,6 @@ angular.module(pNmModulo).factory(pNmFactory,
                 for (var i = 1; i <= 10; i++) {
                     scp.cadastro.apoio.anoList.push({codigo: i, descricao: 'Ano ' + zeroEsq('' + i, 2)});
                 }
-                scp.cadastro.apoio.periodicidadeList = [{codigo: 3, descricao: 'Trimestral'}, {codigo: 6, descricao: 'Semestral'}, {codigo: 12, descricao: 'Anual'}];
-
             },
             filtrar : function(filtro) {
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
