@@ -106,8 +106,8 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 	@Column(name = "custeio_valor_total_juros")
 	private BigDecimal custeioValorTotalJuros;
 
-	@Column(name = "custeio_valor_total_parcelas")
-	private BigDecimal custeioValorTotalParcelas;
+	@Column(name = "custeio_valor_total_prestacoes")
+	private BigDecimal custeioValorTotalPrestacoes;
 
 	@OneToMany(mappedBy = "projetoCreditoRural")
 	@Where(clause = "tipo = 'D'")
@@ -168,8 +168,8 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 	@Column(name = "investimento_valor_total_juros")
 	private BigDecimal investimentoValorTotalJuros;
 
-	@Column(name = "investimento_valor_total_parcelas")
-	private BigDecimal investimentoValorTotalParcelas;
+	@Column(name = "investimento_valor_total_prestacoes")
+	private BigDecimal investimentoValorTotalPrestacoes;
 
 	@ManyToOne
 	@JoinColumn(name = "linha_credito_id")
@@ -298,8 +298,8 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 		return custeioValorTotalJuros;
 	}
 
-	public BigDecimal getCusteioValorTotalParcelas() {
-		return custeioValorTotalParcelas;
+	public BigDecimal getCusteioValorTotalPrestacoes() {
+		return custeioValorTotalPrestacoes;
 	}
 
 	public List<ProjetoCreditoRuralReceitaDespesa> getDespesaList() {
@@ -359,8 +359,8 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 		return investimentoValorTotalJuros;
 	}
 
-	public BigDecimal getInvestimentoValorTotalParcelas() {
-		return investimentoValorTotalParcelas;
+	public BigDecimal getInvestimentoValorTotalPrestacoes() {
+		return investimentoValorTotalPrestacoes;
 	}
 
 	public LinhaCredito getLinhaCredito() {
@@ -455,8 +455,8 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 		this.custeioValorTotalJuros = custeioValorTotalJuros;
 	}
 
-	public void setCusteioValorTotalParcelas(BigDecimal custeioValorTotalParcelas) {
-		this.custeioValorTotalParcelas = custeioValorTotalParcelas;
+	public void setCusteioValorTotalPrestacoes(BigDecimal custeioValorTotalPrestacoes) {
+		this.custeioValorTotalPrestacoes = custeioValorTotalPrestacoes;
 	}
 
 	public void setDespesaList(List<ProjetoCreditoRuralReceitaDespesa> despesaList) {
@@ -516,8 +516,8 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 		this.investimentoValorTotalJuros = investimentoValorTotalJuros;
 	}
 
-	public void setInvestimentoValorTotalParcelas(BigDecimal investimentoValorTotalParcelas) {
-		this.investimentoValorTotalParcelas = investimentoValorTotalParcelas;
+	public void setInvestimentoValorTotalPrestacoes(BigDecimal investimentoValorTotalPrestacoes) {
+		this.investimentoValorTotalPrestacoes = investimentoValorTotalPrestacoes;
 	}
 
 	public void setLinhaCredito(LinhaCredito linhaCredito) {

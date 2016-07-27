@@ -85,8 +85,8 @@
                 </div>
                 <div class="col-sm-3">
                     <div class="form-group">
-                        <label class="control-label" for="{{parte}}ValorTotalParcelas">Total das Parcelas</label>
-                        <input class="form-control input-sm text-right" id="{{parte}}ValorTotalParcelas" name="{{parte}}ValorTotalParcelas" ng-model="cadastro.registro.projetoCreditoRural[parte + 'ValorTotalParcelas']" ui-number-mask="2" ng-required="true" ng-readonly="true">
+                        <label class="control-label" for="{{parte}}ValorTotalPrestacoes">Total das Prestações</label>
+                        <input class="form-control input-sm text-right" id="{{parte}}ValorTotalPrestacoes" name="{{parte}}ValorTotalPrestacoes" ng-model="cadastro.registro.projetoCreditoRural[parte + 'ValorTotalPrestacoes']" ui-number-mask="2" ng-required="true" ng-readonly="true">
                     </div>
                 </div>
                 <div class="col-sm-3">
@@ -114,12 +114,15 @@
                         <thead>
                             <tr>
                                 <th>#</th>
+                                <th>Parcela</th>
                                 <th>Ano</th>
                                 <th>Época</th>
-                                <th>Saldo (R$)</th>
+                                <th>Saldo Devedor Inicial (R$)</th>
+                                <th>Taxa de Juros (%)</th>
                                 <th>Juros (R$)</th>
-                                <th>Principal (R$)</th>
+                                <th>Amortização (R$)</th>
                                 <th>Prestação (R$)</th>
+                                <th>Saldo Devedor Final (R$)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -128,22 +131,31 @@
                                     {{$index + 1 + ((cronogramaNvg.paginaAtual-1) * cronogramaNvg.tamanhoPagina)}}
                                 </td>
                                 <td>
+                                    {{reg.parcela | number: 0}}
+                                </td>
+                                <td>
                                     {{reg.ano | number: 0}}
                                 </td>
                                 <td>
                                     {{reg.epoca | number: 0}}
                                 </td>
                                 <td class="text-right">
-                                    {{reg.saldo | number: 2}}
+                                    {{reg.saldoDevedorInicial | number: 2}}
+                                </td>
+                                <td class="text-right">
+                                    {{reg.taxaJuros | number: 6}}
                                 </td>
                                 <td class="text-right">
                                     {{reg.juros | number: 2}}
                                 </td>
                                 <td class="text-right">
-                                    {{reg.principal | number: 2}}
+                                    {{reg.amortizacao | number: 2}}
                                 </td>
                                 <td class="text-right">
                                     {{reg.prestacao | number: 2}}
+                                </td>
+                                <td class="text-right">
+                                    {{reg.saldoDevedorFinal | number: 2}}
                                 </td>
                             </tr>
                         </tbody>

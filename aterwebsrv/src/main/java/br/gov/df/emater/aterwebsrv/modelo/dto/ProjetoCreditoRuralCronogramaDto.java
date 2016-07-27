@@ -50,7 +50,7 @@ public class ProjetoCreditoRuralCronogramaDto implements Dto {
 
 	private BigDecimal valorTotalJuros;
 
-	private BigDecimal valorTotalParcelas;
+	private BigDecimal valorTotalPrestacoes;
 
 	public Calendar getDataContratacao() {
 		return dataContratacao;
@@ -88,8 +88,8 @@ public class ProjetoCreditoRuralCronogramaDto implements Dto {
 		return valorTotalJuros;
 	}
 
-	public BigDecimal getValorTotalParcelas() {
-		return valorTotalParcelas;
+	public BigDecimal getValorTotalPrestacoes() {
+		return valorTotalPrestacoes;
 	}
 
 	public void setDataContratacao(Calendar dataContratacao) {
@@ -128,8 +128,8 @@ public class ProjetoCreditoRuralCronogramaDto implements Dto {
 		this.valorTotalJuros = valorTotalJuros;
 	}
 
-	public void setValorTotalParcelas(BigDecimal valorTotalParcelas) {
-		this.valorTotalParcelas = valorTotalParcelas;
+	public void setValorTotalPrestacoes(BigDecimal valorTotalPrestacoes) {
+		this.valorTotalPrestacoes = valorTotalPrestacoes;
 	}
 
 }

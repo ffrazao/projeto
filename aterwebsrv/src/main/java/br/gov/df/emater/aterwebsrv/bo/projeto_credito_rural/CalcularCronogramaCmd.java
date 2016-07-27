@@ -71,23 +71,23 @@ public class CalcularCronogramaCmd extends _SalvarCmd {
 		dataPrimeiraParcela.add(Calendar.DATE, cronograma.getPeriodicidade().getTotalDiasPeriodo());
 		cronograma.setDataPrimeiraParcela(dataPrimeiraParcela);
 		cronograma.setValorTotalJuros(new BigDecimal("0"));
-		cronograma.setValorTotalParcelas(new BigDecimal("0"));
+		cronograma.setValorTotalPrestacoes(new BigDecimal("0"));
 
 		// ajustar a taxa de juros conforme a periodicidade dos juros anuais
 		// escolhida
-		BigDecimal taxaJurosAnualAjustada = cronograma.getTaxaJurosAnual().divide(new BigDecimal("100"), 10, RoundingMode.HALF_UP);
+		BigDecimal taxaJurosAnualAjustada = cronograma.getTaxaJurosAnual();
 		switch (cronograma.getPeriodicidade()) {
 		case A:
-			taxaJurosAnualAjustada = UtilitarioFinanceiro.getInstance().converteTempoTaxa(taxaJurosAnualAjustada, cronograma.getPeriodicidade().getUtilitarioFinanceiroPeriodicidade().getFatorEmAnos());
+			taxaJurosAnualAjustada = UtilitarioFinanceiro.getInstance().converteTempoTaxa(taxaJurosAnualAjustada, UtilitarioFinanceiro.Periodicidade.AO_ANO.getFatorEmAnos());
 			break;
 		case M:
-			taxaJurosAnualAjustada = UtilitarioFinanceiro.getInstance().converteTempoTaxa(taxaJurosAnualAjustada, cronograma.getPeriodicidade().getUtilitarioFinanceiroPeriodicidade().getFatorEmMeses());
+			taxaJurosAnualAjustada = UtilitarioFinanceiro.getInstance().converteTempoTaxa(taxaJurosAnualAjustada, UtilitarioFinanceiro.Periodicidade.AO_ANO.getFatorEmMeses());
 			break;
 		case S:
-			taxaJurosAnualAjustada = UtilitarioFinanceiro.getInstance().converteTempoTaxa(taxaJurosAnualAjustada, cronograma.getPeriodicidade().getUtilitarioFinanceiroPeriodicidade().getFatorEmSemestres());
+			taxaJurosAnualAjustada = UtilitarioFinanceiro.getInstance().converteTempoTaxa(taxaJurosAnualAjustada, UtilitarioFinanceiro.Periodicidade.AO_ANO.getFatorEmSemestres());
 			break;
 		case T:
-			taxaJurosAnualAjustada = UtilitarioFinanceiro.getInstance().converteTempoTaxa(taxaJurosAnualAjustada, cronograma.getPeriodicidade().getUtilitarioFinanceiroPeriodicidade().getFatorEmTrimestres());
+			taxaJurosAnualAjustada = UtilitarioFinanceiro.getInstance().converteTempoTaxa(taxaJurosAnualAjustada, UtilitarioFinanceiro.Periodicidade.AO_ANO.getFatorEmTrimestres());
 			break;
 		}
 
@@ -105,10 +105,12 @@ public class CalcularCronogramaCmd extends _SalvarCmd {
 			cronogramaPagamento.setId(--id);
 			cronogramaPagamento.setTipo(cronograma.getTipo());
 			cronogramaPagamento.setParcela(0);
-			cronogramaPagamento.setSaldo(cronograma.getValorFinanciamento());
+			cronogramaPagamento.setSaldoDevedorInicial(cronograma.getValorFinanciamento());
 			cronogramaPagamento.setPrestacao(new BigDecimal("0"));
+			cronogramaPagamento.setTaxaJuros(taxaJurosCarenciaEmDias);
 			cronogramaPagamento.setJuros(jurosCarencia);
-			cronogramaPagamento.setPrincipal(new BigDecimal("0"));
+			cronogramaPagamento.setAmortizacao(new BigDecimal("0"));
+			cronogramaPagamento.setSaldoDevedorFinal(cronogramaPagamento.getSaldoDevedorInicial().add(jurosCarencia));
 
 			cronograma.setValorTotalJuros(cronograma.getValorTotalJuros().add(cronogramaPagamento.getJuros()));
 
@@ -135,13 +137,15 @@ public class CalcularCronogramaCmd extends _SalvarCmd {
 			}
 			cronogramaPagamento.setTipo(cronograma.getTipo());
 			cronogramaPagamento.setParcela((Integer) tabelaPrice.get("parcela"));
-			cronogramaPagamento.setSaldo((BigDecimal) tabelaPrice.get("saldoDevedorAnterior"));
-			cronogramaPagamento.setPrestacao((BigDecimal) tabelaPrice.get("valorParcela"));
+			cronogramaPagamento.setSaldoDevedorInicial((BigDecimal) tabelaPrice.get("saldoDevedorInicial"));
+			cronogramaPagamento.setPrestacao((BigDecimal) tabelaPrice.get("prestacao"));
+			cronogramaPagamento.setTaxaJuros((BigDecimal) tabelaPrice.get("taxaJuros"));
 			cronogramaPagamento.setJuros((BigDecimal) tabelaPrice.get("juros"));
-			cronogramaPagamento.setPrincipal((BigDecimal) tabelaPrice.get("amortizacao"));
+			cronogramaPagamento.setAmortizacao((BigDecimal) tabelaPrice.get("amortizacao"));
+			cronogramaPagamento.setSaldoDevedorFinal((BigDecimal) tabelaPrice.get("saldoDevedorFinal"));
 
 			cronograma.setValorTotalJuros(cronograma.getValorTotalJuros().add(cronogramaPagamento.getJuros()));
-			cronograma.setValorTotalParcelas(cronograma.getValorTotalParcelas().add(cronogramaPagamento.getPrestacao()));
+			cronograma.setValorTotalPrestacoes(cronograma.getValorTotalPrestacoes().add(cronogramaPagamento.getPrestacao()));
 
 			cronogramaPagamentoList.add(cronogramaPagamento);
 		}
@@ -150,13 +154,13 @@ public class CalcularCronogramaCmd extends _SalvarCmd {
 		case I:
 			result.setInvestimentoDataPrimeiraParcela(cronograma.getDataPrimeiraParcela());
 			result.setInvestimentoValorTotalJuros(cronograma.getValorTotalJuros());
-			result.setInvestimentoValorTotalParcelas(cronograma.getValorTotalParcelas());
+			result.setInvestimentoValorTotalPrestacoes(cronograma.getValorTotalPrestacoes());
 			result.setCronogramaInvestimentoList(cronogramaPagamentoList);
 			break;
 		case C:
 			result.setCusteioDataPrimeiraParcela(cronograma.getDataPrimeiraParcela());
 			result.setCusteioValorTotalJuros(cronograma.getValorTotalJuros());
-			result.setCusteioValorTotalParcelas(cronograma.getValorTotalParcelas());
+			result.setCusteioValorTotalPrestacoes(cronograma.getValorTotalPrestacoes());
 			result.setCronogramaCusteioList(cronogramaPagamentoList);
 			break;
 		}

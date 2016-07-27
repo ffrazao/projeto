@@ -2,6 +2,7 @@ package br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural;
 
 import java.math.BigDecimal;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -22,6 +23,8 @@ public class ProjetoCreditoRuralCronogramaPagamento extends EntidadeBase impleme
 
 	private static final long serialVersionUID = 1L;
 
+	private BigDecimal amortizacao;
+
 	private Integer ano;
 
 	private Integer epoca;
@@ -36,13 +39,18 @@ public class ProjetoCreditoRuralCronogramaPagamento extends EntidadeBase impleme
 
 	private BigDecimal prestacao;
 
-	private BigDecimal principal;
-
 	@ManyToOne
 	@JoinColumn(name = "projeto_credito_id")
 	private ProjetoCreditoRural projetoCreditoRural;
 
-	private BigDecimal saldo;
+	@Column(name = "saldo_devedor_final")
+	private BigDecimal saldoDevedorFinal;
+
+	@Column(name = "saldo_devedor_inicial")
+	private BigDecimal saldoDevedorInicial;
+
+	@Column(name = "taxa_juros")
+	private BigDecimal taxaJuros;
 
 	@Enumerated(EnumType.STRING)
 	private FinanciamentoTipo tipo;
@@ -53,6 +61,10 @@ public class ProjetoCreditoRuralCronogramaPagamento extends EntidadeBase impleme
 
 	public ProjetoCreditoRuralCronogramaPagamento(Integer id) {
 		super(id);
+	}
+
+	public BigDecimal getAmortizacao() {
+		return amortizacao;
 	}
 
 	public Integer getAno() {
@@ -80,20 +92,28 @@ public class ProjetoCreditoRuralCronogramaPagamento extends EntidadeBase impleme
 		return prestacao;
 	}
 
-	public BigDecimal getPrincipal() {
-		return principal;
-	}
-
 	public ProjetoCreditoRural getProjetoCreditoRural() {
 		return projetoCreditoRural;
 	}
 
-	public BigDecimal getSaldo() {
-		return saldo;
+	public BigDecimal getSaldoDevedorFinal() {
+		return saldoDevedorFinal;
+	}
+
+	public BigDecimal getSaldoDevedorInicial() {
+		return saldoDevedorInicial;
+	}
+
+	public BigDecimal getTaxaJuros() {
+		return taxaJuros;
 	}
 
 	public FinanciamentoTipo getTipo() {
 		return tipo;
+	}
+
+	public void setAmortizacao(BigDecimal amortizacao) {
+		this.amortizacao = amortizacao;
 	}
 
 	public void setAno(Integer ano) {
@@ -121,16 +141,20 @@ public class ProjetoCreditoRuralCronogramaPagamento extends EntidadeBase impleme
 		this.prestacao = prestacao;
 	}
 
-	public void setPrincipal(BigDecimal principal) {
-		this.principal = principal;
-	}
-
 	public void setProjetoCreditoRural(ProjetoCreditoRural projetoCreditoRural) {
 		this.projetoCreditoRural = projetoCreditoRural;
 	}
 
-	public void setSaldo(BigDecimal saldo) {
-		this.saldo = saldo;
+	public void setSaldoDevedorFinal(BigDecimal saldoDevedorFinal) {
+		this.saldoDevedorFinal = saldoDevedorFinal;
+	}
+
+	public void setSaldoDevedorInicial(BigDecimal saldoDevedorInicial) {
+		this.saldoDevedorInicial = saldoDevedorInicial;
+	}
+
+	public void setTaxaJuros(BigDecimal taxaJuros) {
+		this.taxaJuros = taxaJuros;
 	}
 
 	public void setTipo(FinanciamentoTipo tipo) {

@@ -127,43 +127,45 @@ public class UtilitarioFinanceiro {
 	public List<Map<String, Object>> tabelaPriceCalculaParcelas(BigDecimal valorPresente, BigDecimal taxaJuros, Integer totalParcelas) {
 		List<Map<String, Object>> result = null;
 
-		BigDecimal valorParcela = tabelaPriceCalculaValorParcela(valorPresente, taxaJuros, totalParcelas);
-		if (valorParcela == null) {
+		BigDecimal prestacao = tabelaPriceCalculaPrestacao(valorPresente, taxaJuros, totalParcelas);
+		if (prestacao == null) {
 			return null;
 		}
 
 		taxaJuros = taxaJuros.divide(big("100"), 10, RoundingMode.HALF_UP);
-		BigDecimal saldoDevedor = valorPresente;
-		BigDecimal saldoDevedorAnterior = big();
+		BigDecimal saldoDevedorFinal = valorPresente;
+		BigDecimal saldoDevedorInicial = big();
 		BigDecimal juros = big();
 		BigDecimal amortizacao = big();
 
 		for (int parcela = 0; parcela < totalParcelas; parcela++) {
-			juros = saldoDevedor.multiply(taxaJuros);
-			amortizacao = valorParcela.subtract(juros);
-			saldoDevedorAnterior = saldoDevedor;
-			saldoDevedor = saldoDevedor.subtract(amortizacao);
+			juros = saldoDevedorFinal.multiply(taxaJuros).setScale(2, RoundingMode.HALF_UP);
+			amortizacao = prestacao.subtract(juros);
+			saldoDevedorInicial = saldoDevedorFinal;
+			saldoDevedorFinal = saldoDevedorFinal.subtract(amortizacao);
 			if (result == null) {
 				result = new ArrayList<>();
 			}
 			Map<String, Object> linha = new HashMap<>();
 			linha.put("parcela", parcela + 1);
-			linha.put("saldoDevedorAnterior", saldoDevedorAnterior.setScale(2, RoundingMode.HALF_UP));
-			linha.put("saldoDevedor", saldoDevedor.setScale(2, RoundingMode.HALF_UP));
-			linha.put("valorParcela", valorParcela.setScale(2, RoundingMode.HALF_UP));
+			linha.put("saldoDevedorInicial", saldoDevedorInicial.setScale(2, RoundingMode.HALF_UP));
+			linha.put("prestacao", prestacao.setScale(2, RoundingMode.HALF_UP));
+			linha.put("taxaJuros", taxaJuros.setScale(10, RoundingMode.HALF_UP));
 			linha.put("juros", juros.setScale(2, RoundingMode.HALF_UP));
 			linha.put("amortizacao", amortizacao.setScale(2, RoundingMode.HALF_UP));
+			linha.put("saldoDevedorFinal", saldoDevedorFinal.setScale(2, RoundingMode.HALF_UP));
+			
 			result.add(linha);
 		}
 
 		// jogar o eventual resquício do saldo devedor para a última parcela
-		if (!CollectionUtils.isEmpty(result) && !saldoDevedor.equals(big())) {
+		if (!CollectionUtils.isEmpty(result) && !saldoDevedorFinal.equals(big())) {
 			// result.get(result.size() - 1).put("amortizacao",
-			// amortizacao.add(saldoDevedor).setScale(2, RoundingMode.HALF_UP));
-			// result.get(result.size() - 1).put("saldoDevedorAnterior",
-			// saldoDevedorAnterior.add(saldoDevedor).setScale(2,
+			// amortizacao.add(saldoDevedorFinal).setScale(2, RoundingMode.HALF_UP));
+			// result.get(result.size() - 1).put("saldoDevedorInicial",
+			// saldoDevedorInicial.add(saldoDevedorFinal).setScale(2,
 			// RoundingMode.HALF_UP));
-			result.get(result.size() - 1).put("saldoDevedor", big().setScale(2, RoundingMode.HALF_UP));
+			result.get(result.size() - 1).put("saldoDevedorFinal", big().setScale(2, RoundingMode.HALF_UP));
 		}
 
 		return result;
@@ -173,7 +175,7 @@ public class UtilitarioFinanceiro {
 		return tabelaPriceCalculaParcelas(big(valorPresenteStr), big(taxaJurosStr), totalParcelas);
 	}
 
-	public BigDecimal tabelaPriceCalculaValorParcela(BigDecimal valorPresente, BigDecimal taxaJuros, Integer totalParcelas) {
+	public BigDecimal tabelaPriceCalculaPrestacao(BigDecimal valorPresente, BigDecimal taxaJuros, Integer totalParcelas) {
 		if (valorPresente == null || taxaJuros == null || totalParcelas == null || totalParcelas < 1) {
 			return null;
 		}
@@ -187,8 +189,8 @@ public class UtilitarioFinanceiro {
 		return result.setScale(2, BigDecimal.ROUND_HALF_UP);
 	}
 
-	public BigDecimal tabelaPriceCalculaValorParcela(String valorPresenteStr, String taxaJurosStr, Integer totalParcelas) {
-		return tabelaPriceCalculaValorParcela(big(valorPresenteStr), big(taxaJurosStr), totalParcelas);
+	public BigDecimal tabelaPriceCalculaPrestacao(String valorPresenteStr, String taxaJurosStr, Integer totalParcelas) {
+		return tabelaPriceCalculaPrestacao(big(valorPresenteStr), big(taxaJurosStr), totalParcelas);
 	}
 
 	/**
@@ -200,7 +202,13 @@ public class UtilitarioFinanceiro {
 	 * @return
 	 */
 	public BigDecimal converteTempoTaxa(BigDecimal taxaJuros, BigDecimal fatorConversao) {
-		BigDecimal result = new BigDecimal(Math.pow(new BigDecimal("1").add(taxaJuros).doubleValue(), fatorConversao.doubleValue()), MathContext.DECIMAL64);
-		return result;
+		
+		// POTÊNCIA(1 + 3%; 1/12) - 1
+		taxaJuros = taxaJuros.divide(new BigDecimal("100"), 10, RoundingMode.HALF_UP);
+		BigDecimal base = new BigDecimal("1").add(taxaJuros);
+		BigDecimal result = new BigDecimal(Math.pow(base.doubleValue(), fatorConversao.doubleValue()), MathContext.DECIMAL64);
+		result = result.subtract(big("1"));
+		result = result.multiply(big("100"));
+		return result.setScale(10, RoundingMode.HALF_UP);
 	}
 }
