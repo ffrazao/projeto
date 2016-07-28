@@ -42,6 +42,7 @@
                         <th>% Próprio</th>
                         <th>Valor Financiado</th>
                         <th>Época Liberação</th>
+                        <th>Lote</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -112,6 +113,13 @@
                         <td>
                             <input class="form-control input-sm" id="epocaLiberacao{{$index}}" name="epocaLiberacao{{$index}}" ng-model="reg.epocaLiberacao" ng-required="true">
                             <div class="label label-danger" ng-show="navegador.submetido && financiamentoListFrm['epocaLiberacao' + $index].$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                        <td>
+                            <input class="form-control input-sm" id="nomeLote{{$index}}" name="nomeLote{{$index}}" ng-model="reg.nomeLote" ng-required="true">
+                            <div class="label label-danger" ng-show="navegador.submetido && financiamentoListFrm['nomeLote' + $index].$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>

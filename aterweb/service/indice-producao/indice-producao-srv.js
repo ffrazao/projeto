@@ -93,7 +93,7 @@ angular.module(pNmModulo).factory(pNmFactory,
             },
             excluir : function(registro) {
                 SegurancaSrv.acesso(this.funcionalidade, 'EXCLUIR');
-                return $http.post(this.endereco + '/excluir', registro);
+                return $http.delete(this.endereco + '/excluir', {params: {'id': registro.id}});
             },
             tagBem : function(nome) {
                 return BemProducaoSrv.filtrar({nome: nome});

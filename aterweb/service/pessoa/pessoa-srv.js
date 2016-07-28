@@ -132,25 +132,25 @@ angular.module(pNmModulo).factory(pNmFactory,
             executarFiltro : function() {
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
             },
-            novo : function(pessoa) {
+            novo : function(registro) {
                 SegurancaSrv.acesso(this.funcionalidade, 'INCLUIR');
-                return $http.post(this.endereco + '/novo', pessoa);
+                return $http.post(this.endereco + '/novo', registro);
             },
-            incluir : function(pessoa) {
+            incluir : function(registro) {
                 SegurancaSrv.acesso(this.funcionalidade, 'INCLUIR');
-                return $http.post(this.endereco + '/incluir', pessoa);
+                return $http.post(this.endereco + '/incluir', registro);
             },
             visualizar : function(id) {
                 SegurancaSrv.acesso(this.funcionalidade, 'VISUALIZAR');
                 return $http.get(this.endereco + '/visualizar', {params: {'id': id}});
             },
-            editar : function(pessoa) {
+            editar : function(registro) {
                 SegurancaSrv.acesso(this.funcionalidade, 'EDITAR');
-                return $http.post(this.endereco + '/editar', pessoa);
+                return $http.post(this.endereco + '/editar', registro);
             },
-            excluir : function(pessoa) {
+            excluir : function(registro) {
                 SegurancaSrv.acesso(this.funcionalidade, 'EXCLUIR');
-                return $http.delete(this.endereco + '/excluir', {params: {'id': pessoa.id}});
+                return $http.delete(this.endereco + '/excluir', {params: {'id': registro.id}});
             },
             // funcoes especiais
             formularioFiltrarComColeta : function(filtro) {

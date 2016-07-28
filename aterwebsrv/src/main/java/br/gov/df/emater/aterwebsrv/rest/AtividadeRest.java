@@ -28,9 +28,9 @@ public class AtividadeRest {
 		return salvar(atividade, usuario);
 	}
 
-	@RequestMapping(value = "/excluir", method = RequestMethod.POST)
-	public Resposta excluir(@RequestBody Atividade atividade, Principal usuario) throws Exception {
-		return new Resposta(facadeBo.atividadeExcluir(usuario, atividade).getResposta());
+	@RequestMapping(value = "/excluir", method = RequestMethod.DELETE)
+	public Resposta excluir(@RequestParam Integer id, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.atividadeExcluir(usuario, id).getResposta());
 	}
 
 	@RequestMapping(value = "/filtro-executar", method = RequestMethod.POST)

@@ -75,8 +75,8 @@ public class FacadeBo implements BeanFactoryAware {
 	}
 
 	@Transactional
-	public _Contexto atividadeExcluir(Principal usuario, Atividade atividade) throws Exception {
-		return this._executar(usuario, "AtividadeExcluirCh", atividade);
+	public _Contexto atividadeExcluir(Principal usuario, Integer id) throws Exception {
+		return this._executar(usuario, "AtividadeExcluirCh", id);
 	}
 
 	@Transactional(readOnly = true)
@@ -148,6 +148,11 @@ public class FacadeBo implements BeanFactoryAware {
 		return this._executar(usuario, "FormularioColetarCh", formularioVersao);
 	}
 
+	@Transactional
+	public _Contexto formularioExcluir(Principal usuario, Integer id) throws Exception {
+		return this._executar(usuario, "FormularioExcluirCh", id);
+	}
+
 	@Transactional(readOnly = true)
 	public _Contexto formularioFiltroExecutar(Principal usuario, FormularioCadFiltroDto filtro) throws Exception {
 		return this._executar(usuario, "FormularioFiltroExecutarCh", filtro);
@@ -182,8 +187,8 @@ public class FacadeBo implements BeanFactoryAware {
 	}
 
 	@Transactional
-	public _Contexto funcionalidadeExcluir(Principal usuario, Funcionalidade funcionalidade) throws Exception {
-		return this._executar(usuario, "FuncionalidadeExcluirCh", funcionalidade);
+	public _Contexto funcionalidadeExcluir(Principal usuario, Integer id) throws Exception {
+		return this._executar(usuario, "FuncionalidadeExcluirCh", id);
 	}
 
 	@Transactional(readOnly = true)
@@ -222,8 +227,8 @@ public class FacadeBo implements BeanFactoryAware {
 	}
 
 	@Transactional
-	public _Contexto indiceProducaoExcluir(Principal usuario, Producao producao) throws Exception {
-		return this._executar(usuario, "IndiceProducaoExcluirCh", producao);
+	public _Contexto indiceProducaoExcluir(Principal usuario, Integer id) throws Exception {
+		return this._executar(usuario, "IndiceProducaoExcluirCh", id);
 	}
 
 	@Transactional(readOnly = true)
@@ -259,11 +264,6 @@ public class FacadeBo implements BeanFactoryAware {
 	@Transactional(readOnly = true)
 	public _Contexto indiceProducaoVisualizar(Principal usuario, Integer id) throws Exception {
 		return this._executar(usuario, "IndiceProducaoVisualizarCh", id);
-	}
-
-	@Transactional
-	public _Contexto logAcaoExcluir(Principal usuario, LogAcao logAcao) throws Exception {
-		return this._executar(usuario, "LogAcaoExcluirCh", logAcao);
 	}
 
 	@Transactional(readOnly = true)
@@ -302,8 +302,8 @@ public class FacadeBo implements BeanFactoryAware {
 	}
 
 	@Transactional
-	public _Contexto perfilExcluir(Principal usuario, Perfil perfil) throws Exception {
-		return this._executar(usuario, "PerfilExcluirCh", perfil);
+	public _Contexto perfilExcluir(Principal usuario, Integer id) throws Exception {
+		return this._executar(usuario, "PerfilExcluirCh", id);
 	}
 
 	@Transactional(readOnly = true)
@@ -387,6 +387,11 @@ public class FacadeBo implements BeanFactoryAware {
 	}
 
 	@Transactional
+	public _Contexto projetoCreditoRuralCalcularCronograma(Principal usuario, ProjetoCreditoRural projetoCredito) throws Exception {
+		return this._executar(usuario, "ProjetoCreditoRuralCalcularCronogramaCh", projetoCredito);
+	}
+
+	@Transactional
 	public _Contexto projetoCreditoRuralExcluir(Principal usuario, ProjetoCreditoRural projetoCredito) throws Exception {
 		return this._executar(usuario, "ProjetoCreditoExcluirCh", projetoCredito);
 	}
@@ -404,11 +409,6 @@ public class FacadeBo implements BeanFactoryAware {
 	@Transactional(readOnly = true)
 	public _Contexto projetoCreditoRuralNovo(Principal usuario, ProjetoCreditoRural projetoCredito) throws Exception {
 		return this._executar(usuario, "ProjetoCreditoNovoCh", projetoCredito);
-	}
-
-	@Transactional
-	public _Contexto projetoCreditoRuralCalcularCronograma(Principal usuario, ProjetoCreditoRural projetoCredito) throws Exception {
-		return this._executar(usuario, "ProjetoCreditoRuralCalcularCronogramaCh", projetoCredito);
 	}
 
 	@Transactional
@@ -498,8 +498,8 @@ public class FacadeBo implements BeanFactoryAware {
 	}
 
 	@Transactional
-	public _Contexto usuarioExcluir(Principal usuario, Usuario usr) throws Exception {
-		return this._executar(usuario, "UsuarioExcluirCh", usr);
+	public _Contexto usuarioExcluir(Principal usuario, Integer id) throws Exception {
+		return this._executar(usuario, "UsuarioExcluirCh", id);
 	}
 
 	@Transactional(readOnly = true)

@@ -43,7 +43,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                 return $http.post(this.endereco + '/editar', logAcao);
             },
             excluir : function() {
-                SegurancaSrv.acesso(this.funcionalidade, 'EXCLUIR');
+                throw 'Operação não implementada!';
             },
         };
         return LogAcaoSrv;

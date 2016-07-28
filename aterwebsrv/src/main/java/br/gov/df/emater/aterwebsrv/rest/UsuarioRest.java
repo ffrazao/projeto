@@ -28,10 +28,11 @@ public class UsuarioRest {
 		return salvar(usr, usuario);
 	}
 
-	@RequestMapping(value = "/excluir", method = RequestMethod.POST)
-	public Resposta excluir(@RequestBody Usuario usr, Principal usuario) throws Exception {
-		return new Resposta(facadeBo.usuarioExcluir(usuario, usr).getResposta());
+	@RequestMapping(value = "/excluir", method = RequestMethod.DELETE)
+	public Resposta excluir(@RequestParam Integer id, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.usuarioExcluir(usuario, id).getResposta());
 	}
+
 
 	@RequestMapping(value = "/filtro-executar", method = RequestMethod.POST)
 	public Resposta filtroExecutar(@RequestBody UsuarioCadFiltroDto filtro, Principal usuario) throws Exception {

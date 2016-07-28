@@ -1,8 +1,8 @@
 /* global moment, isUndefOrNull, escape */
 /* jslint loopfunc: true */
 
-var IDLE_TEMPO = 2 * 60;
-var TIMEOUT_TEMPO = 18 * 60;
+var IDLE_TEMPO = 10 * 60;
+var TIMEOUT_TEMPO = 10 * 60;
 
 (function(pNmModulo, pNmController, pNmFormulario) {
 

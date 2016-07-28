@@ -1,97 +1,103 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        <label class="control-label" for="{{parte}}Periodicidade">Periodicidade</label>
-                        <select id="{{parte}}Periodicidade" name="{{parte}}Periodicidade" class="form-control" ng-model="cadastro.registro.projetoCreditoRural[parte + 'Periodicidade']" ng-required="true" ng-options="item.codigo as item.descricao for item in cadastro.apoio.periodicidadeList" ng-init="expression">
-                        </select>
-                        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario[parte + 'Periodicidade'].$error.required">
-                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                            Campo Obrigatório
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        <label class="control-label" for="{{parte}}propriedadeRural">Data da Contratação</label>
-                        <input class="form-control input-sm" id="{{parte}}DataContratacao" name="{{parte}}DataContratacao" ng-model="cadastro.registro.projetoCreditoRural[parte + 'DataContratacao']" ui-date-mask ng-required="true">
-                        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario[parte + 'DataContratacao'].$error.required">
-                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                            Campo Obrigatório
-                        </div>
-                        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario[parte + 'DataContratacao'].$error.date">
-                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                            Data Inválida!
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        <label class="control-label" for="{{parte}}ValorFinanciamento">Financiamento (R$)</label>
-                        <input class="form-control input-sm text-right" id="{{parte}}ValorFinanciamento" name="{{parte}}ValorFinanciamento" ng-model="cadastro.registro.projetoCreditoRural[parte + 'ValorFinanciamento']" ui-number-mask="2" ng-required="true" ng-readonly="true">
-                    </div>
+        <div class="panel panel-default">
+            <div class="panel-heading container-fluid">
+                <frz-navegador
+                    ng-model="cronogramaNvg" exibe-nome-botao="false"
+                    dados="cadastro.registro.projetoCreditoRural[lista]"
+                    acoes-especiais="acoesEspeciais"
+                    on-abrir = "abrir()"
+                    on-agir = "agir()"
+                    on-editar = "editar()"
+                    on-especial = "especial()"
+                    on-excluir = "excluir()"
+                    on-filtrar = "filtrar()"
+                    on-incluir = "incluir()"
+                    on-listar = "listar()"
+                    on-navegar-primeiro = "navegarPrimeiro()"
+                    on-navegar-anterior = "navegarAnterior()"
+                    on-navegar-proximo = "navegarPosterior()"
+                    on-navegar-ultimo = "navegarUltimo()"
+                    on-proxima-pagina="proximaPagina()"
+                    on-ultima-pagina="ultimaPagina()"
+                    ></frz-navegador>
+            </div>
+            <div class="painel-body"  ng-hide="cadastro.registro.projetoCreditoRural[lista].length">
+                <div class="alert alert-warning" style="margin: 0px;" role="alert">
+                    <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                    Nenhum registro localizado!
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        <label class="control-label" for="{{parte}}TaxaJurosAnual">Juros anual (%)</label>
-                        <input class="form-control input-sm text-right" id="{{parte}}TaxaJurosAnual" name="{{parte}}TaxaJurosAnual" ng-model="cadastro.registro.projetoCreditoRural[parte + 'TaxaJurosAnual']" ui-number-mask="3" ng-required="true">
-                        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario[parte + 'TaxaJurosAnual'].$error.required">
-                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                            Campo Obrigatório
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        <label class="control-label" for="{{parte}}QuantidadeParcelas">Quantidade de parcelas</label>
-                        <input class="form-control input-sm text-right" id="{{parte}}QuantidadeParcelas" name="{{parte}}QuantidadeParcelas" ng-model="cadastro.registro.projetoCreditoRural[parte + 'QuantidadeParcelas']" ui-number-mask="0" ng-required="true">
-                        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario[parte + 'QuantidadeParcelas'].$error.required">
-                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                            Campo Obrigatório
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        <label class="control-label" for="{{parte}}DataFinalCarencia">Data final carência</label>
-                        <input class="form-control input-sm" id="{{parte}}DataFinalCarencia" name="{{parte}}DataFinalCarencia" ng-model="cadastro.registro.projetoCreditoRural[parte + 'DataFinalCarencia']" ui-date-mask ng-required="true">
-                        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario[parte + 'DataFinalCarencia'].$error.required">
-                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                            Campo Obrigatório
-                        </div>
-                        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario[parte + 'DataFinalCarencia'].$error.date">
-                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                            Data Inválida!
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        <label class="control-label" for="{{parte}}DataPrimeiraParcela">Data Pag. 1ª parcela</label>
-                        <input class="form-control input-sm text-right" id="{{parte}}DataPrimeiraParcela" name="{{parte}}DataPrimeiraParcela" ng-model="cadastro.registro.projetoCreditoRural[parte + 'DataPrimeiraParcela']" ui-date-mask ng-required="true" ng-readonly="true">
-                    </div>
-                </div>
+            <div class="table-responsive" ng-show="cadastro.registro.projetoCreditoRural[lista].length > 0">
+                <ng-form name="trienioListFrm">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th><frz-seletor ng-model="cronogramaNvg" dados="cadastro.registro.projetoCreditoRural[lista]"></frz-seletor></th>
+                                <th>#</th>
+                                <th>Descrição (Exploração ...)</th>
+                                <th>Receita Ano-3 (R$)</th>
+                                <th>Receita Ano-2 (R$)</th>
+                                <th>Receita Ano-1 (R$)</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="reg in cadastro.registro.projetoCreditoRural[lista] | orderBy: ['descricao'] track by reg.id">
+                                <td>
+                                    <input type="radio" ng-show="cronogramaNvg.selecao.tipo === 'U'" ng-model="cronogramaNvg.selecao.item" ng-value="reg"/>
+                                    <input type="checkbox" ng-show="cronogramaNvg.selecao.tipo === 'M'" checklist-model="cronogramaNvg.selecao.items" checklist-value="reg"/>
+                                </td>
+                                <td>
+                                    {{$index + 1 + ((cronogramaNvg.paginaAtual-1) * cronogramaNvg.tamanhoPagina)}}
+                                </td>
+                                <td>
+                                    <input class="form-control input-sm" id="descricao{{$index}}" name="descricao{{$index}}" ng-model="reg.descricao" ng-required="true" ng-model-options="{ updateOn: 'blur'}">
+                                    <div class="label label-danger" ng-show="navegador.submetido && trienioListFrm['descricao' + $index].$error.required">
+                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                        Campo Obrigatório
+                                    </div>
+                                </td>
+                                <td ng-repeat="idx in [3, 2, 1]">
+                                    <input class="form-control input-sm text-right" id="ano{{idx}}_{{$parent.$index}}" name="ano{{idx}}_{{$parent.$index}}" ng-model="reg['ano' + idx]" ui-number-mask="2" ng-required="true">
+                                    <div class="label label-danger" ng-show="navegador.submetido && trienioListFrm['ano' + idx + '_' + $parent.$index].$error.required">
+                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                        Campo Obrigatório
+                                    </div>
+                                </td>
+                                <td>
+                                    <button ng-click="repetir(cadastro.registro.projetoCreditoRural, 'trienioList', reg, ['id', 'descricao'])" title="Repetir valor!">R</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+                </ng-form>
             </div>
-            <div class="row">
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        <label class="control-label" for="{{parte}}ValorTotalJuros">Total de Juros</label>
-                        <input class="form-control input-sm text-right" id="{{parte}}ValorTotalJuros" name="{{parte}}ValorTotalJuros" ng-model="cadastro.registro.projetoCreditoRural[parte + 'ValorTotalJuros']" ui-number-mask="2" ng-required="true" ng-readonly="true">
+            <div class="panel-footer">
+                <div class="container-fluid" ng-show="cadastro.registro.projetoCreditoRural[lista].length">
+                    <div class="row">
+                        <div class="col-sm-3 text-right">
+                            <label class="control-label">Totais</label>
+                        </div>
+                        <div class="col-sm-3" ng-repeat="idx in [3, 2, 1]">
+                            <div class="form-group">
+                                <label class="control-label" for="ano{{idx}}_{{$index}}">Ano-{{idx}} (R$)</label>
+                                <input type="text" class="form-control text-right" id="ano{{idx}}_{{$index}}" name="ano{{idx}}_{{$index}}" ng-readonly="true" ng-model="cadastro.apoio.trienio['ano' + idx + 'Total']" ui-number-mask="2">
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        <label class="control-label" for="{{parte}}ValorTotalPrestacoes">Total das Prestações</label>
-                        <input class="form-control input-sm text-right" id="{{parte}}ValorTotalPrestacoes" name="{{parte}}ValorTotalPrestacoes" ng-model="cadastro.registro.projetoCreditoRural[parte + 'ValorTotalPrestacoes']" ui-number-mask="2" ng-required="true" ng-readonly="true">
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        <button class="btn btn-primary" ng-click="calcular(lista)">Calcular</button>
+                    <div class="row">
+                        <div class="col-sm-3 text-right">
+                            &nbsp;
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label">Média Geral (R$)</label>
+                                <input type="text" class="form-control text-right" ng-readonly="true" ng-model="cadastro.apoio.trienio.mediaGeral" ui-number-mask="2">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

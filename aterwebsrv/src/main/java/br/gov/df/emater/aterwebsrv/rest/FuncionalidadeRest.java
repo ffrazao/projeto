@@ -30,9 +30,9 @@ public class FuncionalidadeRest {
 		return salvar(funcionalidade, usuario);
 	}
 
-	@RequestMapping(value = "/excluir", method = RequestMethod.POST)
-	public Resposta excluir(@RequestBody Funcionalidade funcionalidade, Principal usuario) throws Exception {
-		return new Resposta(facadeBo.funcionalidadeExcluir(usuario, funcionalidade).getResposta());
+	@RequestMapping(value = "/excluir", method = RequestMethod.DELETE)
+	public Resposta excluir(@RequestParam Integer id, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.funcionalidadeExcluir(usuario, id).getResposta());
 	}
 
 	@RequestMapping(value = "/filtro-executar", method = RequestMethod.POST)

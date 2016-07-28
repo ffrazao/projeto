@@ -19,7 +19,7 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.GarantiaParticipacao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 
 @Entity
-@Table(name = "garantia", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
+@Table(name = "projeto_credito_garantia", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
 public class ProjetoCreditoRuralGarantia extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;

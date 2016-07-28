@@ -18,7 +18,7 @@ import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FluxoCaixaTipo;
 
 @Entity
-@Table(name = "receita_despesa", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
+@Table(name = "projeto_credito_receita_despesa", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
 public class ProjetoCreditoRuralReceitaDespesa extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;

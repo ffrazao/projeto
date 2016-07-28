@@ -17,7 +17,7 @@ import br.gov.df.emater.aterwebsrv.bo._SalvarCmd;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioFinanceiro;
 import br.gov.df.emater.aterwebsrv.modelo.dto.ProjetoCreditoRuralCronogramaDto;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRural;
-import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralCronogramaPagamento;
+import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.CronogramaPagamento;
 
 @Service("ProjetoCreditoRuralCalcularCronogramaCmd")
 public class CalcularCronogramaCmd extends _SalvarCmd {
@@ -61,8 +61,8 @@ public class CalcularCronogramaCmd extends _SalvarCmd {
 		}
 
 		// variáveis produzidas para a resposta do calculo
-		List<ProjetoCreditoRuralCronogramaPagamento> cronogramaPagamentoList = new ArrayList<>();
-		ProjetoCreditoRuralCronogramaPagamento cronogramaPagamento;
+		List<CronogramaPagamento> cronogramaPagamentoList = new ArrayList<>();
+		CronogramaPagamento cronogramaPagamento;
 		Integer id = 0;
 
 		// calcular a data da primeira parcela
@@ -101,9 +101,9 @@ public class CalcularCronogramaCmd extends _SalvarCmd {
 			// http://www.somatematica.com.br/emedio/finan3.php
 			jurosCarencia = (cronograma.getValorFinanciamento().multiply((new BigDecimal("1").add(taxaJurosCarenciaEmDias)).pow(diasCarencia.intValue()))).subtract(cronograma.getValorFinanciamento());
 
-			cronogramaPagamento = new ProjetoCreditoRuralCronogramaPagamento();
+			cronogramaPagamento = new CronogramaPagamento();
 			cronogramaPagamento.setId(--id);
-			cronogramaPagamento.setTipo(cronograma.getTipo());
+//			cronogramaPagamento.setTipo(cronograma.getTipo());
 			cronogramaPagamento.setParcela(0);
 			cronogramaPagamento.setSaldoDevedorInicial(cronograma.getValorFinanciamento());
 			cronogramaPagamento.setPrestacao(new BigDecimal("0"));
@@ -123,7 +123,7 @@ public class CalcularCronogramaCmd extends _SalvarCmd {
 		for (int i = 0; i < tabelaPriceList.size(); i++) {
 			Map<String, Object> tabelaPrice = tabelaPriceList.get(i);
 
-			cronogramaPagamento = new ProjetoCreditoRuralCronogramaPagamento();
+			cronogramaPagamento = new CronogramaPagamento();
 			cronogramaPagamento.setId(--id);
 			if (i == 0) {
 				cronogramaPagamento.setAno(ano);
@@ -135,7 +135,7 @@ public class CalcularCronogramaCmd extends _SalvarCmd {
 				cronogramaPagamento.setAno(++ano);
 				cronogramaPagamento.setEpoca(epoca);
 			}
-			cronogramaPagamento.setTipo(cronograma.getTipo());
+//			cronogramaPagamento.setTipo(cronograma.getTipo());
 			cronogramaPagamento.setParcela((Integer) tabelaPrice.get("parcela"));
 			cronogramaPagamento.setSaldoDevedorInicial((BigDecimal) tabelaPrice.get("saldoDevedorInicial"));
 			cronogramaPagamento.setPrestacao((BigDecimal) tabelaPrice.get("prestacao"));
@@ -151,7 +151,7 @@ public class CalcularCronogramaCmd extends _SalvarCmd {
 		}
 
 		switch (cronograma.getTipo()) {
-		case I:
+		/*case I:
 			result.setInvestimentoDataPrimeiraParcela(cronograma.getDataPrimeiraParcela());
 			result.setInvestimentoValorTotalJuros(cronograma.getValorTotalJuros());
 			result.setInvestimentoValorTotalPrestacoes(cronograma.getValorTotalPrestacoes());
@@ -162,7 +162,7 @@ public class CalcularCronogramaCmd extends _SalvarCmd {
 			result.setCusteioValorTotalJuros(cronograma.getValorTotalJuros());
 			result.setCusteioValorTotalPrestacoes(cronograma.getValorTotalPrestacoes());
 			result.setCronogramaCusteioList(cronogramaPagamentoList);
-			break;
+			break;*/
 		}
 
 		contexto.setResposta(result);

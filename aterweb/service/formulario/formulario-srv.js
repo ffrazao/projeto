@@ -61,8 +61,9 @@ angular.module(pNmModulo).factory(pNmFactory,
                 SegurancaSrv.acesso(this.funcionalidade, 'EDITAR');
                 return $http.post(this.endereco + '/editar', formulario);
             },
-            excluir : function() {
+            excluir : function(registro) {
                 SegurancaSrv.acesso(this.funcionalidade, 'EXCLUIR');
+                return $http.delete(this.endereco + '/excluir', {params: {'id': registro.id}});
             },
 
             // funcoes especiais

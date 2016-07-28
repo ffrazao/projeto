@@ -1,9 +1,9 @@
 package br.gov.df.emater.aterwebsrv.modelo.dominio;
 
 public enum ElementoTipo {
-	array("Conjunto de registros", 1, opcaoFormulario()), cep("CEP - Código de Endereçamento Postal", 2, null), combo_multiplo("Combo Multiplo", 3, opcaoLista()), combo_unico("Combo Único", 4, opcaoLista()), data("Data", 5, null), escolha_multipla("Escolha multipla", 6,
-			opcaoLista()), escolha_multipla_objeto("Escolha Multipla (com Objetos)", 7,
-					opcaoLista()), escolha_unica("Escolha Única", 8, opcaoLista()), memo("Memo", 9, null), numero("Número", 10, opcaoNumero()), objeto("Objeto", 11, opcaoFormulario()), resumo_numero("Resumo Numérico", 12, opcaoFormulario()), string("Letras e Números", 13, null);
+	arquivo("Arquivos anexos", 1, null), array("Conjunto de registros", 2, opcaoFormulario()), cep("CEP - Código de Endereçamento Postal", 3, null), combo_multiplo("Combo Multiplo", 4, opcaoLista()), combo_unico("Combo Único", 5, opcaoLista()), data("Data", 6,
+			null), escolha_multipla("Escolha multipla", 7, opcaoLista()), escolha_multipla_objeto("Escolha Multipla (com Objetos)", 8,
+					opcaoLista()), escolha_unica("Escolha Única", 9, opcaoLista()), memo("Memo", 10, null), numero("Número", 11, opcaoNumero()), objeto("Objeto", 12, opcaoFormulario()), resumo_numero("Resumo Numérico", 13, opcaoFormulario()), string("Letras e Números", 14, null);
 
 	private static String opcaoFormulario() {
 		StringBuilder texto = new StringBuilder();

@@ -13,14 +13,13 @@ import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
+import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 
 @Entity
-@Table(name = "projeto_credito_historico_receita", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
-public class ProjetoCreditoRuralHistoricoReceita extends EntidadeBase implements _ChavePrimaria<Integer> {
+@Table(name = "projeto_credito_garantia", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
+public class ProjetoCreditoRuralPropriedadeRural extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
-
-	private String descricao;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,25 +29,19 @@ public class ProjetoCreditoRuralHistoricoReceita extends EntidadeBase implements
 	@JoinColumn(name = "projeto_credito_id")
 	private ProjetoCreditoRural projetoCreditoRural;
 
-	@Column(name = "receita_ano_1")
-	private BigDecimal receitaAno1;
+	@ManyToOne
+	@JoinColumn(name = "propriedade_rural_id")
+	private PropriedadeRural propriedadeRural;
 
-	@Column(name = "receita_ano_2")
-	private BigDecimal receitaAno2;
+	@Column(name = "renda_liquida")
+	private BigDecimal rendaLiquida;
 
-	@Column(name = "receita_ano_3")
-	private BigDecimal receitaAno3;
-
-	public ProjetoCreditoRuralHistoricoReceita() {
+	public ProjetoCreditoRuralPropriedadeRural() {
 		super();
 	}
 
-	public ProjetoCreditoRuralHistoricoReceita(Integer id) {
+	public ProjetoCreditoRuralPropriedadeRural(Integer id) {
 		super(id);
-	}
-
-	public String getDescricao() {
-		return descricao;
 	}
 
 	@Override
@@ -60,20 +53,12 @@ public class ProjetoCreditoRuralHistoricoReceita extends EntidadeBase implements
 		return projetoCreditoRural;
 	}
 
-	public BigDecimal getReceitaAno1() {
-		return receitaAno1;
+	public PropriedadeRural getPropriedadeRural() {
+		return propriedadeRural;
 	}
 
-	public BigDecimal getReceitaAno2() {
-		return receitaAno2;
-	}
-
-	public BigDecimal getReceitaAno3() {
-		return receitaAno3;
-	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+	public BigDecimal getRendaLiquida() {
+		return rendaLiquida;
 	}
 
 	@Override
@@ -85,16 +70,12 @@ public class ProjetoCreditoRuralHistoricoReceita extends EntidadeBase implements
 		this.projetoCreditoRural = projetoCreditoRural;
 	}
 
-	public void setReceitaAno1(BigDecimal receitaAno1) {
-		this.receitaAno1 = receitaAno1;
+	public void setPropriedadeRural(PropriedadeRural propriedadeRural) {
+		this.propriedadeRural = propriedadeRural;
 	}
 
-	public void setReceitaAno2(BigDecimal receitaAno2) {
-		this.receitaAno2 = receitaAno2;
-	}
-
-	public void setReceitaAno3(BigDecimal receitaAno3) {
-		this.receitaAno3 = receitaAno3;
+	public void setRendaLiquida(BigDecimal rendaLiquida) {
+		this.rendaLiquida = rendaLiquida;
 	}
 
 }

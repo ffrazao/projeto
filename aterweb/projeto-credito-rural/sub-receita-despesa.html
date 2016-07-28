@@ -41,6 +41,7 @@
                                 <th>Unidade</th>
                                 <th>Valor Unitário</th>
                                 <th>Valor Total</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -94,6 +95,9 @@
                                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                         Campo Obrigatório
                                     </div>
+                                </td>
+                                <td>
+                                    <button ng-click="repetir(cadastro.registro.projetoCreditoRural, lista, reg, ['id', 'ano'])" title="Repetir valor!">R</button>
                                 </td>
                             </tr>
                         </tbody>

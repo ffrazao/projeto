@@ -1,0 +1,83 @@
+<fieldset class="form-horizontal">
+    <!-- Select Basic -->
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="nomeLote">Lote</label>
+        <div class="col-md-4">
+            <select id="nomeLote" name="nomeLote" class="form-control" ng-model="conteudo.apoio.lote" ng-options="reg.nomeLote for reg in conteudo.apoio.loteValorList | orderBy: 'nomeLote' track by reg.nomeLote">
+            </select>
+            <div class="label label-danger" ng-show="confirmacaoFrm.nomeLote.$error.required">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Campo Obrigatório
+            </div>
+        </div>
+    </div>
+    <!-- Text input-->
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="valorFinanciamento">Valor Financiamento (R$)</label>
+        <div class="col-md-4">
+            <input id="valorFinanciamento" name="valorFinanciamento" type="text" class="form-control input-md text-right" ng-model="conteudo.apoio.lote.valorFinanciado" ui-number-mask="2" ng-required="true" ng-readonly="true">
+            <div class="label label-danger" ng-show="confirmacaoFrm.valorFinanciamento.$error.required">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Campo Obrigatório
+            </div>
+        </div>
+    </div>
+    <!-- Multiple Radios -->
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="periodicidade">Periodicidade</label>
+        <div class="col-md-4">
+            <div class="radio" ng-repeat="item in conteudo.apoio.periodicidadeList | orderBy: 'ordem'">
+                <label for="periodicidade-{{$index}}">
+                    <input type="radio" name="periodicidade" id="periodicidade-{{$index}}" ng-value="item.codigo" ng-model="conteudo.registro.periodicidade" ng-required="true">{{item.descricao}}
+                </label>
+            </div>
+            <div class="label label-danger" ng-show="confirmacaoFrm.periodicidade.$error.required">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Campo Obrigatório
+            </div>
+        </div>
+    </div>
+    <!-- Text input-->
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="dataContratacao">Data da Contratação</label>
+        <div class="col-md-2">
+            <input id="dataContratacao" name="dataContratacao" type="text" class="form-control input-md" ng-model="conteudo.registro.dataContratacao" ui-date-mask ng-required="true">
+            <div class="label label-danger" ng-show="confirmacaoFrm.dataContratacao.$error.required">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Campo Obrigatório
+            </div>
+            <div class="label label-danger" ng-show="confirmacaoFrm.dataContratacao.$error.date">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Data Inválida!
+            </div>
+        </div>
+    </div>
+    <!-- Text input-->
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="taxaJurosAnual">Taxa Juros Anual (%)</label>
+        <div class="col-md-2">
+            <input id="taxaJurosAnual" name="taxaJurosAnual" type="text" class="form-control input-md text-right" ng-model="conteudo.registro.taxaJurosAnual" ui-number-mask="3" ng-required="true">
+            <div class="label label-danger" ng-show="confirmacaoFrm.taxaJurosAnual.$error.required">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Campo Obrigatório
+            </div>
+        </div>
+    </div>
+    <!-- Text input-->
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="quantidadeParcelas">Quantidade Parcelas</label>
+        <div class="col-md-1">
+            <input id="quantidadeParcelas" name="quantidadeParcelas" type="text" class="form-control input-md text-right" ng-model="conteudo.registro.quantidadeParcelas" ui-number-mask="0" ng-required="true">
+            <div class="label label-danger" ng-show="confirmacaoFrm.quantidadeParcelas.$error.required">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Campo Obrigatório
+            </div>
+        </div>
+    </div>
+    <!-- Text input-->
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="dataFinalCarencia">Data Final da Carência</label>
+        <div class="col-md-2">
+            <input id="dataFinalCarencia" name="dataFinalCarencia" type="text" class="form-control input-md" ng-model="conteudo.registro.dataFinalCarencia" ui-date-mask ng-required="true">
+            <div class="label label-danger" ng-show="confirmacaoFrm.dataFinalCarencia.$error.required">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Campo Obrigatório
+            </div>
+            <div class="label label-danger" ng-show="confirmacaoFrm.dataFinalCarencia.$error.date">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Data Inválida!
+            </div>
+        </div>
+    </div>
+</fieldset>

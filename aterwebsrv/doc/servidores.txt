@@ -1,0 +1,13 @@
+servidor
+
+homologacao:
+
+	10.233.33.11
+	usuario root
+	senha emater123
+
+producao:
+
+	10.233.33.12
+	usuario root
+	senha emater123

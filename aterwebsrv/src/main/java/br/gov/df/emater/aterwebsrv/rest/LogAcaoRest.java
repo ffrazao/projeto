@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
 import br.gov.df.emater.aterwebsrv.modelo.dto.LogAcaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.LogAcao;
@@ -30,7 +31,7 @@ public class LogAcaoRest {
 
 	@RequestMapping(value = "/excluir", method = RequestMethod.POST)
 	public Resposta excluir(@RequestBody LogAcao logAcao, Principal usuario) throws Exception {
-		return new Resposta(facadeBo.logAcaoExcluir(usuario, logAcao).getResposta());
+		throw new BoException("Operação não implementada!");
 	}
 
 	@RequestMapping(value = "/filtro-executar", method = RequestMethod.POST)

@@ -1,36 +1,30 @@
 package br.gov.df.emater.aterwebsrv.bo.atividade;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
-import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoDao;
-import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
+import br.gov.df.emater.aterwebsrv.dao.atividade.AtividadeDao;
 
 @Service("AtividadeExcluirCmd")
 public class ExcluirCmd extends _Comando {
 
 	@Autowired
-	private ProducaoDao dao;
+	private AtividadeDao dao;
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
-		Producao producao = (Producao) contexto.getRequisicao();
-		producao = dao.findOne(producao.getId());
-
-		List<Producao> produtorProducaoList = dao.findByAnoAndBemAndPropriedadeRuralComunidadeUnidadeOrganizacional(producao.getAno(), producao.getBem(), producao.getUnidadeOrganizacional());
-
-		if (produtorProducaoList != null) {
-			for (Producao p : produtorProducaoList) {
-				dao.delete(p);
-			}
+		Integer result = (Integer) contexto.getRequisicao();
+		try {
+			dao.delete(result);
+			dao.flush();
+		} catch (DataIntegrityViolationException e) {
+			throw new BoException("Não é possível excluir este registro! Há dados vinculados", e);
 		}
-		dao.delete(producao);
-
-		contexto.setResposta(producao);
+		contexto.setResposta(result);
 		return false;
 	}
 

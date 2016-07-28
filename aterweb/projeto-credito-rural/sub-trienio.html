@@ -37,6 +37,7 @@
                         <th>Receita Ano-3 (R$)</th>
                         <th>Receita Ano-2 (R$)</th>
                         <th>Receita Ano-1 (R$)</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -61,6 +62,9 @@
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
+                        </td>
+                        <td>
+                            <button ng-click="repetir(cadastro.registro.projetoCreditoRural, 'trienioList', reg, ['id', 'descricao'])" title="Repetir valor!">R</button>
                         </td>
                     </tr>
                 </tbody>

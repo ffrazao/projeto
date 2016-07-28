@@ -144,6 +144,20 @@
             // fim das operaçoes atribuidas ao navagador
 
             // inicio ações especiais
+            $scope.propriedadeRuralComparador = function(a, b) {
+                console.log(a, b); 
+                return a.id === b.id;
+            };
+
+            $scope.repetir = function(lista, nomeLista, item, limpar) {
+                var novo = angular.copy(item);
+                angular.isArray(limpar);
+                angular.forEach(limpar, function(k, v) {
+                    novo[k] = null;
+                });
+                lista[nomeLista].push($scope.criarElemento(lista, nomeLista, novo));
+            };
+
             $scope.ordenarLista = function(item) {
                 return -item[$scope.CABEC.ATIV_INICIO];
             };

@@ -26,7 +26,7 @@ angular.module(pNmModulo).controller(pNmController,
     };
     $scope.incluir = function(destino) {
         init();
-        $scope.cadastro.registro.projetoCreditoRural[destino].push($scope.criarElemento($scope.cadastro.registro.projetoCreditoRural, destino, {}));
+        $scope.cadastro.registro.projetoCreditoRural[destino].push($scope.criarElemento($scope.cadastro.registro.projetoCreditoRural, destino, {nomeLote: "1"}));
     };
     $scope.editar = function() {};
     $scope.excluir = function(nvg, destino) {

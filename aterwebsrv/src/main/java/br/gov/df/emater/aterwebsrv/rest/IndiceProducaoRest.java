@@ -28,9 +28,9 @@ public class IndiceProducaoRest {
 		return salvar(producao, usuario);
 	}
 
-	@RequestMapping(value = "/excluir", method = RequestMethod.POST)
-	public Resposta excluir(@RequestBody Producao producao, Principal usuario) throws Exception {
-		return new Resposta(facadeBo.indiceProducaoExcluir(usuario, producao).getResposta());
+	@RequestMapping(value = "/excluir", method = RequestMethod.DELETE)
+	public Resposta excluir(@RequestParam Integer id, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.indiceProducaoExcluir(usuario, id).getResposta());
 	}
 
 	@RequestMapping(value = "/filtro-executar", method = RequestMethod.POST)

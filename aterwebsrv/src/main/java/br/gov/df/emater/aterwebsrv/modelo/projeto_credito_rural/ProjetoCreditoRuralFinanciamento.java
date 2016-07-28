@@ -18,7 +18,7 @@ import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FinanciamentoTipo;
 
 @Entity
-@Table(name = "financiamento", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
+@Table(name = "projeto_credito_financiamento", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
 public class ProjetoCreditoRuralFinanciamento extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
@@ -27,6 +27,17 @@ public class ProjetoCreditoRuralFinanciamento extends EntidadeBase implements _C
 
 	@Column(name = "epoca_liberacao")
 	private String epocaLiberacao;
+
+	@Column(name = "nome_lote")
+	private String nomeLote;
+
+	public String getNomeLote() {
+		return nomeLote;
+	}
+
+	public void setNomeLote(String nomeLote) {
+		this.nomeLote = nomeLote;
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

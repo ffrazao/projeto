@@ -1,4 +1,4 @@
-package br.gov.df.emater.aterwebsrv.bo.indice_producao;
+package br.gov.df.emater.aterwebsrv.bo.formulario;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -7,13 +7,13 @@ import org.springframework.stereotype.Service;
 import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
-import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoDao;
+import br.gov.df.emater.aterwebsrv.dao.formulario.FormularioDao;
 
-@Service("IndiceProducaoExcluirCmd")
+@Service("FormularioExcluirCmd")
 public class ExcluirCmd extends _Comando {
 
 	@Autowired
-	private ProducaoDao dao;
+	private FormularioDao dao;
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {

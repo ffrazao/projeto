@@ -1,6 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,153 +13,252 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FinanciamentoTipo;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.ProjetoCreditoRuralPeriodicidade;
+import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
+import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerDataHora;
+import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
+import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerDataHora;
 
 @Entity
-@Table(name = "cronograma_pagamento", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
+@Table(name = "projeto_credito_cronograma_pagamento", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
 public class ProjetoCreditoRuralCronogramaPagamento extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
 
-	private BigDecimal amortizacao;
+	@Column(name = "data_calculo")
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+	@JsonSerialize(using = JsonSerializerDataHora.class)
+	@JsonDeserialize(using = JsonDeserializerDataHora.class)
+	private Calendar dataCalculo;
+	
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@JsonSerialize(using = JsonSerializerData.class)
+	@JsonDeserialize(using = JsonDeserializerData.class)
+	@Column(name = "data_contratacao")
+	private Calendar dataContratacao;
+	
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@JsonSerialize(using = JsonSerializerData.class)
+	@JsonDeserialize(using = JsonDeserializerData.class)
+	@Column(name = "data_final_carencia")
+	private Calendar dataFinalCarencia;
 
-	private Integer ano;
-
-	private Integer epoca;
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@JsonSerialize(using = JsonSerializerData.class)
+	@JsonDeserialize(using = JsonDeserializerData.class)
+	@Column(name = "data_primeira_parcela")
+	private Calendar dataPrimeiraParcela;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
+	
+	@Column(name = "nome_lote")
+	private String nomeLote;
 
-	private BigDecimal juros;
-
-	private Integer parcela;
-
-	private BigDecimal prestacao;
+	@Column(name = "periodicidade")
+	@Enumerated(EnumType.STRING)
+	private ProjetoCreditoRuralPeriodicidade periodicidade;
 
 	@ManyToOne
 	@JoinColumn(name = "projeto_credito_id")
 	private ProjetoCreditoRural projetoCreditoRural;
+	
+	@Column(name = "quantidade_parcela")
+	private Integer quantidadeParcelas;
 
-	@Column(name = "saldo_devedor_final")
-	private BigDecimal saldoDevedorFinal;
 
-	@Column(name = "saldo_devedor_inicial")
-	private BigDecimal saldoDevedorInicial;
+	@Column(name = "taxa_juros_anual")
+	private BigDecimal taxaJurosAnual;
 
-	@Column(name = "taxa_juros")
-	private BigDecimal taxaJuros;
 
 	@Enumerated(EnumType.STRING)
 	private FinanciamentoTipo tipo;
+
+
+	@Enumerated(EnumType.STRING)
+	private Confirmacao valido;
+
+
+	@Column(name = "valor_financiamento")
+	private BigDecimal valorFinanciamento;
+
+
+	@Column(name = "valor_total_juros")
+	private BigDecimal valorTotalJuros;
+
+
+	@Column(name = "valor_total_prestacoes")
+	private BigDecimal valorTotalPrestacoes;
+
 
 	public ProjetoCreditoRuralCronogramaPagamento() {
 		super();
 	}
 
+
 	public ProjetoCreditoRuralCronogramaPagamento(Integer id) {
 		super(id);
 	}
 
-	public BigDecimal getAmortizacao() {
-		return amortizacao;
+
+	public Calendar getDataCalculo() {
+		return dataCalculo;
 	}
 
-	public Integer getAno() {
-		return ano;
+
+	public Calendar getDataContratacao() {
+		return dataContratacao;
 	}
 
-	public Integer getEpoca() {
-		return epoca;
+
+	public Calendar getDataFinalCarencia() {
+		return dataFinalCarencia;
 	}
 
-	@Override
+
+	public Calendar getDataPrimeiraParcela() {
+		return dataPrimeiraParcela;
+	}
+
+
 	public Integer getId() {
 		return id;
 	}
 
-	public BigDecimal getJuros() {
-		return juros;
+
+	public String getNomeLote() {
+		return nomeLote;
 	}
 
-	public Integer getParcela() {
-		return parcela;
+
+	public ProjetoCreditoRuralPeriodicidade getPeriodicidade() {
+		return periodicidade;
 	}
 
-	public BigDecimal getPrestacao() {
-		return prestacao;
-	}
 
 	public ProjetoCreditoRural getProjetoCreditoRural() {
 		return projetoCreditoRural;
 	}
 
-	public BigDecimal getSaldoDevedorFinal() {
-		return saldoDevedorFinal;
+
+	public Integer getQuantidadeParcelas() {
+		return quantidadeParcelas;
 	}
 
-	public BigDecimal getSaldoDevedorInicial() {
-		return saldoDevedorInicial;
+
+	public BigDecimal getTaxaJurosAnual() {
+		return taxaJurosAnual;
 	}
 
-	public BigDecimal getTaxaJuros() {
-		return taxaJuros;
-	}
 
 	public FinanciamentoTipo getTipo() {
 		return tipo;
 	}
 
-	public void setAmortizacao(BigDecimal amortizacao) {
-		this.amortizacao = amortizacao;
+
+	public Confirmacao getValido() {
+		return valido;
 	}
 
-	public void setAno(Integer ano) {
-		this.ano = ano;
+
+	public BigDecimal getValorFinanciamento() {
+		return valorFinanciamento;
 	}
 
-	public void setEpoca(Integer epoca) {
-		this.epoca = epoca;
+
+	public BigDecimal getValorTotalJuros() {
+		return valorTotalJuros;
 	}
 
-	@Override
+
+	public BigDecimal getValorTotalPrestacoes() {
+		return valorTotalPrestacoes;
+	}
+
+
+	public void setDataCalculo(Calendar dataCalculo) {
+		this.dataCalculo = dataCalculo;
+	}
+
+
+	public void setDataContratacao(Calendar dataContratacao) {
+		this.dataContratacao = dataContratacao;
+	}
+
+
+	public void setDataFinalCarencia(Calendar dataFinalCarencia) {
+		this.dataFinalCarencia = dataFinalCarencia;
+	}
+
+
+	public void setDataPrimeiraParcela(Calendar dataPrimeiraParcela) {
+		this.dataPrimeiraParcela = dataPrimeiraParcela;
+	}
+
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public void setJuros(BigDecimal juros) {
-		this.juros = juros;
+
+	public void setNomeLote(String nomeLote) {
+		this.nomeLote = nomeLote;
 	}
 
-	public void setParcela(Integer parcela) {
-		this.parcela = parcela;
-	}
 
-	public void setPrestacao(BigDecimal prestacao) {
-		this.prestacao = prestacao;
+	public void setPeriodicidade(ProjetoCreditoRuralPeriodicidade periodicidade) {
+		this.periodicidade = periodicidade;
 	}
 
 	public void setProjetoCreditoRural(ProjetoCreditoRural projetoCreditoRural) {
 		this.projetoCreditoRural = projetoCreditoRural;
 	}
 
-	public void setSaldoDevedorFinal(BigDecimal saldoDevedorFinal) {
-		this.saldoDevedorFinal = saldoDevedorFinal;
+	public void setQuantidadeParcelas(Integer quantidadeParcelas) {
+		this.quantidadeParcelas = quantidadeParcelas;
 	}
 
-	public void setSaldoDevedorInicial(BigDecimal saldoDevedorInicial) {
-		this.saldoDevedorInicial = saldoDevedorInicial;
-	}
-
-	public void setTaxaJuros(BigDecimal taxaJuros) {
-		this.taxaJuros = taxaJuros;
+	public void setTaxaJurosAnual(BigDecimal taxaJurosAnual) {
+		this.taxaJurosAnual = taxaJurosAnual;
 	}
 
 	public void setTipo(FinanciamentoTipo tipo) {
 		this.tipo = tipo;
 	}
+
+	public void setValido(Confirmacao valido) {
+		this.valido = valido;
+	}
+
+	public void setValorFinanciamento(BigDecimal valorFinanciamento) {
+		this.valorFinanciamento = valorFinanciamento;
+	}
+
+	public void setValorTotalJuros(BigDecimal valorTotalJuros) {
+		this.valorTotalJuros = valorTotalJuros;
+	}
+
+
+	public void setValorTotalPrestacoes(BigDecimal valorTotalPrestacoes) {
+		this.valorTotalPrestacoes = valorTotalPrestacoes;
+	}
+
 
 }

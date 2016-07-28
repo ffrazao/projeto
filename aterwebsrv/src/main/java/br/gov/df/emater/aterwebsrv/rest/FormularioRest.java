@@ -35,6 +35,11 @@ public class FormularioRest {
 		return salvar(formulario, usuario);
 	}
 
+	@RequestMapping(value = "/excluir", method = RequestMethod.DELETE)
+	public Resposta excluir(@RequestParam Integer id, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.formularioExcluir(usuario, id).getResposta());
+	}
+
 	@RequestMapping(value = "/filtro-coleta-executar", method = RequestMethod.POST)
 	public Resposta filtroComColetaExecutar(@RequestBody FormularioColetaCadFiltroDto filtro, Principal usuario) throws Exception {
 		return new Resposta(facadeBo.formularioColetaFiltroExecutar(usuario, filtro).getResposta());

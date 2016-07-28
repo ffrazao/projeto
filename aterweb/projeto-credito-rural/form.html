@@ -1,7 +1,7 @@
 <div class="panel panel-default">
     <div class="panel-heading"><h4>{{nomeFormulario}}</h4></div>
     <div class="panel-body">
-        <form name="frm.formulario" novalidate>
+        <ng-form name="frm.formularioProjetoCreditoRural" novalidate>
             <fieldset>
                 <div class="row">
                     <div class="col-sm-6" title="Nome do Beneficiário">
@@ -10,7 +10,7 @@
                             
                             <input type="text" class="form-control" id="nomeBeneficiario" name="nomeBeneficiario" ng-readonly="true" ng-required="true" ng-model="cadastro.registro.projetoCreditoRural.pessoa.nome">
                             
-                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.nomeBeneficiario.$error.required">
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formularioProjetoCreditoRural.nomeBeneficiario.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
@@ -18,10 +18,51 @@
                     </div>
                     <div class="col-sm-6" title="Propriedade Rural">
                         <div class="form-group">
-                            <label class="control-label" for="propriedadeRural">Propriedade Rural</label>
-                            <select id="propriedadeRural" name="propriedadeRural" class="form-control" ng-model="cadastro.registro.projetoCreditoRural.propriedadeRural" ng-required="true" ng-options="item.codigo as item.descricao for item in cadastro.apoio.atividadeSituacaoList">
-                            </select>
-                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.propriedadeRural.$error.required">
+                            <label class="control-label" for="propriedadeRuralTotal">Propriedade(s) Rural(is)</label>
+                            <div class="table-responsive">
+                                <table class="table table-hover table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                            </th>
+                                            <th width="30">
+                                                #
+                                            </th>
+                                            <th>Nome Propriedade</th>
+                                            <th>Área Total</th>
+                                            <th>Exploração</th>
+                                            <th>Área</th>
+                                            <th>Proprietário</th>
+                                            <th>Início Vínculo</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="item in [{id: 1, propriedadeRural: {nome: 'Prop 1', areaTotal: 2}, vinculo: 'Parceiro', area: 1, proprietario : [{nome: 'José'}], inicio: '01/01/2016', }, {id: 2, propriedadeRural: {nome: 'Prop 2', areaTotal: 4}, vinculo: 'Proprietário', area: 4, proprietario : [{nome: 'Alfredo'}], inicio: '01/01/2010', }] | orderBy: 'propriedadeRural.nome' track by item.id">
+                                            <td width="30px">
+                                                <input
+                                                    type="checkbox"
+                                                    id="propriedadeRural_{{$index}}"
+                                                    name="propriedadeRural_{{$index}}"
+                                                    checklist-model="cadastro.registro.creditoRural.propriedadeRuralList"
+                                                    checklist-value="item"
+                                                    checklist-comparator="propriedadeRuralComparador">
+                                                </input>
+                                            </td>
+                                            <td>
+                                                {{$index + 1 + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)}}
+                                            </td>
+                                            <td>{{item.propriedadeRural.nome}}</td>
+                                            <td>{{item.propriedadeRural.areaTotal | number: 3}}</td>
+                                            <td>{{item.vinculo}}</td>
+                                            <td>{{item.area | number: 3}}</td>
+                                            <td>{{item.proprietario[0].nome}}</td>
+                                            <td>{{item.inicio}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <input type="hidden" id="propriedadeRuralTotal" name="propriedadeRuralTotal" ng-model="cadastro.registro.creditoRural.propriedadeRuralList.length" ng-valor-min="1">
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formularioProjetoCreditoRural.propriedadeRuralTotal.$error.ngValorMin">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
@@ -34,7 +75,7 @@
                             <label class="control-label" for="status">Status</label>
                             <select id="status" name="status" class="form-control" ng-model="cadastro.registro.projetoCreditoRural.status" ng-required="true" ng-options="item.codigo as item.descricao for item in cadastro.apoio.atividadeSituacaoList">
                             </select>
-                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.status.$error.required">
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formularioProjetoCreditoRural.status.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
@@ -46,7 +87,7 @@
                             
                             <input type="text" class="form-control" id="finalidade" name="finalidade" ng-readonly="true" ng-required="true" ng-model="cadastro.registro.projetoCreditoRural.pessoa.nome">
                             
-                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.finalidade.$error.required">
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formularioProjetoCreditoRural.finalidade.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
@@ -57,7 +98,7 @@
                             <label class="control-label" for="agenteFinanceiro">Agente Financeiro</label>
                             <select id="agenteFinanceiro" name="agenteFinanceiro" class="form-control" ng-model="cadastro.registro.projetoCreditoRural.agenteFinanceiro" ng-required="true" ng-options="item.codigo as item.descricao for item in cadastro.apoio.atividadeSituacaoList">
                             </select>
-                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.agenteFinanceiro.$error.required">
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formularioProjetoCreditoRural.agenteFinanceiro.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
@@ -69,7 +110,7 @@
                             
                             <input type="text" class="form-control" id="agencia" name="agencia" ng-readonly="true" ng-required="true" ng-model="cadastro.registro.projetoCreditoRural.pessoa.nome">
                             
-                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.agencia.$error.required">
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formularioProjetoCreditoRural.agencia.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
@@ -80,7 +121,7 @@
                             <label class="control-label" for="linhaCredito">Linha de Crédito</label>
                             <select id="linhaCredito" name="linhaCredito" class="form-control" ng-model="cadastro.registro.projetoCreditoRural.propriedadeRural" ng-required="true" ng-options="item.codigo as item.descricao for item in cadastro.apoio.atividadeSituacaoList">
                             </select>
-                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.linhaCredito.$error.required">
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formularioProjetoCreditoRural.linhaCredito.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
@@ -92,7 +133,7 @@
                             
                             <input type="text" class="form-control" id="numeroCedula" name="numeroCedula" ng-readonly="true" ng-required="true" ng-model="cadastro.registro.projetoCreditoRural.pessoa.nome">
                             
-                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.numeroCedula.$error.required">
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formularioProjetoCreditoRural.numeroCedula.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
@@ -110,6 +151,6 @@
                 </uib-tabset>
 
             </fieldset>
-        </form>
+        </ng-form>
     </div>
 </div>

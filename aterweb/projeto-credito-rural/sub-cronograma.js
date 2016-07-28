@@ -24,9 +24,51 @@ angular.module(pNmModulo).controller(pNmController,
         // desabilitar a edição
         nvg.botao('edicao').exibir = function() {return false;};
     };
-    $scope.incluir = function(destino) {
+    $scope.incluir = function(destino, parte) {
         init();
-        $scope.cadastro.registro.projetoCreditoRural[destino].push($scope.criarElemento($scope.cadastro.registro.projetoCreditoRural, destino, {}));
+
+        var loteValorList = [];
+
+        if ($scope.cadastro.registro.projetoCreditoRural[parte + 'List']) {
+            var i, selecionado;
+            $scope.cadastro.registro.projetoCreditoRural[parte + 'List'].forEach(function (reg) {
+                selecionado = null;
+                for (i = 0; i < loteValorList.length; i++) {
+                    if (loteValorList[i].nomeLote === reg.nomeLote) {
+                        selecionado = angular.copy(reg);
+                        break;
+                    }
+                }
+                if (selecionado === null) {
+                    loteValorList.push({nomeLote: reg.nomeLote, valorFinanciado: reg.valorFinanciado});
+                } else {
+                    loteValorList[i].valorFinanciado += reg.valorFinanciado;
+                }
+            });
+        }
+
+        loteValorList = [
+            {nomeLote: "1", valorFinanciado: 1000},
+            {nomeLote: "2", valorFinanciado: 3000},
+            {nomeLote: "3", valorFinanciado: 1300},
+            {nomeLote: "4", valorFinanciado: 100.86},
+        ];
+
+
+        mensagemSrv.confirmacao(true, 'projeto-credito-rural/sub-cronograma-form.html', 'Calcular ' + parte, {
+            registro: {periodicidade: 'A', dataContratacao: $scope.hoje(), dataFinalCarencia: $scope.hoje()},
+            apoio: {
+                loteValorList: loteValorList,
+                periodicidadeList: $scope.cadastro.apoio.periodicidadeList,
+            },
+        }).then(function(conteudo) {
+            // processar o retorno positivo da modal
+            $scope.cadastro.registro.projetoCreditoRural[destino].push($scope.criarElemento($scope.cadastro.registro.projetoCreditoRural, destino, {}));
+        }, function() {
+            // processar o retorno negativo da modal
+            //$log.info('Modal dismissed at: ' + new Date());
+        });
+
     };
     $scope.editar = function() {};
     $scope.excluir = function(nvg, destino) {
@@ -73,7 +115,7 @@ angular.module(pNmModulo).controller('ProjetoCreditoRuralCronogramaCusteioCtrl',
 
     $scope.parte = 'custeio';
 
-    $scope.lista = 'cronogramaCusteioList';
+    $scope.lista = 'cronogramaPagamentoCusteioList';
 
     // inicio rotinas de apoio
     var init = function() {
@@ -91,7 +133,7 @@ angular.module(pNmModulo).controller('ProjetoCreditoRuralCronogramaCusteioCtrl',
         $scope.$parent.abrir($scope.cronogramaNvg);
     };
     $scope.incluir = function() {
-        $scope.$parent.incluir($scope.lista);
+        $scope.$parent.incluir($scope.lista, $scope.parte);
     };
     $scope.excluir = function() {
         $scope.$parent.excluir($scope.cronogramaNvg, $scope.lista);
@@ -107,7 +149,7 @@ angular.module(pNmModulo).controller('ProjetoCreditoRuralCronogramaInvestimentoC
 
     $scope.parte = 'investimento';
 
-    $scope.lista = 'cronogramaInvestimentoList';
+    $scope.lista = 'cronogramaPagamentoInvestimentoList';
 
     // inicio rotinas de apoio
     var init = function() {
@@ -125,7 +167,7 @@ angular.module(pNmModulo).controller('ProjetoCreditoRuralCronogramaInvestimentoC
         $scope.$parent.abrir($scope.cronogramaNvg);
     };
     $scope.incluir = function() {
-        $scope.$parent.incluir($scope.lista);
+        $scope.$parent.incluir($scope.lista, $scope.parte);
     };
     $scope.excluir = function() {
         $scope.$parent.excluir($scope.cronogramaNvg, $scope.lista);

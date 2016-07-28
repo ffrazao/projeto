@@ -287,29 +287,33 @@ angular.module(pNmModulo).controller(pNmController,
     };
     $scope.excluir = function() {
         mensagemSrv.confirmacao(false, 'confirme a exclusão').then(function (conteudo) {
-            var i, j;
+            var i;
             if ($scope.produtoresNvg.selecao.tipo === 'U' && $scope.produtoresNvg.selecao.item) {
-                for (j = $scope.navegador.selecao.item[7].length -1; j >= 0; j--) {
-                    if (angular.equals($scope.navegador.selecao.item[7][j].email.endereco, $scope.produtoresNvg.selecao.item.email.endereco)) {
-                        //$scope.navegador.selecao.item[7].splice(j, 1);
-                        $scope.navegador.selecao.item[7][j].cadastroAcao = 'E';
+                $scope.servico.excluir({
+                    id: $scope.produtoresNvg.selecao.item[0]
+                }).success(function(resposta) {
+                    if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {
+                        $scope.produtoresNvg.dados.splice(UtilSrv.indiceDe($scope.produtoresNvg.dados, $scope.produtoresNvg.selecao.item), 1);
+                        $scope.produtoresNvg.selecao.item = null;
+                        $scope.produtoresNvg.selecao.selecionado = false;
+                        toastr.info('Operação realizada!', 'Informação');
+                    } else {
+                        toastr.error(resposta && resposta.mensagem ? resposta.mensagem : resposta, 'Erro ao excluir');
                     }
-                }
-                $scope.produtoresNvg.selecao.item = null;
-                $scope.produtoresNvg.selecao.selecionado = false;
+                });
             } else if ($scope.produtoresNvg.selecao.items && $scope.produtoresNvg.selecao.items.length) {
-                for (j = $scope.navegador.selecao.item[7].length-1; j >= 0; j--) {
-                    for (i in $scope.produtoresNvg.selecao.items) {
-                        if (angular.equals($scope.navegador.selecao.item[7][j].email.endereco, $scope.produtoresNvg.selecao.items[i].email.endereco)) {
-                            //$scope.navegador.selecao.item[7].splice(j, 1);
-                            $scope.navegador.selecao.item[7][j].cadastroAcao = 'E';
-                            break;
+/*                for (i = $scope.produtoresNvg.selecao.items.length -1; i >= 0; i--) {
+                    $scope.servico.excluir({
+                        id: $scope.produtoresNvg.selecao.items[i][0]
+                    }).success(function(resposta) {
+                        if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {
+                            $scope.produtoresNvg.dados.splice(UtilSrv.indiceDe($scope.produtoresNvg.dados, $scope.produtoresNvg.selecao.items[i][0]), 1);
+                        } else {
+                            toastr.error(resposta && resposta.mensagem ? resposta.mensagem : resposta, 'Erro ao excluir');
                         }
-                    }
+                    });
                 }
-                for (i = $scope.produtoresNvg.selecao.items.length -1; i >= 0; i--) {
-                    $scope.produtoresNvg.selecao.items.splice(i, 1);
-                }
+                toastr.info('Operação realizada!', 'Informação');*/
             }
         }, function () {
         });
