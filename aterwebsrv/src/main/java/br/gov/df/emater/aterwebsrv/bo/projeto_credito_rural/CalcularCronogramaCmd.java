@@ -15,9 +15,11 @@ import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.bo._SalvarCmd;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioFinanceiro;
-import br.gov.df.emater.aterwebsrv.modelo.dto.ProjetoCreditoRuralCronogramaDto;
-import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRural;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.FinanciamentoTipo;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.CronogramaPagamento;
+import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRural;
+import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralCronogramaPagamento;
+import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralFinanciamento;
 
 @Service("ProjetoCreditoRuralCalcularCronogramaCmd")
 public class CalcularCronogramaCmd extends _SalvarCmd {
@@ -25,11 +27,49 @@ public class CalcularCronogramaCmd extends _SalvarCmd {
 	public CalcularCronogramaCmd() {
 	}
 
+	private ProjetoCreditoRuralCronogramaPagamento getCronograma(ProjetoCreditoRural projetoCreditoRural) throws BoException {
+		ProjetoCreditoRuralCronogramaPagamento result = null;
+
+		result = procuraCronogramaPagamento(projetoCreditoRural.getCronogramaPagamentoInvestimentoList(), FinanciamentoTipo.I, projetoCreditoRural.getInvestimentoList());
+		if (result != null) {
+			return result;
+		}
+
+		result = procuraCronogramaPagamento(projetoCreditoRural.getCronogramaPagamentoCusteioList(), FinanciamentoTipo.C, projetoCreditoRural.getCusteioList());
+		if (result != null) {
+			return result;
+		}
+
+		throw new BoException("Tipo de cronograma de projeto de crédito rural não identificado!");
+	}
+
+	private ProjetoCreditoRuralCronogramaPagamento procuraCronogramaPagamento(List<ProjetoCreditoRuralCronogramaPagamento> cronogramaPagamentoList, FinanciamentoTipo financiamentoTipo, List<ProjetoCreditoRuralFinanciamento> financiamentoList) throws BoException {
+
+		if (cronogramaPagamentoList != null) {
+			for (ProjetoCreditoRuralCronogramaPagamento cP : cronogramaPagamentoList) {
+				if (cP.getDataCalculo() == null) {
+					BigDecimal valorFinanciado = new BigDecimal("1000");
+					if (financiamentoList != null) {
+						for (ProjetoCreditoRuralFinanciamento f : financiamentoList) {
+							if (cP.getNomeLote().equals(f.getNomeLote())) {
+								valorFinanciado = valorFinanciado.add(f.getValorFinanciado());
+							}
+						}
+					}
+					cP.setTipo(financiamentoTipo);
+					cP.setValorFinanciamento(valorFinanciado);
+					return cP;
+				}
+			}
+		}
+		return null;
+	}
+
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		ProjetoCreditoRural result = (ProjetoCreditoRural) contexto.getRequisicao();
 
-		ProjetoCreditoRuralCronogramaDto cronograma = result.getCronograma();
+		ProjetoCreditoRuralCronogramaPagamento cronograma = getCronograma(result);
 
 		// criticar parâmetros
 		if (cronograma.getPeriodicidade() == null) {
@@ -103,7 +143,7 @@ public class CalcularCronogramaCmd extends _SalvarCmd {
 
 			cronogramaPagamento = new CronogramaPagamento();
 			cronogramaPagamento.setId(--id);
-//			cronogramaPagamento.setTipo(cronograma.getTipo());
+			// cronogramaPagamento.setTipo(cronograma.getTipo());
 			cronogramaPagamento.setParcela(0);
 			cronogramaPagamento.setSaldoDevedorInicial(cronograma.getValorFinanciamento());
 			cronogramaPagamento.setPrestacao(new BigDecimal("0"));
@@ -135,7 +175,7 @@ public class CalcularCronogramaCmd extends _SalvarCmd {
 				cronogramaPagamento.setAno(++ano);
 				cronogramaPagamento.setEpoca(epoca);
 			}
-//			cronogramaPagamento.setTipo(cronograma.getTipo());
+			// cronogramaPagamento.setTipo(cronograma.getTipo());
 			cronogramaPagamento.setParcela((Integer) tabelaPrice.get("parcela"));
 			cronogramaPagamento.setSaldoDevedorInicial((BigDecimal) tabelaPrice.get("saldoDevedorInicial"));
 			cronogramaPagamento.setPrestacao((BigDecimal) tabelaPrice.get("prestacao"));
@@ -150,20 +190,8 @@ public class CalcularCronogramaCmd extends _SalvarCmd {
 			cronogramaPagamentoList.add(cronogramaPagamento);
 		}
 
-		switch (cronograma.getTipo()) {
-		/*case I:
-			result.setInvestimentoDataPrimeiraParcela(cronograma.getDataPrimeiraParcela());
-			result.setInvestimentoValorTotalJuros(cronograma.getValorTotalJuros());
-			result.setInvestimentoValorTotalPrestacoes(cronograma.getValorTotalPrestacoes());
-			result.setCronogramaInvestimentoList(cronogramaPagamentoList);
-			break;
-		case C:
-			result.setCusteioDataPrimeiraParcela(cronograma.getDataPrimeiraParcela());
-			result.setCusteioValorTotalJuros(cronograma.getValorTotalJuros());
-			result.setCusteioValorTotalPrestacoes(cronograma.getValorTotalPrestacoes());
-			result.setCronogramaCusteioList(cronogramaPagamentoList);
-			break;*/
-		}
+		cronograma.setCronogramaPagamentoList(cronogramaPagamentoList);
+		cronograma.setDataCalculo(Calendar.getInstance());
 
 		contexto.setResposta(result);
 

@@ -35,15 +35,21 @@
                             <tr>
                                 <th><frz-seletor ng-model="cronogramaNvg" dados="cadastro.registro.projetoCreditoRural[lista]"></frz-seletor></th>
                                 <th>#</th>
-                                <th>Descrição (Exploração ...)</th>
-                                <th>Receita Ano-3 (R$)</th>
-                                <th>Receita Ano-2 (R$)</th>
-                                <th>Receita Ano-1 (R$)</th>
-                                <th></th>
+                                <th>Nome Lote</th>
+                                <th>Data Cálculo</th>
+                                <th>Valor Financiamento (R$)</th>
+                                <th>Periodicidade</th>
+                                <th>Data Contratação</th>
+                                <th>Quantidade de Parcelas</th>
+                                <th>Taxa Juros Anual (%)</th>
+                                <th>Data Final Carência</th>
+                                <th>Data Primeira Parcela</th>
+                                <th>Valor Total Juros (R$)</th>
+                                <th>Valor Total Prestações (R$)</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="reg in cadastro.registro.projetoCreditoRural[lista] | orderBy: ['descricao'] track by reg.id">
+                            <tr ng-repeat="reg in cadastro.registro.projetoCreditoRural[lista] | orderBy: ['nomeLote', 'dataCalculo'] track by reg.id">
                                 <td>
                                     <input type="radio" ng-show="cronogramaNvg.selecao.tipo === 'U'" ng-model="cronogramaNvg.selecao.item" ng-value="reg"/>
                                     <input type="checkbox" ng-show="cronogramaNvg.selecao.tipo === 'M'" checklist-model="cronogramaNvg.selecao.items" checklist-value="reg"/>
@@ -51,23 +57,17 @@
                                 <td>
                                     {{$index + 1 + ((cronogramaNvg.paginaAtual-1) * cronogramaNvg.tamanhoPagina)}}
                                 </td>
-                                <td>
-                                    <input class="form-control input-sm" id="descricao{{$index}}" name="descricao{{$index}}" ng-model="reg.descricao" ng-required="true" ng-model-options="{ updateOn: 'blur'}">
-                                    <div class="label label-danger" ng-show="navegador.submetido && trienioListFrm['descricao' + $index].$error.required">
-                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                                        Campo Obrigatório
-                                    </div>
-                                </td>
-                                <td ng-repeat="idx in [3, 2, 1]">
-                                    <input class="form-control input-sm text-right" id="ano{{idx}}_{{$parent.$index}}" name="ano{{idx}}_{{$parent.$index}}" ng-model="reg['ano' + idx]" ui-number-mask="2" ng-required="true">
-                                    <div class="label label-danger" ng-show="navegador.submetido && trienioListFrm['ano' + idx + '_' + $parent.$index].$error.required">
-                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                                        Campo Obrigatório
-                                    </div>
-                                </td>
-                                <td>
-                                    <button ng-click="repetir(cadastro.registro.projetoCreditoRural, 'trienioList', reg, ['id', 'descricao'])" title="Repetir valor!">R</button>
-                                </td>
+                                <td>{{reg.nomeLote}}</td>
+                                <td>{{reg.dataCalculo | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                                <td class="text-right">{{reg.valorFinanciamento | number: 2}}</td>
+                                <td>{{UtilSrv.indiceDePorCampo(cadastro.apoio.periodicidadeList, reg.periodicidade, 'codigo').descricao}}</td>
+                                <td>{{reg.dataContratacao | date: 'dd/MM/yyyy'}}</td>
+                                <td class="text-right">{{reg.quantidadeParcelas | number: 0}}</td>
+                                <td class="text-right">{{reg.taxaJurosAnual | number: 3}}</td>
+                                <td>{{reg.dataFinalCarencia | date: 'dd/MM/yyyy'}}</td>
+                                <td>{{reg.dataPrimeiraParcela | date: 'dd/MM/yyyy'}}</td>
+                                <td class="text-right">{{reg.valorTotalJuros | number: 2}}</td>
+                                <td class="text-right">{{reg.valorTotalPrestacoes | number: 2}}</td>
                             </tr>
                         </tbody>
                         <tfoot>
@@ -76,45 +76,21 @@
                 </ng-form>
             </div>
             <div class="panel-footer">
-                <div class="container-fluid" ng-show="cadastro.registro.projetoCreditoRural[lista].length">
-                    <div class="row">
-                        <div class="col-sm-3 text-right">
-                            <label class="control-label">Totais</label>
-                        </div>
-                        <div class="col-sm-3" ng-repeat="idx in [3, 2, 1]">
-                            <div class="form-group">
-                                <label class="control-label" for="ano{{idx}}_{{$index}}">Ano-{{idx}} (R$)</label>
-                                <input type="text" class="form-control text-right" id="ano{{idx}}_{{$index}}" name="ano{{idx}}_{{$index}}" ng-readonly="true" ng-model="cadastro.apoio.trienio['ano' + idx + 'Total']" ui-number-mask="2">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-3 text-right">
-                            &nbsp;
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="form-group">
-                                <label class="control-label">Média Geral (R$)</label>
-                                <input type="text" class="form-control text-right" ng-readonly="true" ng-model="cadastro.apoio.trienio.mediaGeral" ui-number-mask="2">
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row" ng-show="cronogramaNvg.selecao.item['cronogramaPagamentoList'].length > 0">
         <div class="panel panel-default">
             <div class="panel-heading container-fluid">
                 RESULTADO DO CÁLCULO!
             </div>
-            <div class="painel-body"  ng-hide="cadastro.registro.projetoCreditoRural[lista].length">
+            <div class="painel-body"  ng-hide="cronogramaNvg.selecao.item['cronogramaPagamentoList'].length">
                 <div class="alert alert-warning" style="margin: 0px;" role="alert">
                     <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
                     Nenhum registro localizado!
                 </div>
             </div>
-            <div class="table-responsive" ng-show="cadastro.registro.projetoCreditoRural[lista].length > 0">
+            <div class="table-responsive">
                 <ng-form name="receitaDespesaListFrm">
                     <table class="table table-striped">
                         <thead>
@@ -132,7 +108,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="reg in cadastro.registro.projetoCreditoRural[lista] | orderBy: ['descricao'] track by reg.id">
+                            <tr ng-repeat="reg in cronogramaNvg.selecao.item['cronogramaPagamentoList'] | orderBy: ['descricao'] track by reg.id">
                                 <td>
                                     {{$index + 1 + ((cronogramaNvg.paginaAtual-1) * cronogramaNvg.tamanhoPagina)}}
                                 </td>

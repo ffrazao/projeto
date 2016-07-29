@@ -53,17 +53,58 @@ angular.module(pNmModulo).controller(pNmController,
             {nomeLote: "3", valorFinanciado: 1300},
             {nomeLote: "4", valorFinanciado: 100.86},
         ];
-
+        var atualizaData = function(objeto, ini, fim, sinal) {
+            if (sinal === 'fim') {
+                if (!objeto[ini] || !objeto[fim] || objeto[ini] > objeto[fim]) {
+                    objeto[ini] = angular.copy(objeto[fim]);
+                }
+            } else if (sinal === 'inicio') {
+                if (!objeto[ini] || !objeto[fim] || objeto[ini] > objeto[fim]) {
+                    objeto[fim] = angular.copy(objeto[ini]);
+                }
+            }
+        };
 
         mensagemSrv.confirmacao(true, 'projeto-credito-rural/sub-cronograma-form.html', 'Calcular ' + parte, {
-            registro: {periodicidade: 'A', dataContratacao: $scope.hoje(), dataFinalCarencia: $scope.hoje()},
+            atualizaData: atualizaData,
+            registro: {
+                periodicidade: $scope.cadastro.apoio.periodicidadeList[0], 
+                dataContratacao: $scope.hoje(), 
+                dataFinalCarencia: $scope.hoje(),
+                quantidadeParcelas: 3,
+                taxaJurosAnual: 1,
+            },
             apoio: {
+                lote: loteValorList[0],
                 loteValorList: loteValorList,
                 periodicidadeList: $scope.cadastro.apoio.periodicidadeList,
             },
         }).then(function(conteudo) {
             // processar o retorno positivo da modal
-            $scope.cadastro.registro.projetoCreditoRural[destino].push($scope.criarElemento($scope.cadastro.registro.projetoCreditoRural, destino, {}));
+            removerCampo($scope.$parent.cadastro.registro.projetoCreditoRural, ['@jsonId']);
+            var calculo = {
+                tipo: parte.substr(0,1).toUpperCase(),
+                nomeLote: conteudo.apoio.lote.nomeLote,
+                periodicidade: conteudo.registro.periodicidade.codigo,
+                dataContratacao: conteudo.registro.dataContratacao,
+                quantidadeParcelas: conteudo.registro.quantidadeParcelas,
+                taxaJurosAnual: conteudo.registro.taxaJurosAnual,
+                dataFinalCarencia: conteudo.registro.dataFinalCarencia,
+
+            };
+            var projetoCreditoRural = angular.copy($scope.cadastro.registro.projetoCreditoRural);
+            projetoCreditoRural[destino].push($scope.criarElemento($scope.cadastro.registro.projetoCreditoRural, destino, calculo));
+
+            ProjetoCreditoRuralSrv.calcularCronograma(projetoCreditoRural).success(function(resposta) {
+                if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {
+                    $scope.cadastro.registro.projetoCreditoRural = resposta.resultado;
+                } else {
+                    toastr.error(resposta && resposta.mensagem ? resposta.mensagem : resposta, 'Erro ao calcular dados');
+                }
+            }).error(function(erro) {
+                toastr.error(erro, 'Erro ao calcular dados');
+            });
+
         }, function() {
             // processar o retorno negativo da modal
             //$log.info('Modal dismissed at: ' + new Date());
@@ -88,21 +129,6 @@ angular.module(pNmModulo).controller(pNmController,
         }, function () {
         });
     };
-
-    $scope.calcular = function (lista) {
-        removerCampo($scope.$parent.cadastro.registro.projetoCreditoRural, ['@jsonId']);
-        $scope.cadastro.registro.projetoCreditoRural.calculoTipo = lista === 'cronogramaCusteioList' ? 'C' : 'I';
-        ProjetoCreditoRuralSrv.calcularCronograma($scope.cadastro.registro.projetoCreditoRural).success(function(resposta) {
-            if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {
-                $scope.cadastro.registro.projetoCreditoRural = resposta.resultado;
-            } else {
-                toastr.error(resposta && resposta.mensagem ? resposta.mensagem : resposta, 'Erro ao calcular dados');
-            }
-        }).error(function(erro) {
-            toastr.error(erro, 'Erro ao calcular dados');
-        });
-    };
-
     // fim das operaçoes atribuidas ao navagador
 
 } // fim função

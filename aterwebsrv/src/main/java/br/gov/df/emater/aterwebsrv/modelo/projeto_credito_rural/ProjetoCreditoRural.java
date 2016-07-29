@@ -14,17 +14,13 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.Where;
 
-import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.Atividade;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.FinanciamentoTipo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.ProjetoCreditoRuralStatus;
-import br.gov.df.emater.aterwebsrv.modelo.dto.ProjetoCreditoRuralCronogramaDto;
 
 @Entity
 @Table(name = "projeto_credito_rural", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
@@ -41,9 +37,6 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 	@ManyToOne
 	@JoinColumn(name = "atividade_id")
 	private Atividade atividade;
-
-	@Transient
-	private FinanciamentoTipo calculoTipo;
 
 	@OneToMany(mappedBy = "projetoCreditoRural")
 	@Where(clause = "tipo = 'C'")
@@ -122,43 +115,6 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 
 	public Atividade getAtividade() {
 		return atividade;
-	}
-
-	public FinanciamentoTipo getCalculoTipo() {
-		return calculoTipo;
-	}
-
-	public ProjetoCreditoRuralCronogramaDto getCronograma() throws BoException {
-		ProjetoCreditoRuralCronogramaDto result = new ProjetoCreditoRuralCronogramaDto();
-		result.setTipo(getCalculoTipo());
-
-		switch (result.getTipo()) {
-		case C:
-			// result.setPeriodicidade(this.custeioPeriodicidade);
-			// result.setDataContratacao(this.custeioDataContratacao);
-			// result.setValorFinanciamento(this.custeioValorFinanciamento);
-			// result.setTaxaJurosAnual(this.custeioTaxaJurosAnual);
-			// result.setQuantidadeParcelas(this.custeioQuantidadeParcelas);
-			// result.setDataFinalCarencia(this.custeioDataFinalCarencia);
-			// result.setDataPrimeiraParcela(this.custeioDataPrimeiraParcela);
-			// result.setValorTotalJuros(this.custeioValorTotalJuros);
-			// result.setValorTotalParcelas(this.custeioValorTotalParcelas);
-			break;
-		case I:
-			// result.setPeriodicidade(this.investimentoPeriodicidade);
-			// result.setDataContratacao(this.investimentoDataContratacao);
-			// result.setValorFinanciamento(this.investimentoValorFinanciamento);
-			// result.setTaxaJurosAnual(this.investimentoTaxaJurosAnual);
-			// result.setQuantidadeParcelas(this.investimentoQuantidadeParcelas);
-			// result.setDataFinalCarencia(this.investimentoDataFinalCarencia);
-			// result.setDataPrimeiraParcela(this.investimentoDataPrimeiraParcela);
-			// result.setValorTotalJuros(this.investimentoValorTotalJuros);
-			// result.setValorTotalParcelas(this.investimentoValorTotalParcelas);
-			break;
-		default:
-			throw new BoException("Tipo de cronograma de projeto de crédito rural inválido");
-		}
-		return result;
 	}
 
 	public List<ProjetoCreditoRuralCronogramaPagamento> getCronogramaPagamentoCusteioList() {
@@ -240,10 +196,6 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 
 	public void setAtividade(Atividade atividade) {
 		this.atividade = atividade;
-	}
-
-	public void setCalculoTipo(FinanciamentoTipo calculoTipo) {
-		this.calculoTipo = calculoTipo;
 	}
 
 	public void setCronogramaPagamentoCusteioList(List<ProjetoCreditoRuralCronogramaPagamento> cronogramaPagamentoCusteioList) {

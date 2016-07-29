@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
@@ -33,6 +35,10 @@ public class CronogramaPagamento extends EntidadeBase implements _ChavePrimaria<
 	private Integer parcela;
 
 	private BigDecimal prestacao;
+
+	@ManyToOne
+	@JoinColumn(name = "projeto_credito_cronograma_pagamento_id")
+	private ProjetoCreditoRuralCronogramaPagamento projetoCreditoRuralCronogramaPagamento;
 
 	@Column(name = "saldo_devedor_final")
 	private BigDecimal saldoDevedorFinal;
@@ -80,6 +86,10 @@ public class CronogramaPagamento extends EntidadeBase implements _ChavePrimaria<
 		return prestacao;
 	}
 
+	public ProjetoCreditoRuralCronogramaPagamento getProjetoCreditoRuralCronogramaPagamento() {
+		return projetoCreditoRuralCronogramaPagamento;
+	}
+
 	public BigDecimal getSaldoDevedorFinal() {
 		return saldoDevedorFinal;
 	}
@@ -119,6 +129,10 @@ public class CronogramaPagamento extends EntidadeBase implements _ChavePrimaria<
 
 	public void setPrestacao(BigDecimal prestacao) {
 		this.prestacao = prestacao;
+	}
+
+	public void setProjetoCreditoRuralCronogramaPagamento(ProjetoCreditoRuralCronogramaPagamento projetoCreditoRuralCronogramaPagamento) {
+		this.projetoCreditoRuralCronogramaPagamento = projetoCreditoRuralCronogramaPagamento;
 	}
 
 	public void setSaldoDevedorFinal(BigDecimal saldoDevedorFinal) {

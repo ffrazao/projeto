@@ -26,7 +26,7 @@
         <div class="col-md-4">
             <div class="radio" ng-repeat="item in conteudo.apoio.periodicidadeList | orderBy: 'ordem'">
                 <label for="periodicidade-{{$index}}">
-                    <input type="radio" name="periodicidade" id="periodicidade-{{$index}}" ng-value="item.codigo" ng-model="conteudo.registro.periodicidade" ng-required="true">{{item.descricao}}
+                    <input type="radio" name="periodicidade" id="periodicidade-{{$index}}" ng-value="item" ng-model="conteudo.registro.periodicidade" ng-required="true">{{item.descricao}}
                 </label>
             </div>
             <div class="label label-danger" ng-show="confirmacaoFrm.periodicidade.$error.required">
@@ -38,7 +38,8 @@
     <div class="form-group">
         <label class="col-md-4 control-label" for="dataContratacao">Data da Contratação</label>
         <div class="col-md-2">
-            <input id="dataContratacao" name="dataContratacao" type="text" class="form-control input-md" ng-model="conteudo.registro.dataContratacao" ui-date-mask ng-required="true">
+            <input id="dataContratacao" name="dataContratacao" type="text" class="form-control input-md" ng-model="conteudo.registro.dataContratacao" ui-date-mask ng-required="true" 
+            	ng-change="conteudo.atualizaData(conteudo.registro, 'dataContratacao', 'dataFinalCarencia', 'inicio')">
             <div class="label label-danger" ng-show="confirmacaoFrm.dataContratacao.$error.required">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Campo Obrigatório
             </div>
@@ -51,19 +52,33 @@
     <div class="form-group">
         <label class="col-md-4 control-label" for="taxaJurosAnual">Taxa Juros Anual (%)</label>
         <div class="col-md-2">
-            <input id="taxaJurosAnual" name="taxaJurosAnual" type="text" class="form-control input-md text-right" ng-model="conteudo.registro.taxaJurosAnual" ui-number-mask="3" ng-required="true">
+            <input id="taxaJurosAnual" name="taxaJurosAnual" type="text" class="form-control input-md text-right" ng-model="conteudo.registro.taxaJurosAnual" ui-number-mask="3" ng-required="true"
+            	ng-valor-min="0.001" ng-valor-max="100">
             <div class="label label-danger" ng-show="confirmacaoFrm.taxaJurosAnual.$error.required">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Campo Obrigatório
+            </div>
+            <div class="label label-danger" ng-show="confirmacaoFrm.taxaJurosAnual.$error.ngValorMin">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Valor mínimo ultrapassado! (mín. 0,001%)
+            </div>
+            <div class="label label-danger" ng-show="confirmacaoFrm.taxaJurosAnual.$error.ngValorMax">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Valor máximo ultrapassado! (máx. 100%)
             </div>
         </div>
     </div>
     <!-- Text input-->
     <div class="form-group">
         <label class="col-md-4 control-label" for="quantidadeParcelas">Quantidade Parcelas</label>
-        <div class="col-md-1">
-            <input id="quantidadeParcelas" name="quantidadeParcelas" type="text" class="form-control input-md text-right" ng-model="conteudo.registro.quantidadeParcelas" ui-number-mask="0" ng-required="true">
+        <div class="col-md-2">
+            <input id="quantidadeParcelas" name="quantidadeParcelas" type="text" class="form-control input-md text-right" ng-model="conteudo.registro.quantidadeParcelas" ui-number-mask="0" ng-required="true"
+            	ng-valor-min="1" ng-valor-max="conteudo.registro.periodicidade.maxParcelas">
             <div class="label label-danger" ng-show="confirmacaoFrm.quantidadeParcelas.$error.required">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Campo Obrigatório
+            </div>
+            <div class="label label-danger" ng-show="confirmacaoFrm.quantidadeParcelas.$error.ngValorMin">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Valor mínimo ultrapassado! (mín. 1)
+            </div>
+            <div class="label label-danger" ng-show="confirmacaoFrm.quantidadeParcelas.$error.ngValorMax">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Valor máximo ultrapassado! (máx. {{conteudo.registro.periodicidade.maxParcelas}})
             </div>
         </div>
     </div>
@@ -71,12 +86,16 @@
     <div class="form-group">
         <label class="col-md-4 control-label" for="dataFinalCarencia">Data Final da Carência</label>
         <div class="col-md-2">
-            <input id="dataFinalCarencia" name="dataFinalCarencia" type="text" class="form-control input-md" ng-model="conteudo.registro.dataFinalCarencia" ui-date-mask ng-required="true">
+            <input id="dataFinalCarencia" name="dataFinalCarencia" type="text" class="form-control input-md" ng-model="conteudo.registro.dataFinalCarencia" ui-date-mask ng-required="true"
+            	 ng-change="conteudo.atualizaData(conteudo.registro, 'dataContratacao', 'dataFinalCarencia', 'fim')">
             <div class="label label-danger" ng-show="confirmacaoFrm.dataFinalCarencia.$error.required">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Campo Obrigatório
             </div>
             <div class="label label-danger" ng-show="confirmacaoFrm.dataFinalCarencia.$error.date">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Data Inválida!
+            </div>
+            <div class="label label-danger" ng-show="confirmacaoFrm.dataFinalCarencia.$error.ngValorMin">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Data mínima ultrapassada!
             </div>
         </div>
     </div>
