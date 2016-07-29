@@ -15,6 +15,7 @@ import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.bo._SalvarCmd;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioFinanceiro;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FinanciamentoTipo;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.CronogramaPagamento;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRural;
@@ -32,11 +33,13 @@ public class CalcularCronogramaCmd extends _SalvarCmd {
 
 		result = procuraCronogramaPagamento(projetoCreditoRural.getCronogramaPagamentoInvestimentoList(), FinanciamentoTipo.I, projetoCreditoRural.getInvestimentoList());
 		if (result != null) {
+			result.setTipo(FinanciamentoTipo.I);
 			return result;
 		}
 
 		result = procuraCronogramaPagamento(projetoCreditoRural.getCronogramaPagamentoCusteioList(), FinanciamentoTipo.C, projetoCreditoRural.getCusteioList());
 		if (result != null) {
+			result.setTipo(FinanciamentoTipo.C);
 			return result;
 		}
 
@@ -143,7 +146,6 @@ public class CalcularCronogramaCmd extends _SalvarCmd {
 
 			cronogramaPagamento = new CronogramaPagamento();
 			cronogramaPagamento.setId(--id);
-			// cronogramaPagamento.setTipo(cronograma.getTipo());
 			cronogramaPagamento.setParcela(0);
 			cronogramaPagamento.setSaldoDevedorInicial(cronograma.getValorFinanciamento());
 			cronogramaPagamento.setPrestacao(new BigDecimal("0"));
@@ -192,6 +194,17 @@ public class CalcularCronogramaCmd extends _SalvarCmd {
 
 		cronograma.setCronogramaPagamentoList(cronogramaPagamentoList);
 		cronograma.setDataCalculo(Calendar.getInstance());
+
+		// definir o calculo selecionado
+		switch (cronograma.getTipo()) {
+		case I:
+			result.getCronogramaPagamentoInvestimentoList().stream().filter((c) -> c.getNomeLote().equals(cronograma.getNomeLote())).forEach((c) -> c.setSelecionado(Confirmacao.N));
+			break;
+		case C:
+			result.getCronogramaPagamentoCusteioList().stream().filter((c) -> c.getNomeLote().equals(cronograma.getNomeLote())).forEach((c) -> c.setSelecionado(Confirmacao.N));
+			break;
+		}
+		cronograma.setSelecionado(Confirmacao.S);
 
 		contexto.setResposta(result);
 

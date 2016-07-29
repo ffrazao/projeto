@@ -246,7 +246,7 @@
                 }, 
                 {
                     'nome': 'Fluxo de Caixa',
-                    'include': 'projeto-credito-rural/tab-trienio.html',
+                    'include': 'projeto-credito-rural/tab-fluxo-caixa.html',
                     'visivel': true,
                     'indice': indice++,
                     'ativo': false,

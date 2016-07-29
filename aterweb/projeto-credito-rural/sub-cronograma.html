@@ -29,7 +29,7 @@
                 </div>
             </div>
             <div class="table-responsive" ng-show="cadastro.registro.projetoCreditoRural[lista].length > 0">
-                <ng-form name="trienioListFrm">
+                <ng-form name="cronogramaPagamentoFrm">
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -37,6 +37,7 @@
                                 <th>#</th>
                                 <th>Nome Lote</th>
                                 <th>Data Cálculo</th>
+                                <th>Selecionar</th>
                                 <th>Valor Financiamento (R$)</th>
                                 <th>Periodicidade</th>
                                 <th>Data Contratação</th>
@@ -49,7 +50,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="reg in cadastro.registro.projetoCreditoRural[lista] | orderBy: ['nomeLote', 'dataCalculo'] track by reg.id">
+                            <tr ng-repeat="reg in cadastro.registro.projetoCreditoRural[lista] | orderBy: ['nomeLote', 'dataCalculo'] track by reg.id" ng-class="{azul: reg.selecionado === 'S'}">
                                 <td>
                                     <input type="radio" ng-show="cronogramaNvg.selecao.tipo === 'U'" ng-model="cronogramaNvg.selecao.item" ng-value="reg"/>
                                     <input type="checkbox" ng-show="cronogramaNvg.selecao.tipo === 'M'" checklist-model="cronogramaNvg.selecao.items" checklist-value="reg"/>
@@ -59,6 +60,9 @@
                                 </td>
                                 <td>{{reg.nomeLote}}</td>
                                 <td>{{reg.dataCalculo | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                                <td>
+                                    <input type="radio" id="{{reg.nomeLote}}{{$index}}" name="{{reg.nomeLote}}" ng-click="definirSelecionado(cadastro.registro.projetoCreditoRural[lista], reg)" ng-checked="reg.selecionado === 'S'">
+                                </td>
                                 <td class="text-right">{{reg.valorFinanciamento | number: 2}}</td>
                                 <td>{{UtilSrv.indiceDePorCampo(cadastro.apoio.periodicidadeList, reg.periodicidade, 'codigo').descricao}}</td>
                                 <td>{{reg.dataContratacao | date: 'dd/MM/yyyy'}}</td>
@@ -100,7 +104,7 @@
                                 <th>Ano</th>
                                 <th>Época</th>
                                 <th>Saldo Devedor Inicial (R$)</th>
-                                <th>Taxa de Juros (%)</th>
+                                <th class="sr-only">Taxa de Juros (%)</th>
                                 <th>Juros (R$)</th>
                                 <th>Amortização (R$)</th>
                                 <th>Prestação (R$)</th>
@@ -124,7 +128,7 @@
                                 <td class="text-right">
                                     {{reg.saldoDevedorInicial | number: 2}}
                                 </td>
-                                <td class="text-right">
+                                <td class="text-right sr-only">
                                     {{reg.taxaJuros | number: 6}}
                                 </td>
                                 <td class="text-right">

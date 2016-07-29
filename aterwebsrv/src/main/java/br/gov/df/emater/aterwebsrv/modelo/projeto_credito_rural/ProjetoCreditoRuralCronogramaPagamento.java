@@ -88,14 +88,14 @@ public class ProjetoCreditoRuralCronogramaPagamento extends EntidadeBase impleme
 	@Column(name = "quantidade_parcela")
 	private Integer quantidadeParcelas;
 
+	@Enumerated(EnumType.STRING)
+	private Confirmacao selecionado;
+
 	@Column(name = "taxa_juros_anual")
 	private BigDecimal taxaJurosAnual;
 
 	@Enumerated(EnumType.STRING)
 	private FinanciamentoTipo tipo;
-
-	@Enumerated(EnumType.STRING)
-	private Confirmacao valido;
 
 	@Column(name = "valor_financiamento")
 	private BigDecimal valorFinanciamento;
@@ -154,16 +154,16 @@ public class ProjetoCreditoRuralCronogramaPagamento extends EntidadeBase impleme
 		return quantidadeParcelas;
 	}
 
+	public Confirmacao getSelecionado() {
+		return selecionado;
+	}
+
 	public BigDecimal getTaxaJurosAnual() {
 		return taxaJurosAnual;
 	}
 
 	public FinanciamentoTipo getTipo() {
 		return tipo;
-	}
-
-	public Confirmacao getValido() {
-		return valido;
 	}
 
 	public BigDecimal getValorFinanciamento() {
@@ -218,16 +218,16 @@ public class ProjetoCreditoRuralCronogramaPagamento extends EntidadeBase impleme
 		this.quantidadeParcelas = quantidadeParcelas;
 	}
 
+	public void setSelecionado(Confirmacao selecionado) {
+		this.selecionado = selecionado;
+	}
+
 	public void setTaxaJurosAnual(BigDecimal taxaJurosAnual) {
 		this.taxaJurosAnual = taxaJurosAnual;
 	}
 
 	public void setTipo(FinanciamentoTipo tipo) {
 		this.tipo = tipo;
-	}
-
-	public void setValido(Confirmacao valido) {
-		this.valido = valido;
 	}
 
 	public void setValorFinanciamento(BigDecimal valorFinanciamento) {

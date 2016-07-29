@@ -16,6 +16,19 @@ angular.module(pNmModulo).controller(pNmController,
         }
     };
     init();
+
+    $scope.definirSelecionado = function (lista, reg) {
+        if (!lista || !reg) {
+            return;
+        }
+        lista.forEach(function(r) {
+            if (r.nomeLote === reg.nomeLote) {
+                r.selecionado = 'N';
+            }
+        });
+        reg.selecionado = 'S';
+    };
+
     // fim rotinas de apoio
 
     // inicio das operaçoes atribuidas ao navagador
@@ -59,11 +72,15 @@ angular.module(pNmModulo).controller(pNmController,
         var atualizaData = function(objeto, ini, fim, sinal) {
             if (sinal === 'fim') {
                 if (!objeto[ini] || !objeto[fim] || objeto[ini] > objeto[fim]) {
-                    objeto[ini] = angular.copy(objeto[fim]);
+                    if (objeto[fim]) {
+                        objeto[ini] = angular.copy(objeto[fim]);
+                    }
                 }
             } else if (sinal === 'inicio') {
                 if (!objeto[ini] || !objeto[fim] || objeto[ini] > objeto[fim]) {
-                    objeto[fim] = angular.copy(objeto[ini]);
+                    if (objeto[ini]) {
+                        objeto[fim] = angular.copy(objeto[ini]);
+                    }
                 }
             }
         };
