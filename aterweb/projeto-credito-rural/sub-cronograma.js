@@ -32,27 +32,30 @@ angular.module(pNmModulo).controller(pNmController,
         if ($scope.cadastro.registro.projetoCreditoRural[parte + 'List']) {
             var i, selecionado;
             $scope.cadastro.registro.projetoCreditoRural[parte + 'List'].forEach(function (reg) {
-                selecionado = null;
-                for (i = 0; i < loteValorList.length; i++) {
-                    if (loteValorList[i].nomeLote === reg.nomeLote) {
-                        selecionado = angular.copy(reg);
-                        break;
+                if (reg.nomeLote && reg.nomeLote.trim().length) {
+                    selecionado = null;
+                    for (i = 0; i < loteValorList.length; i++) {
+                        if (loteValorList[i].nomeLote === reg.nomeLote) {
+                            selecionado = angular.copy(reg);
+                            break;
+                        }
                     }
-                }
-                if (selecionado === null) {
-                    loteValorList.push({nomeLote: reg.nomeLote, valorFinanciado: reg.valorFinanciado});
-                } else {
-                    loteValorList[i].valorFinanciado += reg.valorFinanciado;
+                    if (selecionado === null) {
+                        loteValorList.push({nomeLote: reg.nomeLote, valorFinanciado: reg.valorFinanciado});
+                    } else {
+                        loteValorList[i].valorFinanciado += reg.valorFinanciado;
+                    }
                 }
             });
         }
 
-        loteValorList = [
-            {nomeLote: "1", valorFinanciado: 1000},
-            {nomeLote: "2", valorFinanciado: 3000},
-            {nomeLote: "3", valorFinanciado: 1300},
-            {nomeLote: "4", valorFinanciado: 100.86},
-        ];
+        if (!loteValorList.length) {
+            toastr.error("Nenhum lote informado", "Erro ao calcular");
+            return;
+        }
+
+        // loteValorList = [{nomeLote: "1", valorFinanciado: 1000}, {nomeLote: "2", valorFinanciado: 3000}, {nomeLote: "3", valorFinanciado: 1300}, {nomeLote: "4", valorFinanciado: 100.86}, ]; 
+
         var atualizaData = function(objeto, ini, fim, sinal) {
             if (sinal === 'fim') {
                 if (!objeto[ini] || !objeto[fim] || objeto[ini] > objeto[fim]) {
@@ -71,8 +74,8 @@ angular.module(pNmModulo).controller(pNmController,
                 periodicidade: $scope.cadastro.apoio.periodicidadeList[0], 
                 dataContratacao: $scope.hoje(), 
                 dataFinalCarencia: $scope.hoje(),
-                quantidadeParcelas: 3,
-                taxaJurosAnual: 1,
+                quantidadeParcelas: null,
+                taxaJurosAnual: null,
             },
             apoio: {
                 lote: loteValorList[0],
@@ -97,7 +100,7 @@ angular.module(pNmModulo).controller(pNmController,
 
             ProjetoCreditoRuralSrv.calcularCronograma(projetoCreditoRural).success(function(resposta) {
                 if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {
-                    $scope.cadastro.registro.projetoCreditoRural = resposta.resultado;
+                    $scope.cadastro.registro.projetoCreditoRural[destino] = resposta.resultado[destino];
                 } else {
                     toastr.error(resposta && resposta.mensagem ? resposta.mensagem : resposta, 'Erro ao calcular dados');
                 }

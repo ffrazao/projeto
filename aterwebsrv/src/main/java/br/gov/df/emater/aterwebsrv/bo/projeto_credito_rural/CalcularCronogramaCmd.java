@@ -48,7 +48,7 @@ public class CalcularCronogramaCmd extends _SalvarCmd {
 		if (cronogramaPagamentoList != null) {
 			for (ProjetoCreditoRuralCronogramaPagamento cP : cronogramaPagamentoList) {
 				if (cP.getDataCalculo() == null) {
-					BigDecimal valorFinanciado = new BigDecimal("1000");
+					BigDecimal valorFinanciado = new BigDecimal("0");
 					if (financiamentoList != null) {
 						for (ProjetoCreditoRuralFinanciamento f : financiamentoList) {
 							if (cP.getNomeLote().equals(f.getNomeLote())) {

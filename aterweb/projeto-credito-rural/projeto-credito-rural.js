@@ -162,6 +162,19 @@
                 return -item[$scope.CABEC.ATIV_INICIO];
             };
 
+            $scope.cronogramaPagamentoRealizado = function(item, lista) {
+                var i;
+                lista = lista.substr(0,1).toUpperCase().concat(lista.substr(1, lista.length-1));
+                if ($scope.cadastro.registro.projetoCreditoRural['cronogramaPagamento' + lista]) {
+                    for (i = 0; i < $scope.cadastro.registro.projetoCreditoRural['cronogramaPagamento' + lista].length; i++) {
+                        if (item.nomeLote === $scope.cadastro.registro.projetoCreditoRural['cronogramaPagamento' + lista][i].nomeLote) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            };
+
             // nomes dos campos para listagem
 
             $scope.toggleChildren = function (scope) {

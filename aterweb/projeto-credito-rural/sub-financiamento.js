@@ -26,7 +26,14 @@ angular.module(pNmModulo).controller(pNmController,
     };
     $scope.incluir = function(destino) {
         init();
-        $scope.cadastro.registro.projetoCreditoRural[destino].push($scope.criarElemento($scope.cadastro.registro.projetoCreditoRural, destino, {nomeLote: "1"}));
+        var obj = {nomeLote: "1"}, i;
+        for (i = 0; i < $scope.cadastro.registro.projetoCreditoRural[destino].length; i++) {
+            if ($scope.cadastro.registro.projetoCreditoRural[destino][i].nomeLote === obj.nomeLote && 
+                $scope.cronogramaPagamentoRealizado($scope.cadastro.registro.projetoCreditoRural[destino][i], destino)) {
+                obj.nomeLote = "";
+            }
+        }
+        $scope.cadastro.registro.projetoCreditoRural[destino].push($scope.criarElemento($scope.cadastro.registro.projetoCreditoRural, destino, obj));
     };
     $scope.editar = function() {};
     $scope.excluir = function(nvg, destino) {
@@ -34,10 +41,19 @@ angular.module(pNmModulo).controller(pNmController,
             var i, j;
             removerCampo($scope.$parent.cadastro.registro.projetoCreditoRural[destino], ['@jsonId']);
             if (nvg.selecao.tipo === 'U' && nvg.selecao.item) {
-                $scope.excluirElemento($scope, $scope.cadastro.registro.projetoCreditoRural, destino, nvg.selecao.item);
+                if ($scope.cronogramaPagamentoRealizado(nvg.selecao.item, destino)) {
+                    toastr.error("Este item não pode ser excluído", "Erro ao excluir");
+                } else {
+                    $scope.excluirElemento($scope, $scope.cadastro.registro.projetoCreditoRural, destino, nvg.selecao.item);
+                }
+
             } else if (nvg.selecao.items && nvg.selecao.items.length) {
                 for (i in nvg.selecao.items) {
-                    $scope.excluirElemento($scope, $scope.cadastro.registro.projetoCreditoRural, destino, nvg.selecao.items[i]);
+                    if ($scope.cronogramaPagamentoRealizado(nvg.selecao.items[i], destino)) {
+                        toastr.error("Este item não pode ser excluído", "Erro ao excluir");
+                    } else {
+                        $scope.excluirElemento($scope, $scope.cadastro.registro.projetoCreditoRural, destino, nvg.selecao.items[i]);
+                    }
                 }
             }
             nvg.selecao.item = null;
@@ -45,6 +61,13 @@ angular.module(pNmModulo).controller(pNmController,
             nvg.selecao.selecionado = false;
         }, function () {
         });
+    };
+
+    $scope.nomeLoteMudou = function(item, lista) {
+        if ($scope.cronogramaPagamentoRealizado(item, lista)) {
+            item.nomeLote = "";
+            toastr.error("Este lote já foi calculado", "Erro ao editar");
+        }
     };
 
     $scope.totalizadores = function(lista) {

@@ -108,7 +108,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="reg in cronogramaNvg.selecao.item['cronogramaPagamentoList'] | orderBy: ['descricao'] track by reg.id">
+                            <tr ng-repeat="reg in cronogramaNvg.selecao.item['cronogramaPagamentoList'] | orderBy: ['descricao'] track by reg.id" ng-class="{azul: !reg.parcela}">
                                 <td>
                                     {{$index + 1 + ((cronogramaNvg.paginaAtual-1) * cronogramaNvg.tamanhoPagina)}}
                                 </td>
