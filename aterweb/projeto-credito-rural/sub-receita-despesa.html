@@ -30,7 +30,7 @@
             </div>
             <div class="table-responsive" ng-show="cadastro.registro.projetoCreditoRural[lista].length > 0">
                 <ng-form name="receitaDespesaListFrm">
-                    <table class="table table-striped">
+                    <table class="table table-striped table-hover">
                         <thead>
                             <tr>
                                 <th><frz-seletor ng-model="receitaDespesaNvg" dados="cadastro.registro.projetoCreditoRural[lista]"></frz-seletor></th>
@@ -44,6 +44,12 @@
                                 <th></th>
                             </tr>
                         </thead>
+                        <tfoot>
+                            <tr>
+                                <th colspan="7" class="text-right">Valor Bruto Total</th>
+                                <td class="text-right">{{cadastro.apoio.financiamento[lista]['valorTotal'] | number: 2}}</td>
+                            </tr>
+                        </tfoot>
                         <tbody>
                             <tr ng-repeat="reg in cadastro.registro.projetoCreditoRural[lista] | orderBy: ['ano', 'descricao'] track by reg.id">
                                 <td>
@@ -101,23 +107,8 @@
                                 </td>
                             </tr>
                         </tbody>
-                        <tfoot>
-                        </tfoot>
                     </table>
                 </ng-form>
-            </div>
-            <div class="panel-footer" ng-show="cadastro.registro.projetoCreditoRural[lista].length">
-                <div class="row" style="padding: 2px;">
-                    <div class="col-sm-6 text-right">
-                        <label class="control-label">&nbsp;</label>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label class="control-label" for="{{lista}}">Valor Bruto Total</label>
-                            <input type="text" class="form-control text-right" id="{{lista}}" name="{{lista}}" ng-readonly="true" ng-model="cadastro.apoio.financiamento[lista]['valorTotal']" ui-number-mask="2">
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -134,7 +125,7 @@
             </div>
             <div class="table-responsive" ng-show="cadastro.apoio.financiamento[lista]['anoList'].length > 0">
                 <ng-form name="receitaDespesaListFrm">
-                    <table class="table table-striped">
+                    <table class="table table-striped table-hover">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -142,6 +133,18 @@
                                 <th>Valor Total</th>
                             </tr>
                         </thead>
+                        <tfoot>
+                            <tr class="warning" ng-class="{azul: lista === 'receitaList', vermelho: lista === 'despesaList'}">
+                                <th></th>
+                                <th>Média Mensal</th>
+                                <td class="text-right">{{(cadastro.apoio.financiamento[lista]['valorTotal'] / cadastro.apoio.financiamento[lista]['anoList'].length) / 12 | number: 2}}</td>
+                            </tr>
+                            <tr class="warning" ng-class="{azul: lista === 'receitaList', vermelho: lista === 'despesaList'}">
+                                <th></th>
+                                <th>Média Anual</th>
+                                <td class="text-right">{{(cadastro.apoio.financiamento[lista]['valorTotal'] / cadastro.apoio.financiamento[lista]['anoList'].length) | number: 2}}</td>
+                            </tr>
+                        </tfoot>
                         <tbody>
                             <tr ng-repeat="reg in cadastro.apoio.financiamento[lista]['anoList'] | orderBy: ['ano'] track by reg.ano">
                                 <td>
@@ -155,22 +158,8 @@
                                 </td>
                             </tr>
                         </tbody>
-                        <tfoot>
-                        </tfoot>
                     </table>
                 </ng-form>
-            </div>
-            <div class="panel-footer">
-                <table class="table table-striped" ng-show="cadastro.apoio.financiamento[lista]['anoList'].length > 0">
-                    <tr class="warning" ng-class="{azul: lista === 'receitaList', vermelho: lista === 'despesaList'}">
-                        <th>Média Mensal</th>
-                        <td class="text-right">{{(cadastro.apoio.financiamento[lista]['valorTotal'] / cadastro.apoio.financiamento[lista]['anoList'].length) / 12 | number: 2}}</td>
-                    </tr>
-                    <tr class="warning" ng-class="{azul: lista === 'receitaList', vermelho: lista === 'despesaList'}">
-                        <th>Média Anual</th>
-                        <td class="text-right">{{(cadastro.apoio.financiamento[lista]['valorTotal'] / cadastro.apoio.financiamento[lista]['anoList'].length) | number: 2}}</td>
-                    </tr>
-                </table>
             </div>
         </div>
     </div>

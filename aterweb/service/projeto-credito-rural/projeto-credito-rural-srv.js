@@ -105,9 +105,13 @@ angular.module(pNmModulo).factory(pNmFactory,
             tagComunidade : function( unidade, nome) {
                 return ComunidadeSrv.lista({"unidadeOrganizacionalList": [unidade], "nome":nome});
             },
-            calcularCronograma : function(cronograma) {
+            calcularCronograma : function(projetoCreditoRural) {
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
-                return $http.post(this.endereco + '/calcular-cronograma', cronograma);
+                return $http.post(this.endereco + '/calcular-cronograma', projetoCreditoRural);
+            },
+            calcularFluxoCaixa : function(projetoCreditoRural) {
+                SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
+                return $http.post(this.endereco + '/calcular-fluxo-caixa', projetoCreditoRural);
             },
 
         };

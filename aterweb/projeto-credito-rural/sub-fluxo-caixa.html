@@ -1,47 +1,60 @@
+<div class="container-fluid"><div class="row"><button type="button" class="btn btn-primary pull-right" ng-click="calcular()">Calcular</button></div></div>
+
+<ng-include src="'projeto-credito-rural/sub-fluxo-caixa-grade.html'" ng-controller="ProjetoCreditoRuralFluxoCaixaGradeCtrl" onload="iniciarGrade('Receitas', 'R')"></ng-include>
+
+<ng-include src="'projeto-credito-rural/sub-fluxo-caixa-grade.html'" ng-controller="ProjetoCreditoRuralFluxoCaixaGradeCtrl" onload="iniciarGrade('Despesas', 'D')"></ng-include>
+
 <div class="table-responsive" ng-show="cadastro.registro.projetoCreditoRural.fluxoCaixaList.length > 0">
-    <ng-form name="fluxoCaixaListFrm">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th><frz-seletor ng-model="fluxoCaixaNvg" dados="cadastro.registro.projetoCreditoRural.fluxoCaixaList"></frz-seletor></th>
-                    <th>#</th>
-                    <th>Descrição (Exploração ...)</th>
-                    <th>Receita Ano-3 (R$)</th>
-                    <th>Receita Ano-2 (R$)</th>
-                    <th>Receita Ano-1 (R$)</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="reg in cadastro.registro.projetoCreditoRural.fluxoCaixaList | orderBy: ['descricao'] track by reg.id">
-                    <td>
-                        <input type="radio" ng-show="fluxoCaixaNvg.selecao.tipo === 'U'" ng-model="fluxoCaixaNvg.selecao.item" ng-value="reg"/>
-                        <input type="checkbox" ng-show="fluxoCaixaNvg.selecao.tipo === 'M'" checklist-model="fluxoCaixaNvg.selecao.items" checklist-value="reg"/>
-                    </td>
-                    <td>
-                        {{$index + 1 + ((fluxoCaixaNvg.paginaAtual-1) * fluxoCaixaNvg.tamanhoPagina)}}
-                    </td>
-                    <td>
-                        <input class="form-control input-sm" id="descricao{{$index}}" name="descricao{{$index}}" ng-model="reg.descricao" ng-required="true" ng-model-options="{ updateOn: 'blur'}">
-                        <div class="label label-danger" ng-show="navegador.submetido && fluxoCaixaListFrm['descricao' + $index].$error.required">
-                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                            Campo Obrigatório
-                        </div>
-                    </td>
-                    <td ng-repeat="idx in [3, 2, 1]">
-                        <input class="form-control input-sm text-right" id="ano{{idx}}_{{$parent.$index}}" name="ano{{idx}}_{{$parent.$index}}" ng-model="reg['ano' + idx]" ui-number-mask="2" ng-required="true">
-                        <div class="label label-danger" ng-show="navegador.submetido && fluxoCaixaListFrm['ano' + idx + '_' + $parent.$index].$error.required">
-                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                            Campo Obrigatório
-                        </div>
-                    </td>
-                    <td>
-                        <button ng-click="repetir(cadastro.registro.projetoCreditoRural, 'fluxoCaixaList', reg, ['id', 'descricao'])" title="Repetir valor!">R</button>
-                    </td>
-                </tr>
-            </tbody>
-            <tfoot>
-            </tfoot>
-        </table>
-    </ng-form>
+    <table class="table table-striped table-hover">
+        <tbody>
+            <tr>
+                <th>
+                    Totais
+                </th>
+                <th ng-repeat="ano in ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10']" width="170px" class="text-right">
+                    Ano-{{ano}}
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    Lucro (Receita-Despesa) (R$)
+                </th>
+                <td ng-repeat="ano in ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10']" width="170px" class="text-right">
+                    {{ano | number: 2}}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Amortização Financeira (R$)
+                </th>
+                <td ng-repeat="ano in ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10']" width="170px" class="text-right">
+                    {{ano | number: 2}}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Saldo Devedor (R$)
+                </th>
+                <td ng-repeat="ano in ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10']" width="170px" class="text-right">
+                    {{ano | number: 2}}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Fluxo Líquido de Caixa (R$)
+                </th>
+                <td ng-repeat="ano in ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10']" width="170px" class="text-right">
+                    {{ano | number: 2}}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Fluxo Líquido de Caixa Acumulado (R$)
+                </th>
+                <td ng-repeat="ano in ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10']" width="170px" class="text-right">
+                    {{ano | number: 2}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>

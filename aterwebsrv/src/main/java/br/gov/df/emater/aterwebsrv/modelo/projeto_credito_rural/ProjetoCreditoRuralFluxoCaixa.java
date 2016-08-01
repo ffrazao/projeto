@@ -49,6 +49,11 @@ public class ProjetoCreditoRuralFluxoCaixa extends EntidadeBase implements _Chav
 		super(id);
 	}
 
+	public ProjetoCreditoRuralFluxoCaixa(Integer id, FluxoCaixaTipo tipo) {
+		this(id);
+		setTipo(tipo);
+	}
+
 	public Integer getAno() {
 		return ano;
 	}

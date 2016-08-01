@@ -28,6 +28,11 @@ public class ProjetoCreditoRuralRest {
 		return new Resposta(facadeBo.projetoCreditoRuralCalcularCronograma(usuario, projetoCredito).getResposta());
 	}
 
+	@RequestMapping(value = "/calcular-fluxo-caixa", method = RequestMethod.POST)
+	public Resposta calcularFluxoCaixa(@RequestBody ProjetoCreditoRural projetoCredito, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.projetoCreditoRuralCalcularFluxoCaixa(usuario, projetoCredito).getResposta());
+	}
+
 	@RequestMapping(value = "/editar", method = RequestMethod.POST)
 	public Resposta editar(@RequestBody ProjetoCreditoRural projetoCredito, Principal usuario) throws Exception {
 		return salvar(projetoCredito, usuario);

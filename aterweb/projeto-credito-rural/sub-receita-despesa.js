@@ -176,6 +176,4 @@ angular.module(pNmModulo).controller('ProjetoCreditoRuralDespesaCtrl',
 }
 ]);
 
-
-
 })('projetoCreditoRural', 'ProjetoCreditoRuralReceitaDespesaCtrl', 'Receitas e Despesas do Projeto de Crédito Rural');
