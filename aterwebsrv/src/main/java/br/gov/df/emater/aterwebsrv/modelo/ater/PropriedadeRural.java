@@ -55,7 +55,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<PropriedadeRural>, Pendenciavel<PropriedadeRuralPendencia>, _LogInclusaoAlteracao {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Column(name = "alteracao_data", insertable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
@@ -91,14 +91,6 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 	@Column(name = "cartorio_informacao")
 	private String cartorioInformacao;
 
-	// @NumberFormat(style = Style.CURRENCY)
-	// @JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	// private BigDecimal benfeitoria;
-	//
-	// @OneToMany(mappedBy = "propriedadeRural")
-	// // @IndexedEmbedded
-	// private List<Benfeitoria> benfeitoriaList;
-
 	@Column(name = "chave_sisater")
 	private String chaveSisater;
 
@@ -106,6 +98,17 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 	@ManyToOne
 	@JoinColumn(name = "comunidade_id")
 	private Comunidade comunidade;
+
+	@Transient
+	private Object diagnosticoList;
+
+	// @NumberFormat(style = Style.CURRENCY)
+	// @JsonDeserialize(using = JsonFormatarBigDecimal.class)
+	// private BigDecimal benfeitoria;
+	//
+	// @OneToMany(mappedBy = "propriedadeRural")
+	// // @IndexedEmbedded
+	// private List<Benfeitoria> benfeitoriaList;
 
 	@OneToOne
 	@JoinColumn(name = "endereco_id")
@@ -263,6 +266,10 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 		return comunidade;
 	}
 
+	public Object getDiagnosticoList() {
+		return diagnosticoList;
+	}
+
 	public Endereco getEndereco() {
 		return endereco;
 	}
@@ -396,6 +403,10 @@ public class PropriedadeRural extends EntidadeBase implements _ChavePrimaria<Int
 
 	public void setComunidade(Comunidade comunidade) {
 		this.comunidade = comunidade;
+	}
+
+	public void setDiagnosticoList(Object diagnosticoList) {
+		this.diagnosticoList = diagnosticoList;
 	}
 
 	public void setEndereco(Endereco endereco) {

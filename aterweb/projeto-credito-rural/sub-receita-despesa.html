@@ -59,7 +59,7 @@
                                 <td>
                                     {{$index + 1 + ((receitaDespesaNvg.paginaAtual-1) * receitaDespesaNvg.tamanhoPagina)}}
                                 </td>
-                                <td width="100">
+                                <td class="td-exibe-ano">
                                     <select class="form-control input-sm" id="ano{{$index}}" name="ano{{$index}}" ng-model="reg.ano" ng-required="true" ng-options="item.codigo as item.descricao for item in cadastro.apoio.anoList">
                                     </select>
                                     <div class="label label-danger" ng-show="navegador.submetido && receitaDespesaListFrm['ano' + $index].$error.required">

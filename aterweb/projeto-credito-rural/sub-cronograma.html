@@ -63,15 +63,15 @@
                                 <td>
                                     <input type="radio" id="{{reg.nomeLote}}{{$index}}" name="{{reg.nomeLote}}" ng-click="definirSelecionado(cadastro.registro.projetoCreditoRural[lista], reg)" ng-checked="reg.selecionado === 'S'">
                                 </td>
-                                <td class="text-right">{{reg.valorFinanciamento | number: 2}}</td>
+                                <td class="text-right td-exibe-valor">{{reg.valorFinanciamento | number: 2}}</td>
                                 <td>{{UtilSrv.indiceDePorCampo(cadastro.apoio.periodicidadeList, reg.periodicidade, 'codigo').descricao}}</td>
                                 <td>{{reg.dataContratacao | date: 'dd/MM/yyyy'}}</td>
                                 <td class="text-right">{{reg.quantidadeParcelas | number: 0}}</td>
-                                <td class="text-right">{{reg.taxaJurosAnual | number: 3}}</td>
+                                <td class="text-right td-exibe-valor">{{reg.taxaJurosAnual | number: 3}}</td>
                                 <td>{{reg.dataFinalCarencia | date: 'dd/MM/yyyy'}}</td>
                                 <td>{{reg.dataPrimeiraParcela | date: 'dd/MM/yyyy'}}</td>
-                                <td class="text-right">{{reg.valorTotalJuros | number: 2}}</td>
-                                <td class="text-right">{{reg.valorTotalPrestacoes | number: 2}}</td>
+                                <td class="text-right td-exibe-valor">{{reg.valorTotalJuros | number: 2}}</td>
+                                <td class="text-right td-exibe-valor">{{reg.valorTotalPrestacoes | number: 2}}</td>
                             </tr>
                         </tbody>
                         <tfoot>
@@ -125,22 +125,22 @@
                                 <td>
                                     {{reg.epoca | number: 0}}
                                 </td>
-                                <td class="text-right">
+                                <td class="text-right td-exibe-valor">
                                     {{reg.saldoDevedorInicial | number: 2}}
                                 </td>
-                                <td class="text-right sr-only">
+                                <td class="text-right sr-only td-exibe-valor">
                                     {{reg.taxaJuros | number: 6}}
                                 </td>
-                                <td class="text-right">
+                                <td class="text-right td-exibe-valor">
                                     {{reg.juros | number: 2}}
                                 </td>
-                                <td class="text-right">
+                                <td class="text-right td-exibe-valor">
                                     {{reg.amortizacao | number: 2}}
                                 </td>
-                                <td class="text-right">
+                                <td class="text-right td-exibe-valor">
                                     {{reg.prestacao | number: 2}}
                                 </td>
-                                <td class="text-right">
+                                <td class="text-right td-exibe-valor">
                                     {{reg.saldoDevedorFinal | number: 2}}
                                 </td>
                             </tr>

@@ -89,35 +89,35 @@
                                 Campo Obrigatório
                             </div>
                         </td>
-                        <td>
+                        <td class="td-exibe-valor">
                             <input class="form-control input-sm text-right" id="valorUnitario{{$index}}" name="valorUnitario{{$index}}" ng-model="reg.valorUnitario" ui-number-mask="2" ng-required="true" ng-disabled="cronogramaPagamentoRealizado(reg, lista)">
                             <div class="label label-danger" ng-show="navegador.submetido && financiamentoListFrm['valorUnitario' + $index].$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
                         </td>
-                        <td>
+                        <td class="td-exibe-valor">
                             <input class="form-control input-sm text-right" id="valorOrcado{{$index}}" name="valorOrcado{{$index}}" ng-model="reg.valorOrcado" ui-number-mask="2" ng-required="true" ng-readonly="true">
                             <div class="label label-danger" ng-show="navegador.submetido && financiamentoListFrm['valorOrcado' + $index].$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
                         </td>
-                        <td>
+                        <td class="td-exibe-valor">
                             <input class="form-control input-sm text-right" id="valorProprio{{$index}}" name="valorProprio{{$index}}" ng-model="reg.valorProprio" ui-number-mask="2" ng-required="true" ng-readonly="!reg.valorOrcado" ng-disabled="cronogramaPagamentoRealizado(reg, lista)">
                             <div class="label label-danger" ng-show="navegador.submetido && financiamentoListFrm['valorProprio' + $index].$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
                         </td>
-                        <td>
+                        <td class="td-exibe-valor">
                             <input class="form-control input-sm text-right" id="percentualProprio{{$index}}" name="percentualProprio{{$index}}" ng-model="reg.percentualProprio" ui-number-mask="3" ng-required="true" ng-readonly="!reg.valorOrcado" ng-disabled="cronogramaPagamentoRealizado(reg, lista)">
                             <div class="label label-danger" ng-show="navegador.submetido && financiamentoListFrm['percentualProprio' + $index].$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
                         </td>
-                        <td>
+                        <td class="td-exibe-valor">
                             <input class="form-control input-sm text-right" id="valorFinanciado{{$index}}" name="valorFinanciado{{$index}}" ng-model="reg.valorFinanciado" ui-number-mask="2" ng-required="true" ng-readonly="true">
                             <div class="label label-danger" ng-show="navegador.submetido && financiamentoListFrm['valorFinanciado' + $index].$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>

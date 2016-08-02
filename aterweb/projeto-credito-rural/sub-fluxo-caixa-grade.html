@@ -5,8 +5,7 @@
                 <tr>
                     <th>#</th>
                     <th>{{nomeGrade}}</th>
-                    <th ng-repeat="ano in ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10']">Ano-{{ano}} (R$)</th>
-                    <th></th>
+                    <th ng-repeat="ano in cadastro.apoio.anoList">{{ano.descricao}} (R$)</th>
                 </tr>
             </thead>
             <tfoot>
@@ -14,10 +13,9 @@
                     <th colspan="2" class="text-right">
                         Totais
                     </th>
-                    <td ng-repeat="ano in ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10']" width="170px" class="text-right">
-                        {{ano | number: 2}}
-                    </td>
-                    <th></th>
+                    <th ng-repeat="ano in cadastro.apoio.fluxoCaixa[nomeGrade].fluxoCaixaAnoList | orderBy: 'ano'" class="text-right td-exibe-valor">
+                        {{ano.valor | number: 2}}
+                    </th>
                 </tr>
             </tfoot>
             <tbody>
@@ -25,18 +23,32 @@
                     <td>
                         {{$index + 1 + ((fluxoCaixaNvg.paginaAtual-1) * fluxoCaixaNvg.tamanhoPagina)}}
                     </td>
-                    <td>
+                    <th>
                         {{reg.descricao}}
-                    </td>
-                    <td ng-repeat="ano in ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10']" width="170px">
-                        <input class="form-control input-sm text-right" id="ano{{ano}}_{{$parent.$index}}" name="ano{{ano}}_{{$parent.$index}}" ng-model="reg['ano' + ano]" ui-number-mask="2">
-                        <div class="label label-danger" ng-show="navegador.submetido && fluxoCaixaListFrm['ano' + ano + '_' + $parent.$index].$error.required">
+                    </th>
+                    <td ng-repeat="fluxoCaixaAno in reg.fluxoCaixaAnoList" class="td-exibe-valor text-right">
+                        <span ng-if="UtilSrv.indiceDePorCampo(cadastro.apoio.fluxoCaixaCodigoList, reg.codigo, 'codigo').somenteLeitura === 'S'">
+                            {{fluxoCaixaAno.valor | number:2}}
+                        </span>
+                        <input 
+                            class="form-control input-sm text-right" 
+                            id="ano{{fluxoCaixaAno.ano}}_{{$parent.$index}}" 
+                            name="ano{{fluxoCaixaAno.ano}}_{{$parent.$index}}" 
+                            ng-model="fluxoCaixaAno.valor" 
+                            ui-number-mask="2"
+                            ng-required="true"
+                            ng-if="UtilSrv.indiceDePorCampo(cadastro.apoio.fluxoCaixaCodigoList, reg.codigo, 'codigo').somenteLeitura === 'N'">
+                        <button ng-if="$index === 0 && UtilSrv.indiceDePorCampo(cadastro.apoio.fluxoCaixaCodigoList, reg.codigo, 'codigo').somenteLeitura === 'N'" 
+                            ng-click="repetirAno(fluxoCaixaAno.valor, reg.fluxoCaixaAnoList)" 
+                            title="Repetir valor!">
+                            Repetir
+                        </button>
+                        <div class="label label-danger"
+                            ng-show="navegador.submetido && fluxoCaixaListFrm['ano' + fluxoCaixaAno.ano + '_' + $parent.$index].$error.required"
+                            ng-if="UtilSrv.indiceDePorCampo(cadastro.apoio.fluxoCaixaCodigoList, reg.codigo, 'codigo').somenteLeitura === 'N'">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             Campo Obrigatório
                         </div>
-                    </td>
-                    <td>
-                        <button ng-click="repetir(cadastro.registro.projetoCreditoRural, 'fluxoCaixaList', reg, ['id', 'descricao'])" title="Repetir valor!">R</button>
                     </td>
                 </tr>
             </tbody>

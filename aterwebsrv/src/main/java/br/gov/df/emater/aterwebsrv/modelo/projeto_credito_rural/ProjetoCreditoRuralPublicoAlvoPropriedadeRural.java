@@ -13,11 +13,11 @@ import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
-import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
+import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
 
 @Entity
-@Table(name = "projeto_credito_garantia", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
-public class ProjetoCreditoRuralPropriedadeRural extends EntidadeBase implements _ChavePrimaria<Integer> {
+@Table(name = "projeto_credito_rural_publico_alvo_propriedade_rural", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
+public class ProjetoCreditoRuralPublicoAlvoPropriedadeRural extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -30,17 +30,17 @@ public class ProjetoCreditoRuralPropriedadeRural extends EntidadeBase implements
 	private ProjetoCreditoRural projetoCreditoRural;
 
 	@ManyToOne
-	@JoinColumn(name = "propriedade_rural_id")
-	private PropriedadeRural propriedadeRural;
+	@JoinColumn(name = "publico_alvo_propriedade_rural_id")
+	private PublicoAlvoPropriedadeRural publicoAlvoPropriedadeRural;
 
 	@Column(name = "renda_liquida")
 	private BigDecimal rendaLiquida;
 
-	public ProjetoCreditoRuralPropriedadeRural() {
+	public ProjetoCreditoRuralPublicoAlvoPropriedadeRural() {
 		super();
 	}
 
-	public ProjetoCreditoRuralPropriedadeRural(Integer id) {
+	public ProjetoCreditoRuralPublicoAlvoPropriedadeRural(Integer id) {
 		super(id);
 	}
 
@@ -53,8 +53,8 @@ public class ProjetoCreditoRuralPropriedadeRural extends EntidadeBase implements
 		return projetoCreditoRural;
 	}
 
-	public PropriedadeRural getPropriedadeRural() {
-		return propriedadeRural;
+	public PublicoAlvoPropriedadeRural getPublicoAlvoPropriedadeRural() {
+		return publicoAlvoPropriedadeRural;
 	}
 
 	public BigDecimal getRendaLiquida() {
@@ -70,8 +70,8 @@ public class ProjetoCreditoRuralPropriedadeRural extends EntidadeBase implements
 		this.projetoCreditoRural = projetoCreditoRural;
 	}
 
-	public void setPropriedadeRural(PropriedadeRural propriedadeRural) {
-		this.propriedadeRural = propriedadeRural;
+	public void setPublicoAlvoPropriedadeRural(PublicoAlvoPropriedadeRural publicoAlvoPropriedadeRural) {
+		this.publicoAlvoPropriedadeRural = publicoAlvoPropriedadeRural;
 	}
 
 	public void setRendaLiquida(BigDecimal rendaLiquida) {

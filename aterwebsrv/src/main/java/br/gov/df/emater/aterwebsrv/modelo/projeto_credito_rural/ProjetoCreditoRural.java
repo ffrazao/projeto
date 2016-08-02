@@ -19,6 +19,7 @@ import org.hibernate.annotations.Where;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
+import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.Atividade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.ProjetoCreditoRuralStatus;
 
@@ -76,16 +77,18 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 	@JoinColumn(name = "linha_credito_id")
 	private LinhaCredito linhaCredito;
 
-	private String nome;
-
 	@Column(name = "numero_cedula")
 	private String numeroCedula;
 
 	@OneToMany(mappedBy = "projetoCreditoRural")
 	private List<ProjetoCreditoRuralParecerTecnico> parecerTecnicoList;
 
+	@ManyToOne
+	@JoinColumn(name = "publico_alvo_id")
+	private PublicoAlvo publicoAlvo;
+
 	@OneToMany(mappedBy = "projetoCreditoRural")
-	private List<ProjetoCreditoRuralPropriedadeRural> propriedadeRuralList;
+	private List<ProjetoCreditoRuralPublicoAlvoPropriedadeRural> publicoAlvoPropriedadeRuralList;
 
 	@OneToMany(mappedBy = "projetoCreditoRural")
 	@Where(clause = "tipo = 'R'")
@@ -158,10 +161,6 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 		return linhaCredito;
 	}
 
-	public String getNome() {
-		return nome;
-	}
-
 	public String getNumeroCedula() {
 		return numeroCedula;
 	}
@@ -170,8 +169,12 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 		return parecerTecnicoList;
 	}
 
-	public List<ProjetoCreditoRuralPropriedadeRural> getPropriedadeRuralList() {
-		return propriedadeRuralList;
+	public PublicoAlvo getPublicoAlvo() {
+		return publicoAlvo;
+	}
+
+	public List<ProjetoCreditoRuralPublicoAlvoPropriedadeRural> getPublicoAlvoPropriedadeRuralList() {
+		return publicoAlvoPropriedadeRuralList;
 	}
 
 	public List<ProjetoCreditoRuralReceitaDespesa> getReceitaList() {
@@ -239,10 +242,6 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 		this.linhaCredito = linhaCredito;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
 	public void setNumeroCedula(String numeroCedula) {
 		this.numeroCedula = numeroCedula;
 	}
@@ -251,8 +250,12 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 		this.parecerTecnicoList = parecerTecnicoList;
 	}
 
-	public void setPropriedadeRuralList(List<ProjetoCreditoRuralPropriedadeRural> propriedadeRuralList) {
-		this.propriedadeRuralList = propriedadeRuralList;
+	public void setPublicoAlvo(PublicoAlvo publicoAlvo) {
+		this.publicoAlvo = publicoAlvo;
+	}
+
+	public void setPublicoAlvoPropriedadeRuralList(List<ProjetoCreditoRuralPublicoAlvoPropriedadeRural> publicoAlvoPropriedadeRuralList) {
+		this.publicoAlvoPropriedadeRuralList = publicoAlvoPropriedadeRuralList;
 	}
 
 	public void setReceitaList(List<ProjetoCreditoRuralReceitaDespesa> receitaList) {

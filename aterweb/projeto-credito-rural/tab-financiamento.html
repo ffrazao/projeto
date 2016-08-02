@@ -33,7 +33,7 @@
                             <td>
                                 Total das inversões (investimento+custeio)
                             </td>
-                            <td>
+                            <td class="td-exibe-valor">
                                 <div type="text" class="text-right">
                                     {{cadastro.apoio.financiamento['valorFinanciadoTotal'] | number: 2}}
                                 </div>
@@ -41,7 +41,7 @@
                             <td>
                                 Receita Líquida Anual
                             </td>
-                            <td>
+                            <td class="td-exibe-valor">
                                 <div type="text" class="text-right">
                                     {{cadastro.apoio.financiamento.rendimentoLiquidoTotal | number: 2}}
                                 </div>
@@ -51,7 +51,7 @@
                             <td>
                                 Recursos próprios
                             </td>
-                            <td>
+                            <td class="td-exibe-valor">
                                 <div type="text" class="text-right">
                                     {{cadastro.apoio.financiamento['valorProprioTotal'] | number: 2}}
                                 </div>
@@ -59,7 +59,7 @@
                             <td>
                                 Receita Líquida Mensal
                             </td>
-                            <td>
+                            <td class="td-exibe-valor">
                                 <div type="text" class="text-right">
                                     {{cadastro.apoio.financiamento.rendimentoLiquidoTotal / 12 | number: 2}}
                                 </div>
@@ -69,7 +69,7 @@
                             <td>
                                 Total Anual (Fontes de recursos)
                             </td>
-                            <td>
+                            <td class="td-exibe-valor">
                                 <div type="text" class="text-right">
                                     {{ (cadastro.apoio.financiamento['valorFinanciadoTotal'] + cadastro.apoio.financiamento['receitaList'].mediaTotal +cadastro.apoio.financiamento['valorProprioTotal']) - cadastro.apoio.financiamento['despesaList'].mediaTotal | number: 2 }}
                                 </div>
@@ -78,13 +78,13 @@
                                 <table class="table table-hover table-striped table-hover">
                                     <tr class="warning">
                                         <td class="azul"><label class="control-label primary">RECEITAS MENSAL</label></td>
-                                        <td class="azul">
+                                        <td class="azul td-exibe-valor">
                                             <div type="text" class="text-right">
                                                {{cadastro.apoio.financiamento['receitaList'].mediaTotal / 12 | number: 2}}
                                             </div>
                                         </td>
                                         <td class="azul"><label class="control-label primary">ANUAL</label></td>
-                                        <td class="azul">
+                                        <td class="azul td-exibe-valor">
                                             <div type="text" class="text-right">
                                                 {{cadastro.apoio.financiamento['receitaList'].mediaTotal | number: 2}}
                                             </div>
@@ -92,13 +92,13 @@
                                     </tr>
                                     <tr class="danger">
                                         <td class="vermelho"><label class="control-label danger">CUSTOS MENSAL</label></td>
-                                        <td class="vermelho">
+                                        <td class="vermelho td-exibe-valor">
                                             <div type="text" class="text-right">
                                                 {{cadastro.apoio.financiamento['despesaList'].mediaTotal / 12 | number: 2}}
                                             </div>
                                         </td>
                                         <td class="vermelho"><label class="control-label danger">ANUAL</label></td>
-                                        <td class="vermelho">
+                                        <td class="vermelho td-exibe-valor">
                                             <div type="text" class="text-right">
                                                 {{cadastro.apoio.financiamento['despesaList'].mediaTotal | number: 2}}
                                             </div>

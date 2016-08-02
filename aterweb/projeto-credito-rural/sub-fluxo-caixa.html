@@ -1,4 +1,8 @@
-<div class="container-fluid"><div class="row"><button type="button" class="btn btn-primary pull-right" ng-click="calcular()">Calcular</button></div></div>
+<div class="container-fluid">
+    <div class="row">
+        <button type="button" class="btn btn-primary pull-right" ng-click="calcular()">Calcular</button>
+    </div>
+</div>
 
 <ng-include src="'projeto-credito-rural/sub-fluxo-caixa-grade.html'" ng-controller="ProjetoCreditoRuralFluxoCaixaGradeCtrl" onload="iniciarGrade('Receitas', 'R')"></ng-include>
 
@@ -11,15 +15,15 @@
                 <th>
                     Totais
                 </th>
-                <th ng-repeat="ano in ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10']" width="170px" class="text-right">
-                    Ano-{{ano}}
+                <th ng-repeat="ano in cadastro.apoio.anoList" class="text-right td-exibe-valor">
+                    {{ano.descricao}}
                 </th>
             </tr>
             <tr>
                 <th>
                     Lucro (Receita-Despesa) (R$)
                 </th>
-                <td ng-repeat="ano in ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10']" width="170px" class="text-right">
+                <td ng-repeat="ano in cadastro.apoio.anoList" class="text-right td-exibe-valor">
                     {{ano | number: 2}}
                 </td>
             </tr>
@@ -27,7 +31,7 @@
                 <th>
                     Amortização Financeira (R$)
                 </th>
-                <td ng-repeat="ano in ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10']" width="170px" class="text-right">
+                <td ng-repeat="ano in cadastro.apoio.anoList" class="text-right td-exibe-valor">
                     {{ano | number: 2}}
                 </td>
             </tr>
@@ -35,7 +39,7 @@
                 <th>
                     Saldo Devedor (R$)
                 </th>
-                <td ng-repeat="ano in ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10']" width="170px" class="text-right">
+                <td ng-repeat="ano in cadastro.apoio.anoList" class="text-right td-exibe-valor">
                     {{ano | number: 2}}
                 </td>
             </tr>
@@ -43,7 +47,7 @@
                 <th>
                     Fluxo Líquido de Caixa (R$)
                 </th>
-                <td ng-repeat="ano in ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10']" width="170px" class="text-right">
+                <td ng-repeat="ano in cadastro.apoio.anoList" class="text-right td-exibe-valor">
                     {{ano | number: 2}}
                 </td>
             </tr>
@@ -51,7 +55,7 @@
                 <th>
                     Fluxo Líquido de Caixa Acumulado (R$)
                 </th>
-                <td ng-repeat="ano in ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10']" width="170px" class="text-right">
+                <td ng-repeat="ano in cadastro.apoio.anoList" class="text-right td-exibe-valor">
                     {{ano | number: 2}}
                 </td>
             </tr>

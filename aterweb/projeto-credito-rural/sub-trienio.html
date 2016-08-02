@@ -40,6 +40,20 @@
                         <th></th>
                     </tr>
                 </thead>
+                <tfoot>
+                    <tr>
+                        <th colspan="3" class="text-right">Totais</th>
+                        <td class="text-right td-exibe-valor" ng-repeat="idx in [3, 2, 1]">
+                            {{cadastro.apoio.trienio['ano' + idx + 'Total'] | number: 2}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th colspan="3" class="text-right">Média Geral</th>
+                        <td class="text-right td-exibe-valor">
+                            {{cadastro.apoio.trienio.mediaGeral | number: 2}}
+                        </td>
+                    </tr>
+                </tfoot>
                 <tbody>
                     <tr ng-repeat="reg in cadastro.registro.projetoCreditoRural.trienioList | orderBy: ['descricao'] track by reg.id">
                         <td>
@@ -56,7 +70,7 @@
                                 Campo Obrigatório
                             </div>
                         </td>
-                        <td ng-repeat="idx in [3, 2, 1]">
+                        <td ng-repeat="idx in [3, 2, 1]" class="td-exibe-valor">
                             <input class="form-control input-sm text-right" id="ano{{idx}}_{{$parent.$index}}" name="ano{{idx}}_{{$parent.$index}}" ng-model="reg['ano' + idx]" ui-number-mask="2" ng-required="true">
                             <div class="label label-danger" ng-show="navegador.submetido && trienioListFrm['ano' + idx + '_' + $parent.$index].$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -68,20 +82,6 @@
                         </td>
                     </tr>
                 </tbody>
-                <tfoot>
-                    <tr>
-                        <th colspan="3" class="text-right">Totais</th>
-                        <td class="text-right" ng-repeat="idx in [3, 2, 1]">
-                            {{cadastro.apoio.trienio['ano' + idx + 'Total'] | number: 2}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th colspan="3" class="text-right">Média Geral</th>
-                        <td class="text-right">
-                            {{cadastro.apoio.trienio.mediaGeral | number: 2}}
-                        </td>
-                    </tr>
-                </tfoot>
             </table>
         </ng-form>
     </div>

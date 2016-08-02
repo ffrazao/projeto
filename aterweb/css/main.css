@@ -268,3 +268,11 @@ tr.angular-ui-tree-empty {
 .azul {
   color: blue;
 }
+
+.td-exibe-valor {
+    min-width: 120px !important;
+}
+
+.td-exibe-ano {
+    min-width: 100px !important;
+}

@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -8,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
@@ -21,12 +24,13 @@ public class ProjetoCreditoRuralFluxoCaixa extends EntidadeBase implements _Chav
 
 	private static final long serialVersionUID = 1L;
 
-	private Integer ano;
-
 	@Enumerated(EnumType.STRING)
 	private FluxoCaixaCodigo codigo;
 
 	private String descricao;
+
+	@OneToMany(mappedBy = "projetoCreditoRuralFluxoCaixa")
+	private List<FluxoCaixaAno> fluxoCaixaAnoList;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -49,21 +53,16 @@ public class ProjetoCreditoRuralFluxoCaixa extends EntidadeBase implements _Chav
 		super(id);
 	}
 
-	public ProjetoCreditoRuralFluxoCaixa(Integer id, FluxoCaixaTipo tipo) {
-		this(id);
-		setTipo(tipo);
-	}
-
-	public Integer getAno() {
-		return ano;
-	}
-
 	public FluxoCaixaCodigo getCodigo() {
 		return codigo;
 	}
 
 	public String getDescricao() {
 		return descricao;
+	}
+
+	public List<FluxoCaixaAno> getFluxoCaixaAnoList() {
+		return fluxoCaixaAnoList;
 	}
 
 	@Override
@@ -83,16 +82,16 @@ public class ProjetoCreditoRuralFluxoCaixa extends EntidadeBase implements _Chav
 		return tipo;
 	}
 
-	public void setAno(Integer ano) {
-		this.ano = ano;
-	}
-
 	public void setCodigo(FluxoCaixaCodigo codigo) {
 		this.codigo = codigo;
 	}
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+
+	public void setFluxoCaixaAnoList(List<FluxoCaixaAno> fluxoCaixaAnoList) {
+		this.fluxoCaixaAnoList = fluxoCaixaAnoList;
 	}
 
 	@Override
