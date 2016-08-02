@@ -1,21 +1,28 @@
 package br.gov.df.emater.aterwebsrv.modelo.dominio;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.gov.df.emater.aterwebsrv.bo.BoException;
+import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.Coleta;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.FormularioVersao;
+import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.CronogramaPagamento;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.FluxoCaixaAno;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRural;
+import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralCronogramaPagamento;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralFluxoCaixa;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralPublicoAlvoPropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralReceitaDespesa;
@@ -30,8 +37,66 @@ public enum FluxoCaixaCodigo {
 
 	static class Calculo {
 
+		ObjectMapper mapper = new ObjectMapper();
+
+		void atualizarValoresAno(ProjetoCreditoRuralFluxoCaixa modelo, BigDecimal valor) {
+			for (FluxoCaixaAno fca : modelo.getFluxoCaixaAnoList()) {
+				fca.setValor(valor);
+			}
+		}
+
 		ProjetoCreditoRuralFluxoCaixa calcular(ProjetoCreditoRural projetoCreditoRural, ProjetoCreditoRuralFluxoCaixa modelo) throws BoException {
 			return modelo;
+		}
+
+		@SuppressWarnings("unchecked")
+		HashMap<String, Object> captarUltimaColetaFormulario(Object diagnosticoObj, String nomeCampo, Integer numeroVersao) throws BoException {
+			if (diagnosticoObj == null || !(diagnosticoObj instanceof List)) {
+				return null;
+			}
+			List<Object[]> diagnosticoList = (List<Object[]>) diagnosticoObj;
+			if (CollectionUtils.isEmpty(diagnosticoList)) {
+				return null;
+			}
+
+			for (Object[] formulario : diagnosticoList) {
+				// encontrar o formulario
+				if (nomeCampo.equals((String) formulario[2])) {
+					// validar as versões
+					if (formulario[8] != null) {
+						for (FormularioVersao versao : (List<FormularioVersao>) formulario[8]) {
+							if (numeroVersao.equals(versao.getVersao())) {
+								Coleta ultimaColeta = null;
+								for (Coleta coleta : versao.getColetaList()) {
+									if (ultimaColeta == null || coleta.getDataColeta().after(ultimaColeta.getDataColeta())) {
+										ultimaColeta = coleta;
+									}
+								}
+								if (ultimaColeta == null) {
+									return null;
+								} else {
+									if (Confirmacao.N.equals(ultimaColeta.getFinalizada())) {
+										throw new BoException("Há coletas de formulários não finalizadas nos registros de Beneficiário ou de Propriedade Rural deste cálculo, verifique!");
+									}
+									if (StringUtils.isEmpty(ultimaColeta.getValorString())) {
+										return null;
+									}
+									TypeReference<HashMap<String, Object>> typeRef = new TypeReference<HashMap<String, Object>>() {
+									};
+									HashMap<String, Object> valor = null;
+									try {
+										valor = mapper.readValue(ultimaColeta.getValorString(), typeRef);
+									} catch (Exception e) {
+										throw new BoException("Erro ao ler dados em formato JSON", e);
+									}
+									return valor;
+								}
+							}
+						}
+					}
+				}
+			}
+			return null;
 		}
 
 		FluxoCaixaAno getFluxoCaixaAno(List<FluxoCaixaAno> origemList, Integer ano) {
@@ -116,213 +181,165 @@ public enum FluxoCaixaCodigo {
 }
 
 class FluxoCaixaCodigoDespesaAmortizacaoDividasExistente extends FluxoCaixaCodigo.Calculo {
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public ProjetoCreditoRuralFluxoCaixa calcular(ProjetoCreditoRural projetoCreditoRural, ProjetoCreditoRuralFluxoCaixa modelo) throws BoException {
+		// zerar os valores
+		atualizarValoresAno(modelo, new BigDecimal("0"));
+
+		HashMap<String, Object> form = captarUltimaColetaFormulario(projetoCreditoRural.getPublicoAlvo().getPessoa().getDiagnosticoList(), "patrimonioDivida", 1);
+		if (form == null || form.get("dividaExistenteList") == null || !(form.get("dividaExistenteList") instanceof List)) {
+			return modelo;
+		}
+		List<Map<String, Object>> lista = (List<Map<String, Object>>) form.get("dividaExistenteList");
+
+		if (CollectionUtils.isEmpty(lista)) {
+			return modelo;
+		}
+		// coletar as datas do financiamento
+		List<Integer> reguaPrincipal = null;
+		reguaPrincipal = calcularReguaFinanciamento(projetoCreditoRural.getCronogramaPagamentoInvestimentoList(), reguaPrincipal);
+		reguaPrincipal = calcularReguaFinanciamento(projetoCreditoRural.getCronogramaPagamentoCusteioList(), reguaPrincipal);
+
+		for (Map<String, Object> item : lista) {
+			String dataStr[] = new String[2];
+			Calendar data[] = new Calendar[2];
+			dataStr[0] = (String) item.get("contratacao");
+			dataStr[1] = (String) item.get("vencimento");
+			try {
+				data[0] = UtilitarioData.getInstance().ajustaInicioDia((Calendar) UtilitarioData.getInstance().stringParaData(dataStr[0]));
+				data[1] = UtilitarioData.getInstance().ajustaInicioDia((Calendar) UtilitarioData.getInstance().stringParaData(dataStr[1]));
+			} catch (ParseException e) {
+				continue;
+			}
+			BigDecimal amortizacaoAnual = new BigDecimal((String) item.get("amortizacaoAnual"));
+
+			List<Integer> reguaFinanciamento = criarReguaFinanciamento(data[0], data[1].get(Calendar.YEAR) - data[0].get(Calendar.YEAR));
+
+			for (int i = 1; i <= reguaPrincipal.size(); i++) {
+				for (int j = 1; j <= reguaFinanciamento.size(); j++) {
+					if (reguaPrincipal.get(i) == reguaFinanciamento.get(j)) {
+						acumulaValor(modelo, i, amortizacaoAnual);
+						break;
+					}
+				}
+			}
+		}
+
+		return modelo;
+	}
+
+	private void acumulaValor(ProjetoCreditoRuralFluxoCaixa modelo, Integer ano, BigDecimal valor) {
+		for (FluxoCaixaAno fca : modelo.getFluxoCaixaAnoList()) {
+			if (fca.getAno().equals(ano)) {
+				fca.setValor(fca.getValor().add(valor));
+				break;
+			}
+		}
+	}
+
+	private List<Integer> criarReguaFinanciamento(Calendar inicio, Integer totalAnos) {
+		List<Integer> result = new ArrayList<>();
+		for (int ano = inicio.get(Calendar.YEAR); ano <= inicio.get(Calendar.YEAR) + totalAnos; ano++) {
+			result.add(ano);
+		}
+		return result;
+	}
+
+	private List<Integer> calcularReguaFinanciamento(List<ProjetoCreditoRuralCronogramaPagamento> cronogramaPagamentoInvestimentoList, List<Integer> anoFinanciamento) {
+		if (!CollectionUtils.isEmpty(cronogramaPagamentoInvestimentoList)) {
+			Calendar inicioFinanciamento = null;
+			Integer totalAnos = null;
+			for (ProjetoCreditoRuralCronogramaPagamento cronograma : cronogramaPagamentoInvestimentoList) {
+				if (inicioFinanciamento == null || inicioFinanciamento.before(cronograma.getDataContratacao())) {
+					inicioFinanciamento = new GregorianCalendar();
+					inicioFinanciamento.setTime(cronograma.getDataContratacao().getTime());
+				}
+				Integer ano = null;
+				for (CronogramaPagamento parcela : cronograma.getCronogramaPagamentoList()) {
+					if (ano == null || parcela.getAno() > ano) {
+						ano = parcela.getAno();
+					}
+				}
+				if (totalAnos == null || ano > totalAnos) {
+					totalAnos = ano;
+				}
+			}
+			anoFinanciamento = criarReguaFinanciamento(inicioFinanciamento, totalAnos);
+		}
+		return anoFinanciamento;
+	}
+
 }
 
 class FluxoCaixaCodigoDespesaManutencaoBenfeitoriaMaquina extends FluxoCaixaCodigo.Calculo {
 
-	private ObjectMapper mapper = new ObjectMapper();
-
 	@Override
 	public ProjetoCreditoRuralFluxoCaixa calcular(ProjetoCreditoRural projetoCreditoRural, ProjetoCreditoRuralFluxoCaixa modelo) throws BoException {
 		// zerar os valores
-		for (FluxoCaixaAno fca : modelo.getFluxoCaixaAnoList()) {
-			fca.setValor(new BigDecimal("0"));
-		}
+		atualizarValoresAno(modelo, new BigDecimal("0"));
 
 		// calcular máquinas e equipamentos
 		modelo = calcularMaquinaEquipamento(projetoCreditoRural.getPublicoAlvo().getPessoa().getDiagnosticoList(), modelo);
 
 		// calcular benfeitorias nas propriedades
 		for (ProjetoCreditoRuralPublicoAlvoPropriedadeRural publicoAlvoPropriedadeRural : projetoCreditoRural.getPublicoAlvoPropriedadeRuralList()) {
-			if (publicoAlvoPropriedadeRural.getPublicoAlvoPropriedadeRural().getPropriedadeRural().getDiagnosticoList() != null) {
-				modelo = calcularBenfeitoriaPropriedade(publicoAlvoPropriedadeRural.getPublicoAlvoPropriedadeRural().getPropriedadeRural().getDiagnosticoList(), modelo);
-			}
+			modelo = calcularBenfeitoriaPropriedade(publicoAlvoPropriedadeRural.getPublicoAlvoPropriedadeRural().getPropriedadeRural().getDiagnosticoList(), modelo);
 		}
-		for (FluxoCaixaAno fca : modelo.getFluxoCaixaAnoList()) {
-			fca.setValor(modelo.getFluxoCaixaAnoList().get(0).getValor());
-		}
+		// atualiza todos os valores
+		atualizarValoresAno(modelo, modelo.getFluxoCaixaAnoList().get(0).getValor());
+
 		return modelo;
 	}
 
 	@SuppressWarnings("unchecked")
 	private ProjetoCreditoRuralFluxoCaixa calcularBenfeitoriaPropriedade(Object diagnosticoObj, ProjetoCreditoRuralFluxoCaixa modelo) throws BoException {
-		if (diagnosticoObj == null || !(diagnosticoObj instanceof List)) {
+		if (diagnosticoObj == null) {
 			return modelo;
 		}
-		List<Object[]> diagnosticoList = (List<Object[]>) diagnosticoObj;
-		if (CollectionUtils.isEmpty(diagnosticoList)) {
+		HashMap<String, Object> form = captarUltimaColetaFormulario(diagnosticoObj, "avaliacaoDaPropriedade", 1);
+		if (form == null || form.get("benfeitoriaList") == null || !(form.get("benfeitoriaList") instanceof List)) {
 			return modelo;
 		}
-		for (Object[] formulario : diagnosticoList) {
-			// encontrar o formulario
-			if ("avaliacaoDaPropriedade".equals((String) formulario[2])) {
-				// validar as versões
-				if (formulario[8] != null) {
-					for (FormularioVersao versao : (List<FormularioVersao>) formulario[8]) {
-						if (Integer.valueOf(1).equals(versao.getVersao())) {
-							Coleta ultimaColeta = null;
-							for (Coleta coleta : versao.getColetaList()) {
-								if (ultimaColeta == null || coleta.getDataColeta().after(ultimaColeta.getDataColeta())) {
-									ultimaColeta = coleta;
-								}
-							}
-							if (ultimaColeta == null) {
-								return modelo;
-							} else {
-								if (Confirmacao.N.equals(ultimaColeta.getFinalizada())) {
-									throw new BoException("Erro ao calcular despesas manutenção benfeitorias máquinas da propriedade rural, a última coleta ainda não foi finalizada!");
-								}
-								TypeReference<HashMap<String, Object>> typeRef = new TypeReference<HashMap<String, Object>>() {
-								};
-								HashMap<String, Object> valor = null;
-								try {
-									valor = mapper.readValue(ultimaColeta.getValorString(), typeRef);
-								} catch (Exception e) {
-									throw new BoException("Erro ao calcular despesas manutenção benfeitorias máquinas da propriedade rural", e);
-								}
-								if (valor.get("benfeitoriaList") == null || !(valor.get("benfeitoriaList") instanceof List)) {
-									return modelo;
-								}
-								List<Map<String, Object>> benfeitoriaList = (List<Map<String, Object>>) valor.get("benfeitoriaList");
-								if (CollectionUtils.isEmpty(benfeitoriaList)) {
-									return modelo;
-								}
-								BigDecimal total = new BigDecimal("0");
-								for (Map<String, Object> benfeitoria : benfeitoriaList) {
-									BigDecimal quantidade = new BigDecimal(benfeitoria.get("quantidade").toString());
-									BigDecimal valorUnitario = new BigDecimal(benfeitoria.get("valorUnitario").toString());
+		modelo.getFluxoCaixaAnoList().get(0).setValor(modelo.getFluxoCaixaAnoList().get(0).getValor().add(totalizar((List<Map<String, Object>>) form.get("benfeitoriaList")).multiply(new BigDecimal("0.02"))));
 
-									total = total.add(quantidade.multiply(valorUnitario));
-								}
-								modelo.getFluxoCaixaAnoList().get(0).setValor(modelo.getFluxoCaixaAnoList().get(0).getValor().add(total.multiply(new BigDecimal("0.02"))));
-							}
-						}
-					}
-				}
-			}
-		}
 		return modelo;
 	}
 
 	@SuppressWarnings("unchecked")
 	private ProjetoCreditoRuralFluxoCaixa calcularMaquinaEquipamento(Object diagnosticoObj, ProjetoCreditoRuralFluxoCaixa modelo) throws BoException {
-		if (diagnosticoObj == null || !(diagnosticoObj instanceof List)) {
+		HashMap<String, Object> form = captarUltimaColetaFormulario(diagnosticoObj, "patrimonioDivida", 1);
+		if (form == null || form.get("maquinaEquipamentoList") == null || !(form.get("maquinaEquipamentoList") instanceof List)) {
 			return modelo;
 		}
-		List<Object[]> diagnosticoList = (List<Object[]>) diagnosticoObj;
-		if (CollectionUtils.isEmpty(diagnosticoList)) {
-			return modelo;
-		}
-		for (Object[] formulario : diagnosticoList) {
-			// encontrar o formulario
-			if ("patrimonioDivida".equals((String) formulario[2])) {
-				// validar as versões
-				if (formulario[8] != null) {
-					for (FormularioVersao versao : (List<FormularioVersao>) formulario[8]) {
-						if (Integer.valueOf(1).equals(versao.getVersao())) {
-							Coleta ultimaColeta = null;
-							for (Coleta coleta : versao.getColetaList()) {
-								if (ultimaColeta == null || coleta.getDataColeta().after(ultimaColeta.getDataColeta())) {
-									ultimaColeta = coleta;
-								}
-							}
-							if (ultimaColeta == null) {
-								return modelo;
-							} else {
-								if (Confirmacao.N.equals(ultimaColeta.getFinalizada())) {
-									throw new BoException("Erro ao calcular patrimônio do Beneficiário, a última coleta ainda não foi finalizada!");
-								}
-								TypeReference<HashMap<String, Object>> typeRef = new TypeReference<HashMap<String, Object>>() {
-								};
-								HashMap<String, Object> valor = null;
-								try {
-									valor = mapper.readValue(ultimaColeta.getValorString(), typeRef);
-								} catch (Exception e) {
-									throw new BoException("Erro ao calcular patrimônio do Beneficiário", e);
-								}
-								if (valor.get("maquinaEquipamentoList") == null || !(valor.get("maquinaEquipamentoList") instanceof List)) {
-									return modelo;
-								}
-								List<Map<String, Object>> maquinaEquipamentoList = (List<Map<String, Object>>) valor.get("maquinaEquipamentoList");
-								if (CollectionUtils.isEmpty(maquinaEquipamentoList)) {
-									return modelo;
-								}
-								BigDecimal total = new BigDecimal("0");
-								for (Map<String, Object> maquinaEquipamento : maquinaEquipamentoList) {
-									BigDecimal quantidade = new BigDecimal(maquinaEquipamento.get("quantidade").toString());
-									BigDecimal valorUnitario = new BigDecimal(maquinaEquipamento.get("valorUnitario").toString());
-									total = total.add(quantidade.multiply(valorUnitario));
-								}
-								modelo.getFluxoCaixaAnoList().get(0).setValor(modelo.getFluxoCaixaAnoList().get(0).getValor().add(total.multiply(new BigDecimal("0.03"))));
-							}
-						}
-					}
-				}
-			}
-		}
+		modelo.getFluxoCaixaAnoList().get(0).setValor(modelo.getFluxoCaixaAnoList().get(0).getValor().add(totalizar((List<Map<String, Object>>) form.get("maquinaEquipamentoList")).multiply(new BigDecimal("0.03"))));
 		return modelo;
+	}
+
+	private BigDecimal totalizar(List<Map<String, Object>> lista) {
+		BigDecimal result = new BigDecimal("0");
+		if (CollectionUtils.isEmpty(lista)) {
+			return result;
+		}
+		for (Map<String, Object> item : lista) {
+			result = result.add(new BigDecimal(item.get("quantidade").toString()).multiply(new BigDecimal(item.get("valorUnitario").toString())));
+		}
+		return result;
 	}
 
 }
 
 class FluxoCaixaCodigoDespesaMaoDeObra extends FluxoCaixaCodigo.Calculo {
 
-	private ObjectMapper mapper = new ObjectMapper();
-
 	@Override
-	@SuppressWarnings("unchecked")
 	public ProjetoCreditoRuralFluxoCaixa calcular(ProjetoCreditoRural projetoCreditoRural, ProjetoCreditoRuralFluxoCaixa modelo) throws BoException {
-		Object diagnosticoObj = projetoCreditoRural.getPublicoAlvo().getPessoa().getDiagnosticoList();
-		if (diagnosticoObj == null || !(diagnosticoObj instanceof List)) {
-			return modelo;
+		HashMap<String, Object> form = captarUltimaColetaFormulario(projetoCreditoRural.getPublicoAlvo().getPessoa().getDiagnosticoList(), "beneficioSocialForcaTrabalho", 1);
+		if (form.get("trabalhadorPermanente") == null || form.get("salarioMensal") == null) {
+			throw new BoException("Erro ao calcular mão de obra do Beneficiário, informações incompletas!");
 		}
+		atualizarValoresAno(modelo, new BigDecimal("13.3").multiply(new BigDecimal(form.get("trabalhadorPermanente").toString())).multiply(new BigDecimal(form.get("salarioMensal").toString())));
 
-		List<Object[]> diagnosticoList = (List<Object[]>) diagnosticoObj;
-		if (CollectionUtils.isEmpty(diagnosticoList)) {
-			return modelo;
-		}
-		for (Object[] formulario : diagnosticoList) {
-			// encontrar o formulario
-			if ("beneficioSocialForcaTrabalho".equals((String) formulario[2])) {
-				// validar as versões
-				if (formulario[8] != null) {
-					for (FormularioVersao versao : (List<FormularioVersao>) formulario[8]) {
-						if (Integer.valueOf(1).equals(versao.getVersao())) {
-							Coleta ultimaColeta = null;
-							for (Coleta coleta : versao.getColetaList()) {
-								if (ultimaColeta == null || coleta.getDataColeta().after(ultimaColeta.getDataColeta())) {
-									ultimaColeta = coleta;
-								}
-							}
-							if (ultimaColeta == null) {
-								return modelo;
-							} else {
-								if (Confirmacao.N.equals(ultimaColeta.getFinalizada())) {
-									throw new BoException("Erro ao calcular mão de obra do Beneficiário, a última coleta ainda não foi finalizada!");
-								}
-								TypeReference<HashMap<String, Object>> typeRef = new TypeReference<HashMap<String, Object>>() {
-								};
-								HashMap<String, Object> valor = null;
-								try {
-									valor = mapper.readValue(ultimaColeta.getValorString(), typeRef);
-								} catch (Exception e) {
-									throw new BoException("Erro ao calcular mão de obra do Beneficiário", e);
-								}
-								if (valor.get("trabalhadorPermanente") == null || valor.get("salarioMensal") == null) {
-									throw new BoException("Erro ao calcular mão de obra do Beneficiário, informações incompletas!");
-								}
-								BigDecimal trabalhadorPermanente = new BigDecimal(valor.get("trabalhadorPermanente").toString());
-								BigDecimal salarioMensal = new BigDecimal(valor.get("salarioMensal").toString());
-								BigDecimal total = new BigDecimal("13.3").multiply(trabalhadorPermanente).multiply(salarioMensal);
-								for (FluxoCaixaAno fca : modelo.getFluxoCaixaAnoList()) {
-									fca.setValor(total);
-								}
-							}
-						}
-					}
-				}
-			}
-		}
 		return modelo;
 	}
 
@@ -349,7 +366,7 @@ class FluxoCaixaCodigoReceitaDespesaAtividadeAgropecuaria extends FluxoCaixaCodi
 		if (lista == null) {
 			throw new BoException("Objeto Inválido! Lista de %ss não informada!", this.nomeLista);
 		}
-		for (FluxoCaixaAno fluxoCaixaAno: modelo.getFluxoCaixaAnoList()) {
+		for (FluxoCaixaAno fluxoCaixaAno : modelo.getFluxoCaixaAnoList()) {
 			fluxoCaixaAno.setValor(new BigDecimal("0"));
 			// contabilizar todos os registros do mesmo ano
 			for (ProjetoCreditoRuralReceitaDespesa r : lista) {
