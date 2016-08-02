@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 
 import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
+import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
-import br.gov.df.emater.aterwebsrv.bo._SalvarCmd;
 import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoDao;
 import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoPropriedadeRuralDao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
@@ -30,7 +30,7 @@ import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRu
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralPublicoAlvoPropriedadeRural;
 
 @Service("ProjetoCreditoRuralCalcularFluxoCaixaCmd")
-public class CalcularFluxoCaixaCmd extends _SalvarCmd {
+public class CalcularFluxoCaixaCmd extends _Comando {
 
 	private class Item {
 

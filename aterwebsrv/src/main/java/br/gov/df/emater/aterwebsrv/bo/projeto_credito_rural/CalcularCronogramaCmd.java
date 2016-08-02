@@ -12,8 +12,8 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.stereotype.Service;
 
 import br.gov.df.emater.aterwebsrv.bo.BoException;
+import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
-import br.gov.df.emater.aterwebsrv.bo._SalvarCmd;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioFinanceiro;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FinanciamentoTipo;
@@ -23,7 +23,7 @@ import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRu
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralFinanciamento;
 
 @Service("ProjetoCreditoRuralCalcularCronogramaCmd")
-public class CalcularCronogramaCmd extends _SalvarCmd {
+public class CalcularCronogramaCmd extends _Comando {
 
 	public CalcularCronogramaCmd() {
 	}

@@ -93,7 +93,6 @@ public enum FluxoCaixaCodigo {
 				result.getFluxoCaixaAnoList().add(fluxoCaixaAno);
 			}
 		}
-		// tentar recuperar o ID
 		result = this.calculo.calcular(projetoCreditoRural, result);
 		return result;
 	}
@@ -123,12 +122,33 @@ class FluxoCaixaCodigoDespesaManutencaoBenfeitoriaMaquina extends FluxoCaixaCodi
 
 	private ObjectMapper mapper = new ObjectMapper();
 
+	@Override
+	public ProjetoCreditoRuralFluxoCaixa calcular(ProjetoCreditoRural projetoCreditoRural, ProjetoCreditoRuralFluxoCaixa modelo) throws BoException {
+		// zerar os valores
+		for (FluxoCaixaAno fca : modelo.getFluxoCaixaAnoList()) {
+			fca.setValor(new BigDecimal("0"));
+		}
+
+		// calcular máquinas e equipamentos
+		modelo = calcularMaquinaEquipamento(projetoCreditoRural.getPublicoAlvo().getPessoa().getDiagnosticoList(), modelo);
+
+		// calcular benfeitorias nas propriedades
+		for (ProjetoCreditoRuralPublicoAlvoPropriedadeRural publicoAlvoPropriedadeRural : projetoCreditoRural.getPublicoAlvoPropriedadeRuralList()) {
+			if (publicoAlvoPropriedadeRural.getPublicoAlvoPropriedadeRural().getPropriedadeRural().getDiagnosticoList() != null) {
+				modelo = calcularBenfeitoriaPropriedade(publicoAlvoPropriedadeRural.getPublicoAlvoPropriedadeRural().getPropriedadeRural().getDiagnosticoList(), modelo);
+			}
+		}
+		for (FluxoCaixaAno fca : modelo.getFluxoCaixaAnoList()) {
+			fca.setValor(modelo.getFluxoCaixaAnoList().get(0).getValor());
+		}
+		return modelo;
+	}
+
 	@SuppressWarnings("unchecked")
 	private ProjetoCreditoRuralFluxoCaixa calcularBenfeitoriaPropriedade(Object diagnosticoObj, ProjetoCreditoRuralFluxoCaixa modelo) throws BoException {
 		if (diagnosticoObj == null || !(diagnosticoObj instanceof List)) {
 			return modelo;
 		}
-
 		List<Object[]> diagnosticoList = (List<Object[]>) diagnosticoObj;
 		if (CollectionUtils.isEmpty(diagnosticoList)) {
 			return modelo;
@@ -160,19 +180,21 @@ class FluxoCaixaCodigoDespesaManutencaoBenfeitoriaMaquina extends FluxoCaixaCodi
 								} catch (Exception e) {
 									throw new BoException("Erro ao calcular despesas manutenção benfeitorias máquinas da propriedade rural", e);
 								}
-								if (valor.get("benfeitoriaList") == null) {
+								if (valor.get("benfeitoriaList") == null || !(valor.get("benfeitoriaList") instanceof List)) {
 									return modelo;
 								}
-								try {
-									valor = mapper.readValue((String) valor.get("benfeitoriaList"), typeRef);
-								} catch (Exception e) {
-									throw new BoException("Erro ao calcular despesas manutenção benfeitorias máquinas da propriedade rural", e);
+								List<Map<String, Object>> benfeitoriaList = (List<Map<String, Object>>) valor.get("benfeitoriaList");
+								if (CollectionUtils.isEmpty(benfeitoriaList)) {
+									return modelo;
 								}
-								
-								BigDecimal trabalhadorPermanente = new BigDecimal(valor.get("trabalhadorPermanente").toString());
-								BigDecimal salarioMensal = new BigDecimal(valor.get("salarioMensal").toString());
-								BigDecimal total = new BigDecimal("13.3").multiply(trabalhadorPermanente).multiply(salarioMensal);
-								modelo.getFluxoCaixaAnoList().get(0).setValor(modelo.getFluxoCaixaAnoList().get(0).getValor().add(total));
+								BigDecimal total = new BigDecimal("0");
+								for (Map<String, Object> benfeitoria : benfeitoriaList) {
+									BigDecimal quantidade = new BigDecimal(benfeitoria.get("quantidade").toString());
+									BigDecimal valorUnitario = new BigDecimal(benfeitoria.get("valorUnitario").toString());
+
+									total = total.add(quantidade.multiply(valorUnitario));
+								}
+								modelo.getFluxoCaixaAnoList().get(0).setValor(modelo.getFluxoCaixaAnoList().get(0).getValor().add(total.multiply(new BigDecimal("0.02"))));
 							}
 						}
 					}
@@ -181,13 +203,12 @@ class FluxoCaixaCodigoDespesaManutencaoBenfeitoriaMaquina extends FluxoCaixaCodi
 		}
 		return modelo;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private ProjetoCreditoRuralFluxoCaixa calcularMaquinaEquipamento(Object diagnosticoObj, ProjetoCreditoRuralFluxoCaixa modelo) throws BoException {
 		if (diagnosticoObj == null || !(diagnosticoObj instanceof List)) {
 			return modelo;
 		}
-
 		List<Object[]> diagnosticoList = (List<Object[]>) diagnosticoObj;
 		if (CollectionUtils.isEmpty(diagnosticoList)) {
 			return modelo;
@@ -227,41 +248,17 @@ class FluxoCaixaCodigoDespesaManutencaoBenfeitoriaMaquina extends FluxoCaixaCodi
 									return modelo;
 								}
 								BigDecimal total = new BigDecimal("0");
-								for (Map<String,Object> maquinaEquipamento: maquinaEquipamentoList) {
+								for (Map<String, Object> maquinaEquipamento : maquinaEquipamentoList) {
 									BigDecimal quantidade = new BigDecimal(maquinaEquipamento.get("quantidade").toString());
 									BigDecimal valorUnitario = new BigDecimal(maquinaEquipamento.get("valorUnitario").toString());
-
 									total = total.add(quantidade.multiply(valorUnitario));
 								}
-								modelo.getFluxoCaixaAnoList().get(0).setValor(total.multiply(new BigDecimal("0.03")));
+								modelo.getFluxoCaixaAnoList().get(0).setValor(modelo.getFluxoCaixaAnoList().get(0).getValor().add(total.multiply(new BigDecimal("0.03"))));
 							}
 						}
 					}
 				}
 			}
-		}
-		return modelo;
-	}
-
-	
-	@Override
-	public ProjetoCreditoRuralFluxoCaixa calcular(ProjetoCreditoRural projetoCreditoRural, ProjetoCreditoRuralFluxoCaixa modelo) throws BoException {
-		// zerar os valores
-		for (FluxoCaixaAno fca : modelo.getFluxoCaixaAnoList()) {
-			fca.setValor(new BigDecimal("0"));
-		}
-		
-		// calcular máquinas e equipamentos
-		modelo = calcularMaquinaEquipamento(projetoCreditoRural.getPublicoAlvo().getPessoa().getDiagnosticoList(), modelo);
-
-		// calcular benfeitorias nas propriedades
-		for (ProjetoCreditoRuralPublicoAlvoPropriedadeRural publicoAlvoPropriedadeRural: projetoCreditoRural.getPublicoAlvoPropriedadeRuralList()) {
-			if (publicoAlvoPropriedadeRural.getPublicoAlvoPropriedadeRural().getPropriedadeRural().getDiagnosticoList() != null) {
-				modelo = calcularBenfeitoriaPropriedade(publicoAlvoPropriedadeRural.getPublicoAlvoPropriedadeRural().getPropriedadeRural().getDiagnosticoList(), modelo);
-			}
-		}
-		for (FluxoCaixaAno fca : modelo.getFluxoCaixaAnoList()) {
-			fca.setValor(modelo.getFluxoCaixaAnoList().get(0).getValor());
 		}
 		return modelo;
 	}
@@ -276,7 +273,7 @@ class FluxoCaixaCodigoDespesaMaoDeObra extends FluxoCaixaCodigo.Calculo {
 	@SuppressWarnings("unchecked")
 	public ProjetoCreditoRuralFluxoCaixa calcular(ProjetoCreditoRural projetoCreditoRural, ProjetoCreditoRuralFluxoCaixa modelo) throws BoException {
 		Object diagnosticoObj = projetoCreditoRural.getPublicoAlvo().getPessoa().getDiagnosticoList();
-		if (1==1 || diagnosticoObj == null || !(diagnosticoObj instanceof List)) {
+		if (diagnosticoObj == null || !(diagnosticoObj instanceof List)) {
 			return modelo;
 		}
 
@@ -343,19 +340,16 @@ class FluxoCaixaCodigoReceitaDespesaAtividadeAgropecuaria extends FluxoCaixaCodi
 	@SuppressWarnings("unchecked")
 	public ProjetoCreditoRuralFluxoCaixa calcular(ProjetoCreditoRural projetoCreditoRural, ProjetoCreditoRuralFluxoCaixa modelo) throws BoException {
 		List<ProjetoCreditoRuralReceitaDespesa> lista = null;
-
 		try {
 			lista = ((List<ProjetoCreditoRuralReceitaDespesa>) ProjetoCreditoRural.class.getMethod(String.format("get%sList", nomeLista)).invoke(projetoCreditoRural));
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(-1);
 		}
-
 		if (lista == null) {
 			throw new BoException("Objeto Inválido! Lista de %ss não informada!", this.nomeLista);
 		}
-		for (int ano = 1; ano <= FluxoCaixaCodigo.MAX_ANOS; ano++) {
-			FluxoCaixaAno fluxoCaixaAno = getFluxoCaixaAno(modelo.getFluxoCaixaAnoList(), ano);
+		for (FluxoCaixaAno fluxoCaixaAno: modelo.getFluxoCaixaAnoList()) {
 			fluxoCaixaAno.setValor(new BigDecimal("0"));
 			// contabilizar todos os registros do mesmo ano
 			for (ProjetoCreditoRuralReceitaDespesa r : lista) {
