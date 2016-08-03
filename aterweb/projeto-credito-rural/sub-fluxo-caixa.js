@@ -20,6 +20,21 @@ angular.module(pNmModulo).controller(pNmController,
         if (!$scope.fluxoCaixaNvg) {
             $scope.fluxoCaixaNvg = new FrzNavegadorParams($scope.cadastro.registro.projetoCreditoRural.fluxoCaixaList, 4);
         }
+        if (!$scope.cadastro.apoio.fluxoCaixa) {
+            $scope.cadastro.apoio.fluxoCaixa = {};
+        }
+        if (!$scope.cadastro.apoio.fluxoCaixa.Receitas) {
+            $scope.cadastro.apoio.fluxoCaixa.Receitas = {fluxoCaixaAnoList: []};
+        }
+        if (!$scope.cadastro.apoio.fluxoCaixa.Despesas) {
+            $scope.cadastro.apoio.fluxoCaixa.Despesas = {fluxoCaixaAnoList: []};
+        }
+        if (!$scope.cadastro.apoio.fluxoCaixa.Lucro) {
+            $scope.cadastro.apoio.fluxoCaixa.Lucro = {fluxoCaixaAnoList: []};
+        }
+        if (!$scope.cadastro.apoio.fluxoCaixa.Amortizacao) {
+            $scope.cadastro.apoio.fluxoCaixa.Amortizacao = {fluxoCaixaAnoList: []};
+        }
     };
     init();
 
@@ -55,6 +70,8 @@ angular.module(pNmModulo).controller(pNmController,
         ProjetoCreditoRuralSrv.calcularFluxoCaixa(projetoCreditoRural).success(function(resposta) {
             if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {
                 $scope.cadastro.registro.projetoCreditoRural['fluxoCaixaList'] = resposta.resultado['fluxoCaixaList'];
+                $scope.cadastro.registro.projetoCreditoRural['cronogramaPagamentoInvestimentoList'] = resposta.resultado['cronogramaPagamentoInvestimentoList'];
+                $scope.cadastro.registro.projetoCreditoRural['cronogramaPagamentoCusteioList'] = resposta.resultado['cronogramaPagamentoCusteioList'];
             } else {
                 toastr.error(resposta && resposta.mensagem ? resposta.mensagem : resposta, 'Erro ao calcular dados');
             }
@@ -120,14 +137,11 @@ angular.module(pNmModulo).controller(pNmController,
 
     $scope.$watch("cadastro.registro.projetoCreditoRural.fluxoCaixaList", function(n, o) {
         var i, fluxoCaixaAno;
-        $scope.cadastro.apoio.fluxoCaixa = {
-            Receitas: {
-                fluxoCaixaAnoList: [],
-            }, 
-            Despesas: {
-                fluxoCaixaAnoList: [],
-            }
-        };
+
+        $scope.cadastro.apoio.fluxoCaixa.Receitas.fluxoCaixaAnoList = [];
+        $scope.cadastro.apoio.fluxoCaixa.Despesas.fluxoCaixaAnoList = [];
+        $scope.cadastro.apoio.fluxoCaixa.Lucro.fluxoCaixaAnoList = [];
+
         $scope.cadastro.registro.projetoCreditoRural.fluxoCaixaList.forEach(function(fc) {
             if (fc.tipo === 'R') {
                 fc.fluxoCaixaAnoList.forEach(function(a) {
@@ -163,6 +177,53 @@ angular.module(pNmModulo).controller(pNmController,
                 });
             }
         });
+        for (i = 0; i < $scope.cadastro.apoio.fluxoCaixa.Receitas.fluxoCaixaAnoList.length; i++) {
+            $scope.cadastro.apoio.fluxoCaixa.Lucro.fluxoCaixaAnoList.push({ano: $scope.cadastro.apoio.fluxoCaixa.Receitas.fluxoCaixaAnoList[i].ano, valor: $scope.cadastro.apoio.fluxoCaixa.Receitas.fluxoCaixaAnoList[i].valor - $scope.cadastro.apoio.fluxoCaixa.Despesas.fluxoCaixaAnoList[i].valor});
+        }
+    }, true);
+
+    $scope.$watch('cadastro.registro.projetoCreditoRural.cronogramaPagamentoInvestimentoList', function(v, o) {
+        if (!$scope.cadastro.registro.projetoCreditoRural || !$scope.cadastro.registro.projetoCreditoRural.cronogramaPagamentoInvestimentoList) {
+            return;
+        }
+        $scope.cadastro.apoio.fluxoCaixa.Amortizacao.fluxoCaixaAnoList = [];
+        var ano = null, j, k, total = 0, encontrou;
+        $scope.cadastro.registro.projetoCreditoRural.cronogramaPagamentoInvestimentoList.forEach(function(e) {
+            if (e.selecionado === 'S') {
+                for (j = 0; j < e.cronogramaPagamentoList.length; j++) {
+                    if (ano == null) {
+                        ano = e.cronogramaPagamentoList[j].ano;
+                    }
+                    if (e.cronogramaPagamentoList[j].ano && (ano != e.cronogramaPagamentoList[j].ano)) {
+                        encontrou = false;
+                        for (k = 0; k < $scope.cadastro.apoio.fluxoCaixa.Amortizacao.fluxoCaixaAnoList.length; k++) {
+                            if ($scope.cadastro.apoio.fluxoCaixa.Amortizacao.fluxoCaixaAnoList[k].ano === ano) {
+                                $scope.cadastro.apoio.fluxoCaixa.Amortizacao.fluxoCaixaAnoList[k].valor += total;
+                                encontrou = true;
+                                break;
+                            }
+                        }
+                        if (!encontrou) {
+                            $scope.cadastro.apoio.fluxoCaixa.Amortizacao.fluxoCaixaAnoList.push({ano: ano, valor: total});
+                        }
+                        total = 0;
+                    }
+                    total += e.cronogramaPagamentoList[j].amortizacao;
+                }
+                encontrou = false;
+                for (k = 0; k < $scope.cadastro.apoio.fluxoCaixa.Amortizacao.fluxoCaixaAnoList.length; k++) {
+                    if ($scope.cadastro.apoio.fluxoCaixa.Amortizacao.fluxoCaixaAnoList[k].ano === ano) {
+                        $scope.cadastro.apoio.fluxoCaixa.Amortizacao.fluxoCaixaAnoList[k].valor += total;
+                        encontrou = true;
+                        break;
+                    }
+                }
+                if (!encontrou) {
+                    $scope.cadastro.apoio.fluxoCaixa.Amortizacao.fluxoCaixaAnoList.push({ano: ano, valor: total});
+                }
+            }
+        });
+
     }, true);
 
 

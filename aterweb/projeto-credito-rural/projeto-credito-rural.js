@@ -306,7 +306,6 @@
                         ($scope.cadastro.apoio.financiamento.custeioList.valorFinanciadoTotal ? $scope.cadastro.apoio.financiamento.custeioList.valorFinanciadoTotal : 0);
                 } catch (e) {}
             });
-
             // fim dos watches
         }
     ]);

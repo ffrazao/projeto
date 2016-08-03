@@ -23,16 +23,16 @@
                 <th>
                     Lucro (Receita-Despesa) (R$)
                 </th>
-                <td ng-repeat="ano in cadastro.apoio.anoList" class="text-right td-exibe-valor">
-                    {{ano | number: 2}}
+                <td ng-repeat="ano in cadastro.apoio.fluxoCaixa['Lucro'].fluxoCaixaAnoList | orderBy: 'ano'" class="text-right td-exibe-valor">
+                    <span ng-class="{azul: (ano.valor >= 0), vermelho: (ano.valor < 0)}">{{ano.valor | number: 2}}</span>
                 </td>
             </tr>
             <tr>
                 <th>
                     Amortização Financeira (R$)
                 </th>
-                <td ng-repeat="ano in cadastro.apoio.anoList" class="text-right td-exibe-valor">
-                    {{ano | number: 2}}
+                <td ng-repeat="ano in cadastro.apoio.fluxoCaixa['Amortizacao'].fluxoCaixaAnoList | orderBy: 'ano'" class="text-right td-exibe-valor">
+                    <span ng-class="{azul: (ano.valor >= 0), vermelho: (ano.valor < 0)}">{{ano.valor | number: 2}}</span>
                 </td>
             </tr>
             <tr>

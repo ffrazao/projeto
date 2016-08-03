@@ -213,14 +213,15 @@ class FluxoCaixaCodigoDespesaAmortizacaoDividasExistente extends FluxoCaixaCodig
 			} catch (ParseException e) {
 				continue;
 			}
-			BigDecimal amortizacaoAnual = new BigDecimal((String) item.get("amortizacaoAnual"));
+			BigDecimal amortizacaoAnual = new BigDecimal(item.get("amortizacaoAnual").toString());
 
-			List<Integer> reguaFinanciamento = criarReguaFinanciamento(data[0], data[1].get(Calendar.YEAR) - data[0].get(Calendar.YEAR));
+			List<Integer> reguaFinanciamento = null;
+			reguaFinanciamento = criarReguaFinanciamento(data[0], data[1].get(Calendar.YEAR) - data[0].get(Calendar.YEAR), reguaFinanciamento);
 
-			for (int i = 1; i <= reguaPrincipal.size(); i++) {
-				for (int j = 1; j <= reguaFinanciamento.size(); j++) {
-					if (reguaPrincipal.get(i) == reguaFinanciamento.get(j)) {
-						acumulaValor(modelo, i, amortizacaoAnual);
+			for (int i = 0; i < reguaPrincipal.size(); i++) {
+				for (int j = 0; j < reguaFinanciamento.size(); j++) {
+					if (reguaPrincipal.get(i).equals(reguaFinanciamento.get(j))) {
+						acumulaValor(modelo, i + 1, amortizacaoAnual);
 						break;
 					}
 				}
@@ -239,10 +240,19 @@ class FluxoCaixaCodigoDespesaAmortizacaoDividasExistente extends FluxoCaixaCodig
 		}
 	}
 
-	private List<Integer> criarReguaFinanciamento(Calendar inicio, Integer totalAnos) {
-		List<Integer> result = new ArrayList<>();
-		for (int ano = inicio.get(Calendar.YEAR); ano <= inicio.get(Calendar.YEAR) + totalAnos; ano++) {
-			result.add(ano);
+	private List<Integer> criarReguaFinanciamento(Calendar inicio, Integer totalAnos, List<Integer> lista) {
+		List<Integer> result = lista == null ? new ArrayList<>() : lista;
+		for (Integer ano = inicio.get(Calendar.YEAR); ano <= inicio.get(Calendar.YEAR) + totalAnos; ano++) {
+			boolean encontrou = false;
+			for (Integer i = 0; i < result.size(); i++) {
+				if (result.get(i).equals(ano)) {
+					encontrou = true;
+					break;
+				}
+			}
+			if (!encontrou) {
+				result.add(ano);
+			}
 		}
 		return result;
 	}
@@ -258,7 +268,7 @@ class FluxoCaixaCodigoDespesaAmortizacaoDividasExistente extends FluxoCaixaCodig
 				}
 				Integer ano = null;
 				for (CronogramaPagamento parcela : cronograma.getCronogramaPagamentoList()) {
-					if (ano == null || parcela.getAno() > ano) {
+					if (ano == null || (parcela.getAno() != null && parcela.getAno() > ano)) {
 						ano = parcela.getAno();
 					}
 				}
@@ -266,7 +276,7 @@ class FluxoCaixaCodigoDespesaAmortizacaoDividasExistente extends FluxoCaixaCodig
 					totalAnos = ano;
 				}
 			}
-			anoFinanciamento = criarReguaFinanciamento(inicioFinanciamento, totalAnos);
+			anoFinanciamento = criarReguaFinanciamento(inicioFinanciamento, totalAnos, anoFinanciamento);
 		}
 		return anoFinanciamento;
 	}
@@ -335,11 +345,9 @@ class FluxoCaixaCodigoDespesaMaoDeObra extends FluxoCaixaCodigo.Calculo {
 	@Override
 	public ProjetoCreditoRuralFluxoCaixa calcular(ProjetoCreditoRural projetoCreditoRural, ProjetoCreditoRuralFluxoCaixa modelo) throws BoException {
 		HashMap<String, Object> form = captarUltimaColetaFormulario(projetoCreditoRural.getPublicoAlvo().getPessoa().getDiagnosticoList(), "beneficioSocialForcaTrabalho", 1);
-		if (form.get("trabalhadorPermanente") == null || form.get("salarioMensal") == null) {
-			throw new BoException("Erro ao calcular mão de obra do Beneficiário, informações incompletas!");
+		if (form != null && form.get("trabalhadorPermanente") != null && form.get("salarioMensal") != null) {
+			atualizarValoresAno(modelo, new BigDecimal("13.3").multiply(new BigDecimal(form.get("trabalhadorPermanente").toString())).multiply(new BigDecimal(form.get("salarioMensal").toString())));
 		}
-		atualizarValoresAno(modelo, new BigDecimal("13.3").multiply(new BigDecimal(form.get("trabalhadorPermanente").toString())).multiply(new BigDecimal(form.get("salarioMensal").toString())));
-
 		return modelo;
 	}
 

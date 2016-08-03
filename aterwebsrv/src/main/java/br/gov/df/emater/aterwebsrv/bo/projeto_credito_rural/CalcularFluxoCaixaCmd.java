@@ -113,10 +113,21 @@ public class CalcularFluxoCaixaCmd extends _Comando {
 		if (result.getPublicoAlvoPropriedadeRuralList() == null) {
 			throw new BoException("Não informado a(s) Propriedade(s) Rural(ais) do beneficiário do Projeto de Crédito Rural");
 		}
+		// remover os cronogramas não utilizados
+		for (int i = result.getCronogramaPagamentoInvestimentoList().size(); i > 0; i--) {
+			if (Confirmacao.N.equals(result.getCronogramaPagamentoInvestimentoList().get(i - 1).getSelecionado())) {
+				result.getCronogramaPagamentoInvestimentoList().remove(i - 1);
+			}
+		}
+		for (int i = result.getCronogramaPagamentoCusteioList().size(); i > 0; i--) {
+			if (Confirmacao.N.equals(result.getCronogramaPagamentoCusteioList().get(i - 1).getSelecionado())) {
+				result.getCronogramaPagamentoCusteioList().remove(i - 1);
+			}
+		}
 
 		// recuperar dados do publico alvo
 		result.setPublicoAlvo(publicoAlvoDao.findOne(result.getPublicoAlvo().getId()));
-		
+
 		// captar diagnosticos
 		FormularioColetaCadFiltroDto filtro = new FormularioColetaCadFiltroDto();
 		Set<FormularioDestino> destinoList = new HashSet<>();
@@ -145,7 +156,7 @@ public class CalcularFluxoCaixaCmd extends _Comando {
 			destinoList.add(FormularioDestino.PR);
 			filtro.setDestino(destinoList);
 			filtro.setSubformulario(subFormularioList);
-			filtro.setSituacao(situacaoList);			
+			filtro.setSituacao(situacaoList);
 			filtro.setPropriedadeRural(prop.getPublicoAlvoPropriedadeRural().getPropriedadeRural());
 			diagnosticoCtx = facadeBo.formularioColetaFiltroExecutar(contexto.getUsuario(), filtro);
 			prop.getPublicoAlvoPropriedadeRural().getPropriedadeRural().setDiagnosticoList(diagnosticoCtx.getResposta());
