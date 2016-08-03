@@ -18,12 +18,16 @@ angular.module(pNmModulo).factory(pNmFactory,
                    'ProjetoCreditoRuralPeriodicidade',
                    'Confirmacao',
                    'FluxoCaixaCodigo',
+                   'ProjetoCreditoRuralStatus',
+                   'AgenteFinanceiro',
                 ]}).success(function(resposta) {
                     if (resposta && resposta.resultado) {
                         var i = 0;
                         scp.cadastro.apoio.periodicidadeList = resposta.resultado[i++];
                         scp.cadastro.apoio.confirmacaoList = resposta.resultado[i++];
                         scp.cadastro.apoio.fluxoCaixaCodigoList = resposta.resultado[i++];
+                        scp.cadastro.apoio.projetoCreditoRuralStatusList = resposta.resultado[i++];
+                        scp.cadastro.apoio.agenteFinanceiroList = resposta.resultado[i++];
                     }
                 });
                 scp.cadastro.apoio.anoList = [];

@@ -61,7 +61,7 @@
                                 <td>{{reg.nomeLote}}</td>
                                 <td>{{reg.dataCalculo | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
                                 <td>
-                                    <input type="radio" id="{{reg.nomeLote}}{{$index}}" name="{{reg.nomeLote}}" ng-click="definirSelecionado(cadastro.registro.projetoCreditoRural[lista], reg)" ng-checked="reg.selecionado === 'S'">
+                                    <input type="radio" id="{{lista}}{{reg.nomeLote}}{{$index}}" name="{{lista}}{{reg.nomeLote}}" ng-click="definirSelecionado(cadastro.registro.projetoCreditoRural[lista], reg)" ng-checked="reg.selecionado === 'S'">
                                 </td>
                                 <td class="text-right td-exibe-valor">{{reg.valorFinanciamento | number: 2}}</td>
                                 <td>{{UtilSrv.indiceDePorCampo(cadastro.apoio.periodicidadeList, reg.periodicidade, 'codigo').descricao}}</td>

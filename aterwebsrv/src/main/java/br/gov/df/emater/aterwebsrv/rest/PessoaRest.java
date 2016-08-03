@@ -28,7 +28,12 @@ public class PessoaRest {
 	public Resposta buscaCep(@RequestParam("cep") String cep, Principal usuario) throws Exception {
 		return new Resposta(facadeBo.pessoaBuscarCep(usuario, cep).getResposta());
 	}
-
+	
+	@RequestMapping(value = "/publico-alvo-por-pessoa-id", method = RequestMethod.GET)
+	public Resposta publicoAlvoPorPessoaId(@RequestParam Integer id, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.pessoaPublicoAlvoPorPessoaId(usuario, id).getResposta());
+	}
+	
 	@RequestMapping(value = "/carteira-produtor-rel", method = RequestMethod.POST)
 	public Resposta carteiraProdutorRel(@RequestBody CarteiraProdutorRelFiltroDto filtro, Principal usuario) throws Exception {
 		return new Resposta(facadeBo.pessoaCarteiraProdutorRel(usuario, filtro).getResposta());

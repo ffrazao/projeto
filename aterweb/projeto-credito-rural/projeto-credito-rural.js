@@ -306,6 +306,21 @@
                         ($scope.cadastro.apoio.financiamento.custeioList.valorFinanciadoTotal ? $scope.cadastro.apoio.financiamento.custeioList.valorFinanciadoTotal : 0);
                 } catch (e) {}
             });
+
+            $scope.$watch('cadastro.registro.pessoaDemandanteList.length + cadastro.registro.metodo', function(v, o) {
+                if ($scope.frm.formularioProjetoCreditoRural) {
+                    $scope.frm.formularioProjetoCreditoRural.$setValidity('qtdBenefInvalida', true);
+                }
+                if (!$scope.cadastro.registro.pessoaDemandanteList || !$scope.cadastro.registro.metodo || !$scope.cadastro.registro.metodo.codigo || $scope.cadastro.registro.metodo.codigo !== 'PROJETO_CREDITO_RURAL') {
+                    return;
+                }
+                if ($scope.cadastro.registro.pessoaDemandanteList.length === 1) {
+                    if (!$scope.cadastro.registro.projetoCreditoRural.publicoAlvo) {
+                    }
+                }
+                $scope.frm.formularioProjetoCreditoRural.$setValidity('qtdBenefInvalida', ($scope.cadastro.registro.pessoaDemandanteList.length <= 1));
+            });
+
             // fim dos watches
         }
     ]);

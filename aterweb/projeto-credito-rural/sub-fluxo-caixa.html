@@ -39,24 +39,24 @@
                 <th>
                     Saldo Devedor (R$)
                 </th>
-                <td ng-repeat="ano in cadastro.apoio.anoList" class="text-right td-exibe-valor">
-                    {{ano | number: 2}}
+                <td ng-repeat="ano in cadastro.apoio.fluxoCaixa['SaldoDevedor'].fluxoCaixaAnoList | orderBy: 'ano'" class="text-right td-exibe-valor">
+                    <span ng-class="{azul: (ano.valor >= 0), vermelho: (ano.valor < 0)}">{{ano.valor | number: 2}}</span>
                 </td>
             </tr>
             <tr>
                 <th>
                     Fluxo Líquido de Caixa (R$)
                 </th>
-                <td ng-repeat="ano in cadastro.apoio.anoList" class="text-right td-exibe-valor">
-                    {{ano | number: 2}}
+                <td ng-repeat="ano in cadastro.apoio.fluxoCaixa['FluxoLiquidoCaixa'].fluxoCaixaAnoList | orderBy: 'ano'" class="text-right td-exibe-valor">
+                    <span ng-class="{azul: (ano.valor >= 0), vermelho: (ano.valor < 0)}">{{ano.valor | number: 2}}</span>
                 </td>
             </tr>
             <tr>
                 <th>
                     Fluxo Líquido de Caixa Acumulado (R$)
                 </th>
-                <td ng-repeat="ano in cadastro.apoio.anoList" class="text-right td-exibe-valor">
-                    {{ano | number: 2}}
+                <td ng-repeat="ano in cadastro.apoio.fluxoCaixa['FluxoLiquidoCaixaAcumulado'].fluxoCaixaAnoList | orderBy: 'ano'" class="text-right td-exibe-valor">
+                    <span ng-class="{azul: (ano.valor >= 0), vermelho: (ano.valor < 0)}">{{ano.valor | number: 2}}</span>
                 </td>
             </tr>
         </tbody>

@@ -7,11 +7,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 
 @Entity
 @Table(name = "linha_credito", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
-public class LinhaCredito extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class LinhaCredito extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<LinhaCredito> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -29,6 +30,11 @@ public class LinhaCredito extends EntidadeBase implements _ChavePrimaria<Integer
 		super(id);
 	}
 
+	public LinhaCredito(Integer id, String nome) {
+		this.id = id;
+		this.nome = nome;
+	}
+
 	@Override
 	public Integer getId() {
 		return id;
@@ -36,6 +42,10 @@ public class LinhaCredito extends EntidadeBase implements _ChavePrimaria<Integer
 
 	public String getNome() {
 		return nome;
+	}
+
+	public LinhaCredito infoBasica() {
+		return new LinhaCredito(this.id, this.nome);
 	}
 
 	@Override

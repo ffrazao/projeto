@@ -2,7 +2,7 @@ package br.gov.df.emater.aterwebsrv.modelo.dominio;
 
 public enum ProjetoCreditoRuralStatus {
 
-	CA("", 1), CO("", 1), EA("", 1), EE("", 1), LI("", 1), NC("", 1), NE("", 1), PR("", 1);
+	CA("Cancelado", 6), CO("Contratado", 3), EA("Em análise", 1), EE("Em elaboração", 2), LI("Liquidado", 7), NC("Não contratado", 4), NE("Negado", 5), PR("Pró-Rural", 8);
 
 	private String descricao;
 

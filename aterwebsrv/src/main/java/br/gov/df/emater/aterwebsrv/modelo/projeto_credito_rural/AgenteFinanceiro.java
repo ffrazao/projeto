@@ -1,26 +1,34 @@
 package br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 
 @Entity
 @Table(name = "agente_financeiro", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
-public class AgenteFinanceiro extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class AgenteFinanceiro extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<AgenteFinanceiro> {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
+
+	@OneToMany(mappedBy = "agenteFinanceiro")
+	private List<AgenteFinanceiroLinhaCredito> linhaCreditoList;
 
 	@ManyToOne
 	@JoinColumn(name = "pessoa_juridica_id")
@@ -34,9 +42,23 @@ public class AgenteFinanceiro extends EntidadeBase implements _ChavePrimaria<Int
 		super(id);
 	}
 
+	public AgenteFinanceiro(Integer id, PessoaJuridica pessoaJuridica, List<AgenteFinanceiroLinhaCredito> linhaCreditoList) {
+		this.id = id;
+		this.pessoaJuridica = pessoaJuridica == null ? null : (PessoaJuridica) pessoaJuridica.infoBasica();
+		List<AgenteFinanceiroLinhaCredito> lista = new ArrayList<>();
+		if (linhaCreditoList != null) {
+			linhaCreditoList.forEach((lc) -> lista.add(lc.infoBasica()));
+		}
+		this.linhaCreditoList = lista;
+	}
+
 	@Override
 	public Integer getId() {
 		return id;
+	}
+
+	public List<AgenteFinanceiroLinhaCredito> getLinhaCreditoList() {
+		return linhaCreditoList;
 	}
 
 	public PessoaJuridica getPessoaJuridica() {
@@ -48,8 +70,17 @@ public class AgenteFinanceiro extends EntidadeBase implements _ChavePrimaria<Int
 		this.id = id;
 	}
 
+	public void setLinhaCreditoList(List<AgenteFinanceiroLinhaCredito> linhaCreditoList) {
+		this.linhaCreditoList = linhaCreditoList;
+	}
+
 	public void setPessoaJuridica(PessoaJuridica pessoaJuridica) {
 		this.pessoaJuridica = pessoaJuridica;
+	}
+
+	@Override
+	public AgenteFinanceiro infoBasica() {
+		return new AgenteFinanceiro(getId(), getPessoaJuridica(), getLinhaCreditoList());
 	}
 
 }

@@ -376,6 +376,11 @@ public class FacadeBo implements BeanFactoryAware {
 		return this._executar(usuario, "PessoaNovoCh", pessoa);
 	}
 
+	@Transactional(readOnly = true)
+	public _Contexto pessoaPublicoAlvoPorPessoaId(Principal usuario, Integer id) throws Exception {
+		return this._executar(usuario, "PessoaPublicoAlvoPorPessoaIdCmd", id);
+	}
+
 	@Transactional
 	public _Contexto pessoaSalvar(Principal usuario, Pessoa pessoa) throws Exception {
 		return this._executar(usuario, "PessoaSalvarCh", pessoa);

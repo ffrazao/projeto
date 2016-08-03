@@ -37,6 +37,11 @@ public class AgenteFinanceiroLinhaCredito extends EntidadeBase implements _Chave
 		super(id);
 	}
 
+	public AgenteFinanceiroLinhaCredito(Integer id, LinhaCredito linhaCredito) {
+		this.id = id;
+		this.linhaCredito = linhaCredito == null ? null : linhaCredito.infoBasica();
+	}
+
 	public AgenteFinanceiro getAgenteFinanceiro() {
 		return agenteFinanceiro;
 	}
@@ -50,14 +55,18 @@ public class AgenteFinanceiroLinhaCredito extends EntidadeBase implements _Chave
 		return linhaCredito;
 	}
 
+	public AgenteFinanceiroLinhaCredito infoBasica() {
+		return new AgenteFinanceiroLinhaCredito(getId(), getLinhaCredito());
+	}
+
 	public void setAgenteFinanceiro(AgenteFinanceiro agenteFinanceiro) {
 		this.agenteFinanceiro = agenteFinanceiro;
 	}
-
 	@Override
 	public void setId(Integer id) {
 		this.id = id;
 	}
+
 	public void setLinhaCredito(LinhaCredito linhaCredito) {
 		this.linhaCredito = linhaCredito;
 	}

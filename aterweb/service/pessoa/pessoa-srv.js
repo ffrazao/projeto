@@ -165,6 +165,9 @@ angular.module(pNmModulo).factory(pNmFactory,
             carteiraProdutorRel : function (filtro) {
                 return $http.post(this.endereco + '/carteira-produtor-rel', filtro);
             },
+            publicoAlvoPorPessoaId : function (id) {
+                return $http.post(this.endereco + '/publico-alvo-por-pessoa-id', filtro);
+            },
         };
         return PessoaSrv;
     }
