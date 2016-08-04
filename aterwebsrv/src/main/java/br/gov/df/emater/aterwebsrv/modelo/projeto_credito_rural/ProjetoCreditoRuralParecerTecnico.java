@@ -45,9 +45,13 @@ public class ProjetoCreditoRuralParecerTecnico extends EntidadeBase implements _
 	@JsonDeserialize(using = JsonDeserializerData.class)
 	private Calendar data;
 
+	private String descricao;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
+
+	private Integer ordem;
 
 	@ManyToOne
 	@JoinColumn(name = "projeto_credito_id")
@@ -77,9 +81,17 @@ public class ProjetoCreditoRuralParecerTecnico extends EntidadeBase implements _
 		return data;
 	}
 
+	public String getDescricao() {
+		return descricao;
+	}
+
 	@Override
 	public Integer getId() {
 		return id;
+	}
+
+	public Integer getOrdem() {
+		return ordem;
 	}
 
 	public ProjetoCreditoRural getProjetoCreditoRural() {
@@ -102,9 +114,17 @@ public class ProjetoCreditoRuralParecerTecnico extends EntidadeBase implements _
 		this.data = data;
 	}
 
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
 	@Override
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public void setOrdem(Integer ordem) {
+		this.ordem = ordem;
 	}
 
 	public void setProjetoCreditoRural(ProjetoCreditoRural projetoCreditoRural) {

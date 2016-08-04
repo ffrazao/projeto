@@ -21,6 +21,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                    'ProjetoCreditoRuralStatus',
                    'AgenteFinanceiro',
                    'PropriedadeRuralVinculoTipo',
+                   'ParecerTecnicoCodigo',
                 ]}).success(function(resposta) {
                     if (resposta && resposta.resultado) {
                         var i = 0;
@@ -30,6 +31,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                         scp.cadastro.apoio.projetoCreditoRuralStatusList = resposta.resultado[i++];
                         scp.cadastro.apoio.agenteFinanceiroList = resposta.resultado[i++];
                         scp.cadastro.apoio.propriedadeRuralVinculoTipoList = resposta.resultado[i++];
+                        scp.cadastro.apoio.parecerTecnicoCodigoList = resposta.resultado[i++];
                     }
                 });
                 scp.cadastro.apoio.anoList = [];

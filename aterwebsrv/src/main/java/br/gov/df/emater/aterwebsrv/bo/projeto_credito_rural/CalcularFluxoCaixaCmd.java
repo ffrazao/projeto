@@ -21,12 +21,14 @@ import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoPropriedadeRuralDao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FluxoCaixaCodigo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FormularioDestino;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.ParecerTecnicoCodigo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Situacao;
 import br.gov.df.emater.aterwebsrv.modelo.dto.FormularioColetaCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRural;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralCronogramaPagamento;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralFinanciamento;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralFluxoCaixa;
+import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralParecerTecnico;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralPublicoAlvoPropriedadeRural;
 
 @Service("ProjetoCreditoRuralCalcularFluxoCaixaCmd")
@@ -60,16 +62,16 @@ public class CalcularFluxoCaixaCmd extends _Comando {
 	}
 
 	@Autowired
-	private PublicoAlvoDao publicoAlvoDao;
-
-	@Autowired
 	private EntityManager em;
 
 	@Autowired
-	private PublicoAlvoPropriedadeRuralDao publicoAlvoPropriedadeRuralDao;
+	private FacadeBo facadeBo;
 
 	@Autowired
-	private FacadeBo facadeBo;
+	private PublicoAlvoDao publicoAlvoDao;
+
+	@Autowired
+	private PublicoAlvoPropriedadeRuralDao publicoAlvoPropriedadeRuralDao;
 
 	public CalcularFluxoCaixaCmd() {
 	};
@@ -175,8 +177,24 @@ public class CalcularFluxoCaixaCmd extends _Comando {
 			fluxoCaixaList.add(pcrfc);
 		}
 		fluxoCaixaList.sort((fc1, fc2) -> fc1.getOrdem().compareTo(fc2.getOrdem()));
-
 		result.setFluxoCaixaList(fluxoCaixaList);
+
+		// montar os pareceres técnicos
+		List<ProjetoCreditoRuralParecerTecnico> parecerTecnicoList = new ArrayList<>();
+		id = 0;
+		for (ParecerTecnicoCodigo relatorio : ParecerTecnicoCodigo.values()) {
+			ProjetoCreditoRuralParecerTecnico pcrpt = relatorio.gerar(result);
+			// caso não exista, criar um novo ID
+			if (pcrpt.getId() == null) {
+				pcrpt.setId(--id);
+			}
+			if (pcrpt.getUsuario() == null) {
+				pcrpt.setUsuario(getUsuario(contexto.getUsuario().getName()).infoBasica());
+			}
+			parecerTecnicoList.add(pcrpt);
+		}
+		parecerTecnicoList.sort((pt1, pt2) -> pt1.getOrdem().compareTo(pt2.getOrdem()));
+		result.setParecerTecnicoList(parecerTecnicoList);
 
 		contexto.setResposta(result);
 

@@ -31,21 +31,23 @@
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
-                        <th><frz-seletor ng-model="parecerTecnicoNvg" dados="cadastro.registro.projetoCreditoRural.parecerTecnicoList"></frz-seletor></th>
-                        <th>#</th>
+                        <th rowspan="2"><frz-seletor ng-model="parecerTecnicoNvg" dados="cadastro.registro.projetoCreditoRural.parecerTecnicoList"></frz-seletor></th>
+                        <th rowspan="2">#</th>
                         <th>Data</th>
                         <th>Modelo</th>
                         <th>Responsável</th>
-                        <th>Parecer</th>
+                    </tr>
+                    <tr>
+                        <th colspan="3">Parecer</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="reg in cadastro.registro.projetoCreditoRural.parecerTecnicoList | orderBy: ['data', 'codigo'] track by reg.id">
-                        <td>
+                    <tr ng-repeat-start="reg in cadastro.registro.projetoCreditoRural.parecerTecnicoList | orderBy: ['data', 'codigo'] track by reg.id">
+                        <td rowspan="2">
                             <input type="radio" ng-show="parecerTecnicoNvg.selecao.tipo === 'U'" ng-model="parecerTecnicoNvg.selecao.item" ng-value="reg"/>
                             <input type="checkbox" ng-show="parecerTecnicoNvg.selecao.tipo === 'M'" checklist-model="parecerTecnicoNvg.selecao.items" checklist-value="reg"/>
                         </td>
-                        <td>
+                        <td rowspan="2">
                             {{$index + 1 + ((parecerTecnicoNvg.paginaAtual-1) * parecerTecnicoNvg.tamanhoPagina)}}
                         </td>
                         <td>
@@ -60,7 +62,7 @@
                             </div>
                         </td>
                         <td>
-                            <select class="form-control input-sm" id="codigo{{$index}}" name="codigo{{$index}}" ng-model="reg.codigo" ng-required="true">
+                            <select class="form-control input-sm" id="codigo{{$index}}" name="codigo{{$index}}" ng-model="reg.codigo" ng-required="true" ng-options="item.codigo as item.descricao for item in cadastro.apoio.parecerTecnicoCodigoList | orderBy: 'ordem' ">
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && parecerTecnicoListFrm['codigo' + $index].$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -68,10 +70,13 @@
                             </div>
                         </td>
                         <td>
-                            {{reg.usuario.nome}}
+                            {{reg.usuario.pessoa.nome}}
                         </td>
-                        <td>
-                            <textarea class="form-control input-sm" id="parecer{{$index}}" name="parecer{{$index}}" ng-model="reg.parecer" ng-required="true"></textarea>
+                    </tr>
+                    <tr ng-repeat-end>
+                        <td colspan="3">
+                            parecer{{$index}}
+                            <trix-editor class="trix-content" angular-trix id="parecer{{$index}}" name="parecer{{$index}}" ng-model="reg.conteudo" rows="6"></trix-editor>
                             <div class="label label-danger" ng-show="navegador.submetido && parecerTecnicoListFrm['parecer' + $index].$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório

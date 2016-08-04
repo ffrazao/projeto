@@ -65,7 +65,7 @@ angular.module(pNmModulo).controller(pNmController,
         var i;
         angular.forEach($scope.cadastro.registro.projetoCreditoRural.trienioList, function(v, k) {
             for (i = 1; i <= 3; i++) {
-                $scope.cadastro.apoio.trienio['ano' + i + 'Total'] += v['ano' + i] ? v['ano' + i] : 0;
+                $scope.cadastro.apoio.trienio['ano' + i + 'Total'] += v['receitaAno' + i] ? v['receitaAno' + i] : 0;
             }
         });
         var total = 0;

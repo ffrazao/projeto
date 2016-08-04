@@ -145,7 +145,6 @@
 
             // inicio ações especiais
             $scope.propriedadeRuralComparador = function(a, b) {
-                console.log(a, b); 
                 return a.id === b.id;
             };
 
@@ -329,7 +328,7 @@
                             })
                             .error(function(resposta) {
                                 console.log(resposta);
-                                toastr.error(erro, 'Erro ao pesquisar beneficiário');
+                                toastr.error(resposta, 'Erro ao pesquisar beneficiário');
                             });
                     }
                 }
