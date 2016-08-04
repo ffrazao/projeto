@@ -182,6 +182,18 @@
                 }
             };
 
+            var confirmarSalvar = function(cadastro) {
+                removerCampo(cadastro, ['@jsonId']);
+            };
+
+            $scope.confirmarIncluirAntes = function(cadastro) {
+                return confirmarSalvar(cadastro);
+            };
+
+            $scope.confirmarEditarAntes = function(cadastro) {
+                return confirmarSalvar(cadastro);
+            };
+
             $scope.limpar = function(scp) {
                 var e = scp.navegador.estadoAtual();
                 if ('FILTRANDO' === e) {

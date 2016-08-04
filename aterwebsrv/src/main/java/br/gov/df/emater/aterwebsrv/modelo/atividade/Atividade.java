@@ -20,6 +20,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -35,6 +36,7 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.AtividadeFormato;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.AtividadeNatureza;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.AtividadePrioridade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.AtividadeSituacao;
+import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRural;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
@@ -138,6 +140,9 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer>, 
 
 	@Enumerated(EnumType.STRING)
 	private AtividadePrioridade prioridade;
+
+	@Transient
+	private ProjetoCreditoRural projetoCreditoRural;
 
 	@Column(name = "publico_estimado")
 	private Integer publicoEstimado;
@@ -268,6 +273,10 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer>, 
 		return prioridade;
 	}
 
+	public ProjetoCreditoRural getProjetoCreditoRural() {
+		return projetoCreditoRural;
+	}
+
 	public Integer getPublicoEstimado() {
 		return publicoEstimado;
 	}
@@ -387,6 +396,10 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer>, 
 
 	public void setPrioridade(AtividadePrioridade prioridade) {
 		this.prioridade = prioridade;
+	}
+
+	public void setProjetoCreditoRural(ProjetoCreditoRural projetoCreditoRural) {
+		this.projetoCreditoRural = projetoCreditoRural;
 	}
 
 	public void setPublicoEstimado(Integer publicoEstimado) {

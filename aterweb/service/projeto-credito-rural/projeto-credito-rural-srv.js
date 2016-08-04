@@ -5,8 +5,8 @@
 'use strict';
 
 angular.module(pNmModulo).factory(pNmFactory,
-  ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams', 'ComunidadeSrv',
-    function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams, ComunidadeSrv) {
+  ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams', 'ComunidadeSrv', 'PessoaSrv',
+    function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams, ComunidadeSrv, PessoaSrv) {
         'ngInject';
         
         var ProjetoCreditoRuralSrv = {
@@ -20,6 +20,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                    'FluxoCaixaCodigo',
                    'ProjetoCreditoRuralStatus',
                    'AgenteFinanceiro',
+                   'PropriedadeRuralVinculoTipo',
                 ]}).success(function(resposta) {
                     if (resposta && resposta.resultado) {
                         var i = 0;
@@ -28,6 +29,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                         scp.cadastro.apoio.fluxoCaixaCodigoList = resposta.resultado[i++];
                         scp.cadastro.apoio.projetoCreditoRuralStatusList = resposta.resultado[i++];
                         scp.cadastro.apoio.agenteFinanceiroList = resposta.resultado[i++];
+                        scp.cadastro.apoio.propriedadeRuralVinculoTipoList = resposta.resultado[i++];
                     }
                 });
                 scp.cadastro.apoio.anoList = [];
@@ -69,7 +71,9 @@ angular.module(pNmModulo).factory(pNmFactory,
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
                 return $http.post(this.endereco + '/calcular-fluxo-caixa', projetoCreditoRural);
             },
-
+            publicoAlvoPorPessoaId : function (id) {
+                return PessoaSrv.publicoAlvoPorPessoaId(id);
+            },
         };
         return ProjetoCreditoRuralSrv;
     }

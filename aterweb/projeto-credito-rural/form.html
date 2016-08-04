@@ -8,7 +8,7 @@
         <ng-form name="frm.formularioProjetoCreditoRural" novalidate ng-hide="frm.formularioProjetoCreditoRural.$error.qtdBenefInvalida">
             <fieldset>
                 <div class="row">
-                    <div class="col-sm-6" title="Nome do Beneficiário">
+                    <div class="col-sm-12" title="Nome do Beneficiário">
                         <div class="form-group">
                             <label class="control-label" for="nomeBeneficiario">Nome do Beneficiário</label>
                             <input type="text" class="form-control" id="nomeBeneficiario" name="nomeBeneficiario" ng-readonly="true" ng-required="true" ng-model="cadastro.registro.projetoCreditoRural.publicoAlvo.pessoa.nome">
@@ -18,10 +18,16 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-6" title="Propriedade Rural">
+                </div>
+                <div class="row">
+                    <div class="col-sm-12" title="Propriedade Rural Vinculada">
                         <div class="form-group">
-                            <label class="control-label" for="propriedadeRuralTotal">Propriedade(s) Rural(is)</label>
-                            <div class="table-responsive">
+                            <label class="control-label" for="propriedadeRuralTotal">Propriedade(s) Rural(is) Vinculada(s)</label>
+                            <div class="alert alert-warning" style="margin: 0px;" role="alert" ng-hide="cadastro.registro.projetoCreditoRural.publicoAlvo.publicoAlvoPropriedadeRuralList.length">
+                                <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                                Nenhum registro localizado!
+                            </div>
+                            <div class="table-responsive" ng-show="cadastro.registro.projetoCreditoRural.publicoAlvo.publicoAlvoPropriedadeRuralList.length">
                                 <table class="table table-hover table-striped">
                                     <thead>
                                         <tr>
@@ -39,7 +45,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-repeat="item in [{id: 1, propriedadeRural: {nome: 'Prop 1', areaTotal: 2}, vinculo: 'Parceiro', area: 1, proprietario : [{nome: 'José'}], inicio: '01/01/2016', }, {id: 2, propriedadeRural: {nome: 'Prop 2', areaTotal: 4}, vinculo: 'Proprietário', area: 4, proprietario : [{nome: 'Alfredo'}], inicio: '01/01/2010', }] | orderBy: 'propriedadeRural.nome' track by item.id">
+                                        <tr ng-repeat="item in cadastro.registro.projetoCreditoRural.publicoAlvo.publicoAlvoPropriedadeRuralList | orderBy: 'propriedadeRural.nome' track by item.id">
                                             <td width="30px">
                                                 <input
                                                     type="checkbox"
@@ -55,7 +61,7 @@
                                             </td>
                                             <td>{{item.propriedadeRural.nome}}</td>
                                             <td>{{item.propriedadeRural.areaTotal | number: 3}}</td>
-                                            <td>{{item.vinculo}}</td>
+                                            <td>{{UtilSrv.indiceDePorCampo(cadastro.apoio.propriedadeRuralVinculoTipoList, item.vinculo, 'codigo').descricao}}</td>
                                             <td>{{item.area | number: 3}}</td>
                                             <td>{{item.proprietario[0].nome}}</td>
                                             <td>{{item.inicio}}</td>

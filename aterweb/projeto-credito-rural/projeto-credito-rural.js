@@ -315,10 +315,27 @@
                     return;
                 }
                 if ($scope.cadastro.registro.pessoaDemandanteList.length === 1) {
-                    if (!$scope.cadastro.registro.projetoCreditoRural.publicoAlvo) {
+                    if (!$scope.cadastro.registro.projetoCreditoRural.publicoAlvo || !$scope.cadastro.registro.projetoCreditoRural.publicoAlvo.pessoa || !$scope.cadastro.registro.projetoCreditoRural.publicoAlvo.pessoa.id ||
+                        $scope.cadastro.registro.projetoCreditoRural.publicoAlvo.pessoa.id !== $scope.cadastro.registro.pessoaDemandanteList[0].pessoa.id) {
+                        $scope.cadastro.registro.projetoCreditoRural.publicoAlvo = null;
+                        ProjetoCreditoRuralSrv.publicoAlvoPorPessoaId($scope.cadastro.registro.pessoaDemandanteList[0].pessoa.id)
+                            .success(function(resposta) {
+                                if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {
+                                    $scope.cadastro.registro.projetoCreditoRural.publicoAlvo = resposta.resultado;
+                                } else {
+                                    $scope.cadastro.registro.pessoaDemandanteList.splice(0, $scope.cadastro.registro.pessoaDemandanteList.length);
+                                    toastr.error(resposta && resposta.mensagem ? resposta.mensagem : resposta, 'Erro ao pesquisar beneficiário');
+                                }
+                            })
+                            .error(function(resposta) {
+                                console.log(resposta);
+                                toastr.error(erro, 'Erro ao pesquisar beneficiário');
+                            });
                     }
                 }
-                $scope.frm.formularioProjetoCreditoRural.$setValidity('qtdBenefInvalida', ($scope.cadastro.registro.pessoaDemandanteList.length <= 1));
+                if ($scope.frm.formularioProjetoCreditoRural) {
+                    $scope.frm.formularioProjetoCreditoRural.$setValidity('qtdBenefInvalida', ($scope.cadastro.registro.pessoaDemandanteList.length <= 1));
+                }
             });
 
             // fim dos watches

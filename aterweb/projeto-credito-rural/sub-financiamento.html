@@ -125,7 +125,7 @@
                             </div>
                         </td>
                         <td>
-                            <input class="form-control input-sm" id="epocaLiberacao{{$index}}" name="epocaLiberacao{{$index}}" ng-model="reg.epocaLiberacao" ng-required="true" ng-disabled="cronogramaPagamentoRealizado(reg, lista)">
+                            <input class="form-control input-sm" id="epocaLiberacao{{$index}}" name="epocaLiberacao{{$index}}" ng-model="reg.epocaLiberacao" ng-required="false" ng-disabled="cronogramaPagamentoRealizado(reg, lista)">
                             <div class="label label-danger" ng-show="navegador.submetido && financiamentoListFrm['epocaLiberacao' + $index].$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
