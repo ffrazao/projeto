@@ -36,11 +36,31 @@
                         <th>Pessoa</th>
                         <th>Participação</th>
                         <th>Profissão</th>
-                        <th>Renda Líquida (R$)</th>
+                        <th class="td-exibe-valor">Renda Líquida Anual (R$)</th>
                     </tr>
                 </thead>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <th colspan="3" class="text-right">Total Primeiro</th>
+                        <td class="text-right">{{cadastro.apoio.garantiaParticipacao.totAvaliacao1 | number: 2}}</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <th colspan="3" class="text-right">Total Segundo</th>
+                        <td class="text-right">{{cadastro.apoio.garantiaParticipacao.totAvaliacao2 | number: 2}}</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <th colspan="3" class="text-right">Total Geral</th>
+                        <td class="text-right">{{cadastro.apoio.garantiaParticipacao.totAvaliacaoGeral | number: 2}}</td>
+                    </tr>
+                </tfoot>
                 <tbody>
-                    <tr ng-repeat="reg in cadastro.registro.projetoCreditoRural.garantiaList | orderBy: ['data', 'participacao'] track by reg.id">
+                    <tr ng-repeat="reg in cadastro.registro.projetoCreditoRural.garantiaList | orderBy: ordenaGarantia track by reg.id">
                         <td>
                             <input type="radio" ng-show="garantiaNvg.selecao.tipo === 'U'" ng-model="garantiaNvg.selecao.item" ng-value="reg"/>
                             <input type="checkbox" ng-show="garantiaNvg.selecao.tipo === 'M'" checklist-model="garantiaNvg.selecao.items" checklist-value="reg"/>
@@ -49,10 +69,10 @@
                             {{$index + 1 + ((garantiaNvg.paginaAtual-1) * garantiaNvg.tamanhoPagina)}}
                         </td>
                         <td>
-                            {{reg.pessoa.nome}}
+                            <a ng-click="modalVerPessoa(reg.pessoa.id)">{{reg.pessoa.nome}}</a>
                         </td>
                         <td>
-                            <select class="form-control input-sm" id="participacao{{$index}}" name="participacao{{$index}}" ng-model="reg.participacao" ng-required="true">
+                            <select class="form-control input-sm" id="participacao{{$index}}" name="participacao{{$index}}" ng-model="reg.participacao" ng-required="true" ng-options="item.codigo as item.descricao for item in cadastro.apoio.garantiaParticipacaoList">
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && garantiaListFrm['participacao' + $index].$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -60,7 +80,7 @@
                             </div>
                         </td>
                         <td>
-                            <select class="form-control input-sm" id="profissao{{$index}}" name="profissao{{$index}}" ng-model="reg.profissao" ng-required="true">
+                            <select class="form-control input-sm" id="profissao{{$index}}" name="profissao{{$index}}" ng-model="reg.profissao" ng-required="true" ng-options="item as item.nome for item in cadastro.apoio.profissaoList track by item.id">
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && garantiaListFrm['profissao' + $index].$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -68,16 +88,18 @@
                             </div>
                         </td>
                         <td class="td-exibe-valor">
-                            <input class="form-control input-sm text-right" id="rendaLiquida_{{$index}}" name="rendaLiquida_{{$index}}" ng-model="reg.rendaLiquida" ui-number-mask="2" ng-required="true">
-                            <div class="label label-danger" ng-show="navegador.submetido && garantiaListFrm['data' + $index].$error.required">
+                            <input class="form-control input-sm text-right" id="rendaLiquida_{{$index}}" name="rendaLiquida_{{$index}}" ng-model="reg.rendaLiquida" ui-number-mask="2" ng-valor-min="0.01" ng-required="true">
+                            <div class="label label-danger" ng-show="navegador.submetido && garantiaListFrm['rendaLiquida_' + $index].$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
+                            </div>
+                            <div class="label label-danger" ng-show="navegador.submetido && garantiaListFrm['rendaLiquida_' + $index].$error.ngValorMin">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Valor mínimo ultrapassado! (mín. R$ 0,01)
                             </div>
                         </td>
                     </tr>
                 </tbody>
-                <tfoot>
-                </tfoot>
             </table>
         </ng-form>
     </div>

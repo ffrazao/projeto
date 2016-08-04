@@ -82,14 +82,16 @@ public enum ParecerTecnicoCodigo {
 class ParecerTecnicoCodigoFluxoCaixa extends ParecerTecnicoCodigo.Relatorio {
 
 	ProjetoCreditoRuralParecerTecnico gerar(ProjetoCreditoRural projetoCreditoRural, ProjetoCreditoRuralParecerTecnico modelo) throws BoException {
-		StringBuilder conteudo = new StringBuilder("Ainda não projetado. Possíveis valores deste parecer\n\n");
+		StringBuilder conteudo = new StringBuilder("<h4 style=\"color: green; background-color: yellow;\"><u><b>Parecer ainda não definido. Valores captados no fluxo de caixa</b></u></h4><table width=\"100%\">");
+		conteudo.append("<tr><th>Item do Fluxo</th><th>Valor</th></tr>");
 		for (ProjetoCreditoRuralFluxoCaixa fc : projetoCreditoRural.getFluxoCaixaList()) {
 			BigDecimal total = new BigDecimal("0");
 			for (FluxoCaixaAno fca : fc.getFluxoCaixaAnoList()) {
 				total = total.add(fca.getValor());
 			}
-			conteudo.append(fc.getDescricao()).append(" = ").append(total).append("\n");
+			conteudo.append("<tr><td>").append(fc.getDescricao()).append("</td><td>").append(total).append("</td></tr>");
 		}
+		conteudo.append("</table>");
 		modelo.setConteudo(conteudo.toString());
 		return modelo;
 	}

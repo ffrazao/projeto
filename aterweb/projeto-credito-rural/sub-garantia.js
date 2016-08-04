@@ -33,7 +33,7 @@ angular.module(pNmModulo).controller(pNmController,
         return true;
     };
 
-    $scope.modalSelecinarPessoa = function (destino) {
+    var editarItem = function (destino, item) {
         // abrir a modal
         var modalInstance = $uibModal.open({
             animation: true,
@@ -46,49 +46,39 @@ angular.module(pNmModulo).controller(pNmController,
                 }
             }
         });
+        
         // processar retorno da modal
         modalInstance.result.then(function (resultado) {
+            init();
             // processar o retorno positivo da modal
-            var reg = null;
+            var reg = angular.extend({}, destino);
+
             if (resultado.selecao.tipo === 'U') {
                 reg = {
                     pessoa: {
                         id: resultado.selecao.item[0], 
                         nome: resultado.selecao.item[1],
                         pessoaTipo: resultado.selecao.item[3],
-                    },
+                    }
                 };
-                reg.inicio = new Date();
-                reg.ativo = 'S';
                 $scope.preparaClassePessoa(reg.pessoa);
-                if (!$scope.$parent.cadastro.registro.projetoCreditoRural[destino].length) {
-                    reg.responsavel = 'S';
-                }
-                reg = $scope.criarElemento($scope.$parent.cadastro.registro.projetoCreditoRural, destino, reg);
-                $scope.$parent.cadastro.registro.projetoCreditoRural[destino].push(reg);
+                $scope.cadastro.registro.projetoCreditoRural.garantiaList.push($scope.criarElemento($scope.cadastro.registro.projetoCreditoRural, 'garantiaList', reg));
             } else {
                 for (var i in resultado.selecao.items) {
                     reg = {
                         pessoa: {
-                            id: resultado.selecao.items[i][0], 
+                                id: resultado.selecao.items[i][0], 
                             nome: resultado.selecao.items[i][1],
                             pessoaTipo: resultado.selecao.items[i][3],
-                        },
+                        }
                     };
-                    reg.inicio = new Date();
-                    reg.ativo = 'S';
                     $scope.preparaClassePessoa(reg.pessoa);
-                    if (!$scope.$parent.cadastro.registro.projetoCreditoRural[destino].length) {
-                        reg.responsavel = 'S';
-                    }
-                    reg = $scope.criarElemento($scope.$parent.cadastro.registro.projetoCreditoRural, destino, reg);
-                    $scope.$parent.cadastro.registro.projetoCreditoRural[destino].push(reg);
+                    $scope.cadastro.registro.projetoCreditoRural.garantiaList.push($scope.criarElemento($scope.cadastro.registro.projetoCreditoRural, 'garantiaList', reg));
                 }
             }
             toastr.info('Operação realizada!', 'Informação');
         }, function () {
             // processar o retorno negativo da modal
-            
         });
     };
     // fim rotinas de apoio
@@ -101,7 +91,8 @@ angular.module(pNmModulo).controller(pNmController,
     };
     $scope.incluir = function() {
         init();
-        $scope.cadastro.registro.projetoCreditoRural.garantiaList.push($scope.criarElemento($scope.cadastro.registro.projetoCreditoRural, 'garantiaList', {}));
+        var item = {};
+        editarItem(null, item);
     };
     $scope.editar = function() {};
     $scope.excluir = function(nvg, dados) {
@@ -122,6 +113,37 @@ angular.module(pNmModulo).controller(pNmController,
         });
     };
     // fim das operaçoes atribuidas ao navagador
+
+    $scope.ordenaGarantia = function(garantia) {
+        var result = "";
+        if (garantia && garantia.participacao) {
+            result += UtilSrv.indiceDePorCampo($scope.cadastro.apoio.garantiaParticipacaoList, garantia.participacao, 'codigo').ordem;
+        }
+        if (garantia && garantia.pessoa) {
+            result += garantia.pessoa.nome;
+        }
+        return result;
+    };
+
+    $scope.$watch('cadastro.registro.projetoCreditoRural.garantiaList', function() {
+        if (!angular.isObject($scope.cadastro.apoio.garantiaParticipacao)) {
+            $scope.cadastro.apoio.garantiaParticipacao = {};
+        }
+        $scope.cadastro.apoio.garantiaParticipacao.totAvaliacao1 = 0;
+        $scope.cadastro.apoio.garantiaParticipacao.totAvaliacao2 = 0;
+        $scope.cadastro.apoio.garantiaParticipacao.totAvaliacaoGeral = 0;
+
+        angular.forEach($scope.cadastro.registro.projetoCreditoRural.garantiaList, function(v, k) {
+            if (v.participacao && v.rendaLiquida) {
+                if (v.participacao.indexOf('PA') >= 0) {
+                    $scope.cadastro.apoio.garantiaParticipacao.totAvaliacao1 += v.rendaLiquida;
+                } else {
+                    $scope.cadastro.apoio.garantiaParticipacao.totAvaliacao2 += v.rendaLiquida;
+                }
+            }
+        });
+        $scope.cadastro.apoio.garantiaParticipacao.totAvaliacaoGeral = $scope.cadastro.apoio.garantiaParticipacao.totAvaliacao1 + $scope.cadastro.apoio.garantiaParticipacao.totAvaliacao2;
+    }, true);
 
 } // fim função
 ]);

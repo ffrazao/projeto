@@ -28,7 +28,9 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.abrir = function() { 
         $scope.parecerTecnicoNvg.mudarEstado('ESPECIAL'); 
         // desabilitar a edição
+        $scope.parecerTecnicoNvg.botao('inclusao').exibir = function() {return false;};
         $scope.parecerTecnicoNvg.botao('edicao').exibir = function() {return false;};
+        $scope.parecerTecnicoNvg.botao('exclusao').exibir = function() {return false;};
     };
     $scope.incluir = function() {
         init();

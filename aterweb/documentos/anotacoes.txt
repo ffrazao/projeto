@@ -10,3 +10,6 @@ objet do googlemaps: http://angular-ui.github.io/angular-google-maps/#!/demo
 
 26/10/2015 - ngTagsInput
 http://mbenford.github.io/ngTagsInput/
+
+04/08/2016 - Componente TextArea com html 
+http://textangular.com/

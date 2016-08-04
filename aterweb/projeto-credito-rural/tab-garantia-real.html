@@ -1,7 +1,7 @@
 <div class="row">
     <div class="form-group col-sm-12">
         <label class="control-label">Garantias Reais</label>
-        <textarea class="form-control input-sm" id="garantiaReal" name="garantiaReal" ng-model="reg.garantiaReal" ng-required="false" rows="10"></textarea>
+        <text-angular id="garantiaReal" name="garantiaReal" ng-model="reg.garantiaReal"></text-angular>
         <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.garantiaReal.$error.required">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             Campo Obrigatório
