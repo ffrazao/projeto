@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural;
 
+import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaList;
+
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -14,13 +16,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FluxoCaixaCodigo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FluxoCaixaTipo;
 
 @Entity
 @Table(name = "projeto_credito_rural_fluxo_caixa", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
-public class ProjetoCreditoRuralFluxoCaixa extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class ProjetoCreditoRuralFluxoCaixa extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<ProjetoCreditoRuralFluxoCaixa> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -108,6 +111,21 @@ public class ProjetoCreditoRuralFluxoCaixa extends EntidadeBase implements _Chav
 	}
 
 	public void setTipo(FluxoCaixaTipo tipo) {
+		this.tipo = tipo;
+	}
+
+	@Override
+	public ProjetoCreditoRuralFluxoCaixa infoBasica() {
+		return new ProjetoCreditoRuralFluxoCaixa(this.codigo, this.descricao, infoBasicaList(this.fluxoCaixaAnoList), this.id, this.ordem, this.tipo);
+	}
+
+	public ProjetoCreditoRuralFluxoCaixa(FluxoCaixaCodigo codigo, String descricao, List<FluxoCaixaAno> fluxoCaixaAnoList, Integer id, Integer ordem, FluxoCaixaTipo tipo) {
+		super();
+		this.codigo = codigo;
+		this.descricao = descricao;
+		this.fluxoCaixaAnoList = fluxoCaixaAnoList;
+		this.id = id;
+		this.ordem = ordem;
 		this.tipo = tipo;
 	}
 

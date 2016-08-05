@@ -9,11 +9,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 
 @Entity
 @Table(name = "agente_financeiro_linha_credito", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
-public class AgenteFinanceiroLinhaCredito extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class AgenteFinanceiroLinhaCredito extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<AgenteFinanceiroLinhaCredito> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -39,7 +40,7 @@ public class AgenteFinanceiroLinhaCredito extends EntidadeBase implements _Chave
 
 	public AgenteFinanceiroLinhaCredito(Integer id, LinhaCredito linhaCredito) {
 		this.id = id;
-		this.linhaCredito = linhaCredito == null ? null : linhaCredito.infoBasica();
+		this.linhaCredito = linhaCredito;
 	}
 
 	public AgenteFinanceiro getAgenteFinanceiro() {
@@ -55,13 +56,15 @@ public class AgenteFinanceiroLinhaCredito extends EntidadeBase implements _Chave
 		return linhaCredito;
 	}
 
+	@Override
 	public AgenteFinanceiroLinhaCredito infoBasica() {
-		return new AgenteFinanceiroLinhaCredito(getId(), getLinhaCredito());
+		return new AgenteFinanceiroLinhaCredito(getId(), getLinhaCredito() == null ? null : getLinhaCredito().infoBasica());
 	}
 
 	public void setAgenteFinanceiro(AgenteFinanceiro agenteFinanceiro) {
 		this.agenteFinanceiro = agenteFinanceiro;
 	}
+
 	@Override
 	public void setId(Integer id) {
 		this.id = id;

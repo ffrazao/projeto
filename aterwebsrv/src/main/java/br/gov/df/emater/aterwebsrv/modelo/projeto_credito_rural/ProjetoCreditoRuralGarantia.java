@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural;
 
+import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaReg;
+
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
@@ -14,13 +16,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.GarantiaParticipacao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica;
 
 @Entity
 @Table(name = "projeto_credito_rural_garantia", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
-public class ProjetoCreditoRuralGarantia extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class ProjetoCreditoRuralGarantia extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<ProjetoCreditoRuralGarantia> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -50,6 +53,14 @@ public class ProjetoCreditoRuralGarantia extends EntidadeBase implements _ChaveP
 		super(id);
 	}
 
+	public ProjetoCreditoRuralGarantia(Integer id, GarantiaParticipacao participacao, PessoaFisica pessoaFisica, BigDecimal rendaLiquida) {
+		super();
+		this.id = id;
+		this.participacao = participacao;
+		this.pessoaFisica = pessoaFisica;
+		this.rendaLiquida = rendaLiquida;
+	}
+
 	@Override
 	public Integer getId() {
 		return id;
@@ -69,6 +80,11 @@ public class ProjetoCreditoRuralGarantia extends EntidadeBase implements _ChaveP
 
 	public BigDecimal getRendaLiquida() {
 		return rendaLiquida;
+	}
+
+	@Override
+	public ProjetoCreditoRuralGarantia infoBasica() {
+		return new ProjetoCreditoRuralGarantia(this.id, this.participacao, (PessoaFisica) infoBasicaReg(this.pessoaFisica), this.rendaLiquida);
 	}
 
 	@Override

@@ -1,5 +1,8 @@
 package br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural;
 
+import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaList;
+import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaReg;
+
 import java.util.List;
 
 import javax.persistence.Column;
@@ -18,6 +21,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Where;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.Atividade;
@@ -25,7 +29,7 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.ProjetoCreditoRuralStatus;
 
 @Entity
 @Table(name = "projeto_credito_rural", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
-public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<ProjetoCreditoRural> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -108,6 +112,32 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 		super(id);
 	}
 
+	public ProjetoCreditoRural(Integer id, String agencia, AgenteFinanceiro agenteFinanceiro, String garantiaReal, LinhaCredito linhaCredito, String numeroCedula, PublicoAlvo publicoAlvo, ProjetoCreditoRuralStatus status,
+			List<ProjetoCreditoRuralCronogramaPagamento> cronogramaPagamentoCusteioList, List<ProjetoCreditoRuralCronogramaPagamento> cronogramaPagamentoInvestimentoList, List<ProjetoCreditoRuralFinanciamento> custeioList, List<ProjetoCreditoRuralReceitaDespesa> despesaList,
+			List<ProjetoCreditoRuralFluxoCaixa> fluxoCaixaList, List<ProjetoCreditoRuralGarantia> garantiaList, List<ProjetoCreditoRuralFinanciamento> investimentoList, List<ProjetoCreditoRuralParecerTecnico> parecerTecnicoList,
+			List<ProjetoCreditoRuralPublicoAlvoPropriedadeRural> publicoAlvoPropriedadeRuralList, List<ProjetoCreditoRuralReceitaDespesa> receitaList, List<ProjetoCreditoRuralHistoricoReceita> trienioList) {
+		super();
+		this.agencia = agencia;
+		this.agenteFinanceiro = agenteFinanceiro;
+		this.cronogramaPagamentoCusteioList = cronogramaPagamentoCusteioList;
+		this.cronogramaPagamentoInvestimentoList = cronogramaPagamentoInvestimentoList;
+		this.custeioList = custeioList;
+		this.despesaList = despesaList;
+		this.fluxoCaixaList = fluxoCaixaList;
+		this.garantiaList = garantiaList;
+		this.garantiaReal = garantiaReal;
+		this.id = id;
+		this.investimentoList = investimentoList;
+		this.linhaCredito = linhaCredito;
+		this.numeroCedula = numeroCedula;
+		this.parecerTecnicoList = parecerTecnicoList;
+		this.publicoAlvo = publicoAlvo;
+		this.publicoAlvoPropriedadeRuralList = publicoAlvoPropriedadeRuralList;
+		this.receitaList = receitaList;
+		this.status = status;
+		this.trienioList = trienioList;
+	}
+
 	public String getAgencia() {
 		return agencia;
 	}
@@ -187,6 +217,13 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 
 	public List<ProjetoCreditoRuralHistoricoReceita> getTrienioList() {
 		return trienioList;
+	}
+
+	@Override
+	public ProjetoCreditoRural infoBasica() {
+		return new ProjetoCreditoRural(this.id, this.agencia, infoBasicaReg(this.agenteFinanceiro), this.garantiaReal, infoBasicaReg(this.linhaCredito), this.numeroCedula, infoBasicaReg(this.publicoAlvo), this.status, infoBasicaList(this.cronogramaPagamentoCusteioList),
+				infoBasicaList(this.cronogramaPagamentoInvestimentoList), infoBasicaList(this.custeioList), infoBasicaList(this.despesaList), infoBasicaList(this.fluxoCaixaList), infoBasicaList(this.garantiaList), infoBasicaList(this.investimentoList),
+				infoBasicaList(this.parecerTecnicoList), infoBasicaList(this.publicoAlvoPropriedadeRuralList), infoBasicaList(this.receitaList), infoBasicaList(this.trienioList));
 	}
 
 	public void setAgencia(String agencia) {

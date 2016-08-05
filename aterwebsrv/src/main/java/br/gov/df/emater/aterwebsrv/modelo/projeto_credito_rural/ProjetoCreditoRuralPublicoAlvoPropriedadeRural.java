@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural;
 
+import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaReg;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,12 +11,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
 
 @Entity
 @Table(name = "projeto_credito_rural_publico_alvo_propriedade_rural", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
-public class ProjetoCreditoRuralPublicoAlvoPropriedadeRural extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class ProjetoCreditoRuralPublicoAlvoPropriedadeRural extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<ProjetoCreditoRuralPublicoAlvoPropriedadeRural> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -38,6 +41,12 @@ public class ProjetoCreditoRuralPublicoAlvoPropriedadeRural extends EntidadeBase
 		super(id);
 	}
 
+	public ProjetoCreditoRuralPublicoAlvoPropriedadeRural(Integer id, PublicoAlvoPropriedadeRural publicoAlvoPropriedadeRural) {
+		super();
+		this.id = id;
+		this.publicoAlvoPropriedadeRural = publicoAlvoPropriedadeRural;
+	}
+
 	@Override
 	public Integer getId() {
 		return id;
@@ -49,6 +58,11 @@ public class ProjetoCreditoRuralPublicoAlvoPropriedadeRural extends EntidadeBase
 
 	public PublicoAlvoPropriedadeRural getPublicoAlvoPropriedadeRural() {
 		return publicoAlvoPropriedadeRural;
+	}
+
+	@Override
+	public ProjetoCreditoRuralPublicoAlvoPropriedadeRural infoBasica() {
+		return new ProjetoCreditoRuralPublicoAlvoPropriedadeRural(this.id, infoBasicaReg(this.publicoAlvoPropriedadeRural));
 	}
 
 	@Override

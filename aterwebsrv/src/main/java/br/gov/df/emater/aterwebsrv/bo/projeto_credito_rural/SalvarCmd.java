@@ -1,15 +1,15 @@
 package br.gov.df.emater.aterwebsrv.bo.projeto_credito_rural;
 
 import java.io.Serializable;
-import java.lang.reflect.Method;
-import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.reflect.MethodUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
+import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.bo._SalvarCmd;
 import br.gov.df.emater.aterwebsrv.dao.projeto_credito_rural.CronogramaPagamentoDao;
@@ -79,7 +79,6 @@ public class SalvarCmd extends _SalvarCmd {
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		Atividade atividade = (Atividade) contexto.getRequisicao();
-		// atividade.setId((Integer) contexto.getResposta());
 
 		ProjetoCreditoRural result = atividade.getProjetoCreditoRural();
 		if (result == null) {
@@ -89,28 +88,56 @@ public class SalvarCmd extends _SalvarCmd {
 		// atualizar o campo de ligação
 		result.setAtividade(atividade);
 
+		// limpar os id das tabelas dependentes
+		if (!CollectionUtils.isEmpty(result.getCronogramaPagamentoCusteioList())) {
+			limparChavePrimaria(result.getCronogramaPagamentoCusteioList());
+			result.getCronogramaPagamentoCusteioList().forEach((c) -> {
+				limparChavePrimaria(c.getCronogramaPagamentoList());
+			});
+		}
+		if (!CollectionUtils.isEmpty(result.getCronogramaPagamentoInvestimentoList())) {
+			limparChavePrimaria(result.getCronogramaPagamentoInvestimentoList());
+			result.getCronogramaPagamentoInvestimentoList().forEach((c) -> {
+				limparChavePrimaria(c.getCronogramaPagamentoList());
+			});
+		}
+		limparChavePrimaria(result.getCusteioList());
+		limparChavePrimaria(result.getInvestimentoList());
+		if (!CollectionUtils.isEmpty(result.getFluxoCaixaList())) {
+			limparChavePrimaria(result.getFluxoCaixaList());
+			result.getFluxoCaixaList().forEach((c) -> {
+				limparChavePrimaria(c.getFluxoCaixaAnoList());
+			});
+		}
+		limparChavePrimaria(result.getGarantiaList());
+		limparChavePrimaria(result.getTrienioList());
+		limparChavePrimaria(result.getParecerTecnicoList());
+		limparChavePrimaria(result.getPublicoAlvoPropriedadeRuralList());
+		limparChavePrimaria(result.getDespesaList());
+		limparChavePrimaria(result.getReceitaList());
+
 		// salvar a tabela principal
 		result = dao.save(result);
 
 		if (!CollectionUtils.isEmpty(result.getCronogramaPagamentoCusteioList())) {
-			result.getCronogramaPagamentoCusteioList().forEach((custeio)-> custeio.setTipo(FinanciamentoTipo.C));
+			result.getCronogramaPagamentoCusteioList().forEach((custeio) -> custeio.setTipo(FinanciamentoTipo.C));
 		}
 		salvarTabelaDependente(result, "cronogramaPagamentoCusteioList", projetoCreditoRuralCronogramaPagamentoDao, ProjetoCreditoRuralCronogramaPagamento.class, result.getCronogramaPagamentoCusteioList());
 		salvarPagamentos(result.getCronogramaPagamentoCusteioList());
 
 		if (!CollectionUtils.isEmpty(result.getCronogramaPagamentoInvestimentoList())) {
-			result.getCronogramaPagamentoInvestimentoList().forEach((investimento)-> investimento.setTipo(FinanciamentoTipo.I));
+			result.getCronogramaPagamentoInvestimentoList().forEach((investimento) -> investimento.setTipo(FinanciamentoTipo.I));
 		}
 		salvarTabelaDependente(result, "cronogramaPagamentoInvestimentoList", projetoCreditoRuralCronogramaPagamentoDao, ProjetoCreditoRuralCronogramaPagamento.class, result.getCronogramaPagamentoInvestimentoList());
 		salvarPagamentos(result.getCronogramaPagamentoInvestimentoList());
 
 		if (!CollectionUtils.isEmpty(result.getCusteioList())) {
-			result.getCusteioList().forEach((custeio)-> custeio.setTipo(FinanciamentoTipo.C));
+			result.getCusteioList().forEach((custeio) -> custeio.setTipo(FinanciamentoTipo.C));
 		}
 		salvarTabelaDependente(result, "custeioList", projetoCreditoRuralFinanciamentoDao, ProjetoCreditoRuralFinanciamento.class, result.getCusteioList());
 
 		if (!CollectionUtils.isEmpty(result.getInvestimentoList())) {
-			result.getInvestimentoList().forEach((investimento)-> investimento.setTipo(FinanciamentoTipo.I));
+			result.getInvestimentoList().forEach((investimento) -> investimento.setTipo(FinanciamentoTipo.I));
 		}
 		salvarTabelaDependente(result, "investimentoList", projetoCreditoRuralFinanciamentoDao, ProjetoCreditoRuralFinanciamento.class, result.getInvestimentoList());
 
@@ -127,15 +154,16 @@ public class SalvarCmd extends _SalvarCmd {
 		result.getParecerTecnicoList().forEach((parecer) -> parecer.setUsuario(parecer.getUsuario() == null ? null : getUsuario(parecer.getUsuario().getUsername())));
 		salvarTabelaDependente(result, "parecerTecnicoList", projetoCreditoRuralParecerTecnicoDao, ProjetoCreditoRuralParecerTecnico.class, result.getParecerTecnicoList());
 
+		recuperarIdExcluirInexistentes(result, ProjetoCreditoRuralPublicoAlvoPropriedadeRural.class, projetoCreditoRuralPublicoAlvoPropriedadeRuralDao, result.getPublicoAlvoPropriedadeRuralList(), "getPublicoAlvoPropriedadeRural");
 		salvarTabelaDependente(result, "publicoAlvoPropriedadeRuralList", projetoCreditoRuralPublicoAlvoPropriedadeRuralDao, ProjetoCreditoRuralPublicoAlvoPropriedadeRural.class, result.getPublicoAlvoPropriedadeRuralList());
 
 		if (!CollectionUtils.isEmpty(result.getDespesaList())) {
-			result.getDespesaList().forEach((despesa)-> despesa.setTipo(FluxoCaixaTipo.D));
+			result.getDespesaList().forEach((despesa) -> despesa.setTipo(FluxoCaixaTipo.D));
 		}
 		salvarTabelaDependente(result, "despesaList", projetoCreditoRuralReceitaDespesaDao, ProjetoCreditoRuralReceitaDespesa.class, result.getDespesaList());
 
 		if (!CollectionUtils.isEmpty(result.getReceitaList())) {
-			result.getReceitaList().forEach((receita)-> receita.setTipo(FluxoCaixaTipo.R));
+			result.getReceitaList().forEach((receita) -> receita.setTipo(FluxoCaixaTipo.R));
 		}
 		salvarTabelaDependente(result, "receitaList", projetoCreditoRuralReceitaDespesaDao, ProjetoCreditoRuralReceitaDespesa.class, result.getReceitaList());
 
@@ -145,6 +173,42 @@ public class SalvarCmd extends _SalvarCmd {
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> void recuperarIdExcluirInexistentes(ProjetoCreditoRural projetoCreditoRural, Class<T> classe, JpaRepository<T, Integer> dao, List<T> lista, String nomeCampoCompara) throws BoException {
+		List<T> salvoList = null;
+		try {
+			salvoList = (List<T>) MethodUtils.invokeMethod(dao, "findAllByProjetoCreditoRural", projetoCreditoRural);
+		} catch (Exception e) {
+			throw new BoException(e);
+		}
+		// recuperar IDs já salvos
+		if (!CollectionUtils.isEmpty(salvoList)) {
+			for (T propSalvo : salvoList) {
+				boolean encontrou = false;
+				if (!CollectionUtils.isEmpty(lista)) {
+					for (T prop : lista) {
+						try {
+							// comparar chaves primárias dos campos de
+							// comparação
+							if (((_ChavePrimaria<Serializable>) ((T) MethodUtils.invokeMethod(propSalvo, nomeCampoCompara))).getId().equals(((_ChavePrimaria<Serializable>) ((T) MethodUtils.invokeMethod(prop, nomeCampoCompara))).getId())) {
+								// recuperar a chave primaria
+								((_ChavePrimaria<Serializable>) prop).setId(((_ChavePrimaria<Serializable>) propSalvo).getId());
+								encontrou = true;
+								break;
+							}
+						} catch (Exception e) {
+							throw new BoException(e);
+						}
+					}
+				}
+				// excluir caso ID não encontrado
+				if (!encontrou) {
+					dao.delete(propSalvo);
+				}
+			}
+		}
+	}
+
 	private void salvarPagamentos(List<ProjetoCreditoRuralCronogramaPagamento> lista) {
 		lista.forEach((cronograma) -> cronograma.getCronogramaPagamentoList().forEach((pagto) -> {
 			pagto.setProjetoCreditoRuralCronogramaPagamento(cronograma);
@@ -152,25 +216,19 @@ public class SalvarCmd extends _SalvarCmd {
 		}));
 	}
 
-	@SuppressWarnings("unchecked")
-	private <T> void salvarTabelaDependente(ProjetoCreditoRural projetoCreditoRural, String nomeLista, JpaRepository<T, Integer> dao, Class<T> classe, List<T> lista) {
-		// limpar os id das tabelas dependentes
-		limparChavePrimaria((Collection<? extends _ChavePrimaria<? extends Serializable>>) lista);
-
+	private <T> void salvarTabelaDependente(ProjetoCreditoRural projetoCreditoRural, String nomeLista, JpaRepository<T, Integer> dao, Class<T> classe, List<T> lista) throws BoException {
 		// excluir registros
 		excluirRegistros(projetoCreditoRural, nomeLista, dao);
 		if (!CollectionUtils.isEmpty(lista)) {
 			// salvar registros filhos
-			lista.forEach((registro) -> {
-				Method metodo;
+			for (T registro : lista) {
 				try {
-					metodo = registro.getClass().getMethod("setProjetoCreditoRural", projetoCreditoRural.getClass());
-					metodo.invoke(registro, projetoCreditoRural);
+					MethodUtils.invokeMethod(registro, "setProjetoCreditoRural", projetoCreditoRural);
 				} catch (Exception e) {
-					System.exit(-1);
+					throw new BoException(e);
 				}
-				dao.save((T) registro);
-			});
+				dao.save(registro);
+			}
 		}
 	}
 }

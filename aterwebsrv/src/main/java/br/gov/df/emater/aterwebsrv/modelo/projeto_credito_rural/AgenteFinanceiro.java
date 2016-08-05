@@ -1,6 +1,8 @@
 package br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural;
 
-import java.util.ArrayList;
+import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaList;
+import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaReg;
+
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -44,12 +46,8 @@ public class AgenteFinanceiro extends EntidadeBase implements _ChavePrimaria<Int
 
 	public AgenteFinanceiro(Integer id, PessoaJuridica pessoaJuridica, List<AgenteFinanceiroLinhaCredito> linhaCreditoList) {
 		this.id = id;
-		this.pessoaJuridica = pessoaJuridica == null ? null : (PessoaJuridica) pessoaJuridica.infoBasica();
-		List<AgenteFinanceiroLinhaCredito> lista = new ArrayList<>();
-		if (linhaCreditoList != null) {
-			linhaCreditoList.forEach((lc) -> lista.add(lc.infoBasica()));
-		}
-		this.linhaCreditoList = lista;
+		this.pessoaJuridica = pessoaJuridica;
+		this.linhaCreditoList = linhaCreditoList;
 	}
 
 	@Override
@@ -66,6 +64,11 @@ public class AgenteFinanceiro extends EntidadeBase implements _ChavePrimaria<Int
 	}
 
 	@Override
+	public AgenteFinanceiro infoBasica() {
+		return new AgenteFinanceiro(getId(), (PessoaJuridica) infoBasicaReg(getPessoaJuridica()), infoBasicaList(getLinhaCreditoList()));
+	}
+
+	@Override
 	public void setId(Integer id) {
 		this.id = id;
 	}
@@ -76,11 +79,6 @@ public class AgenteFinanceiro extends EntidadeBase implements _ChavePrimaria<Int
 
 	public void setPessoaJuridica(PessoaJuridica pessoaJuridica) {
 		this.pessoaJuridica = pessoaJuridica;
-	}
-
-	@Override
-	public AgenteFinanceiro infoBasica() {
-		return new AgenteFinanceiro(getId(), getPessoaJuridica(), getLinhaCreditoList());
 	}
 
 }

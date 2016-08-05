@@ -12,11 +12,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 
 @Entity
 @Table(name = "projeto_credito_rural_historico_receita", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
-public class ProjetoCreditoRuralHistoricoReceita extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class ProjetoCreditoRuralHistoricoReceita extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<ProjetoCreditoRuralHistoricoReceita> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -47,6 +48,15 @@ public class ProjetoCreditoRuralHistoricoReceita extends EntidadeBase implements
 		super(id);
 	}
 
+	public ProjetoCreditoRuralHistoricoReceita(String descricao, Integer id, BigDecimal receitaAno1, BigDecimal receitaAno2, BigDecimal receitaAno3) {
+		super();
+		this.descricao = descricao;
+		this.id = id;
+		this.receitaAno1 = receitaAno1;
+		this.receitaAno2 = receitaAno2;
+		this.receitaAno3 = receitaAno3;
+	}
+
 	public String getDescricao() {
 		return descricao;
 	}
@@ -70,6 +80,11 @@ public class ProjetoCreditoRuralHistoricoReceita extends EntidadeBase implements
 
 	public BigDecimal getReceitaAno3() {
 		return receitaAno3;
+	}
+
+	@Override
+	public ProjetoCreditoRuralHistoricoReceita infoBasica() {
+		return new ProjetoCreditoRuralHistoricoReceita(this.descricao, this.id, this.receitaAno1, this.receitaAno2, this.receitaAno3);
 	}
 
 	public void setDescricao(String descricao) {

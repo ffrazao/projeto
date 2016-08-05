@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural;
 
+import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaReg;
+
 import java.util.Calendar;
 
 import javax.persistence.Entity;
@@ -21,6 +23,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.ParecerTecnicoCodigo;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
@@ -29,7 +32,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 
 @Entity
 @Table(name = "projeto_credito_rural_parecer_tecnico", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
-public class ProjetoCreditoRuralParecerTecnico extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class ProjetoCreditoRuralParecerTecnico extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<ProjetoCreditoRuralParecerTecnico> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -69,6 +72,17 @@ public class ProjetoCreditoRuralParecerTecnico extends EntidadeBase implements _
 		super(id);
 	}
 
+	public ProjetoCreditoRuralParecerTecnico(ParecerTecnicoCodigo codigo, String conteudo, Calendar data, String descricao, Integer id, Integer ordem, Usuario usuario) {
+		super();
+		this.codigo = codigo;
+		this.conteudo = conteudo;
+		this.data = data;
+		this.descricao = descricao;
+		this.id = id;
+		this.ordem = ordem;
+		this.usuario = usuario;
+	}
+
 	public ParecerTecnicoCodigo getCodigo() {
 		return codigo;
 	}
@@ -100,6 +114,11 @@ public class ProjetoCreditoRuralParecerTecnico extends EntidadeBase implements _
 
 	public Usuario getUsuario() {
 		return usuario;
+	}
+
+	@Override
+	public ProjetoCreditoRuralParecerTecnico infoBasica() {
+		return new ProjetoCreditoRuralParecerTecnico(this.codigo, this.conteudo, this.data, this.descricao, this.id, this.ordem, infoBasicaReg(this.usuario));
 	}
 
 	public void setCodigo(ParecerTecnicoCodigo codigo) {

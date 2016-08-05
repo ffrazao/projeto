@@ -12,11 +12,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 
 @Entity
 @Table(name = "fluxo_caixa_ano", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
-public class FluxoCaixaAno extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class FluxoCaixaAno extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<FluxoCaixaAno> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -41,6 +42,13 @@ public class FluxoCaixaAno extends EntidadeBase implements _ChavePrimaria<Intege
 		super(id);
 	}
 
+	public FluxoCaixaAno(Integer ano, Integer id, BigDecimal valor) {
+		super();
+		this.ano = ano;
+		this.id = id;
+		this.valor = valor;
+	}
+
 	public Integer getAno() {
 		return ano;
 	}
@@ -55,6 +63,11 @@ public class FluxoCaixaAno extends EntidadeBase implements _ChavePrimaria<Intege
 
 	public BigDecimal getValor() {
 		return valor;
+	}
+
+	@Override
+	public FluxoCaixaAno infoBasica() {
+		return new FluxoCaixaAno(this.ano, this.id, this.valor);
 	}
 
 	public void setAno(Integer ano) {

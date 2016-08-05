@@ -63,21 +63,17 @@ angular.module(pNmModulo).controller(pNmController,
         $scope.cadastro.apoio.trienio.ano2Total = 0;
         $scope.cadastro.apoio.trienio.ano1Total = 0;
 
-        if (!$scope.cadastro.registro.projetoCreditoRural || $scope.cadastro.registro.projetoCreditoRural.trienioList) {
+        if (!$scope.cadastro.registro.projetoCreditoRural || !$scope.cadastro.registro.projetoCreditoRural.trienioList) {
             return;
         }
-        var i;
-        angular.forEach($scope.cadastro.registro.projetoCreditoRural.trienioList, function(v, k) {
+        var i, total = 0, item;
+        angular.forEach($scope.cadastro.registro.projetoCreditoRural.trienioList, function(v) {
             for (i = 1; i <= 3; i++) {
-                $scope.cadastro.apoio.trienio['ano' + i + 'Total'] += v['receitaAno' + i] ? v['receitaAno' + i] : 0;
+                item = v['receitaAno' + i] ? v['receitaAno' + i] : 0;
+                $scope.cadastro.apoio.trienio['ano' + i + 'Total'] += item;
+                total += item;
             }
         });
-        var total = 0;
-        for (i = 1; i <= 3; i++) {
-            if ($scope.cadastro.apoio.trienio['ano' + i + 'Total']) {
-                total += $scope.cadastro.apoio.trienio['ano' + i + 'Total'];
-            }
-        }
         $scope.cadastro.apoio.trienio.mediaGeral = total / 3;
     }, true);
 

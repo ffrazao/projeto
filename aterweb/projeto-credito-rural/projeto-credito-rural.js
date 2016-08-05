@@ -145,7 +145,9 @@
 
             // inicio ações especiais
             $scope.propriedadeRuralComparador = function(a, b) {
-                return a.id === b.id;
+                if (a && a.publicoAlvoPropriedadeRural && b && b.publicoAlvoPropriedadeRural) {
+                    return a.publicoAlvoPropriedadeRural.id === b.publicoAlvoPropriedadeRural.id;
+                }
             };
 
             $scope.repetir = function(lista, nomeLista, item, limpar) {

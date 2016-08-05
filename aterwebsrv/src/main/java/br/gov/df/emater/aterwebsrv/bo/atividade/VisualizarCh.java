@@ -11,10 +11,11 @@ import br.gov.df.emater.aterwebsrv.bo.seguranca.LogCmd;
 public class VisualizarCh extends _Cadeia {
 
 	@Autowired
-	public VisualizarCh(AutenticarUsuarioCmd c1, VisualizarCmd c2, LogCmd c3) {
+	public VisualizarCh(AutenticarUsuarioCmd c1, VisualizarCmd c2, LogCmd c3, VisualizarComplementoCh c4) {
 		super.addCommand(c1);
 		super.addCommand(c2);
 		super.addCommand(c3);
+		super.addCommand(c4);
 	}
 
 }

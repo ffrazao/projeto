@@ -14,12 +14,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FinanciamentoTipo;
 
 @Entity
 @Table(name = "projeto_credito_rural_financiamento", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
-public class ProjetoCreditoRuralFinanciamento extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class ProjetoCreditoRuralFinanciamento extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<ProjetoCreditoRuralFinanciamento> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -28,20 +29,12 @@ public class ProjetoCreditoRuralFinanciamento extends EntidadeBase implements _C
 	@Column(name = "epoca_liberacao")
 	private String epocaLiberacao;
 
-	@Column(name = "nome_lote")
-	private String nomeLote;
-
-	public String getNomeLote() {
-		return nomeLote;
-	}
-
-	public void setNomeLote(String nomeLote) {
-		this.nomeLote = nomeLote;
-	}
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
+
+	@Column(name = "nome_lote")
+	private String nomeLote;
 
 	@Column(name = "percentual_proprio")
 	private BigDecimal percentualProprio;
@@ -78,6 +71,23 @@ public class ProjetoCreditoRuralFinanciamento extends EntidadeBase implements _C
 		super(id);
 	}
 
+	public ProjetoCreditoRuralFinanciamento(String descricao, String epocaLiberacao, String nomeLote, Integer id, BigDecimal percentualProprio, BigDecimal quantidade, FinanciamentoTipo tipo, String unidade, BigDecimal valorFinanciado, BigDecimal valorOrcado,
+			BigDecimal valorProprio, BigDecimal valorUnitario) {
+		super();
+		this.descricao = descricao;
+		this.epocaLiberacao = epocaLiberacao;
+		this.nomeLote = nomeLote;
+		this.id = id;
+		this.percentualProprio = percentualProprio;
+		this.quantidade = quantidade;
+		this.tipo = tipo;
+		this.unidade = unidade;
+		this.valorFinanciado = valorFinanciado;
+		this.valorOrcado = valorOrcado;
+		this.valorProprio = valorProprio;
+		this.valorUnitario = valorUnitario;
+	}
+
 	public String getDescricao() {
 		return descricao;
 	}
@@ -89,6 +99,10 @@ public class ProjetoCreditoRuralFinanciamento extends EntidadeBase implements _C
 	@Override
 	public Integer getId() {
 		return id;
+	}
+
+	public String getNomeLote() {
+		return nomeLote;
 	}
 
 	public BigDecimal getPercentualProprio() {
@@ -127,6 +141,11 @@ public class ProjetoCreditoRuralFinanciamento extends EntidadeBase implements _C
 		return valorUnitario;
 	}
 
+	@Override
+	public ProjetoCreditoRuralFinanciamento infoBasica() {
+		return new ProjetoCreditoRuralFinanciamento(this.descricao, this.epocaLiberacao, this.nomeLote, this.id, this.percentualProprio, this.quantidade, this.tipo, this.unidade, this.valorFinanciado, this.valorOrcado, this.valorProprio, this.valorUnitario);
+	}
+
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
@@ -138,6 +157,10 @@ public class ProjetoCreditoRuralFinanciamento extends EntidadeBase implements _C
 	@Override
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public void setNomeLote(String nomeLote) {
+		this.nomeLote = nomeLote;
 	}
 
 	public void setPercentualProprio(BigDecimal percentualProprio) {

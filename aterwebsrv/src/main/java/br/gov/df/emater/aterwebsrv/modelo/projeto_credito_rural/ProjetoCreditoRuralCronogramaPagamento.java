@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural;
 
+import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaList;
+
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
@@ -24,6 +26,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FinanciamentoTipo;
@@ -35,7 +38,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerDataHora;
 
 @Entity
 @Table(name = "projeto_credito_rural_cronograma_pagamento", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
-public class ProjetoCreditoRuralCronogramaPagamento extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class ProjetoCreditoRuralCronogramaPagamento extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<ProjetoCreditoRuralCronogramaPagamento> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -114,6 +117,26 @@ public class ProjetoCreditoRuralCronogramaPagamento extends EntidadeBase impleme
 		super(id);
 	}
 
+	public ProjetoCreditoRuralCronogramaPagamento(List<CronogramaPagamento> cronogramaPagamentoList, Calendar dataCalculo, Calendar dataContratacao, Calendar dataFinalCarencia, Calendar dataPrimeiraParcela, Integer id, String nomeLote,
+			ProjetoCreditoRuralPeriodicidade periodicidade, Integer quantidadeParcelas, Confirmacao selecionado, BigDecimal taxaJurosAnual, FinanciamentoTipo tipo, BigDecimal valorFinanciamento, BigDecimal valorTotalJuros, BigDecimal valorTotalPrestacoes) {
+		super();
+		this.cronogramaPagamentoList = cronogramaPagamentoList;
+		this.dataCalculo = dataCalculo;
+		this.dataContratacao = dataContratacao;
+		this.dataFinalCarencia = dataFinalCarencia;
+		this.dataPrimeiraParcela = dataPrimeiraParcela;
+		this.id = id;
+		this.nomeLote = nomeLote;
+		this.periodicidade = periodicidade;
+		this.quantidadeParcelas = quantidadeParcelas;
+		this.selecionado = selecionado;
+		this.taxaJurosAnual = taxaJurosAnual;
+		this.tipo = tipo;
+		this.valorFinanciamento = valorFinanciamento;
+		this.valorTotalJuros = valorTotalJuros;
+		this.valorTotalPrestacoes = valorTotalPrestacoes;
+	}
+
 	public List<CronogramaPagamento> getCronogramaPagamentoList() {
 		return cronogramaPagamentoList;
 	}
@@ -176,6 +199,12 @@ public class ProjetoCreditoRuralCronogramaPagamento extends EntidadeBase impleme
 
 	public BigDecimal getValorTotalPrestacoes() {
 		return valorTotalPrestacoes;
+	}
+
+	@Override
+	public ProjetoCreditoRuralCronogramaPagamento infoBasica() {
+		return new ProjetoCreditoRuralCronogramaPagamento(infoBasicaList(this.cronogramaPagamentoList), this.dataCalculo, this.dataContratacao, this.dataFinalCarencia, this.dataPrimeiraParcela, this.id, this.nomeLote, this.periodicidade, this.quantidadeParcelas, this.selecionado,
+				this.taxaJurosAnual, this.tipo, this.valorFinanciamento, this.valorTotalJuros, this.valorTotalPrestacoes);
 	}
 
 	public void setCronogramaPagamentoList(List<CronogramaPagamento> cronogramaPagamentoList) {

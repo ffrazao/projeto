@@ -196,7 +196,7 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 
 	@Override
 	public PublicoAlvo infoBasica() {
-		return new PublicoAlvo(getId(), getPessoa().infoBasica());
+		return new PublicoAlvo(getId(), getPessoa() == null ? null : getPessoa().infoBasica());
 	}
 
 	public void setCarteiraProdutorEmissao(Calendar carteiraProdutorEmissao) {

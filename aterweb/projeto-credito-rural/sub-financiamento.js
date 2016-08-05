@@ -82,7 +82,7 @@ angular.module(pNmModulo).controller(pNmController,
             $scope.cadastro.apoio.financiamento[lista].valorProprioTotal = 0;
             $scope.cadastro.apoio.financiamento[lista].valorFinanciadoTotal = 0;
 
-            if ($scope.cadastro.registro.projetoCreditoRural[lista]) {
+            if ($scope.cadastro.registro.projetoCreditoRural && $scope.cadastro.registro.projetoCreditoRural[lista]) {
                 var i, v;
                 for (i = 0; i < $scope.cadastro.registro.projetoCreditoRural[lista].length; i++) {
                     v = angular.copy($scope.cadastro.registro.projetoCreditoRural[lista][i]);

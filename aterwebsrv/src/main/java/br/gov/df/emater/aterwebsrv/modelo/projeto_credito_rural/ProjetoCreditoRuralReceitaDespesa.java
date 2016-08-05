@@ -14,12 +14,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FluxoCaixaTipo;
 
 @Entity
 @Table(name = "projeto_credito_rural_receita_despesa", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
-public class ProjetoCreditoRuralReceitaDespesa extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class ProjetoCreditoRuralReceitaDespesa extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<ProjetoCreditoRuralReceitaDespesa> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -57,6 +58,18 @@ public class ProjetoCreditoRuralReceitaDespesa extends EntidadeBase implements _
 		super(id);
 	}
 
+	public ProjetoCreditoRuralReceitaDespesa(Integer ano, String descricao, Integer id, BigDecimal quantidade, FluxoCaixaTipo tipo, String unidade, BigDecimal valorTotal, BigDecimal valorUnitario) {
+		super();
+		this.ano = ano;
+		this.descricao = descricao;
+		this.id = id;
+		this.quantidade = quantidade;
+		this.tipo = tipo;
+		this.unidade = unidade;
+		this.valorTotal = valorTotal;
+		this.valorUnitario = valorUnitario;
+	}
+
 	public Integer getAno() {
 		return ano;
 	}
@@ -92,6 +105,11 @@ public class ProjetoCreditoRuralReceitaDespesa extends EntidadeBase implements _
 
 	public BigDecimal getValorUnitario() {
 		return valorUnitario;
+	}
+
+	@Override
+	public ProjetoCreditoRuralReceitaDespesa infoBasica() {
+		return new ProjetoCreditoRuralReceitaDespesa(this.ano, this.descricao, this.id, this.quantidade, this.tipo, this.unidade, this.valorTotal, this.valorUnitario);
 	}
 
 	public void setAno(Integer ano) {

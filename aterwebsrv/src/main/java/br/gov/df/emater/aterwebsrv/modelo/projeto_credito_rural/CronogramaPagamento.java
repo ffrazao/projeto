@@ -12,11 +12,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 
 @Entity
 @Table(name = "cronograma_pagamento", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
-public class CronogramaPagamento extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class CronogramaPagamento extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<CronogramaPagamento> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -51,6 +52,20 @@ public class CronogramaPagamento extends EntidadeBase implements _ChavePrimaria<
 
 	public CronogramaPagamento() {
 		super();
+	}
+
+	public CronogramaPagamento(BigDecimal amortizacao, Integer ano, Integer epoca, Integer id, BigDecimal juros, Integer parcela, BigDecimal prestacao, BigDecimal saldoDevedorFinal, BigDecimal saldoDevedorInicial, BigDecimal taxaJuros) {
+		super();
+		this.amortizacao = amortizacao;
+		this.ano = ano;
+		this.epoca = epoca;
+		this.id = id;
+		this.juros = juros;
+		this.parcela = parcela;
+		this.prestacao = prestacao;
+		this.saldoDevedorFinal = saldoDevedorFinal;
+		this.saldoDevedorInicial = saldoDevedorInicial;
+		this.taxaJuros = taxaJuros;
 	}
 
 	public CronogramaPagamento(Integer id) {
@@ -100,6 +115,11 @@ public class CronogramaPagamento extends EntidadeBase implements _ChavePrimaria<
 
 	public BigDecimal getTaxaJuros() {
 		return taxaJuros;
+	}
+
+	@Override
+	public CronogramaPagamento infoBasica() {
+		return new CronogramaPagamento(this.amortizacao, this.ano, this.epoca, this.id, this.juros, this.parcela, this.prestacao, this.saldoDevedorFinal, this.saldoDevedorInicial, this.taxaJuros);
 	}
 
 	public void setAmortizacao(BigDecimal amortizacao) {
