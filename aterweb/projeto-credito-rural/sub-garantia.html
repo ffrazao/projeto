@@ -35,27 +35,20 @@
                         <th>#</th>
                         <th>Pessoa</th>
                         <th>Participação</th>
-                        <th>Profissão</th>
                         <th class="td-exibe-valor">Renda Líquida Anual (R$)</th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <th colspan="3" class="text-right">Total Primeiro</th>
+                        <th colspan="4" class="text-right">Total Primeiro</th>
                         <td class="text-right">{{cadastro.apoio.garantiaParticipacao.totAvaliacao1 | number: 2}}</td>
                     </tr>
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <th colspan="3" class="text-right">Total Segundo</th>
+                        <th colspan="4" class="text-right">Total Segundo</th>
                         <td class="text-right">{{cadastro.apoio.garantiaParticipacao.totAvaliacao2 | number: 2}}</td>
                     </tr>
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <th colspan="3" class="text-right">Total Geral</th>
+                        <th colspan="4" class="text-right">Total Geral</th>
                         <td class="text-right">{{cadastro.apoio.garantiaParticipacao.totAvaliacaoGeral | number: 2}}</td>
                     </tr>
                 </tfoot>
@@ -69,20 +62,12 @@
                             {{$index + 1 + ((garantiaNvg.paginaAtual-1) * garantiaNvg.tamanhoPagina)}}
                         </td>
                         <td>
-                            <a ng-click="modalVerPessoa(reg.pessoa.id)">{{reg.pessoa.nome}}</a>
+                            <a ng-click="modalVerPessoa(reg.pessoaFisica.id)">{{reg.pessoaFisica.nome}}</a>
                         </td>
                         <td>
                             <select class="form-control input-sm" id="participacao{{$index}}" name="participacao{{$index}}" ng-model="reg.participacao" ng-required="true" ng-options="item.codigo as item.descricao for item in cadastro.apoio.garantiaParticipacaoList">
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && garantiaListFrm['participacao' + $index].$error.required">
-                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                                Campo Obrigatório
-                            </div>
-                        </td>
-                        <td>
-                            <select class="form-control input-sm" id="profissao{{$index}}" name="profissao{{$index}}" ng-model="reg.profissao" ng-required="true" ng-options="item as item.nome for item in cadastro.apoio.profissaoList track by item.id">
-                            </select>
-                            <div class="label label-danger" ng-show="navegador.submetido && garantiaListFrm['profissao' + $index].$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>

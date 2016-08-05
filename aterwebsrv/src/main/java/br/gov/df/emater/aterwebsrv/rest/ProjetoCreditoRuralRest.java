@@ -33,11 +33,6 @@ public class ProjetoCreditoRuralRest {
 		return new Resposta(facadeBo.projetoCreditoRuralCalcularFluxoCaixa(usuario, projetoCredito).getResposta());
 	}
 
-	@RequestMapping(value = "/editar", method = RequestMethod.POST)
-	public Resposta editar(@RequestBody ProjetoCreditoRural projetoCredito, Principal usuario) throws Exception {
-		return salvar(projetoCredito, usuario);
-	}
-
 	@RequestMapping(value = "/excluir", method = RequestMethod.POST)
 	public Resposta excluir(@RequestBody ProjetoCreditoRural projetoCredito, Principal usuario) throws Exception {
 		return new Resposta(facadeBo.projetoCreditoRuralExcluir(usuario, projetoCredito).getResposta());
@@ -53,18 +48,9 @@ public class ProjetoCreditoRuralRest {
 		return new Resposta(facadeBo.projetoCreditoRuralFiltroNovo(usuario).values());
 	}
 
-	@RequestMapping(value = "/incluir", method = RequestMethod.POST)
-	public Resposta incluir(@RequestBody ProjetoCreditoRural projetoCredito, Principal usuario) throws Exception {
-		return salvar(projetoCredito, usuario);
-	}
-
 	@RequestMapping(value = "/novo", method = RequestMethod.GET)
 	public Resposta novo(@RequestParam(value = "id", required = false) Integer id, Principal usuario) throws Exception {
 		return new Resposta(facadeBo.projetoCreditoRuralNovo(usuario, id == null ? null : new ProjetoCreditoRural(id)).getResposta());
-	}
-
-	public Resposta salvar(@RequestBody ProjetoCreditoRural projetoCredito, Principal usuario) throws Exception {
-		return new Resposta(facadeBo.projetoCreditoRuralSalvar(usuario, projetoCredito).getResposta());
 	}
 
 	@RequestMapping(value = "/visualizar", method = RequestMethod.GET)

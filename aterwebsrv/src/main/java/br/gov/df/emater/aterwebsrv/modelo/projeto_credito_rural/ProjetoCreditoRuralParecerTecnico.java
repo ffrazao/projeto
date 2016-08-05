@@ -28,7 +28,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 
 @Entity
-@Table(name = "projeto_credito_parecer_tecnico", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
+@Table(name = "projeto_credito_rural_parecer_tecnico", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
 public class ProjetoCreditoRuralParecerTecnico extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
@@ -54,7 +54,7 @@ public class ProjetoCreditoRuralParecerTecnico extends EntidadeBase implements _
 	private Integer ordem;
 
 	@ManyToOne
-	@JoinColumn(name = "projeto_credito_id")
+	@JoinColumn(name = "projeto_credito_rural_id")
 	private ProjetoCreditoRural projetoCreditoRural;
 
 	@ManyToOne

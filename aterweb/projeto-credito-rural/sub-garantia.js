@@ -25,7 +25,7 @@ angular.module(pNmModulo).controller(pNmController,
     
     var jaCadastrado = function(conteudo) {
         for (var j in conteudo) {
-            if (!angular.equals($scope.getList()[j].id, conteudo.id) && angular.equals($scope.getList()[j].pessoa.id, conteudo.pessoa.id)) {
+            if (!angular.equals($scope.getList()[j].id, conteudo.id) && angular.equals($scope.getList()[j].pessoaFisica.id, conteudo.pessoaFisica.id)) {
                 toastr.error('Registro já cadastrado');
                 return false;
             }
@@ -55,24 +55,24 @@ angular.module(pNmModulo).controller(pNmController,
 
             if (resultado.selecao.tipo === 'U') {
                 reg = {
-                    pessoa: {
+                    pessoaFisica: {
                         id: resultado.selecao.item[0], 
                         nome: resultado.selecao.item[1],
                         pessoaTipo: resultado.selecao.item[3],
                     }
                 };
-                $scope.preparaClassePessoa(reg.pessoa);
+                $scope.preparaClassePessoa(reg.pessoaFisica);
                 $scope.cadastro.registro.projetoCreditoRural.garantiaList.push($scope.criarElemento($scope.cadastro.registro.projetoCreditoRural, 'garantiaList', reg));
             } else {
                 for (var i in resultado.selecao.items) {
                     reg = {
-                        pessoa: {
+                        pessoaFisica: {
                                 id: resultado.selecao.items[i][0], 
                             nome: resultado.selecao.items[i][1],
                             pessoaTipo: resultado.selecao.items[i][3],
                         }
                     };
-                    $scope.preparaClassePessoa(reg.pessoa);
+                    $scope.preparaClassePessoa(reg.pessoaFisica);
                     $scope.cadastro.registro.projetoCreditoRural.garantiaList.push($scope.criarElemento($scope.cadastro.registro.projetoCreditoRural, 'garantiaList', reg));
                 }
             }
@@ -119,8 +119,8 @@ angular.module(pNmModulo).controller(pNmController,
         if (garantia && garantia.participacao) {
             result += UtilSrv.indiceDePorCampo($scope.cadastro.apoio.garantiaParticipacaoList, garantia.participacao, 'codigo').ordem;
         }
-        if (garantia && garantia.pessoa) {
-            result += garantia.pessoa.nome;
+        if (garantia && garantia.pessoaFisica) {
+            result += garantia.pessoaFisica.nome;
         }
         return result;
     };

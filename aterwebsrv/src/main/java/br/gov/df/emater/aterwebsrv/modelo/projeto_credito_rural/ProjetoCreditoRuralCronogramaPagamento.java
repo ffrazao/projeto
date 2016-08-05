@@ -34,7 +34,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerDataHora;
 
 @Entity
-@Table(name = "projeto_credito_cronograma_pagamento", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
+@Table(name = "projeto_credito_rural_cronograma_pagamento", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
 public class ProjetoCreditoRuralCronogramaPagamento extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
@@ -82,7 +82,7 @@ public class ProjetoCreditoRuralCronogramaPagamento extends EntidadeBase impleme
 	private ProjetoCreditoRuralPeriodicidade periodicidade;
 
 	@ManyToOne
-	@JoinColumn(name = "projeto_credito_id")
+	@JoinColumn(name = "projeto_credito_rural_id")
 	private ProjetoCreditoRural projetoCreditoRural;
 
 	@Column(name = "quantidade_parcela")

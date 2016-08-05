@@ -18,7 +18,7 @@ import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FinanciamentoTipo;
 
 @Entity
-@Table(name = "projeto_credito_financiamento", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
+@Table(name = "projeto_credito_rural_financiamento", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
 public class ProjetoCreditoRuralFinanciamento extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
@@ -47,7 +47,7 @@ public class ProjetoCreditoRuralFinanciamento extends EntidadeBase implements _C
 	private BigDecimal percentualProprio;
 
 	@ManyToOne
-	@JoinColumn(name = "projeto_credito_id")
+	@JoinColumn(name = "projeto_credito_rural_id")
 	private ProjetoCreditoRural projetoCreditoRural;
 
 	@Column(name = "quantidade")

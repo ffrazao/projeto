@@ -18,7 +18,7 @@ import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FluxoCaixaTipo;
 
 @Entity
-@Table(name = "projeto_credito_receita_despesa", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
+@Table(name = "projeto_credito_rural_receita_despesa", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
 public class ProjetoCreditoRuralReceitaDespesa extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
@@ -32,7 +32,7 @@ public class ProjetoCreditoRuralReceitaDespesa extends EntidadeBase implements _
 	private Integer id;
 
 	@ManyToOne
-	@JoinColumn(name = "projeto_credito_id")
+	@JoinColumn(name = "projeto_credito_rural_id")
 	private ProjetoCreditoRural projetoCreditoRural;
 
 	@Column(name = "quantidade")
@@ -70,6 +70,10 @@ public class ProjetoCreditoRuralReceitaDespesa extends EntidadeBase implements _
 		return id;
 	}
 
+	public ProjetoCreditoRural getProjetoCreditoRural() {
+		return projetoCreditoRural;
+	}
+
 	public BigDecimal getQuantidade() {
 		return quantidade;
 	}
@@ -101,6 +105,10 @@ public class ProjetoCreditoRuralReceitaDespesa extends EntidadeBase implements _
 	@Override
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public void setProjetoCreditoRural(ProjetoCreditoRural projetoCreditoRural) {
+		this.projetoCreditoRural = projetoCreditoRural;
 	}
 
 	public void setQuantidade(BigDecimal quantidade) {

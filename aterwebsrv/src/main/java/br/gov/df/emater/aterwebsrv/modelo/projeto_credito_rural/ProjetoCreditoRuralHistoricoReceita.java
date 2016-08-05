@@ -15,7 +15,7 @@ import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 
 @Entity
-@Table(name = "projeto_credito_historico_receita", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
+@Table(name = "projeto_credito_rural_historico_receita", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
 public class ProjetoCreditoRuralHistoricoReceita extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
@@ -27,7 +27,7 @@ public class ProjetoCreditoRuralHistoricoReceita extends EntidadeBase implements
 	private Integer id;
 
 	@ManyToOne
-	@JoinColumn(name = "projeto_credito_id")
+	@JoinColumn(name = "projeto_credito_rural_id")
 	private ProjetoCreditoRural projetoCreditoRural;
 
 	@Column(name = "receita_ano_1")

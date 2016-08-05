@@ -37,7 +37,7 @@ public class CronogramaPagamento extends EntidadeBase implements _ChavePrimaria<
 	private BigDecimal prestacao;
 
 	@ManyToOne
-	@JoinColumn(name = "projeto_credito_cronograma_pagamento_id")
+	@JoinColumn(name = "projeto_credito_rural_cronograma_pagamento_id")
 	private ProjetoCreditoRuralCronogramaPagamento projetoCreditoRuralCronogramaPagamento;
 
 	@Column(name = "saldo_devedor_final")

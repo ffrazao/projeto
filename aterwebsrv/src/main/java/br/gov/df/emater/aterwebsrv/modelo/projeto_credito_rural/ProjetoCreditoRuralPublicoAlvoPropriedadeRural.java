@@ -1,8 +1,5 @@
 package br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural;
 
-import java.math.BigDecimal;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,15 +23,12 @@ public class ProjetoCreditoRuralPublicoAlvoPropriedadeRural extends EntidadeBase
 	private Integer id;
 
 	@ManyToOne
-	@JoinColumn(name = "projeto_credito_id")
+	@JoinColumn(name = "projeto_credito_rural_id")
 	private ProjetoCreditoRural projetoCreditoRural;
 
 	@ManyToOne
 	@JoinColumn(name = "publico_alvo_propriedade_rural_id")
 	private PublicoAlvoPropriedadeRural publicoAlvoPropriedadeRural;
-
-	@Column(name = "renda_liquida")
-	private BigDecimal rendaLiquida;
 
 	public ProjetoCreditoRuralPublicoAlvoPropriedadeRural() {
 		super();
@@ -57,10 +51,6 @@ public class ProjetoCreditoRuralPublicoAlvoPropriedadeRural extends EntidadeBase
 		return publicoAlvoPropriedadeRural;
 	}
 
-	public BigDecimal getRendaLiquida() {
-		return rendaLiquida;
-	}
-
 	@Override
 	public void setId(Integer id) {
 		this.id = id;
@@ -72,10 +62,6 @@ public class ProjetoCreditoRuralPublicoAlvoPropriedadeRural extends EntidadeBase
 
 	public void setPublicoAlvoPropriedadeRural(PublicoAlvoPropriedadeRural publicoAlvoPropriedadeRural) {
 		this.publicoAlvoPropriedadeRural = publicoAlvoPropriedadeRural;
-	}
-
-	public void setRendaLiquida(BigDecimal rendaLiquida) {
-		this.rendaLiquida = rendaLiquida;
 	}
 
 }

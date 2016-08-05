@@ -19,7 +19,7 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.FluxoCaixaCodigo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FluxoCaixaTipo;
 
 @Entity
-@Table(name = "projeto_credito_fluxo_caixa", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
+@Table(name = "projeto_credito_rural_fluxo_caixa", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
 public class ProjetoCreditoRuralFluxoCaixa extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
@@ -39,7 +39,7 @@ public class ProjetoCreditoRuralFluxoCaixa extends EntidadeBase implements _Chav
 	private Integer ordem;
 
 	@ManyToOne
-	@JoinColumn(name = "projeto_credito_id")
+	@JoinColumn(name = "projeto_credito_rural_id")
 	private ProjetoCreditoRural projetoCreditoRural;
 
 	@Enumerated(EnumType.STRING)

@@ -51,7 +51,7 @@
                                                     type="checkbox"
                                                     id="propriedadeRural_{{$index}}"
                                                     name="propriedadeRural_{{$index}}"
-                                                    checklist-model="cadastro.registro.creditoRural.propriedadeRuralList"
+                                                    checklist-model="cadastro.registro.projetoCreditoRural.publicoAlvoPropriedadeRuralList"
                                                     checklist-value="item"
                                                     checklist-comparator="propriedadeRuralComparador">
                                                 </input>
@@ -69,7 +69,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <input type="hidden" id="propriedadeRuralTotal" name="propriedadeRuralTotal" ng-model="cadastro.registro.creditoRural.propriedadeRuralList.length" ng-valor-min="1">
+                            <input type="hidden" id="propriedadeRuralTotal" name="propriedadeRuralTotal" ng-model="cadastro.registro.projetoCreditoRural.publicoAlvoPropriedadeRuralList.length" ng-valor-min="1">
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formularioProjetoCreditoRural.propriedadeRuralTotal.$error.ngValorMin">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
@@ -77,7 +77,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row" ng-show="cadastro.registro.creditoRural.propriedadeRuralList.length">
+                <div class="row" ng-show="cadastro.registro.projetoCreditoRural.publicoAlvoPropriedadeRuralList.length">
                     <div class="col-sm-2" title="Status">
                         <div class="form-group">
                             <label class="control-label" for="status">Status</label>
@@ -147,7 +147,7 @@
                     </div>
                 </div>
 
-                <uib-tabset active="tabAtiva" ng-show="cadastro.registro.creditoRural.propriedadeRuralList.length">
+                <uib-tabset active="tabAtiva" ng-show="cadastro.registro.projetoCreditoRural.publicoAlvoPropriedadeRuralList.length">
                     <uib-tab ng-repeat="tab in tabs | filter: {'visivel': true}" select="tab.selecao()" index="tab.indice">
                         <uib-tab-heading>
                             {{$index + 1}} {{tab.nome}}<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>

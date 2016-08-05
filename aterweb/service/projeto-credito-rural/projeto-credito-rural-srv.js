@@ -23,7 +23,6 @@ angular.module(pNmModulo).factory(pNmFactory,
                    'PropriedadeRuralVinculoTipo',
                    'ParecerTecnicoCodigo',
                    'GarantiaParticipacao',
-                   'Profissao',
                 ]}).success(function(resposta) {
                     if (resposta && resposta.resultado) {
                         var i = 0;
@@ -35,7 +34,6 @@ angular.module(pNmModulo).factory(pNmFactory,
                         scp.cadastro.apoio.propriedadeRuralVinculoTipoList = resposta.resultado[i++];
                         scp.cadastro.apoio.parecerTecnicoCodigoList = resposta.resultado[i++];
                         scp.cadastro.apoio.garantiaParticipacaoList = resposta.resultado[i++];
-                        scp.cadastro.apoio.profissaoList = resposta.resultado[i++];
                     }
                 });
                 scp.cadastro.apoio.anoList = [];

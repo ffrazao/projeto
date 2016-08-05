@@ -16,10 +16,10 @@ import javax.persistence.Table;
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.GarantiaParticipacao;
-import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica;
 
 @Entity
-@Table(name = "projeto_credito_garantia", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
+@Table(name = "projeto_credito_rural_garantia", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
 public class ProjetoCreditoRuralGarantia extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
@@ -32,11 +32,11 @@ public class ProjetoCreditoRuralGarantia extends EntidadeBase implements _ChaveP
 	private GarantiaParticipacao participacao;
 
 	@ManyToOne
-	@JoinColumn(name = "pessoa_id")
-	private Pessoa pessoa;
+	@JoinColumn(name = "pessoa_fisica_id")
+	private PessoaFisica pessoaFisica;
 
 	@ManyToOne
-	@JoinColumn(name = "projeto_credito_id")
+	@JoinColumn(name = "projeto_credito_rural_id")
 	private ProjetoCreditoRural projetoCreditoRural;
 
 	@Column(name = "renda_liquida")
@@ -59,8 +59,8 @@ public class ProjetoCreditoRuralGarantia extends EntidadeBase implements _ChaveP
 		return participacao;
 	}
 
-	public Pessoa getPessoa() {
-		return pessoa;
+	public PessoaFisica getPessoaFisica() {
+		return pessoaFisica;
 	}
 
 	public ProjetoCreditoRural getProjetoCreditoRural() {
@@ -80,8 +80,8 @@ public class ProjetoCreditoRuralGarantia extends EntidadeBase implements _ChaveP
 		this.participacao = participacao;
 	}
 
-	public void setPessoa(Pessoa pessoa) {
-		this.pessoa = pessoa;
+	public void setPessoaFisica(PessoaFisica pessoaFisica) {
+		this.pessoaFisica = pessoaFisica;
 	}
 
 	public void setProjetoCreditoRural(ProjetoCreditoRural projetoCreditoRural) {
