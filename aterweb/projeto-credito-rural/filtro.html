@@ -6,7 +6,7 @@
                 <legend>Dados Básicos</legend>
                 <div class="form-group" title="Demandante">
                     <label class="col-md-4 control-label" for="demandante">
-                        Demandante
+                        Beneficiário
                     </label>
                     <div class="col-md-6">
                         <tags-input id="demandanteList" name="demandanteList" ng-model="cadastro.filtro.demandanteList" placeholder="Digite o nome, ou parte dele, e tecle enter" replace-spaces-with-dashes="false"></tags-input>
@@ -16,9 +16,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group" title="Executor">
+                <div class="form-group sr-only" title="Executor">
                     <label class="col-md-4 control-label" for="executor">
-                        Executor
+                        Técnico Responsável
                     </label>
                     <div class="col-md-6">
                         <tags-input id="executorList" name="executorList" ng-model="cadastro.filtro.executorList" placeholder="Digite o nome, ou parte dele, e tecle enter" replace-spaces-with-dashes="false"></tags-input>
@@ -74,173 +74,59 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group" title="Método">
-                    <label class="col-md-4 control-label" for="metodo">
-                        Método
-                    </label>
-                    <div class="col-md-6">
-                        <select class="form-control" id="metodo" name="metodo" ng-model="cadastro.filtro.metodo" ng-options="item as item.nome for item in cadastro.apoio.metodoList track by item.id">
-                            <option value="">-- Ignorar --</option>
-                        </select>
-                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.metodo.$error.required">
-                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                            Campo Obrigatório
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group" title="Assunto">
-                    <label class="col-md-4 control-label" for="assunto">
-                        Assunto
-                    </label>
-                    <div class="col-md-6">
-                        <select class="form-control" id="assunto" name="assunto" ng-model="cadastro.filtro.assunto" ng-options="item as item.nome for item in cadastro.apoio.assuntoList track by item.id">
-                            <option value="">-- Ignorar --</option>
-                        </select>
-
-                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.assunto.$error.required">
-                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                            Campo Obrigatório
-                        </div>
-                    </div>
-                </div>
-                <legend>Beneficiários</legend>
-                <div class="form-group" title="Segmento">
-                    <label class="col-md-4 control-label" for="segmento">Segmento</label>
+                <legend>Projeto de Crédito Rural</legend>
+                <div class="form-group" title="Finalidade">
+                    <label class="col-md-4 control-label" for="financiamentoTipoList">Finalidade</label>
                     <div class="col-md-8">
-                        <label class="checkbox-inline" for="segmento-{{$index}}" ng-repeat="item in cadastro.apoio.publicoAlvoSegmentoList">
-                            <input type="checkbox" name="segmento" id="segmento-{{$index}}" checklist-model="cadastro.filtro.segmento" checklist-value="item.codigo">
+                        <label class="checkbox-inline" for="financiamentoTipoList-{{$index}}" ng-repeat="item in cadastro.apoio.financiamentoTipoList">
+                            <input type="checkbox" name="financiamentoTipoList" id="financiamentoTipoList-{{$index}}" checklist-model="cadastro.filtro.financiamentoTipoList" checklist-value="item.codigo">
                             {{item.descricao}}
                         </label>
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.segmento.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.financiamentoTipoList.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
                 </div>
-                <div class="form-group" title="Categoria">
-                    <label class="col-md-4 control-label" for="categoria">
-                        Categoria
-                    </label>
+                <div class="form-group" title="Status">
+                    <label class="col-md-4 control-label" for="statusList">Status</label>
                     <div class="col-md-8">
-                        <label class="checkbox-inline" for="categoria-{{$index}}" ng-repeat="item in cadastro.apoio.publicoAlvoCategoriaList">
-                            <input type="checkbox" name="categoria" id="categoria-{{$index}}" checklist-model="cadastro.filtro.categoria" checklist-value="item.codigo">
+                        <label class="checkbox-inline" for="statusList-{{$index}}" ng-repeat="item in cadastro.apoio.projetoCreditoRuralStatusList">
+                            <input type="checkbox" name="statusList" id="statusList-{{$index}}" checklist-model="cadastro.filtro.statusList" checklist-value="item.codigo">
                             {{item.descricao}}
                         </label>
-
-                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.categoria.$error.required">
-                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                            Campo Obrigatório
-                        </div>
+                    </div>
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.statusList.$error.required">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        Campo Obrigatório
                     </div>
                 </div>
-                <div class="form-group" title="Gênero">
-                    <label class="col-md-4 control-label" for="genero">
-                        Gênero
-                    </label>
+                <div class="form-group" title="Agente Financeiro">
+                    <label class="col-md-4 control-label" for="agenteFinanceiroIdList">Agente Financeiro</label>
                     <div class="col-md-8">
-                        <label class="checkbox-inline" for="genero-{{$index}}" ng-repeat="item in cadastro.apoio.generoList">
-                            <input type="checkbox" name="genero" id="genero-{{$index}}" checklist-model="cadastro.filtro.genero" checklist-value="item.codigo">
-                            {{item.descricao}}
-                        </label>
-
-                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.genero.$error.required">
-                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                            Campo Obrigatório
+                        <div class="checkbox" ng-repeat="item in cadastro.apoio.agenteFinanceiroList | orderBy: 'nome' track by item.id">
+                            <label class="checkbox-inline" for="agenteFinanceiroIdList-{{$index}}">
+                                <input type="checkbox" name="agenteFinanceiroIdList" id="agenteFinanceiroIdList-{{$index}}" checklist-model="cadastro.filtro.agenteFinanceiroIdList" checklist-value="item.id">
+                                {{item.pessoaJuridica.nome}}
+                            </label>
                         </div>
                     </div>
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.agenteFinanceiroIdList.$error.required">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        Campo Obrigatório
+                    </div>
                 </div>
-                <div class="form-group" title="Geração">
-                    <label class="col-md-4 control-label" for="geracao">
-                        Geração
-                    </label>
+                <div class="form-group" title="Linha de Crédito">
+                    <label class="col-md-4 control-label" for="linhaCreditoIdList">Linha de Crédito</label>
                     <div class="col-md-8">
-                        <label class="checkbox-inline" for="pessoaGeracao-{{$index}}" ng-repeat="item in cadastro.apoio.pessoaGeracaoList">
-                            <input type="checkbox" name="pessoaGeracao" id="pessoaGeracao-{{$index}}" checklist-model="cadastro.filtro.geracao" checklist-value="item.codigo">
-                            {{item.descricao}}
-                        </label>
-
-                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.geracao.$error.required">
-                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                            Campo Obrigatório
+                        <div class="checkbox" ng-repeat="item in cadastro.apoio.linhaCreditoList | orderBy: 'nome' track by item.id">
+                            <label class="checkbox-inline" for="linhaCreditoIdList-{{$index}}">
+                                <input type="checkbox" name="linhaCreditoIdList" id="linhaCreditoIdList-{{$index}}" checklist-model="cadastro.filtro.linhaCreditoIdList" checklist-value="item.id">
+                                {{item.nome}}
+                            </label>
                         </div>
                     </div>
-                </div>
-                <div class="form-group" title="Organização">
-                    <label class="col-md-4 control-label" for="organizacao">
-                        Organização
-                    </label>
-                    <div class="col-md-8">
-                        <label class="checkbox-inline" for="organizacao-{{$index}}" ng-repeat="item in cadastro.apoio.confirmacaoList">
-                            <input type="checkbox" name="organizacao" id="organizacao-{{$index}}" checklist-model="cadastro.filtro.organizacao" checklist-value="item.codigo">
-                            {{item.descricao}}
-                        </label>
-
-                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.organizacao.$error.required">
-                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                            Campo Obrigatório
-                        </div>
-                    </div>
-                </div>
-                <!-- Multiple Checkboxes (inline) -->
-                <div class="form-group" title="Unidade Organizacional/Comunidade">
-                    <label class="col-md-4 control-label" for="unidadeOrganizacionalComunidade">
-                        Unidade Organizacional/Comunidade
-                    </label>
-                    <div class="col-md-7">
-                        <div class="input-group">
-                            <input type="text" class="form-control" ng-model="cadastro.apoio.localFiltro" placeholder="Filtrar por Comunidade">
-                            <span class="input-group-btn">
-                                <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-default" ng-click="cadastro.apoio.localFiltro = limparRegistroSelecionado(cadastro.apoio.localList)">
-                                        <span class="glyphicon glyphicon-trash"></span>
-                                    </button>
-                                </div>
-                            </span>
-                        </div>
-                        <div class="row" style="height: 200px; overflow: scroll;">
-                            <div ui-tree drag-enabled="false">
-                                <ol ui-tree-nodes="" ng-model="cadastro.apoio.localList">
-                                    <li ng-repeat="item in cadastro.apoio.localList | orderBy: 'nome' track by item.id" ui-tree-node>
-                                        <div ui-tree-handle>
-                                            <a class="btn btn-primary btn-xs Tooltip" data-nodrag data-ng-click="toggleChildren(this)" title="Expandir/Recolher">
-                                                <span class="glyphicon glyphicon-chevron-right" data-ng-show="collapsed"></span>
-                                                <span class="glyphicon glyphicon-chevron-down" data-ng-show="!collapsed"></span>
-                                            </a>
-                                            <label>
-                                                <input type="checkbox" ng-model="item.selecionado" ng-true-value="true" ng-false-value="false">
-                                                {{item.nome}}
-                                            </label>
-                                        </div>
-                                        <ol ui-tree-nodes="" ng-model="item.unidadeList" ng-class="{hidden: collapsed}">
-                                            <li ng-repeat="subItem in item.unidadeList | unidadeOrganizacionalComunidadeFltr:cadastro.apoio.localFiltro | orderBy: ['nome'] track by subItem.id" ui-tree-node>
-                                                <div ui-tree-handle>
-                                                    <a class="btn btn-primary btn-xs Tooltip" data-nodrag data-ng-click="toggleChildren(this)" title="Expandir/Recolher">
-                                                        <span class="glyphicon glyphicon-chevron-right" data-ng-show="collapsed"></span>
-                                                        <span class="glyphicon glyphicon-chevron-down" data-ng-show="!collapsed"></span>
-                                                    </a>
-                                                    <label>
-                                                        <input type="checkbox" ng-model="subItem.selecionado" ng-true-value="true" ng-false-value="false">
-                                                        {{subItem.nome}}
-                                                    </label>
-                                                </div>
-                                                <ol ui-tree-nodes="" ng-model="subItem.comunidadeList" ng-class="{hidden: collapsed}">
-                                                    <li ng-repeat="subSubItem in subItem.comunidadeList | orderBy: 'nome' track by subSubItem.id" ui-tree-node ng-show="visible(subSubItem)">
-                                                        <div ui-tree-handle>
-                                                            <label>
-                                                                <input type="checkbox" ng-model="subSubItem.selecionado" ng-true-value="true" ng-false-value="false">
-                                                                {{subSubItem.nome}}
-                                                            </label>
-                                                        </div>
-                                                    </li>
-                                                </ol>
-                                            </li>
-                                        </ol>
-                                    </li>
-                                </ol>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.unidadeOrganizacionalComunidade.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.linhaCreditoIdList.$error.required">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>

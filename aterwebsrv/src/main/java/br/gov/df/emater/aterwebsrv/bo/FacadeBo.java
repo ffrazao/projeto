@@ -392,38 +392,33 @@ public class FacadeBo implements BeanFactoryAware {
 	}
 
 	@Transactional
-	public _Contexto projetoCreditoRuralCalcularCronograma(Principal usuario, ProjetoCreditoRural projetoCredito) throws Exception {
-		return this._executar(usuario, "ProjetoCreditoRuralCalcularCronogramaCh", projetoCredito);
+	public _Contexto projetoCreditoRuralCalcularCronograma(Principal usuario, ProjetoCreditoRural projetoCreditoRural) throws Exception {
+		return this._executar(usuario, "ProjetoCreditoRuralCalcularCronogramaCh", projetoCreditoRural);
 	}
 
 	@Transactional
-	public _Contexto projetoCreditoRuralCalcularFluxoCaixa(Principal usuario, ProjetoCreditoRural projetoCredito) throws Exception {
-		return this._executar(usuario, "ProjetoCreditoRuralCalcularFluxoCaixaCh", projetoCredito);
+	public _Contexto projetoCreditoRuralCalcularFluxoCaixa(Principal usuario, ProjetoCreditoRural projetoCreditoRural) throws Exception {
+		return this._executar(usuario, "ProjetoCreditoRuralCalcularFluxoCaixaCh", projetoCreditoRural);
 	}
 
 	@Transactional
-	public _Contexto projetoCreditoRuralExcluir(Principal usuario, ProjetoCreditoRural projetoCredito) throws Exception {
-		return this._executar(usuario, "ProjetoCreditoExcluirCh", projetoCredito);
+	public _Contexto projetoCreditoRuralExcluir(Principal usuario, ProjetoCreditoRural projetoCreditoRural) throws Exception {
+		return this._executar(usuario, "ProjetoCreditoRuralExcluirCh", projetoCreditoRural);
 	}
 
 	@Transactional(readOnly = true)
 	public _Contexto projetoCreditoRuralFiltroExecutar(Principal usuario, ProjetoCreditoRuralCadFiltroDto filtro) throws Exception {
-		return this._executar(usuario, "ProjetoCreditoFiltroExecutarCh", filtro);
+		return this._executar(usuario, "ProjetoCreditoRuralFiltroExecutarCh", filtro);
 	}
 
 	@Transactional(readOnly = true)
 	public _Contexto projetoCreditoRuralFiltroNovo(Principal usuario) throws Exception {
-		return this._executar(usuario, "ProjetoCreditoFiltroNovoCmd");
+		return this._executar(usuario, "ProjetoCreditoRuralFiltroNovoCmd");
 	}
 
 	@Transactional(readOnly = true)
-	public _Contexto projetoCreditoRuralNovo(Principal usuario, ProjetoCreditoRural projetoCredito) throws Exception {
-		return this._executar(usuario, "ProjetoCreditoNovoCh", projetoCredito);
-	}
-
-	@Transactional(readOnly = true)
-	public _Contexto projetoCreditoRuralVisualizar(Principal usuario, Integer id) throws Exception {
-		return this._executar(usuario, "ProjetoCreditoVisualizarCh", id);
+	public _Contexto projetoCreditoRuralNovo(Principal usuario, ProjetoCreditoRural projetoCreditoRural) throws Exception {
+		return this._executar(usuario, "ProjetoCreditoRuralNovoCh", projetoCreditoRural);
 	}
 
 	@Transactional

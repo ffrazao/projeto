@@ -19,11 +19,12 @@ public abstract class _SalvarCmd extends _Comando {
 		}
 	}
 
-	public void limparChavePrimaria(Collection<? extends _ChavePrimaria<? extends Serializable>> lista) {
-		if (CollectionUtils.isEmpty(lista)) {
-			return;
+	public Collection<? extends _ChavePrimaria<? extends Serializable>> limparChavePrimaria(Collection<? extends _ChavePrimaria<? extends Serializable>> lista) {
+		if (!CollectionUtils.isEmpty(lista)) {
+			lista.stream().filter(e -> e.getId() != null && ((Integer) e.getId()) < 0).collect(Collectors.toList()).forEach(e -> e.setId(null));
 		}
-		lista.stream().filter(e -> e.getId() != null && ((Integer) e.getId()) < 0).collect(Collectors.toList()).forEach(e -> e.setId(null));
+		return lista;
+
 	}
 
 }

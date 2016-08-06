@@ -45,17 +45,12 @@ public class ProjetoCreditoRuralRest {
 
 	@RequestMapping("/filtro-novo")
 	public Resposta filtroNovo(Principal usuario) throws Exception {
-		return new Resposta(facadeBo.projetoCreditoRuralFiltroNovo(usuario).values());
+		return new Resposta(facadeBo.projetoCreditoRuralFiltroNovo(usuario).getResposta());
 	}
 
 	@RequestMapping(value = "/novo", method = RequestMethod.GET)
 	public Resposta novo(@RequestParam(value = "id", required = false) Integer id, Principal usuario) throws Exception {
 		return new Resposta(facadeBo.projetoCreditoRuralNovo(usuario, id == null ? null : new ProjetoCreditoRural(id)).getResposta());
-	}
-
-	@RequestMapping(value = "/visualizar", method = RequestMethod.GET)
-	public Resposta visualizar(@RequestParam Integer id, Principal usuario) throws Exception {
-		return new Resposta(facadeBo.projetoCreditoRuralVisualizar(usuario, id).getResposta());
 	}
 
 }

@@ -7,7 +7,26 @@
     angular.module(pNmModulo).config(['$stateProvider', function($stateProvider) {
         'ngInject';
 
-        criarEstadosPadrao($stateProvider, pNmModulo, pNmController, pUrlModulo);
+        $stateProvider.state('p.' + pNmModulo, {
+            abstract: true,
+            controller: pNmController,
+            templateUrl: pUrlModulo + '/' + pUrlModulo + '.html',
+            url: '/' + pUrlModulo,
+        });
+        $stateProvider.state('p.' + pNmModulo + '.filtro', {
+            templateUrl: pUrlModulo + '/filtro.html',
+            url: '',
+        });
+        $stateProvider.state('p.' + pNmModulo + '.lista', {
+            templateUrl: pUrlModulo + '/lista.html',
+            url: '/lista',
+        });
+        $stateProvider.state('p.' + pNmModulo + '.form', {
+            templateUrl: 'atividade/form.html',
+            controller: 'AtividadeCtrl',
+            url: '/form/:id',
+        });
+
     }]);
     angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'ProjetoCreditoRuralSrv',
         function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, ProjetoCreditoRuralSrv) {

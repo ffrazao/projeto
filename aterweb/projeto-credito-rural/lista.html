@@ -10,37 +10,23 @@
         <table class="table table-hover table-striped" ng-init="cadastro.apoio.escondeDetalhe = true">
             <thead>
                 <tr>
-                    <th rowspan="4">
+                    <th>
                         <frz-seletor ng-model="navegador"></frz-seletor>
                     </th>
-                    <th width="30" rowspan="4">
+                    <th width="30">
                         #
                     </th>
-                    <th rowspan="4">Código da Atividade</th>
-                    <th>Método</th>
-                    <th>Formato</th>
-                    <th>Finalidade</th>
-                    <th>Natureza</th>
-                    <th>Prioridade</th>
-                    <th>Situação</th>
-                    <th>% Conclusão</th>
+                    <th>Beneficiário</th>
+                    <th>Data</th>
+                    <th>Código da Atividade</th>
+                    <th>Status</th>
+                    <th>Agente Financiador</th>
+                    <th>Agência</th>
+                    <th>Linha de Crédito</th>
+                    <th>Número Cédula</th>
+                    <th>Itens Custeio</th>
+                    <th>Itens Investimento</th>
                 </tr>
-                <tr>
-                    <th>Início</th>
-                    <th>Previsão Conclusão</th>
-                    <th>Conclusão</th>
-                    <th>Duração Prevista</th>
-                    <th>Duração Real</th>
-                    <th colspan="2">Duração Suspensão</th>
-                </tr> 
-                <tr>
-                    <th colspan="2">Assunto</th>
-                    <th colspan="2">Demandante(s)</th>
-                    <th colspan="3">Executor(es)</th>
-                </tr> 
-                <tr>
-                    <th colspan="7">Detalhamento</th>
-                </tr> 
             </thead>
             <tbody>
                 <tr ng-repeat-start="item in navegador.dados | orderBy: ordenarLista | pagina: navegador.paginaAtual : navegador.tamanhoPagina | limitTo: navegador.tamanhoPagina" ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)" title="Cadastrado por: {{item[CABEC.CABEC.ATIV_INCLUSAO_USUARIO]}} em {{item[CABEC.ATIV_INCLUSAO_DATA] | date: 'dd/MM/yyyy'}}, alterado por: {{item[CABEC.ATIV_ALTERACAO_USUARIO]}} em {{item[CABEC.ATIV_ALTERACAO_DATA] | date: 'dd/MM/yyyy'}}"
@@ -72,61 +58,7 @@
                         </div>
                     </td>
                 </tr>
-                <tr ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)" ng-class="classeAtividade(item[CABEC.ATIV_SITUACAO])">
-                    <td title="Início">{{item[CABEC.ATIV_INICIO] | date:'dd/MM/yyyy'}}</td>
-                    <td title="Previsão Conclusão">{{item[CABEC.ATIV_PREVISAO_CONCLUSAO] | date:'dd/MM/yyyy'}}</td>
-                    <td title="Conclusão">{{item[CABEC.ATIV_CONCLUSAO] | date:'dd/MM/yyyy'}}</td>
-                    <td title="Duração Estimada">{{item[CABEC.ATIV_DURACAO_ESTIMADA]}}</td>
-                    <td title="Duração Real">{{item[CABEC.ATIV_DURACAO_REAL]}}</td>
-                    <td title="Duração Suspensão" colspan="2">{{item[CABEC.ATIV_DURACAO_SUSPENSAO]}}</td>
-                </tr>
-                <tr ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)" ng-class="classeAtividade(item[CABEC.ATIV_SITUACAO])">
-                    <td colspan="2" title="Assunto">
-                        <ul>
-                            <li ng-repeat="l in item[CABEC.ATIV_ASSUNTO_LIST[0]] | orderBy: [CABEC.ATIV_ASSUNTO_LIST[1].ATIV_ASSUNTO_ASSUNTO_NOME.toString()] | pagina: 1 : 10 | limitTo: 10">
-                                {{l[CABEC.ATIV_ASSUNTO_LIST[1].ATIV_ASSUNTO_ASSUNTO_NOME]}}
-                            </li>
-                            <li ng-if="item[CABEC.ATIV_ASSUNTO_LIST[0]].length >= 10"><a>...</a></li>
-                        </ul>
-                    </td>
-                    <td colspan="2" title="Demandante(s)">
-                        <ul>
-                            <li ng-repeat="l in item[CABEC.DEMAND_LIST[0]] | orderBy: [CABEC.DEMAND_LIST[1].ATIV_UNIDADE_ORGANIZACIONAL_NOME.toString(), CABEC.DEMAND_LIST[1].ATIV_PESS_PESSOA_NOME.toString()] | pagina: 1 : 10 | limitTo: 10">
-                                <span ng-if="l[CABEC.DEMAND_LIST[1].ATIV_UNIDADE_ORGANIZACIONAL_ID]">
-                                    {{l[CABEC.DEMAND_LIST[1].ATIV_UNIDADE_ORGANIZACIONAL_NOME]}}
-                                </span>
-                                <a ng-if="l[CABEC.DEMAND_LIST[1].ATIV_PESS_PESSOA_ID]" ng-click="modalVerPessoa(l[CABEC.DEMAND_LIST[1].ATIV_PESS_PESSOA_ID])">
-                                    {{l[CABEC.DEMAND_LIST[1].ATIV_PESS_PESSOA_NOME]}}
-                                </a>
-                            </li>
-                            <li ng-if="item[CABEC.DEMAND_LIST[0]].length >= 10"><a>...</a></li>
-                        </ul>
-                    </td>
-                    <td colspan="3" title="Executor(es)">
-                        <ul>
-                            <li ng-repeat="l in item[CABEC.EXECUT_LIST[0]] | orderBy: [CABEC.EXECUT_LIST[1].ATIV_UNIDADE_ORGANIZACIONAL_NOME.toString(), CABEC.EXECUT_LIST[1].ATIV_PESS_PESSOA_NOME.toString()] | pagina: 1 : 10 | limitTo: 10">
-                                <span ng-if="l[CABEC.EXECUT_LIST[1].ATIV_UNIDADE_ORGANIZACIONAL_ID]">
-                                    {{l[CABEC.EXECUT_LIST[1].ATIV_UNIDADE_ORGANIZACIONAL_NOME]}}
-                                </span>
-                                <a ng-if="l[CABEC.EXECUT_LIST[1].ATIV_PESS_PESSOA_ID]" ng-click="modalVerPessoa(l[CABEC.EXECUT_LIST[1].ATIV_PESS_PESSOA_ID])">
-                                    {{l[CABEC.EXECUT_LIST[1].ATIV_PESS_PESSOA_NOME]}}
-                                </a>
-                            </li>
-                            <li ng-if="item[CABEC.EXECUT_LIST[0]].length >= 10"><a>...</a></li>
-                        </ul>
-                    </td>
-                </tr>
-                <tr ng-repeat-end ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)" ng-class="classeAtividade(item[CABEC.ATIV_SITUACAO])">
-                    <td colspan="7" title="Detalhamento">
-                        {{item[CABEC.ATIV_DETALHAMENTO]}}
-                    </td>
-                </tr>
             </tbody>
-            <tfoot>
-                <tr>
-                    <th></th>
-                </tr> 
-            </tfoot>
         </table>
     </div>
 </div>

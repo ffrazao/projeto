@@ -23,6 +23,9 @@ angular.module(pNmModulo).factory(pNmFactory,
                    'PropriedadeRuralVinculoTipo',
                    'ParecerTecnicoCodigo',
                    'GarantiaParticipacao',
+                   'FinanciamentoTipo',
+                   'LinhaCredito',
+                   'ProjetoCreditoRuralStatus',
                 ]}).success(function(resposta) {
                     if (resposta && resposta.resultado) {
                         var i = 0;
@@ -34,12 +37,19 @@ angular.module(pNmModulo).factory(pNmFactory,
                         scp.cadastro.apoio.propriedadeRuralVinculoTipoList = resposta.resultado[i++];
                         scp.cadastro.apoio.parecerTecnicoCodigoList = resposta.resultado[i++];
                         scp.cadastro.apoio.garantiaParticipacaoList = resposta.resultado[i++];
+                        scp.cadastro.apoio.financiamentoTipoList = resposta.resultado[i++];
+                        scp.cadastro.apoio.linhaCreditoList = resposta.resultado[i++];
+                        scp.cadastro.apoio.projetoCreditoRuralStatusList = resposta.resultado[i++];
                     }
                 });
                 scp.cadastro.apoio.anoList = [];
                 for (var i = 1; i <= 10; i++) {
                     scp.cadastro.apoio.anoList.push({codigo: i, descricao: 'Ano ' + zeroEsq('' + i, 2)});
                 }
+            },
+            filtroNovo: function() {
+                SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
+                return $http.post(this.endereco + '/filtro-novo');
             },
             filtrar : function(filtro) {
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
