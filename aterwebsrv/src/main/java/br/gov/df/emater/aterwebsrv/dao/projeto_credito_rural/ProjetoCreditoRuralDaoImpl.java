@@ -9,12 +9,12 @@ import javax.persistence.Query;
 
 import org.springframework.util.CollectionUtils;
 
+import br.gov.df.emater.aterwebsrv.dto.ProjetoCreditoRuralCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.TagDto;
 import br.gov.df.emater.aterwebsrv.ferramenta.Util;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FinanciamentoTipo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.ProjetoCreditoRuralStatus;
-import br.gov.df.emater.aterwebsrv.modelo.dto.ProjetoCreditoRuralCadFiltroDto;
-import br.gov.df.emater.aterwebsrv.modelo.dto.TagDto;
 
 public class ProjetoCreditoRuralDaoImpl implements ProjetoCreditoRuralDaoCustom {
 

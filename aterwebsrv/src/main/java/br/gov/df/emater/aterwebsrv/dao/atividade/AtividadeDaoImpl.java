@@ -9,14 +9,14 @@ import javax.persistence.TypedQuery;
 
 import org.springframework.util.CollectionUtils;
 
+import br.gov.df.emater.aterwebsrv.dto.AtividadeCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.TagDto;
 import br.gov.df.emater.aterwebsrv.ferramenta.Util;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGeracao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoCategoria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoSegmento;
-import br.gov.df.emater.aterwebsrv.modelo.dto.AtividadeCadFiltroDto;
-import br.gov.df.emater.aterwebsrv.modelo.dto.TagDto;
 
 public class AtividadeDaoImpl implements AtividadeDaoCustom {
 

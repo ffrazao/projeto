@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.projeto_credito_rural.ProjetoCreditoRuralDao;
-import br.gov.df.emater.aterwebsrv.modelo.dto.ProjetoCreditoRuralCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.ProjetoCreditoRuralCadFiltroDto;
 
 @Service("ProjetoCreditoRuralFiltrarCmd")
 public class FiltrarCmd extends _Comando {

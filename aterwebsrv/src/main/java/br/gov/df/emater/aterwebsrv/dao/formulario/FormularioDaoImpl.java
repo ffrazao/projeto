@@ -12,12 +12,12 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import br.gov.df.emater.aterwebsrv.dao.DaoException;
+import br.gov.df.emater.aterwebsrv.dto.FiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.FormularioCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.FormularioColetaCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FormularioDestino;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Situacao;
-import br.gov.df.emater.aterwebsrv.modelo.dto.FiltroDto;
-import br.gov.df.emater.aterwebsrv.modelo.dto.FormularioCadFiltroDto;
-import br.gov.df.emater.aterwebsrv.modelo.dto.FormularioColetaCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.FormularioVersao;
 
 public class FormularioDaoImpl implements FormularioDaoCustom {

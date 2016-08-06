@@ -10,8 +10,8 @@ import org.springframework.util.CollectionUtils;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoPropriedadeRuralDao;
+import br.gov.df.emater.aterwebsrv.dto.PublicoAlvoPropriedadeRuralCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
-import br.gov.df.emater.aterwebsrv.modelo.dto.PublicoAlvoPropriedadeRuralCadFiltroDto;
 
 @Service("PropriedadeRuralFiltrarPorPublicoAlvoPropriedadeRuralComunidadeCmd")
 public class FiltrarPorPublicoAlvoPropriedadeRuralComunidadeCmd extends _Comando {

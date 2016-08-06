@@ -9,8 +9,8 @@ import javax.persistence.TypedQuery;
 
 import org.springframework.util.StringUtils;
 
-import br.gov.df.emater.aterwebsrv.modelo.dto.BemProducaoCadFiltroDto;
-import br.gov.df.emater.aterwebsrv.modelo.dto.FiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.BemProducaoCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.FiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacao;
 
 public class BemDaoImpl implements BemDaoCustom {

@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
+import br.gov.df.emater.aterwebsrv.dto.AtividadeCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.Atividade;
-import br.gov.df.emater.aterwebsrv.modelo.dto.AtividadeCadFiltroDto;
 
 @RestController
 @RequestMapping("/atividade")

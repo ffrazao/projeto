@@ -1,4 +1,4 @@
-package br.gov.df.emater.aterwebsrv.modelo.dto;
+package br.gov.df.emater.aterwebsrv.dto;
 
 public interface FiltroDto extends Dto {
 

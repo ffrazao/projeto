@@ -9,8 +9,8 @@ import javax.persistence.TypedQuery;
 
 import org.springframework.util.StringUtils;
 
-import br.gov.df.emater.aterwebsrv.modelo.dto.BemClassificacaoCadFiltroDto;
-import br.gov.df.emater.aterwebsrv.modelo.dto.FiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.BemClassificacaoCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.FiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacaoFormaProducaoItem;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacaoFormaProducaoValor;

@@ -1,4 +1,4 @@
-package br.gov.df.emater.aterwebsrv.modelo.dto;
+package br.gov.df.emater.aterwebsrv.dto;
 
 import java.util.Calendar;
 import java.util.List;

@@ -9,10 +9,10 @@ import javax.persistence.Query;
 
 import org.springframework.util.CollectionUtils;
 
+import br.gov.df.emater.aterwebsrv.dto.TagDto;
+import br.gov.df.emater.aterwebsrv.dto.UsuarioCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.UsuarioStatusConta;
-import br.gov.df.emater.aterwebsrv.modelo.dto.TagDto;
-import br.gov.df.emater.aterwebsrv.modelo.dto.UsuarioCadFiltroDto;
 
 public class UsuarioDaoImpl implements UsuarioDaoCustom {
 

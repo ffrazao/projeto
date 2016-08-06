@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
-import br.gov.df.emater.aterwebsrv.modelo.dto.LogAcaoCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.LogAcaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.LogAcao;
 
 @RestController

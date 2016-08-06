@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
-import br.gov.df.emater.aterwebsrv.modelo.dto.FormularioCadFiltroDto;
-import br.gov.df.emater.aterwebsrv.modelo.dto.FormularioColetaCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.FormularioCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.FormularioColetaCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.Formulario;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.FormularioVersao;
 

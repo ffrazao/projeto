@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
-import br.gov.df.emater.aterwebsrv.modelo.dto.ComunidadeListaDto;
+import br.gov.df.emater.aterwebsrv.dto.ComunidadeListaDto;
 
 @RestController
 @RequestMapping("/comunidade")

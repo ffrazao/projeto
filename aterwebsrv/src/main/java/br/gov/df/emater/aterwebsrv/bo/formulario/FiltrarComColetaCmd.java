@@ -11,7 +11,7 @@ import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.formulario.ColetaDao;
 import br.gov.df.emater.aterwebsrv.dao.formulario.FormularioDao;
-import br.gov.df.emater.aterwebsrv.modelo.dto.FormularioColetaCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.FormularioColetaCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.Coleta;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.FormularioVersao;
 

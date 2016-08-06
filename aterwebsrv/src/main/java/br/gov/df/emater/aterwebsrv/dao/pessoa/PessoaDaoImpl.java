@@ -15,6 +15,8 @@ import javax.persistence.TypedQuery;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import br.gov.df.emater.aterwebsrv.dto.PessoaCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.TagDto;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.ConfirmacaoDap;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;
@@ -23,8 +25,6 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaTipo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoCategoria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoSegmento;
-import br.gov.df.emater.aterwebsrv.modelo.dto.PessoaCadFiltroDto;
-import br.gov.df.emater.aterwebsrv.modelo.dto.TagDto;
 
 public class PessoaDaoImpl implements PessoaDaoCustom {
 

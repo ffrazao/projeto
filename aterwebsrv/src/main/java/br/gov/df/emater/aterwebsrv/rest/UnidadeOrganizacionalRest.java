@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
-import br.gov.df.emater.aterwebsrv.modelo.dto.UnidadeOrganizacionalCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.UnidadeOrganizacionalCadFiltroDto;
 
 @RestController
 @RequestMapping("/unidade-organizacional")

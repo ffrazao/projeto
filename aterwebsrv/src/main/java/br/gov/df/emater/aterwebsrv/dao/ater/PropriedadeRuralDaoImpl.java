@@ -10,12 +10,12 @@ import javax.persistence.TypedQuery;
 
 import org.springframework.util.CollectionUtils;
 
+import br.gov.df.emater.aterwebsrv.dto.PropriedadeRuralCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.TagDto;
 import br.gov.df.emater.aterwebsrv.modelo.ater.BaciaHidrografica;
 import br.gov.df.emater.aterwebsrv.modelo.ater.Comunidade;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
-import br.gov.df.emater.aterwebsrv.modelo.dto.PropriedadeRuralCadFiltroDto;
-import br.gov.df.emater.aterwebsrv.modelo.dto.TagDto;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Area;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Endereco;
 

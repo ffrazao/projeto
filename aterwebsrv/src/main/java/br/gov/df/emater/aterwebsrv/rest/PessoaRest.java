@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
-import br.gov.df.emater.aterwebsrv.modelo.dto.CarteiraProdutorRelFiltroDto;
-import br.gov.df.emater.aterwebsrv.modelo.dto.PessoaCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.CarteiraProdutorRelFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.PessoaCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 
 @RestController
