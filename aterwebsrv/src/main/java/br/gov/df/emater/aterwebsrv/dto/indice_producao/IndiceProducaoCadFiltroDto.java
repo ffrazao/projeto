@@ -1,8 +1,9 @@
-package br.gov.df.emater.aterwebsrv.dto;
+package br.gov.df.emater.aterwebsrv.dto.indice_producao;
 
 import java.util.List;
 import java.util.Set;
 
+import br.gov.df.emater.aterwebsrv.dto.CadFiltroDtoCustom;
 import br.gov.df.emater.aterwebsrv.modelo.ater.Comunidade;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
@@ -13,7 +14,7 @@ import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.FormaProducaoValor;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 
-public class IndiceProducaoCadFiltroDto extends FiltroDtoCustom {
+public class IndiceProducaoCadFiltroDto extends CadFiltroDtoCustom {
 
 	private static final long serialVersionUID = 1L;
 

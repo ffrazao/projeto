@@ -12,7 +12,7 @@ import org.springframework.util.CollectionUtils;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.ater.ComunidadeDao;
-import br.gov.df.emater.aterwebsrv.dto.ComunidadeListaDto;
+import br.gov.df.emater.aterwebsrv.dto.ater.ComunidadeListaDto;
 import br.gov.df.emater.aterwebsrv.modelo.ater.Comunidade;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;

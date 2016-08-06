@@ -1,4 +1,4 @@
-package br.gov.df.emater.aterwebsrv.dto;
+package br.gov.df.emater.aterwebsrv.dto.sistema;
 
 import java.util.Calendar;
 import java.util.Set;
@@ -11,10 +11,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import br.gov.df.emater.aterwebsrv.dto.CadFiltroDtoCustom;
+import br.gov.df.emater.aterwebsrv.dto.TagDto;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 
-public class LogAcaoCadFiltroDto extends FiltroDtoCustom {
+public class LogAcaoCadFiltroDto extends CadFiltroDtoCustom {
 
 	private static final long serialVersionUID = 1L;
 

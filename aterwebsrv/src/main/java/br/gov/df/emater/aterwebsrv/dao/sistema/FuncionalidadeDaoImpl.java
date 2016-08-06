@@ -9,8 +9,8 @@ import javax.persistence.Query;
 
 import org.springframework.util.CollectionUtils;
 
-import br.gov.df.emater.aterwebsrv.dto.FuncionalidadeCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.TagDto;
+import br.gov.df.emater.aterwebsrv.dto.sistema.FuncionalidadeCadFiltroDto;
 
 public class FuncionalidadeDaoImpl implements FuncionalidadeDaoCustom {
 

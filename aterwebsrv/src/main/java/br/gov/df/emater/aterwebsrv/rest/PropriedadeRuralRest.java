@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
-import br.gov.df.emater.aterwebsrv.dto.PropriedadeRuralCadFiltroDto;
-import br.gov.df.emater.aterwebsrv.dto.PublicoAlvoPropriedadeRuralCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.ater.PropriedadeRuralCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.ater.PublicoAlvoPropriedadeRuralCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 
 @RestController

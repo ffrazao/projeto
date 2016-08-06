@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
-import br.gov.df.emater.aterwebsrv.dto.FuncionalidadeCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.sistema.FuncionalidadeCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Comando;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Funcionalidade;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Modulo;

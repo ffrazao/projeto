@@ -9,8 +9,8 @@ import javax.persistence.TypedQuery;
 
 import org.springframework.util.CollectionUtils;
 
-import br.gov.df.emater.aterwebsrv.dto.AtividadeCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.TagDto;
+import br.gov.df.emater.aterwebsrv.dto.atividade.AtividadeCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.ferramenta.Util;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;

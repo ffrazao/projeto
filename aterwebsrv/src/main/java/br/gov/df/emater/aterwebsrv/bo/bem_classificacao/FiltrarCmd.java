@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.BemClassificacaoDao;
-import br.gov.df.emater.aterwebsrv.dto.BemClassificacaoCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.indice_producao.BemClassificacaoCadFiltroDto;
 
 @Service("BemClassificacaoFiltrarCmd")
 public class FiltrarCmd extends _Comando {

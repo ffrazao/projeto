@@ -9,8 +9,8 @@ import javax.persistence.Query;
 
 import org.springframework.util.CollectionUtils;
 
-import br.gov.df.emater.aterwebsrv.dto.LogAcaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.TagDto;
+import br.gov.df.emater.aterwebsrv.dto.sistema.LogAcaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
 
 public class LogAcaoDaoImpl implements LogAcaoDaoCustom {

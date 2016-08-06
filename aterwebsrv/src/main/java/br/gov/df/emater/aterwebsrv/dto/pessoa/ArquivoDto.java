@@ -1,4 +1,4 @@
-package br.gov.df.emater.aterwebsrv.dto;
+package br.gov.df.emater.aterwebsrv.dto.pessoa;
 
 public class ArquivoDto {
 

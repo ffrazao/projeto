@@ -12,9 +12,9 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import br.gov.df.emater.aterwebsrv.dao.DaoException;
-import br.gov.df.emater.aterwebsrv.dto.FiltroDto;
-import br.gov.df.emater.aterwebsrv.dto.FormularioCadFiltroDto;
-import br.gov.df.emater.aterwebsrv.dto.FormularioColetaCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.CadFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.formulario.FormularioCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.formulario.FormularioColetaCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FormularioDestino;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Situacao;
@@ -67,7 +67,7 @@ public class FormularioDaoImpl implements FormularioDaoCustom {
 		if (!StringUtils.isEmpty(filtro.getNome())) {
 			sql.append("and (").append("\n");
 			sqlTemp = new StringBuilder();
-			for (String nome : filtro.getNome().split(FiltroDto.SEPARADOR_CAMPO)) {
+			for (String nome : filtro.getNome().split(CadFiltroDto.SEPARADOR_CAMPO)) {
 				if (sqlTemp.length() > 0) {
 					sqlTemp.append(" or ");
 				}
@@ -80,7 +80,7 @@ public class FormularioDaoImpl implements FormularioDaoCustom {
 		if (!StringUtils.isEmpty(filtro.getCodigo())) {
 			sql.append("and (").append("\n");
 			sqlTemp = new StringBuilder();
-			for (String codigo : filtro.getCodigo().split(FiltroDto.SEPARADOR_CAMPO)) {
+			for (String codigo : filtro.getCodigo().split(CadFiltroDto.SEPARADOR_CAMPO)) {
 				if (sqlTemp.length() > 0) {
 					sqlTemp.append(" or ");
 				}

@@ -9,8 +9,8 @@ import javax.persistence.TypedQuery;
 
 import org.springframework.util.StringUtils;
 
-import br.gov.df.emater.aterwebsrv.dto.BemClassificacaoCadFiltroDto;
-import br.gov.df.emater.aterwebsrv.dto.FiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.CadFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.indice_producao.BemClassificacaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacaoFormaProducaoItem;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacaoFormaProducaoValor;
@@ -178,7 +178,7 @@ public class BemClassificacaoDaoImpl implements BemClassificacaoDaoCustom {
 		if (!StringUtils.isEmpty(filtro.getNome())) {
 			sql.append("and (").append("\n");
 			sqlTemp = new StringBuilder();
-			for (String nome : filtro.getNome().split(FiltroDto.SEPARADOR_CAMPO)) {
+			for (String nome : filtro.getNome().split(CadFiltroDto.SEPARADOR_CAMPO)) {
 				if (sqlTemp.length() > 0) {
 					sqlTemp.append(" or ");
 				}

@@ -9,8 +9,8 @@ import javax.persistence.TypedQuery;
 
 import org.springframework.util.StringUtils;
 
-import br.gov.df.emater.aterwebsrv.dto.BemProducaoCadFiltroDto;
-import br.gov.df.emater.aterwebsrv.dto.FiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.CadFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.indice_producao.BemProducaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacao;
 
 public class BemDaoImpl implements BemDaoCustom {
@@ -42,7 +42,7 @@ public class BemDaoImpl implements BemDaoCustom {
 		if (!StringUtils.isEmpty(filtro.getNome())) {
 			sql.append("and (").append("\n");
 			sqlTemp = new StringBuilder();
-			for (String nome : filtro.getNome().split(FiltroDto.SEPARADOR_CAMPO)) {
+			for (String nome : filtro.getNome().split(CadFiltroDto.SEPARADOR_CAMPO)) {
 				if (sqlTemp.length() > 0) {
 					sqlTemp.append(" or ");
 				}

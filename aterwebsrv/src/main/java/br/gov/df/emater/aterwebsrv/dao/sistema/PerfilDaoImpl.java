@@ -9,8 +9,8 @@ import javax.persistence.Query;
 
 import org.springframework.util.CollectionUtils;
 
-import br.gov.df.emater.aterwebsrv.dto.PerfilCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.TagDto;
+import br.gov.df.emater.aterwebsrv.dto.sistema.PerfilCadFiltroDto;
 
 public class PerfilDaoImpl implements PerfilDaoCustom {
 

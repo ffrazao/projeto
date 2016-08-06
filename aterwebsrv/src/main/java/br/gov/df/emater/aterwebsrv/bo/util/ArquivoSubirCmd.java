@@ -16,7 +16,7 @@ import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.ArquivoDao;
-import br.gov.df.emater.aterwebsrv.dto.ArquivoDto;
+import br.gov.df.emater.aterwebsrv.dto.pessoa.ArquivoDto;
 import br.gov.df.emater.aterwebsrv.ferramenta.Criptografia;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.ArquivoTipo;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Arquivo;

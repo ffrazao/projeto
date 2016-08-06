@@ -1,7 +1,8 @@
-package br.gov.df.emater.aterwebsrv.dto;
+package br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural;
 
 import java.util.Set;
 
+import br.gov.df.emater.aterwebsrv.dto.atividade.AtividadeCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FinanciamentoTipo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.ProjetoCreditoRuralStatus;
 

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
-import br.gov.df.emater.aterwebsrv.dto.LogAcaoCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.sistema.LogAcaoCadFiltroDto;
 
 @Service("LogAcaoFiltroNovoCmd")
 public class FiltroNovoCmd extends _Comando {

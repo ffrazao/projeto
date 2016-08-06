@@ -13,7 +13,7 @@ import br.gov.df.emater.aterwebsrv.dao.atividade.AtividadeAssuntoDao;
 import br.gov.df.emater.aterwebsrv.dao.atividade.AtividadeDao;
 import br.gov.df.emater.aterwebsrv.dao.atividade.AtividadePessoaDao;
 import br.gov.df.emater.aterwebsrv.dao.atividade.OcorrenciaDao;
-import br.gov.df.emater.aterwebsrv.dto.AtividadeCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.atividade.AtividadeCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.AtividadeAssunto;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.AtividadePessoa;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.Ocorrencia;

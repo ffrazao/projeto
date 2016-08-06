@@ -1,10 +1,11 @@
-package br.gov.df.emater.aterwebsrv.dto;
+package br.gov.df.emater.aterwebsrv.dto.funcional;
 
 import java.util.Set;
 
+import br.gov.df.emater.aterwebsrv.dto.CadFiltroDtoCustom;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.UnidadeOrganizacionalClassificacao;
 
-public class UnidadeOrganizacionalCadFiltroDto extends FiltroDtoCustom {
+public class UnidadeOrganizacionalCadFiltroDto extends CadFiltroDtoCustom {
 
 	private static final long serialVersionUID = 1L;
 

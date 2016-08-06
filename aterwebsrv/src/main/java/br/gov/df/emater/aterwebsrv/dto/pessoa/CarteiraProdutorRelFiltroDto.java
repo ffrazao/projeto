@@ -1,8 +1,10 @@
-package br.gov.df.emater.aterwebsrv.dto;
+package br.gov.df.emater.aterwebsrv.dto.pessoa;
 
 import java.util.List;
 
-public class CarteiraProdutorRelFiltroDto extends FiltroDtoCustom {
+import br.gov.df.emater.aterwebsrv.dto.CadFiltroDtoCustom;
+
+public class CarteiraProdutorRelFiltroDto extends CadFiltroDtoCustom {
 
 	private static final long serialVersionUID = 1L;
 

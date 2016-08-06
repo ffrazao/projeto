@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.sistema.UsuarioDao;
-import br.gov.df.emater.aterwebsrv.dto.UsuarioCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.sistema.UsuarioCadFiltroDto;
 
 @Service("UsuarioFiltrarCmd")
 public class FiltrarCmd extends _Comando {

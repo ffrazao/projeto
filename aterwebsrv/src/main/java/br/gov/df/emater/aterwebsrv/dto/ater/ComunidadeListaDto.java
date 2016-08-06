@@ -1,8 +1,10 @@
-package br.gov.df.emater.aterwebsrv.dto;
+package br.gov.df.emater.aterwebsrv.dto.ater;
 
 import java.util.Set;
 
-public class ComunidadeListaDto extends FiltroDtoCustom {
+import br.gov.df.emater.aterwebsrv.dto.CadFiltroDtoCustom;
+
+public class ComunidadeListaDto extends CadFiltroDtoCustom {
 
 	private static final long serialVersionUID = 1L;
 

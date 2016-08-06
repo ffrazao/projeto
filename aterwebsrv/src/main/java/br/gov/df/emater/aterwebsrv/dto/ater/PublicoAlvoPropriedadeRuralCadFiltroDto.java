@@ -1,12 +1,13 @@
-package br.gov.df.emater.aterwebsrv.dto;
+package br.gov.df.emater.aterwebsrv.dto.ater;
 
 import java.util.List;
 
+import br.gov.df.emater.aterwebsrv.dto.CadFiltroDtoCustom;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 
-public class PublicoAlvoPropriedadeRuralCadFiltroDto extends FiltroDtoCustom {
+public class PublicoAlvoPropriedadeRuralCadFiltroDto extends CadFiltroDtoCustom {
 
 	private static final long serialVersionUID = 1L;
 

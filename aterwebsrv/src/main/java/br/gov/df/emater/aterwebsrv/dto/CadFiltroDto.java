@@ -1,6 +1,6 @@
 package br.gov.df.emater.aterwebsrv.dto;
 
-public interface FiltroDto extends Dto {
+public interface CadFiltroDto extends Dto {
 
 	enum TemMaisRegistros {
 		PRIMEIRA_PAGINA, PROXIMA_PAGINA, ULTIMA_PAGINA;

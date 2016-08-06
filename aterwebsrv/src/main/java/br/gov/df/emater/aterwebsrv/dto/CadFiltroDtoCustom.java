@@ -2,7 +2,7 @@ package br.gov.df.emater.aterwebsrv.dto;
 
 import javax.persistence.Query;
 
-public abstract class FiltroDtoCustom implements FiltroDto {
+public abstract class CadFiltroDtoCustom implements CadFiltroDto {
 
 	private static final long serialVersionUID = 1L;
 
@@ -14,7 +14,7 @@ public abstract class FiltroDtoCustom implements FiltroDto {
 
 	public void configuraPaginacao(Query query) {
 		Integer ini = this.getNumeroPagina() == null ? 1 : this.getNumeroPagina();
-		Integer tam = FiltroDto.TAMANHO_PAGINA;
+		Integer tam = CadFiltroDto.TAMANHO_PAGINA;
 
 		ini = (ini - 1) * tam;
 

@@ -1,8 +1,10 @@
-package br.gov.df.emater.aterwebsrv.dto;
+package br.gov.df.emater.aterwebsrv.dto.pessoa;
 
 import java.util.List;
 import java.util.Set;
 
+import br.gov.df.emater.aterwebsrv.dto.CadFiltroDtoCustom;
+import br.gov.df.emater.aterwebsrv.dto.TagDto;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.ater.Comunidade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
@@ -18,7 +20,7 @@ import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.GrupoSocial;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 
-public class PessoaCadFiltroDto extends FiltroDtoCustom {
+public class PessoaCadFiltroDto extends CadFiltroDtoCustom {
 
 	private static final long serialVersionUID = 1L;
 

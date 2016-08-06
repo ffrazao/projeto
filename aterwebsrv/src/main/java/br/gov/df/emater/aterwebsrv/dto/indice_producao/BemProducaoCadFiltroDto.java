@@ -1,6 +1,8 @@
-package br.gov.df.emater.aterwebsrv.dto;
+package br.gov.df.emater.aterwebsrv.dto.indice_producao;
 
-public class BemClassificacaoCadFiltroDto extends FiltroDtoCustom {
+import br.gov.df.emater.aterwebsrv.dto.CadFiltroDtoCustom;
+
+public class BemProducaoCadFiltroDto extends CadFiltroDtoCustom {
 
 	private static final long serialVersionUID = 1L;
 
