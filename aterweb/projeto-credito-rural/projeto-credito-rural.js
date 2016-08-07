@@ -21,12 +21,6 @@
             templateUrl: pUrlModulo + '/lista.html',
             url: '/lista',
         });
-        $stateProvider.state('p.' + pNmModulo + '.form', {
-            templateUrl: 'atividade/form.html',
-            controller: 'AtividadeCtrl',
-            url: '/form/:id',
-        });
-
     }]);
     angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'ProjetoCreditoRuralSrv',
         function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, ProjetoCreditoRuralSrv) {
@@ -118,6 +112,54 @@
             // fim: atividades do Modal
 
             // inicio das operaçoes atribuidas ao navagador
+            var editarItem = function (destino, item) {
+                var arr = [];
+                if (!destino) {
+                    arr.push({registro: {}});
+                } else {                
+                    if ($scope.navegador.selecao.tipo === 'U') {
+                        arr.push({registro: {id: $scope.navegador.selecao.item.atividadeId}});
+                    } else {
+                        $scope.navegador.selecao.items.forEach(function (registro) {
+                            arr.push({registro: {id: registro.atividadeId}});
+                        });
+                    }
+                }
+                if (!arr.length) {
+                    toastr.error('Dados não informados', 'Erro ao abrir formulário');
+                } else {
+                    arr.forEach(function(registro) {
+                        var modalInstance = $uibModal.open({
+                            animation: true,
+                            controller: 'AtividadeCtrl',
+                            size : 'lg',
+                            templateUrl: 'atividade/atividade-form-modal.html',
+                            resolve: {
+                                modalCadastro: function() {
+                                    return registro;
+                                },
+                            },
+                        });
+
+                        modalInstance.result.then(function(conteudo) {
+                            alert(conteudo);
+                            console.log(conteudo);
+                        }, function () {
+                            // processar o retorno negativo da modal
+                            //$log.info('Modal dismissed at: ' + new Date());
+                        });
+                    });
+                }
+            };
+
+            $scope.incluir = function() {
+                editarItem();
+            };
+
+            $scope.editar = function(scp) {
+                editarItem($scope.cadastro.lista);
+            };
+
             $scope.confirmarFiltrarAntes = function(filtro) {
                 filtro.empresaList = [];
                 filtro.unidadeOrganizacionalList = [];

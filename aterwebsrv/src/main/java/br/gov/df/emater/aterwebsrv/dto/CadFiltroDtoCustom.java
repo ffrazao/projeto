@@ -12,6 +12,33 @@ public abstract class CadFiltroDtoCustom implements CadFiltroDto {
 
 	private TemMaisRegistros temMaisRegistros;
 
+	public void configuraPaginacao(org.hibernate.Query query) {
+		Integer ini = this.getNumeroPagina() == null ? 1 : this.getNumeroPagina();
+		Integer tam = CadFiltroDto.TAMANHO_PAGINA;
+
+		ini = (ini - 1) * tam;
+
+		if (this.getTemMaisRegistros() != null) {
+			switch (this.getTemMaisRegistros()) {
+			case PRIMEIRA_PAGINA:
+				ini = 1;
+				break;
+			case ULTIMA_PAGINA:
+				tam = null;
+			case PROXIMA_PAGINA:
+				if (ini == 0) {
+					ini = tam;
+				}
+			default:
+				break;
+			}
+		}
+		query.setFirstResult(ini);
+		if (tam != null) {
+			query.setMaxResults(tam);
+		}
+	}
+
 	public void configuraPaginacao(Query query) {
 		Integer ini = this.getNumeroPagina() == null ? 1 : this.getNumeroPagina();
 		Integer tam = CadFiltroDto.TAMANHO_PAGINA;

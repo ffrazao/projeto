@@ -33,11 +33,15 @@
         function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, AtividadeSrv) {
             'ngInject';
 
-            if (!$state.params.opcao || !$state.params.opcao.length || ['executar', 'demandar'].indexOf($state.params.opcao) < 0) {
-                $state.go('p.atividade.filtro', {opcao: 'executar'}, {location: true});
-                return;
+            if (!modalCadastro) {
+                if (!$state.params.opcao || !$state.params.opcao.length || ['executar', 'demandar'].indexOf($state.params.opcao) < 0) {
+                    $state.go('p.atividade.filtro', {opcao: 'executar'}, {location: true});
+                    return;
+                } else {
+                    $scope.opcao = $state.params.opcao;
+                }
             } else {
-                $scope.opcao = $state.params.opcao;
+                $scope.opcao = 'executar';                
             }
 
             if ($scope.opcao === 'demandar') {

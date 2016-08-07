@@ -5,12 +5,16 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
+import org.hibernate.Query;
+import org.hibernate.SessionFactory;
+import org.hibernate.transform.Transformers;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 
 import br.gov.df.emater.aterwebsrv.dto.TagDto;
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoCreditoRuralCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoCreditoRuralCadListaDto;
 import br.gov.df.emater.aterwebsrv.ferramenta.Util;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FinanciamentoTipo;
@@ -21,37 +25,40 @@ public class ProjetoCreditoRuralDaoImpl implements ProjetoCreditoRuralDaoCustom 
 	@PersistenceContext
 	private EntityManager em;
 
+	@Autowired
+	private SessionFactory sessionFactory;
+
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Object[]> filtrar(ProjetoCreditoRuralCadFiltroDto filtro) {
+	public List<ProjetoCreditoRuralCadListaDto> filtrar(ProjetoCreditoRuralCadFiltroDto filtro) {
 		// objetos de trabalho
-		List<Object[]> result = null;
+		List<ProjetoCreditoRuralCadListaDto> result = null;
 		List<Object> params = new ArrayList<Object>();
 		StringBuilder sql, sqlTemp;
 
 		// construção do sql
 		sql = new StringBuilder();
 		sql.append("SELECT ").append("\n");
-		sql.append("    ativ.id,").append("\n");
-		sql.append("    cred.id as cred_id,").append("\n");
-		sql.append("    pes.nome as beneficiario,").append("\n");
-		sql.append("    ativ.inicio,").append("\n");
-		sql.append("    ativ.codigo,").append("\n");
-		sql.append("    cred.status,").append("\n");
-		sql.append("    agente.id as agente_id,").append("\n");
-		sql.append("    agente_pessoa.nome as agente_nome,").append("\n");
-		sql.append("    cred.agencia,").append("\n");
-		sql.append("    linha.id as linha_id,").append("\n");
-		sql.append("    linha.nome as linha_nome,").append("\n");
-		sql.append("    cred.numero_cedula,").append("\n");
+		sql.append("    ativ.id as atividadeId,").append("\n");
+		sql.append("    cred.id as projetoCreditoRuralId,").append("\n");
+		sql.append("    pes.nome as beneficiarioNome,").append("\n");
+		sql.append("    ativ.inicio as inicio,").append("\n");
+		sql.append("    ativ.codigo as atividadeCodigo,").append("\n");
+		sql.append("    cred.status as status,").append("\n");
+		sql.append("    agente.id as agenteFinanceiroId,").append("\n");
+		sql.append("    agente_pessoa.nome as agenteFiananceiroNome,").append("\n");
+		sql.append("    cred.agencia as agencia,").append("\n");
+		sql.append("    linha.id as linhaCreditoId,").append("\n");
+		sql.append("    linha.nome as linhaCreditoNome,").append("\n");
+		sql.append("    cred.numero_cedula as numeroCedula,").append("\n");
 		sql.append("	(SELECT COUNT(*) as total").append("\n");
 		sql.append("	 FROM credito_rural.projeto_credito_rural_financiamento financCust").append("\n");
 		sql.append("	 WHERE financCust.projeto_credito_rural_id = cred.id").append("\n");
-		sql.append("     AND   financCust.tipo = 'C') custeio_total,").append("\n");
+		sql.append("     AND   financCust.tipo = 'C') as custeioTotal,").append("\n");
 		sql.append("	(SELECT COUNT(*) as total").append("\n");
 		sql.append("	 FROM credito_rural.projeto_credito_rural_financiamento financInvest").append("\n");
 		sql.append("	 WHERE financInvest.projeto_credito_rural_id = cred.id").append("\n");
-		sql.append("     AND   financInvest.tipo = 'I') invest_total").append("\n");
+		sql.append("     AND   financInvest.tipo = 'I') as investimentoTotal").append("\n");
 		sql.append("FROM").append("\n");
 		sql.append("    atividade.atividade ativ").append("\n");
 		sql.append("        JOIN").append("\n");
@@ -78,9 +85,9 @@ public class ProjetoCreditoRuralDaoImpl implements ProjetoCreditoRuralDaoCustom 
 				}
 				String n = nome.getText().replaceAll("\\s", "%");
 				params.add(String.format("%%%s%%", n));
-				sqlTemp.append(" (pes.nome like ?").append(params.size());
+				sqlTemp.append(" (pes.nome like ?");
 				params.add(String.format("%%%s%%", n));
-				sqlTemp.append(" or pes.apelido_sigla like ?").append(params.size()).append(")").append("\n");
+				sqlTemp.append(" or pes.apelido_sigla like ?").append(")").append("\n");
 			}
 			sql.append(sqlTemp);
 			sql.append(" )").append("\n");
@@ -96,7 +103,7 @@ public class ProjetoCreditoRuralDaoImpl implements ProjetoCreditoRuralDaoCustom 
 				}
 				String n = Util.codigoAtividadeFormatar(nome.getText());
 				params.add(n);
-				sqlTemp.append(" ativ.codigo = ?").append(params.size()).append("\n");
+				sqlTemp.append(" ativ.codigo = ?").append("\n");
 			}
 			sql.append(sqlTemp);
 			sql.append(" )").append("\n");
@@ -105,11 +112,11 @@ public class ProjetoCreditoRuralDaoImpl implements ProjetoCreditoRuralDaoCustom 
 		// PERIODO
 		if (filtro.getInicio() != null) {
 			params.add(UtilitarioData.getInstance().ajustaInicioDia(filtro.getInicio()));
-			sql.append("and ativ.inicio >= ?").append(params.size()).append("\n");
+			sql.append("and ativ.inicio >= ?").append("\n");
 		}
 		if (filtro.getTermino() != null) {
 			params.add(UtilitarioData.getInstance().ajustaFinalDia(filtro.getTermino()));
-			sql.append("and ativ.inicio <= ?").append(params.size()).append("\n");
+			sql.append("and ativ.inicio <= ?").append("\n");
 		}
 
 		// TECNICO EXECUTOR
@@ -122,10 +129,10 @@ public class ProjetoCreditoRuralDaoImpl implements ProjetoCreditoRuralDaoCustom 
 		// }
 		// String n = nome.getText().replaceAll("\\s", "%");
 		// params.add(String.format("%%%s%%", n));
-		// sqlTemp.append(" (exec.pessoa.nome like ?").append(params.size());
+		// sqlTemp.append(" (exec.pessoa.nome like ?");
 		// params.add(String.format("%%%s%%", n));
 		// sqlTemp.append(" or exec.pessoa.apelido_sigla like
-		// ?").append(params.size()).append(")").append("\n");
+		// ?").append(")").append("\n");
 		// }
 		// sql.append(sqlTemp);
 		// sql.append(" )").append("\n");
@@ -152,7 +159,7 @@ public class ProjetoCreditoRuralDaoImpl implements ProjetoCreditoRuralDaoCustom 
 					sqlTemp.append(" or ");
 				}
 				params.add(item.name());
-				sqlTemp.append(" cred.status = ?").append(params.size()).append("\n");
+				sqlTemp.append(" cred.status = ?").append("\n");
 			}
 			sql.append(sqlTemp);
 			sql.append(" )").append("\n");
@@ -167,7 +174,7 @@ public class ProjetoCreditoRuralDaoImpl implements ProjetoCreditoRuralDaoCustom 
 					sqlTemp.append(" or ");
 				}
 				params.add(item);
-				sqlTemp.append(" agente.id = ?").append(params.size()).append("\n");
+				sqlTemp.append(" agente.id = ?").append("\n");
 			}
 			sql.append(sqlTemp);
 			sql.append(" )").append("\n");
@@ -182,7 +189,7 @@ public class ProjetoCreditoRuralDaoImpl implements ProjetoCreditoRuralDaoCustom 
 					sqlTemp.append(" or ");
 				}
 				params.add(item);
-				sqlTemp.append(" linha.id = ?").append(params.size()).append("\n");
+				sqlTemp.append(" linha.id = ?").append("\n");
 			}
 			sql.append(sqlTemp);
 			sql.append(" )").append("\n");
@@ -190,18 +197,18 @@ public class ProjetoCreditoRuralDaoImpl implements ProjetoCreditoRuralDaoCustom 
 		sql.append("ORDER BY pes.nome , ativ.inicio DESC").append("\n");
 
 		// criar a query
-		Query query = em.createNativeQuery(sql.toString());
+		Query query = sessionFactory.getCurrentSession().createSQLQuery(sql.toString()).setResultTransformer(Transformers.aliasToBean(ProjetoCreditoRuralCadListaDto.class));
 
 		// inserir os parametros
 		for (int i = 1; i <= params.size(); i++) {
-			query.setParameter(i, params.get(i - 1));
+			query.setParameter(i - 1, params.get(i - 1));
 		}
 
 		// definir a pagina a ser consultada
 		filtro.configuraPaginacao(query);
 
 		// executar a consulta
-		result = query.getResultList();
+		result = query.list();
 
 		// retornar
 		return result;
