@@ -39,7 +39,7 @@ public class ProjetoCreditoRuralDaoImpl implements ProjetoCreditoRuralDaoCustom 
 		// construção do sql
 		sql = new StringBuilder();
 		sql.append("SELECT ").append("\n");
-		sql.append("    ativ.id as atividadeId,").append("\n");
+		sql.append("    ativ.id as id,").append("\n");
 		sql.append("    cred.id as projetoCreditoRuralId,").append("\n");
 		sql.append("    pes.nome as beneficiarioNome,").append("\n");
 		sql.append("    ativ.inicio as inicio,").append("\n");

@@ -5,8 +5,8 @@
 'use strict';
 
 angular.module(pNmModulo).factory(pNmFactory,
-  ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams', 'ComunidadeSrv', 'PessoaSrv',
-    function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams, ComunidadeSrv, PessoaSrv) {
+  ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams', 'ComunidadeSrv', 'PessoaSrv', 'AtividadeSrv',
+    function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams, ComunidadeSrv, PessoaSrv, AtividadeSrv) {
         'ngInject';
         
         var ProjetoCreditoRuralSrv = {
@@ -62,20 +62,19 @@ angular.module(pNmModulo).factory(pNmFactory,
                 SegurancaSrv.acesso(this.funcionalidade, 'INCLUIR');
                 return $http.get(this.endereco + '/novo');
             },
-            incluir : function(registro) {
-                SegurancaSrv.acesso(this.funcionalidade, 'INCLUIR');
-                return $http.post(this.endereco + '/incluir', registro);
-            },
             visualizar : function(id) {
                 SegurancaSrv.acesso(this.funcionalidade, 'VISUALIZAR');
                 return $http.get(this.endereco + '/visualizar', {params: {'id': id}});
             },
-            editar : function(registro) {
-                SegurancaSrv.acesso(this.funcionalidade, 'EDITAR');
-                return $http.post(this.endereco + '/editar', registro);
-            },
             excluir : function() {
                 SegurancaSrv.acesso(this.funcionalidade, 'EXCLUIR');
+            },
+            salvar: function(registro) {
+                if (registro.id) {
+                    return AtividadeSrv.editar(registro);
+                } else {
+                    return AtividadeSrv.incluir(registro);
+                }
             },
             calcularCronograma : function(projetoCreditoRural) {
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');

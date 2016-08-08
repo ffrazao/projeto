@@ -110,18 +110,32 @@
                 });
             };
             // fim: atividades do Modal
-
+            
             // inicio das operaçoes atribuidas ao navagador
+            var salvar = function(registro, modal) {
+                ProjetoCreditoRuralSrv.salvar(registro.cadastro).success(function(resposta) {
+                    if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {
+                        $scope.confirmarFiltrar($scope, $scope.cadastro.filtro.numeroPagina, $scope.cadastro.filtro.temMaisRegistros);
+                        toastr.info('Operação realizada!', 'Informação');
+                        modal.dismiss();
+                    } else {
+                        toastr.error(resposta && resposta.mensagem ? resposta.mensagem : resposta, 'Erro ao salvar');
+                    }
+                }).error(function(erro) {
+                    toastr.error(erro, 'Erro ao salvar');
+                });
+            };
+
             var editarItem = function (destino, item) {
                 var arr = [];
                 if (!destino) {
                     arr.push({registro: {}});
                 } else {                
                     if ($scope.navegador.selecao.tipo === 'U') {
-                        arr.push({registro: {id: $scope.navegador.selecao.item.atividadeId}});
+                        arr.push({registro: {id: $scope.navegador.selecao.item.id}});
                     } else {
                         $scope.navegador.selecao.items.forEach(function (registro) {
-                            arr.push({registro: {id: registro.atividadeId}});
+                            arr.push({registro: {id: registro.id}});
                         });
                     }
                 }
@@ -136,17 +150,13 @@
                             templateUrl: 'atividade/atividade-form-modal.html',
                             resolve: {
                                 modalCadastro: function() {
+                                    registro.modalOk = salvar;
                                     return registro;
                                 },
                             },
                         });
-
                         modalInstance.result.then(function(conteudo) {
-                            alert(conteudo);
-                            console.log(conteudo);
                         }, function () {
-                            // processar o retorno negativo da modal
-                            //$log.info('Modal dismissed at: ' + new Date());
                         });
                     });
                 }
@@ -156,7 +166,7 @@
                 editarItem();
             };
 
-            $scope.editar = function(scp) {
+            $scope.visualizar = function(scp) {
                 editarItem($scope.cadastro.lista);
             };
 

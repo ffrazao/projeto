@@ -122,7 +122,18 @@
             // inicio: atividades do Modal
             $scope.modalOk = function() {
                 // Retorno da modal
-                $uibModalInstance.close({cadastro: angular.copy($scope.cadastro), selecao: angular.copy($scope.navegador.selecao)});
+                $scope.navegador.submetido = true;
+                if ($scope.frm.formulario.$invalid) {
+                    toastr.error('Verifique os campos marcados', 'Erro');
+                    return false;
+                }
+                if ($scope.modalCadastro && $scope.modalCadastro.modalOk) {
+                    confirmarSalvar($scope.cadastro);
+                    var registro = $rootScope.pegarRegistroMarcadoExclusao($scope);
+                    $scope.modalCadastro.modalOk({cadastro: angular.copy(registro), selecao: angular.copy($scope.navegador.selecao)}, $uibModalInstance);
+                } else {
+                    $uibModalInstance.close({cadastro: angular.copy($scope.cadastro), selecao: angular.copy($scope.navegador.selecao)});
+                }
             };
             $scope.modalCancelar = function() {
                 // Cancelar a modal
@@ -260,6 +271,14 @@
             // inicio dos watches
 
             // fim dos watches
+            if (modalCadastro) {
+                $scope.modalCadastro = modalCadastro;
+                if (modalCadastro.registro.id) {
+                    $scope.editar($scope, modalCadastro.registro.id);
+                } else {
+                    $scope.incluir($scope);
+                }
+            }
         }
     ]);
 })('atividade', 'AtividadeCtrl', 'Cadastro de Atividades', 'atividade');

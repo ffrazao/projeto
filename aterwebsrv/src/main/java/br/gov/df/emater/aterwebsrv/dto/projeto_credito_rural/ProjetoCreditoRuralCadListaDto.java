@@ -20,11 +20,11 @@ public class ProjetoCreditoRuralCadListaDto extends CadListaDtoCustom {
 
 	private String atividadeCodigo;
 
-	private Integer atividadeId;
-
 	private String beneficiarioNome;
 
 	private BigInteger custeioTotal;
+
+	private Integer id;
 
 	private Calendar inicio;
 
@@ -56,16 +56,16 @@ public class ProjetoCreditoRuralCadListaDto extends CadListaDtoCustom {
 		return atividadeCodigo;
 	}
 
-	public Integer getAtividadeId() {
-		return atividadeId;
-	}
-
 	public String getBeneficiarioNome() {
 		return beneficiarioNome;
 	}
 
 	public BigInteger getCusteioTotal() {
 		return custeioTotal;
+	}
+
+	public Integer getId() {
+		return id;
 	}
 
 	public Calendar getInicio() {
@@ -112,16 +112,16 @@ public class ProjetoCreditoRuralCadListaDto extends CadListaDtoCustom {
 		this.atividadeCodigo = atividadeCodigo;
 	}
 
-	public void setAtividadeId(Integer atividadeId) {
-		this.atividadeId = atividadeId;
-	}
-
 	public void setBeneficiarioNome(String beneficiarioNome) {
 		this.beneficiarioNome = beneficiarioNome;
 	}
 
 	public void setCusteioTotal(BigInteger custeioTotal) {
 		this.custeioTotal = custeioTotal;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public void setInicio(Object inicio) {

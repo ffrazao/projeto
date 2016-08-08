@@ -113,7 +113,9 @@ angular.module(pNmModulo).controller(pNmController,
         }
         if ($scope.cadastro.registro.assuntoList.length !== $scope.atividadeAssuntoNvg.dados.length) {
             $scope.atividadeAssuntoNvg.setDados($scope.cadastro.registro.assuntoList);
-            $scope.atividadeAssuntoNvg.botao('edicao').visivel = false;
+            if ($scope.atividadeAssuntoNvg.botao('edicao')) {
+                $scope.atividadeAssuntoNvg.botao('edicao').visivel = false;
+            }
             return;
         }
     }, true);

@@ -218,7 +218,10 @@ angular.module(pNmModulo).controller('Demandante' + pNmController,
         }
         if ($scope.$parent.cadastro.registro[$scope.lista].length !== $scope.atividadePessoaNvg.dados.length) {
             $scope.atividadePessoaNvg.setDados($scope.$parent.cadastro.registro[$scope.lista]);
-            $scope.atividadePessoaNvg.botao('edicao').visivel = false;
+            if ($scope.atividadePessoaNvg.botao('edicao')) {
+                $scope.atividadePessoaNvg.botao('edicao').visivel = false;
+            }
+
             return;
         }
     }, true);
@@ -256,7 +259,9 @@ angular.module(pNmModulo).controller('Executor' + pNmController,
     $scope.$watch('cadastro.registro.' + $scope.lista, function() {
         if (angular.isArray($scope.$parent.cadastro.registro[$scope.lista]) && !angular.isArray($scope.atividadePessoaNvg.dados)) {
             $scope.atividadePessoaNvg.setDados($scope.$parent.cadastro.registro[$scope.lista]);
-            $scope.atividadePessoaNvg.botao('edicao').visivel = false;
+            if ($scope.atividadePessoaNvg.botao('edicao')) {
+                $scope.atividadePessoaNvg.botao('edicao').visivel = false;
+            }
             return;
         }
         if (!angular.isArray($scope.$parent.cadastro.registro[$scope.lista])) {
@@ -264,7 +269,9 @@ angular.module(pNmModulo).controller('Executor' + pNmController,
         }
         if ($scope.$parent.cadastro.registro[$scope.lista].length !== $scope.atividadePessoaNvg.dados.length) {
             $scope.atividadePessoaNvg.setDados($scope.$parent.cadastro.registro[$scope.lista]);
-            $scope.atividadePessoaNvg.botao('edicao').visivel = false;
+            if ($scope.atividadePessoaNvg.botao('edicao')) {
+                $scope.atividadePessoaNvg.botao('edicao').visivel = false;
+            }
             return;
         }
     }, true);

@@ -58,7 +58,7 @@ public class NovoCmd extends _Comando {
 
 		// FIXME quebra galho para facilitar a construção do credito rural,
 		// remover assim que terminar
-		result.setPublicoEstimado(1);
+		/*result.setPublicoEstimado(1);
 		result.setMetodo(metodoDao.findOneByCodigo(MetodoCodigo.PROJETO_CREDITO_RURAL));
 		List<AtividadeAssunto> assuntoList = new ArrayList<>();
 		AtividadeAssunto atividadeAssunto = new AtividadeAssunto();
@@ -125,6 +125,7 @@ public class NovoCmd extends _Comando {
 		result.setProjetoCreditoRural(projetoCreditoRural);
 		// FIXME quebra galho para facilitar a construção do credito rural,
 		// remover assim que terminar
+		 */
 
 		Calendar hoje = Calendar.getInstance();
 		result.setInicio(hoje);
