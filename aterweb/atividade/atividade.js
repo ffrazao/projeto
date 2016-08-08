@@ -120,6 +120,10 @@
             // código para verificar se o modal está ou não ativo
             $scope.verificaEstado($uibModalInstance, $scope, 'filtro', modalCadastro, pNmFormulario);
             // inicio: atividades do Modal
+            var confirmarSalvar = function(cadastro) {
+                removerCampo(cadastro, ['@jsonId']);
+            };
+
             $scope.modalOk = function() {
                 // Retorno da modal
                 $scope.navegador.submetido = true;
@@ -195,10 +199,6 @@
                     toastr.error('Informe pelo menos uma comunidade', 'Erro ao filtrar');
                     throw 'Informe pelo menos uma comunidade';
                 }
-            };
-
-            var confirmarSalvar = function(cadastro) {
-                removerCampo(cadastro, ['@jsonId']);
             };
 
             $scope.confirmarIncluirAntes = function(cadastro) {
