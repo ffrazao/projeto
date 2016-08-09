@@ -12,6 +12,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
+import br.gov.df.emater.aterwebsrv.bo.BoException;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -26,64 +27,88 @@ public class _RelatorioImpl implements _Relatorio {
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
+	private final static String CLASSPATH = "classpath:jasper";
+
 	@Autowired
 	private ResourceLoader resourceLoader;
 
-	public void compilar(String relatorioNome) throws IOException, JRException {
-		compilarInterno(resourceLoader.getResource("classpath:jasper").getFile(), relatorioNome);
+	public void compilar(String relatorioNome) throws BoException {
+		try {
+			compilarInterno(resourceLoader.getResource(CLASSPATH).getFile(), relatorioNome);
+		} catch (IOException e) {
+			throw new BoException(e);
+		}
 	}
 
-	private void compilarInterno(File fonte, String relatorioNome) throws JRException {
-		if (logger.isDebugEnabled()) {
-			logger.debug(String.format("Procurando relatórios para compilar em [%s]", fonte.getAbsolutePath()));
+	private void compilarInterno(File diretorioFonte, String relatorioNome) throws BoException {
+		if (diretorioFonte == null || !diretorioFonte.isDirectory()) {
+			throw new BoException("Diretório dos arquivos fontes de relatórios inválido, [%s]", diretorioFonte);
 		}
-		for (File origem : fonte.listFiles()) {
-			if (origem.isFile() && origem.getName().endsWith(EXTENSAO_ARQUIVO_FONTE) && (relatorioNome == null || (origem.getAbsolutePath().endsWith(relatorioNome.concat(EXTENSAO_ARQUIVO_FONTE))))) {
+		if (logger.isDebugEnabled()) {
+			logger.debug(String.format("Procurando relatórios para compilar no diretório [%s]", diretorioFonte.getAbsolutePath()));
+		}
+		
+		String relatorioNomeInterno = relatorioNome.concat(EXTENSAO_ARQUIVO_FONTE).replaceAll("\\\\", "").replaceAll("/", "").toLowerCase();
+		for (File arquivo : diretorioFonte.listFiles()) { 
+			if (arquivo.isFile() && arquivo.getAbsoluteFile().toString().replaceAll("\\\\", "").replaceAll("/", "").toLowerCase().endsWith(relatorioNomeInterno)) {
 				if (logger.isDebugEnabled()) {
-					logger.debug(String.format("Compilando relatório [%s]", origem.getAbsolutePath()));
+					logger.debug(String.format("Compilando relatório [%s]", arquivo.getAbsolutePath()));
 				}
-				File compilado = new File(origem.getAbsolutePath().substring(0, origem.getAbsolutePath().lastIndexOf(EXTENSAO_ARQUIVO_FONTE)).concat(EXTENSAO_ARQUIVO_COMPILADO));
+				File compilado = new File(arquivo.getAbsolutePath().substring(0, arquivo.getAbsolutePath().lastIndexOf(EXTENSAO_ARQUIVO_FONTE)).concat(EXTENSAO_ARQUIVO_COMPILADO));
 				compilado.delete();
-				JasperCompileManager.compileReportToFile(origem.getAbsolutePath(), compilado.getAbsolutePath());
-			} else if (origem.isDirectory()) {
-				compilarInterno(origem, relatorioNome);
+				try {
+					JasperCompileManager.compileReportToFile(arquivo.getAbsolutePath(), compilado.getAbsolutePath());
+				} catch (JRException e) {
+					throw new BoException(e);
+				}
+			} else if (arquivo.isDirectory()) {
+				compilarInterno(arquivo, relatorioNome);
 			}
 		}
 	}
 
 	@Override
-	public byte[] imprimir(String relatorioNome, Map<String, Object> parametros, List<?> lista) throws Exception {
+	public byte[] imprimir(String relatorioNome, Map<String, Object> parametros, List<?> lista) throws BoException {
 		return imprimir(relatorioNome, parametros, lista, null);
 	}
 
 	@Override
-	public byte[] imprimir(String relatorioNome, Map<String, Object> parametros, List<?> lista, Formato formato) throws Exception {
-		JasperReport relatorio;
+	public byte[] imprimir(String relatorioNome, Map<String, Object> parametros, List<?> lista, Formato formato) throws BoException {
+		try {
+			JasperReport relatorio;
 
-		// carregar o modelo do relatório
-		String relatorioNomeCompleto = String.format("classpath:jasper/%s%s", relatorioNome, EXTENSAO_ARQUIVO_COMPILADO);
-		if (logger.isDebugEnabled()) {
-			logger.debug(String.format("Imprimindo o relatório [%s]", relatorioNomeCompleto));
-		}
-		Resource compilado = resourceLoader.getResource(relatorioNomeCompleto);
+			// carregar o modelo do relatório
+			String relatorioNomeCompleto = String.format("%s/%s%s", CLASSPATH, relatorioNome, EXTENSAO_ARQUIVO_COMPILADO);
+			if (logger.isDebugEnabled()) {
+				logger.debug(String.format("Imprimindo o relatório [%s]", relatorioNomeCompleto));
+			}
+			Resource compilado = resourceLoader.getResource(relatorioNomeCompleto);
 
-		// carregar o modelo do relatório
-		relatorio = (JasperReport) JRLoader.loadObject(compilado.getInputStream());
+			// verificar se o relatório já foi compilado
+			if (!compilado.exists()) {
+				compilar(relatorioNome);
+			}
 
-		// gerar uma impressão
-		JasperPrint impressao = JasperFillManager.fillReport(relatorio, parametros, new JRBeanCollectionDataSource(lista));
+			// carregar o modelo do relatório
+			relatorio = (JasperReport) JRLoader.loadObject(compilado.getInputStream());
 
-		// JasperExportManager.exportReportToPdfFile(impressao,
-		// "e:/CarteiraProdutorRel.pdf");
+			// gerar uma impressão
+			JasperPrint impressao = JasperFillManager.fillReport(relatorio, parametros, new JRBeanCollectionDataSource(lista));
 
-		if (formato == null) {
-			formato = Formato.PDF;
-		}
+			// JasperExportManager.exportReportToPdfFile(impressao,
+			// "e:/CarteiraProdutorRel.pdf");
 
-		switch (formato) {
-		default:
-		case PDF:
-			return JasperExportManager.exportReportToPdf(impressao);
+			if (formato == null) {
+				formato = Formato.PDF;
+			}
+
+			switch (formato) {
+			default:
+			case PDF:
+				return JasperExportManager.exportReportToPdf(impressao);
+			}
+		} catch (Exception e) {
+			throw new BoException(e);
 		}
 	}
 

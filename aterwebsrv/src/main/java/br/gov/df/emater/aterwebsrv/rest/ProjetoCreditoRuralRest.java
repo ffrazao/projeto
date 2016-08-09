@@ -53,4 +53,9 @@ public class ProjetoCreditoRuralRest {
 		return new Resposta(facadeBo.projetoCreditoRuralNovo(usuario, id == null ? null : new ProjetoCreditoRural(id)).getResposta());
 	}
 
+	@RequestMapping(value = "/projeto-tecnico-rel", method = RequestMethod.GET)
+	public Resposta projetoTecnicoRel(@RequestParam(value = "idList", required = true) Integer[] idList, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.projetoCreditoRuralProjetoTecnicoRel(usuario, idList).getResposta());
+	}
+
 }

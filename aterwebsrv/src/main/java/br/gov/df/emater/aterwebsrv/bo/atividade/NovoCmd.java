@@ -1,46 +1,23 @@
 package br.gov.df.emater.aterwebsrv.bo.atividade;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
-import br.gov.df.emater.aterwebsrv.dao.atividade.MetodoDao;
-import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
-import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
-import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
-import br.gov.df.emater.aterwebsrv.modelo.atividade.Assunto;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.Atividade;
-import br.gov.df.emater.aterwebsrv.modelo.atividade.AtividadeAssunto;
-import br.gov.df.emater.aterwebsrv.modelo.atividade.AtividadePessoa;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.AtividadeFinalidade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.AtividadeFormato;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.AtividadeNatureza;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.AtividadePessoaParticipacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.AtividadePrioridade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.AtividadeSituacao;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.MetodoCodigo;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.ProjetoCreditoRuralStatus;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.PropriedadeRuralVinculoTipo;
-import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica;
-import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.AgenteFinanceiro;
-import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.AgenteFinanceiroLinhaCredito;
-import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.LinhaCredito;
-import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRural;
 
 @Service("AtividadeNovoCmd")
 public class NovoCmd extends _Comando {
 
-	@Autowired
-	private MetodoDao metodoDao;
+//	@Autowired
+//	private MetodoDao metodoDao;
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
