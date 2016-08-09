@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.1.final using JasperReports Library version 6.2.1  -->
-<!-- 2016-08-08T15:54:36 -->
+<!-- 2016-08-08T22:15:51 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ProjetoCreditoRural" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3e5c30a5-f784-4e41-9a25-bdf3043bd50f">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<import value="br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.*"/>
 	<import value="br.gov.df.emater.aterwebsrv.modelo.ater.*"/>
 	<import value="br.gov.df.emater.aterwebsrv.modelo.funcional.*"/>
@@ -11,6 +12,11 @@
 	<import value="br.gov.df.emater.aterwebsrv.modelo.dominio.*"/>
 	<import value="br.gov.df.emater.aterwebsrv.modelo.pessoa.*"/>
 	<import value="br.gov.df.emater.aterwebsrv.modelo.sistema.*"/>
+	<style name="Style1" fontName="Arial" fontSize="12"/>
+	<parameter name="nomeParteRelatorio" class="java.lang.String">
+		<parameterDescription><![CDATA[Nome da parte do relatório que está sendo impressa]]></parameterDescription>
+		<defaultValueExpression><![CDATA["Capa"]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -78,15 +84,15 @@
 		<band splitType="Stretch"/>
 	</background>
 	<pageHeader>
-		<band height="48">
+		<band height="50">
 			<rectangle>
-				<reportElement mode="Transparent" x="0" y="0" width="555" height="48" uuid="cbfd7c5c-0b98-49cb-984f-2a92edc2827b">
+				<reportElement mode="Transparent" x="0" y="0" width="555" height="50" uuid="aab29a63-9f20-41f2-9f5b-056bbe1ef31e">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
 			</rectangle>
 			<image hAlign="Center" vAlign="Middle">
-				<reportElement x="10" y="9" width="90" height="30" uuid="b73b7172-e08e-4c0a-a0d6-cc026069e302">
+				<reportElement x="10" y="9" width="90" height="30" uuid="c611fc05-29b3-478e-96e6-a3aac89b473e">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
@@ -94,38 +100,28 @@
 				</reportElement>
 				<imageExpression><![CDATA["jasper/imagens/logo-emater-df.jpg"]]></imageExpression>
 			</image>
-			<staticText>
-				<reportElement x="227" y="-8" width="100" height="8" uuid="6fe298e2-bffc-40c2-91d5-94eba7a8b00f">
+			<textField>
+				<reportElement key="" x="100" y="0" width="360" height="50" uuid="ea7aba77-7a5d-4371-986b-604593cc821a">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
-				<text><![CDATA[CAPA]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="110" y="10" width="340" height="28" uuid="83db7553-de1a-4b88-936f-e130b4b7d3d7">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[CAPA]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="0" width="100" height="0" uuid="f687076b-00a9-44f3-a3dd-321f565d42d9"/>
-				<text><![CDATA[Static Text]]></text>
-			</staticText>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nomeParteRelatorio}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<detail>
-		<band height="802" splitType="Stretch">
+		<band height="700" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<rectangle>
-				<reportElement mode="Transparent" x="0" y="10" width="555" height="760" uuid="e2078bb9-f90b-40b6-9ebd-ffab0c3a4159">
+				<reportElement mode="Transparent" x="0" y="10" width="555" height="640" uuid="e2078bb9-f90b-40b6-9ebd-ffab0c3a4159">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 			</rectangle>
-			<break>
-				<reportElement x="0" y="790" width="555" height="1" uuid="3c815272-9725-46ee-91bb-56fbd92b8a19"/>
-			</break>
 			<staticText>
 				<reportElement x="0" y="95" width="555" height="30" uuid="86831482-8ae4-4056-983d-04919b2ebd40"/>
 				<textElement textAlignment="Center"/>
@@ -185,33 +181,37 @@
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Left"/>
-				<textFieldExpression><![CDATA["LINHA DE CRÉDITO:"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{linhaCredito}.getNome()]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="208" y="536" width="300" height="13" uuid="08b4eda4-c85f-4556-b303-09dbc9490f33"/>
 				<textElement textAlignment="Left"/>
-				<textFieldExpression><![CDATA["AGENTE FINANCEIRO:"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{agenteFinanceiro}.getNome()]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="208" y="557" width="300" height="13" uuid="84944713-bd22-4927-8527-87f5b341c8f1"/>
 				<textElement textAlignment="Left"/>
-				<textFieldExpression><![CDATA["AGÊNCIA:"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{agencia}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="208" y="578" width="300" height="13" uuid="fdcbe350-2d9c-4e44-8238-8d7d07fbedd7"/>
 				<textElement textAlignment="Left"/>
-				<textFieldExpression><![CDATA["EMPRESA:"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["EMATER-DF"]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="208" y="599" width="300" height="13" uuid="d0557f57-df3a-455c-b241-c37332673af7"/>
 				<textElement textAlignment="Left"/>
-				<textFieldExpression><![CDATA["PROPONENTE:"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{publicoAlvo}.getPublicoAlvo().getPessoa().getNome()]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="208" y="623" width="300" height="13" uuid="bde5e689-0a5f-4655-a996-a09e3466667c"/>
 				<textElement textAlignment="Left"/>
-				<textFieldExpression><![CDATA["UNIDADE EMATER-DF:"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{publicoAlvoPropriedadeRuralList}.getPublicoAlvoPropriedadeRural().get(0).getPropriedadeRural().getNome()]]></textFieldExpression>
 			</textField>
+			<subreport>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="676" width="555" height="24" uuid="d3258660-aad8-4bd8-80c0-eacf24a5e9da"/>
+				<subreportExpression><![CDATA["src/main/resources/jasper/projeto-credito-rural/Proponente.jasper"]]></subreportExpression>
+			</subreport>
 		</band>
 	</detail>
 </jasperReport>
