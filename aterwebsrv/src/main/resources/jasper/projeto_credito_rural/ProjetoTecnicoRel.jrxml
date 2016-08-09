@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.2.1.final using JasperReports Library version 6.2.1  -->
+<!-- 2016-08-09T15:08:47 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ProjetoTecnicoRel" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c594ea92-668e-49e5-898f-58530152c0af">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<import value="br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.*"/>
+	<parameter name="RelatorioNome" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Nome do Relatório]]></parameterDescription>
+		<defaultValueExpression><![CDATA[$P{RelatorioNome}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Usuario" class="br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario" isForPrompting="false">
+		<parameterDescription><![CDATA[Usuário Autenticado pelo no Sistema]]></parameterDescription>
+		<defaultValueExpression><![CDATA[$P{Usuario}.getUsername()]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="trienioList" class="java.util.List">
+		<fieldDescription><![CDATA[trienioList]]></fieldDescription>
+	</field>
+	<field name="agenteFinanceiro" class="br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.AgenteFinanceiro">
+		<fieldDescription><![CDATA[agenteFinanceiro]]></fieldDescription>
+	</field>
+	<field name="publicoAlvo" class="br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo">
+		<fieldDescription><![CDATA[publicoAlvo]]></fieldDescription>
+	</field>
+	<field name="receitaList" class="java.util.List">
+		<fieldDescription><![CDATA[receitaList]]></fieldDescription>
+	</field>
+	<field name="cronogramaPagamentoInvestimentoList" class="java.util.List">
+		<fieldDescription><![CDATA[cronogramaPagamentoInvestimentoList]]></fieldDescription>
+	</field>
+	<field name="fluxoCaixaList" class="java.util.List">
+		<fieldDescription><![CDATA[fluxoCaixaList]]></fieldDescription>
+	</field>
+	<field name="garantiaReal" class="java.lang.String">
+		<fieldDescription><![CDATA[garantiaReal]]></fieldDescription>
+	</field>
+	<field name="numeroCedula" class="java.lang.String">
+		<fieldDescription><![CDATA[numeroCedula]]></fieldDescription>
+	</field>
+	<field name="parecerTecnicoList" class="java.util.List">
+		<fieldDescription><![CDATA[parecerTecnicoList]]></fieldDescription>
+	</field>
+	<field name="despesaList" class="java.util.List">
+		<fieldDescription><![CDATA[despesaList]]></fieldDescription>
+	</field>
+	<field name="agencia" class="java.lang.String">
+		<fieldDescription><![CDATA[agencia]]></fieldDescription>
+	</field>
+	<field name="atividade" class="br.gov.df.emater.aterwebsrv.modelo.atividade.Atividade">
+		<fieldDescription><![CDATA[atividade]]></fieldDescription>
+	</field>
+	<field name="publicoAlvoPropriedadeRuralList" class="java.util.List">
+		<fieldDescription><![CDATA[publicoAlvoPropriedadeRuralList]]></fieldDescription>
+	</field>
+	<field name="investimentoList" class="java.util.List">
+		<fieldDescription><![CDATA[investimentoList]]></fieldDescription>
+	</field>
+	<field name="cronogramaPagamentoCusteioList" class="java.util.List">
+		<fieldDescription><![CDATA[cronogramaPagamentoCusteioList]]></fieldDescription>
+	</field>
+	<field name="linhaCredito" class="br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.LinhaCredito">
+		<fieldDescription><![CDATA[linhaCredito]]></fieldDescription>
+	</field>
+	<field name="garantiaList" class="java.util.List">
+		<fieldDescription><![CDATA[garantiaList]]></fieldDescription>
+	</field>
+	<field name="id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[id]]></fieldDescription>
+	</field>
+	<field name="custeioList" class="java.util.List">
+		<fieldDescription><![CDATA[custeioList]]></fieldDescription>
+	</field>
+	<field name="status" class="br.gov.df.emater.aterwebsrv.modelo.dominio.ProjetoCreditoRuralStatus">
+		<fieldDescription><![CDATA[status]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="30" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement x="10" y="0" width="70" height="30" uuid="2f91c6dc-2928-47b9-941a-5a2ad26dd352">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<imageExpression><![CDATA["jasper/imagens/logo-emater-df.jpg"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="90" y="0" width="380" height="30" uuid="3e12b573-5a0e-4b96-870b-f9668872ccb3">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{RelatorioNome}]]></textFieldExpression>
+			</textField>
+			<image hAlign="Right" vAlign="Middle">
+				<reportElement x="510" y="0" width="45" height="30" uuid="35ebe4c9-d639-4b71-9f39-d7df092b8e1d">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<imageExpression><![CDATA["jasper/imagens/logo-transparente.png"]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="50" splitType="Prevent">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField>
+				<reportElement x="105" y="0" width="100" height="15" uuid="49e1b09c-3242-48e7-9ae1-b693b1015ef1">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{agencia}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="5" y="0" width="100" height="15" uuid="cf0ee333-7062-4217-b7aa-15757f69e1ce"/>
+				<text><![CDATA[agencia]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="23" splitType="Stretch">
+			<textField>
+				<reportElement x="210" y="8" width="140" height="15" uuid="b9388f0c-6750-4182-ad53-3efa7e431db0">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date())]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="555" height="5" uuid="56d66aca-fab5-4682-b5bc-d979d1fe8a8c"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="350" y="8" width="205" height="15" uuid="4d8f5310-ab3c-4a08-9b20-52cb1d165fa9"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="8" width="210" height="15" uuid="f21daeee-f547-4ccd-8349-25fa9bf88779"/>
+				<textFieldExpression><![CDATA[$P{Usuario}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

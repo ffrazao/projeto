@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import br.gov.df.emater.aterwebsrv.bo.BoException;
+import net.sf.jasperreports.engine.JasperPrint;
 
 @Service
 public interface _Relatorio {
@@ -19,7 +20,14 @@ public interface _Relatorio {
 
 	void compilar(String relatorioNome) throws BoException;
 
+	byte[] imprimir(JasperPrint principal) throws BoException;
+
+	byte[] imprimir(JasperPrint principal, Formato formato) throws BoException;
+
 	byte[] imprimir(String relatorioNome, Map<String, Object> parametros, List<?> lista) throws BoException;
 
 	byte[] imprimir(String relatorioNome, Map<String, Object> parametros, List<?> lista, Formato formato) throws BoException;
+
+	JasperPrint montarRelatorio(String relatorioNome, Map<String, Object> parametros, List<?> lista) throws BoException;
+
 }

@@ -25,9 +25,9 @@ import net.sf.jasperreports.engine.util.JRLoader;
 @Component
 public class _RelatorioImpl implements _Relatorio {
 
-	protected final Log logger = LogFactory.getLog(getClass());
-
 	private final static String CLASSPATH = "classpath:jasper";
+
+	protected final Log logger = LogFactory.getLog(getClass());
 
 	@Autowired
 	private ResourceLoader resourceLoader;
@@ -47,9 +47,9 @@ public class _RelatorioImpl implements _Relatorio {
 		if (logger.isDebugEnabled()) {
 			logger.debug(String.format("Procurando relatórios para compilar no diretório [%s]", diretorioFonte.getAbsolutePath()));
 		}
-		
+
 		String relatorioNomeInterno = relatorioNome.concat(EXTENSAO_ARQUIVO_FONTE).replaceAll("\\\\", "").replaceAll("/", "").toLowerCase();
-		for (File arquivo : diretorioFonte.listFiles()) { 
+		for (File arquivo : diretorioFonte.listFiles()) {
 			if (arquivo.isFile() && arquivo.getAbsoluteFile().toString().replaceAll("\\\\", "").replaceAll("/", "").toLowerCase().endsWith(relatorioNomeInterno)) {
 				if (logger.isDebugEnabled()) {
 					logger.debug(String.format("Compilando relatório [%s]", arquivo.getAbsolutePath()));
@@ -68,12 +68,42 @@ public class _RelatorioImpl implements _Relatorio {
 	}
 
 	@Override
+	public byte[] imprimir(JasperPrint impressao) throws BoException {
+		return imprimir(impressao, null);
+	}
+
+	@Override
+	public byte[] imprimir(JasperPrint impressao, Formato formato) throws BoException {
+		try {
+			// JasperExportManager.exportReportToPdfFile(impressao,
+			// "e:/CarteiraProdutorRel.pdf");
+
+			if (formato == null) {
+				formato = Formato.PDF;
+			}
+
+			switch (formato) {
+			default:
+			case PDF:
+				return JasperExportManager.exportReportToPdf(impressao);
+			}
+		} catch (Exception e) {
+			throw new BoException(e);
+		}
+	}
+
+	@Override
 	public byte[] imprimir(String relatorioNome, Map<String, Object> parametros, List<?> lista) throws BoException {
 		return imprimir(relatorioNome, parametros, lista, null);
 	}
 
 	@Override
 	public byte[] imprimir(String relatorioNome, Map<String, Object> parametros, List<?> lista, Formato formato) throws BoException {
+		return imprimir(montarRelatorio(relatorioNome, parametros, lista));
+	}
+
+	@Override
+	public JasperPrint montarRelatorio(String relatorioNome, Map<String, Object> parametros, List<?> lista) throws BoException {
 		try {
 			JasperReport relatorio;
 
@@ -93,20 +123,10 @@ public class _RelatorioImpl implements _Relatorio {
 			relatorio = (JasperReport) JRLoader.loadObject(compilado.getInputStream());
 
 			// gerar uma impressão
-			JasperPrint impressao = JasperFillManager.fillReport(relatorio, parametros, new JRBeanCollectionDataSource(lista));
+			JasperPrint result = JasperFillManager.fillReport(relatorio, parametros, new JRBeanCollectionDataSource(lista));
 
-			// JasperExportManager.exportReportToPdfFile(impressao,
-			// "e:/CarteiraProdutorRel.pdf");
+			return result;
 
-			if (formato == null) {
-				formato = Formato.PDF;
-			}
-
-			switch (formato) {
-			default:
-			case PDF:
-				return JasperExportManager.exportReportToPdf(impressao);
-			}
 		} catch (Exception e) {
 			throw new BoException(e);
 		}

@@ -1,4 +1,4 @@
-/* global moment, zeroEsq */
+/* global moment, zeroEsq, isUndefOrNull */
 
 (function(pNmModulo, pNmFactory, pNmController) {
 
@@ -87,6 +87,15 @@ angular.module(pNmModulo).factory(pNmFactory,
             publicoAlvoPorPessoaId : function (id) {
                 return PessoaSrv.publicoAlvoPorPessoaId(id);
             },
+            projetoTecnicoRel: function(idList) {
+                SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
+                if (idList && !angular.isArray(idList)) {
+                    var temp = idList;
+                    idList = [];
+                    idList.push(temp);
+                }
+                return $http.get(this.endereco + '/projeto-tecnico-rel', {params: {'idList': idList}});
+            }
         };
         return ProjetoCreditoRuralSrv;
     }

@@ -201,6 +201,55 @@
                 }
             };
 
+            $scope.emitirProjetoTecnico = function() {
+                var idList = [];
+                if ($scope.navegador.estadoAtual() === 'LISTANDO') {
+                    if ($scope.navegador.selecao.tipo === 'U' && $scope.navegador.selecao.selecionado) {
+                        idList.push($scope.navegador.selecao.item.projetoCreditoRuralId);
+                    } else if ($scope.navegador.selecao.tipo === 'M' && $scope.navegador.selecao.marcado > 0) {
+                        $scope.navegador.selecao.items.forEach(function(item) {
+                            idList.push(item.projetoCreditoRuralId);
+                        });
+                    }
+                } else if ($scope.navegador.estadoAtual() === 'VISUALIZANDO' && $scope.cadastro.registro.id) {
+                    idList.push($scope.cadastro.registro.id);
+                }
+
+                ProjetoCreditoRuralSrv.projetoTecnicoRel(idList)
+                    .success(function(resposta) {
+                        if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {
+                            window.open("data:application/zip;base64,"+resposta.resultado);
+                        } else {
+                            toastr.error(resposta && resposta.mensagem ? resposta.mensagem : resposta, 'Erro ao emitir relatório');
+                        }
+                    })
+                    .error(function(resposta) {
+                        console.log(resposta);
+                        toastr.error(resposta, 'Erro ao emitir relatório');
+                    });
+            };
+
+            $scope.abrir = function(scp) {
+                // ajustar o menu das acoes especiais
+                $scope.navegador.botao('acao', 'acao')['subFuncoes'] = [
+                    {
+                        nome: 'Projeto Técnico',
+                        descricao: 'Emitir o Projeto Técnico',
+                        acao: $scope.emitirProjetoTecnico,
+                        exibir: function() {
+                            return (
+                                ($scope.navegador.estadoAtual() === 'VISUALIZANDO' && $scope.cadastro.registro.id) || 
+                                ($scope.navegador.estadoAtual() === 'LISTANDO' && 
+                                    ($scope.navegador.selecao.tipo === 'U' && $scope.navegador.selecao.selecionado) || 
+                                    ($scope.navegador.selecao.tipo === 'M' && $scope.navegador.selecao.marcado > 0))
+                            );
+                        },
+                    },
+                ];
+                $rootScope.abrir(scp);
+            };
+
+
             $scope.limpar = function(scp) {
                 var e = scp.navegador.estadoAtual();
                 if ('FILTRANDO' === e) {
