@@ -27,6 +27,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PropriedadeRuralVinculoTipo;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonFormatarBigDecimal;
@@ -60,6 +61,9 @@ public class PublicoAlvoPropriedadeRural extends EntidadeBase implements _ChaveP
 	@JsonSerialize(using = JsonSerializerData.class)
 	@JsonDeserialize(using = JsonDeserializerData.class)
 	private Calendar inicio;
+
+	@Enumerated(EnumType.STRING)
+	protected Confirmacao principal;
 
 	@ManyToOne
 	@JoinColumn(name = "propriedade_rural_id")
@@ -121,6 +125,10 @@ public class PublicoAlvoPropriedadeRural extends EntidadeBase implements _ChaveP
 		return inicio;
 	}
 
+	public Confirmacao getPrincipal() {
+		return principal;
+	}
+
 	public PropriedadeRural getPropriedadeRural() {
 		return propriedadeRural;
 	}
@@ -162,6 +170,10 @@ public class PublicoAlvoPropriedadeRural extends EntidadeBase implements _ChaveP
 
 	public void setInicio(Calendar inicio) {
 		this.inicio = inicio;
+	}
+
+	public void setPrincipal(Confirmacao principal) {
+		this.principal = principal;
 	}
 
 	public void setPropriedadeRural(PropriedadeRural propriedadeRural) {

@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,6 +15,7 @@ import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 
 /**
  * The persistent class for the pessoa_email database table.
@@ -42,6 +45,9 @@ public class PessoaEmail extends EntidadeBase implements _ChavePrimaria<Integer>
 	@ManyToOne
 	@JoinColumn(name = "pessoa_id")
 	private Pessoa pessoa;
+
+	@Enumerated(EnumType.STRING)
+	protected Confirmacao principal;
 
 	public PessoaEmail() {
 	}
@@ -85,6 +91,10 @@ public class PessoaEmail extends EntidadeBase implements _ChavePrimaria<Integer>
 		return pessoa;
 	}
 
+	public Confirmacao getPrincipal() {
+		return principal;
+	}
+
 	public void setChaveSisater(String chaveSisater) {
 		this.chaveSisater = chaveSisater;
 	}
@@ -108,6 +118,10 @@ public class PessoaEmail extends EntidadeBase implements _ChavePrimaria<Integer>
 
 	public void setPessoa(Pessoa pessoa) {
 		this.pessoa = pessoa;
+	}
+
+	public void setPrincipal(Confirmacao principal) {
+		this.principal = principal;
 	}
 
 }

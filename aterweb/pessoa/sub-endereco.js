@@ -80,6 +80,34 @@ angular.module(pNmModulo).controller(pNmController,
             //$log.info('Modal dismissed at: ' + new Date());
         });
     };
+
+    $scope.definirPrincipalLocal = function (reg, local) {
+        if (local === 'P') {
+            if ($scope.cadastro.registro && $scope.cadastro.registro.enderecoList) {
+                $scope.cadastro.registro.enderecoList.forEach(function(r) {
+                    r.principal = 'N';
+                });
+            }
+            $scope.definirPrincipal($scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList, reg);
+        } else if (local === 'E') {
+            if ($scope.cadastro.registro && $scope.cadastro.registro.publicoAlvo && $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList) {
+                $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList.forEach(function(r) {
+                    r.principal = 'N';
+                });
+            }
+            $scope.definirPrincipal($scope.cadastro.registro.enderecoList, reg);
+        }
+    };
+
+    $scope.definirPrincipal = function (lista, reg) {
+        if (!lista || !reg) {
+            return;
+        }
+        lista.forEach(function(r) {
+            r.principal = angular.equals(reg, r) ? 'S': 'N';
+        });
+    };
+
     // fim rotinas de apoio
 
     // inicio das operaçoes atribuidas ao navagador

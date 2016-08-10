@@ -64,6 +64,15 @@ angular.module(pNmModulo).controller(pNmController,
             //$log.info('Modal dismissed at: ' + new Date());
         });
     };
+    
+    $scope.definirPrincipal = function (lista, reg) {
+        if (!lista || !reg) {
+            return;
+        }
+        lista.forEach(function(r) {
+            r.principal = angular.equals(reg, r) ? 'S': 'N';
+        });
+    };
     // fim rotinas de apoio
 
     // inicio das operaçoes atribuidas ao navagador

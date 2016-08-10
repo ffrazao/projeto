@@ -15,6 +15,7 @@ import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.TelefoneTipo;
 
 /**
@@ -41,6 +42,9 @@ public class PessoaTelefone extends EntidadeBase implements _ChavePrimaria<Integ
 	@ManyToOne
 	@JoinColumn(name = "pessoa_id")
 	private Pessoa pessoa;
+
+	@Enumerated(EnumType.STRING)
+	protected Confirmacao principal;
 
 	@ManyToOne
 	@JoinColumn(name = "telefone_id")
@@ -84,6 +88,10 @@ public class PessoaTelefone extends EntidadeBase implements _ChavePrimaria<Integ
 		return pessoa;
 	}
 
+	public Confirmacao getPrincipal() {
+		return principal;
+	}
+
 	public Telefone getTelefone() {
 		return telefone;
 	}
@@ -111,6 +119,10 @@ public class PessoaTelefone extends EntidadeBase implements _ChavePrimaria<Integ
 
 	public void setPessoa(Pessoa pessoa) {
 		this.pessoa = pessoa;
+	}
+
+	public void setPrincipal(Confirmacao principal) {
+		this.principal = principal;
 	}
 
 	public void setTelefone(Telefone telefone) {

@@ -11,7 +11,7 @@ import javax.persistence.TypedQuery;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import br.gov.df.emater.aterwebsrv.dao.DaoException;
+import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.dto.CadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.formulario.FormularioCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.formulario.FormularioColetaCadFiltroDto;
@@ -125,9 +125,9 @@ public class FormularioDaoImpl implements FormularioDaoCustom {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<FormularioVersao> filtrarComColeta(FormularioColetaCadFiltroDto filtro) throws Exception {
+	public List<FormularioVersao> filtrarComColeta(FormularioColetaCadFiltroDto filtro) throws BoException {
 		if (filtro.getDestino() == null) {
-			throw new DaoException("Dados incompletos!");
+			throw new BoException("Dados incompletos!");
 		}
 		boolean enviaColetas = false;
 		if ((filtro.getPessoa() != null && filtro.getPessoa().getId() != null) || (filtro.getPropriedadeRural() != null && filtro.getPropriedadeRural().getId() != null)) {

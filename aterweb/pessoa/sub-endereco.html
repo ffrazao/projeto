@@ -27,6 +27,7 @@
                     <th colspan="11" class="text-center"><h4>Endereço das Propriedades Rurais Vinculadas</h4></th>
                 </tr>
                 <tr>
+                    <th>Principal</th>
                     <th>Comunidade</th>
                     <th>Nome</th>
                     <th>Logradouro</th>
@@ -42,6 +43,15 @@
             </thead>
             <tbody ng-if="cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList">
                 <tr ng-repeat="reg in cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList | orderBy: ['comunidade.nome', 'propriedadeRural.nome'] track by reg.id">
+                    <td>
+                        <div class="radio">
+                            <label for="principalEndereco">
+                                <input type="radio" id="principalEndereco_{{$index}}" name="principalEndereco" 
+                                    ng-click="definirPrincipalLocal(reg, 'P')" 
+                                    ng-checked="reg.principal === 'S'">
+                            </label>
+                        </div>
+                    </td>
                     <td>{{reg.comunidade.nome}}</td>
                     <td><a ng-click="modalVerPropriedadeRural(reg.propriedadeRural.id)">{{reg.propriedadeRural.nome}}</a></td>
                     <td>{{reg.propriedadeRural.endereco.logradouro}}</td>
@@ -73,6 +83,7 @@
                     <tr>
                         <th rowspan="2"><frz-seletor ng-model="pessoaEnderecoNvg" dados="cadastro.registro.enderecoList"></frz-seletor></th>
                         <th rowspan="2">#</th>
+                        <th>Principal</th>
                         <th>Logradouro</th>
                         <th>Complemento</th>
                         <th>Número</th>
@@ -96,6 +107,15 @@
                         </td>
                         <td rowspan="2">
                             {{$index + 1 + ((pessoaEnderecoNvg.paginaAtual-1) * pessoaEnderecoNvg.tamanhoPagina)}}
+                        </td>
+                        <td>
+                            <div class="radio">
+                                <label for="principalEndereco">
+                                    <input type="radio" id="principalEndereco_{{$index}}" name="principalEndereco" 
+                                        ng-click="definirPrincipalLocal(reg, 'E')" 
+                                        ng-checked="reg.principal === 'S'">
+                                </label>
+                            </div>
                         </td>
                         <td>{{reg.endereco.logradouro}}</td>
                         <td>{{reg.endereco.complemento}}</td>

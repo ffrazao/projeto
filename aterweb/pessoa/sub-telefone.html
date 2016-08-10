@@ -33,6 +33,7 @@
                     <tr>
                         <th rowspan="2"><frz-seletor ng-model="pessoaTelefoneNvg" dados="cadastro.registro.telefoneList"></frz-seletor></th>
                         <th rowspan="2">#</th>
+                        <th colspan="2">Principal</th>
                         <th colspan="2">Número</th>
                     </tr>
                     <tr>
@@ -48,6 +49,15 @@
                         </td>
                         <td rowspan="2">
                             {{$index + 1 + ((pessoaTelefoneNvg.paginaAtual-1) * pessoaTelefoneNvg.tamanhoPagina)}}
+                        </td>
+                        <td colspan="2">
+                            <div class="radio">
+                                <label for="principalTelefone">
+                                    <input type="radio" id="principalTelefone_{{$index}}" name="principalTelefone" 
+                                        ng-click="definirPrincipal(cadastro.registro.telefoneList, reg)" 
+                                        ng-checked="reg.principal === 'S'">
+                                </label>
+                            </div>
                         </td>
                         <td colspan="2">{{reg.telefone.numero}}</td>
                     </tr>

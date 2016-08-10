@@ -33,6 +33,7 @@
                     <tr>
                         <th rowspan="2"><frz-seletor ng-model="pessoaEmailNvg" dados="cadastro.registro.emailList"></frz-seletor></th>
                         <th rowspan="2">#</th>
+                        <th colspan="2">Principal</th>
                         <th colspan="2">Endereço</th>
                     </tr>
                     <tr>
@@ -47,6 +48,15 @@
                         </td>
                         <td rowspan="2">
                             {{$index + 1 + ((pessoaEmailNvg.paginaAtual-1) * pessoaEmailNvg.tamanhoPagina)}}
+                        </td>
+                        <td colspan="2">
+                            <div class="radio">
+                                <label for="principalEmail">
+                                    <input type="radio" id="principalEmail_{{$index}}" name="principalEmail" 
+                                        ng-click="definirPrincipal(cadastro.registro.emailList, reg)" 
+                                        ng-checked="reg.principal === 'S'">
+                                </label>
+                            </div>
                         </td>
                         <td colspan="2">{{reg.email.endereco}}</td>
                     </tr>
