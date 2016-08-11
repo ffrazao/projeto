@@ -6,7 +6,7 @@ import java.util.List;
 import br.gov.df.emater.aterwebsrv.dto.Dto;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
-import br.gov.df.emater.aterwebsrv.modelo.formulario.FormularioVersao;
+import br.gov.df.emater.aterwebsrv.modelo.formulario.Coleta;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Email;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Endereco;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica;
@@ -16,7 +16,7 @@ public class ProjetoTecnicoProponenteRelDto implements Dto {
 
 	private static final long serialVersionUID = 1L;
 
-	private FormularioVersao beneficioSocialForcaTrabalhoFormulario;
+	private Coleta beneficioSocialForcaTrabalhoColeta;
 
 	private Telefone celular;
 
@@ -42,9 +42,9 @@ public class ProjetoTecnicoProponenteRelDto implements Dto {
 
 	private BigDecimal patrimonioBenfeitorias;
 
-	private FormularioVersao patrimonioDividaFormulario;
-
 	private BigDecimal patrimonioDividas;
+
+	private Coleta patrimonioEDividasColeta;
 
 	private List<RelacaoItemRelDto> patrimonioList;
 
@@ -81,11 +81,13 @@ public class ProjetoTecnicoProponenteRelDto implements Dto {
 	private BigDecimal rendaBrutaAnualTotalPercentual;
 
 	private BigDecimal rendaBrutaAnualTotalValor;
+
 	private List<RelacaoItemRelDto> semoventeList;
+
 	private Telefone telefone;
 
-	public FormularioVersao getBeneficioSocialForcaTrabalhoFormulario() {
-		return beneficioSocialForcaTrabalhoFormulario;
+	public Coleta getBeneficioSocialForcaTrabalhoColeta() {
+		return beneficioSocialForcaTrabalhoColeta;
 	}
 
 	public Telefone getCelular() {
@@ -136,12 +138,12 @@ public class ProjetoTecnicoProponenteRelDto implements Dto {
 		return patrimonioBenfeitorias;
 	}
 
-	public FormularioVersao getPatrimonioDividaFormulario() {
-		return patrimonioDividaFormulario;
-	}
-
 	public BigDecimal getPatrimonioDividas() {
 		return patrimonioDividas;
+	}
+
+	public Coleta getPatrimonioEDividasColeta() {
+		return patrimonioEDividasColeta;
 	}
 
 	public List<RelacaoItemRelDto> getPatrimonioList() {
@@ -224,8 +226,8 @@ public class ProjetoTecnicoProponenteRelDto implements Dto {
 		return telefone;
 	}
 
-	public void setBeneficioSocialForcaTrabalhoFormulario(FormularioVersao beneficioSocialForcaTrabalhoFormulario) {
-		this.beneficioSocialForcaTrabalhoFormulario = beneficioSocialForcaTrabalhoFormulario;
+	public void setBeneficioSocialForcaTrabalhoColeta(Coleta beneficioSocialForcaTrabalhoColeta) {
+		this.beneficioSocialForcaTrabalhoColeta = beneficioSocialForcaTrabalhoColeta;
 	}
 
 	public void setCelular(Telefone celular) {
@@ -276,12 +278,12 @@ public class ProjetoTecnicoProponenteRelDto implements Dto {
 		this.patrimonioBenfeitorias = patrimonioBenfeitorias;
 	}
 
-	public void setPatrimonioDividaFormulario(FormularioVersao patrimonioDividaFormulario) {
-		this.patrimonioDividaFormulario = patrimonioDividaFormulario;
-	}
-
 	public void setPatrimonioDividas(BigDecimal patrimonioDividas) {
 		this.patrimonioDividas = patrimonioDividas;
+	}
+
+	public void setPatrimonioEDividasColeta(Coleta patrimonioEDividasColeta) {
+		this.patrimonioEDividasColeta = patrimonioEDividasColeta;
 	}
 
 	public void setPatrimonioList(List<RelacaoItemRelDto> patrimonioList) {

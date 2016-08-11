@@ -2,6 +2,8 @@ package br.gov.df.emater.aterwebsrv.bo.projeto_credito_rural;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -18,6 +20,9 @@ import org.apache.commons.lang3.reflect.MethodUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
@@ -37,6 +42,7 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.FormularioDestino;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Situacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.TelefoneTipo;
+import br.gov.df.emater.aterwebsrv.modelo.formulario.Coleta;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.FormularioVersao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Email;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Endereco;
@@ -204,10 +210,7 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 			}
 			reg.setPrincipalAtividadeProdutiva(UtilitarioString.collectionToString(principalAtividadeProdutiva));
 
-			// Captar dados dos diagnósticos
-
-			// beneficio social
-			// captar diagnosticos
+			// recuperar os diagnósticos do proponente
 			FormularioColetaCadFiltroDto filtro = new FormularioColetaCadFiltroDto();
 			Set<FormularioDestino> destinoList = new HashSet<>();
 			destinoList.add(FormularioDestino.PE);
@@ -219,20 +222,23 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 			situacaoList.add(Situacao.A);
 			filtro.setSituacao(situacaoList);
 			filtro.setPessoa(proponente);
-			_Contexto diagnosticoCtx;
-			diagnosticoCtx = facadeBo.formularioColetaFiltroExecutar(contexto.getUsuario(), filtro);
+			proponente.setDiagnosticoList((List<Object[]>) facadeBo.formularioColetaFiltroExecutar(contexto.getUsuario(), filtro).getResposta());
 
-			proponente.setDiagnosticoList((List<Object[]>) diagnosticoCtx.getResposta());
+			// captar as últimas coletas dos diagnósticos
+			captarUltimaColetaFormularios((List<Object[]>) proponente.getDiagnosticoList(), reg, "beneficioSocialForcaTrabalho", "patrimonioEDividas");
 
-			// TODO Auto-generated method stub
-			captarFormularios((List<Object[]>) proponente.getDiagnosticoList(), reg, "beneficioSocialForcaTrabalho", "patrimonioDivida");
+			// DADOS SOCIO-ECONÔMICOS
+			processarDiagnosticoProponente(reg);
 
 			// captar dados das propriedades informadas no crédito
+			reg.setPatrimonioTerras(new BigDecimal("0"));
+			reg.setPatrimonioBenfeitorias(new BigDecimal("0"));
 			List<PublicoAlvoPropriedadeRural> propriedadeList = null;
 			if (!CollectionUtils.isEmpty(pcr.getPublicoAlvoPropriedadeRuralList())) {
 				propriedadeList = new ArrayList<>();
 				for (ProjetoCreditoRuralPublicoAlvoPropriedadeRural publicoAlvoPropriedadeRural : pcr.getPublicoAlvoPropriedadeRuralList()) {
 
+					// recuperar os diagnósticos da propriedade
 					PropriedadeRural pr = publicoAlvoPropriedadeRural.getPublicoAlvoPropriedadeRural().getPropriedadeRural();
 					filtro = new FormularioColetaCadFiltroDto();
 					destinoList = new HashSet<>();
@@ -245,10 +251,12 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 					situacaoList.add(Situacao.A);
 					filtro.setSituacao(situacaoList);
 					filtro.setPropriedadeRural(pr);
-					diagnosticoCtx = facadeBo.formularioColetaFiltroExecutar(contexto.getUsuario(), filtro);
-					pr.setDiagnosticoList((List<Object[]>) diagnosticoCtx.getResposta());
+					pr.setDiagnosticoList((List<Object[]>) facadeBo.formularioColetaFiltroExecutar(contexto.getUsuario(), filtro).getResposta());
+
+					processarDiagnosticoPropriedade((List<Object[]>) pr.getDiagnosticoList(), reg);
 
 					propriedadeList.add(publicoAlvoPropriedadeRural.getPublicoAlvoPropriedadeRural());
+					// TODO Auto-generated method stub
 				}
 			}
 			reg.setPropriedadeList(propriedadeList);
@@ -261,17 +269,37 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void captarFormularios(List<Object[]> diagnosticoList, ProjetoTecnicoProponenteRelDto reg, String... propriedadeList) throws Exception {
+	private void captarUltimaColetaFormularios(List<Object[]> diagnosticoList, ProjetoTecnicoProponenteRelDto reg, String... propriedadeList) throws Exception {
+		Map<String, FormularioVersao> formularioVersaoMap = new HashMap<>();
+		// captar a ultima versao do formulario
 		for (Object[] formulario : diagnosticoList) {
 			for (FormularioVersao versao : (List<FormularioVersao>) formulario[8]) {
 				for (String propriedade : propriedadeList) {
 					if (propriedade.equals(formulario[2])) {
-						FormularioVersao temp = (FormularioVersao) MethodUtils.invokeMethod(reg, "get".concat(StringUtils.capitalize(propriedade)).concat("Formulario"));
-						if (temp == null || (Integer) versao.getVersao() > temp.getVersao()) {
-							MethodUtils.invokeMethod(reg, "set".concat(StringUtils.capitalize(propriedade)).concat("Formulario"), versao);
+						if (formularioVersaoMap.get(propriedade) == null || (Integer) versao.getVersao() > formularioVersaoMap.get(propriedade).getVersao()) {
+							formularioVersaoMap.put(propriedade, versao);
+
+							// limpar dados da coleta atual
+							MethodUtils.invokeMethod(reg, "set".concat(StringUtils.capitalize(propriedade)).concat("Coleta"), (Coleta) null);
+							for (Coleta coleta : versao.getColetaList()) {
+								Coleta coletaTemp = (Coleta) MethodUtils.invokeMethod(reg, "get".concat(StringUtils.capitalize(propriedade)).concat("Coleta"));
+								if (coletaTemp == null || coleta.getDataColeta().after(coletaTemp.getDataColeta())) {
+									// captar coleta
+									if (Confirmacao.N.equals(coleta.getFinalizada())) {
+										throw new BoException("Há diagnósticos não finalizados!");
+									}
+									MethodUtils.invokeMethod(reg, "set".concat(StringUtils.capitalize(propriedade)).concat("Coleta"), (Coleta) coleta);
+								}
+							}
 						}
 					}
 				}
+			}
+		}
+		// verificar se alguma coleta não foi realizada
+		for (String propriedade : propriedadeList) {
+			if ((Coleta) MethodUtils.invokeMethod(reg, "get".concat(StringUtils.capitalize(propriedade)).concat("Coleta")) == null) {
+				throw new BoException("Há diagnósticos não realizados!");
 			}
 		}
 	}
@@ -327,6 +355,137 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 			this.relacionamentoTipo = relacionamentoTipoDao.findByCodigo(RelacionamentoTipo.Codigo.FAMILIAR.name());
 			this.funcaoPaiMae = relacionamentoFuncaoDao.findOneByNomeSeMasculino("Pai");
 			this.funcaoConjuge = relacionamentoFuncaoDao.findOneByNomeSeMasculino("Esposo");
+		}
+	}
+
+	private Map<String, Object> montaColeta(Coleta coleta) throws Exception {
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> result = mapper.readValue(coleta.getValorString(), new TypeReference<Map<String, Object>>() {
+		});
+		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	private void processarDiagnosticoProponente(ProjetoTecnicoProponenteRelDto reg) throws Exception {
+		Map<String, Object> beneficioSocialForcaTrabalho = montaColeta(reg.getBeneficioSocialForcaTrabalhoColeta());
+		Map<String, Object> patrimonioEDividas = montaColeta(reg.getPatrimonioEDividasColeta());
+
+		// FORCA DE TRABALHO CONTRATADA
+		reg.setForcaTrabalhoEventual(new BigDecimal(beneficioSocialForcaTrabalho.get("eventualDiaHomemAno").toString()));
+		reg.setForcaTrabalhoTrabalhadorPermanente(new BigDecimal(beneficioSocialForcaTrabalho.get("trabalhadorPermanente").toString()));
+		reg.setForcaTrabalhoSalarioMensal(new BigDecimal(beneficioSocialForcaTrabalho.get("salarioMensal").toString()));
+
+		// RENDA BRUTA ANUAL
+		reg.setRendaBrutaAnualPropriedadeValor(patrimonioEDividas.get("rendaBrutaAnualPropriedade") == null ? new BigDecimal(0) : new BigDecimal(patrimonioEDividas.get("rendaBrutaAnualPropriedade").toString()));
+		reg.setRendaBrutaAnualAssalariadoValor(patrimonioEDividas.get("rendaBrutaAnualAssalariado") == null ? new BigDecimal(0) : new BigDecimal(patrimonioEDividas.get("rendaBrutaAnualAssalariado").toString()));
+		reg.setRendaBrutaAnualOutrasRendasValor(patrimonioEDividas.get("rendaBrutaAnualOutrasRendas") == null ? new BigDecimal(0) : new BigDecimal(patrimonioEDividas.get("rendaBrutaAnualOutrasRendas").toString()));
+		reg.setRendaBrutaAnualTotalValor(reg.getRendaBrutaAnualPropriedadeValor().add(reg.getRendaBrutaAnualAssalariadoValor().add(reg.getRendaBrutaAnualOutrasRendasValor())));
+		reg.setRendaBrutaAnualTotalPercentual(new BigDecimal("100"));
+		reg.setRendaBrutaAnualPropriedadePercentual(reg.getRendaBrutaAnualPropriedadeValor().divide(reg.getRendaBrutaAnualTotalValor(), RoundingMode.HALF_UP).multiply(new BigDecimal("100")));
+		reg.setRendaBrutaAnualAssalariadoPercentual(reg.getRendaBrutaAnualAssalariadoValor().divide(reg.getRendaBrutaAnualTotalValor(), RoundingMode.HALF_UP).multiply(new BigDecimal("100")));
+		reg.setRendaBrutaAnualOutrasRendasPercentual(reg.getRendaBrutaAnualOutrasRendasValor().divide(reg.getRendaBrutaAnualTotalValor(), RoundingMode.HALF_UP).multiply(new BigDecimal("100")));
+
+		// MAQUINAS E EQUIPAMENTOS
+		reg.setPatrimonioMaquinasEquipamento(new BigDecimal("0"));
+		List<Map<String, Object>> maquinaEquipamentoList = (List<Map<String, Object>>) patrimonioEDividas.get("maquinaEquipamentoList");
+		if (!CollectionUtils.isEmpty(maquinaEquipamentoList)) {
+			for (Map<String, Object> registro : maquinaEquipamentoList) {
+				BigDecimal quantidade = new BigDecimal(registro.get("quantidade") == null ? "0" : registro.get("quantidade").toString());
+				BigDecimal valorUnitario = new BigDecimal(registro.get("valorUnitario") == null ? "0" : registro.get("valorUnitario").toString());
+				reg.setPatrimonioMaquinasEquipamento(reg.getPatrimonioMaquinasEquipamento().add(quantidade.multiply(valorUnitario)));
+			}
+		}
+
+		// SEMOVENTES
+		reg.setPatrimonioSemoventes(new BigDecimal("0"));
+		List<Map<String, Object>> semoventeList = (List<Map<String, Object>>) patrimonioEDividas.get("semoventeList");
+		if (!CollectionUtils.isEmpty(semoventeList)) {
+			for (Map<String, Object> registro : semoventeList) {
+				BigDecimal quantidade = new BigDecimal(registro.get("quantidade") == null ? "0" : registro.get("quantidade").toString());
+				BigDecimal valorUnitario = new BigDecimal(registro.get("valorUnitario") == null ? "0" : registro.get("valorUnitario").toString());
+				reg.setPatrimonioSemoventes(reg.getPatrimonioSemoventes().add(quantidade.multiply(valorUnitario)));
+			}
+		}
+
+		// OUTROS PATRIMONIOS
+		reg.setPatrimonioOutros(new BigDecimal("0"));
+		List<Map<String, Object>> outroPatrimonioList = (List<Map<String, Object>>) patrimonioEDividas.get("outroPatrimonioList");
+		if (!CollectionUtils.isEmpty(outroPatrimonioList)) {
+			for (Map<String, Object> registro : outroPatrimonioList) {
+				BigDecimal quantidade = new BigDecimal(registro.get("quantidade") == null ? "0" : registro.get("quantidade").toString());
+				BigDecimal valorUnitario = new BigDecimal(registro.get("valorUnitario") == null ? "0" : registro.get("valorUnitario").toString());
+				reg.setPatrimonioOutros(reg.getPatrimonioOutros().add(quantidade.multiply(valorUnitario)));
+			}
+		}
+
+		// DIVIDAS EXISTENTES
+		reg.setPatrimonioDividas(new BigDecimal("0"));
+		List<Map<String, Object>> dividasList = (List<Map<String, Object>>) patrimonioEDividas.get("dividaExistenteList");
+		if (!CollectionUtils.isEmpty(dividasList)) {
+			for (Map<String, Object> registro : dividasList) {
+				BigDecimal valorContratado = new BigDecimal(registro.get("valorContratado") == null ? "0" : registro.get("valorContratado").toString());
+				reg.setPatrimonioDividas(reg.getPatrimonioDividas().add(valorContratado));
+			}
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private void processarDiagnosticoPropriedade(List<Object[]> diagnosticoList, ProjetoTecnicoProponenteRelDto reg) throws Exception {
+		Coleta coletaUltima = null;
+
+		Map<String, FormularioVersao> formularioVersaoMap = new HashMap<>();
+		// captar a ultima versao do formulario
+		for (Object[] formulario : diagnosticoList) {
+			for (FormularioVersao versao : (List<FormularioVersao>) formulario[8]) {
+				if ("avaliacaoDaPropriedade".equals(formulario[2])) {
+					if (formularioVersaoMap.get("avaliacaoDaPropriedade") == null || (Integer) versao.getVersao() > formularioVersaoMap.get("avaliacaoDaPropriedade").getVersao()) {
+						formularioVersaoMap.put("avaliacaoDaPropriedade", versao);
+						// limpar dados da coleta atual
+						coletaUltima = null;
+						for (Coleta coleta : versao.getColetaList()) {
+							if (coletaUltima == null || coleta.getDataColeta().after(coletaUltima.getDataColeta())) {
+								// captar coleta
+								if (Confirmacao.N.equals(coleta.getFinalizada())) {
+									throw new BoException("Há diagnósticos não finalizados!");
+								}
+								coletaUltima = coleta;
+							}
+						}
+					}
+				}
+			}
+		}
+		// verificar se alguma coleta não foi realizada
+		if (coletaUltima == null) {
+			throw new BoException("Há diagnósticos não realizados!");
+		}
+
+		Map<String, Object> valor = montaColeta(coletaUltima);
+
+		Map<String, Object> usoDoSoloMap = (Map<String, Object>) valor.get("usoDoSolo");
+		Map<String, Object> benfeitoriaListMap = (Map<String, Object>) valor.get("benfeitoriaList");
+
+		if (!CollectionUtils.isEmpty(usoDoSoloMap)) {
+			BigDecimal benfeitoriasArea = new BigDecimal(usoDoSoloMap.get("benfeitoriasArea") == null ? null : usoDoSoloMap.get("benfeitoriasArea").toString());
+			BigDecimal benfeitoriasValorUnitario = new BigDecimal(usoDoSoloMap.get("benfeitoriasValorUnitario") == null ? null : usoDoSoloMap.get("benfeitoriasValorUnitario").toString());
+			BigDecimal culturasPerenesArea = new BigDecimal(usoDoSoloMap.get("culturasPerenesArea") == null ? null : usoDoSoloMap.get("culturasPerenesArea").toString());
+			BigDecimal culturasPerenesValorUnitario = new BigDecimal(usoDoSoloMap.get("culturasPerenesValorUnitario") == null ? null : usoDoSoloMap.get("culturasPerenesValorUnitario").toString());
+			BigDecimal culturasTemporariasArea = new BigDecimal(usoDoSoloMap.get("culturasTemporariasArea") == null ? null : usoDoSoloMap.get("culturasTemporariasArea").toString());
+			BigDecimal culturasTemporariasValorUnitario = new BigDecimal(usoDoSoloMap.get("culturasTemporariasValorUnitario") == null ? null : usoDoSoloMap.get("culturasTemporariasValorUnitario").toString());
+			BigDecimal outrasArea = new BigDecimal(usoDoSoloMap.get("outrasArea") == null ? null : usoDoSoloMap.get("outrasArea").toString());
+			BigDecimal outrasValorUnitario = new BigDecimal(usoDoSoloMap.get("outrasValorUnitario") == null ? null : usoDoSoloMap.get("outrasValorUnitario").toString());
+			BigDecimal pastagensArea = new BigDecimal(usoDoSoloMap.get("pastagensArea") == null ? null : usoDoSoloMap.get("pastagensArea").toString());
+			BigDecimal pastagensValorUnitario = new BigDecimal(usoDoSoloMap.get("pastagensValorUnitario") == null ? null : usoDoSoloMap.get("pastagensValorUnitario").toString());
+			BigDecimal preservacaoPermanenteArea = new BigDecimal(usoDoSoloMap.get("preservacaoPermanenteArea") == null ? null : usoDoSoloMap.get("preservacaoPermanenteArea").toString());
+			BigDecimal preservacaoPermanenteValorUnitario = new BigDecimal(usoDoSoloMap.get("preservacaoPermanenteValorUnitario") == null ? null : usoDoSoloMap.get("preservacaoPermanenteValorUnitario").toString());
+			BigDecimal reservaLegalArea = new BigDecimal(usoDoSoloMap.get("reservaLegalArea") == null ? null : usoDoSoloMap.get("reservaLegalArea").toString());
+			BigDecimal reservaLegalValorUnitario = new BigDecimal(usoDoSoloMap.get("reservaLegalValorUnitario") == null ? null : usoDoSoloMap.get("reservaLegalValorUnitario").toString());
+			reg.setPatrimonioTerras(reg.getPatrimonioTerras().add(benfeitoriasArea.multiply(benfeitoriasValorUnitario).add(culturasPerenesArea.multiply(culturasPerenesValorUnitario).add(culturasTemporariasArea.multiply(culturasTemporariasValorUnitario)
+					.add(outrasArea.multiply(outrasValorUnitario).add(pastagensArea.multiply(pastagensValorUnitario).add(preservacaoPermanenteArea.multiply(preservacaoPermanenteValorUnitario).add(reservaLegalArea.multiply(reservaLegalValorUnitario)))))))));
+		}
+
+		if (!CollectionUtils.isEmpty(benfeitoriaListMap)) {
+			// TODO calcular benfeitorias
 		}
 	}
 
