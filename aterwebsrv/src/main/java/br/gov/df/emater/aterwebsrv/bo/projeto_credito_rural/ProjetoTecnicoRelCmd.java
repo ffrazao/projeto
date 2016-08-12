@@ -36,6 +36,7 @@ import br.gov.df.emater.aterwebsrv.dto.formulario.FormularioColetaCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.DividaExistenteRelDto;
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoTecnicoProponenteRelDto;
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.RelacaoItemRelDto;
+import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
@@ -199,9 +200,6 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 						break;
 					}
 				}
-			}
-			if (email == null) {
-				throw new BoException("E-mail não informado!");
 			}
 			reg.setEmail(email);
 
@@ -446,8 +444,10 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 			for (Map<String, Object> registro : dividasList) {
 				BigDecimal valorContratado = new BigDecimal(registro.get("valorContratado") == null ? "0" : registro.get("valorContratado").toString());
 				reg.setPatrimonioDividas(reg.getPatrimonioDividas().add(valorContratado));
-				dividaExistenteList.add(new DividaExistenteRelDto((String) registro.get("finalidade"), (String) registro.get("especificacao"), (Calendar) registro.get("dataContratacao"), (Calendar) registro.get("dataVencimento"),
-						new BigDecimal(registro.get("juroPercAnual").toString()), new BigDecimal(registro.get("valorContratado").toString()), new BigDecimal(registro.get("amortizacao").toString()), new BigDecimal(registro.get("saldoDevedor").toString())));
+				dividaExistenteList.add(new DividaExistenteRelDto((String) registro.get("finalidade"), (String) registro.get("especificacao"), (Calendar) UtilitarioData.getInstance().stringParaData(registro.get("contratacao")),
+						(Calendar) UtilitarioData.getInstance().stringParaData(registro.get("vencimento")), new BigDecimal(registro.get("juroAnual") == null ? "0" : registro.get("juroAnual").toString()),
+						new BigDecimal(registro.get("valorContratado") == null ? "0" : registro.get("valorContratado").toString()), new BigDecimal(registro.get("amortizacaoAnual") == null ? "0" : registro.get("amortizacaoAnual").toString()),
+						new BigDecimal(registro.get("saldoDevedor") == null ? "0" : registro.get("saldoDevedor").toString())));
 			}
 			reg.setDividaExistenteList(dividaExistenteList);
 		}

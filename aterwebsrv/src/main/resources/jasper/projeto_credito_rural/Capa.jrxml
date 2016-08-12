@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.1.final using JasperReports Library version 6.2.1  -->
-<!-- 2016-08-09T15:50:35 -->
+<!-- 2016-08-12T09:31:16 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Capa" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4be54963-8492-4271-af5b-1a708b6a64c7">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="RelatorioNome" class="java.lang.String" isForPrompting="false">
@@ -14,23 +14,11 @@
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
-	<field name="trienioList" class="java.util.List">
-		<fieldDescription><![CDATA[trienioList]]></fieldDescription>
-	</field>
 	<field name="agenteFinanceiro" class="br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.AgenteFinanceiro">
 		<fieldDescription><![CDATA[agenteFinanceiro]]></fieldDescription>
 	</field>
 	<field name="publicoAlvo" class="br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo">
 		<fieldDescription><![CDATA[publicoAlvo]]></fieldDescription>
-	</field>
-	<field name="receitaList" class="java.util.List">
-		<fieldDescription><![CDATA[receitaList]]></fieldDescription>
-	</field>
-	<field name="cronogramaPagamentoInvestimentoList" class="java.util.List">
-		<fieldDescription><![CDATA[cronogramaPagamentoInvestimentoList]]></fieldDescription>
-	</field>
-	<field name="fluxoCaixaList" class="java.util.List">
-		<fieldDescription><![CDATA[fluxoCaixaList]]></fieldDescription>
 	</field>
 	<field name="garantiaReal" class="java.lang.String">
 		<fieldDescription><![CDATA[garantiaReal]]></fieldDescription>
@@ -38,38 +26,17 @@
 	<field name="numeroCedula" class="java.lang.String">
 		<fieldDescription><![CDATA[numeroCedula]]></fieldDescription>
 	</field>
-	<field name="parecerTecnicoList" class="java.util.List">
-		<fieldDescription><![CDATA[parecerTecnicoList]]></fieldDescription>
-	</field>
-	<field name="despesaList" class="java.util.List">
-		<fieldDescription><![CDATA[despesaList]]></fieldDescription>
-	</field>
 	<field name="agencia" class="java.lang.String">
 		<fieldDescription><![CDATA[agencia]]></fieldDescription>
 	</field>
 	<field name="atividade" class="br.gov.df.emater.aterwebsrv.modelo.atividade.Atividade">
 		<fieldDescription><![CDATA[atividade]]></fieldDescription>
 	</field>
-	<field name="publicoAlvoPropriedadeRuralList" class="java.util.List">
-		<fieldDescription><![CDATA[publicoAlvoPropriedadeRuralList]]></fieldDescription>
-	</field>
-	<field name="investimentoList" class="java.util.List">
-		<fieldDescription><![CDATA[investimentoList]]></fieldDescription>
-	</field>
-	<field name="cronogramaPagamentoCusteioList" class="java.util.List">
-		<fieldDescription><![CDATA[cronogramaPagamentoCusteioList]]></fieldDescription>
-	</field>
 	<field name="linhaCredito" class="br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.LinhaCredito">
 		<fieldDescription><![CDATA[linhaCredito]]></fieldDescription>
 	</field>
-	<field name="garantiaList" class="java.util.List">
-		<fieldDescription><![CDATA[garantiaList]]></fieldDescription>
-	</field>
 	<field name="id" class="java.lang.Integer">
 		<fieldDescription><![CDATA[id]]></fieldDescription>
-	</field>
-	<field name="custeioList" class="java.util.List">
-		<fieldDescription><![CDATA[custeioList]]></fieldDescription>
 	</field>
 	<field name="status" class="br.gov.df.emater.aterwebsrv.modelo.dominio.ProjetoCreditoRuralStatus">
 		<fieldDescription><![CDATA[status]]></fieldDescription>
@@ -134,7 +101,7 @@
 			<staticText>
 				<reportElement x="0" y="356" width="555" height="30" uuid="180f21e8-c332-4427-bf6a-51028e117d4c"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
+					<font size="18" isBold="true"/>
 				</textElement>
 				<text><![CDATA[PROJETO TÉCNICO]]></text>
 			</staticText>
