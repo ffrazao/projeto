@@ -36,8 +36,6 @@ public class ProjetoTecnicoProponenteRelDto implements Dto {
 
 	private PessoaFisica mae;
 
-	private List<RelacaoItemRelDto> outroBemList;
-
 	private PessoaFisica pai;
 
 	private BigDecimal patrimonioBenfeitorias;
@@ -46,11 +44,15 @@ public class ProjetoTecnicoProponenteRelDto implements Dto {
 
 	private Coleta patrimonioEDividasColeta;
 
-	private List<RelacaoItemRelDto> patrimonioList;
+	private List<RelacaoItemRelDto> patrimonioMaquinaEquipamentoList;
 
 	private BigDecimal patrimonioMaquinasEquipamento;
 
+	private List<RelacaoItemRelDto> patrimonioOutroBemList;
+
 	private BigDecimal patrimonioOutros;
+
+	private List<RelacaoItemRelDto> patrimonioSemoventeList;
 
 	private BigDecimal patrimonioSemoventes;
 
@@ -81,8 +83,6 @@ public class ProjetoTecnicoProponenteRelDto implements Dto {
 	private BigDecimal rendaBrutaAnualTotalPercentual;
 
 	private BigDecimal rendaBrutaAnualTotalValor;
-
-	private List<RelacaoItemRelDto> semoventeList;
 
 	private Telefone telefone;
 
@@ -126,10 +126,6 @@ public class ProjetoTecnicoProponenteRelDto implements Dto {
 		return mae;
 	}
 
-	public List<RelacaoItemRelDto> getOutroBemList() {
-		return outroBemList;
-	}
-
 	public PessoaFisica getPai() {
 		return pai;
 	}
@@ -146,16 +142,24 @@ public class ProjetoTecnicoProponenteRelDto implements Dto {
 		return patrimonioEDividasColeta;
 	}
 
-	public List<RelacaoItemRelDto> getPatrimonioList() {
-		return patrimonioList;
+	public List<RelacaoItemRelDto> getPatrimonioMaquinaEquipamentoList() {
+		return patrimonioMaquinaEquipamentoList;
 	}
 
 	public BigDecimal getPatrimonioMaquinasEquipamento() {
 		return patrimonioMaquinasEquipamento;
 	}
 
+	public List<RelacaoItemRelDto> getPatrimonioOutroBemList() {
+		return patrimonioOutroBemList;
+	}
+
 	public BigDecimal getPatrimonioOutros() {
 		return patrimonioOutros;
+	}
+
+	public List<RelacaoItemRelDto> getPatrimonioSemoventeList() {
+		return patrimonioSemoventeList;
 	}
 
 	public BigDecimal getPatrimonioSemoventes() {
@@ -218,10 +222,6 @@ public class ProjetoTecnicoProponenteRelDto implements Dto {
 		return rendaBrutaAnualTotalValor;
 	}
 
-	public List<RelacaoItemRelDto> getSemoventeList() {
-		return semoventeList;
-	}
-
 	public Telefone getTelefone() {
 		return telefone;
 	}
@@ -266,10 +266,6 @@ public class ProjetoTecnicoProponenteRelDto implements Dto {
 		this.mae = mae;
 	}
 
-	public void setOutroBemList(List<RelacaoItemRelDto> outroBemList) {
-		this.outroBemList = outroBemList;
-	}
-
 	public void setPai(PessoaFisica pai) {
 		this.pai = pai;
 	}
@@ -286,16 +282,24 @@ public class ProjetoTecnicoProponenteRelDto implements Dto {
 		this.patrimonioEDividasColeta = patrimonioEDividasColeta;
 	}
 
-	public void setPatrimonioList(List<RelacaoItemRelDto> patrimonioList) {
-		this.patrimonioList = patrimonioList;
+	public void setPatrimonioMaquinaEquipamentoList(List<RelacaoItemRelDto> patrimonioMaquinaEquipamentoList) {
+		this.patrimonioMaquinaEquipamentoList = patrimonioMaquinaEquipamentoList;
 	}
 
 	public void setPatrimonioMaquinasEquipamento(BigDecimal patrimonioMaquinasEquipamento) {
 		this.patrimonioMaquinasEquipamento = patrimonioMaquinasEquipamento;
 	}
 
+	public void setPatrimonioOutroBemList(List<RelacaoItemRelDto> patrimonioOutroBemList) {
+		this.patrimonioOutroBemList = patrimonioOutroBemList;
+	}
+
 	public void setPatrimonioOutros(BigDecimal patrimonioOutros) {
 		this.patrimonioOutros = patrimonioOutros;
+	}
+
+	public void setPatrimonioSemoventeList(List<RelacaoItemRelDto> patrimonioSemoventeList) {
+		this.patrimonioSemoventeList = patrimonioSemoventeList;
 	}
 
 	public void setPatrimonioSemoventes(BigDecimal patrimonioSemoventes) {
@@ -356,10 +360,6 @@ public class ProjetoTecnicoProponenteRelDto implements Dto {
 
 	public void setRendaBrutaAnualTotalValor(BigDecimal rendaBrutaAnualTotalValor) {
 		this.rendaBrutaAnualTotalValor = rendaBrutaAnualTotalValor;
-	}
-
-	public void setSemoventeList(List<RelacaoItemRelDto> semoventeList) {
-		this.semoventeList = semoventeList;
 	}
 
 	public void setTelefone(Telefone telefone) {

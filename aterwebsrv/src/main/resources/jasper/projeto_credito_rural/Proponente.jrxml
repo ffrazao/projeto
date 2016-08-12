@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.1.final using JasperReports Library version 6.2.1  -->
-<!-- 2016-08-10T09:38:59 -->
+<!-- 2016-08-11T22:18:55 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Capa" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4be54963-8492-4271-af5b-1a708b6a64c7">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="RelatorioNome" class="java.lang.String" isForPrompting="false">
@@ -14,65 +14,113 @@
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
-	<field name="trienioList" class="java.util.List">
-		<fieldDescription><![CDATA[trienioList]]></fieldDescription>
+	<field name="principalAtividadeProdutiva" class="java.lang.String">
+		<fieldDescription><![CDATA[principalAtividadeProdutiva]]></fieldDescription>
 	</field>
-	<field name="agenteFinanceiro" class="br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.AgenteFinanceiro">
-		<fieldDescription><![CDATA[agenteFinanceiro]]></fieldDescription>
+	<field name="proponente" class="br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica">
+		<fieldDescription><![CDATA[proponente]]></fieldDescription>
+	</field>
+	<field name="telefone" class="br.gov.df.emater.aterwebsrv.modelo.pessoa.Telefone">
+		<fieldDescription><![CDATA[telefone]]></fieldDescription>
+	</field>
+	<field name="patrimonioOutroBemList" class="java.util.List">
+		<fieldDescription><![CDATA[patrimonioOutroBemList]]></fieldDescription>
 	</field>
 	<field name="publicoAlvo" class="br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo">
 		<fieldDescription><![CDATA[publicoAlvo]]></fieldDescription>
 	</field>
-	<field name="receitaList" class="java.util.List">
-		<fieldDescription><![CDATA[receitaList]]></fieldDescription>
+	<field name="patrimonioEDividasColeta" class="br.gov.df.emater.aterwebsrv.modelo.formulario.Coleta">
+		<fieldDescription><![CDATA[patrimonioEDividasColeta]]></fieldDescription>
 	</field>
-	<field name="cronogramaPagamentoInvestimentoList" class="java.util.List">
-		<fieldDescription><![CDATA[cronogramaPagamentoInvestimentoList]]></fieldDescription>
+	<field name="dividaExistenteList" class="java.util.List">
+		<fieldDescription><![CDATA[dividaExistenteList]]></fieldDescription>
 	</field>
-	<field name="fluxoCaixaList" class="java.util.List">
-		<fieldDescription><![CDATA[fluxoCaixaList]]></fieldDescription>
+	<field name="rendaBrutaAnualTotalValor" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[rendaBrutaAnualTotalValor]]></fieldDescription>
 	</field>
-	<field name="garantiaReal" class="java.lang.String">
-		<fieldDescription><![CDATA[garantiaReal]]></fieldDescription>
+	<field name="propriedadeList" class="java.util.List">
+		<fieldDescription><![CDATA[propriedadeList]]></fieldDescription>
 	</field>
-	<field name="numeroCedula" class="java.lang.String">
-		<fieldDescription><![CDATA[numeroCedula]]></fieldDescription>
+	<field name="rendaBrutaAnualPropriedadeValor" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[rendaBrutaAnualPropriedadeValor]]></fieldDescription>
 	</field>
-	<field name="parecerTecnicoList" class="java.util.List">
-		<fieldDescription><![CDATA[parecerTecnicoList]]></fieldDescription>
+	<field name="patrimonioTerras" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[patrimonioTerras]]></fieldDescription>
 	</field>
-	<field name="despesaList" class="java.util.List">
-		<fieldDescription><![CDATA[despesaList]]></fieldDescription>
+	<field name="mae" class="br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica">
+		<fieldDescription><![CDATA[mae]]></fieldDescription>
 	</field>
-	<field name="agencia" class="java.lang.String">
-		<fieldDescription><![CDATA[agencia]]></fieldDescription>
+	<field name="patrimonioSemoventeList" class="java.util.List">
+		<fieldDescription><![CDATA[patrimonioSemoventeList]]></fieldDescription>
 	</field>
-	<field name="atividade" class="br.gov.df.emater.aterwebsrv.modelo.atividade.Atividade">
-		<fieldDescription><![CDATA[atividade]]></fieldDescription>
+	<field name="celular" class="br.gov.df.emater.aterwebsrv.modelo.pessoa.Telefone">
+		<fieldDescription><![CDATA[celular]]></fieldDescription>
 	</field>
-	<field name="publicoAlvoPropriedadeRuralList" class="java.util.List">
-		<fieldDescription><![CDATA[publicoAlvoPropriedadeRuralList]]></fieldDescription>
+	<field name="conjuge" class="br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica">
+		<fieldDescription><![CDATA[conjuge]]></fieldDescription>
 	</field>
-	<field name="investimentoList" class="java.util.List">
-		<fieldDescription><![CDATA[investimentoList]]></fieldDescription>
+	<field name="pai" class="br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica">
+		<fieldDescription><![CDATA[pai]]></fieldDescription>
 	</field>
-	<field name="cronogramaPagamentoCusteioList" class="java.util.List">
-		<fieldDescription><![CDATA[cronogramaPagamentoCusteioList]]></fieldDescription>
+	<field name="class" class="java.lang.Class">
+		<fieldDescription><![CDATA[class]]></fieldDescription>
 	</field>
-	<field name="linhaCredito" class="br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.LinhaCredito">
-		<fieldDescription><![CDATA[linhaCredito]]></fieldDescription>
+	<field name="email" class="br.gov.df.emater.aterwebsrv.modelo.pessoa.Email">
+		<fieldDescription><![CDATA[email]]></fieldDescription>
 	</field>
-	<field name="garantiaList" class="java.util.List">
-		<fieldDescription><![CDATA[garantiaList]]></fieldDescription>
+	<field name="rendaBrutaAnualAssalariadoPercentual" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[rendaBrutaAnualAssalariadoPercentual]]></fieldDescription>
 	</field>
-	<field name="id" class="java.lang.Integer">
-		<fieldDescription><![CDATA[id]]></fieldDescription>
+	<field name="patrimonioTotal" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[patrimonioTotal]]></fieldDescription>
 	</field>
-	<field name="custeioList" class="java.util.List">
-		<fieldDescription><![CDATA[custeioList]]></fieldDescription>
+	<field name="endereco" class="br.gov.df.emater.aterwebsrv.modelo.pessoa.Endereco">
+		<fieldDescription><![CDATA[endereco]]></fieldDescription>
 	</field>
-	<field name="status" class="br.gov.df.emater.aterwebsrv.modelo.dominio.ProjetoCreditoRuralStatus">
-		<fieldDescription><![CDATA[status]]></fieldDescription>
+	<field name="patrimonioMaquinaEquipamentoList" class="java.util.List">
+		<fieldDescription><![CDATA[patrimonioMaquinaEquipamentoList]]></fieldDescription>
+	</field>
+	<field name="rendaBrutaAnualTotalPercentual" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[rendaBrutaAnualTotalPercentual]]></fieldDescription>
+	</field>
+	<field name="beneficioSocialForcaTrabalhoColeta" class="br.gov.df.emater.aterwebsrv.modelo.formulario.Coleta">
+		<fieldDescription><![CDATA[beneficioSocialForcaTrabalhoColeta]]></fieldDescription>
+	</field>
+	<field name="patrimonioOutros" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[patrimonioOutros]]></fieldDescription>
+	</field>
+	<field name="patrimonioDividas" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[patrimonioDividas]]></fieldDescription>
+	</field>
+	<field name="patrimonioSemoventes" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[patrimonioSemoventes]]></fieldDescription>
+	</field>
+	<field name="patrimonioMaquinasEquipamento" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[patrimonioMaquinasEquipamento]]></fieldDescription>
+	</field>
+	<field name="rendaBrutaAnualAssalariadoValor" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[rendaBrutaAnualAssalariadoValor]]></fieldDescription>
+	</field>
+	<field name="forcaTrabalhoSalarioMensal" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[forcaTrabalhoSalarioMensal]]></fieldDescription>
+	</field>
+	<field name="forcaTrabalhoEventual" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[forcaTrabalhoEventual]]></fieldDescription>
+	</field>
+	<field name="rendaBrutaAnualOutrasRendasValor" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[rendaBrutaAnualOutrasRendasValor]]></fieldDescription>
+	</field>
+	<field name="rendaBrutaAnualOutrasRendasPercentual" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[rendaBrutaAnualOutrasRendasPercentual]]></fieldDescription>
+	</field>
+	<field name="rendaBrutaAnualPropriedadePercentual" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[rendaBrutaAnualPropriedadePercentual]]></fieldDescription>
+	</field>
+	<field name="patrimonioBenfeitorias" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[patrimonioBenfeitorias]]></fieldDescription>
+	</field>
+	<field name="forcaTrabalhoTrabalhadorPermanente" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[forcaTrabalhoTrabalhadorPermanente]]></fieldDescription>
 	</field>
 	<background>
 		<band splitType="Stretch"/>
@@ -107,123 +155,9 @@
 	<detail>
 		<band height="742" splitType="Prevent">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-			<staticText>
-				<reportElement x="0" y="10" width="555" height="30" uuid="427046c7-58f0-436b-9d22-cd5d03eb8eea"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[GOVERNO DO DISTRITO FEDERAL]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="40" width="555" height="30" uuid="dd49802c-0d73-4e1a-ab2c-53bc2537e947"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Secretaria de Estado da Agricultura, Abastecimento e Desenvolvimento Rural]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="70" width="555" height="30" uuid="84843e3d-38dd-4e08-a72a-5ecdabf36c46"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Empresa de Assistência Técnica e Extensão Rural do Distrito Federal]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="356" width="555" height="30" uuid="180f21e8-c332-4427-bf6a-51028e117d4c"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[PROJETO TÉCNICO]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="614" width="200" height="15" uuid="66db5bcb-8222-49a6-9926-e8429ceeb939">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-				</reportElement>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[LINHA DE CRÉDITO:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="629" width="200" height="15" uuid="a52775f5-ec02-403d-9c08-9467404c8244"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[AGENTE FINANCEIRO:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="644" width="200" height="15" uuid="b57b8137-e2fa-4048-84e5-3e5e336cfd56"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[AGÊNCIA:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="659" width="200" height="15" uuid="600d9aa7-becc-4244-a3a3-05d458dc290a"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[EMPRESA:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="674" width="200" height="15" uuid="1c98dcc4-66d4-4b92-bba8-6fc8f65c7298"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[PROPONENTE:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="689" width="200" height="15" uuid="7d799726-4df2-43e8-85db-ca520a7c4726"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[UNIDADE EMATER-DF:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="208" y="659" width="340" height="15" uuid="a82480a1-5031-4828-b420-f9b63003c236"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font isBold="false"/>
-				</textElement>
-				<text><![CDATA[EMATER-DF]]></text>
-			</staticText>
 			<textField>
-				<reportElement x="208" y="614" width="340" height="15" uuid="37d86c16-ee76-4582-8eb8-d151e9072ab4">
-					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-				</reportElement>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{linhaCredito}.getNome()]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="208" y="629" width="340" height="15" uuid="5acd0c74-c755-4be3-9740-5628270e1769"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{agenteFinanceiro}.getPessoaJuridica().getNome()]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="208" y="644" width="340" height="15" uuid="60ffdaae-c06d-49c8-ab94-b2b0ede934b3"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{agencia}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="208" y="674" width="340" height="15" uuid="37e36796-3a23-4e76-98e7-4085f8408067"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{publicoAlvo}.getPessoa().getNome()]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="208" y="689" width="340" height="15" uuid="47525dc2-a30c-4732-9ef8-7300e8562235"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA["UNIDADE EMATER-DF:"]]></textFieldExpression>
+				<reportElement x="255" y="351" width="100" height="30" uuid="cb8f9a55-4d35-4762-bf4b-a77f056539df"/>
+				<textFieldExpression><![CDATA[$F{mae}.getNome()]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

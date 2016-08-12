@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -32,7 +33,9 @@ import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoFuncaoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoTipoDao;
 import br.gov.df.emater.aterwebsrv.dao.projeto_credito_rural.ProjetoCreditoRuralDao;
 import br.gov.df.emater.aterwebsrv.dto.formulario.FormularioColetaCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.DividaExistenteRelDto;
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoTecnicoProponenteRelDto;
+import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.RelacaoItemRelDto;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
@@ -233,6 +236,7 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 			// captar dados das propriedades informadas no crédito
 			reg.setPatrimonioTerras(new BigDecimal("0"));
 			reg.setPatrimonioBenfeitorias(new BigDecimal("0"));
+
 			List<PublicoAlvoPropriedadeRural> propriedadeList = null;
 			if (!CollectionUtils.isEmpty(pcr.getPublicoAlvoPropriedadeRuralList())) {
 				propriedadeList = new ArrayList<>();
@@ -381,51 +385,71 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 		reg.setRendaBrutaAnualOutrasRendasValor(patrimonioEDividas.get("rendaBrutaAnualOutrasRendas") == null ? new BigDecimal(0) : new BigDecimal(patrimonioEDividas.get("rendaBrutaAnualOutrasRendas").toString()));
 		reg.setRendaBrutaAnualTotalValor(reg.getRendaBrutaAnualPropriedadeValor().add(reg.getRendaBrutaAnualAssalariadoValor().add(reg.getRendaBrutaAnualOutrasRendasValor())));
 		reg.setRendaBrutaAnualTotalPercentual(new BigDecimal("100"));
-		reg.setRendaBrutaAnualPropriedadePercentual(reg.getRendaBrutaAnualPropriedadeValor().divide(reg.getRendaBrutaAnualTotalValor(), RoundingMode.HALF_UP).multiply(new BigDecimal("100")));
-		reg.setRendaBrutaAnualAssalariadoPercentual(reg.getRendaBrutaAnualAssalariadoValor().divide(reg.getRendaBrutaAnualTotalValor(), RoundingMode.HALF_UP).multiply(new BigDecimal("100")));
-		reg.setRendaBrutaAnualOutrasRendasPercentual(reg.getRendaBrutaAnualOutrasRendasValor().divide(reg.getRendaBrutaAnualTotalValor(), RoundingMode.HALF_UP).multiply(new BigDecimal("100")));
+		if (reg.getRendaBrutaAnualTotalValor().equals(new BigDecimal("0"))) {
+			reg.setRendaBrutaAnualPropriedadePercentual(new BigDecimal("0"));
+			reg.setRendaBrutaAnualAssalariadoPercentual(new BigDecimal("0"));
+			reg.setRendaBrutaAnualOutrasRendasPercentual(new BigDecimal("0"));
+		} else {
+			reg.setRendaBrutaAnualPropriedadePercentual(reg.getRendaBrutaAnualPropriedadeValor().divide(reg.getRendaBrutaAnualTotalValor(), RoundingMode.HALF_UP).multiply(new BigDecimal("100")));
+			reg.setRendaBrutaAnualAssalariadoPercentual(reg.getRendaBrutaAnualAssalariadoValor().divide(reg.getRendaBrutaAnualTotalValor(), RoundingMode.HALF_UP).multiply(new BigDecimal("100")));
+			reg.setRendaBrutaAnualOutrasRendasPercentual(reg.getRendaBrutaAnualOutrasRendasValor().divide(reg.getRendaBrutaAnualTotalValor(), RoundingMode.HALF_UP).multiply(new BigDecimal("100")));
+		}
 
 		// MAQUINAS E EQUIPAMENTOS
 		reg.setPatrimonioMaquinasEquipamento(new BigDecimal("0"));
 		List<Map<String, Object>> maquinaEquipamentoList = (List<Map<String, Object>>) patrimonioEDividas.get("maquinaEquipamentoList");
 		if (!CollectionUtils.isEmpty(maquinaEquipamentoList)) {
+			List<RelacaoItemRelDto> patrimonioMaquinaEquipamentoList = new ArrayList<>();
 			for (Map<String, Object> registro : maquinaEquipamentoList) {
 				BigDecimal quantidade = new BigDecimal(registro.get("quantidade") == null ? "0" : registro.get("quantidade").toString());
 				BigDecimal valorUnitario = new BigDecimal(registro.get("valorUnitario") == null ? "0" : registro.get("valorUnitario").toString());
 				reg.setPatrimonioMaquinasEquipamento(reg.getPatrimonioMaquinasEquipamento().add(quantidade.multiply(valorUnitario)));
+				patrimonioMaquinaEquipamentoList.add(new RelacaoItemRelDto((String) registro.get("discriminacao"), (String) registro.get("marca"), (String) registro.get("chassi"), (Integer) registro.get("ano"), new BigDecimal(registro.get("quantidade").toString()),
+						new BigDecimal(registro.get("valorUnitario").toString())));
 			}
+			reg.setPatrimonioMaquinaEquipamentoList(patrimonioMaquinaEquipamentoList);
 		}
 
 		// SEMOVENTES
 		reg.setPatrimonioSemoventes(new BigDecimal("0"));
 		List<Map<String, Object>> semoventeList = (List<Map<String, Object>>) patrimonioEDividas.get("semoventeList");
 		if (!CollectionUtils.isEmpty(semoventeList)) {
+			List<RelacaoItemRelDto> patrimonioSemoventeList = new ArrayList<>();
 			for (Map<String, Object> registro : semoventeList) {
 				BigDecimal quantidade = new BigDecimal(registro.get("quantidade") == null ? "0" : registro.get("quantidade").toString());
 				BigDecimal valorUnitario = new BigDecimal(registro.get("valorUnitario") == null ? "0" : registro.get("valorUnitario").toString());
 				reg.setPatrimonioSemoventes(reg.getPatrimonioSemoventes().add(quantidade.multiply(valorUnitario)));
+				patrimonioSemoventeList.add(new RelacaoItemRelDto((String) registro.get("discriminacao"), (String) registro.get("unidade"), null, null, new BigDecimal(registro.get("quantidade").toString()), new BigDecimal(registro.get("valorUnitario").toString())));
 			}
+			reg.setPatrimonioSemoventeList(patrimonioSemoventeList);
 		}
 
 		// OUTROS PATRIMONIOS
 		reg.setPatrimonioOutros(new BigDecimal("0"));
 		List<Map<String, Object>> outroPatrimonioList = (List<Map<String, Object>>) patrimonioEDividas.get("outroPatrimonioList");
 		if (!CollectionUtils.isEmpty(outroPatrimonioList)) {
+			List<RelacaoItemRelDto> patrimonioOutroBemList = new ArrayList<>();
 			for (Map<String, Object> registro : outroPatrimonioList) {
 				BigDecimal quantidade = new BigDecimal(registro.get("quantidade") == null ? "0" : registro.get("quantidade").toString());
 				BigDecimal valorUnitario = new BigDecimal(registro.get("valorUnitario") == null ? "0" : registro.get("valorUnitario").toString());
 				reg.setPatrimonioOutros(reg.getPatrimonioOutros().add(quantidade.multiply(valorUnitario)));
+				patrimonioOutroBemList.add(new RelacaoItemRelDto((String) registro.get("discriminacao"), (String) registro.get("unidade"), null, null, new BigDecimal(registro.get("quantidade").toString()), new BigDecimal(registro.get("valorUnitario").toString())));
 			}
+			reg.setPatrimonioOutroBemList(patrimonioOutroBemList);
 		}
 
 		// DIVIDAS EXISTENTES
 		reg.setPatrimonioDividas(new BigDecimal("0"));
 		List<Map<String, Object>> dividasList = (List<Map<String, Object>>) patrimonioEDividas.get("dividaExistenteList");
 		if (!CollectionUtils.isEmpty(dividasList)) {
+			List<DividaExistenteRelDto> dividaExistenteList = new ArrayList<>();
 			for (Map<String, Object> registro : dividasList) {
 				BigDecimal valorContratado = new BigDecimal(registro.get("valorContratado") == null ? "0" : registro.get("valorContratado").toString());
 				reg.setPatrimonioDividas(reg.getPatrimonioDividas().add(valorContratado));
+				dividaExistenteList.add(new DividaExistenteRelDto((String) registro.get("finalidade"), (String) registro.get("especificacao"), (Calendar) registro.get("dataContratacao"), (Calendar) registro.get("dataVencimento"),
+						new BigDecimal(registro.get("juroPercAnual").toString()), new BigDecimal(registro.get("valorContratado").toString()), new BigDecimal(registro.get("amortizacao").toString()), new BigDecimal(registro.get("saldoDevedor").toString())));
 			}
+			reg.setDividaExistenteList(dividaExistenteList);
 		}
 	}
 
@@ -463,7 +487,7 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 		Map<String, Object> valor = montaColeta(coletaUltima);
 
 		Map<String, Object> usoDoSoloMap = (Map<String, Object>) valor.get("usoDoSolo");
-		Map<String, Object> benfeitoriaListMap = (Map<String, Object>) valor.get("benfeitoriaList");
+		List<Map<String, Object>> benfeitoriaListMapList = (List<Map<String, Object>>) valor.get("benfeitoriaList");
 
 		if (!CollectionUtils.isEmpty(usoDoSoloMap)) {
 			BigDecimal benfeitoriasArea = new BigDecimal(usoDoSoloMap.get("benfeitoriasArea") == null ? null : usoDoSoloMap.get("benfeitoriasArea").toString());
@@ -484,8 +508,13 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 					.add(outrasArea.multiply(outrasValorUnitario).add(pastagensArea.multiply(pastagensValorUnitario).add(preservacaoPermanenteArea.multiply(preservacaoPermanenteValorUnitario).add(reservaLegalArea.multiply(reservaLegalValorUnitario)))))))));
 		}
 
-		if (!CollectionUtils.isEmpty(benfeitoriaListMap)) {
+		if (!CollectionUtils.isEmpty(benfeitoriaListMapList)) {
 			// TODO calcular benfeitorias
+			for (Map<String, Object> registro : benfeitoriaListMapList) {
+				BigDecimal quantidade = new BigDecimal(registro.get("quantidade") == null ? "0" : registro.get("quantidade").toString());
+				BigDecimal valorUnitario = new BigDecimal(registro.get("valorUnitario") == null ? "0" : registro.get("valorUnitario").toString());
+				reg.setPatrimonioBenfeitorias(reg.getPatrimonioBenfeitorias().add(quantidade.multiply(valorUnitario)));
+			}
 		}
 	}
 

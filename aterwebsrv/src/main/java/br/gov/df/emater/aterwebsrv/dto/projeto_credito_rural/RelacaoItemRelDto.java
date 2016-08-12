@@ -14,6 +14,8 @@ public class RelacaoItemRelDto implements Dto {
 
 	private String descricao2;
 
+	private String descricao3;
+
 	private BigDecimal quantidade;
 
 	private String unidade;
@@ -22,10 +24,11 @@ public class RelacaoItemRelDto implements Dto {
 
 	private BigDecimal valorUnitario;
 
-	public RelacaoItemRelDto(String descricao1, String descricao2, Integer ano, BigDecimal quantidade, BigDecimal valorUnitario) {
+	public RelacaoItemRelDto(String descricao1, String descricao2, String descricao3, Integer ano, BigDecimal quantidade, BigDecimal valorUnitario) {
 		super();
 		this.descricao1 = descricao1;
 		this.descricao2 = descricao2;
+		this.descricao3 = descricao3;
 		this.ano = ano;
 		this.quantidade = quantidade;
 		this.valorUnitario = valorUnitario;
@@ -42,6 +45,10 @@ public class RelacaoItemRelDto implements Dto {
 
 	public String getDescricao2() {
 		return descricao2;
+	}
+
+	public String getDescricao3() {
+		return descricao3;
 	}
 
 	public BigDecimal getQuantidade() {
@@ -70,6 +77,10 @@ public class RelacaoItemRelDto implements Dto {
 
 	public void setDescricao2(String descricao2) {
 		this.descricao2 = descricao2;
+	}
+
+	public void setDescricao3(String descricao3) {
+		this.descricao3 = descricao3;
 	}
 
 	public void setQuantidade(BigDecimal quantidade) {
