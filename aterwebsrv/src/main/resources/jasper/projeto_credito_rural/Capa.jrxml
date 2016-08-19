@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.1.final using JasperReports Library version 6.2.1  -->
-<!-- 2016-08-12T09:31:16 -->
+<!-- 2016-08-15T11:12:50 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Capa" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4be54963-8492-4271-af5b-1a708b6a64c7">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="RelatorioNome" class="java.lang.String" isForPrompting="false">
@@ -10,6 +10,9 @@
 	<parameter name="Usuario" class="br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario" isForPrompting="false">
 		<parameterDescription><![CDATA[Usuário Autenticado pelo no Sistema]]></parameterDescription>
 		<defaultValueExpression><![CDATA[$P{Usuario}.getUsername()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Parte" class="java.lang.Integer">
+		<parameterDescription><![CDATA[Número da Parte do Relatório]]></parameterDescription>
 	</parameter>
 	<queryString>
 		<![CDATA[]]>
@@ -221,7 +224,7 @@
 			<textField>
 				<reportElement x="350" y="8" width="205" height="15" uuid="12aedea3-038a-4355-83b1-7fb143d6844e"/>
 				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Parte " + $P{Parte} + " pág. " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

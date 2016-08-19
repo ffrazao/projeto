@@ -156,6 +156,9 @@ angular.module(pNmModulo).factory(pNmFactory,
             filtrarComColeta : function(filtro) {
                 return $http.post(this.endereco + '/filtro-coleta-executar', filtro);
             },
+            coletar : function(registro) {
+                return $http.post(this.endereco + '/coletar', registro);
+            },
         };
         return FormularioSrv;
     }

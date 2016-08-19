@@ -1,6 +1,8 @@
 package br.gov.df.emater.aterwebsrv.ferramenta;
 
+import java.math.BigDecimal;
 import java.text.Normalizer;
+import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.regex.Pattern;
@@ -16,6 +18,14 @@ public class UtilitarioString {
 
 	public static final int[] DDD_TELEFONE = new int[] { 11, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 24, 27, 28, 31, 32, 33, 34, 35, 37, 38, 41, 42, 43, 44, 45, 46, 47, 48, 49, 51, 53, 54, 55, 61, 62, 63, 64, 65, 66, 67, 68, 69, 71, 73, 74, 75, 77, 79, 81, 82, 83, 84, 85, 86, 87,
 			88, 89, 91, 92, 93, 94, 95, 96, 97, 98, 99 };
+
+	private static NumberFormat inteiroFormatter = NumberFormat.getNumberInstance();
+
+	private static NumberFormat moedaFormatter = NumberFormat.getCurrencyInstance();
+
+	private static NumberFormat numeroFormatter = NumberFormat.getNumberInstance();
+
+	private static NumberFormat percentualFormatter = NumberFormat.getPercentInstance();
 
 	public static String calculaNomeUsuario(String nome) {
 		if (StringUtils.isBlank(nome)) {
@@ -114,6 +124,16 @@ public class UtilitarioString {
 		return endereco;
 	}
 
+	public static String formataInteiro(BigDecimal numero) {
+		String result = inteiroFormatter.format(numero.doubleValue());
+		return result;
+	}
+
+	public static String formataMoeda(BigDecimal numero) {
+		String result = moedaFormatter.format(numero.doubleValue());
+		return result;
+	}
+
 	public static String formataNis(String numero) {
 		if (StringUtils.isBlank(numero)) {
 			return null;
@@ -140,6 +160,16 @@ public class UtilitarioString {
 			}
 		}
 		return result.toString();
+	}
+
+	public static String formataNumero(BigDecimal numero) {
+		String result = numeroFormatter.format(numero.doubleValue());
+		return result;
+	}
+
+	public static String formataPercentual(BigDecimal numero) {
+		String result = percentualFormatter.format(numero.doubleValue());
+		return result;
 	}
 
 	public static String formataTelefone(String numero) {
@@ -175,6 +205,7 @@ public class UtilitarioString {
 				}
 				return null;
 			}
+
 			public String[] numeroComDddTudoJunto(String numero) {
 				numero = soNumero(numero);
 				if (numero.startsWith("0") && (numero.length() == 11 || numero.length() == 12) && ArrayUtils.contains(DDD_TELEFONE, Integer.parseInt(numero.substring(1, 3)))) {

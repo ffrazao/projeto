@@ -24,6 +24,7 @@ import org.springframework.util.CollectionUtils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vividsolutions.jts.geom.Coordinate;
 
 import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
@@ -32,9 +33,11 @@ import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoFuncaoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoTipoDao;
 import br.gov.df.emater.aterwebsrv.dao.projeto_credito_rural.ProjetoCreditoRuralDao;
+import br.gov.df.emater.aterwebsrv.dto.Dto;
 import br.gov.df.emater.aterwebsrv.dto.formulario.FormularioColetaCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.DividaExistenteRelDto;
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoTecnicoProponenteRelDto;
+import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoTecnicoPropriedadeRuralRelDto;
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.RelacaoItemRelDto;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
@@ -239,7 +242,6 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 			if (!CollectionUtils.isEmpty(pcr.getPublicoAlvoPropriedadeRuralList())) {
 				propriedadeList = new ArrayList<>();
 				for (ProjetoCreditoRuralPublicoAlvoPropriedadeRural publicoAlvoPropriedadeRural : pcr.getPublicoAlvoPropriedadeRuralList()) {
-
 					// recuperar os diagnósticos da propriedade
 					PropriedadeRural pr = publicoAlvoPropriedadeRural.getPublicoAlvoPropriedadeRural().getPropriedadeRural();
 					filtro = new FormularioColetaCadFiltroDto();
@@ -254,11 +256,8 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 					filtro.setSituacao(situacaoList);
 					filtro.setPropriedadeRural(pr);
 					pr.setDiagnosticoList((List<Object[]>) facadeBo.formularioColetaFiltroExecutar(contexto.getUsuario(), filtro).getResposta());
-
 					processarDiagnosticoPropriedade((List<Object[]>) pr.getDiagnosticoList(), reg);
-
 					propriedadeList.add(publicoAlvoPropriedadeRural.getPublicoAlvoPropriedadeRural());
-					// TODO Auto-generated method stub
 				}
 			}
 			reg.setPropriedadeList(propriedadeList);
@@ -271,7 +270,57 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void captarUltimaColetaFormularios(List<Object[]> diagnosticoList, ProjetoTecnicoProponenteRelDto reg, String... propriedadeList) throws Exception {
+	private List<ProjetoTecnicoPropriedadeRuralRelDto> captarCadastroPropriedadeRural(_Contexto contexto, List<ProjetoCreditoRural> pList) throws BoException {
+		try {
+			List<ProjetoTecnicoPropriedadeRuralRelDto> result = new ArrayList<>();
+			ProjetoCreditoRural pcr = pList.get(0);
+
+			FormularioColetaCadFiltroDto filtro = new FormularioColetaCadFiltroDto();
+			Set<FormularioDestino> destinoList = new HashSet<>();
+			destinoList.add(FormularioDestino.PR);
+			filtro.setDestino(destinoList);
+			Set<Confirmacao> subFormularioList = new HashSet<>();
+			subFormularioList.add(Confirmacao.N);
+			filtro.setSubformulario(subFormularioList);
+			Set<Situacao> situacaoList = new HashSet<>();
+			situacaoList.add(Situacao.A);
+			filtro.setSituacao(situacaoList);
+
+			// captar propriedades
+			for (ProjetoCreditoRuralPublicoAlvoPropriedadeRural pr : pcr.getPublicoAlvoPropriedadeRuralList()) {
+				ProjetoTecnicoPropriedadeRuralRelDto reg = new ProjetoTecnicoPropriedadeRuralRelDto();
+				reg.setPublicoAlvoPropriedadeRural(pr.getPublicoAlvoPropriedadeRural());
+
+				Double latitude = null;
+				Double longitude = null;
+				if (pr.getPublicoAlvoPropriedadeRural().getPropriedadeRural().getEndereco().getEntradaPrincipal() != null) {
+					latitude = pr.getPublicoAlvoPropriedadeRural().getPropriedadeRural().getEndereco().getEntradaPrincipal().getCoordinate().getOrdinate(Coordinate.X);
+					longitude = pr.getPublicoAlvoPropriedadeRural().getPropriedadeRural().getEndereco().getEntradaPrincipal().getCoordinate().getOrdinate(Coordinate.Y);
+				}
+				reg.setLatitude(new BigDecimal(latitude == null ? "0" : latitude.toString()));
+				reg.setLongitude(new BigDecimal(longitude == null ? "0" : longitude.toString()));
+
+				// recuperar os diagnósticos do proponente
+				filtro.setPropriedadeRural(pr.getPublicoAlvoPropriedadeRural().getPropriedadeRural());
+				pr.getPublicoAlvoPropriedadeRural().getPropriedadeRural().setDiagnosticoList((List<Object[]>) facadeBo.formularioColetaFiltroExecutar(contexto.getUsuario(), filtro).getResposta());
+
+				// captar as últimas coletas dos diagnósticos
+				captarUltimaColetaFormularios((List<Object[]>) pr.getPublicoAlvoPropriedadeRural().getPropriedadeRural().getDiagnosticoList(), reg, "avaliacaoDaPropriedade");
+
+				// TODO Auto-generated method stub
+				processarDiagnosticoPropriedadeRural(reg);
+
+				result.add(reg);
+			}
+
+			return result;
+		} catch (Exception e) {
+			throw new BoException(e);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private void captarUltimaColetaFormularios(List<Object[]> diagnosticoList, Dto reg, String... propriedadeList) throws Exception {
 		Map<String, FormularioVersao> formularioVersaoMap = new HashMap<>();
 		// captar a ultima versao do formulario
 		for (Object[] formulario : diagnosticoList) {
@@ -331,13 +380,22 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 			pList.add(projeto);
 
 			parametros.put("RelatorioNome", "CAPA");
+			parametros.put("Parte", 1);
 			JasperPrint capa = relatorio.montarRelatorio("projeto_credito_rural/Capa", parametros, pList);
 
 			parametros.put("RelatorioNome", "CADASTRO DO PROPONENTE");
+			parametros.put("Parte", 2);
 			JasperPrint proponente = relatorio.montarRelatorio("projeto_credito_rural/Proponente", parametros, captarCadastroProponente(contexto, pList));
+
+			parametros.put("RelatorioNome", "CADASTRO DA PROPRIEDADE RURAL");
+			parametros.put("Parte", 3);
+			JasperPrint propriedadeRural = relatorio.montarRelatorio("projeto_credito_rural/PropriedadeRural", parametros, captarCadastroPropriedadeRural(contexto, pList));
 
 			// montar o resultado final
 			for (JRPrintPage pagina : proponente.getPages()) {
+				capa.addPage(pagina);
+			}
+			for (JRPrintPage pagina : propriedadeRural.getPages()) {
 				capa.addPage(pagina);
 			}
 
@@ -509,13 +567,74 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 		}
 
 		if (!CollectionUtils.isEmpty(benfeitoriaListMapList)) {
-			// TODO calcular benfeitorias
 			for (Map<String, Object> registro : benfeitoriaListMapList) {
 				BigDecimal quantidade = new BigDecimal(registro.get("quantidade") == null ? "0" : registro.get("quantidade").toString());
 				BigDecimal valorUnitario = new BigDecimal(registro.get("valorUnitario") == null ? "0" : registro.get("valorUnitario").toString());
 				reg.setPatrimonioBenfeitorias(reg.getPatrimonioBenfeitorias().add(quantidade.multiply(valorUnitario)));
 			}
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private void processarDiagnosticoPropriedadeRural(ProjetoTecnicoPropriedadeRuralRelDto reg) throws Exception {
+		// TODO Auto-generated method stub
+		Map<String, Object> avaliacaoDaPropriedade = montaColeta(reg.getAvaliacaoDaPropriedadeColeta());
+
+		Map<String, Object> usoDoSolo = (Map<String, Object>) avaliacaoDaPropriedade.get("usoDoSolo");
+		reg.setUsoDoSoloCulturasPerenesArea(new BigDecimal(usoDoSolo.get("culturasPerenesArea") == null ? "0" : usoDoSolo.get("culturasPerenesArea").toString()));
+		reg.setUsoDoSoloCulturasTemporariasArea(new BigDecimal(usoDoSolo.get("culturasTemporariasArea") == null ? "0" : usoDoSolo.get("culturasTemporariasArea").toString()));
+		reg.setUsoDoSoloPastagensArea(new BigDecimal(usoDoSolo.get("pastagensArea") == null ? "0" : usoDoSolo.get("pastagensArea").toString()));
+		reg.setUsoDoSoloBenfeitoriasArea(new BigDecimal(usoDoSolo.get("benfeitoriasArea") == null ? "0" : usoDoSolo.get("benfeitoriasArea").toString()));
+		reg.setUsoDoSoloReservaLegalArea(new BigDecimal(usoDoSolo.get("reservaLegalArea") == null ? "0" : usoDoSolo.get("reservaLegalArea").toString()));
+		reg.setUsoDoSoloPreservacaoPermanenteArea(new BigDecimal(usoDoSolo.get("preservacaoPermanenteArea") == null ? "0" : usoDoSolo.get("preservacaoPermanenteArea").toString()));
+		reg.setUsoDoSoloOutrasArea(new BigDecimal(usoDoSolo.get("outrasArea") == null ? "0" : usoDoSolo.get("outrasArea").toString()));
+		reg.setUsoDoSoloCulturasPerenesValorUnitario(new BigDecimal(usoDoSolo.get("culturasPerenesValorUnitario") == null ? "0" : usoDoSolo.get("culturasPerenesValorUnitario").toString()).multiply(reg.getUsoDoSoloCulturasPerenesArea()));
+		reg.setUsoDoSoloCulturasTemporariasValorUnitario(new BigDecimal(usoDoSolo.get("culturasTemporariasValorUnitario") == null ? "0" : usoDoSolo.get("culturasTemporariasValorUnitario").toString()).multiply(reg.getUsoDoSoloCulturasTemporariasArea()));
+		reg.setUsoDoSoloPastagensValorUnitario(new BigDecimal(usoDoSolo.get("pastagensValorUnitario") == null ? "0" : usoDoSolo.get("pastagensValorUnitario").toString()).multiply(reg.getUsoDoSoloPastagensArea()));
+		reg.setUsoDoSoloBenfeitoriasValorUnitario(new BigDecimal(usoDoSolo.get("benfeitoriasValorUnitario") == null ? "0" : usoDoSolo.get("benfeitoriasValorUnitario").toString()).multiply(reg.getUsoDoSoloBenfeitoriasArea()));
+		reg.setUsoDoSoloReservaLegalValorUnitario(new BigDecimal(usoDoSolo.get("reservaLegalValorUnitario") == null ? "0" : usoDoSolo.get("reservaLegalValorUnitario").toString()).multiply(reg.getUsoDoSoloReservaLegalArea()));
+		reg.setUsoDoSoloPreservacaoPermanenteValorUnitario(new BigDecimal(usoDoSolo.get("preservacaoPermanenteValorUnitario") == null ? "0" : usoDoSolo.get("preservacaoPermanenteValorUnitario").toString()).multiply(reg.getUsoDoSoloPreservacaoPermanenteArea()));
+		reg.setUsoDoSoloOutrasValorUnitario(new BigDecimal(usoDoSolo.get("outrasValorUnitario") == null ? "0" : usoDoSolo.get("outrasValorUnitario").toString()).multiply(reg.getUsoDoSoloOutrasArea()));
+		reg.setUsoDoSoloAreaTotal(reg.getUsoDoSoloCulturasPerenesArea()
+				.add(reg.getUsoDoSoloCulturasTemporariasArea().add(reg.getUsoDoSoloPastagensArea().add(reg.getUsoDoSoloBenfeitoriasArea().add(reg.getUsoDoSoloReservaLegalArea().add(reg.getUsoDoSoloPreservacaoPermanenteArea().add(reg.getUsoDoSoloOutrasArea())))))));
+		reg.setUsoDoSoloValorTotal(reg.getUsoDoSoloCulturasPerenesValorUnitario().add(reg.getUsoDoSoloCulturasTemporariasValorUnitario()
+				.add(reg.getUsoDoSoloPastagensValorUnitario().add(reg.getUsoDoSoloBenfeitoriasValorUnitario().add(reg.getUsoDoSoloReservaLegalValorUnitario().add(reg.getUsoDoSoloPreservacaoPermanenteValorUnitario().add(reg.getUsoDoSoloOutrasValorUnitario())))))));
+
+		Map<String, Object> areasIrrigadas = (Map<String, Object>) avaliacaoDaPropriedade.get("areasIrrigadas");
+		reg.setAreasIrrigadasAutoPropelido(new BigDecimal(areasIrrigadas.get("autoPropelido") == null ? "0" : areasIrrigadas.get("autoPropelido").toString()));
+		reg.setAreasIrrigadasGotejamento(new BigDecimal(areasIrrigadas.get("gotejamento") == null ? "0" : areasIrrigadas.get("gotejamento").toString()));
+		reg.setAreasIrrigadasMicroAspersao(new BigDecimal(areasIrrigadas.get("microAspersao") == null ? "0" : areasIrrigadas.get("microAspersao").toString()));
+		reg.setAreasIrrigadasOutros(new BigDecimal(areasIrrigadas.get("outros") == null ? "0" : areasIrrigadas.get("outros").toString()));
+		reg.setAreasIrrigadasPivoCentral(new BigDecimal(areasIrrigadas.get("pivoCentral") == null ? "0" : areasIrrigadas.get("pivoCentral").toString()));
+		reg.setAreasIrrigadasSuperficie(new BigDecimal(areasIrrigadas.get("superficie") == null ? "0" : areasIrrigadas.get("superficie").toString()));
+		reg.setAreasIrrigadasAspersaoConvencional(new BigDecimal(areasIrrigadas.get("aspersaoConvencional") == null ? "0" : areasIrrigadas.get("aspersaoConvencional").toString()));
+		reg.setAreasIrrigadasAreaTotal(reg.getAreasIrrigadasAutoPropelido()
+				.add(reg.getAreasIrrigadasGotejamento().add(reg.getAreasIrrigadasMicroAspersao().add(reg.getAreasIrrigadasOutros().add(reg.getAreasIrrigadasPivoCentral().add(reg.getAreasIrrigadasSuperficie().add(reg.getAreasIrrigadasAspersaoConvencional())))))));
+
+		Map<String, Object> moradoresDaPropriedade = (Map<String, Object>) avaliacaoDaPropriedade.get("moradoresDaPropriedade");
+		reg.setMoradoresDaPropriedadePessoas(new BigDecimal(moradoresDaPropriedade.get("pessoas") == null ? "0" : moradoresDaPropriedade.get("pessoas").toString()));
+		reg.setMoradoresDaPropriedadeFamilias(new BigDecimal(moradoresDaPropriedade.get("familias") == null ? "0" : moradoresDaPropriedade.get("familias").toString()));
+
+		Map<String, Object> maoDeObra = (Map<String, Object>) avaliacaoDaPropriedade.get("maoDeObra");
+		reg.setMaoDeObraFamiliar(new BigDecimal(maoDeObra.get("familiar") == null ? "0" : maoDeObra.get("familiar").toString()));
+		reg.setMaoDeObraContratada(new BigDecimal(maoDeObra.get("contratada") == null ? "0" : maoDeObra.get("contratada").toString()));
+		reg.setMaoDeObraTemporaria(new BigDecimal(maoDeObra.get("temporaria") == null ? "0" : maoDeObra.get("temporaria").toString()));
+		
+		Map<String, Object> fonteDeAgua = (Map<String, Object>) avaliacaoDaPropriedade.get("fonteDAgua");
+		reg.setFonteDAguaPrincipal((String) fonteDeAgua.get("fonteDAguaPrincipal"));
+		reg.setVazaoLSPrincipal(new BigDecimal(fonteDeAgua.get("vazaoLSPrincpal") == null ? "0" : fonteDeAgua.get("vazaoLSPrincpal").toString()));
+		reg.setFonteDAguaSecundaria((String) fonteDeAgua.get("fonteDAguaSecundaria"));
+		reg.setVazaoLSSecundaria(new BigDecimal(fonteDeAgua.get("vazaoLSSecundaria") == null ? "0" : fonteDeAgua.get("vazaoLSSecundaria").toString()));
+
+		List<Map<String, Object>> benfeitoriaList = (List<Map<String, Object>>) avaliacaoDaPropriedade.get("benfeitoriaList");
+		List<RelacaoItemRelDto> benefList = new ArrayList<>();
+		if (!CollectionUtils.isEmpty(benfeitoriaList)) {
+			for (Map<String, Object> b : benfeitoriaList) {
+				benefList.add(new RelacaoItemRelDto((String) b.get("discriminacaoDasBenfeitorias"), (String) b.get("caracteristica"), (String) b.get("unidade"), null, new BigDecimal(b.get("quantidade") == null ? "0" : b.get("quantidade").toString()),
+						new BigDecimal(b.get("valorUnitario") == null ? "0" : b.get("valorUnitario").toString())));
+			}
+		}
+		reg.setBenfeitoriasList(benefList);
 	}
 
 	private byte[] ziparResultado(List<ProjetoCreditoRural> lista, List<byte[]> resultList) throws IOException {

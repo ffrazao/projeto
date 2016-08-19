@@ -123,6 +123,7 @@ public class SalvarCmd extends _SalvarCmd {
 			result.getPublicoAlvoPropriedadeRuralList().forEach((papr) -> {
 				papr.setPropriedadeRural(result);
 				papr.setPublicoAlvo(publicoAlvoDao.findOneByPessoa(papr.getPublicoAlvo().getPessoa()));
+				papr.setPrincipal(papr.getPrincipal() == null ? Confirmacao.N : papr.getPrincipal()); 
 				publicoAlvoPropriedadeRuralDao.save(papr);
 			});
 		}

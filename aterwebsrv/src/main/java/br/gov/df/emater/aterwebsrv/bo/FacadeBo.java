@@ -38,8 +38,8 @@ import br.gov.df.emater.aterwebsrv.dto.sistema.UsuarioCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.Atividade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.ArquivoTipo;
+import br.gov.df.emater.aterwebsrv.modelo.formulario.Coleta;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.Formulario;
-import br.gov.df.emater.aterwebsrv.modelo.formulario.FormularioVersao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRural;
@@ -144,8 +144,8 @@ public class FacadeBo implements BeanFactoryAware {
 	}
 
 	@Transactional
-	public _Contexto formularioColetar(Principal usuario, FormularioVersao formularioVersao) throws Exception {
-		return this._executar(usuario, "FormularioColetarCh", formularioVersao);
+	public _Contexto formularioColetar(Principal usuario, Coleta coleta) throws Exception {
+		return this._executar(usuario, "FormularioColetarCh", coleta);
 	}
 
 	@Transactional

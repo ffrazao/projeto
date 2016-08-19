@@ -152,6 +152,16 @@ angular.module(pNmModulo).controller(pNmController,
                 }
             });
         },
+        funcaoSalvarDepois: function(form, dd, acao) {
+            FormularioSrv.coletar(dd).success(function(resposta) {
+                if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {
+                } else {
+                    toastr.error(resposta && resposta.mensagem ? resposta.mensagem : resposta, 'Erro ao salvar diagnóstico');
+                }
+            }).error(function(erro) {
+                toastr.error(erro, 'Erro ao salvar diagnóstico');
+            });
+        },
     };
 
     $scope.$on('abaDiagnosticoAtivada', function(e) {  
