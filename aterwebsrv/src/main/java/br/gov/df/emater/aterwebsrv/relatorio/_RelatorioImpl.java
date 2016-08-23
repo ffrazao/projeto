@@ -48,7 +48,7 @@ public class _RelatorioImpl implements _Relatorio {
 			logger.debug(String.format("Procurando relatórios para compilar no diretório [%s]", diretorioFonte.getAbsolutePath()));
 		}
 
-		String relatorioNomeInterno = relatorioNome.concat(EXTENSAO_ARQUIVO_FONTE).replaceAll("\\\\", "").replaceAll("/", "").toLowerCase();
+		String relatorioNomeInterno = relatorioNome == null ? EXTENSAO_ARQUIVO_FONTE : relatorioNome.concat(EXTENSAO_ARQUIVO_FONTE).replaceAll("\\\\", "").replaceAll("/", "").toLowerCase();
 		for (File arquivo : diretorioFonte.listFiles()) {
 			if (arquivo.isFile() && arquivo.getAbsoluteFile().toString().replaceAll("\\\\", "").replaceAll("/", "").toLowerCase().endsWith(relatorioNomeInterno)) {
 				if (logger.isDebugEnabled()) {

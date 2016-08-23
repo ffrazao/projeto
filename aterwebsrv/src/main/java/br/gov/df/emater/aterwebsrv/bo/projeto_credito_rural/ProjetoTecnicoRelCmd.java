@@ -2,6 +2,7 @@ package br.gov.df.emater.aterwebsrv.bo.projeto_credito_rural;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -36,6 +37,8 @@ import br.gov.df.emater.aterwebsrv.dao.projeto_credito_rural.ProjetoCreditoRural
 import br.gov.df.emater.aterwebsrv.dto.Dto;
 import br.gov.df.emater.aterwebsrv.dto.formulario.FormularioColetaCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.DividaExistenteRelDto;
+import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoTecnicoFluxoCaixa;
+import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoTecnicoFluxoCaixaItem;
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoTecnicoProponenteRelDto;
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoTecnicoPropriedadeRuralRelDto;
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.RelacaoItemRelDto;
@@ -45,6 +48,7 @@ import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoSetor;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.FluxoCaixaTipo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FormularioDestino;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Situacao;
@@ -61,11 +65,14 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaTelefone;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoFuncao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoTipo;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Telefone;
+import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.FluxoCaixaAno;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRural;
+import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralFluxoCaixa;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralPublicoAlvoPropriedadeRural;
 import br.gov.df.emater.aterwebsrv.relatorio._Relatorio;
 import net.sf.jasperreports.engine.JRPrintPage;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.type.OrientationEnum;
 
 @Service("ProjetoCreditoRuralProjetoTecnicoRelCmd")
 public class ProjetoTecnicoRelCmd extends _Comando {
@@ -307,7 +314,6 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 				// captar as últimas coletas dos diagnósticos
 				captarUltimaColetaFormularios((List<Object[]>) pr.getPublicoAlvoPropriedadeRural().getPropriedadeRural().getDiagnosticoList(), reg, "avaliacaoDaPropriedade");
 
-				// TODO Auto-generated method stub
 				processarDiagnosticoPropriedadeRural(reg);
 
 				result.add(reg);
@@ -317,6 +323,99 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 		} catch (Exception e) {
 			throw new BoException(e);
 		}
+	}
+
+	private List<ProjetoTecnicoFluxoCaixa> captarFluxoCaixa(List<ProjetoCreditoRuralFluxoCaixa> fluxoCaixaList) throws Exception {
+		// TODO aqui
+		List<ProjetoTecnicoFluxoCaixa> result = new ArrayList<>();
+		ProjetoTecnicoFluxoCaixa ptfc = new ProjetoTecnicoFluxoCaixa();
+		ptfc.setReceitaItemList(new ArrayList<>());
+		ptfc.setDespesaItemList(new ArrayList<>());
+
+		for (ProjetoCreditoRuralFluxoCaixa fluxoCaixa : fluxoCaixaList) {
+			ProjetoTecnicoFluxoCaixaItem item = captarFluxoCaixaItem(fluxoCaixa);
+
+			if (FluxoCaixaTipo.R.equals(fluxoCaixa.getTipo())) {
+				ptfc.getReceitaItemList().add(item);
+			} else if (FluxoCaixaTipo.D.equals(fluxoCaixa.getTipo())) {
+				ptfc.getDespesaItemList().add(item);
+			}
+
+			switch (fluxoCaixa.getCodigo()) {
+			case DESPESA_AMORTIZACAO_DIVIDAS_EXISTENTE:
+				captarFluxoCaixaTotalizador(ptfc, "lucro", Confirmacao.N, item);
+				captarFluxoCaixaTotalizador(ptfc, "amortizacao", Confirmacao.N, item);
+				captarFluxoCaixaTotalizador(ptfc, "saldoDevedor", Confirmacao.N, item);
+				captarFluxoCaixaTotalizador(ptfc, "fluxoLiquido", Confirmacao.N, item);
+				break;
+			case DESPESA_ATIVIDADE_AGROPECUARIA:
+				captarFluxoCaixaTotalizador(ptfc, "lucro", Confirmacao.N, item);
+				captarFluxoCaixaTotalizador(ptfc, "saldoDevedor", Confirmacao.N, item);
+				captarFluxoCaixaTotalizador(ptfc, "fluxoLiquido", Confirmacao.N, item);
+				break;
+			case DESPESA_IMPOSTO_TAXA:
+				captarFluxoCaixaTotalizador(ptfc, "lucro", Confirmacao.N, item);
+				captarFluxoCaixaTotalizador(ptfc, "saldoDevedor", Confirmacao.N, item);
+				captarFluxoCaixaTotalizador(ptfc, "fluxoLiquido", Confirmacao.N, item);
+				break;
+			case DESPESA_MANUTENCAO_BENFEITORIA_MAQUINA:
+				captarFluxoCaixaTotalizador(ptfc, "lucro", Confirmacao.N, item);
+				captarFluxoCaixaTotalizador(ptfc, "saldoDevedor", Confirmacao.N, item);
+				captarFluxoCaixaTotalizador(ptfc, "fluxoLiquido", Confirmacao.N, item);
+				break;
+			case DESPESA_MAO_DE_OBRA:
+				captarFluxoCaixaTotalizador(ptfc, "lucro", Confirmacao.N, item);
+				captarFluxoCaixaTotalizador(ptfc, "saldoDevedor", Confirmacao.N, item);
+				captarFluxoCaixaTotalizador(ptfc, "fluxoLiquido", Confirmacao.N, item);
+				break;
+			case DESPESA_OUTRO:
+				captarFluxoCaixaTotalizador(ptfc, "lucro", Confirmacao.N, item);
+				captarFluxoCaixaTotalizador(ptfc, "saldoDevedor", Confirmacao.N, item);
+				captarFluxoCaixaTotalizador(ptfc, "fluxoLiquido", Confirmacao.N, item);
+				break;
+			case DESPESA_REMUNERACAO_PRODUTOR:
+				captarFluxoCaixaTotalizador(ptfc, "lucro", Confirmacao.N, item);
+				captarFluxoCaixaTotalizador(ptfc, "saldoDevedor", Confirmacao.N, item);
+				captarFluxoCaixaTotalizador(ptfc, "fluxoLiquido", Confirmacao.N, item);
+				break;
+			case RECEITA_ATIVIDADE_AGROPECUARIA:
+				captarFluxoCaixaTotalizador(ptfc, "lucro", Confirmacao.S, item);
+				captarFluxoCaixaTotalizador(ptfc, "saldoDevedor", Confirmacao.S, item);
+				captarFluxoCaixaTotalizador(ptfc, "fluxoLiquido", Confirmacao.S, item);
+				break;
+			case RECEITA_OUTRO:
+				captarFluxoCaixaTotalizador(ptfc, "lucro", Confirmacao.S, item);
+				captarFluxoCaixaTotalizador(ptfc, "saldoDevedor", Confirmacao.S, item);
+				captarFluxoCaixaTotalizador(ptfc, "fluxoLiquido", Confirmacao.S, item);
+				break;
+			}
+
+		}
+		result.add(ptfc);
+		return result;
+	}
+
+	private void captarFluxoCaixaTotalizador(ProjetoTecnicoFluxoCaixa objeto, String metodo, Confirmacao somar, ProjetoTecnicoFluxoCaixaItem item) throws Exception {
+		for (int i = 1; i <= 10; i++) {
+			BigDecimal valor = (BigDecimal) MethodUtils.invokeMethod(item, String.format("getAno%02d", i));
+			BigDecimal total = (BigDecimal) MethodUtils.invokeMethod(objeto, String.format("get%sAno%02d", StringUtils.capitalize(metodo), i));
+			if (valor == null) {
+				valor = new BigDecimal("0");
+			}
+			if (total == null) {
+				total = new BigDecimal("0");
+			}
+			MethodUtils.invokeMethod(objeto, String.format("set%sAno%02d", StringUtils.capitalize(metodo), i), Confirmacao.S.equals(somar) ? total.add(valor) : total.subtract(valor));
+		}
+	}
+
+	private ProjetoTecnicoFluxoCaixaItem captarFluxoCaixaItem(ProjetoCreditoRuralFluxoCaixa fluxoCaixa) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+		ProjetoTecnicoFluxoCaixaItem result = new ProjetoTecnicoFluxoCaixaItem();
+		result.setCodigo(fluxoCaixa.getCodigo());
+		for (FluxoCaixaAno fca : fluxoCaixa.getFluxoCaixaAnoList()) {
+			MethodUtils.invokeMethod(result, String.format("setAno%02d", fca.getAno()), fca.getValor());
+		}
+		return result;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -379,27 +478,39 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 			List<ProjetoCreditoRural> pList = new ArrayList<>();
 			pList.add(projeto);
 
-			parametros.put("RelatorioNome", "CAPA");
-			parametros.put("Parte", 1);
-			JasperPrint capa = relatorio.montarRelatorio("projeto_credito_rural/Capa", parametros, pList);
+			List<JasperPrint> parteList = new ArrayList<>();
 
-			parametros.put("RelatorioNome", "CADASTRO DO PROPONENTE");
-			parametros.put("Parte", 2);
-			JasperPrint proponente = relatorio.montarRelatorio("projeto_credito_rural/Proponente", parametros, captarCadastroProponente(contexto, pList));
-
-			parametros.put("RelatorioNome", "CADASTRO DA PROPRIEDADE RURAL");
-			parametros.put("Parte", 3);
-			JasperPrint propriedadeRural = relatorio.montarRelatorio("projeto_credito_rural/PropriedadeRural", parametros, captarCadastroPropriedadeRural(contexto, pList));
+			// montar as partes do relatório
+			montaParte("CAPA", "Capa", parametros, pList, parteList);
+			montaParte("CADASTRO DO PROPONENTE", "Proponente", parametros, captarCadastroProponente(contexto, pList), parteList);
+			montaParte("CADASTRO DA PROPRIEDADE RURAL", "PropriedadeRural", parametros, captarCadastroPropriedadeRural(contexto, pList), parteList);
+			montaParte("TRIÊNIO, INVERSÕES, CUSTOS E RECEITAS", "Solicitacao", parametros, pList, parteList);
+			montaParte("OBJETIVOS E PARECER TÉCNICO", "ParecerTecnico", parametros, projeto.getParecerTecnicoList(), parteList);
+			montaParte("GARANTIAS - AVALISTAS", "Garantia", parametros, pList, parteList);
+			montaParte("CRONOGRAMA DE REEMBOLSO", "Cronograma", parametros, pList, parteList);
+			// TODO aqui
+			montaParte("FLUXO DE CAIXA", "FluxoCaixa", parametros, captarFluxoCaixa(pList.get(0).getFluxoCaixaList()), parteList);
 
 			// montar o resultado final
-			for (JRPrintPage pagina : proponente.getPages()) {
-				capa.addPage(pagina);
-			}
-			for (JRPrintPage pagina : propriedadeRural.getPages()) {
-				capa.addPage(pagina);
+			boolean primeiro = true;
+			for (JasperPrint parte : parteList) {
+				if (primeiro) {
+					primeiro = false;
+					continue;
+				}
+				for (JRPrintPage pagina : parte.getPages()) {
+					parteList.get(0).setOrientation(parte.getOrientationValue());
+					parteList.get(0).setPageWidth(parte.getPageWidth());
+					parteList.get(0).setPageHeight(parte.getPageHeight());
+					
+					parteList.get(0).
+
+					parteList.get(0).addPage(pagina);
+				}
 			}
 
-			resultList.add(relatorio.imprimir(capa));
+			// gerar o resultado
+			resultList.add(relatorio.imprimir(parteList.get(0)));
 		}
 
 		// zipar o resultado
@@ -423,6 +534,20 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 		Map<String, Object> result = mapper.readValue(coleta.getValorString(), new TypeReference<Map<String, Object>>() {
 		});
 		return result;
+	}
+
+	private void montaParte(String relatorioNome, String nomeArquivo, Map<String, Object> parametros, List<?> pList, List<JasperPrint> parteList) throws BoException {
+		parametros.put("RelatorioNome", relatorioNome);
+		parametros.put("Parte", parteList.size() + 1);
+		JasperPrint impressao = relatorio.montarRelatorio(String.format("projeto_credito_rural/%s", nomeArquivo), parametros, pList);
+		
+/*		if ("FLUXO DE CAIXA".equals(relatorioNome)) {
+			impressao.setOrientation(OrientationEnum.LANDSCAPE);
+			impressao.setPageWidth(842);
+			impressao.setPageHeight(595);
+		}*/
+		
+		parteList.add(impressao);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -577,7 +702,6 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 
 	@SuppressWarnings("unchecked")
 	private void processarDiagnosticoPropriedadeRural(ProjetoTecnicoPropriedadeRuralRelDto reg) throws Exception {
-		// TODO Auto-generated method stub
 		Map<String, Object> avaliacaoDaPropriedade = montaColeta(reg.getAvaliacaoDaPropriedadeColeta());
 
 		Map<String, Object> usoDoSolo = (Map<String, Object>) avaliacaoDaPropriedade.get("usoDoSolo");
@@ -619,7 +743,7 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 		reg.setMaoDeObraFamiliar(new BigDecimal(maoDeObra.get("familiar") == null ? "0" : maoDeObra.get("familiar").toString()));
 		reg.setMaoDeObraContratada(new BigDecimal(maoDeObra.get("contratada") == null ? "0" : maoDeObra.get("contratada").toString()));
 		reg.setMaoDeObraTemporaria(new BigDecimal(maoDeObra.get("temporaria") == null ? "0" : maoDeObra.get("temporaria").toString()));
-		
+
 		Map<String, Object> fonteDeAgua = (Map<String, Object>) avaliacaoDaPropriedade.get("fonteDAgua");
 		reg.setFonteDAguaPrincipal((String) fonteDeAgua.get("fonteDAguaPrincipal"));
 		reg.setVazaoLSPrincipal(new BigDecimal(fonteDeAgua.get("vazaoLSPrincpal") == null ? "0" : fonteDeAgua.get("vazaoLSPrincpal").toString()));
