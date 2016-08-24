@@ -8,6 +8,7 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -39,10 +40,13 @@ import br.gov.df.emater.aterwebsrv.dto.formulario.FormularioColetaCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.DividaExistenteRelDto;
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoTecnicoFluxoCaixa;
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoTecnicoFluxoCaixaItem;
+import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoTecnicoGarantiaAvalistaRelDto;
+import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoTecnicoGarantiaRelDto;
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoTecnicoProponenteRelDto;
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoTecnicoPropriedadeRuralRelDto;
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.RelacaoItemRelDto;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
+import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioPdf;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
@@ -68,6 +72,7 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Telefone;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.FluxoCaixaAno;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRural;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralFluxoCaixa;
+import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralGarantia;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralPublicoAlvoPropriedadeRural;
 import br.gov.df.emater.aterwebsrv.relatorio._Relatorio;
 import net.sf.jasperreports.engine.JRPrintPage;
@@ -326,7 +331,6 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 	}
 
 	private List<ProjetoTecnicoFluxoCaixa> captarFluxoCaixa(List<ProjetoCreditoRuralFluxoCaixa> fluxoCaixaList) throws Exception {
-		// TODO aqui
 		List<ProjetoTecnicoFluxoCaixa> result = new ArrayList<>();
 		ProjetoTecnicoFluxoCaixa ptfc = new ProjetoTecnicoFluxoCaixa();
 		ptfc.setReceitaItemList(new ArrayList<>());
@@ -395,6 +399,15 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 		return result;
 	}
 
+	private ProjetoTecnicoFluxoCaixaItem captarFluxoCaixaItem(ProjetoCreditoRuralFluxoCaixa fluxoCaixa) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+		ProjetoTecnicoFluxoCaixaItem result = new ProjetoTecnicoFluxoCaixaItem();
+		result.setCodigo(fluxoCaixa.getCodigo());
+		for (FluxoCaixaAno fca : fluxoCaixa.getFluxoCaixaAnoList()) {
+			MethodUtils.invokeMethod(result, String.format("setAno%02d", fca.getAno()), fca.getValor());
+		}
+		return result;
+	}
+
 	private void captarFluxoCaixaTotalizador(ProjetoTecnicoFluxoCaixa objeto, String metodo, Confirmacao somar, ProjetoTecnicoFluxoCaixaItem item) throws Exception {
 		for (int i = 1; i <= 10; i++) {
 			BigDecimal valor = (BigDecimal) MethodUtils.invokeMethod(item, String.format("getAno%02d", i));
@@ -409,12 +422,78 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 		}
 	}
 
-	private ProjetoTecnicoFluxoCaixaItem captarFluxoCaixaItem(ProjetoCreditoRuralFluxoCaixa fluxoCaixa) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-		ProjetoTecnicoFluxoCaixaItem result = new ProjetoTecnicoFluxoCaixaItem();
-		result.setCodigo(fluxoCaixa.getCodigo());
-		for (FluxoCaixaAno fca : fluxoCaixa.getFluxoCaixaAnoList()) {
-			MethodUtils.invokeMethod(result, String.format("setAno%02d", fca.getAno()), fca.getValor());
+	private List<ProjetoTecnicoGarantiaRelDto> captarGarantia(List<ProjetoCreditoRural> projetoCreditoRuralList) throws Exception {
+		// TODO aqui
+		List<ProjetoTecnicoGarantiaAvalistaRelDto> garantiaAvalistaList = new ArrayList<>();
+		for (ProjetoCreditoRuralGarantia pcrg : projetoCreditoRuralList.get(0).getGarantiaList()) {
+			ProjetoTecnicoGarantiaAvalistaRelDto garantiaAvalista = new ProjetoTecnicoGarantiaAvalistaRelDto();
+
+			// encontrar o endereco principal
+			if (!CollectionUtils.isEmpty(pcrg.getPessoaFisica().getEnderecoList())) {
+				for (PessoaEndereco pEnd : pcrg.getPessoaFisica().getEnderecoList()) {
+					if (garantiaAvalista.getLogradouro() == null || Confirmacao.S.equals(pEnd.getPrincipal())) {
+						garantiaAvalista.setLogradouro(String.format("%s, %s, %s", pEnd.getEndereco().getLogradouro(), pEnd.getEndereco().getComplemento(), pEnd.getEndereco().getNumero()));
+						garantiaAvalista.setLocalidade(String.format("%s, %s", pEnd.getEndereco().getBairro(), pEnd.getEndereco().getEstado() == null ? "" : pEnd.getEndereco().getEstado().getSigla()));
+						garantiaAvalista.setCep(pEnd.getEndereco().getCep());
+					}
+				}
+			}
+
+			// encontrar o telefone principal
+			if (!CollectionUtils.isEmpty(pcrg.getPessoaFisica().getTelefoneList())) {
+				for (PessoaTelefone pTel : pcrg.getPessoaFisica().getTelefoneList()) {
+					if (garantiaAvalista.getTelefoneCelular() == null || Confirmacao.S.equals(pTel.getPrincipal())) {
+						garantiaAvalista.setTelefoneCelular(pTel.getTelefone().getNumero());
+					}
+				}
+			}
+
+			// encontrar pai e mae
+			if (!CollectionUtils.isEmpty(pcrg.getPessoaFisica().getRelacionamentoList())) {
+				for (PessoaRelacionamento pRel : pcrg.getPessoaFisica().getRelacionamentoList()) {
+					if (RelacionamentoTipo.Codigo.FAMILIAR.name().equals(pRel.getRelacionamento().getRelacionamentoTipo().getCodigo())) {
+						if ("Pai".equals(pRel.getRelacionamentoFuncao().getNomeSeMasculino())) {
+							if (pRel.getPessoa() == null) {
+								if (PessoaGenero.M.equals(pRel.getGenero())) {
+									garantiaAvalista.setPaiNome(pRel.getNome());
+								} else if (PessoaGenero.F.equals(pRel.getGenero())) {
+									garantiaAvalista.setMaeNome(pRel.getNome());
+								}
+							} else {
+								if (PessoaGenero.M.equals(((PessoaFisica) pRel.getPessoa()).getGenero())) {
+									garantiaAvalista.setPaiNome(pRel.getNome());
+								} else if (PessoaGenero.F.equals(((PessoaFisica) pRel.getPessoa()).getGenero())) {
+									garantiaAvalista.setMaeNome(pRel.getNome());
+								}
+							}
+						}
+					}
+				}
+			}
+			garantiaAvalista.setCpfCnpj(pcrg.getPessoaFisica().getCpf());
+			garantiaAvalista.setEstadoCivil(pcrg.getPessoaFisica().getEstadoCivil());
+			garantiaAvalista.setIdentidadeNumero(pcrg.getPessoaFisica().getRgNumero());
+			garantiaAvalista.setIdentidadeOrgao(String.format("%s / %s", pcrg.getPessoaFisica().getRgOrgaoEmissor(), pcrg.getPessoaFisica().getRgUf()));
+			garantiaAvalista.setNascimento(pcrg.getPessoaFisica().getNascimento());
+			garantiaAvalista.setNaturalidade(String.format("%s %s", pcrg.getPessoaFisica().getNascimentoMunicipio() == null ? "" : pcrg.getPessoaFisica().getNascimentoMunicipio().getNome(),
+					pcrg.getPessoaFisica().getNascimentoEstado() == null ? "" : pcrg.getPessoaFisica().getNascimentoEstado().getSigla()));
+			garantiaAvalista.setNome(pcrg.getPessoaFisica().getNome());
+			garantiaAvalista.setParticipacao(pcrg.getParticipacao());
+			garantiaAvalista.setProfissao(pcrg.getPessoaFisica().getProfissao());
+			garantiaAvalista.setRendaLiquida(pcrg.getRendaLiquida());
+
+			garantiaAvalistaList.add(garantiaAvalista);
 		}
+		// ordenar pela ordem de participação
+		Collections.sort(garantiaAvalistaList, ((a, b) -> Integer.compare(a.getParticipacao().getOrdem(), b.getParticipacao().getOrdem())));
+		
+		List<ProjetoTecnicoGarantiaRelDto> result = new ArrayList<>();
+		ProjetoTecnicoGarantiaRelDto garantia = new ProjetoTecnicoGarantiaRelDto();
+		garantia.setGarantia(projetoCreditoRuralList.get(0).getGarantiaReal());
+		garantia.setGarantiaAvalistaList(garantiaAvalistaList);
+		
+		result.add(garantia);
+		
 		return result;
 	}
 
@@ -485,32 +564,45 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 			montaParte("CADASTRO DO PROPONENTE", "Proponente", parametros, captarCadastroProponente(contexto, pList), parteList);
 			montaParte("CADASTRO DA PROPRIEDADE RURAL", "PropriedadeRural", parametros, captarCadastroPropriedadeRural(contexto, pList), parteList);
 			montaParte("TRIÊNIO, INVERSÕES, CUSTOS E RECEITAS", "Solicitacao", parametros, pList, parteList);
-			montaParte("OBJETIVOS E PARECER TÉCNICO", "ParecerTecnico", parametros, projeto.getParecerTecnicoList(), parteList);
-			montaParte("GARANTIAS - AVALISTAS", "Garantia", parametros, pList, parteList);
 			montaParte("CRONOGRAMA DE REEMBOLSO", "Cronograma", parametros, pList, parteList);
-			// TODO aqui
 			montaParte("FLUXO DE CAIXA", "FluxoCaixa", parametros, captarFluxoCaixa(pList.get(0).getFluxoCaixaList()), parteList);
+			montaParte("OBJETIVOS E PARECER TÉCNICO", "ParecerTecnico", parametros, projeto.getParecerTecnicoList(), parteList);
+			// TODO aqui
+			montaParte("GARANTIAS - AVALISTAS", "Garantia", parametros, captarGarantia(pList), parteList);
 
-			// montar o resultado final
-			boolean primeiro = true;
+			// juntar as partes do relatório
+			// é necessário quebrar por orientação da página
+			List<byte[]> arquivoList = new ArrayList<>();
+			boolean primeiraPagina = false;
+			JasperPrint bloco = null;
+			OrientationEnum orientacaoPaginaAtual = null;
 			for (JasperPrint parte : parteList) {
-				if (primeiro) {
-					primeiro = false;
+				if (!parte.getOrientationValue().equals(orientacaoPaginaAtual)) {
+					primeiraPagina = true;
+				}
+				if (primeiraPagina) {
+					if (bloco != null) {
+						arquivoList.add(relatorio.imprimir(bloco));
+					}
+					// procedimento para ignorar a capa
+					primeiraPagina = false;
+					bloco = parte;
+					orientacaoPaginaAtual = parte.getOrientationValue();
 					continue;
 				}
-				for (JRPrintPage pagina : parte.getPages()) {
-					parteList.get(0).setOrientation(parte.getOrientationValue());
-					parteList.get(0).setPageWidth(parte.getPageWidth());
-					parteList.get(0).setPageHeight(parte.getPageHeight());
-					
-					parteList.get(0).
 
-					parteList.get(0).addPage(pagina);
+				// juntar as partes
+				for (JRPrintPage pagina : parte.getPages()) {
+					bloco.addPage(pagina);
 				}
+			}
+			// captar o último bloco
+			if (bloco != null) {
+				arquivoList.add(relatorio.imprimir(bloco));
 			}
 
 			// gerar o resultado
-			resultList.add(relatorio.imprimir(parteList.get(0)));
+			resultList.add(UtilitarioPdf.juntarPdf(arquivoList));
 		}
 
 		// zipar o resultado
@@ -540,13 +632,6 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 		parametros.put("RelatorioNome", relatorioNome);
 		parametros.put("Parte", parteList.size() + 1);
 		JasperPrint impressao = relatorio.montarRelatorio(String.format("projeto_credito_rural/%s", nomeArquivo), parametros, pList);
-		
-/*		if ("FLUXO DE CAIXA".equals(relatorioNome)) {
-			impressao.setOrientation(OrientationEnum.LANDSCAPE);
-			impressao.setPageWidth(842);
-			impressao.setPageHeight(595);
-		}*/
-		
 		parteList.add(impressao);
 	}
 

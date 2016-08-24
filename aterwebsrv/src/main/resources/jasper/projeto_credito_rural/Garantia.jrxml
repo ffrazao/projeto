@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.1.final using JasperReports Library version 6.2.1  -->
-<!-- 2016-08-21T21:51:29 -->
+<!-- 2016-08-24T19:36:04 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Capa" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4be54963-8492-4271-af5b-1a708b6a64c7">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="RelatorioNome" class="java.lang.String" isForPrompting="false">
@@ -17,74 +17,14 @@
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
-	<field name="trienioList" class="java.util.List">
-		<fieldDescription><![CDATA[trienioList]]></fieldDescription>
-	</field>
-	<field name="agenteFinanceiro" class="br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.AgenteFinanceiro">
-		<fieldDescription><![CDATA[agenteFinanceiro]]></fieldDescription>
-	</field>
-	<field name="publicoAlvo" class="br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo">
-		<fieldDescription><![CDATA[publicoAlvo]]></fieldDescription>
-	</field>
-	<field name="receitaList" class="java.util.List">
-		<fieldDescription><![CDATA[receitaList]]></fieldDescription>
-	</field>
-	<field name="cronogramaPagamentoInvestimentoList" class="java.util.List">
-		<fieldDescription><![CDATA[cronogramaPagamentoInvestimentoList]]></fieldDescription>
-	</field>
-	<field name="fluxoCaixaList" class="java.util.List">
-		<fieldDescription><![CDATA[fluxoCaixaList]]></fieldDescription>
-	</field>
-	<field name="garantiaReal" class="java.lang.String">
-		<fieldDescription><![CDATA[garantiaReal]]></fieldDescription>
-	</field>
-	<field name="numeroCedula" class="java.lang.String">
-		<fieldDescription><![CDATA[numeroCedula]]></fieldDescription>
-	</field>
-	<field name="parecerTecnicoList" class="java.util.List">
-		<fieldDescription><![CDATA[parecerTecnicoList]]></fieldDescription>
-	</field>
-	<field name="despesaList" class="java.util.List">
-		<fieldDescription><![CDATA[despesaList]]></fieldDescription>
-	</field>
-	<field name="agencia" class="java.lang.String">
-		<fieldDescription><![CDATA[agencia]]></fieldDescription>
-	</field>
-	<field name="atividade" class="br.gov.df.emater.aterwebsrv.modelo.atividade.Atividade">
-		<fieldDescription><![CDATA[atividade]]></fieldDescription>
-	</field>
-	<field name="publicoAlvoPropriedadeRuralList" class="java.util.List">
-		<fieldDescription><![CDATA[publicoAlvoPropriedadeRuralList]]></fieldDescription>
-	</field>
-	<field name="investimentoList" class="java.util.List">
-		<fieldDescription><![CDATA[investimentoList]]></fieldDescription>
-	</field>
-	<field name="cronogramaPagamentoCusteioList" class="java.util.List">
-		<fieldDescription><![CDATA[cronogramaPagamentoCusteioList]]></fieldDescription>
-	</field>
-	<field name="excluidoMap" class="java.util.Map">
-		<fieldDescription><![CDATA[excluidoMap]]></fieldDescription>
-	</field>
-	<field name="linhaCredito" class="br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.LinhaCredito">
-		<fieldDescription><![CDATA[linhaCredito]]></fieldDescription>
-	</field>
-	<field name="garantiaList" class="java.util.List">
-		<fieldDescription><![CDATA[garantiaList]]></fieldDescription>
-	</field>
-	<field name="id" class="java.lang.Integer">
-		<fieldDescription><![CDATA[id]]></fieldDescription>
-	</field>
-	<field name="custeioList" class="java.util.List">
-		<fieldDescription><![CDATA[custeioList]]></fieldDescription>
+	<field name="garantiaAvalistaList" class="java.util.List">
+		<fieldDescription><![CDATA[garantiaAvalistaList]]></fieldDescription>
 	</field>
 	<field name="class" class="java.lang.Class">
 		<fieldDescription><![CDATA[class]]></fieldDescription>
 	</field>
-	<field name="cadastroAcao" class="br.gov.df.emater.aterwebsrv.modelo.dominio.CadastroAcao">
-		<fieldDescription><![CDATA[cadastroAcao]]></fieldDescription>
-	</field>
-	<field name="status" class="br.gov.df.emater.aterwebsrv.modelo.dominio.ProjetoCreditoRuralStatus">
-		<fieldDescription><![CDATA[status]]></fieldDescription>
+	<field name="garantia" class="java.lang.String">
+		<fieldDescription><![CDATA[garantia]]></fieldDescription>
 	</field>
 	<background>
 		<band splitType="Stretch"/>
@@ -121,7 +61,7 @@
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<subreport>
 				<reportElement x="0" y="0" width="555" height="40" uuid="6b3f43dc-30b5-4e5d-a7d2-d25a643bb97d"/>
-				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{garantiaList})]]></dataSourceExpression>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{garantiaAvalistaList})]]></dataSourceExpression>
 				<subreportExpression><![CDATA["src/main/resources/jasper/projeto_credito_rural/GarantiaAvalista.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
@@ -129,7 +69,7 @@
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="0" y="24" width="555" height="30" uuid="d3d29cab-3c27-4923-b513-353964893604"/>
 				<textElement markup="html"/>
-				<textFieldExpression><![CDATA[$F{garantiaReal}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{garantia}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement mode="Opaque" x="0" y="0" width="555" height="15" backcolor="#C8C8C8" uuid="a50a4fe9-ee03-491c-a831-8b3e7fc3b37d"/>
