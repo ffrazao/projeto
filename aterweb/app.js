@@ -527,6 +527,8 @@ var TIMEOUT_TEMPO = 10 * 60;
                     pessoa['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica';
                 } else if (pessoa.pessoaTipo === 'PJ') {
                     pessoa['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica';
+                } else if (pessoa.pessoaTipo === 'GS') {
+                    pessoa['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.GrupoSocial';
                 }
             };
             $rootScope.marcarParaExclusao = function(scp, nomeLista, item) {

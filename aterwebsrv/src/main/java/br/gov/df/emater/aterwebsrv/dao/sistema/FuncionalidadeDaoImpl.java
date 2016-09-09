@@ -7,14 +7,16 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 
 import br.gov.df.emater.aterwebsrv.dto.TagDto;
 import br.gov.df.emater.aterwebsrv.dto.sistema.FuncionalidadeCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 
 public class FuncionalidadeDaoImpl implements FuncionalidadeDaoCustom {
 
-	@PersistenceContext
+	@PersistenceContext(unitName = EntidadeBase.PERSISTENCE_UNIT)
 	private EntityManager em;
 
 	public FuncionalidadeDaoImpl() {

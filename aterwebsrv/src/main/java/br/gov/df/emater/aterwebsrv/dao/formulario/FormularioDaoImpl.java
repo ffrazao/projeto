@@ -8,6 +8,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -15,6 +16,7 @@ import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.dto.CadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.formulario.FormularioCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.formulario.FormularioColetaCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FormularioDestino;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Situacao;
@@ -22,7 +24,7 @@ import br.gov.df.emater.aterwebsrv.modelo.formulario.FormularioVersao;
 
 public class FormularioDaoImpl implements FormularioDaoCustom {
 
-	@PersistenceContext
+	@PersistenceContext(unitName = EntidadeBase.PERSISTENCE_UNIT)
 	private EntityManager em;
 
 	@Override

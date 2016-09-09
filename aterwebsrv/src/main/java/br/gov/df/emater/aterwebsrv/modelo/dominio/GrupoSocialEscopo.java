@@ -1,14 +1,14 @@
 package br.gov.df.emater.aterwebsrv.modelo.dominio;
 
-public enum PessoaTipo {
+public enum GrupoSocialEscopo {
 
-	GS("Grupo Social", 3), PF("Pessoa Física", 1), PJ("Pessoa Jurídica", 2);
+	E("Empresa", 1), T("Técnico", 3), U("Unidade Organizacional", 2);
 
 	private String descricao;
 
 	private Integer ordem;
 
-	private PessoaTipo(String descricao, Integer ordem) {
+	private GrupoSocialEscopo(String descricao, Integer ordem) {
 		this.descricao = descricao;
 		this.ordem = ordem;
 	}

@@ -8,10 +8,12 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 
 import br.gov.df.emater.aterwebsrv.dto.TagDto;
 import br.gov.df.emater.aterwebsrv.dto.ater.PropriedadeRuralCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.ater.BaciaHidrografica;
 import br.gov.df.emater.aterwebsrv.modelo.ater.Comunidade;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
@@ -21,7 +23,7 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Endereco;
 
 public class PropriedadeRuralDaoImpl implements PropriedadeRuralDaoCustom {
 
-	@PersistenceContext
+	@PersistenceContext(unitName = EntidadeBase.PERSISTENCE_UNIT)
 	private EntityManager em;
 
 	private String pendenciaQryStr;

@@ -41,6 +41,8 @@ public abstract class EntidadeBase implements Serializable {
 
 	public static final String SISTEMA_SCHEMA = "sistema";
 
+	public static final String PERSISTENCE_UNIT = "default";
+
 	@Transient
 	private CadastroAcao cadastroAcao;
 

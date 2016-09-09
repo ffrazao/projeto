@@ -17,12 +17,13 @@ import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoCreditoRural
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoCreditoRuralCadListaDto;
 import br.gov.df.emater.aterwebsrv.ferramenta.Util;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
+import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FinanciamentoTipo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.ProjetoCreditoRuralStatus;
 
 public class ProjetoCreditoRuralDaoImpl implements ProjetoCreditoRuralDaoCustom {
 
-	@PersistenceContext
+	@PersistenceContext(unitName = EntidadeBase.PERSISTENCE_UNIT)
 	private EntityManager em;
 
 	@Autowired

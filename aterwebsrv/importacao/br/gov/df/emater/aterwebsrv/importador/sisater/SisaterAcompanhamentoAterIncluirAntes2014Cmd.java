@@ -31,6 +31,7 @@ import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaRelacionamentoDao;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.importador.apoio.ConexaoFirebird.DbSater;
 import br.gov.df.emater.aterwebsrv.importador.apoio.ImpUtil;
+import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.Assunto;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.Atividade;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.AtividadeAssunto;
@@ -268,7 +269,7 @@ public class SisaterAcompanhamentoAterIncluirAntes2014Cmd extends _Comando {
 
 	private Connection con;
 
-	@PersistenceContext
+	@PersistenceContext(unitName = EntidadeBase.PERSISTENCE_UNIT)
 	private EntityManager em;
 
 	private PessoaJuridica emater;

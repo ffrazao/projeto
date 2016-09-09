@@ -34,6 +34,7 @@ import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaDao;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.importador.apoio.ConexaoFirebird.DbSater;
 import br.gov.df.emater.aterwebsrv.importador.apoio.ImpUtil;
+import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Bem;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.FormaProducaoItem;
@@ -744,7 +745,7 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 
 	private Connection con;
 
-	@PersistenceContext
+	@PersistenceContext(unitName = EntidadeBase.PERSISTENCE_UNIT)
 	private EntityManager em;
 
 	private PessoaJuridica emater;

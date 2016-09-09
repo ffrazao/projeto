@@ -1,6 +1,7 @@
 package br.gov.df.emater.aterwebsrv.bo.funcionalidade;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.sistema.FuncionalidadeDao;
+import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Funcionalidade;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.FuncionalidadeComando;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.ModuloFuncionalidade;
@@ -19,7 +21,7 @@ public class VisualizarCmd extends _Comando {
 	@Autowired
 	private FuncionalidadeDao dao;
 
-	@Autowired
+	@PersistenceContext(unitName = EntidadeBase.PERSISTENCE_UNIT)
 	private EntityManager em;
 
 	@Override

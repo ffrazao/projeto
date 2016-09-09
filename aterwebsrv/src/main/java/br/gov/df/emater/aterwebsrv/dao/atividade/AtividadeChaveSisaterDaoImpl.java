@@ -6,9 +6,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+
 public class AtividadeChaveSisaterDaoImpl implements AtividadeChaveSisaterDaoCustom {
 
-	@PersistenceContext
+	@PersistenceContext(unitName = EntidadeBase.PERSISTENCE_UNIT)
 	private EntityManager em;
 
 	@Override

@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaDao;
 import br.gov.df.emater.aterwebsrv.dto.indice_producao.IndiceProducaoCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoSetor;
@@ -39,7 +41,7 @@ public class VisualizarCmd extends _Comando {
 	@Autowired
 	private FacadeBo facadeBo;
 
-	@Autowired
+	@PersistenceContext(unitName = EntidadeBase.PERSISTENCE_UNIT)
 	private EntityManager em;
 
 	@SuppressWarnings("unchecked")

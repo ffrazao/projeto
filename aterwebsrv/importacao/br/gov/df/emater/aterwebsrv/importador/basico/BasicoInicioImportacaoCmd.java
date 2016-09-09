@@ -21,6 +21,7 @@ import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoConfiguracaoViDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoFuncaoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoTipoDao;
 import br.gov.df.emater.aterwebsrv.importador.apoio.ImpUtil;
+import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.RelacionamentoParticipacao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Estado;
@@ -32,7 +33,7 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoTipo;
 @Service
 public class BasicoInicioImportacaoCmd extends _Comando {
 
-	@PersistenceContext
+	@PersistenceContext(unitName = EntidadeBase.PERSISTENCE_UNIT)
 	private EntityManager em;
 
 	@Autowired

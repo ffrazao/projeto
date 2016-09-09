@@ -7,9 +7,7 @@
                 <!-- Text input-->
                 <div class="form-group" title="Razão Social/Sigla ou Nome/Apelido">
                     <label class="col-md-4 control-label" for="nome">
-                        <span ng-hide="cadastro.filtro.pessoaTipoList.length === 1 && cadastro.filtro.pessoaTipoList.indexOf('PF') >= 0">Razão Social/Sigla</span>
-                        <span ng-hide="cadastro.filtro.pessoaTipoList.length === 1">ou</span>
-                        <span ng-hide="cadastro.filtro.pessoaTipoList.length === 1 && cadastro.filtro.pessoaTipoList.indexOf('PJ') >= 0">Nome/Apelido</span>
+                        <span>{{nomeFiltro(cadastro.filtro.pessoaTipoList)}}</span>
                     </label>
                     <div class="col-md-6">
                         <tags-input id="nomeList" name="nomeList" ng-model="cadastro.filtro.nomeList" placeholder="Digite o nome, ou parte dele, e tecle enter" replace-spaces-with-dashes="false"></tags-input>
@@ -34,7 +32,7 @@
                     </div>
                 </div>
                 <!-- Text input-->
-                <div class="form-group" title="Cadastro Nacional de Pessoa Jurídica" ng-hide="cadastro.filtro.pessoaTipoList.length === 1 && cadastro.filtro.pessoaTipoList.indexOf('PF') >= 0">
+                <div class="form-group" title="Cadastro Nacional de Pessoa Jurídica" ng-show="!cadastro.filtro.pessoaTipoList || cadastro.filtro.pessoaTipoList.length === 0 || cadastro.filtro.pessoaTipoList.indexOf('PJ') >= 0">
                     <label class="col-md-4 control-label" for="cnpj">CNPJ</label>
                     <div class="col-md-3">
                         <input id="cnpj" name="cnpj" type="text" placeholder="" class="form-control input-md" ng-model="cadastro.filtro.cnpj" ui-br-cnpj-mask>
@@ -45,7 +43,7 @@
                     </div>
                 </div>
                 <!-- Text input-->
-                <div class="form-group" title="Cadastro de Pessoa Física" ng-hide="cadastro.filtro.pessoaTipoList.length === 1 && cadastro.filtro.pessoaTipoList.indexOf('PJ') >= 0">
+                <div class="form-group" title="Cadastro de Pessoa Física" ng-show="!cadastro.filtro.pessoaTipoList || cadastro.filtro.pessoaTipoList.length === 0 || cadastro.filtro.pessoaTipoList.indexOf('PF') >= 0">
                     <label class="col-md-4 control-label" for="cpf">CPF</label>
                     <div class="col-md-3">
                         <input id="cpf" name="cpf" type="text" placeholder="" class="form-control input-md" ng-model="cadastro.filtro.cpf" ui-br-cpf-mask>
@@ -56,7 +54,7 @@
                     </div>
                 </div>
                 <!-- Multiple Checkboxes (inline) -->
-                <div class="form-group" title="Gênero da Pessoa" ng-hide="cadastro.filtro.pessoaTipoList.length === 1 && cadastro.filtro.pessoaTipoList.indexOf('PJ') >= 0">
+                <div class="form-group" title="Gênero da Pessoa" ng-show="!cadastro.filtro.pessoaTipoList || cadastro.filtro.pessoaTipoList.length === 0 || cadastro.filtro.pessoaTipoList.indexOf('PF') >= 0">
                     <label class="col-md-4 control-label" for="genero">Gênero da Pessoa</label>
                     <div class="col-md-6">
                         <label class="checkbox-inline" for="genero-{{$index}}" ng-repeat="item in cadastro.apoio.generoList">
@@ -70,7 +68,7 @@
                     </div>
                 </div>
                 <!-- Multiple Checkboxes (inline) -->
-                <div class="form-group" title="Geração da Pessoa" ng-hide="cadastro.filtro.pessoaTipoList.length === 1 && cadastro.filtro.pessoaTipoList.indexOf('PJ') >= 0">
+                <div class="form-group" title="Geração da Pessoa" ng-show="!cadastro.filtro.pessoaTipoList || cadastro.filtro.pessoaTipoList.length === 0 || cadastro.filtro.pessoaTipoList.indexOf('PF') >= 0">
                     <label class="col-md-4 control-label" for="pessoaGeracao">Geração da Pessoa</label>
                     <div class="col-md-6">
                         <label class="checkbox-inline" for="pessoaGeracao-{{$index}}" ng-repeat="item in cadastro.apoio.pessoaGeracaoList">

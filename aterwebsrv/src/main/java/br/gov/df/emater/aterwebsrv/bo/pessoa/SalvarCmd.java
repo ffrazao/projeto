@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -43,6 +44,7 @@ import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.TelefoneDao;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
+import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoSetor;
@@ -87,7 +89,7 @@ public class SalvarCmd extends _SalvarCmd {
 	@Autowired
 	private PessoaDao dao;
 
-	@Autowired
+	@PersistenceContext(unitName = EntidadeBase.PERSISTENCE_UNIT)
 	private EntityManager em;
 
 	@Autowired
@@ -215,7 +217,7 @@ public class SalvarCmd extends _SalvarCmd {
 					}
 				}
 			}
-		} else {
+		} else if (result instanceof PessoaJuridica) {
 			PessoaJuridica pj = (PessoaJuridica) result;
 			pj.setCnpj(UtilitarioString.formataCnpj(pj.getCnpj()));
 		}

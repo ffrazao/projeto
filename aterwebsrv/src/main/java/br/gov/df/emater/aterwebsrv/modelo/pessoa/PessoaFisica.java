@@ -191,12 +191,11 @@ public class PessoaFisica extends Pessoa implements PessoaFisicaDadosBasicos {
 	private String tituloZona;
 
 	public PessoaFisica() {
-		setPessoaTipo(PessoaTipo.PF);
+		this(null, null, null, null, null, null, null, null);
 	}
 
 	public PessoaFisica(Integer id) {
-		super(id);
-		setPessoaTipo(PessoaTipo.PF);
+		this(id, null, null, null, null, null, null, null);
 	}
 
 	public PessoaFisica(Integer id, String nome, String apelidoSigla, Arquivo perfilArquivo, PessoaSituacao situacao, Confirmacao publicoAlvoConfirmacao, PessoaGenero genero, String cpf) {

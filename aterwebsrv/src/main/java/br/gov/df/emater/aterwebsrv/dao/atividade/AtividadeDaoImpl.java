@@ -7,12 +7,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 
 import br.gov.df.emater.aterwebsrv.dto.TagDto;
 import br.gov.df.emater.aterwebsrv.dto.atividade.AtividadeCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.ferramenta.Util;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
+import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGeracao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoCategoria;
@@ -20,7 +22,7 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoSegmento;
 
 public class AtividadeDaoImpl implements AtividadeDaoCustom {
 
-	@PersistenceContext
+	@PersistenceContext(unitName = EntidadeBase.PERSISTENCE_UNIT)
 	private EntityManager em;
 
 	@Override

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import br.gov.df.emater.aterwebsrv.dao.ater.ComunidadeDao;
 import br.gov.df.emater.aterwebsrv.dao.ater.PropriedadeRuralDao;
 import br.gov.df.emater.aterwebsrv.dao.funcional.UnidadeOrganizacionalDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoDao;
+import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.ater.Comunidade;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
@@ -33,7 +35,7 @@ public class SalvarPrincipalCmd extends _Comando {
 	@Autowired
 	private ProducaoDao dao;
 
-	@Autowired
+	@PersistenceContext(unitName = EntidadeBase.PERSISTENCE_UNIT)
 	private EntityManager em;
 
 	@Autowired

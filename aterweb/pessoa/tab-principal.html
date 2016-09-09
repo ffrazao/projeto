@@ -1,10 +1,16 @@
-<div class="row">
+<div class="row" ng-if="cadastro.registro.pessoaTipo==='PF' || cadastro.registro.pessoaTipo==='PJ'">
     <div class="form-group col-md-12">
-        <label class="control-label"><span ng-if="cadastro.registro.pessoaTipo==='PF'">Nascimento <small ng-show="cadastro.apoio.geracao">({{cadastro.apoio.geracao}})</small> <small ng-show="cadastro.apoio.nacionalidade.descricao">({{cadastro.apoio.nacionalidade.descricao}})</small></span><span ng-if="cadastro.registro.pessoaTipo==='PJ'">Data de Fundação</span></label>
+        <label class="control-label">
+            <span ng-if="cadastro.registro.pessoaTipo==='PF'">
+                Nascimento <small ng-show="cadastro.apoio.geracao">({{cadastro.apoio.geracao}})</small> <small ng-show="cadastro.apoio.nacionalidade.descricao">({{cadastro.apoio.nacionalidade.descricao}})</small>
+            </span>
+            <span ng-if="cadastro.registro.pessoaTipo==='PJ'">Fundação</span>
+        </label>
         <div class="row">
             <div class="form-group col-md-2">
                 <label class="control-label">Data</label>
-                <input class="form-control" type="text" id="nascimento" name="nascimento" ng-model="cadastro.registro.nascimento" ui-date-mask ng-required="cadastro.registro.pessoaTipo==='PF' && cadastro.registro.publicoAlvoConfirmacao === 'S'">
+                <input class="form-control" type="text" id="nascimento" name="nascimento" ng-model="cadastro.registro.nascimento" ui-date-mask ng-required="cadastro.registro.pessoaTipo==='PF' && cadastro.registro.publicoAlvoConfirmacao === 'S'" ng-show="cadastro.registro.pessoaTipo === 'PF'">
+                <input class="form-control" type="text" id="fundacao" name="fundacao" ng-model="cadastro.registro.fundacao" ui-date-mask ng-show="cadastro.registro.pessoaTipo === 'PJ'">
                 <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.nascimento.$error.date">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     Valor Inválido!
@@ -84,13 +90,33 @@
         </select>
     </div>
 </div>
-<div class="row">
+<div class="row" ng-if="cadastro.registro.pessoaTipo === 'GS'">
+    <div class="form-group col-md-3">
+        <label class="control-label">Tipo de Grupo</label>
+        <select class="form-control" id="grupoSocialTipo" name="grupoSocialTipo" ng-model="cadastro.registro.grupoSocialTipo" ng-options="item as item.nome for item in cadastro.apoio.grupoSocialTipoList | orderBy : 'nome' track by item.id" ng-disabled="cadastro.registro.id" ng-required="true">
+        </select>
+        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.grupoSocialTipo.$error.required">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Campo Obrigatório
+        </div>
+    </div>
+    <div class="form-group col-md-3">
+        <label class="control-label">Escopo do Grupo</label>
+        <select class="form-control" id="escopo" name="escopo" ng-model="cadastro.registro.escopo" ng-options="item.codigo as item.descricao for item in cadastro.apoio.grupoSocialEscopoList | orderBy : 'ordem'" ng-required="true">
+        </select>
+        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.escopo.$error.required">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Campo Obrigatório
+        </div>
+    </div>
+</div>
+<div class="row" ng-hide="cadastro.registro.pessoaTipo === 'GS'">
     <div class="form-group col-md-12">
         <label class="control-label">Endereço para Contato</label>
         <ng-include src="'pessoa/sub-endereco.html'" ng-controller="PessoaEnderecoCtrl" />
     </div>
 </div>
-<div class="row">
+<div class="row" ng-hide="cadastro.registro.pessoaTipo === 'GS'">
     <div class="form-group col-md-6">
         <label class="control-label">Telefone</label>
         <ng-include src="'pessoa/sub-telefone.html'" ng-controller="PessoaTelefoneCtrl" />
@@ -100,7 +126,7 @@
         <ng-include src="'pessoa/sub-email.html'" ng-controller="PessoaEmailCtrl" />
     </div>
 </div>
-<div class="row">
+<div class="row" ng-if="cadastro.registro.pessoaTipo !== 'GS'">
     <div class="form-group col-md-12">
         <label class="control-label">Relacionamentos</label>
         <ng-include src="'pessoa/sub-relacionamento.html'" ng-controller="PessoaRelacionamentoCtrl" />
@@ -182,7 +208,7 @@
         </div>
     </div>
 </div>
-<div class="row" ng-if="(!(cadastro.registro.pessoaTipo === 'PF' && cadastro.registro.publicoAlvoConfirmacao === 'N'))">
+<div class="row" ng-if="cadastro.registro.pessoaTipo !== 'GS' && (!(cadastro.registro.pessoaTipo === 'PF' && cadastro.registro.publicoAlvoConfirmacao === 'N'))">
     <fieldset class="form-group col-md-6">
         <label class="control-label">Inscrição Estadual</label>
         <div class="row">

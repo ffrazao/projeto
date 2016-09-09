@@ -1,0 +1,13 @@
+EXPORTAR
+
+mysqldump -uemater -p"emater" --hex-blob --databases ater atividade credito_rural formulario funcional indice_producao pessoa planejamento sistema > dump.sql
+
+
+mysqldump -uemater -p"emater" --default-character-set=utf8 --single-transaction --hex-blob --databases pessoa > pessoa.sql
+
+
+IMPORTAR
+
+mysql -uemater -p
+SET GLOBAL max_allowed_packet=1073741824;
+source pessoa.sql;

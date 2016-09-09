@@ -31,12 +31,11 @@ public class PessoaJuridica extends Pessoa {
 	private String cnpj;
 
 	public PessoaJuridica() {
-		setPessoaTipo(PessoaTipo.PJ);
+		this(null, null, null, null, null, null, null);
 	}
 
 	public PessoaJuridica(Integer id) {
-		super(id);
-		setPessoaTipo(PessoaTipo.PJ);
+		this(id, null, null, null, null, null, null);
 	}
 
 	public PessoaJuridica(Integer id, String nome, String apelidoSigla, Arquivo perfilArquivo, PessoaSituacao situacao, Confirmacao publicoAlvoConfirmacao, String cnpj) {

@@ -41,7 +41,9 @@ angular.module(pNmModulo).factory(pNmFactory,
                    'Situacao',
                    'OrganizacaoTipo',
                    'Estado',
-                   'PendenciaTipo'
+                   'PendenciaTipo',
+                   'GrupoSocialTipo',
+                   'GrupoSocialEscopo'
                 ]}).success(function(resposta) {
                     if (resposta && resposta.mensagem === 'OK') {
                         scp.cadastro.apoio.pessoaTipoList = resposta.resultado[0];
@@ -83,6 +85,8 @@ angular.module(pNmModulo).factory(pNmFactory,
                         scp.cadastro.apoio.organizacaoTipoList = resposta.resultado[24];
                         scp.cadastro.apoio.estadoList = resposta.resultado[25];
                         scp.cadastro.apoio.pendenciaTipoList = resposta.resultado[26];
+                        scp.cadastro.apoio.grupoSocialTipoList = resposta.resultado[27];
+                        scp.cadastro.apoio.grupoSocialEscopoList = resposta.resultado[28];
 
                         scp.cadastro.apoio.tradicaoList = [];
                         var anoAtual = new Date().getFullYear();

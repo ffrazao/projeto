@@ -410,6 +410,24 @@
                 };
             };
 
+            $scope.nomeFiltro = function (pessoaTipoList) {
+                var result = '';
+                if (!pessoaTipoList || pessoaTipoList.length === 0 || pessoaTipoList.indexOf('PF') >= 0) {
+                    result += 'Nome/Apelido';
+                } if (!pessoaTipoList || pessoaTipoList.length === 0 || pessoaTipoList.indexOf('PJ') >= 0) {
+                    if (result.length > 0) {
+                        result += ' ou ';
+                    }
+                    result += 'Razão Social/Sigla'; 
+                } if (!pessoaTipoList || pessoaTipoList.length === 0 || pessoaTipoList.indexOf('GS') >= 0) {
+                    if (result.length > 0) {
+                        result += ' ou ';
+                    }
+                    result += 'Nome/Sigla';
+                }
+                return result;
+            };
+
             $scope.toggleChildren = function (scope) {
                 scope.toggle();
             };
@@ -498,10 +516,11 @@
                 });
             };
             $scope.tabVisivelPublicoAlvo = function(visivel) {
-                $scope.tabVisivel('Beneficiário', visivel);
-                $scope.tabVisivel('Índice de Produção', visivel);
+                $scope.tabVisivel('Beneficiário', $scope.cadastro.registro.pessoaTipo !== 'GS' && visivel);
+                $scope.tabVisivel('Índice de Produção', $scope.cadastro.registro.pessoaTipo !== 'GS' && visivel);
                 var outro = $scope.tabVisivel('Colaborador');
-                $scope.tabVisivel('Diagnósticos', visivel || outro);
+                $scope.tabVisivel('Diagnósticos', $scope.cadastro.registro.pessoaTipo !== 'GS' && (visivel || outro));
+                $scope.tabVisivel('Programas Sociais', $scope.cadastro.registro.pessoaTipo !== 'GS');
             };
             $scope.tabVisivelColaborador = function(visivel) {
                 $scope.tabVisivel('Colaborador', visivel);
