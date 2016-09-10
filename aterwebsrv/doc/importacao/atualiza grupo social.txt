@@ -1,0 +1,15 @@
+ALTER TABLE `pessoa`.`pessoa` 
+CHANGE COLUMN `pessoa_tipo` `pessoa_tipo` ENUM('PF', 'PJ', 'GS') NOT NULL DEFAULT 'PF' COMMENT 'PF - Pessoa Fisica\nPJ - Pessoa Juridica\nGS - Grupo Social' ;
+
+SET @maxId = (select max(id) from pessoa.pessoa);
+
+set foreign_key_checks = 0;
+set sql_safe_updates = 0;
+
+update pessoa.grupo_social set id = id + @maxId;
+update pessoa.pessoa_grupo_social set grupo_social_id = grupo_social_id + @maxId;
+
+insert into pessoa.pessoa (id, nome, pessoa_tipo) (select id, nome, 'GS' from pessoa.grupo_social);
+
+set foreign_key_checks = 1;
+set sql_safe_updates = 0;
