@@ -1,7 +1,6 @@
 package br.gov.df.emater.aterwebsrv.bo.indice_producao;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +10,6 @@ import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoFormaComposicaoDao;
-import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoForma;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoFormaComposicao;
@@ -25,7 +23,7 @@ public class VisualizarCmd extends _Comando {
 	@Autowired
 	private ProducaoFormaComposicaoDao producaoFormaComposicaoDao;
 
-	@PersistenceContext(unitName = EntidadeBase.PERSISTENCE_UNIT)
+	@Autowired
 	private EntityManager em;
 
 	@Override

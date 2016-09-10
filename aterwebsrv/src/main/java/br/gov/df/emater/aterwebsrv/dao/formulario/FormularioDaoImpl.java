@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
@@ -16,7 +15,6 @@ import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.dto.CadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.formulario.FormularioCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.formulario.FormularioColetaCadFiltroDto;
-import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FormularioDestino;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Situacao;
@@ -24,7 +22,7 @@ import br.gov.df.emater.aterwebsrv.modelo.formulario.FormularioVersao;
 
 public class FormularioDaoImpl implements FormularioDaoCustom {
 
-	@PersistenceContext(unitName = EntidadeBase.PERSISTENCE_UNIT)
+	@Autowired
 	private EntityManager em;
 
 	@Override

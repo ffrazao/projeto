@@ -3,9 +3,6 @@ package br.gov.df.emater.aterwebsrv.dao.projeto_credito_rural;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.transform.Transformers;
@@ -17,14 +14,10 @@ import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoCreditoRural
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoCreditoRuralCadListaDto;
 import br.gov.df.emater.aterwebsrv.ferramenta.Util;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
-import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FinanciamentoTipo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.ProjetoCreditoRuralStatus;
 
 public class ProjetoCreditoRuralDaoImpl implements ProjetoCreditoRuralDaoCustom {
-
-	@PersistenceContext(unitName = EntidadeBase.PERSISTENCE_UNIT)
-	private EntityManager em;
 
 	@Autowired
 	private SessionFactory sessionFactory;

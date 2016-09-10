@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +12,10 @@ import org.springframework.util.CollectionUtils;
 import br.gov.df.emater.aterwebsrv.dto.TagDto;
 import br.gov.df.emater.aterwebsrv.dto.sistema.LogAcaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
-import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 
 public class LogAcaoDaoImpl implements LogAcaoDaoCustom {
 
-	@PersistenceContext(unitName = EntidadeBase.PERSISTENCE_UNIT)
+	@Autowired
 	private EntityManager em;
 
 	public LogAcaoDaoImpl() {
