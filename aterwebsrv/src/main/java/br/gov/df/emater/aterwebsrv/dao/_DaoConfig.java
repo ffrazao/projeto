@@ -1,5 +1,6 @@
 package br.gov.df.emater.aterwebsrv.dao;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
@@ -33,35 +34,51 @@ public class _DaoConfig {
 	// return dataSource;
 	// }
 
-	@Bean(name = "dataSource")
+	@Autowired
+	private EntityManagerFactoryBuilder builder;
+
+	@Bean
 	@Qualifier(value = "dataSource")
 	@Primary
 	@ConfigurationProperties(prefix = "spring.datasource")
 	public DataSource dataSource() {
-		return DataSourceBuilder.create().build();
+		DataSource result = DataSourceBuilder.create().build();
+		return result;
 	}
 
-	@Bean(name = "entityManagerFactory")
+	@Bean
+	@Qualifier(value = "dataSourcePlanejamento")
+	@ConfigurationProperties(prefix = "planejamento.datasource")
+	public DataSource dataSourcePlanejamento() {
+		DataSource result = DataSourceBuilder.create().build();
+		return result;
+	}
+
+	@Bean
 	@Qualifier(value = "entityManagerFactory")
 	@Primary
-	public LocalContainerEntityManagerFactoryBean entityManagerFactory(EntityManagerFactoryBuilder builder) {
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 		LocalContainerEntityManagerFactoryBean result = builder.dataSource(dataSource()).packages("br.gov.df.emater.aterwebsrv.modelo").persistenceUnit("default").build();
 		return result;
 	}
 
-	@Bean(name = "dataSourcePlanejamento")
-	@Qualifier(value = "dataSourcePlanejamento")
-	@ConfigurationProperties(prefix = "planejamento.datasource")
-	public DataSource dataSourcePlanejamento() {
-		return DataSourceBuilder.create().build();
+	@Bean
+	@Qualifier(value = "entityManager")
+	@Primary
+	public EntityManager entityManager() {
+		EntityManager result = entityManagerFactory().getNativeEntityManagerFactory().createEntityManager();
+		return result;
 	}
 
 	@Bean
+	@Qualifier(value = "sessionFactory")
+	@Primary
 	public HibernateJpaSessionFactoryBean sessionFactory() {
-		return new HibernateJpaSessionFactoryBean();
+		HibernateJpaSessionFactoryBean result = new HibernateJpaSessionFactoryBean();
+		return result;
 	}
 
-	@Bean(name = "transactionManager")
+	@Bean
 	@Qualifier(value = "transactionManager")
 	@Primary
 	@Autowired
