@@ -10,7 +10,6 @@ import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +33,6 @@ import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaDao;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.importador.apoio.ConexaoFirebird.DbSater;
 import br.gov.df.emater.aterwebsrv.importador.apoio.ImpUtil;
-import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Bem;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.FormaProducaoItem;
@@ -745,7 +743,7 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 
 	private Connection con;
 
-	@PersistenceContext(unitName = EntidadeBase.PERSISTENCE_UNIT)
+	@Autowired
 	private EntityManager em;
 
 	private PessoaJuridica emater;
@@ -798,9 +796,9 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 		checkProducaoList.init();
 
 		for (OrigemList origem : OrigemList.values()) {
-//			if (origem.compareTo(OrigemList.IPAP00) < 0) {
-//				continue;
-//			}
+			// if (origem.compareTo(OrigemList.IPAP00) < 0) {
+			// continue;
+			// }
 			for (int i = 0; i <= 1; i++) {
 				checkProducaoList.importar(base, contexto.getUsuario(), origem, i);
 			}

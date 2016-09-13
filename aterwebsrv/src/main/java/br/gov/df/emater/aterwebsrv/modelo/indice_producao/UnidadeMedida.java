@@ -7,11 +7,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 
 @Entity
 @Table(name = "unidade_medida", schema = EntidadeBase.INDICE_PRODUCAO_SCHEMA)
-public class UnidadeMedida extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class UnidadeMedida extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<UnidadeMedida> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -25,6 +26,16 @@ public class UnidadeMedida extends EntidadeBase implements _ChavePrimaria<Intege
 		super();
 	}
 
+	public UnidadeMedida(Integer id) {
+		super();
+		this.id = id;
+	}
+
+	public UnidadeMedida(Integer id, String nome) {
+		super(id);
+		this.nome = nome;
+	}
+
 	@Override
 	public Integer getId() {
 		return id;
@@ -32,6 +43,11 @@ public class UnidadeMedida extends EntidadeBase implements _ChavePrimaria<Intege
 
 	public String getNome() {
 		return nome;
+	}
+
+	@Override
+	public UnidadeMedida infoBasica() {
+		return new UnidadeMedida(this.id, this.nome);
 	}
 
 	@Override
