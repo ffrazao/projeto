@@ -1,6 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.format.annotation.NumberFormat;
@@ -40,6 +42,9 @@ public class CustoProducao extends EntidadeBase implements _ChavePrimaria<Intege
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
+	@OneToMany(mappedBy = "custoProducao")
+	private List<CustoProducaoItem> itens;
+
 	@NumberFormat(style = Style.NUMBER)
 	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
 	private BigDecimal produtividade;
@@ -56,13 +61,14 @@ public class CustoProducao extends EntidadeBase implements _ChavePrimaria<Intege
 		super(id);
 	}
 
-	public CustoProducao(Integer id, Bem bem, BigDecimal area, BigDecimal produtividade, UnidadeMedida unidadeMedida) {
+	public CustoProducao(Integer id, Bem bem, BigDecimal area, BigDecimal produtividade, UnidadeMedida unidadeMedida, List<CustoProducaoItem> itens) {
 		super();
 		this.id = id;
 		this.bem = bem;
 		this.area = area;
 		this.produtividade = produtividade;
 		this.unidadeMedida = unidadeMedida;
+		this.itens = itens;
 	}
 
 	public BigDecimal getArea() {
@@ -78,6 +84,10 @@ public class CustoProducao extends EntidadeBase implements _ChavePrimaria<Intege
 		return id;
 	}
 
+	public List<CustoProducaoItem> getItens() {
+		return itens;
+	}
+
 	public BigDecimal getProdutividade() {
 		return produtividade;
 	}
@@ -87,7 +97,7 @@ public class CustoProducao extends EntidadeBase implements _ChavePrimaria<Intege
 	}
 
 	public CustoProducao infoBasica() {
-		return new CustoProducao(this.id, this.bem == null ? null : this.bem.infoBasica(), this.area, this.produtividade, this.unidadeMedida == null ? null : this.unidadeMedida.infoBasica());
+		return new CustoProducao(this.id, this.bem == null ? null : this.bem.infoBasica(), this.area, this.produtividade, this.unidadeMedida == null ? null : this.unidadeMedida.infoBasica(), this.itens);
 	}
 
 	public void setArea(BigDecimal area) {
@@ -101,6 +111,10 @@ public class CustoProducao extends EntidadeBase implements _ChavePrimaria<Intege
 	@Override
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public void setItens(List<CustoProducaoItem> itens) {
+		this.itens = itens;
 	}
 
 	public void setProdutividade(BigDecimal produtividade) {

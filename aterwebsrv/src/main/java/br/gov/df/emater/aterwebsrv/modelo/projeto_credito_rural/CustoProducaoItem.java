@@ -1,9 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural;
 
 import java.math.BigDecimal;
-import java.util.Calendar;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,28 +9,26 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
-import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonFormatarBigDecimal;
-import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 
 @Entity
-@Table(name = "custo_producao_insumo_servico_preco", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
-public class CustoProducaoInsumoServicoPreco extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<CustoProducaoInsumoServicoPreco> {
+@Table(name = "custo_producao_item", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
+public class CustoProducaoItem extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<CustoProducaoItem> {
 
 	private static final long serialVersionUID = 1L;
+
+	@ManyToOne
+	@JoinColumn(name = "custo_producao_id")
+	private CustoProducao custoProducao;
 
 	@ManyToOne
 	@JoinColumn(name = "custo_producao_insumo_servico_id")
@@ -42,31 +38,28 @@ public class CustoProducaoInsumoServicoPreco extends EntidadeBase implements _Ch
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	@JsonSerialize(using = JsonSerializerData.class)
-	@JsonDeserialize(using = JsonDeserializerData.class)
-	@Column(name = "inicio_vigencia")
-	private Calendar inicioVigencia;
-
 	@NumberFormat(style = Style.NUMBER)
 	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
-	private BigDecimal preco;
+	private BigDecimal quantidade;
 
-	public CustoProducaoInsumoServicoPreco() {
+	public CustoProducaoItem() {
 		super();
 	}
 
-	public CustoProducaoInsumoServicoPreco(Integer id) {
+	public CustoProducaoItem(Integer id) {
 		super(id);
 	}
 
-	public CustoProducaoInsumoServicoPreco(Integer id, CustoProducaoInsumoServico custoProducaoInsumoServico, Calendar inicioVigencia, BigDecimal preco) {
+	public CustoProducaoItem(Integer id, CustoProducao custoProducao, CustoProducaoInsumoServico custoProducaoInsumoServico, BigDecimal quantidade) {
 		super();
 		this.id = id;
+		this.custoProducao = custoProducao;
 		this.custoProducaoInsumoServico = custoProducaoInsumoServico;
-		this.inicioVigencia = inicioVigencia;
-		this.preco = preco;
+		this.quantidade = quantidade;
+	}
+
+	public CustoProducao getCustoProducao() {
+		return custoProducao;
 	}
 
 	public CustoProducaoInsumoServico getCustoProducaoInsumoServico() {
@@ -78,17 +71,17 @@ public class CustoProducaoInsumoServicoPreco extends EntidadeBase implements _Ch
 		return id;
 	}
 
-	public Calendar getInicioVigencia() {
-		return inicioVigencia;
-	}
-
-	public BigDecimal getPreco() {
-		return preco;
+	public BigDecimal getQuantidade() {
+		return quantidade;
 	}
 
 	@Override
-	public CustoProducaoInsumoServicoPreco infoBasica() {
-		return new CustoProducaoInsumoServicoPreco(this.id, this.custoProducaoInsumoServico, this.inicioVigencia, this.preco);
+	public CustoProducaoItem infoBasica() {
+		return new CustoProducaoItem(this.id, this.custoProducao == null ? null : this.custoProducao.infoBasica(), this.custoProducaoInsumoServico == null ? null : this.custoProducaoInsumoServico.infoBasica(), this.quantidade);
+	}
+
+	public void setCustoProducao(CustoProducao custoProducao) {
+		this.custoProducao = custoProducao;
 	}
 
 	public void setCustoProducaoInsumoServico(CustoProducaoInsumoServico custoProducaoInsumoServico) {
@@ -100,12 +93,8 @@ public class CustoProducaoInsumoServicoPreco extends EntidadeBase implements _Ch
 		this.id = id;
 	}
 
-	public void setInicioVigencia(Calendar inicioVigencia) {
-		this.inicioVigencia = inicioVigencia;
-	}
-
-	public void setPreco(BigDecimal preco) {
-		this.preco = preco;
+	public void setQuantidade(BigDecimal quantidade) {
+		this.quantidade = quantidade;
 	}
 
 }
