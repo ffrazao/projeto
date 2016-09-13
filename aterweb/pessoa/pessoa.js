@@ -106,7 +106,8 @@
                 } else {
                     executaIncluir();
                 }
-            };
+            };            
+
             var salvar = function(scp, acao) {
                 $rootScope.preparaClassePessoa(scp.cadastro.registro);
                 if (acao === 'incluir') {
@@ -686,7 +687,60 @@
                     }, 2000);
                 }
             });
+            
+            $scope.$watch('cadastro.registro.enderecoList', function(newValue, oldValue){
+                if(!$scope.frm||!$scope.frm.formulario){
+                return;
+                }
+                if(!$scope.cadastro.registro.enderecoList||!$scope.cadastro.registro.enderecoList.length){
+                    $scope.frm.formulario.$setValidity("enderecoPrincipal", true);
+                    return;
+                }
+                var encontrou = false;
+                for(var i in $scope.cadastro.registro.enderecoList){
+                    if($scope.cadastro.registro.enderecoList[i].principal === 'S'){
+                        encontrou = true;
+                        break;
+                    }
+                }
+                $scope.frm.formulario.$setValidity("enderecoPrincipal", encontrou);
+            },true);
 
+            $scope.$watch('cadastro.registro.telefoneList', function(newValue, oldValue){
+               if(!$scope.frm||!$scope.frm.formulario){
+                return;
+               }
+                if(!$scope.cadastro.registro.telefoneList||!$scope.cadastro.registro.telefoneList.length){
+                    $scope.frm.formulario.$setValidity("telefonePrincipal", true);
+                    return;
+                }
+                var encontrou = false;
+                for(var i in $scope.cadastro.registro.telefoneList){
+                    if($scope.cadastro.registro.telefoneList[i].principal === 'S'){
+                        encontrou = true;
+                        break;
+                    }
+                }
+                $scope.frm.formulario.$setValidity("telefonePrincipal", encontrou);
+            },true);
+
+            $scope.$watch('cadastro.registro.emailList', function(newValue, oldValue){
+                if(!$scope.frm||!$scope.frm.formulario){
+                return;
+                }
+                if(!$scope.cadastro.registro.emailList||!$scope.cadastro.registro.emailList.length){
+                    $scope.frm.formulario.$setValidity("emailPrincipal", true);
+                    return;
+                }
+                var encontrou = false;
+                for(var i in $scope.cadastro.registro.emailList){
+                    if($scope.cadastro.registro.emailList[i].principal === 'S'){
+                        encontrou = true;
+                        break;
+                    }
+                }
+                $scope.frm.formulario.$setValidity("emailPrincipal", encontrou);
+            },true);
             // fim dos watches
 
             $scope.selecionaFotoPerfil = function() {
