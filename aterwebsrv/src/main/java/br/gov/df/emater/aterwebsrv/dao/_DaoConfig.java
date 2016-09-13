@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
+import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -20,10 +21,16 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@EnableJpaRepositories(basePackages = "br.gov.df.emater.aterwebsrv.dao")
-// @EntityScan(basePackages = "br.gov.df.emater.aterwebsrv.modelo")
+@EntityScan(basePackages = { _DaoConfig.MODELO })
+@EnableJpaRepositories(basePackages = { _DaoConfig.DAO }, entityManagerFactoryRef = "entityManagerFactory", transactionManagerRef = "transactionManager")
 @EnableTransactionManagement
 public class _DaoConfig {
+
+	public static final String DAO = "br.gov.df.emater.aterwebsrv.dao";
+
+	public static final String MODELO = "br.gov.df.emater.aterwebsrv.modelo";
+
+	public static final String PERSISTENCE_UNIT = "default";
 
 	// TODO descomentar esta linha para o ambiente de produção
 	// @Bean(name = "dataSource")
@@ -37,55 +44,46 @@ public class _DaoConfig {
 	@Autowired
 	private EntityManagerFactoryBuilder builder;
 
-	@Bean
-	@Qualifier(value = "dataSource")
+	@Bean(name = "dataSource")
 	@Primary
 	@ConfigurationProperties(prefix = "spring.datasource")
-	public DataSource dataSource() {
+	public DataSource defaultDataSource() {
 		DataSource result = DataSourceBuilder.create().build();
 		return result;
 	}
 
-	@Bean
-	@Qualifier(value = "dataSourcePlanejamento")
-	@ConfigurationProperties(prefix = "planejamento.datasource")
-	public DataSource dataSourcePlanejamento() {
-		DataSource result = DataSourceBuilder.create().build();
-		return result;
-	}
-
-	@Bean
-	@Qualifier(value = "entityManagerFactory")
-	@Primary
-	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-		LocalContainerEntityManagerFactoryBean result = builder.dataSource(dataSource()).packages("br.gov.df.emater.aterwebsrv.modelo").persistenceUnit("default").build();
-		return result;
-	}
-
-	@Bean
+	@Bean(name = "entityManager")
 	@Qualifier(value = "entityManager")
 	@Primary
-	public EntityManager entityManager() {
-		EntityManager result = entityManagerFactory().getNativeEntityManagerFactory().createEntityManager();
+	public EntityManager defaultEntityManager() {
+		EntityManager result = defaultEntityManagerFactory().getNativeEntityManagerFactory().createEntityManager();
 		return result;
 	}
 
-	@Bean
+	@Bean(name = "entityManagerFactory")
+	@Qualifier(value = "entityManagerFactory")
+	@Primary
+	public LocalContainerEntityManagerFactoryBean defaultEntityManagerFactory() {
+		LocalContainerEntityManagerFactoryBean result = builder.dataSource(defaultDataSource()).packages(MODELO).persistenceUnit(PERSISTENCE_UNIT).build();
+		return result;
+	}
+
+	@Bean(name = "transactionManager")
+	@Qualifier(value = "transactionManager")
+	@Primary
+	@Autowired
+	public PlatformTransactionManager defaultTransactionManager(EntityManagerFactory entityManagerFactory) {
+		JpaTransactionManager txManager = new JpaTransactionManager();
+		txManager.setEntityManagerFactory(entityManagerFactory);
+		return txManager;
+	}
+
+	@Bean(name = "sessionFactory")
 	@Qualifier(value = "sessionFactory")
 	@Primary
 	public HibernateJpaSessionFactoryBean sessionFactory() {
 		HibernateJpaSessionFactoryBean result = new HibernateJpaSessionFactoryBean();
 		return result;
-	}
-
-	@Bean
-	@Qualifier(value = "transactionManager")
-	@Primary
-	@Autowired
-	public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
-		JpaTransactionManager txManager = new JpaTransactionManager();
-		txManager.setEntityManagerFactory(entityManagerFactory);
-		return txManager;
 	}
 
 }

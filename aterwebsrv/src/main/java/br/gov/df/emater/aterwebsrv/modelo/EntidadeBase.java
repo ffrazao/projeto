@@ -37,11 +37,11 @@ public abstract class EntidadeBase implements Serializable {
 
 	public static final String PESSOA_SCHEMA = "pessoa";
 
+	public static final String PLANEJAMENTO_SCHEMA = "planejamento";
+
 	private static final long serialVersionUID = 1L;
 
 	public static final String SISTEMA_SCHEMA = "sistema";
-
-	public static final String PERSISTENCE_UNIT = "default";
 
 	@Transient
 	private CadastroAcao cadastroAcao;
