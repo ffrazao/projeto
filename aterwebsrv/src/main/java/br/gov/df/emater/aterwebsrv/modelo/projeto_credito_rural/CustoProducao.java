@@ -3,7 +3,9 @@ package br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural;
 import java.math.BigDecimal;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,6 +39,9 @@ public class CustoProducao extends EntidadeBase implements _ChavePrimaria<Intege
 	@ManyToOne
 	@JoinColumn(name = "bem_id")
 	private Bem bem;
+
+	@OneToMany(mappedBy = "custoProducao", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	private List<CustoProducaoFormaProducao> formaProducaoList;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -79,6 +84,10 @@ public class CustoProducao extends EntidadeBase implements _ChavePrimaria<Intege
 		return bem;
 	}
 
+	public List<CustoProducaoFormaProducao> getFormaProducaoList() {
+		return formaProducaoList;
+	}
+
 	@Override
 	public Integer getId() {
 		return id;
@@ -106,6 +115,10 @@ public class CustoProducao extends EntidadeBase implements _ChavePrimaria<Intege
 
 	public void setBem(Bem bem) {
 		this.bem = bem;
+	}
+
+	public void setFormaProducaoList(List<CustoProducaoFormaProducao> formaProducaoList) {
+		this.formaProducaoList = formaProducaoList;
 	}
 
 	@Override
