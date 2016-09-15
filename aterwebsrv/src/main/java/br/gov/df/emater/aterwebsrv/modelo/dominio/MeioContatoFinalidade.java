@@ -2,7 +2,7 @@ package br.gov.df.emater.aterwebsrv.modelo.dominio;
 
 public enum MeioContatoFinalidade {
 
-	C("Comercial", 1), P("Particular", 2);
+	C("Para Contato", 1), P("Privativo", 2);
 
 	private String descricao;
 
