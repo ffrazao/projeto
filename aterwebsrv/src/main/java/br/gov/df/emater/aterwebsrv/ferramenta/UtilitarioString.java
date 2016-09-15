@@ -180,7 +180,7 @@ public class UtilitarioString {
 			public String[] numeroComDddEntreParenteses(String numero) {
 				numero = numero.trim();
 				if (numero.startsWith("(") && numero.indexOf(")") > 0) {
-					String ddd = soNumero(numero.substring(1, numero.indexOf(")") - 1));
+					String ddd = soNumero(numero.substring(1, numero.indexOf(")")));
 					numero = soNumero(numero.substring(numero.indexOf(")") + 1, numero.length()));
 					return numeroComDddTudoJunto(ddd + numero);
 				}
