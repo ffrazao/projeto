@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -49,6 +50,9 @@ public class CustoProducao extends EntidadeBase implements _ChavePrimaria<Intege
 
 	@OneToMany(mappedBy = "custoProducao")
 	private List<CustoProducaoItem> itens;
+
+	@Column(name = "nome_forma_producao")
+	private String nomeFormaProducao;
 
 	@NumberFormat(style = Style.NUMBER)
 	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
@@ -97,6 +101,10 @@ public class CustoProducao extends EntidadeBase implements _ChavePrimaria<Intege
 		return itens;
 	}
 
+	public String getNomeFormaProducao() {
+		return nomeFormaProducao;
+	}
+
 	public BigDecimal getProdutividade() {
 		return produtividade;
 	}
@@ -128,6 +136,10 @@ public class CustoProducao extends EntidadeBase implements _ChavePrimaria<Intege
 
 	public void setItens(List<CustoProducaoItem> itens) {
 		this.itens = itens;
+	}
+
+	public void setNomeFormaProducao(String nomeFormaProducao) {
+		this.nomeFormaProducao = nomeFormaProducao;
 	}
 
 	public void setProdutividade(BigDecimal produtividade) {
