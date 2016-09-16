@@ -510,7 +510,8 @@ var TIMEOUT_TEMPO = 10 * 60;
             };
 
             $rootScope.globalLocalizacao = 'pt-br';
-            $rootScope.globalFracaoHectares = '3';
+            $rootScope.globalFracaoHectares = '2';
+            //$rootScope.globalProdutividade = '2';
             $rootScope.globalFracaoSem = '0';
             $rootScope.safeApply = function(fn) {
                 var phase = $rootScope.$$phase;

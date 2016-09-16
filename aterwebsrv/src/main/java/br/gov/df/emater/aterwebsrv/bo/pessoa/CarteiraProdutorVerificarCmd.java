@@ -69,8 +69,8 @@ public class CarteiraProdutorVerificarCmd extends _Comando {
 				}
 				if (!(pessoa instanceof PessoaFisica)) {
 					acumulaItem(pessoaReg, "erroList", "Carteira disponível somente a pessoas físicas!");
-				} else if (((PessoaFisica) pessoa).getCpf() == null || ((PessoaFisica) pessoa).getNisNumero() == null) {
-					acumulaItem(pessoaReg, "erroList", "Documentos (CPF, NIS) não informados!");
+				} else if (((PessoaFisica) pessoa).getCpf() == null) {
+					acumulaItem(pessoaReg, "erroList", "Documento CPF não informado!");
 				}
 				if (pessoa.getPublicoAlvo() == null) {
 					acumulaItem(pessoaReg, "erroList", "Cadastro de Beneficiário incompleto!");

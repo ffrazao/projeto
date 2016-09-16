@@ -107,10 +107,14 @@
     </div>
     <div class="form-group col-md-2">
         <label class="control-label">Área Total</label>
-        <input class="form-control input-md" id="areaTotal" name="areaTotal" ng-model="cadastro.registro.areaTotal" ui-number-mask="globalFracaoHectares">
-        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.areaTotal.$error.required">
+        <input class="form-control input-md text-right" id="areaTotal" name="areaTotal" ng-model="cadastro.registro.areaTotal" ui-number-mask="globalFracaoHectares" ng-required="true" >
+        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.areaTotal.$error.required  || frm.formulario.situacaoFundiaria.$error.minlength">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             Campo Obrigatório
+        </div>
+        <div class="label label-danger" ng-show="navegador.submetido && cadastro.registro.areaTotal <= 0.000">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            Valor minimo 0,001
         </div>
     </div>
     <div class="form-group col-md-5">
