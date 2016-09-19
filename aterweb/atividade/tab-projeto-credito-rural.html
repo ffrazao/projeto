@@ -1,0 +1,9 @@
+<div class="row" ng-if="cadastro.registro.metodo">
+    <div class="col-md-12" title="Detalhes">
+        <div class="form-group" ng-switch="cadastro.registro.metodo.codigo">
+            <div ng-switch-when="PROJETO_CREDITO_RURAL">
+                <ng-include src="'projeto-credito-rural/form.html'" ng-controller="ProjetoCreditoRuralCtrl"></ng-include>
+            </div>
+        </div>
+    </div>
+</div>

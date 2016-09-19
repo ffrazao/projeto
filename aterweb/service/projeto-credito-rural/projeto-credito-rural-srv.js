@@ -26,6 +26,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                    'FinanciamentoTipo',
                    'LinhaCredito',
                    'ProjetoCreditoRuralStatus',
+                   'CustoProducao',
                 ]}).success(function(resposta) {
                     if (resposta && resposta.resultado) {
                         var i = 0;
@@ -40,6 +41,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                         scp.cadastro.apoio.financiamentoTipoList = resposta.resultado[i++];
                         scp.cadastro.apoio.linhaCreditoList = resposta.resultado[i++];
                         scp.cadastro.apoio.projetoCreditoRuralStatusList = resposta.resultado[i++];
+                        scp.cadastro.apoio.custoProducaoList = resposta.resultado[i++];
                     }
                 });
                 scp.cadastro.apoio.anoList = [];

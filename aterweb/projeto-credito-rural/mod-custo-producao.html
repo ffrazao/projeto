@@ -1,0 +1,77 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-6" title="Cultura">
+            <div class="form-group">
+                <label class="control-label" for="cultura">Cultura</label>
+                <select id="cultura" name="cultura" class="form-control" ng-model="conteudo.cultura" ng-required="true" ng-options="item.codigo as item.descricao for item in conteudo.apoio.custoProducaoList | orderBy: 'ordem'">
+                </select>
+                <div class="label label-danger" ng-show="navegador.submetido && confirmacaoFrm.cultura.$error.required">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    Campo Obrigatório
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3" title="Área">
+            <div class="form-group">
+                <label class="control-label" for="area">Área</label>
+                <input type="text" class="form-control" id="area" name="area" ng-required="true" ng-model="conteudo.area">
+                <div class="label label-danger" ng-show="navegador.submetido && confirmacaoFrm.area.$error.required">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    Campo Obrigatório
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6" title="Produtividade">
+            <div class="form-group">
+                <label class="control-label" for="produtividade">Produtividade</label>
+                <select id="produtividade" name="produtividade" class="form-control" ng-model="conteudo.produtividade" ng-required="true" ng-options="item.codigo as item.descricao for item in conteudo.apoio.custoProducaoList | orderBy: 'ordem'">
+                </select>
+                <div class="label label-danger" ng-show="navegador.submetido && confirmacaoFrm.produtividade.$error.required">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    Campo Obrigatório
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12" title="Insumos">
+            <div class="form-group">
+                <label class="control-label" for="insumoList">Insumos</label>
+                <select id="insumoList" name="insumoList" class="form-control" ng-model="conteudo.produtividade" ng-required="true" ng-options="item.codigo as item.descricao for item in conteudo.apoio.custoProducaoList | orderBy: 'ordem'">
+                </select>
+                <div class="label label-danger" ng-show="navegador.submetido && confirmacaoFrm.produtividade.$error.required">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    Campo Obrigatório
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12" title="Serviços">
+            <div class="form-group">
+                <label class="control-label" for="servicoList">Serviços</label>
+                <select id="servicoList" name="servicoList" class="form-control" ng-model="conteudo.produtividade" ng-required="true" ng-options="item.codigo as item.descricao for item in conteudo.apoio.custoProducaoList | orderBy: 'ordem'">
+                </select>
+                <div class="label label-danger" ng-show="navegador.submetido && confirmacaoFrm.produtividade.$error.required">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    Campo Obrigatório
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12" title="Totais">
+            <div class="form-group">
+                <label class="control-label" for="servicoList">Totais</label>
+                <select id="servicoList" name="servicoList" class="form-control" ng-model="conteudo.produtividade" ng-required="true" ng-options="item.codigo as item.descricao for item in conteudo.apoio.custoProducaoList | orderBy: 'ordem'">
+                </select>
+                <div class="label label-danger" ng-show="navegador.submetido && confirmacaoFrm.produtividade.$error.required">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    Campo Obrigatório
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -68,7 +68,14 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <input class="form-control input-sm" id="descricao{{$index}}" name="descricao{{$index}}" ng-model="reg.descricao" ng-required="true" ng-model-options="{ updateOn: 'blur'}">
+                                    <div class="input-group">
+                                        <input class="form-control input-sm" id="descricao{{$index}}" name="descricao{{$index}}" ng-model="reg.descricao" ng-required="true" ng-model-options="{ updateOn: 'blur'}">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default btn-sm" type="button" ng-click="captaCustoProducao(reg)">
+                                                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                            </button>
+                                        </span>
+                                    </div>
                                     <div class="label label-danger" ng-show="navegador.submetido && receitaDespesaListFrm['descricao' + $index].$error.required">
                                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                         Campo Obrigatório

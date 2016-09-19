@@ -265,12 +265,56 @@
             // fim ações especiais
 
             // inicio trabalho tab
-            
+            var indice = 0;
+            $scope.tabAtiva = 0;
+            $scope.tabs = [
+                {
+                    'nome': 'Principal',
+                    'include': 'atividade/tab-principal.html',
+                    'visivel': true,
+                    'indice': indice++,
+                    'ativo': true,
+                }, 
+                {
+                    'nome': 'Projeto de Crédito',
+                    'include': 'atividade/tab-projeto-credito-rural.html',
+                    'visivel': true,
+                    'indice': indice++,
+                    'ativo': false,
+                }, 
+            ];
+            $scope.setTabAtiva = function(nome) {
+                $scope.tabs.forEach(function(item, idx) {
+                    if (nome === item.nome) {
+                        $scope.tabAtiva = item.indice;
+                    }
+                });
+            };
+            $scope.tabVisivel = function(tabNome, visivel) {
+                for (var t in $scope.tabs) {
+                    if ($scope.tabs[t].nome === tabNome) {
+                        if (angular.isDefined(visivel)) {
+                            $scope.tabs[t].visivel = visivel;
+                            return;
+                        } else {
+                            return $scope.tabs[t].visivel;
+                        }
+                    }
+                }
+            };
             // fim trabalho tab
 
             // inicio dos watches
-
+            $scope.$watch('cadastro.registro.metodo', function(v, o) {
+                for (var i = 1; i < $scope.tabs.length; i++) {
+                    $scope.tabVisivel($scope.tabs[i].nome, false);
+                    if ($scope.cadastro.registro.metodo && $scope.cadastro.registro.metodo.codigo === 'PROJETO_CREDITO_RURAL') {
+                        $scope.tabVisivel($scope.tabs[i].nome, true);
+                    }
+                }
+            });
             // fim dos watches
+
             if (modalCadastro) {
                 $scope.modalCadastro = modalCadastro;
                 if (modalCadastro.registro.id) {
