@@ -16,7 +16,7 @@ import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 
 @Entity
-@Table(schema = EntidadeBase.FORMULARIO_SCHEMA)
+@Table(schema = EntidadeBase.FORMULARIO_SCHEMA, name = "observar")
 public class Observar extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;

@@ -136,6 +136,7 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer>, 
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	@JsonSerialize(using = JsonSerializerData.class)
 	@JsonDeserialize(using = JsonDeserializerData.class)
+	@Column(name="previsao_conclusao")
 	private Calendar previsaoConclusao;
 
 	@Enumerated(EnumType.STRING)

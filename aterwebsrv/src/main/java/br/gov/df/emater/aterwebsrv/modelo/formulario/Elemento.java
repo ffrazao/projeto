@@ -20,7 +20,7 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.ElementoTipo;
 
 @Entity
-@Table(schema = EntidadeBase.FORMULARIO_SCHEMA)
+@Table(schema = EntidadeBase.FORMULARIO_SCHEMA, name = "elemento")
 public class Elemento extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;

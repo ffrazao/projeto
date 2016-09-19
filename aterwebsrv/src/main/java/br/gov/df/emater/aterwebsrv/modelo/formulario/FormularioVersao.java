@@ -28,7 +28,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 
 @Entity
-@Table(schema = EntidadeBase.FORMULARIO_SCHEMA)
+@Table(name = "formulario_versao", schema = EntidadeBase.FORMULARIO_SCHEMA)
 public class FormularioVersao extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<FormularioVersao> {
 
 	private static final long serialVersionUID = 1L;

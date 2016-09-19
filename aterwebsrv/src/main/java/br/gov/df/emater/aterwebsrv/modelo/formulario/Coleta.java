@@ -36,7 +36,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 
 @Entity
-@Table(schema = EntidadeBase.FORMULARIO_SCHEMA)
+@Table(schema = EntidadeBase.FORMULARIO_SCHEMA, name = "coleta")
 public class Coleta extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<Coleta>, _LogInclusaoAlteracao {
 
 	private static final long serialVersionUID = 1L;

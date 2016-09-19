@@ -13,7 +13,7 @@ import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 
 @Entity
-@Table(schema = EntidadeBase.FORMULARIO_SCHEMA)
+@Table(schema = EntidadeBase.FORMULARIO_SCHEMA, name = "opcao")
 public class Opcao extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
