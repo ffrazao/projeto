@@ -1,76 +1,133 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-6" title="Cultura">
-            <div class="form-group">
-                <label class="control-label" for="cultura">Cultura</label>
-                <select id="cultura" name="cultura" class="form-control" ng-model="conteudo.cultura" ng-required="true" ng-options="item.codigo as item.descricao for item in conteudo.apoio.custoProducaoList | orderBy: 'ordem'">
-                </select>
-                <div class="label label-danger" ng-show="navegador.submetido && confirmacaoFrm.cultura.$error.required">
-                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                    Campo Obrigatório
-                </div>
+        <div class="col-md-9" title="Cultura">
+            <label class="control-label" for="cultura">Cultura</label>
+            <select id="cultura" name="cultura" class="form-control" ng-model="conteudo.cultura" ng-required="true" ng-options="item as item.nomeFormaProducao for item in conteudo.apoio.custoProducaoList | orderBy: 'nomeFormaProducao' track by item.id">
+            </select>
+            <div class="label label-danger" ng-show="confirmacaoFrm.cultura.$error.required">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                Campo Obrigatório
             </div>
         </div>
-        <div class="col-sm-3" title="Área">
-            <div class="form-group">
-                <label class="control-label" for="area">Área</label>
-                <input type="text" class="form-control" id="area" name="area" ng-required="true" ng-model="conteudo.area">
-                <div class="label label-danger" ng-show="navegador.submetido && confirmacaoFrm.area.$error.required">
-                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                    Campo Obrigatório
-                </div>
+        <div class="col-md-3" title="Área">
+            <label class="control-label" for="area">Área</label>
+            <input type="text" class="form-control text-right" id="area" name="area" ng-required="true" ng-model="conteudo.area" ui-number-mask="globalFracaoHectares" ng-valor-min="0.01">
+            <div class="label label-danger" ng-show="confirmacaoFrm.area.$error.required || confirmacaoFrm.area.$error.ngValorMin">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                Campo Obrigatório
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-6" title="Produtividade">
-            <div class="form-group">
-                <label class="control-label" for="produtividade">Produtividade</label>
-                <select id="produtividade" name="produtividade" class="form-control" ng-model="conteudo.produtividade" ng-required="true" ng-options="item.codigo as item.descricao for item in conteudo.apoio.custoProducaoList | orderBy: 'ordem'">
-                </select>
-                <div class="label label-danger" ng-show="navegador.submetido && confirmacaoFrm.produtividade.$error.required">
-                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                    Campo Obrigatório
-                </div>
+    <div class="row" ng-show="conteudo.cultura">
+        <div class="col-md-3" title="Produtividade">
+            <label class="control-label" for="produtividade">Produtividade</label>
+            <div class="form-control text-right">
+                {{conteudo.cultura.produtividade | number: '3'}}
+            </div>
+        </div>
+        <div class="col-md-3" title="Unidade de Medida" ng-show="conteudo.cultura">
+            <label class="control-label" for="unidadeMedida">Unidade de Medida</label>
+            <div class="form-control">
+                {{conteudo.cultura.unidadeMedida.nome}}
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-12" title="Insumos">
-            <div class="form-group">
-                <label class="control-label" for="insumoList">Insumos</label>
-                <select id="insumoList" name="insumoList" class="form-control" ng-model="conteudo.produtividade" ng-required="true" ng-options="item.codigo as item.descricao for item in conteudo.apoio.custoProducaoList | orderBy: 'ordem'">
-                </select>
-                <div class="label label-danger" ng-show="navegador.submetido && confirmacaoFrm.produtividade.$error.required">
-                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                    Campo Obrigatório
-                </div>
+    <div class="row" ng-show="conteudo.cultura">
+        <div class="col-md-12" title="Insumos">
+            <label class="control-label" for="insumoList">Insumos</label>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <tr>
+                        <th>
+                            Especificação
+                        </th>
+                        <th>
+                            Quantidade
+                        </th>
+                        <th>
+                            Unidade de Medida
+                        </th>
+                        <th>
+                            Valor Unitário (R$)
+                        </th>
+                        <th>
+                            Valor Total (R$)
+                        </th>
+                    </tr>
+                    <tr ng-repeat="item in conteudo.cultura.itens | filter: {custoProducaoInsumoServico: {tipo: 'I'}}">
+                        <td>{{item.custoProducaoInsumoServico.especificacao}}</td>
+                        <td class="text-right">{{item.quantidade | number: 2}}</td>
+                        <td>{{item.custoProducaoInsumoServico.unidadeMedida.nome}}</td>
+                        <td class="text-right">{{item.custoProducaoInsumoServico.precoList[0].preco | number: 2}}</td>
+                        <td class="text-right">{{item.quantidade * item.custoProducaoInsumoServico.precoList[0].preco | number: 2}}</td>
+                    </tr>
+                    <tr>
+                        <th colspan="4">Subtotal</th>
+                        <th class="text-right">{{conteudo.insumoTotal | number: 2}}</th>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-12" title="Serviços">
-            <div class="form-group">
-                <label class="control-label" for="servicoList">Serviços</label>
-                <select id="servicoList" name="servicoList" class="form-control" ng-model="conteudo.produtividade" ng-required="true" ng-options="item.codigo as item.descricao for item in conteudo.apoio.custoProducaoList | orderBy: 'ordem'">
-                </select>
-                <div class="label label-danger" ng-show="navegador.submetido && confirmacaoFrm.produtividade.$error.required">
-                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                    Campo Obrigatório
-                </div>
+    <div class="row" ng-show="conteudo.cultura">
+        <div class="col-md-12" title="Serviços">
+            <label class="control-label" for="servicoList">Serviços</label>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <tr>
+                        <th>
+                            Especificação
+                        </th>
+                        <th>
+                            Quantidade
+                        </th>
+                        <th>
+                            Unidade de Medida
+                        </th>
+                        <th>
+                            Valor Unitário (R$)
+                        </th>
+                        <th>
+                            Valor Total (R$)
+                        </th>
+                    </tr>
+                    <tr ng-repeat="item in conteudo.cultura.itens | filter: {custoProducaoInsumoServico: {tipo: 'S'}}">
+                        <td>{{item.custoProducaoInsumoServico.especificacao}}</td>
+                        <td class="text-right">{{item.quantidade | number: 2}}</td>
+                        <td>{{item.custoProducaoInsumoServico.unidadeMedida.nome}}</td>
+                        <td class="text-right">{{item.custoProducaoInsumoServico.precoList[0].preco | number: 2}}</td>
+                        <td class="text-right">{{item.quantidade * item.custoProducaoInsumoServico.precoList[0].preco | number: 2}}</td>
+                    </tr>
+                    <tr>
+                        <th colspan="4">Subtotal</th>
+                        <th class="text-right">{{conteudo.servicoTotal | number: 2}}</th>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-12" title="Totais">
-            <div class="form-group">
-                <label class="control-label" for="servicoList">Totais</label>
-                <select id="servicoList" name="servicoList" class="form-control" ng-model="conteudo.produtividade" ng-required="true" ng-options="item.codigo as item.descricao for item in conteudo.apoio.custoProducaoList | orderBy: 'ordem'">
-                </select>
-                <div class="label label-danger" ng-show="navegador.submetido && confirmacaoFrm.produtividade.$error.required">
-                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                    Campo Obrigatório
-                </div>
+    <div class="row" ng-show="conteudo.cultura">
+        <div class="col-md-12" title="Totais">
+            <label class="control-label" for="servicoList">Totais</label>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <tr>
+                        <th>
+                            CUSTO TOTAL POR HECTARE
+                        </th>
+                        <th>
+                            CUSTO TOTAL
+                        </th>
+                        <th>
+                            CUSTO (UNID. COMERCIALIZAÇÃO): R$
+                        </th>
+                    </tr>
+                    <tr>
+                        <td class="text-right">{{conteudo.insumoTotal + conteudo.servicoTotal | number: 2}}</th>
+                        <td class="text-right">{{(conteudo.insumoTotal + conteudo.servicoTotal) * conteudo.area | number: 2}}</th>
+                        <td class="text-right">{{conteudo.cultura.produtividade / (conteudo.insumoTotal + conteudo.servicoTotal) | number: 2}}</th>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>

@@ -49,6 +49,18 @@ public class ProjetoCreditoRuralFinanciamento extends EntidadeBase implements _C
 	@Enumerated(EnumType.STRING)
 	private FinanciamentoTipo tipo;
 
+	@ManyToOne
+	@JoinColumn(name = "custo_producao_id")
+	private CustoProducao custoProducao;
+
+	public CustoProducao getCustoProducao() {
+		return custoProducao;
+	}
+
+	public void setCustoProducao(CustoProducao custoProducao) {
+		this.custoProducao = custoProducao;
+	}
+
 	private String unidade;
 
 	@Column(name = "valor_financiado")

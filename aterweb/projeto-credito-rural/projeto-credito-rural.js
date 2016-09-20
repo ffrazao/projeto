@@ -264,6 +264,34 @@
             // fim das operaçoes atribuidas ao navagador
 
             // inicio ações especiais
+            $scope.captaCustoProducao = function(reg) {
+                var conteudo = {registro: null, apoio: {}};
+                conteudo.apoio.custoProducaoList = angular.copy($scope.cadastro.apoio.custoProducaoList);
+                 //return formModal('confirmacao', url, mensagem, titulo, conteudo, tamanho, funcaoOk, funcaoCancelar, funcaoIncializar);
+                //}
+                mensagemSrv.confirmacao(true, 'projeto-credito-rural/mod-custo-producao.html', 'Custo de Produção', conteudo, null, null, null, function(scope) {
+                    scope.$watch('conteudo.cultura', function(v, o) {
+                        if (!scope.conteudo.cultura) {
+                            return;
+                        }
+                        scope.conteudo.insumoTotal = 0;
+                        scope.conteudo.servicoTotal = 0;
+                        var valor = 0;
+                        scope.conteudo.cultura.itens.forEach(function(v) {
+                            valor = v.quantidade * v.custoProducaoInsumoServico.precoList[0].preco;
+                            if (v.custoProducaoInsumoServico.tipo === 'I') {
+                                scope.conteudo.insumoTotal += valor;
+                            } else {
+                                scope.conteudo.servicoTotal += valor;
+                            }
+                        });
+                    });
+                }).then(function (conteudo) {
+                    reg.custoProducao = conteudo.cultura;
+                }, function () {
+                });
+            };
+
             $scope.propriedadeRuralComparador = function(a, b) {
                 if (a && a.publicoAlvoPropriedadeRural && b && b.publicoAlvoPropriedadeRural) {
                     return a.publicoAlvoPropriedadeRural.id === b.publicoAlvoPropriedadeRural.id;

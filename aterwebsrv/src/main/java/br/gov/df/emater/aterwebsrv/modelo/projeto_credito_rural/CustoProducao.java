@@ -1,6 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -70,9 +71,10 @@ public class CustoProducao extends EntidadeBase implements _ChavePrimaria<Intege
 		super(id);
 	}
 
-	public CustoProducao(Integer id, Bem bem, BigDecimal area, BigDecimal produtividade, UnidadeMedida unidadeMedida, List<CustoProducaoItem> itens) {
+	public CustoProducao(Integer id, String nomeFormaProducao, Bem bem, BigDecimal area, BigDecimal produtividade, UnidadeMedida unidadeMedida, List<CustoProducaoItem> itens) {
 		super();
 		this.id = id;
+		this.nomeFormaProducao = nomeFormaProducao;
 		this.bem = bem;
 		this.area = area;
 		this.produtividade = produtividade;
@@ -114,7 +116,14 @@ public class CustoProducao extends EntidadeBase implements _ChavePrimaria<Intege
 	}
 
 	public CustoProducao infoBasica() {
-		return new CustoProducao(this.id, this.bem == null ? null : this.bem.infoBasica(), this.area, this.produtividade, this.unidadeMedida == null ? null : this.unidadeMedida.infoBasica(), this.itens);
+		if (this.itens != null) {
+			List<CustoProducaoItem> itensTemp = new ArrayList<>();
+			for (CustoProducaoItem item: this.itens) {
+				itensTemp.add(item.infoBasica());
+			}
+			this.itens = itensTemp;
+		}
+		return new CustoProducao(this.id, this.nomeFormaProducao, this.bem == null ? null : this.bem.infoBasica(), this.area, this.produtividade, this.unidadeMedida == null ? null : this.unidadeMedida.infoBasica(), this.itens);
 	}
 
 	public void setArea(BigDecimal area) {

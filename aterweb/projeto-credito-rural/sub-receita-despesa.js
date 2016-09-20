@@ -46,15 +46,6 @@ angular.module(pNmModulo).controller(pNmController,
         }, function () {
         });
     };
-    $scope.captaCustoProducao = function(reg) {
-        var conteudo = {registro: null, apoio: null};
-        conteudo.apoio.custoProducaoList = angular.copy($scope.cadastro.apoio.custoProducaoList);
-         //return formModal('confirmacao', url, mensagem, titulo, conteudo, tamanho, funcaoOk, funcaoCancelar, funcaoIncializar);
-        //}
-        mensagemSrv.confirmacao(true, 'projeto-credito-rural/mod-custo-producao.html', 'Selecione', conteudo).then(function (conteudo) {
-        }, function () {
-        });
-    };
 
     // fim das operaçoes atribuidas ao navagador
     $scope.totalizadores = function(lista) {

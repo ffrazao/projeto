@@ -67,11 +67,11 @@
                                         Campo Obrigatório
                                     </div>
                                 </td>
-                                <td>
+                                <td ng-if="!reg.custoProducao" style="min-width:250px">
                                     <div class="input-group">
                                         <input class="form-control input-sm" id="descricao{{$index}}" name="descricao{{$index}}" ng-model="reg.descricao" ng-required="true" ng-model-options="{ updateOn: 'blur'}">
                                         <span class="input-group-btn">
-                                            <button class="btn btn-default btn-sm" type="button" ng-click="captaCustoProducao(reg)">
+                                            <button class="btn btn-default btn-sm" type="button" ng-click="captaCustoProducao(reg)" title="Selecionar Custo de Produção">
                                                 <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                                             </button>
                                         </span>
@@ -79,6 +79,16 @@
                                     <div class="label label-danger" ng-show="navegador.submetido && receitaDespesaListFrm['descricao' + $index].$error.required">
                                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                         Campo Obrigatório
+                                    </div>
+                                </td>
+                                <td ng-if="reg.custoProducao" nowrap="true" style="min-width:250px">
+                                    <div class="input-group">
+                                        <input class="form-control input-sm" id="descricao{{$index}}" name="descricao{{$index}}" ng-model="reg.custoProducao.nomeFormaProducao" ng-readonly="true" ng-disabled="true">
+                                        <span class="input-group-btn" title="Remover Custo de Produção">
+                                            <button class="btn btn-default btn-sm" type="button" ng-click="reg.custoProducao = null">
+                                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                            </button>
+                                        </span>
                                     </div>
                                 </td>
                                 <td>

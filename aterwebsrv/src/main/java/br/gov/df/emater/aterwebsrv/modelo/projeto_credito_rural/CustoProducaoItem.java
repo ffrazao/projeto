@@ -77,7 +77,7 @@ public class CustoProducaoItem extends EntidadeBase implements _ChavePrimaria<In
 
 	@Override
 	public CustoProducaoItem infoBasica() {
-		return new CustoProducaoItem(this.id, this.custoProducao == null ? null : this.custoProducao.infoBasica(), this.custoProducaoInsumoServico == null ? null : this.custoProducaoInsumoServico.infoBasica(), this.quantidade);
+		return new CustoProducaoItem(this.id, this.custoProducao == null ? null : new CustoProducao(this.custoProducao.getId()), this.custoProducaoInsumoServico == null ? null : this.custoProducaoInsumoServico.infoBasica(), this.quantidade);
 	}
 
 	public void setCustoProducao(CustoProducao custoProducao) {

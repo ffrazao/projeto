@@ -1,5 +1,6 @@
 package br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -82,6 +83,14 @@ public class CustoProducaoInsumoServico extends EntidadeBase implements _ChavePr
 
 	@Override
 	public CustoProducaoInsumoServico infoBasica() {
+		if (this.precoList != null) {
+			List<CustoProducaoInsumoServicoPreco> itensTemp = new ArrayList<>();
+			for (CustoProducaoInsumoServicoPreco item: this.precoList) {
+				itensTemp.add(item.infoBasica());
+			}
+			this.precoList = itensTemp;
+		}
+		
 		return new CustoProducaoInsumoServico(this.id, this.especificacao, this.tipo, this.unidadeMedida == null ? null : this.unidadeMedida.infoBasica(), this.precoList);
 	}
 
