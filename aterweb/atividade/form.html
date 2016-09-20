@@ -73,7 +73,7 @@
                             <div class="radio" ng-repeat="item in cadastro.apoio.atividadePrioridadeList track by item.codigo">
                                 <label for="prioridade-{{$index}}">
                                     <input type="radio" name="prioridade" id="prioridade-{{$index}}" ng-model="cadastro.registro.prioridade" ng-value="item.codigo" required="true" ng-disabled="true">
-                                    <span class="label" ng-class="{'label-default' : item.codigo === 'N', 'label-info' : item.codigo === 'B', 'label-danger' : item.codigo === 'A'}">
+                                    <span class="label" ng-class="{'label-success' : item.codigo === 'N', 'label-info' : item.codigo === 'B', 'label-danger' : item.codigo === 'A'}">
                                         {{item.descricao}}
                                     </span>
                                 </label>
