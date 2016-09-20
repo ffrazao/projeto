@@ -140,10 +140,16 @@
     </div>
     <div class="form-group col-md-3">
         <label class="control-label">Outorga</label>
-        <label class="checkbox-inline" for="outorga">
-            <input type="checkbox" name="outorga" id="outorga" ng-model="cadastro.registro.outorga" ng-true-value="'S'" ng-false-value="'N'">
-            Ativo
+        <div>
+        <label class="radio-inline" for="radio-outorga">
+        <input type="radio" name="outorga" id="outorga-1" ng-model="cadastro.registro.outorga" ng-true-value="'S'" ng-false-value="'N'">
+        Sim
         </label>
+        <label class="radio-inline" for="radio-outorga">
+        <input type="radio" name="outorga" id="outorga-2" ng-model="cadastro.registro.outorga" ng-true-value="'S'" ng-false-value="'N'">
+        Não
+        </label>
+        </div>
         <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.outorga.$error.required">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             Campo Obrigatório
