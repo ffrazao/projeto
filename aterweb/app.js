@@ -13,8 +13,8 @@ var TIMEOUT_TEMPO = 10 * 60;
         'ngIdle', 'angular.filter', 'qrScanner', 'webcam', 'textAngular',
         'mensagemSrv', 'segurancaSrv', 'utilSrv', 'frz.form', 'frz.tabela', 'frz.arquivo', 'frz.endereco', 'frz.painel.vidro', 'frz.navegador',
         'casa', 'contrato', 'info', 'offline', 'pessoa', 'formulario', 'propriedadeRural', 'atividade', 'indiceProducao', 
-        'funcionalidade', 'perfil', 'usuario', 'logAcao', 'projetoCreditoRural',
-    ]);
+        'funcionalidade', 'perfil', 'usuario', 'logAcao', 'projetoCreditoRural', 
+        ]);
 
     // inicio: codigo para habilitar o modal recursivo
     angular.module(pNmModulo).factory('$uibModalInstance', function() {
