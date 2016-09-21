@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-md-9" title="Cultura">
             <label class="control-label" for="cultura">Cultura</label>
-            <select id="cultura" name="cultura" class="form-control" ng-model="conteudo.cultura" ng-required="true" ng-options="item as item.nomeFormaProducao for item in conteudo.apoio.custoProducaoList | orderBy: 'nomeFormaProducao' track by item.id">
+            <select id="cultura" name="cultura" class="form-control" ng-model="conteudo.registro.cultura" ng-required="true" ng-options="item as item.nomeFormaProducao for item in conteudo.apoio.custoProducaoList | orderBy: 'nomeFormaProducao' track by item.id">
             </select>
             <div class="label label-danger" ng-show="confirmacaoFrm.cultura.$error.required">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -11,28 +11,28 @@
         </div>
         <div class="col-md-3" title="Área">
             <label class="control-label" for="area">Área</label>
-            <input type="text" class="form-control text-right" id="area" name="area" ng-required="true" ng-model="conteudo.area" ui-number-mask="globalFracaoHectares" ng-valor-min="0.01">
+            <input type="text" class="form-control text-right" id="area" name="area" ng-required="true" ng-model="conteudo.registro.area" ui-number-mask="globalFracaoHectares" ng-valor-min="0.01">
             <div class="label label-danger" ng-show="confirmacaoFrm.area.$error.required || confirmacaoFrm.area.$error.ngValorMin">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                 Campo Obrigatório
             </div>
         </div>
     </div>
-    <div class="row" ng-show="conteudo.cultura">
+    <div class="row" ng-show="conteudo.registro.cultura">
         <div class="col-md-3" title="Produtividade">
             <label class="control-label" for="produtividade">Produtividade</label>
             <div class="form-control text-right">
-                {{conteudo.cultura.produtividade | number: '3'}}
+                {{conteudo.registro.cultura.produtividade | number: '3'}}
             </div>
         </div>
-        <div class="col-md-3" title="Unidade de Medida" ng-show="conteudo.cultura">
+        <div class="col-md-3" title="Unidade de Medida" ng-show="conteudo.registro.cultura">
             <label class="control-label" for="unidadeMedida">Unidade de Medida</label>
             <div class="form-control">
-                {{conteudo.cultura.unidadeMedida.nome}}
+                {{conteudo.registro.cultura.unidadeMedida.nome}}
             </div>
         </div>
     </div>
-    <div class="row" ng-show="conteudo.cultura">
+    <div class="row" ng-show="conteudo.registro.cultura">
         <div class="col-md-12" title="Insumos">
             <label class="control-label" for="insumoList">Insumos</label>
             <div class="table-responsive">
@@ -54,7 +54,7 @@
                             Valor Total (R$)
                         </th>
                     </tr>
-                    <tr ng-repeat="item in conteudo.cultura.itens | filter: {custoProducaoInsumoServico: {tipo: 'I'}}">
+                    <tr ng-repeat="item in conteudo.registro.cultura.itens | filter: {custoProducaoInsumoServico: {tipo: 'I'}}">
                         <td>{{item.custoProducaoInsumoServico.especificacao}}</td>
                         <td class="text-right">{{item.quantidade | number: 2}}</td>
                         <td>{{item.custoProducaoInsumoServico.unidadeMedida.nome}}</td>
@@ -63,13 +63,13 @@
                     </tr>
                     <tr>
                         <th colspan="4">Subtotal</th>
-                        <th class="text-right">{{conteudo.insumoTotal | number: 2}}</th>
+                        <th class="text-right">{{conteudo.apoio.insumoTotal | number: 2}}</th>
                     </tr>
                 </table>
             </div>
         </div>
     </div>
-    <div class="row" ng-show="conteudo.cultura">
+    <div class="row" ng-show="conteudo.registro.cultura">
         <div class="col-md-12" title="Serviços">
             <label class="control-label" for="servicoList">Serviços</label>
             <div class="table-responsive">
@@ -91,7 +91,7 @@
                             Valor Total (R$)
                         </th>
                     </tr>
-                    <tr ng-repeat="item in conteudo.cultura.itens | filter: {custoProducaoInsumoServico: {tipo: 'S'}}">
+                    <tr ng-repeat="item in conteudo.registro.cultura.itens | filter: {custoProducaoInsumoServico: {tipo: 'S'}}">
                         <td>{{item.custoProducaoInsumoServico.especificacao}}</td>
                         <td class="text-right">{{item.quantidade | number: 2}}</td>
                         <td>{{item.custoProducaoInsumoServico.unidadeMedida.nome}}</td>
@@ -100,13 +100,13 @@
                     </tr>
                     <tr>
                         <th colspan="4">Subtotal</th>
-                        <th class="text-right">{{conteudo.servicoTotal | number: 2}}</th>
+                        <th class="text-right">{{conteudo.apoio.servicoTotal | number: 2}}</th>
                     </tr>
                 </table>
             </div>
         </div>
     </div>
-    <div class="row" ng-show="conteudo.cultura">
+    <div class="row" ng-show="conteudo.registro.cultura">
         <div class="col-md-12" title="Totais">
             <label class="control-label" for="servicoList">Totais</label>
             <div class="table-responsive">
@@ -123,9 +123,9 @@
                         </th>
                     </tr>
                     <tr>
-                        <td class="text-right">{{conteudo.insumoTotal + conteudo.servicoTotal | number: 2}}</th>
-                        <td class="text-right">{{(conteudo.insumoTotal + conteudo.servicoTotal) * conteudo.area | number: 2}}</th>
-                        <td class="text-right">{{conteudo.cultura.produtividade / (conteudo.insumoTotal + conteudo.servicoTotal) | number: 2}}</th>
+                        <td class="text-right">{{conteudo.apoio.insumoTotal + conteudo.apoio.servicoTotal | number: 2}}</th>
+                        <td class="text-right">{{(conteudo.apoio.insumoTotal + conteudo.apoio.servicoTotal) * conteudo.registro.area | number: 2}}</th>
+                        <td class="text-right">{{(conteudo.apoio.insumoTotal + conteudo.apoio.servicoTotal) / conteudo.registro.cultura.produtividade | number: 2}}</th>
                     </tr>
                 </table>
             </div>

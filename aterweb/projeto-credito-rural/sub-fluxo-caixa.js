@@ -187,6 +187,10 @@ angular.module(pNmModulo).controller(pNmController,
         iniciaFluxoCaixaAno($scope.cadastro.apoio.fluxoCaixa.Despesas.fluxoCaixaAnoList);
         iniciaFluxoCaixaAno($scope.cadastro.apoio.fluxoCaixa.Lucro.fluxoCaixaAnoList);
 
+        if (!$scope.cadastro.registro.projetoCreditoRural.fluxoCaixaList) {
+            return;
+        }
+
         $scope.cadastro.registro.projetoCreditoRural.fluxoCaixaList.forEach(function(fc) {
             if (fc.tipo === 'R') {
                 fc.fluxoCaixaAnoList.forEach(function(a) {

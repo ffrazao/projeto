@@ -71,7 +71,7 @@
                                     <div class="input-group">
                                         <input class="form-control input-sm" id="descricao{{$index}}" name="descricao{{$index}}" ng-model="reg.descricao" ng-required="true" ng-model-options="{ updateOn: 'blur'}">
                                         <span class="input-group-btn">
-                                            <button class="btn btn-default btn-sm" type="button" ng-click="captaCustoProducao(reg)" title="Selecionar Custo de Produção">
+                                            <button class="btn btn-default btn-sm" type="button" ng-click="captaCustoProducao(reg, {modulo: 'receita-despesa', funcao: lista})" title="Selecionar Custo de Produção">
                                                 <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                                             </button>
                                         </span>
@@ -83,7 +83,7 @@
                                 </td>
                                 <td ng-if="reg.custoProducao" nowrap="true" style="min-width:250px">
                                     <div class="input-group">
-                                        <input class="form-control input-sm" id="descricao{{$index}}" name="descricao{{$index}}" ng-model="reg.custoProducao.nomeFormaProducao" ng-readonly="true" ng-disabled="true">
+                                        <input class="form-control input-sm" id="descricao{{$index}}" name="descricao{{$index}}" ng-model="reg.descricao" ng-readonly="true" ng-disabled="true">
                                         <span class="input-group-btn" title="Remover Custo de Produção">
                                             <button class="btn btn-default btn-sm" type="button" ng-click="reg.custoProducao = null">
                                                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
@@ -91,7 +91,7 @@
                                         </span>
                                     </div>
                                 </td>
-                                <td>
+                                <td class="td-exibe-valor">
                                     <input class="form-control input-sm text-right" id="quantidade{{$index}}" name="quantidade{{$index}}" ng-model="reg.quantidade" ui-number-mask="3" ng-required="true">
                                     <div class="label label-danger" ng-show="navegador.submetido && receitaDespesaListFrm['quantidade' + $index].$error.required">
                                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -99,20 +99,20 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <input class="form-control input-sm" id="unidade{{$index}}" name="unidade{{$index}}" ng-model="reg.unidade" ng-required="true">
+                                    <input class="form-control input-sm" id="unidade{{$index}}" name="unidade{{$index}}" ng-model="reg.unidade" ng-required="true" ng-disabled="reg.custoProducao.id">
                                     <div class="label label-danger" ng-show="navegador.submetido && receitaDespesaListFrm['unidade' + $index].$error.required">
                                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                         Campo Obrigatório
                                     </div>
                                 </td>
-                                <td>
-                                    <input class="form-control input-sm text-right" id="valorUnitario{{$index}}" name="valorUnitario{{$index}}" ng-model="reg.valorUnitario" ui-number-mask="2" ng-required="true">
+                                <td class="td-exibe-valor">
+                                    <input class="form-control input-sm text-right" id="valorUnitario{{$index}}" name="valorUnitario{{$index}}" ng-model="reg.valorUnitario" ui-number-mask="2" ng-required="true" ng-disabled="reg.custoProducao.id && !lista === 'receitaList'">
                                     <div class="label label-danger" ng-show="navegador.submetido && receitaDespesaListFrm['valorUnitario' + $index].$error.required">
                                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                         Campo Obrigatório
                                     </div>
                                 </td>
-                                <td>
+                                <td class="td-exibe-valor">
                                     <input class="form-control input-sm text-right" id="valorTotal{{$index}}" name="valorTotal{{$index}}" ng-model="reg.valorTotal" ui-number-mask="2" ng-required="true" ng-readonly="true">
                                     <div class="label label-danger" ng-show="navegador.submetido && receitaDespesaListFrm['valorTotal' + $index].$error.required">
                                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>

@@ -264,31 +264,46 @@
             // fim das operaçoes atribuidas ao navagador
 
             // inicio ações especiais
-            $scope.captaCustoProducao = function(reg) {
-                var conteudo = {registro: null, apoio: {}};
+            $scope.captaCustoProducao = function(reg, local) {
+                var conteudo = {registro: (reg && reg.custoProducao) ? {id: reg.custoProducao.id} : null, apoio: {}};
                 conteudo.apoio.custoProducaoList = angular.copy($scope.cadastro.apoio.custoProducaoList);
-                 //return formModal('confirmacao', url, mensagem, titulo, conteudo, tamanho, funcaoOk, funcaoCancelar, funcaoIncializar);
-                //}
+
                 mensagemSrv.confirmacao(true, 'projeto-credito-rural/mod-custo-producao.html', 'Custo de Produção', conteudo, null, null, null, function(scope) {
-                    scope.$watch('conteudo.cultura', function(v, o) {
-                        if (!scope.conteudo.cultura) {
+                    scope.$watch('conteudo.registro.cultura', function(v, o) {
+                        scope.conteudo.apoio.insumoTotal = 0;
+                        scope.conteudo.apoio.servicoTotal = 0;
+                        if (!scope.conteudo.registro || !scope.conteudo.registro.cultura) {
                             return;
                         }
-                        scope.conteudo.insumoTotal = 0;
-                        scope.conteudo.servicoTotal = 0;
                         var valor = 0;
-                        scope.conteudo.cultura.itens.forEach(function(v) {
+                        scope.conteudo.registro.cultura.itens.forEach(function(v) {
                             valor = v.quantidade * v.custoProducaoInsumoServico.precoList[0].preco;
                             if (v.custoProducaoInsumoServico.tipo === 'I') {
-                                scope.conteudo.insumoTotal += valor;
+                                scope.conteudo.apoio.insumoTotal += valor;
                             } else {
-                                scope.conteudo.servicoTotal += valor;
+                                scope.conteudo.apoio.servicoTotal += valor;
                             }
                         });
                     });
                 }).then(function (conteudo) {
-                    reg.custoProducao = conteudo.cultura;
-                }, function () {
+                    reg.custoProducao = {id: conteudo.registro.cultura.id};
+                    reg.descricao = conteudo.registro.cultura.nomeFormaProducao;
+                    if (local.modulo === 'receita-despesa') {
+                        if (local.funcao === 'despesaList') {
+                            reg.unidade = 'ha';
+                            reg.quantidade = conteudo.registro.area;
+                            reg.valorUnitario = conteudo.apoio.insumoTotal + conteudo.apoio.servicoTotal;
+                        } else if (local.funcao === 'receitaList') {
+                            reg.unidade = conteudo.registro.cultura.unidadeMedida.nome;
+                            reg.quantidade = conteudo.registro.area * conteudo.registro.cultura.produtividade;
+                        }
+                    } else if (local.modulo === 'financiamento') {
+                        reg.unidade = 'ha';
+                        reg.quantidade = conteudo.registro.area;
+                        reg.valorUnitario = conteudo.apoio.insumoTotal + conteudo.apoio.servicoTotal;
+                    }
+                }, function (erro) {
+                    toastr.error(erro, 'Erro ao captar informação');
                 });
             };
 
