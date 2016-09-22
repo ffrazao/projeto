@@ -33,7 +33,7 @@
                         Versão do Formulário
                     </label>
                     <div class="col-md-6">
-                        <input id="versao" name="versao" type="text" placeholder="" class="form-control input-md" ng-model="cadastro.filtro.versao" ui-number-mask="0" ng-trim="true">
+                        <input id="versao" name="versao" type="text" placeholder="" class="form-control input-md" ng-model="cadastro.filtro.versao" ui-number-mask="globalFracaoSem" ng-trim="true">
                         <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.versao.$error.required">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             Campo Obrigatório

@@ -41,8 +41,7 @@
     "webcam": "webcam-directive#^3.1.1",
     "br-validations": "~0.3.0",
     "string-mask": "~0.3.0",
-    "textAngular": "^1.5.3",
-    "angular-hotkeys": "chieffancypants/angular-hotkeys#^1.7.0"
+    "textAngular": "^1.5.3"
   },
   "devDependencies": {
     "angular-google-maps": "~2"

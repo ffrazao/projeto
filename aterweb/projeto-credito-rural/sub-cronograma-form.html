@@ -14,7 +14,7 @@
     <div class="form-group">
         <label class="col-md-4 control-label" for="valorFinanciamento">Valor Financiamento (R$)</label>
         <div class="col-md-4">
-            <input id="valorFinanciamento" name="valorFinanciamento" type="text" class="form-control input-md text-right" ng-model="conteudo.apoio.lote.valorFinanciado" ui-number-mask="2" ng-required="true" ng-readonly="true" ng-valor-min="0.01">
+            <input id="valorFinanciamento" name="valorFinanciamento" type="text" class="form-control input-md text-right" ng-model="conteudo.apoio.lote.valorFinanciado" ui-money-mask="globalMonetario" ng-required="true" ng-readonly="true" ng-valor-min="0.01">
             <div class="label label-danger" ng-show="confirmacaoFrm.valorFinanciamento.$error.required">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Campo Obrigatório
             </div>
@@ -55,7 +55,7 @@
     <div class="form-group">
         <label class="col-md-4 control-label" for="taxaJurosAnual">Taxa Juros Anual (%)</label>
         <div class="col-md-2">
-            <input id="taxaJurosAnual" name="taxaJurosAnual" type="text" class="form-control input-md text-right" ng-model="conteudo.registro.taxaJurosAnual" ui-number-mask="3" ng-required="true"
+            <input id="taxaJurosAnual" name="taxaJurosAnual" type="text" class="form-control input-md text-right" ng-model="conteudo.registro.taxaJurosAnual" ui-money-mask="globalTaxaJuros" ng-required="true"
             	ng-valor-min="0.001" ng-valor-max="100">
             <div class="label label-danger" ng-show="confirmacaoFrm.taxaJurosAnual.$error.required">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Campo Obrigatório
@@ -72,7 +72,7 @@
     <div class="form-group">
         <label class="col-md-4 control-label" for="quantidadeParcelas">Quantidade Parcelas</label>
         <div class="col-md-2">
-            <input id="quantidadeParcelas" name="quantidadeParcelas" type="text" class="form-control input-md text-right" ng-model="conteudo.registro.quantidadeParcelas" ui-number-mask="0" ng-required="true"
+            <input id="quantidadeParcelas" name="quantidadeParcelas" type="text" class="form-control input-md text-right" ng-model="conteudo.registro.quantidadeParcelas" ui-number-mask="globalFracaoSem" ng-required="true"
             	ng-valor-min="1" ng-valor-max="conteudo.registro.periodicidade.maxParcelas">
             <div class="label label-danger" ng-show="confirmacaoFrm.quantidadeParcelas.$error.required">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Campo Obrigatório

@@ -3,7 +3,7 @@
         <div class="form-group">
             <label class="control-label" for="publicoEstimado" ng-if="cadastro.registro.finalidade === 'O'">Publico Estimado</label>
             
-            <input class="form-control text-right" type="text" id="publicoEstimado" name="publicoEstimado" ng-model="cadastro.registro.publicoEstimado" ng-if="cadastro.registro.finalidade === 'O'" required="true" ng-valor-min="1" ui-number-mask="0"></input>
+            <input class="form-control text-right" type="text" id="publicoEstimado" name="publicoEstimado" ng-model="cadastro.registro.publicoEstimado" ng-if="cadastro.registro.finalidade === 'O'" required="true" ng-valor-min="1" ui-number-mask="globalFracaoSem"></input>
             
             <div class="label label-danger" ng-show="navegador.submetido && (frm.formulario.publicoEstimado.$error.required || frm.formulario.publicoEstimado.$error.ngValorMin)">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -15,7 +15,7 @@
         <div class="form-group">
             <label class="control-label" for="publicoReal" ng-if="cadastro.registro.finalidade === 'O'">Publico Real</label>
             
-            <input class="form-control text-right" type="text" id="publicoReal" name="publicoReal" ng-model="cadastro.registro.publicoReal" ng-disabled="true" ng-if="cadastro.registro.finalidade === 'O'" ui-number-mask="0"></input>
+            <input class="form-control text-right" type="text" id="publicoReal" name="publicoReal" ng-model="cadastro.registro.publicoReal" ng-disabled="true" ng-if="cadastro.registro.finalidade === 'O'" ui-number-mask="globalFracaoSem"></input>
 
             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.publicoReal.$error.required">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -156,7 +156,7 @@
         <div class="form-group">
             <label class="control-label" for="duracaoEstimada">Duração Estimada (horas)</label>
             
-            <input class="form-control text-right" type="text" id="duracaoEstimada" name="duracaoEstimada" ng-model="cadastro.registro.duracaoEstimada" ng-required="false" ui-number-mask="0" ng-disabled="true"></input>
+            <input class="form-control text-right" type="text" id="duracaoEstimada" name="duracaoEstimada" ng-model="cadastro.registro.duracaoEstimada" ng-required="false" ui-number-mask="globalTempo" ng-disabled="true"></input>
 
             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.duracaoEstimada.$error.required">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -168,7 +168,7 @@
         <div class="form-group">
             <label class="control-label" for="duracaoSuspensao">Duração Suspensão (horas)</label>
             
-            <input class="form-control text-right" type="text" id="duracaoSuspensao" name="duracaoSuspensao" ng-model="cadastro.registro.duracaoSuspensao" ng-disabled="true" ui-number-mask="0"></input>
+            <input class="form-control text-right" type="text" id="duracaoSuspensao" name="duracaoSuspensao" ng-model="cadastro.registro.duracaoSuspensao" ng-disabled="true" ui-number-mask="globalTempo"></input>
             
             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.duracaoSuspensao.$error.required">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -180,7 +180,7 @@
         <div class="form-group">
             <label class="control-label" for="duracaoReal">Duração Real (horas)</label>
             
-            <input class="form-control text-right" type="text" id="duracaoReal" name="duracaoReal" ng-model="cadastro.registro.duracaoReal" ng-disabled="true" ui-number-mask="0"></input>
+            <input class="form-control text-right" type="text" id="duracaoReal" name="duracaoReal" ng-model="cadastro.registro.duracaoReal" ng-disabled="true" ui-number-mask="globalTempo"></input>
             
             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.duracaoReal.$error.required">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
