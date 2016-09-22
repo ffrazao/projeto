@@ -31,6 +31,7 @@ import br.gov.df.emater.aterwebsrv.dto.indice_producao.IndiceProducaoCadFiltroDt
 import br.gov.df.emater.aterwebsrv.dto.pessoa.CarteiraProdutorRelFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.pessoa.PessoaCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoCreditoRuralCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoCreditoRuralReceitaDespesaApoioDto;
 import br.gov.df.emater.aterwebsrv.dto.sistema.FuncionalidadeCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.sistema.LogAcaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.sistema.PerfilCadFiltroDto;
@@ -412,18 +413,23 @@ public class FacadeBo implements BeanFactoryAware {
 	}
 	
 	@Transactional(readOnly = true)
-	public _Contexto projetoCreditoRuralProjetoTecnicoRel(Principal usuario, Integer[] idList) throws Exception {
-		return this._executar(usuario, "ProjetoCreditoRuralProjetoTecnicoRelCh", idList);
-	}
-		
-	@Transactional(readOnly = true)
 	public _Contexto projetoCreditoRuralFiltroNovo(Principal usuario) throws Exception {
 		return this._executar(usuario, "ProjetoCreditoRuralFiltroNovoCmd");
 	}
-
+	
 	@Transactional(readOnly = true)
 	public _Contexto projetoCreditoRuralNovo(Principal usuario, ProjetoCreditoRural projetoCreditoRural) throws Exception {
 		return this._executar(usuario, "ProjetoCreditoRuralNovoCh", projetoCreditoRural);
+	}
+		
+	@Transactional
+	public _Contexto projetoCreditoRuralPlanilhaUpload(Principal usuario, ProjetoCreditoRuralReceitaDespesaApoioDto registro) throws Exception {
+		return this._executar(usuario, "ProjetoCreditoRuralPlanilhaUploadCh", registro);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto projetoCreditoRuralProjetoTecnicoRel(Principal usuario, Integer[] idList) throws Exception {
+		return this._executar(usuario, "ProjetoCreditoRuralProjetoTecnicoRelCh", idList);
 	}
 
 	@Transactional

@@ -155,7 +155,7 @@ public class SalvarCmd extends _SalvarCmd {
 		salvarTabelaDependente(result, "investimentoList", projetoCreditoRuralFinanciamentoDao, ProjetoCreditoRuralFinanciamento.class, investimentoList);
 
 		salvarTabelaDependente(result, "fluxoCaixaList", projetoCreditoRuralFluxoCaixaDao, ProjetoCreditoRuralFluxoCaixa.class, fluxoCaixaList);
-		if (!CollectionUtils.isEmpty(fluxoCaixaList)) {			
+		if (!CollectionUtils.isEmpty(fluxoCaixaList)) {
 			fluxoCaixaList.forEach((fluxoCaixa) -> fluxoCaixa.getFluxoCaixaAnoList().forEach((ano) -> {
 				ano.setProjetoCreditoRuralFluxoCaixa(fluxoCaixa);
 				fluxoCaixaAnoDao.save(ano);
@@ -225,7 +225,7 @@ public class SalvarCmd extends _SalvarCmd {
 	}
 
 	private void salvarPagamentos(List<ProjetoCreditoRuralCronogramaPagamento> lista) {
-		if (!CollectionUtils.isEmpty(lista)) {			
+		if (!CollectionUtils.isEmpty(lista)) {
 			lista.forEach((cronograma) -> cronograma.getCronogramaPagamentoList().forEach((pagto) -> {
 				pagto.setProjetoCreditoRuralCronogramaPagamento(cronograma);
 				cronogramaPagamentoDao.save(pagto);

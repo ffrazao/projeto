@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoCreditoRuralCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoCreditoRuralReceitaDespesaApoioDto;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRural;
 
 @RestController
@@ -57,5 +58,11 @@ public class ProjetoCreditoRuralRest {
 	public Resposta projetoTecnicoRel(@RequestParam(value = "idList", required = true) Integer[] idList, Principal usuario) throws Exception {
 		return new Resposta(facadeBo.projetoCreditoRuralProjetoTecnicoRel(usuario, idList).getResposta());
 	}
+
+	@RequestMapping(value = "/planilha-upload", method = RequestMethod.POST)
+	public Resposta planilhaUpload(@RequestBody ProjetoCreditoRuralReceitaDespesaApoioDto registro, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.projetoCreditoRuralPlanilhaUpload(usuario, registro).getResposta());
+	}
+
 
 }

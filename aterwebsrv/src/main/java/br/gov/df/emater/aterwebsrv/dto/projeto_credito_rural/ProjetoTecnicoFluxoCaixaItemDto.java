@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import br.gov.df.emater.aterwebsrv.dto.Dto;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FluxoCaixaCodigo;
 
-public class ProjetoTecnicoFluxoCaixaItem implements Dto {
+public class ProjetoTecnicoFluxoCaixaItemDto implements Dto {
 
 	private static final long serialVersionUID = 1L;
 

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -11,7 +12,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -66,14 +69,24 @@ public class UtilitarioExcel {
 	}
 
 	public static List<Map<String, Object>> criarMapaDoArquivoExcel(File excel, int aba) throws Exception {
-		return UtilitarioExcel.criarMapaDoArquivoExcel(excel, aba, 0);
+		return UtilitarioExcel.criarMapaDoArquivoExcel(new FileInputStream(excel), aba);
 	}
 
 	public static List<Map<String, Object>> criarMapaDoArquivoExcel(File excel, int aba, int pularLinha) throws Exception {
+		return UtilitarioExcel.criarMapaDoArquivoExcel(new FileInputStream(excel), aba, pularLinha);
+	}
+
+	public static List<Map<String, Object>> criarMapaDoArquivoExcel(InputStream excel, int aba) throws Exception {
+		return UtilitarioExcel.criarMapaDoArquivoExcel(excel, aba, 0);
+	}
+
+	public static List<Map<String, Object>> criarMapaDoArquivoExcel(InputStream excel, int aba, int pularLinha) throws Exception {
 		List<Map<String, Object>> result = null;
-		try (FileInputStream inputStream = new FileInputStream(excel); Workbook workbook = WorkbookFactory.create(inputStream)) {
+		try (Workbook workbook = WorkbookFactory.create(excel)) {
 			Sheet firstSheet = workbook.getSheetAt(aba);
 			Iterator<Row> iterator = firstSheet.iterator();
+
+			FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
 
 			List<String> colunas = new ArrayList<String>();
 			Map<String, Object> linha = null;
@@ -88,25 +101,16 @@ public class UtilitarioExcel {
 				Iterator<Cell> cellIterator = nextRow.cellIterator();
 				int colCont = 0;
 				while (cellIterator.hasNext()) {
-					Cell cell = cellIterator.next();
-					switch (cell.getCellType()) {
-					case Cell.CELL_TYPE_STRING:
-						valor = cell.getStringCellValue();
-						break;
-					case Cell.CELL_TYPE_BOOLEAN:
-						valor = cell.getBooleanCellValue();
-						break;
-					case Cell.CELL_TYPE_NUMERIC:
-						valor = cell.getNumericCellValue();
-						break;
-					}
+					valor = getValor(cellIterator, evaluator);
 					if (primeiraLinha) {
 						colunas.add(valor.toString());
 					} else {
 						if (linha == null) {
 							linha = new HashMap<String, Object>();
 						}
-						linha.put(colunas.get(colCont), valor);
+						if (colCont < colunas.size()) {
+							linha.put(colunas.get(colCont), valor);
+						}
 					}
 					colCont++;
 				}
@@ -122,6 +126,76 @@ public class UtilitarioExcel {
 			}
 		}
 
+		return result;
+	}
+
+	private static Object handleCell(int type, Cell cell, FormulaEvaluator evaluator) {
+		if (type == HSSFCell.CELL_TYPE_STRING) {
+			return cell.getStringCellValue();
+		} else if (type == HSSFCell.CELL_TYPE_NUMERIC) {
+			return cell.getNumericCellValue();
+		} else if (type == HSSFCell.CELL_TYPE_BOOLEAN) {
+			return cell.getBooleanCellValue();
+		} else if (type == HSSFCell.CELL_TYPE_FORMULA) {
+			// Re-run based on the formula type
+			evaluator.evaluateFormulaCell(cell);
+			return handleCell(cell.getCachedFormulaResultType(), cell, evaluator);
+		}
+		return null;
+	}
+
+	public static List<List<List<Object>>> lerPlanilha(InputStream excel) throws Exception {
+		List<List<List<Object>>> result = null;
+
+		try (Workbook workbook = WorkbookFactory.create(excel)) {
+
+			FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
+
+			for (int abaCont = 0; abaCont < workbook.getNumberOfSheets(); abaCont++) {
+
+				Iterator<Row> sheet = workbook.getSheetAt(abaCont).iterator();
+
+				List<List<Object>> linha = new ArrayList<>();
+
+				while (sheet.hasNext()) {
+					Row nextRow = sheet.next();
+
+					Iterator<Cell> cellIterator = nextRow.cellIterator();
+
+					List<Object> colunas = new ArrayList<>();
+
+					while (cellIterator.hasNext()) {
+						colunas.add(getValor(cellIterator, evaluator));
+					}
+					linha.add(colunas);
+				}
+				if (result == null) {
+					result = new ArrayList<>();
+				}
+				result.add(linha);
+			}
+		}
+		return result;
+	}
+
+	private static Object getValor(Iterator<Cell> cellIterator, FormulaEvaluator evaluator) {
+		Object result = null;
+		Cell cell = cellIterator.next();
+		switch (cell.getCellType()) {
+		case Cell.CELL_TYPE_STRING:
+			result = cell.getStringCellValue();
+			break;
+		case Cell.CELL_TYPE_BOOLEAN:
+			result = cell.getBooleanCellValue();
+			break;
+		case Cell.CELL_TYPE_NUMERIC:
+			result = cell.getNumericCellValue();
+			break;
+		case Cell.CELL_TYPE_FORMULA:
+			evaluator.evaluateFormulaCell(cell);
+			result = handleCell(cell.getCellType(), cell, evaluator);
+			break;
+		}
 		return result;
 	}
 }

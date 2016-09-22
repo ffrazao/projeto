@@ -38,8 +38,8 @@ import br.gov.df.emater.aterwebsrv.dao.projeto_credito_rural.ProjetoCreditoRural
 import br.gov.df.emater.aterwebsrv.dto.Dto;
 import br.gov.df.emater.aterwebsrv.dto.formulario.FormularioColetaCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.DividaExistenteRelDto;
-import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoTecnicoFluxoCaixa;
-import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoTecnicoFluxoCaixaItem;
+import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoTecnicoFluxoCaixaDto;
+import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoTecnicoFluxoCaixaItemDto;
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoTecnicoGarantiaAvalistaRelDto;
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoTecnicoGarantiaRelDto;
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoTecnicoProponenteRelDto;
@@ -330,14 +330,14 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 		}
 	}
 
-	private List<ProjetoTecnicoFluxoCaixa> captarFluxoCaixa(List<ProjetoCreditoRuralFluxoCaixa> fluxoCaixaList) throws Exception {
-		List<ProjetoTecnicoFluxoCaixa> result = new ArrayList<>();
-		ProjetoTecnicoFluxoCaixa ptfc = new ProjetoTecnicoFluxoCaixa();
+	private List<ProjetoTecnicoFluxoCaixaDto> captarFluxoCaixa(List<ProjetoCreditoRuralFluxoCaixa> fluxoCaixaList) throws Exception {
+		List<ProjetoTecnicoFluxoCaixaDto> result = new ArrayList<>();
+		ProjetoTecnicoFluxoCaixaDto ptfc = new ProjetoTecnicoFluxoCaixaDto();
 		ptfc.setReceitaItemList(new ArrayList<>());
 		ptfc.setDespesaItemList(new ArrayList<>());
 
 		for (ProjetoCreditoRuralFluxoCaixa fluxoCaixa : fluxoCaixaList) {
-			ProjetoTecnicoFluxoCaixaItem item = captarFluxoCaixaItem(fluxoCaixa);
+			ProjetoTecnicoFluxoCaixaItemDto item = captarFluxoCaixaItem(fluxoCaixa);
 
 			if (FluxoCaixaTipo.R.equals(fluxoCaixa.getTipo())) {
 				ptfc.getReceitaItemList().add(item);
@@ -399,8 +399,8 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 		return result;
 	}
 
-	private ProjetoTecnicoFluxoCaixaItem captarFluxoCaixaItem(ProjetoCreditoRuralFluxoCaixa fluxoCaixa) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-		ProjetoTecnicoFluxoCaixaItem result = new ProjetoTecnicoFluxoCaixaItem();
+	private ProjetoTecnicoFluxoCaixaItemDto captarFluxoCaixaItem(ProjetoCreditoRuralFluxoCaixa fluxoCaixa) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+		ProjetoTecnicoFluxoCaixaItemDto result = new ProjetoTecnicoFluxoCaixaItemDto();
 		result.setCodigo(fluxoCaixa.getCodigo());
 		for (FluxoCaixaAno fca : fluxoCaixa.getFluxoCaixaAnoList()) {
 			MethodUtils.invokeMethod(result, String.format("setAno%02d", fca.getAno()), fca.getValor());
@@ -408,7 +408,7 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 		return result;
 	}
 
-	private void captarFluxoCaixaTotalizador(ProjetoTecnicoFluxoCaixa objeto, String metodo, Confirmacao somar, ProjetoTecnicoFluxoCaixaItem item) throws Exception {
+	private void captarFluxoCaixaTotalizador(ProjetoTecnicoFluxoCaixaDto objeto, String metodo, Confirmacao somar, ProjetoTecnicoFluxoCaixaItemDto item) throws Exception {
 		for (int i = 1; i <= 10; i++) {
 			BigDecimal valor = (BigDecimal) MethodUtils.invokeMethod(item, String.format("getAno%02d", i));
 			BigDecimal total = (BigDecimal) MethodUtils.invokeMethod(objeto, String.format("get%sAno%02d", StringUtils.capitalize(metodo), i));

@@ -26,23 +26,23 @@
                                 </td>
                                 <td>
                                     <ui>
-                                        <li><a href="download/modelo/projeto-credito-rural/evolucaoRebanhoBOVINO2015.xls">Bovino</a></li>
-                                        <li><a href="download/modelo/projeto-credito-rural/evolucaoRebanhoOVINO2015.xls">Ovino</a></li>
-                                        <li><a href="download/modelo/projeto-credito-rural/evolucaoRebanhoSUINO2015.xls">Suino</a></li>
+                                        <li><a ng-href="{{planilhaDownload('EVOLUCAO_REBANHO', 'BOVINO')}}">Bovino</a></li>
+                                        <li><a ng-href="{{planilhaDownload('EVOLUCAO_REBANHO', 'OVINO')}}">Ovino</a></li>
+                                        <li><a ng-href="{{planilhaDownload('EVOLUCAO_REBANHO', 'SUINO')}}">Suino</a></li>
                                     </ui>
                                 </td>
                                 <td>
                                     <ui>
-                                        <li><a >Bovino</a></li>
-                                        <li><a >Ovino</a></li>
-                                        <li><a >Suino</a></li>
+                                        <li><a ng-click="planilhaUpload('EVOLUCAO_REBANHO', 'BOVINO')">Bovino</a></li>
+                                        <li><a ng-click="planilhaUpload('EVOLUCAO_REBANHO', 'OVINO')">Ovino</a></li>
+                                        <li><a ng-click="planilhaUpload('EVOLUCAO_REBANHO', 'SUINO')">Suino</a></li>
                                     </ui>
                                 </td>
                                 <td>
                                     <ui>
-                                        <li><a >Bovino</a></li>
-                                        <li><a >Ovino</a></li>
-                                        <li><a >Suino</a></li>
+                                        <li><a ng-click="planilhaDesconsiderar('EVOLUCAO_REBANHO', 'BOVINO')">Bovino</a></li>
+                                        <li><a ng-click="planilhaDesconsiderar('EVOLUCAO_REBANHO', 'OVINO')">Ovino</a></li>
+                                        <li><a ng-click="planilhaDesconsiderar('EVOLUCAO_REBANHO', 'SUINO')">Suino</a></li>
                                     </ui>
                                 </td>
                             </tr>

@@ -5,7 +5,7 @@ import java.util.List;
 
 import br.gov.df.emater.aterwebsrv.dto.Dto;
 
-public class ProjetoTecnicoFluxoCaixa implements Dto {
+public class ProjetoTecnicoFluxoCaixaDto implements Dto {
 
 	private static final long serialVersionUID = 1L;
 
@@ -29,7 +29,7 @@ public class ProjetoTecnicoFluxoCaixa implements Dto {
 
 	private BigDecimal amortizacaoAno10;
 
-	private List<ProjetoTecnicoFluxoCaixaItem> despesaItemList;
+	private List<ProjetoTecnicoFluxoCaixaItemDto> despesaItemList;
 
 	private BigDecimal fluxoLiquidoAno01;
 
@@ -71,7 +71,7 @@ public class ProjetoTecnicoFluxoCaixa implements Dto {
 
 	private BigDecimal lucroAno10;
 
-	private List<ProjetoTecnicoFluxoCaixaItem> receitaItemList;
+	private List<ProjetoTecnicoFluxoCaixaItemDto> receitaItemList;
 
 	private BigDecimal saldoDevedorAno01;
 
@@ -133,7 +133,7 @@ public class ProjetoTecnicoFluxoCaixa implements Dto {
 		return amortizacaoAno10;
 	}
 
-	public List<ProjetoTecnicoFluxoCaixaItem> getDespesaItemList() {
+	public List<ProjetoTecnicoFluxoCaixaItemDto> getDespesaItemList() {
 		return despesaItemList;
 	}
 
@@ -217,7 +217,7 @@ public class ProjetoTecnicoFluxoCaixa implements Dto {
 		return lucroAno10;
 	}
 
-	public List<ProjetoTecnicoFluxoCaixaItem> getReceitaItemList() {
+	public List<ProjetoTecnicoFluxoCaixaItemDto> getReceitaItemList() {
 		return receitaItemList;
 	}
 
@@ -301,7 +301,7 @@ public class ProjetoTecnicoFluxoCaixa implements Dto {
 		this.amortizacaoAno10 = amortizacaoAno10;
 	}
 
-	public void setDespesaItemList(List<ProjetoTecnicoFluxoCaixaItem> despesaItemList) {
+	public void setDespesaItemList(List<ProjetoTecnicoFluxoCaixaItemDto> despesaItemList) {
 		this.despesaItemList = despesaItemList;
 	}
 
@@ -385,7 +385,7 @@ public class ProjetoTecnicoFluxoCaixa implements Dto {
 		this.lucroAno10 = lucroAno10;
 	}
 
-	public void setReceitaItemList(List<ProjetoTecnicoFluxoCaixaItem> receitaItemList) {
+	public void setReceitaItemList(List<ProjetoTecnicoFluxoCaixaItemDto> receitaItemList) {
 		this.receitaItemList = receitaItemList;
 	}
 

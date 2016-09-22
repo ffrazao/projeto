@@ -39,6 +39,9 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 	@JoinColumn(name = "agente_financeiro_id")
 	private AgenteFinanceiro agenteFinanceiro;
 
+	@OneToMany(mappedBy = "projetoCreditoRural")
+	private List<ProjetoCreditoRuralArquivo> arquivoList;
+
 	@ManyToOne
 	@JoinColumn(name = "atividade_id")
 	private Atividade atividade;
@@ -115,7 +118,8 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 	public ProjetoCreditoRural(Integer id, String agencia, AgenteFinanceiro agenteFinanceiro, String garantiaReal, LinhaCredito linhaCredito, String numeroCedula, PublicoAlvo publicoAlvo, ProjetoCreditoRuralStatus status,
 			List<ProjetoCreditoRuralCronogramaPagamento> cronogramaPagamentoCusteioList, List<ProjetoCreditoRuralCronogramaPagamento> cronogramaPagamentoInvestimentoList, List<ProjetoCreditoRuralFinanciamento> custeioList, List<ProjetoCreditoRuralReceitaDespesa> despesaList,
 			List<ProjetoCreditoRuralFluxoCaixa> fluxoCaixaList, List<ProjetoCreditoRuralGarantia> garantiaList, List<ProjetoCreditoRuralFinanciamento> investimentoList, List<ProjetoCreditoRuralParecerTecnico> parecerTecnicoList,
-			List<ProjetoCreditoRuralPublicoAlvoPropriedadeRural> publicoAlvoPropriedadeRuralList, List<ProjetoCreditoRuralReceitaDespesa> receitaList, List<ProjetoCreditoRuralHistoricoReceita> trienioList) {
+			List<ProjetoCreditoRuralPublicoAlvoPropriedadeRural> publicoAlvoPropriedadeRuralList, List<ProjetoCreditoRuralReceitaDespesa> receitaList, List<ProjetoCreditoRuralHistoricoReceita> trienioList
+			, List<ProjetoCreditoRuralArquivo> arquivoList) {
 		super();
 		this.agencia = agencia;
 		this.agenteFinanceiro = agenteFinanceiro;
@@ -136,6 +140,7 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 		this.receitaList = receitaList;
 		this.status = status;
 		this.trienioList = trienioList;
+		this.arquivoList = arquivoList;
 	}
 
 	public String getAgencia() {
@@ -223,7 +228,7 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 	public ProjetoCreditoRural infoBasica() {
 		return new ProjetoCreditoRural(this.id, this.agencia, infoBasicaReg(this.agenteFinanceiro), this.garantiaReal, infoBasicaReg(this.linhaCredito), this.numeroCedula, infoBasicaReg(this.publicoAlvo), this.status, infoBasicaList(this.cronogramaPagamentoCusteioList),
 				infoBasicaList(this.cronogramaPagamentoInvestimentoList), infoBasicaList(this.custeioList), infoBasicaList(this.despesaList), infoBasicaList(this.fluxoCaixaList), infoBasicaList(this.garantiaList), infoBasicaList(this.investimentoList),
-				infoBasicaList(this.parecerTecnicoList), infoBasicaList(this.publicoAlvoPropriedadeRuralList), infoBasicaList(this.receitaList), infoBasicaList(this.trienioList));
+				infoBasicaList(this.parecerTecnicoList), infoBasicaList(this.publicoAlvoPropriedadeRuralList), infoBasicaList(this.receitaList), infoBasicaList(this.trienioList), infoBasicaList(this.arquivoList));
 	}
 
 	public void setAgencia(String agencia) {

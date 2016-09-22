@@ -97,6 +97,9 @@ angular.module(pNmModulo).factory(pNmFactory,
                     idList.push(temp);
                 }
                 return $http.get(this.endereco + '/projeto-tecnico-rel', {params: {'idList': idList}});
+            }, 
+            planilhaUpload: function(registro) {
+                return $http.post(this.endereco + '/planilha-upload', registro);
             }
         };
         return ProjetoCreditoRuralSrv;
