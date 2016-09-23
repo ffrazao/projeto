@@ -33,8 +33,8 @@
                     <tr>
                         <th rowspan="2"><frz-seletor ng-model="pessoaEmailNvg" dados="cadastro.registro.emailList"></frz-seletor></th>
                         <th rowspan="2">#</th>
-                        <th colspan="2">Principal</th>
-                        <th colspan="2">Endereço</th>
+                        <th>Principal</th>
+                        <th>Endereço</th>
                     </tr>
                     <tr>
                         <th><small>Finalidade</small></th>
@@ -49,7 +49,7 @@
                         <td rowspan="2">
                             {{$index + 1 + ((pessoaEmailNvg.paginaAtual-1) * pessoaEmailNvg.tamanhoPagina)}}
                         </td>
-                        <td colspan="2">
+                        <td>
                             <div class="radio">
                                 <label for="principalEmail">
                                     <input type="radio" id="principalEmail_{{$index}}" name="principalEmail" 
@@ -58,7 +58,7 @@
                                 </label>
                             </div>
                         </td>
-                        <td colspan="2">{{reg.email.endereco}}</td>
+                        <td>{{reg.email.endereco}}</td>
                     </tr>
                     <tr ng-repeat-end>
                         <td>

@@ -33,8 +33,8 @@
                     <tr>
                         <th rowspan="2"><frz-seletor ng-model="pessoaTelefoneNvg" dados="cadastro.registro.telefoneList"></frz-seletor></th>
                         <th rowspan="2">#</th>
-                        <th colspan="2">Principal</th>
-                        <th colspan="2">Número</th>
+                        <th>Principal</th>
+                        <th>Número</th>
                     </tr>
                     <tr>
                         <th><small>Tipo</small></th>
@@ -50,7 +50,7 @@
                         <td rowspan="2">
                             {{$index + 1 + ((pessoaTelefoneNvg.paginaAtual-1) * pessoaTelefoneNvg.tamanhoPagina)}}
                         </td>
-                        <td colspan="2">
+                        <td>
                             <div class="radio">
                                 <label for="principalTelefone">
                                     <input type="radio" id="principalTelefone_{{$index}}" name="principalTelefone" 
@@ -59,7 +59,7 @@
                                 </label>
                             </div>
                         </td>
-                        <td colspan="2">{{reg.telefone.numero}}</td>
+                        <td>{{reg.telefone.numero}}</td>
                     </tr>
                     <tr ng-repeat-end>
                         <td>

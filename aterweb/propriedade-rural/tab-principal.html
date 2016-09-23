@@ -141,11 +141,11 @@
         <div>
         <label class="radio-inline" for="radio-outorga">
         <input type="radio" name="outorga" id="outorga-1" ng-model="cadastro.registro.outorga" ng-true-value="'S'" ng-false-value="'N'">
-        Sim
+        <label for="outorga-1">Sim</label>
         </label>
         <label class="radio-inline" for="radio-outorga">
         <input type="radio" name="outorga" id="outorga-2" ng-model="cadastro.registro.outorga" ng-true-value="'S'" ng-false-value="'N'">
-        Não
+        <label for="outorga-2">Não</label>
         </label>
         </div>
         <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.outorga.$error.required">

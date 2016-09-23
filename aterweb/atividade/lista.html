@@ -58,7 +58,7 @@
                     <td title="Finalidade">{{UtilSrv.indiceDePorCampo(cadastro.apoio.atividadeFinalidadeList, item[CABEC.ATIV_FINALIDADE], 'codigo').descricao}}</td>
                     <td title="Natureza">{{UtilSrv.indiceDePorCampo(cadastro.apoio.atividadeNaturezaList, item[CABEC.ATIV_NATUREZA], 'codigo').descricao}}</td>
                     <td title="Prioridade">
-                        <span class="label" ng-class="{'label-default' : item[CABEC.ATIV_PRIORIDADE] === 'N', 'label-info' : item[CABEC.ATIV_PRIORIDADE] === 'B', 'label-danger' : item[CABEC.ATIV_PRIORIDADE] === 'A'}">
+                        <span class="label" ng-class="{'label-success' : item[CABEC.ATIV_PRIORIDADE] === 'N', 'label-info' : item[CABEC.ATIV_PRIORIDADE] === 'B', 'label-danger' : item[CABEC.ATIV_PRIORIDADE] === 'A'}">
                             {{UtilSrv.indiceDePorCampo(cadastro.apoio.atividadePrioridadeList, item[CABEC.ATIV_PRIORIDADE], 'codigo').descricao}}
                         </span>
                     </td>
