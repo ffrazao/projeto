@@ -53,14 +53,14 @@
                         <tbody>
                             <tr ng-repeat="reg in cadastro.registro.projetoCreditoRural[lista] | orderBy: ['ano', 'descricao'] track by reg.id">
                                 <td>
-                                    <input type="radio" ng-show="receitaDespesaNvg.selecao.tipo === 'U'" ng-model="receitaDespesaNvg.selecao.item" ng-value="reg"/>
-                                    <input type="checkbox" ng-show="receitaDespesaNvg.selecao.tipo === 'M'" checklist-model="receitaDespesaNvg.selecao.items" checklist-value="reg"/>
+                                    <input type="radio" ng-show="receitaDespesaNvg.selecao.tipo === 'U'" ng-model="receitaDespesaNvg.selecao.item" ng-value="reg"  ng-disabled="reg.codigo"/>
+                                    <input type="checkbox" ng-show="receitaDespesaNvg.selecao.tipo === 'M'" checklist-model="receitaDespesaNvg.selecao.items" checklist-value="reg"  ng-disabled="reg.codigo"/>
                                 </td>
                                 <td>
                                     {{$index + 1 + ((receitaDespesaNvg.paginaAtual-1) * receitaDespesaNvg.tamanhoPagina)}}
                                 </td>
                                 <td class="td-exibe-ano">
-                                    <select class="form-control input-sm" id="ano{{$index}}" name="ano{{$index}}" ng-model="reg.ano" ng-required="true" ng-options="item.codigo as item.descricao for item in cadastro.apoio.anoList">
+                                    <select class="form-control input-sm" id="ano{{$index}}" name="ano{{$index}}" ng-model="reg.ano" ng-required="true" ng-options="item.codigo as item.descricao for item in cadastro.apoio.anoList" ng-disabled="reg.codigo">
                                     </select>
                                     <div class="label label-danger" ng-show="navegador.submetido && receitaDespesaListFrm['ano' + $index].$error.required">
                                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -69,9 +69,9 @@
                                 </td>
                                 <td ng-if="!reg.custoProducao" style="min-width:250px">
                                     <div class="input-group">
-                                        <input class="form-control input-sm" id="descricao{{$index}}" name="descricao{{$index}}" ng-model="reg.descricao" ng-required="true" ng-model-options="{ updateOn: 'blur'}">
+                                        <input class="form-control input-sm" id="descricao{{$index}}" name="descricao{{$index}}" ng-model="reg.descricao" ng-required="true" ng-model-options="{ updateOn: 'blur'}" ng-disabled="reg.codigo">
                                         <span class="input-group-btn">
-                                            <button class="btn btn-default btn-sm" type="button" ng-click="captaCustoProducao(reg, {modulo: 'receita-despesa', funcao: lista})" title="Selecionar Custo de Produção">
+                                            <button class="btn btn-default btn-sm" type="button" ng-click="captaCustoProducao(reg, {modulo: 'receita-despesa', funcao: lista})" title="Selecionar Custo de Produção" ng-disabled="reg.codigo">
                                                 <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                                             </button>
                                         </span>
@@ -92,21 +92,21 @@
                                     </div>
                                 </td>
                                 <td class="td-exibe-valor">
-                                    <input class="form-control input-sm text-right" id="quantidade{{$index}}" name="quantidade{{$index}}" ng-model="reg.quantidade" ui-number-mask="3" ng-required="true">
+                                    <input class="form-control input-sm text-right" id="quantidade{{$index}}" name="quantidade{{$index}}" ng-model="reg.quantidade" ui-number-mask="3" ng-required="true" ng-disabled="reg.codigo">
                                     <div class="label label-danger" ng-show="navegador.submetido && receitaDespesaListFrm['quantidade' + $index].$error.required">
                                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                         Campo Obrigatório
                                     </div>
                                 </td>
                                 <td>
-                                    <input class="form-control input-sm" id="unidade{{$index}}" name="unidade{{$index}}" ng-model="reg.unidade" ng-required="true" ng-disabled="reg.custoProducao.id">
+                                    <input class="form-control input-sm" id="unidade{{$index}}" name="unidade{{$index}}" ng-model="reg.unidade" ng-required="true" ng-disabled="reg.custoProducao.id || reg.codigo">
                                     <div class="label label-danger" ng-show="navegador.submetido && receitaDespesaListFrm['unidade' + $index].$error.required">
                                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                         Campo Obrigatório
                                     </div>
                                 </td>
                                 <td class="td-exibe-valor">
-                                    <input class="form-control input-sm text-right" id="valorUnitario{{$index}}" name="valorUnitario{{$index}}" ng-model="reg.valorUnitario" ui-number-mask="2" ng-required="true" ng-disabled="reg.custoProducao.id && !lista === 'receitaList'">
+                                    <input class="form-control input-sm text-right" id="valorUnitario{{$index}}" name="valorUnitario{{$index}}" ng-model="reg.valorUnitario" ui-number-mask="2" ng-required="true" ng-disabled="(reg.custoProducao.id && !lista === 'receitaList') || reg.codigo">
                                     <div class="label label-danger" ng-show="navegador.submetido && receitaDespesaListFrm['valorUnitario' + $index].$error.required">
                                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                         Campo Obrigatório
@@ -120,7 +120,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <button ng-click="repetir(cadastro.registro.projetoCreditoRural, lista, reg, ['id', 'ano'])" title="Repetir valor!">R</button>
+                                    <button ng-click="repetir(cadastro.registro.projetoCreditoRural, lista, reg, ['id', 'ano'])" title="Repetir valor!" ng-disabled="reg.codigo">R</button>
                                 </td>
                             </tr>
                         </tbody>

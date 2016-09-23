@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural;
 
+import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaReg;
+
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
@@ -27,9 +29,9 @@ public class ProjetoCreditoRuralReceitaDespesa extends EntidadeBase implements _
 	private Integer ano;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name="arquivo_codigo")
+	@Column(name = "arquivo_codigo")
 	private ProjetoCreditoRuralArquivo.Codigo codigo;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "custo_producao_id")
 	private CustoProducao custoProducao;
@@ -66,7 +68,7 @@ public class ProjetoCreditoRuralReceitaDespesa extends EntidadeBase implements _
 		super(id);
 	}
 
-	public ProjetoCreditoRuralReceitaDespesa(Integer ano, String descricao, Integer id, BigDecimal quantidade, FluxoCaixaTipo tipo, String unidade, BigDecimal valorTotal, BigDecimal valorUnitario) {
+	public ProjetoCreditoRuralReceitaDespesa(Integer ano, String descricao, Integer id, BigDecimal quantidade, FluxoCaixaTipo tipo, String unidade, BigDecimal valorTotal, BigDecimal valorUnitario, CustoProducao custoProducao, ProjetoCreditoRuralArquivo.Codigo codigo) {
 		super();
 		this.ano = ano;
 		this.descricao = descricao;
@@ -76,6 +78,8 @@ public class ProjetoCreditoRuralReceitaDespesa extends EntidadeBase implements _
 		this.unidade = unidade;
 		this.valorTotal = valorTotal;
 		this.valorUnitario = valorUnitario;
+		this.custoProducao = custoProducao;
+		this.codigo = codigo;
 	}
 
 	public Integer getAno() {
@@ -125,7 +129,7 @@ public class ProjetoCreditoRuralReceitaDespesa extends EntidadeBase implements _
 
 	@Override
 	public ProjetoCreditoRuralReceitaDespesa infoBasica() {
-		return new ProjetoCreditoRuralReceitaDespesa(this.ano, this.descricao, this.id, this.quantidade, this.tipo, this.unidade, this.valorTotal, this.valorUnitario);
+		return new ProjetoCreditoRuralReceitaDespesa(this.ano, this.descricao, this.id, this.quantidade, this.tipo, this.unidade, this.valorTotal, this.valorUnitario, infoBasicaReg(this.custoProducao), this.codigo);
 	}
 
 	public void setAno(Integer ano) {

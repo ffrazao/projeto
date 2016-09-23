@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural;
 
+import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaReg;
+
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
@@ -84,7 +86,7 @@ public class ProjetoCreditoRuralFinanciamento extends EntidadeBase implements _C
 	}
 
 	public ProjetoCreditoRuralFinanciamento(String descricao, String epocaLiberacao, String nomeLote, Integer id, BigDecimal percentualProprio, BigDecimal quantidade, FinanciamentoTipo tipo, String unidade, BigDecimal valorFinanciado, BigDecimal valorOrcado,
-			BigDecimal valorProprio, BigDecimal valorUnitario) {
+			BigDecimal valorProprio, BigDecimal valorUnitario, CustoProducao custoProducao) {
 		super();
 		this.descricao = descricao;
 		this.epocaLiberacao = epocaLiberacao;
@@ -98,6 +100,7 @@ public class ProjetoCreditoRuralFinanciamento extends EntidadeBase implements _C
 		this.valorOrcado = valorOrcado;
 		this.valorProprio = valorProprio;
 		this.valorUnitario = valorUnitario;
+		this.custoProducao = custoProducao;
 	}
 
 	public String getDescricao() {
@@ -155,7 +158,8 @@ public class ProjetoCreditoRuralFinanciamento extends EntidadeBase implements _C
 
 	@Override
 	public ProjetoCreditoRuralFinanciamento infoBasica() {
-		return new ProjetoCreditoRuralFinanciamento(this.descricao, this.epocaLiberacao, this.nomeLote, this.id, this.percentualProprio, this.quantidade, this.tipo, this.unidade, this.valorFinanciado, this.valorOrcado, this.valorProprio, this.valorUnitario);
+		return new ProjetoCreditoRuralFinanciamento(this.descricao, this.epocaLiberacao, this.nomeLote, this.id, this.percentualProprio, this.quantidade, this.tipo, this.unidade, this.valorFinanciado, this.valorOrcado, this.valorProprio, this.valorUnitario,
+				infoBasicaReg(this.custoProducao));
 	}
 
 	public void setDescricao(String descricao) {

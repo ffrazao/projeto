@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.bo._SalvarCmd;
+import br.gov.df.emater.aterwebsrv.dao.pessoa.ArquivoDao;
 import br.gov.df.emater.aterwebsrv.dao.projeto_credito_rural.CronogramaPagamentoDao;
 import br.gov.df.emater.aterwebsrv.dao.projeto_credito_rural.FluxoCaixaAnoDao;
+import br.gov.df.emater.aterwebsrv.dao.projeto_credito_rural.ProjetoCreditoRuralArquivoDao;
 import br.gov.df.emater.aterwebsrv.dao.projeto_credito_rural.ProjetoCreditoRuralCronogramaPagamentoDao;
 import br.gov.df.emater.aterwebsrv.dao.projeto_credito_rural.ProjetoCreditoRuralDao;
 import br.gov.df.emater.aterwebsrv.dao.projeto_credito_rural.ProjetoCreditoRuralFinanciamentoDao;
@@ -28,6 +30,7 @@ import br.gov.df.emater.aterwebsrv.modelo.atividade.Atividade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FinanciamentoTipo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FluxoCaixaTipo;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRural;
+import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralArquivo;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralCronogramaPagamento;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralFinanciamento;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralFluxoCaixa;
@@ -102,6 +105,8 @@ public class SalvarCmd extends _SalvarCmd {
 		List<ProjetoCreditoRuralReceitaDespesa> despesaList = null;
 		List<ProjetoCreditoRuralReceitaDespesa> receitaList = null;
 
+		List<ProjetoCreditoRuralArquivo> arquivoList = null;
+
 		if (!CollectionUtils.isEmpty(result.getCronogramaPagamentoCusteioList())) {
 			cronogramaPagamentoCusteioList = (List<ProjetoCreditoRuralCronogramaPagamento>) limparChavePrimaria(result.getCronogramaPagamentoCusteioList());
 			result.getCronogramaPagamentoCusteioList().forEach((c) -> {
@@ -128,6 +133,7 @@ public class SalvarCmd extends _SalvarCmd {
 		publicoAlvoPropriedadeRuralList = (List<ProjetoCreditoRuralPublicoAlvoPropriedadeRural>) limparChavePrimaria(result.getPublicoAlvoPropriedadeRuralList());
 		despesaList = (List<ProjetoCreditoRuralReceitaDespesa>) limparChavePrimaria(result.getDespesaList());
 		receitaList = (List<ProjetoCreditoRuralReceitaDespesa>) limparChavePrimaria(result.getReceitaList());
+		arquivoList = (List<ProjetoCreditoRuralArquivo>) limparChavePrimaria(result.getArquivoList());
 
 		// salvar a tabela principal
 		result = dao.save(result);
@@ -166,8 +172,10 @@ public class SalvarCmd extends _SalvarCmd {
 
 		salvarTabelaDependente(result, "trienioList", projetoCreditoRuralHistoricoReceitaDao, ProjetoCreditoRuralHistoricoReceita.class, trienioList);
 
-		parecerTecnicoList.forEach((parecer) -> parecer.setUsuario(parecer.getUsuario() == null ? null : getUsuario(parecer.getUsuario().getUsername())));
-		salvarTabelaDependente(result, "parecerTecnicoList", projetoCreditoRuralParecerTecnicoDao, ProjetoCreditoRuralParecerTecnico.class, parecerTecnicoList);
+		if (!CollectionUtils.isEmpty(parecerTecnicoList)) {
+			parecerTecnicoList.forEach((parecer) -> parecer.setUsuario(parecer.getUsuario() == null ? null : getUsuario(parecer.getUsuario().getUsername())));
+			salvarTabelaDependente(result, "parecerTecnicoList", projetoCreditoRuralParecerTecnicoDao, ProjetoCreditoRuralParecerTecnico.class, parecerTecnicoList);
+		}
 
 		recuperarIdExcluirInexistentes(result, ProjetoCreditoRuralPublicoAlvoPropriedadeRural.class, projetoCreditoRuralPublicoAlvoPropriedadeRuralDao, publicoAlvoPropriedadeRuralList, "getPublicoAlvoPropriedadeRural");
 		salvarTabelaDependente(result, "publicoAlvoPropriedadeRuralList", projetoCreditoRuralPublicoAlvoPropriedadeRuralDao, ProjetoCreditoRuralPublicoAlvoPropriedadeRural.class, publicoAlvoPropriedadeRuralList);
@@ -182,11 +190,45 @@ public class SalvarCmd extends _SalvarCmd {
 		}
 		salvarTabelaDependente(result, "receitaList", projetoCreditoRuralReceitaDespesaDao, ProjetoCreditoRuralReceitaDespesa.class, receitaList);
 
+		// salvar arquivos vinculados
+		List<ProjetoCreditoRuralArquivo> projetoCreditoRuralArquivoList = projetoCreditoRuralArquivoDao.findByProjetoCreditoRural(result);
+		if (!CollectionUtils.isEmpty(projetoCreditoRuralArquivoList)) {
+			if (CollectionUtils.isEmpty(arquivoList)) {
+				projetoCreditoRuralArquivoDao.deleteByProjetoCreditoRural(result);
+			} else {
+				for (ProjetoCreditoRuralArquivo pcraSalvo : projetoCreditoRuralArquivoList) {
+					boolean encontrou = false;
+					for (ProjetoCreditoRuralArquivo pcra : arquivoList) {
+						if (pcraSalvo.getId().equals(pcra.getId())) {
+							encontrou = true;
+							break;
+						}
+					}
+					if (!encontrou) {
+						projetoCreditoRuralArquivoDao.delete(pcraSalvo);
+					}
+				}
+			}
+		}
+		if (!CollectionUtils.isEmpty(arquivoList)) {
+			for (ProjetoCreditoRuralArquivo pcra : arquivoList) {
+				pcra.setProjetoCreditoRural(result);
+				pcra.setArquivo(arquivoDao.findByMd5(pcra.getArquivo().getMd5()));
+				projetoCreditoRuralArquivoDao.save(pcra);
+			}
+		}
+
 		dao.flush();
 
 		// não modificar o conteúdo da resposta
 		return false;
 	}
+
+	@Autowired
+	private ArquivoDao arquivoDao;
+
+	@Autowired
+	private ProjetoCreditoRuralArquivoDao projetoCreditoRuralArquivoDao;
 
 	@SuppressWarnings("unchecked")
 	private <T> void recuperarIdExcluirInexistentes(ProjetoCreditoRural projetoCreditoRural, Class<T> classe, JpaRepository<T, Integer> dao, List<T> lista, String nomeCampoCompara) throws BoException {

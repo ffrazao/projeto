@@ -118,8 +118,7 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 	public ProjetoCreditoRural(Integer id, String agencia, AgenteFinanceiro agenteFinanceiro, String garantiaReal, LinhaCredito linhaCredito, String numeroCedula, PublicoAlvo publicoAlvo, ProjetoCreditoRuralStatus status,
 			List<ProjetoCreditoRuralCronogramaPagamento> cronogramaPagamentoCusteioList, List<ProjetoCreditoRuralCronogramaPagamento> cronogramaPagamentoInvestimentoList, List<ProjetoCreditoRuralFinanciamento> custeioList, List<ProjetoCreditoRuralReceitaDespesa> despesaList,
 			List<ProjetoCreditoRuralFluxoCaixa> fluxoCaixaList, List<ProjetoCreditoRuralGarantia> garantiaList, List<ProjetoCreditoRuralFinanciamento> investimentoList, List<ProjetoCreditoRuralParecerTecnico> parecerTecnicoList,
-			List<ProjetoCreditoRuralPublicoAlvoPropriedadeRural> publicoAlvoPropriedadeRuralList, List<ProjetoCreditoRuralReceitaDespesa> receitaList, List<ProjetoCreditoRuralHistoricoReceita> trienioList
-			, List<ProjetoCreditoRuralArquivo> arquivoList) {
+			List<ProjetoCreditoRuralPublicoAlvoPropriedadeRural> publicoAlvoPropriedadeRuralList, List<ProjetoCreditoRuralReceitaDespesa> receitaList, List<ProjetoCreditoRuralHistoricoReceita> trienioList, List<ProjetoCreditoRuralArquivo> arquivoList) {
 		super();
 		this.agencia = agencia;
 		this.agenteFinanceiro = agenteFinanceiro;
@@ -149,6 +148,10 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 
 	public AgenteFinanceiro getAgenteFinanceiro() {
 		return agenteFinanceiro;
+	}
+
+	public List<ProjetoCreditoRuralArquivo> getArquivoList() {
+		return arquivoList;
 	}
 
 	public Atividade getAtividade() {
@@ -237,6 +240,10 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 
 	public void setAgenteFinanceiro(AgenteFinanceiro agenteFinanceiro) {
 		this.agenteFinanceiro = agenteFinanceiro;
+	}
+
+	public void setArquivoList(List<ProjetoCreditoRuralArquivo> arquivoList) {
+		this.arquivoList = arquivoList;
 	}
 
 	public void setAtividade(Atividade atividade) {
