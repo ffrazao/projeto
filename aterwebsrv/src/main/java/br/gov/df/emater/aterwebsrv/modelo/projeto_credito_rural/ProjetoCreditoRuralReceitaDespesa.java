@@ -26,6 +26,10 @@ public class ProjetoCreditoRuralReceitaDespesa extends EntidadeBase implements _
 
 	private Integer ano;
 
+	@Enumerated(EnumType.STRING)
+	@Column(name="arquivo_codigo")
+	private ProjetoCreditoRuralArquivo.Codigo codigo;
+	
 	@ManyToOne
 	@JoinColumn(name = "custo_producao_id")
 	private CustoProducao custoProducao;
@@ -78,6 +82,10 @@ public class ProjetoCreditoRuralReceitaDespesa extends EntidadeBase implements _
 		return ano;
 	}
 
+	public ProjetoCreditoRuralArquivo.Codigo getCodigo() {
+		return codigo;
+	}
+
 	public CustoProducao getCustoProducao() {
 		return custoProducao;
 	}
@@ -122,6 +130,10 @@ public class ProjetoCreditoRuralReceitaDespesa extends EntidadeBase implements _
 
 	public void setAno(Integer ano) {
 		this.ano = ano;
+	}
+
+	public void setCodigo(ProjetoCreditoRuralArquivo.Codigo codigo) {
+		this.codigo = codigo;
 	}
 
 	public void setCustoProducao(CustoProducao custoProducao) {
