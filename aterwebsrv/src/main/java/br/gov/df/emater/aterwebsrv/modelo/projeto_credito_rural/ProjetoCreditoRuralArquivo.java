@@ -22,7 +22,24 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Arquivo;
 public class ProjetoCreditoRuralArquivo extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<ProjetoCreditoRuralArquivo> {
 
 	public enum Codigo {
-		EVOLUCAO_REBANHO_BOVINO, EVOLUCAO_REBANHO_OVINO, EVOLUCAO_REBANHO_SUINO;
+		EVOLUCAO_REBANHO_BOVINO(44, 63), EVOLUCAO_REBANHO_OVINO(34, 55), EVOLUCAO_REBANHO_SUINO(34, 55);
+
+		private int linhaDespesa;
+
+		private int linhaReceita;
+
+		private Codigo(int linhaDespesa, int linhaReceita) {
+			this.linhaDespesa = linhaDespesa; // estes valores indicam a linha no arquivo excel onde serao encontrados os respectivos valores
+			this.linhaReceita = linhaReceita;
+		}
+
+		public int getLinhaDespesa() {
+			return this.linhaDespesa;
+		}
+
+		public int getLinhaReceita() {
+			return this.linhaReceita;
+		}
 	}
 
 	private static final long serialVersionUID = 1L;

@@ -69,11 +69,15 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaTelefone;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoFuncao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoTipo;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Telefone;
+import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.CustoProducao;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.FluxoCaixaAno;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRural;
+import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralArquivo;
+import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralFinanciamento;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralFluxoCaixa;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralGarantia;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralPublicoAlvoPropriedadeRural;
+import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralReceitaDespesa;
 import br.gov.df.emater.aterwebsrv.relatorio._Relatorio;
 import net.sf.jasperreports.engine.JRPrintPage;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -330,6 +334,42 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 		}
 	}
 
+	// TODO criar
+	private List<CustoProducao> captarCustoProducao(ProjetoCreditoRural projetoCreditoRural) {
+		List<CustoProducao> result = null;
+
+		Set<CustoProducao> items = new HashSet<>();
+
+		// captar custo de produção do custeio do financiamento
+		for (ProjetoCreditoRuralFinanciamento item : projetoCreditoRural.getCusteioList()) {
+			if (item.getCustoProducao() != null && item.getCustoProducao().getId() != null) {
+				items.add(item.getCustoProducao());
+			}
+		}
+
+		// captar custo de produção do receita
+		for (ProjetoCreditoRuralReceitaDespesa item : projetoCreditoRural.getReceitaList()) {
+			if (item.getCustoProducao() != null && item.getCustoProducao().getId() != null) {
+				items.add(item.getCustoProducao());
+			}
+		}
+
+		// captar custo de produção do despesa
+		for (ProjetoCreditoRuralReceitaDespesa item : projetoCreditoRural.getDespesaList()) {
+			if (item.getCustoProducao() != null && item.getCustoProducao().getId() != null) {
+				items.add(item.getCustoProducao());
+			}
+		}
+
+		// se foi inserido
+		if (items.size() > 0) {
+			result = new ArrayList<>(items);
+			result.sort((cp1, cp2) -> cp1.getNomeFormaProducao().compareTo(cp2.getNomeFormaProducao()));
+		}
+
+		return result;
+	}
+
 	private List<ProjetoTecnicoFluxoCaixaDto> captarFluxoCaixa(List<ProjetoCreditoRuralFluxoCaixa> fluxoCaixaList) throws Exception {
 		List<ProjetoTecnicoFluxoCaixaDto> result = new ArrayList<>();
 		ProjetoTecnicoFluxoCaixaDto ptfc = new ProjetoTecnicoFluxoCaixaDto();
@@ -423,7 +463,6 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 	}
 
 	private List<ProjetoTecnicoGarantiaRelDto> captarGarantia(List<ProjetoCreditoRural> projetoCreditoRuralList) throws Exception {
-		// TODO aqui
 		List<ProjetoTecnicoGarantiaAvalistaRelDto> garantiaAvalistaList = new ArrayList<>();
 		for (ProjetoCreditoRuralGarantia pcrg : projetoCreditoRuralList.get(0).getGarantiaList()) {
 			ProjetoTecnicoGarantiaAvalistaRelDto garantiaAvalista = new ProjetoTecnicoGarantiaAvalistaRelDto();
@@ -486,14 +525,14 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 		}
 		// ordenar pela ordem de participação
 		Collections.sort(garantiaAvalistaList, ((a, b) -> Integer.compare(a.getParticipacao().getOrdem(), b.getParticipacao().getOrdem())));
-		
+
 		List<ProjetoTecnicoGarantiaRelDto> result = new ArrayList<>();
 		ProjetoTecnicoGarantiaRelDto garantia = new ProjetoTecnicoGarantiaRelDto();
 		garantia.setGarantia(projetoCreditoRuralList.get(0).getGarantiaReal());
 		garantia.setGarantiaAvalistaList(garantiaAvalistaList);
-		
+
 		result.add(garantia);
-		
+
 		return result;
 	}
 
@@ -564,10 +603,13 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 			montaParte("CADASTRO DO PROPONENTE", "Proponente", parametros, captarCadastroProponente(contexto, pList), parteList);
 			montaParte("CADASTRO DA PROPRIEDADE RURAL", "PropriedadeRural", parametros, captarCadastroPropriedadeRural(contexto, pList), parteList);
 			montaParte("TRIÊNIO, INVERSÕES, CUSTOS E RECEITAS", "Solicitacao", parametros, pList, parteList);
+
+			// TODO criar
+			montaParte("CUSTO DE PRODUÇÃO", "CustoProducao", parametros, captarCustoProducao(pList.get(0)), parteList);
+
 			montaParte("CRONOGRAMA DE REEMBOLSO", "Cronograma", parametros, pList, parteList);
 			montaParte("FLUXO DE CAIXA", "FluxoCaixa", parametros, captarFluxoCaixa(pList.get(0).getFluxoCaixaList()), parteList);
 			montaParte("OBJETIVOS E PARECER TÉCNICO", "ParecerTecnico", parametros, projeto.getParecerTecnicoList(), parteList);
-			// TODO aqui
 			montaParte("GARANTIAS - AVALISTAS", "Garantia", parametros, captarGarantia(pList), parteList);
 
 			// juntar as partes do relatório
@@ -603,6 +645,7 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 
 			// gerar o resultado
 			resultList.add(UtilitarioPdf.juntarPdf(arquivoList));
+			
 		}
 
 		// zipar o resultado
@@ -629,6 +672,9 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 	}
 
 	private void montaParte(String relatorioNome, String nomeArquivo, Map<String, Object> parametros, List<?> pList, List<JasperPrint> parteList) throws BoException {
+		if (pList == null || pList.size() == 0) {
+			return;
+		}
 		parametros.put("RelatorioNome", relatorioNome);
 		parametros.put("Parte", parteList.size() + 1);
 		JasperPrint impressao = relatorio.montarRelatorio(String.format("projeto_credito_rural/%s", nomeArquivo), parametros, pList);
@@ -829,11 +875,16 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 		reg.setMaoDeObraContratada(new BigDecimal(maoDeObra.get("contratada") == null ? "0" : maoDeObra.get("contratada").toString()));
 		reg.setMaoDeObraTemporaria(new BigDecimal(maoDeObra.get("temporaria") == null ? "0" : maoDeObra.get("temporaria").toString()));
 
+		// FIXME notebook de casa sem estes dados, remover em producaos
 		Map<String, Object> fonteDeAgua = (Map<String, Object>) avaliacaoDaPropriedade.get("fonteDAgua");
-		reg.setFonteDAguaPrincipal((String) fonteDeAgua.get("fonteDAguaPrincipal"));
-		reg.setVazaoLSPrincipal(new BigDecimal(fonteDeAgua.get("vazaoLSPrincpal") == null ? "0" : fonteDeAgua.get("vazaoLSPrincpal").toString()));
-		reg.setFonteDAguaSecundaria((String) fonteDeAgua.get("fonteDAguaSecundaria"));
-		reg.setVazaoLSSecundaria(new BigDecimal(fonteDeAgua.get("vazaoLSSecundaria") == null ? "0" : fonteDeAgua.get("vazaoLSSecundaria").toString()));
+		try {
+			reg.setFonteDAguaPrincipal((String) fonteDeAgua.get("fonteDAguaPrincipal"));
+			reg.setVazaoLSPrincipal(new BigDecimal(fonteDeAgua.get("vazaoLSPrincpal") == null ? "0" : fonteDeAgua.get("vazaoLSPrincpal").toString()));
+			reg.setFonteDAguaSecundaria((String) fonteDeAgua.get("fonteDAguaSecundaria"));
+			reg.setVazaoLSSecundaria(new BigDecimal(fonteDeAgua.get("vazaoLSSecundaria") == null ? "0" : fonteDeAgua.get("vazaoLSSecundaria").toString()));			
+		} catch (NullPointerException e) {
+			throw e;
+		}
 
 		List<Map<String, Object>> benfeitoriaList = (List<Map<String, Object>>) avaliacaoDaPropriedade.get("benfeitoriaList");
 		List<RelacaoItemRelDto> benefList = new ArrayList<>();
@@ -849,14 +900,30 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 	private byte[] ziparResultado(List<ProjetoCreditoRural> lista, List<byte[]> resultList) throws IOException {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		ZipOutputStream zos = new ZipOutputStream(baos);
+		ZipEntry entry;
 		int i = 0;
+		byte[] arquivo;
+		
 		for (ProjetoCreditoRural projeto : lista) {
-			ZipEntry entry = new ZipEntry(projeto.getAtividade().getCodigo().concat(".pdf"));
-			byte[] arquivo = resultList.get(i++);
+			// inserir o arquivo do projeto de crédito
+			entry = new ZipEntry(projeto.getAtividade().getCodigo().concat(".pdf"));
+			arquivo = resultList.get(i++);
 			entry.setSize(arquivo.length);
 			zos.putNextEntry(entry);
 			zos.write(arquivo);
 			zos.closeEntry();
+			
+			// inserir os arquivos anexos do projeto de credito
+			if (!CollectionUtils.isEmpty(projeto.getArquivoList())) {
+				for (ProjetoCreditoRuralArquivo anexo: projeto.getArquivoList()) {
+					entry = new ZipEntry(projeto.getAtividade().getCodigo().concat(anexo.getArquivo().getNomeOriginal()).concat(anexo.getArquivo().getExtensao()));
+					arquivo = anexo.getArquivo().getConteudo();
+					entry.setSize(arquivo.length);
+					zos.putNextEntry(entry);
+					zos.write(arquivo);
+					zos.closeEntry();
+				}
+			}
 		}
 		zos.close();
 		return baos.toByteArray();

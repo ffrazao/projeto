@@ -49,9 +49,9 @@ public class PlanilhaUploadCmd extends _Comando {
 		}
 		String produto = StringUtils.capitalize(result.getCodigo().toString().substring("EVOLUCAO_REBANHO_".length()).toLowerCase());
 		
-		captarValores(result, "Despesa", produto, arqExcel, 44);
+		captarValores(result, "Despesa", produto, arqExcel, result.getCodigo().getLinhaDespesa());
 
-		captarValores(result, "Receita", produto, arqExcel, 63);
+		captarValores(result, "Receita", produto, arqExcel, result.getCodigo().getLinhaDespesa());
 
 		// ajustar o arquivo
 		List<ProjetoCreditoRuralArquivo> arquivoList = result.getProjetoCreditoRural().getArquivoList();
@@ -101,7 +101,7 @@ public class PlanilhaUploadCmd extends _Comando {
 			// remover os itens referentes ao codigo que esta sendo inserido
 			lista = lista.stream().filter(p -> !dto.getCodigo().equals(p.getCodigo())).collect(Collectors.toList());
 		}
-
+		// inserir os itens captados
 		for (int i = 0; i < 10; i++) {
 			ProjetoCreditoRuralReceitaDespesa r = new ProjetoCreditoRuralReceitaDespesa();
 			r.setId(--id);
