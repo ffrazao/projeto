@@ -65,6 +65,12 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.incluir = function() {
         init();
         var item = {email: {endereco: null}};
+        if(!$scope.cadastro.registro.emailList || !$scope.cadastro.registro.emailList.length){
+            item.principal = 'S';
+        } else {
+            item.principal = 'N';
+        }
+
         item = $scope.criarElemento($scope.cadastro.registro, 'emailList', item);
         editarItem(null, item);
     };

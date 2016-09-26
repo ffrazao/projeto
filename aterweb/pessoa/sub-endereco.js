@@ -116,6 +116,13 @@ angular.module(pNmModulo).controller(pNmController,
         init();
         EnderecoSrv.novo().success(function (resposta) {
             var item = {endereco: resposta.resultado};
+
+            if(!$scope.cadastro.registro.enderecoList || !$scope.cadastro.registro.enderecoList.length){
+            item.principal = 'S';
+            } else {
+            item.principal = 'N';
+            }
+
             item = $scope.criarElemento($scope.cadastro.registro, 'enderecoList', item);
             editarItem(null, item);
         });

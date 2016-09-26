@@ -81,6 +81,13 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.incluir = function() {
         init();
         var item = {telefone: {numero: '61'}};
+
+        if(!$scope.cadastro.registro.telefoneList || !$scope.cadastro.registro.telefoneList.length){
+            item.principal = 'S';
+        } else {
+            item.principal = 'N';
+        }
+
         item = $scope.criarElemento($scope.cadastro.registro, 'telefoneList', item);
         editarItem(null, item);
     };
