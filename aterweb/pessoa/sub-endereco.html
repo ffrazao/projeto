@@ -128,7 +128,7 @@
                         <td>{{reg.endereco.estado.sigla}}</td>
                     </tr>
                     <tr ng-repeat-end>
-                        <td>
+                        <td colspan="2">
                             <select class="form-control input-sm" id="finalidade" name="finalidade{{$index}}" ng-model="reg.finalidade" ng-options="item.codigo as item.descricao for item in scp.cadastro.apoio.meioContatoFinalidadeList" ng-required="true">
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && enderecoListFrm.finalidade{{$index}}.$error.required">
