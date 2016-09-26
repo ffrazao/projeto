@@ -40,9 +40,9 @@ public class ProjetoTecnicoProponenteRelDto implements Dto {
 
 	private BigDecimal patrimonioBenfeitorias;
 
-	private BigDecimal patrimonioDividas;
+	private BigDecimal patrimonioDivida;
 
-	private Coleta patrimonioEDividasColeta;
+	private Coleta patrimonioDividaColeta;
 
 	private List<RelacaoItemRelDto> patrimonioMaquinaEquipamentoList;
 
@@ -134,12 +134,12 @@ public class ProjetoTecnicoProponenteRelDto implements Dto {
 		return patrimonioBenfeitorias;
 	}
 
-	public BigDecimal getPatrimonioDividas() {
-		return patrimonioDividas;
+	public BigDecimal getPatrimonioDivida() {
+		return patrimonioDivida;
 	}
 
-	public Coleta getPatrimonioEDividasColeta() {
-		return patrimonioEDividasColeta;
+	public Coleta getPatrimonioDividaColeta() {
+		return patrimonioDividaColeta;
 	}
 
 	public List<RelacaoItemRelDto> getPatrimonioMaquinaEquipamentoList() {
@@ -274,12 +274,12 @@ public class ProjetoTecnicoProponenteRelDto implements Dto {
 		this.patrimonioBenfeitorias = patrimonioBenfeitorias;
 	}
 
-	public void setPatrimonioDividas(BigDecimal patrimonioDividas) {
-		this.patrimonioDividas = patrimonioDividas;
+	public void setPatrimonioDivida(BigDecimal patrimonioDivida) {
+		this.patrimonioDivida = patrimonioDivida;
 	}
 
-	public void setPatrimonioEDividasColeta(Coleta patrimonioEDividasColeta) {
-		this.patrimonioEDividasColeta = patrimonioEDividasColeta;
+	public void setPatrimonioDividaColeta(Coleta patrimonioDividaColeta) {
+		this.patrimonioDividaColeta = patrimonioDividaColeta;
 	}
 
 	public void setPatrimonioMaquinaEquipamentoList(List<RelacaoItemRelDto> patrimonioMaquinaEquipamentoList) {

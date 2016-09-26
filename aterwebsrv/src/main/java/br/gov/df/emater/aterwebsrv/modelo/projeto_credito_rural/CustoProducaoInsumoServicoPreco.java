@@ -88,7 +88,7 @@ public class CustoProducaoInsumoServicoPreco extends EntidadeBase implements _Ch
 
 	@Override
 	public CustoProducaoInsumoServicoPreco infoBasica() {
-		return new CustoProducaoInsumoServicoPreco(this.id, this.custoProducaoInsumoServico, this.inicioVigencia, this.preco);
+		return new CustoProducaoInsumoServicoPreco(this.id, this.custoProducaoInsumoServico == null ? null : new CustoProducaoInsumoServico(this.custoProducaoInsumoServico.getId()), this.inicioVigencia, this.preco);
 	}
 
 	public void setCustoProducaoInsumoServico(CustoProducaoInsumoServico custoProducaoInsumoServico) {

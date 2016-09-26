@@ -1,7 +1,9 @@
 package br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural;
 
+import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaList;
+import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaReg;
+
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -159,14 +161,7 @@ public class CustoProducao extends EntidadeBase implements _ChavePrimaria<Intege
 	}
 
 	public CustoProducao infoBasica() {
-		if (this.itens != null) {
-			List<CustoProducaoItem> itensTemp = new ArrayList<>();
-			for (CustoProducaoItem item : this.itens) {
-				itensTemp.add(item.infoBasica());
-			}
-			this.itens = itensTemp;
-		}
-		return new CustoProducao(this.id, this.nomeFormaProducao, this.bem == null ? null : this.bem.infoBasica(), this.area, this.produtividade, this.unidadeMedida == null ? null : this.unidadeMedida.infoBasica(), this.itens);
+		return new CustoProducao(this.id, this.nomeFormaProducao, infoBasicaReg(this.bem), this.area, this.produtividade, infoBasicaReg(this.unidadeMedida), infoBasicaList(this.itens));
 	}
 
 	public void setArea(BigDecimal area) {

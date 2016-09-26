@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural;
 
+import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaReg;
+
 import java.math.BigDecimal;
 
 import javax.persistence.Entity;
@@ -77,7 +79,7 @@ public class CustoProducaoItem extends EntidadeBase implements _ChavePrimaria<In
 
 	@Override
 	public CustoProducaoItem infoBasica() {
-		return new CustoProducaoItem(this.id, this.custoProducao == null ? null : new CustoProducao(this.custoProducao.getId()), this.custoProducaoInsumoServico == null ? null : this.custoProducaoInsumoServico.infoBasica(), this.quantidade);
+		return new CustoProducaoItem(this.id, this.custoProducao == null ? null : new CustoProducao(this.custoProducao.getId()), infoBasicaReg(this.custoProducaoInsumoServico), this.quantidade);
 	}
 
 	public void setCustoProducao(CustoProducao custoProducao) {

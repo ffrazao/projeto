@@ -245,7 +245,7 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 			proponente.setDiagnosticoList((List<Object[]>) facadeBo.formularioColetaFiltroExecutar(contexto.getUsuario(), filtro).getResposta());
 
 			// captar as últimas coletas dos diagnósticos
-			captarUltimaColetaFormularios((List<Object[]>) proponente.getDiagnosticoList(), reg, "beneficioSocialForcaTrabalho", "patrimonioEDividas");
+			captarUltimaColetaFormularios((List<Object[]>) proponente.getDiagnosticoList(), reg, "beneficioSocialForcaTrabalho", "patrimonioDivida");
 
 			// DADOS SOCIO-ECONÔMICOS
 			processarDiagnosticoProponente(reg);
@@ -567,7 +567,7 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 		// verificar se alguma coleta não foi realizada
 		for (String propriedade : propriedadeList) {
 			if ((Coleta) MethodUtils.invokeMethod(reg, "get".concat(StringUtils.capitalize(propriedade)).concat("Coleta")) == null) {
-				throw new BoException("Há diagnósticos não realizados!");
+				throw new BoException("Há diagnósticos não realizados! [Diagnostico %s]", propriedade);
 			}
 		}
 	}
@@ -665,6 +665,9 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 	}
 
 	private Map<String, Object> montaColeta(Coleta coleta) throws Exception {
+		if (coleta == null || coleta.getValorString() == null) {
+			return null;
+		}
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> result = mapper.readValue(coleta.getValorString(), new TypeReference<Map<String, Object>>() {
 		});
@@ -684,17 +687,19 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 	@SuppressWarnings("unchecked")
 	private void processarDiagnosticoProponente(ProjetoTecnicoProponenteRelDto reg) throws Exception {
 		Map<String, Object> beneficioSocialForcaTrabalho = montaColeta(reg.getBeneficioSocialForcaTrabalhoColeta());
-		Map<String, Object> patrimonioEDividas = montaColeta(reg.getPatrimonioEDividasColeta());
+		Map<String, Object> patrimonioDivida = montaColeta(reg.getPatrimonioDividaColeta());
 
 		// FORCA DE TRABALHO CONTRATADA
-		reg.setForcaTrabalhoEventual(new BigDecimal(beneficioSocialForcaTrabalho.get("eventualDiaHomemAno").toString()));
-		reg.setForcaTrabalhoTrabalhadorPermanente(new BigDecimal(beneficioSocialForcaTrabalho.get("trabalhadorPermanente").toString()));
-		reg.setForcaTrabalhoSalarioMensal(new BigDecimal(beneficioSocialForcaTrabalho.get("salarioMensal").toString()));
+		if (beneficioSocialForcaTrabalho != null) {
+			reg.setForcaTrabalhoEventual(new BigDecimal(beneficioSocialForcaTrabalho.get("eventualDiaHomemAno").toString()));
+			reg.setForcaTrabalhoTrabalhadorPermanente(new BigDecimal(beneficioSocialForcaTrabalho.get("trabalhadorPermanente").toString()));
+			reg.setForcaTrabalhoSalarioMensal(new BigDecimal(beneficioSocialForcaTrabalho.get("salarioMensal").toString()));
+		}
 
 		// RENDA BRUTA ANUAL
-		reg.setRendaBrutaAnualPropriedadeValor(patrimonioEDividas.get("rendaBrutaAnualPropriedade") == null ? new BigDecimal(0) : new BigDecimal(patrimonioEDividas.get("rendaBrutaAnualPropriedade").toString()));
-		reg.setRendaBrutaAnualAssalariadoValor(patrimonioEDividas.get("rendaBrutaAnualAssalariado") == null ? new BigDecimal(0) : new BigDecimal(patrimonioEDividas.get("rendaBrutaAnualAssalariado").toString()));
-		reg.setRendaBrutaAnualOutrasRendasValor(patrimonioEDividas.get("rendaBrutaAnualOutrasRendas") == null ? new BigDecimal(0) : new BigDecimal(patrimonioEDividas.get("rendaBrutaAnualOutrasRendas").toString()));
+		reg.setRendaBrutaAnualPropriedadeValor(patrimonioDivida == null || patrimonioDivida.get("rendaBrutaAnualPropriedade") == null ? new BigDecimal(0) : new BigDecimal(patrimonioDivida.get("rendaBrutaAnualPropriedade").toString()));
+		reg.setRendaBrutaAnualAssalariadoValor(patrimonioDivida == null || patrimonioDivida.get("rendaBrutaAnualAssalariado") == null ? new BigDecimal(0) : new BigDecimal(patrimonioDivida.get("rendaBrutaAnualAssalariado").toString()));
+		reg.setRendaBrutaAnualOutrasRendasValor(patrimonioDivida == null || patrimonioDivida.get("rendaBrutaAnualOutrasRendas") == null ? new BigDecimal(0) : new BigDecimal(patrimonioDivida.get("rendaBrutaAnualOutrasRendas").toString()));
 		reg.setRendaBrutaAnualTotalValor(reg.getRendaBrutaAnualPropriedadeValor().add(reg.getRendaBrutaAnualAssalariadoValor().add(reg.getRendaBrutaAnualOutrasRendasValor())));
 		reg.setRendaBrutaAnualTotalPercentual(new BigDecimal("100"));
 		if (reg.getRendaBrutaAnualTotalValor().equals(new BigDecimal("0"))) {
@@ -709,7 +714,7 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 
 		// MAQUINAS E EQUIPAMENTOS
 		reg.setPatrimonioMaquinasEquipamento(new BigDecimal("0"));
-		List<Map<String, Object>> maquinaEquipamentoList = (List<Map<String, Object>>) patrimonioEDividas.get("maquinaEquipamentoList");
+		List<Map<String, Object>> maquinaEquipamentoList = patrimonioDivida == null ? new ArrayList<>() : (List<Map<String, Object>>) patrimonioDivida.get("maquinaEquipamentoList");
 		if (!CollectionUtils.isEmpty(maquinaEquipamentoList)) {
 			List<RelacaoItemRelDto> patrimonioMaquinaEquipamentoList = new ArrayList<>();
 			for (Map<String, Object> registro : maquinaEquipamentoList) {
@@ -724,7 +729,7 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 
 		// SEMOVENTES
 		reg.setPatrimonioSemoventes(new BigDecimal("0"));
-		List<Map<String, Object>> semoventeList = (List<Map<String, Object>>) patrimonioEDividas.get("semoventeList");
+		List<Map<String, Object>> semoventeList = (List<Map<String, Object>>) patrimonioDivida.get("semoventeList");
 		if (!CollectionUtils.isEmpty(semoventeList)) {
 			List<RelacaoItemRelDto> patrimonioSemoventeList = new ArrayList<>();
 			for (Map<String, Object> registro : semoventeList) {
@@ -738,7 +743,7 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 
 		// OUTROS PATRIMONIOS
 		reg.setPatrimonioOutros(new BigDecimal("0"));
-		List<Map<String, Object>> outroPatrimonioList = (List<Map<String, Object>>) patrimonioEDividas.get("outroPatrimonioList");
+		List<Map<String, Object>> outroPatrimonioList = (List<Map<String, Object>>) patrimonioDivida.get("outroPatrimonioList");
 		if (!CollectionUtils.isEmpty(outroPatrimonioList)) {
 			List<RelacaoItemRelDto> patrimonioOutroBemList = new ArrayList<>();
 			for (Map<String, Object> registro : outroPatrimonioList) {
@@ -751,13 +756,13 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 		}
 
 		// DIVIDAS EXISTENTES
-		reg.setPatrimonioDividas(new BigDecimal("0"));
-		List<Map<String, Object>> dividasList = (List<Map<String, Object>>) patrimonioEDividas.get("dividaExistenteList");
+		reg.setPatrimonioDivida(new BigDecimal("0"));
+		List<Map<String, Object>> dividasList = (List<Map<String, Object>>) patrimonioDivida.get("dividaExistenteList");
 		if (!CollectionUtils.isEmpty(dividasList)) {
 			List<DividaExistenteRelDto> dividaExistenteList = new ArrayList<>();
 			for (Map<String, Object> registro : dividasList) {
 				BigDecimal valorContratado = new BigDecimal(registro.get("valorContratado") == null ? "0" : registro.get("valorContratado").toString());
-				reg.setPatrimonioDividas(reg.getPatrimonioDividas().add(valorContratado));
+				reg.setPatrimonioDivida(reg.getPatrimonioDivida().add(valorContratado));
 				dividaExistenteList.add(new DividaExistenteRelDto((String) registro.get("finalidade"), (String) registro.get("especificacao"), (Calendar) UtilitarioData.getInstance().stringParaData(registro.get("contratacao")),
 						(Calendar) UtilitarioData.getInstance().stringParaData(registro.get("vencimento")), new BigDecimal(registro.get("juroAnual") == null ? "0" : registro.get("juroAnual").toString()),
 						new BigDecimal(registro.get("valorContratado") == null ? "0" : registro.get("valorContratado").toString()), new BigDecimal(registro.get("amortizacaoAnual") == null ? "0" : registro.get("amortizacaoAnual").toString()),
@@ -877,14 +882,10 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 
 		// FIXME notebook de casa sem estes dados, remover em producaos
 		Map<String, Object> fonteDeAgua = (Map<String, Object>) avaliacaoDaPropriedade.get("fonteDAgua");
-		try {
-			reg.setFonteDAguaPrincipal((String) fonteDeAgua.get("fonteDAguaPrincipal"));
-			reg.setVazaoLSPrincipal(new BigDecimal(fonteDeAgua.get("vazaoLSPrincpal") == null ? "0" : fonteDeAgua.get("vazaoLSPrincpal").toString()));
-			reg.setFonteDAguaSecundaria((String) fonteDeAgua.get("fonteDAguaSecundaria"));
-			reg.setVazaoLSSecundaria(new BigDecimal(fonteDeAgua.get("vazaoLSSecundaria") == null ? "0" : fonteDeAgua.get("vazaoLSSecundaria").toString()));			
-		} catch (NullPointerException e) {
-			throw e;
-		}
+		reg.setFonteDAguaPrincipal(fonteDeAgua == null ? "": (String) fonteDeAgua.get("fonteDAguaPrincipal"));
+		reg.setVazaoLSPrincipal(new BigDecimal(fonteDeAgua == null || fonteDeAgua.get("vazaoLSPrincpal") == null ? "0" : fonteDeAgua.get("vazaoLSPrincpal").toString()));
+		reg.setFonteDAguaSecundaria(fonteDeAgua == null ? "": (String) fonteDeAgua.get("fonteDAguaSecundaria"));
+		reg.setVazaoLSSecundaria(new BigDecimal(fonteDeAgua == null || fonteDeAgua.get("vazaoLSSecundaria") == null ? "0" : fonteDeAgua.get("vazaoLSSecundaria").toString()));			
 
 		List<Map<String, Object>> benfeitoriaList = (List<Map<String, Object>>) avaliacaoDaPropriedade.get("benfeitoriaList");
 		List<RelacaoItemRelDto> benefList = new ArrayList<>();

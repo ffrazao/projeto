@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.1.final using JasperReports Library version 6.2.1  -->
-<!-- 2016-09-25T19:18:10 -->
+<!-- 2016-09-26T14:08:29 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ProponentePropriedade" pageWidth="555" pageHeight="842" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="4f3e2a9b-c98c-497f-9ccc-4d9c8fd3b19a">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -32,7 +32,7 @@
 		<fieldDescription><![CDATA[cadastroAcao]]></fieldDescription>
 	</field>
 	<variable name="total" class="java.lang.Double" incrementType="Column" calculation="Sum">
-		<variableExpression><![CDATA[($F{quantidade} * $F{custoProducaoInsumoServico}.getPrecoList().get(0).getPreco()) + $V{total}]]></variableExpression>
+		<variableExpression><![CDATA[$F{quantidade}.multiply($F{custoProducaoInsumoServico}.getPrecoList().get(0).getPreco()).doubleValue() + $V{total}]]></variableExpression>
 		<initialValueExpression><![CDATA[0d]]></initialValueExpression>
 	</variable>
 	<filterExpression><![CDATA[$F{custoProducaoInsumoServico}.getTipo().name().equals($P{tipo})]]></filterExpression>
@@ -138,7 +138,7 @@
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$F{quantidade} * $F{custoProducaoInsumoServico}.getPrecoList().get(0).getPreco()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{quantidade}.multiply($F{custoProducaoInsumoServico}.getPrecoList().get(0).getPreco())]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="230" height="15" uuid="7d5b64d8-7ea4-415a-87d6-6b9042c8473f">

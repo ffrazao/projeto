@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.1.final using JasperReports Library version 6.2.1  -->
-<!-- 2016-09-25T19:43:59 -->
+<!-- 2016-09-26T14:53:12 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Capa" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4be54963-8492-4271-af5b-1a708b6a64c7">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
@@ -64,6 +64,12 @@
 	<field name="cadastroAcao" class="br.gov.df.emater.aterwebsrv.modelo.dominio.CadastroAcao">
 		<fieldDescription><![CDATA[cadastroAcao]]></fieldDescription>
 	</field>
+	<variable name="totalInsumo" class="java.lang.Double" resetType="None">
+		<initialValueExpression><![CDATA[0d]]></initialValueExpression>
+	</variable>
+	<variable name="totalServico" class="java.lang.Double" resetType="None">
+		<initialValueExpression><![CDATA[0d]]></initialValueExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -168,6 +174,7 @@
 					<subreportParameterExpression><![CDATA["I"]]></subreportParameterExpression>
 				</subreportParameter>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{itens})]]></dataSourceExpression>
+				<returnValue subreportVariable="total" toVariable="totalInsumo"/>
 				<subreportExpression><![CDATA["src/main/resources/jasper/projeto_credito_rural/CustoProducaoItem.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
@@ -187,58 +194,57 @@
 					<subreportParameterExpression><![CDATA["S"]]></subreportParameterExpression>
 				</subreportParameter>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{itens})]]></dataSourceExpression>
+				<returnValue subreportVariable="total" toVariable="totalServico"/>
 				<subreportExpression><![CDATA["src/main/resources/jasper/projeto_credito_rural/CustoProducaoItem.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
-	</detail>
-	<columnFooter>
-		<band height="50">
+		<band height="64">
 			<staticText>
-				<reportElement x="344" y="0" width="100" height="15" uuid="a19ace77-9e65-4e62-ba57-bb372ee3e68d">
+				<reportElement x="240" y="2" width="204" height="15" uuid="bd69f13c-530d-499c-aff9-5c17951de2aa">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Right">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Totais]]></text>
+				<text><![CDATA[Custo total por Hectare]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="450" y="0" width="100" height="15" uuid="8a7436c9-a5ec-447b-9853-c1fb567df79e"/>
+			<textField pattern="#,##0.00">
+				<reportElement x="450" y="2" width="100" height="15" uuid="580c0d75-c25d-4813-af07-a3ed2314c559"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{totalInsumo} + $V{totalServico}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="344" y="18" width="100" height="15" uuid="2c128ee5-4590-4417-9d80-bbb97d0f8001"/>
+				<reportElement x="240" y="20" width="204" height="15" uuid="ccc7649b-80af-4c8d-8c02-8dac012a329e"/>
 				<textElement textAlignment="Right">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Totais]]></text>
+				<text><![CDATA[Custo Total]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="450" y="18" width="100" height="15" uuid="e400f634-7105-44ad-911c-93d6fceed0a1"/>
+			<textField pattern="#,##0.00">
+				<reportElement x="450" y="20" width="100" height="15" uuid="bfc67ece-6398-4290-be87-06e78d53ca25"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($V{totalInsumo} + $V{totalServico}) * $F{area}.doubleValue()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="344" y="35" width="100" height="15" uuid="012cbb7a-3cfd-4d57-a021-2c74cdbc2982"/>
+				<reportElement x="240" y="37" width="204" height="15" uuid="805ef2c4-7fec-4dbb-b205-85865c7741d6"/>
 				<textElement textAlignment="Right">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Totais]]></text>
+				<text><![CDATA[Custo (Unid. Comercialização) R$]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="450" y="35" width="100" height="15" uuid="fc52748b-a667-4520-b521-f9166164c478"/>
+			<textField pattern="#,##0.00">
+				<reportElement x="450" y="37" width="100" height="15" uuid="7a190236-e2ee-4a43-b53d-364c7d14bf90"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($V{totalInsumo} + $V{totalServico}) / $F{produtividade}.doubleValue()]]></textFieldExpression>
 			</textField>
 		</band>
-	</columnFooter>
+	</detail>
 	<pageFooter>
 		<band height="30">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
