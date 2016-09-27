@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.1.final using JasperReports Library version 6.2.1  -->
-<!-- 2016-08-19T15:44:51 -->
+<!-- 2016-09-27T11:50:51 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Capa" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4be54963-8492-4271-af5b-1a708b6a64c7">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="RelatorioNome" class="java.lang.String" isForPrompting="false">
@@ -1127,7 +1127,7 @@
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{benfeitoriasList})]]></dataSourceExpression>
-				<subreportExpression><![CDATA["src/main/resources/jasper/projeto_credito_rural/PropriedadeRuralBenfeitoria.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA["PropriedadeRuralBenfeitoria.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>
