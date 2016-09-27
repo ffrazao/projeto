@@ -61,6 +61,7 @@ public class ArquivoDescerCmd extends _Comando implements ArquivoConstantes {
 
 				// recuperar o arquivo no system file
 				if (!arquivoDescer.exists()) {
+					logger.debug(String.format("O arquivo [%s] não encontrado no servidor de arquivos, inicio do download do banco de dados", file));
 					if (arquivoBanco.getConteudo() == null || arquivoBanco.getConteudo().length == 0) {
 						throw new FileNotFoundException(String.format("Nao foi possivel recuperar o arquivo [%s]", arquivoBanco.getMd5()));
 					}
@@ -69,6 +70,7 @@ public class ArquivoDescerCmd extends _Comando implements ArquivoConstantes {
 					try (OutputStream out = new FileOutputStream(arquivoDescer)) {
 						out.write(arquivoBanco.getConteudo());
 						out.flush();
+						logger.debug(String.format("O arquivo [%s] salvo em [%s]", file, arquivoDescer.getAbsolutePath()));
 					}
 				}
 
