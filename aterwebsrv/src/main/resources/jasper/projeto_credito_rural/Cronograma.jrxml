@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.1.final using JasperReports Library version 6.2.1  -->
-<!-- 2016-09-27T11:42:50 -->
+<!-- 2016-09-27T15:27:54 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Capa" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4be54963-8492-4271-af5b-1a708b6a64c7">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<import value="org.apache.commons.collections.CollectionUtils"/>
@@ -14,6 +14,9 @@
 	</parameter>
 	<parameter name="Parte" class="java.lang.Integer">
 		<parameterDescription><![CDATA[Número da Parte do Relatório]]></parameterDescription>
+	</parameter>
+	<parameter name="DiretorioJasper" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[DiretorioJasper]]></parameterDescription>
 	</parameter>
 	<queryString>
 		<![CDATA[]]>
@@ -130,8 +133,20 @@
 			</staticText>
 			<subreport>
 				<reportElement x="0" y="16" width="555" height="34" uuid="940c78e7-fdbe-47b7-a185-854db474c691"/>
+				<subreportParameter name="RelatorioNome">
+					<subreportParameterExpression><![CDATA[$P{RelatorioNome}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="Usuario">
+					<subreportParameterExpression><![CDATA[$P{Usuario}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="Parte">
+					<subreportParameterExpression><![CDATA[$P{Parte}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="DiretorioJasper">
+					<subreportParameterExpression><![CDATA[$P{DiretorioJasper}]]></subreportParameterExpression>
+				</subreportParameter>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{cronogramaPagamentoCusteioList})]]></dataSourceExpression>
-				<subreportExpression><![CDATA["CronogramaCusteio.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{DiretorioJasper} + "/projeto_credito_rural/CronogramaCusteio.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 		<band height="52">
@@ -146,8 +161,20 @@
 			</staticText>
 			<subreport>
 				<reportElement x="0" y="16" width="555" height="34" uuid="bde70d34-43f5-4b74-88c1-36f21e0d90e0"/>
+				<subreportParameter name="RelatorioNome">
+					<subreportParameterExpression><![CDATA[$P{RelatorioNome}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="Usuario">
+					<subreportParameterExpression><![CDATA[$P{Usuario}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="Parte">
+					<subreportParameterExpression><![CDATA[$P{Parte}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="DiretorioJasper">
+					<subreportParameterExpression><![CDATA[$P{DiretorioJasper}]]></subreportParameterExpression>
+				</subreportParameter>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{cronogramaPagamentoInvestimentoList})]]></dataSourceExpression>
-				<subreportExpression><![CDATA["CronogramaInvestimento.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{DiretorioJasper} + "/projeto_credito_rural/CronogramaInvestimento.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>

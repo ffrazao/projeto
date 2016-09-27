@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.1.final using JasperReports Library version 6.2.1  -->
-<!-- 2016-09-27T11:51:10 -->
+<!-- 2016-09-27T15:01:43 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Capa" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4be54963-8492-4271-af5b-1a708b6a64c7">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="RelatorioNome" class="java.lang.String" isForPrompting="false">
@@ -13,6 +13,9 @@
 	</parameter>
 	<parameter name="Parte" class="java.lang.Integer">
 		<parameterDescription><![CDATA[Número da Parte do Relatório]]></parameterDescription>
+	</parameter>
+	<parameter name="DiretorioJasper" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[DiretorioJasper]]></parameterDescription>
 	</parameter>
 	<queryString>
 		<![CDATA[]]>
@@ -1200,7 +1203,7 @@
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{propriedadeList})]]></dataSourceExpression>
-				<subreportExpression><![CDATA["ProponentePropriedade.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{DiretorioJasper} + "/projeto_credito_rural/ProponentePropriedade.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 		<band height="45" splitType="Stretch">
@@ -1221,7 +1224,7 @@
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{patrimonioMaquinaEquipamentoList})]]></dataSourceExpression>
-				<subreportExpression><![CDATA["ProponentePatrimonioMaquinaEquipamento.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{DiretorioJasper} + "/projeto_credito_rural/ProponentePatrimonioMaquinaEquipamento.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 		<band height="45" splitType="Stretch">
@@ -1241,7 +1244,7 @@
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 				</reportElement>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{patrimonioSemoventeList})]]></dataSourceExpression>
-				<subreportExpression><![CDATA["ProponentePatrimonioSemovente.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{DiretorioJasper} + "/projeto_credito_rural/ProponentePatrimonioSemovente.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 		<band height="45" splitType="Stretch">
@@ -1261,7 +1264,7 @@
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 				</reportElement>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{patrimonioOutroBemList})]]></dataSourceExpression>
-				<subreportExpression><![CDATA["ProponentePatrimonioOutroBem.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{DiretorioJasper} + "/projeto_credito_rural/ProponentePatrimonioOutroBem.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 		<band height="45" splitType="Stretch">
@@ -1271,7 +1274,7 @@
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 				</reportElement>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{dividaExistenteList})]]></dataSourceExpression>
-				<subreportExpression><![CDATA["ProponenteDividaExistente.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{DiretorioJasper} + "/projeto_credito_rural/ProponenteDividaExistente.jasper"]]></subreportExpression>
 			</subreport>
 			<staticText>
 				<reportElement mode="Opaque" x="0" y="0" width="555" height="15" backcolor="#C8C8C8" uuid="0400e9c2-4d96-4373-8953-b4ab5917f064">

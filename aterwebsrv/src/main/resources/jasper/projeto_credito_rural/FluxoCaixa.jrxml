@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.1.final using JasperReports Library version 6.2.1  -->
-<!-- 2016-09-27T11:51:06 -->
+<!-- 2016-09-27T15:28:53 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Capa" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="BlankPage" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4be54963-8492-4271-af5b-1a708b6a64c7">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -23,6 +23,9 @@
 	</parameter>
 	<parameter name="Parte" class="java.lang.Integer">
 		<parameterDescription><![CDATA[Número da Parte do Relatório]]></parameterDescription>
+	</parameter>
+	<parameter name="DiretorioJasper" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[DiretorioJasper]]></parameterDescription>
 	</parameter>
 	<queryString>
 		<![CDATA[]]>
@@ -193,7 +196,7 @@
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{receitaItemList})]]></dataSourceExpression>
-				<subreportExpression><![CDATA["FluxoCaixaItem.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{DiretorioJasper} + "/projeto_credito_rural/FluxoCaixaItem.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 		<band height="35">
@@ -202,7 +205,7 @@
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{despesaItemList})]]></dataSourceExpression>
-				<subreportExpression><![CDATA["FluxoCaixaItem.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{DiretorioJasper} + "/projeto_credito_rural/FluxoCaixaItem.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 		<band height="70">

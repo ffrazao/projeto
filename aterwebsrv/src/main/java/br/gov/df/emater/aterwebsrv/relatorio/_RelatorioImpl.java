@@ -121,6 +121,9 @@ public class _RelatorioImpl implements _Relatorio {
 
 			// carregar o modelo do relatório
 			relatorio = (JasperReport) JRLoader.loadObject(compilado.getInputStream());
+			
+			// inserir o local dos relatórios
+			parametros. put("DiretorioJasper", resourceLoader.getResource(CLASSPATH).getFile().getAbsolutePath());
 
 			// gerar uma impressão
 			JasperPrint result = JasperFillManager.fillReport(relatorio, parametros, new JRBeanCollectionDataSource(lista));
