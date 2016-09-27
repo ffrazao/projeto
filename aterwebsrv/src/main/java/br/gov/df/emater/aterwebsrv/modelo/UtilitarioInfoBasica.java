@@ -11,11 +11,13 @@ public class UtilitarioInfoBasica {
 
 	public static <T extends InfoBasica<? extends T>> List<T> infoBasicaList(final List<T> lista) {
 		List<T> result = null;
-		for (T registro : lista) {
-			if (result == null) {
-				result = new ArrayList<>();
+		if (lista != null) {
+			for (T registro : lista) {
+				if (result == null) {
+					result = new ArrayList<>();
+				}
+				result.add(registro == null ? null : (T) registro.infoBasica());
 			}
-			result.add(registro == null ? null : (T) registro.infoBasica());
 		}
 		return result;
 	}
