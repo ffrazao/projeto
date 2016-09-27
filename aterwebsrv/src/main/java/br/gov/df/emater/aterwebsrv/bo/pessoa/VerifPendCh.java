@@ -9,7 +9,7 @@ import br.gov.df.emater.aterwebsrv.bo._Cadeia;
 public class VerifPendCh extends _Cadeia {
 
 	@Autowired
-	public VerifPendCh(VerifPendCnpjCmd c1, VerifPendCpfCmd c2, VerifPendInscricaoEstadualCmd c3, VerifPendNisCmd c4, VerifPendRgCmd c5, VerifPendTelefoneCmd c6, VerifPendEmailCmd c7, VerifPendRelacionamentoCmd c8) {
+	public VerifPendCh(VerifPendCnpjCmd c1, VerifPendCpfCmd c2, VerifPendInscricaoEstadualCmd c3, VerifPendNisCmd c4, VerifPendRgCmd c5, VerifPendTelefoneCmd c6, VerifPendEmailCmd c7, VerifPendRelacionamentoCmd c8, VerifPendDatasCmd c9) {
 		super.addCommand(c1);
 		super.addCommand(c2);
 		super.addCommand(c3);
@@ -18,6 +18,7 @@ public class VerifPendCh extends _Cadeia {
 		super.addCommand(c6);
 		super.addCommand(c7);
 		super.addCommand(c8);
+		super.addCommand(c9);
 	}
 
 }

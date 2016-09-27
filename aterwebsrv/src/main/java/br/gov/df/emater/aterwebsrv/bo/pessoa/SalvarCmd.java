@@ -324,6 +324,9 @@ public class SalvarCmd extends _SalvarCmd {
 				pessoaEndereco.setPessoa(result);
 				pessoaEndereco.setEndereco(endereco);
 				pessoaEndereco.setOrdem(++ordem);
+				if (pessoaEndereco.getPrincipal() == null) {
+					pessoaEndereco.setPrincipal(Confirmacao.N);
+				}
 				pessoaEnderecoDao.save(pessoaEndereco);
 
 			}
@@ -352,6 +355,9 @@ public class SalvarCmd extends _SalvarCmd {
 				pessoaTelefone.setPessoa(result);
 				pessoaTelefone.setTelefone(telefone);
 				pessoaTelefone.setOrdem(++ordem);
+				if (pessoaTelefone.getPrincipal() == null) {
+					pessoaTelefone.setPrincipal(Confirmacao.N);
+				}
 				pessoaTelefoneDao.save(pessoaTelefone);
 			}
 		}
@@ -381,6 +387,9 @@ public class SalvarCmd extends _SalvarCmd {
 				pessoaEmail.setPessoa(result);
 				pessoaEmail.setEmail(email);
 				pessoaEmail.setOrdem(++ordem);
+				if (pessoaEmail.getPrincipal() == null) {
+					pessoaEmail.setPrincipal(Confirmacao.N);
+				}
 				pessoaEmailDao.save(pessoaEmail);
 			}
 		}

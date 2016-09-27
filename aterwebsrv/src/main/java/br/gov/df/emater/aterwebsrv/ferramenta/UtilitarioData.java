@@ -117,7 +117,7 @@ public class UtilitarioData {
 	}
 
 	public int qtdAnosEntre(Calendar inicio, Calendar fim) {
-		if (inicio == null || fim == null) {
+		if (inicio == null || fim == null || inicio.getTimeInMillis() >= fim.getTimeInMillis()) {
 			return 0;
 		}
 		Interval interval = new Interval(inicio.getTimeInMillis(), fim.getTimeInMillis());
