@@ -42,7 +42,7 @@
                                 <th>Valor Unitário</th>
                                 <th>Valor Total</th>
                                 <th></th>
-                            </tr>
+                            </tr>F
                         </thead>
                         <tfoot>
                             <tr>
@@ -92,7 +92,9 @@
                                     </div>
                                 </td>
                                 <td class="td-exibe-valor">
-                                    <input class="form-control input-sm text-right" id="quantidade{{$index}}" name="quantidade{{$index}}" ng-model="reg.quantidade" ui-number-mask="3" ng-required="true" ng-disabled="reg.codigo">
+                                    <input class="form-control input-sm text-right" id="quantidade{{$index}}" name="quantidade{{$index}}" ng-model="reg.quantidade" ui-number-mask="globalQuantidade" ng-required="true">
+                                    <input class="form-control input-sm text-right" id="quantidade{{$index}}" name="quantidade{{$index}}" ng-model="reg.quantidade" ui-number-mask="globalQuantidade" ng-required="true">
+                                    <input class="form-control input-sm text-right" id="quantidade{{$index}}" name="quantidade{{$index}}" ng-model="reg.quantidade" ui-number-mask="globalQuantidade" ng-required="true" ng-disabled="reg.codigo">
                                     <div class="label label-danger" ng-show="navegador.submetido && receitaDespesaListFrm['quantidade' + $index].$error.required">
                                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                         Campo Obrigatório
@@ -106,14 +108,16 @@
                                     </div>
                                 </td>
                                 <td class="td-exibe-valor">
-                                    <input class="form-control input-sm text-right" id="valorUnitario{{$index}}" name="valorUnitario{{$index}}" ng-model="reg.valorUnitario" ui-number-mask="2" ng-required="true" ng-disabled="(reg.custoProducao.id && !lista === 'receitaList') || reg.codigo">
+                                    <input class="form-control input-sm text-right" id="valorUnitario{{$index}}" name="valorUnitario{{$index}}" ng-model="reg.valorUnitario" ui-money-mask="globalMonetario" ng-required="true" ng-disabled="reg.custoProducao.id && !lista === 'receitaList'">
+                                    <input class="form-control input-sm text-right" id="valorUnitario{{$index}}" name="valorUnitario{{$index}}" ng-model="reg.valorUnitario" ui-money-mask="globalMonetario" ng-required="true" ng-disabled="reg.custoProducao.id && !lista === 'receitaList'">
+                                    <input class="form-control input-sm text-right" id="valorUnitario{{$index}}" name="valorUnitario{{$index}}" ng-model="reg.valorUnitario" ui-money-mask="globalMonetario" ng-required="true" ng-disabled="(reg.custoProducao.id && !lista === 'receitaList') || reg.codigo">
                                     <div class="label label-danger" ng-show="navegador.submetido && receitaDespesaListFrm['valorUnitario' + $index].$error.required">
                                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                         Campo Obrigatório
                                     </div>
                                 </td>
                                 <td class="td-exibe-valor">
-                                    <input class="form-control input-sm text-right" id="valorTotal{{$index}}" name="valorTotal{{$index}}" ng-model="reg.valorTotal" ui-number-mask="2" ng-required="true" ng-readonly="true">
+                                    <input class="form-control input-sm text-right" id="valorTotal{{$index}}" name="valorTotal{{$index}}" ng-model="reg.valorTotal" ui-money-mask="globalMonetario" ng-required="true" ng-readonly="true">
                                     <div class="label label-danger" ng-show="navegador.submetido && receitaDespesaListFrm['valorTotal' + $index].$error.required">
                                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                         Campo Obrigatório
