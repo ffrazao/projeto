@@ -69,7 +69,7 @@
                             </div>
                         </td>
                         <td ng-repeat="idx in [3, 2, 1]" class="td-exibe-valor">
-                            <input class="form-control input-sm text-right" id="ano{{idx}}_{{$parent.$index}}" name="ano{{idx}}_{{$parent.$index}}" ng-model="reg['receitaAno' + idx]" ui-number-mask="2" ng-required="true">
+                            <input class="form-control input-sm text-right" id="ano{{idx}}_{{$parent.$index}}" name="ano{{idx}}_{{$parent.$index}}" ng-model="reg['receitaAno' + idx]" ui-money-mask="globalMonetario" ng-required="true">
                             <div class="label label-danger" ng-show="navegador.submetido && trienioListFrm['ano' + idx + '_' + $parent.$index].$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório

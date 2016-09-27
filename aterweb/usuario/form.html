@@ -150,7 +150,7 @@
                     </div>
                     <div class="col-md-3" title="Número de Tentativas de Acesso Inválido">
                         <label class="control-label" for="tentativaAcessoInvalido">Tentativas de Acesso Inválido</label>
-                        <input type="text" class="form-control" id="tentativaAcessoInvalido" name="tentativaAcessoInvalido" ng-model="cadastro.registro.tentativaAcessoInvalido" ui-number-mask="0" ng-valor-max="3">
+                        <input type="text" class="form-control" id="tentativaAcessoInvalido" name="tentativaAcessoInvalido" ng-model="cadastro.registro.tentativaAcessoInvalido" ui-number-mask="globalFracaoSem" ng-valor-max="3">
                         <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.tentativaAcessoInvalido.$error.required">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             Campo Obrigatório

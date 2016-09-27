@@ -518,6 +518,8 @@ var TIMEOUT_TEMPO = 10 * 60;
             $rootScope.globalTaxaJuros = '3';
             $rootScope.globalTempo = '0';
             $rootScope.globalFracaoSem = '0';
+            $rootScope.globalQuantidade = '3';
+            $rootScope.globalPercentual = '3';
             $rootScope.safeApply = function(fn) {
                 var phase = $rootScope.$$phase;
                 if (phase === '$apply' || phase === '$digest') {

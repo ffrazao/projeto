@@ -73,7 +73,7 @@
                             </div>
                         </td>
                         <td class="td-exibe-valor">
-                            <input class="form-control input-sm text-right" id="rendaLiquida_{{$index}}" name="rendaLiquida_{{$index}}" ng-model="reg.rendaLiquida" ui-number-mask="2" ng-valor-min="0.01" ng-required="true">
+                            <input class="form-control input-sm text-right" id="rendaLiquida_{{$index}}" name="rendaLiquida_{{$index}}" ng-model="reg.rendaLiquida" ui-money-mask="globalMonetario" ng-valor-min="0.01" ng-required="true">
                             <div class="label label-danger" ng-show="navegador.submetido && garantiaListFrm['rendaLiquida_' + $index].$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório

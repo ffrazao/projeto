@@ -35,7 +35,7 @@
                             id="ano{{fluxoCaixaAno.ano}}_{{$parent.$index}}" 
                             name="ano{{fluxoCaixaAno.ano}}_{{$parent.$index}}" 
                             ng-model="fluxoCaixaAno.valor" 
-                            ui-number-mask="2"
+                            ui-money-mask="globalMonetario"
                             ng-required="true"
                             ng-if="UtilSrv.indiceDePorCampo(cadastro.apoio.fluxoCaixaCodigoList, reg.codigo, 'codigo').somenteLeitura === 'N'">
                         <button ng-if="$index === 0 && UtilSrv.indiceDePorCampo(cadastro.apoio.fluxoCaixaCodigoList, reg.codigo, 'codigo').somenteLeitura === 'N'" 
