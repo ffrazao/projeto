@@ -129,6 +129,27 @@ public class UtilitarioExcel {
 		return result;
 	}
 
+	private static Object getValor(Iterator<Cell> cellIterator, FormulaEvaluator evaluator) {
+		Object result = null;
+		Cell cell = cellIterator.next();
+		switch (cell.getCellType()) {
+		case Cell.CELL_TYPE_STRING:
+			result = cell.getStringCellValue();
+			break;
+		case Cell.CELL_TYPE_BOOLEAN:
+			result = cell.getBooleanCellValue();
+			break;
+		case Cell.CELL_TYPE_NUMERIC:
+			result = cell.getNumericCellValue();
+			break;
+		case Cell.CELL_TYPE_FORMULA:
+			evaluator.evaluateFormulaCell(cell);
+			result = handleCell(cell.getCellType(), cell, evaluator);
+			break;
+		}
+		return result;
+	}
+
 	private static Object handleCell(int type, Cell cell, FormulaEvaluator evaluator) {
 		if (type == HSSFCell.CELL_TYPE_STRING) {
 			return cell.getStringCellValue();
@@ -142,6 +163,10 @@ public class UtilitarioExcel {
 			return handleCell(cell.getCachedFormulaResultType(), cell, evaluator);
 		}
 		return null;
+	}
+
+	public static List<List<List<Object>>> lerPlanilha(File excel) throws Exception {
+		return UtilitarioExcel.lerPlanilha(new FileInputStream(excel));
 	}
 
 	public static List<List<List<Object>>> lerPlanilha(InputStream excel) throws Exception {
@@ -174,27 +199,6 @@ public class UtilitarioExcel {
 				}
 				result.add(linha);
 			}
-		}
-		return result;
-	}
-
-	private static Object getValor(Iterator<Cell> cellIterator, FormulaEvaluator evaluator) {
-		Object result = null;
-		Cell cell = cellIterator.next();
-		switch (cell.getCellType()) {
-		case Cell.CELL_TYPE_STRING:
-			result = cell.getStringCellValue();
-			break;
-		case Cell.CELL_TYPE_BOOLEAN:
-			result = cell.getBooleanCellValue();
-			break;
-		case Cell.CELL_TYPE_NUMERIC:
-			result = cell.getNumericCellValue();
-			break;
-		case Cell.CELL_TYPE_FORMULA:
-			evaluator.evaluateFormulaCell(cell);
-			result = handleCell(cell.getCellType(), cell, evaluator);
-			break;
 		}
 		return result;
 	}

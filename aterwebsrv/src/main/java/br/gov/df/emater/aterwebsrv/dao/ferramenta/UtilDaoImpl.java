@@ -13,6 +13,7 @@ import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import br.gov.df.emater.aterwebsrv.dao.DaoException;
@@ -23,6 +24,7 @@ import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ItemNome;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.UnidadeMedida;
 
 @Repository
+
 public class UtilDaoImpl implements UtilDao {
 
 	private static final Logger logger = Logger.getLogger(UtilDaoImpl.class);
@@ -45,6 +47,7 @@ public class UtilDaoImpl implements UtilDao {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
+	@Cacheable("dominio")
 	public List<?> getDominio(String entidade, String nomeChavePrimaria, String valorChavePrimaria, String order, String nomeEnum) throws DaoException {
 		if (logger.isTraceEnabled()) {
 			logger.trace(String.format("Recuperando domínio para Entidade[%s], NomeChavePrimaria[%s], ValorChavePrim�ria[%s]", entidade, nomeChavePrimaria, valorChavePrimaria));
@@ -118,6 +121,7 @@ public class UtilDaoImpl implements UtilDao {
 	 *            nome da Enumeração a ser chamada
 	 */
 	@Override
+	@Cacheable("enumeracao")
 	public List<Map<String, Object>> getEnumeracao(String enumeracao) throws DaoException {
 		try {
 			List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
@@ -161,6 +165,7 @@ public class UtilDaoImpl implements UtilDao {
 	}
 
 	@Override
+	@Cacheable("ipa")
 	public Map<String, Object> ipaBemClassificacaoDetalhes(BemClassificacao bemClassificacao) {
 		Map<String, Object> result = null;
 		if (bemClassificacao != null) {

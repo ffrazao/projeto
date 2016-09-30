@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.boot.orm.jpa.EntityScan;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EntityScan(basePackages = { _DaoConfig.MODELO })
 @EnableJpaRepositories(basePackages = { _DaoConfig.DAO }, entityManagerFactoryRef = "entityManagerFactory", transactionManagerRef = "transactionManager")
 @EnableTransactionManagement
+@EnableCaching
 public class _DaoConfig {
 
 	public static final String DAO = "br.gov.df.emater.aterwebsrv.dao";
