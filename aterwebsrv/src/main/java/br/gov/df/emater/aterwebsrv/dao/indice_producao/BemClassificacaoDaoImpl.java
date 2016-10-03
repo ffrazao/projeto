@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.util.StringUtils;
 
 import br.gov.df.emater.aterwebsrv.dto.CadFiltroDto;
@@ -163,6 +164,7 @@ public class BemClassificacaoDaoImpl implements BemClassificacaoDaoCustom {
 	}
 
 	@Override
+	@Cacheable("BemClassificacao")
 	public List<Object> filtrar(BemClassificacaoCadFiltroDto filtro) {
 		// objetos de trabalho
 		List<Object> result = null;
