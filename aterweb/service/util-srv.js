@@ -57,7 +57,7 @@ angular.module(pNmModulo).factory(pNmFactory, ['$rootScope', '$http', 'toastr', 
                 return null;
             },
             dominio: function (parametroPesquisa) {
-                return $http.get($rootScope.servicoUrl + '/dominio', {params: parametroPesquisa});
+                return $http.get($rootScope.servicoUrl + '/dominio', {params: parametroPesquisa, cache: true});
             },
             dominioLista: function (lista, parametroPesquisa, callback) {
                 this.dominio(parametroPesquisa).success(sucessoInterno(lista, callback)).error(erroInterno);
