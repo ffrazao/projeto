@@ -40,9 +40,10 @@ public class FormaProducaoValor extends EntidadeBase implements _ChavePrimaria<I
 		super(id);
 	}
 
-	public FormaProducaoValor(Serializable id, String nome) {
+	public FormaProducaoValor(Serializable id, String nome, Integer ordem) {
 		super(id);
 		setNome(nome);
+		setOrdem(ordem);
 	}
 
 	public FormaProducaoItem getFormaProducaoItem() {
@@ -64,7 +65,7 @@ public class FormaProducaoValor extends EntidadeBase implements _ChavePrimaria<I
 
 	@Override
 	public FormaProducaoValor infoBasica() {
-		return new FormaProducaoValor(getId(), getNome());
+		return new FormaProducaoValor(getId(), getNome(), this.ordem);
 	}
 
 	public void setFormaProducaoItem(FormaProducaoItem formaProducaoItem) {

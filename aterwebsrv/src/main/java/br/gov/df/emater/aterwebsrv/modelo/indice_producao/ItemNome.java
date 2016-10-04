@@ -9,12 +9,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.ItemNomeResultado;
 
 @Entity
 @Table(name = "item_nome", schema = EntidadeBase.INDICE_PRODUCAO_SCHEMA)
-public class ItemNome extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class ItemNome extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<ItemNome> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -35,6 +36,13 @@ public class ItemNome extends EntidadeBase implements _ChavePrimaria<Integer> {
 		super(id);
 	}
 
+	public ItemNome(Integer id, String nome, ItemNomeResultado resultado) {
+		super(id);
+		this.id = id;
+		this.nome = nome;
+		this.resultado = resultado;
+	}
+
 	public ItemNome(String nome) {
 		setNome(nome);
 	}
@@ -50,6 +58,11 @@ public class ItemNome extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	public ItemNomeResultado getResultado() {
 		return resultado;
+	}
+
+	@Override
+	public ItemNome infoBasica() {
+		return new ItemNome(this.id, this.nome, this.resultado);
 	}
 
 	@Override

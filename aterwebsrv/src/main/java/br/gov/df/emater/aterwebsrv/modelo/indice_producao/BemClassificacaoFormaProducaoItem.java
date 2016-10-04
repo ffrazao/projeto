@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.indice_producao;
 
+import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaReg;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,11 +11,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 
 @Entity
 @Table(name = "bem_classificacao_forma_producao_item", schema = EntidadeBase.INDICE_PRODUCAO_SCHEMA)
-public class BemClassificacaoFormaProducaoItem extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class BemClassificacaoFormaProducaoItem extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<BemClassificacaoFormaProducaoItem> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -35,6 +38,14 @@ public class BemClassificacaoFormaProducaoItem extends EntidadeBase implements _
 		super();
 	}
 
+	public BemClassificacaoFormaProducaoItem(Integer id, BemClassificacao bemClassificacao, FormaProducaoItem formaProducaoItem, Integer ordem) {
+		super();
+		this.bemClassificacao = bemClassificacao;
+		this.formaProducaoItem = formaProducaoItem;
+		this.id = id;
+		this.ordem = ordem;
+	}
+
 	public BemClassificacao getBemClassificacao() {
 		return bemClassificacao;
 	}
@@ -50,6 +61,11 @@ public class BemClassificacaoFormaProducaoItem extends EntidadeBase implements _
 
 	public Integer getOrdem() {
 		return ordem;
+	}
+
+	@Override
+	public BemClassificacaoFormaProducaoItem infoBasica() {
+		return new BemClassificacaoFormaProducaoItem(this.id, new BemClassificacao(this.bemClassificacao == null ? null : this.bemClassificacao.getId()), infoBasicaReg(this.formaProducaoItem), this.ordem);
 	}
 
 	public void setBemClassificacao(BemClassificacao bemClassificacao) {

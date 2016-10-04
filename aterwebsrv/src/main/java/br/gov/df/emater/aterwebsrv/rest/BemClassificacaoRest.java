@@ -26,4 +26,9 @@ public class BemClassificacaoRest {
 		return new Resposta(facadeBo.bemClassificacaoFiltroExecutar(usuario, filtro).getResposta());
 	}
 
+	@RequestMapping(value = "/matriz", method = RequestMethod.GET)
+	public Resposta matriz(Principal usuario) throws Exception {
+		return new Resposta(facadeBo.bemProducaoMatriz(usuario).getResposta());
+	}
+
 }

@@ -115,6 +115,11 @@ public class FacadeBo implements BeanFactoryAware {
 		return this._executar(usuario, "BemProducaoFiltroExecutarCh", filtro);
 	}
 
+	@Transactional(readOnly = true)
+	public _Contexto bemProducaoMatriz(Principal usuario) throws Exception {
+		return this._executar(usuario, "BemProducaoMatrizCmd");
+	}
+
 	// Comunidade Lista
 	@Transactional(readOnly = true)
 	public _Contexto comunidadeLista(Principal usuario, ComunidadeListaDto filtro) throws Exception {
@@ -411,17 +416,17 @@ public class FacadeBo implements BeanFactoryAware {
 	public _Contexto projetoCreditoRuralFiltroExecutar(Principal usuario, ProjetoCreditoRuralCadFiltroDto filtro) throws Exception {
 		return this._executar(usuario, "ProjetoCreditoRuralFiltroExecutarCh", filtro);
 	}
-	
+
 	@Transactional(readOnly = true)
 	public _Contexto projetoCreditoRuralFiltroNovo(Principal usuario) throws Exception {
 		return this._executar(usuario, "ProjetoCreditoRuralFiltroNovoCmd");
 	}
-	
+
 	@Transactional(readOnly = true)
 	public _Contexto projetoCreditoRuralNovo(Principal usuario, ProjetoCreditoRural projetoCreditoRural) throws Exception {
 		return this._executar(usuario, "ProjetoCreditoRuralNovoCh", projetoCreditoRural);
 	}
-		
+
 	@Transactional
 	public _Contexto projetoCreditoRuralPlanilhaUpload(Principal usuario, ProjetoCreditoRuralReceitaDespesaApoioDto registro) throws Exception {
 		return this._executar(usuario, "ProjetoCreditoRuralPlanilhaUploadCh", registro);

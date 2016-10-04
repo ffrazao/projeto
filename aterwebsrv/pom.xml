@@ -29,6 +29,7 @@
 		<jasperreports-fonts.version>6.0.0</jasperreports-fonts.version>
 		<jasperreports.version>6.2.1</jasperreports.version>
 		<jstl.version>1.2</jstl.version>
+		<mime-util.version>2.1.3</mime-util.version>
 		<neo4j-cypher-compiler-2.1.version>2.1.5</neo4j-cypher-compiler-2.1.version>
 		<neo4j-cypher-compiler-2.2.version>2.2.5</neo4j-cypher-compiler-2.2.version>
 		<org-apache-batik-all.version>1.7-201003011305</org-apache-batik-all.version>
@@ -240,6 +241,13 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>${commons-lang3.version}</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/eu.medsea.mimeutil/mime-util -->
+		<dependency>
+			<groupId>eu.medsea.mimeutil</groupId>
+			<artifactId>mime-util</artifactId>
+			<version>${mime-util.version}</version>
 		</dependency>
 
 		<dependency>
