@@ -456,7 +456,7 @@ public class SalvarCmd extends _SalvarCmd {
 					relacionador.setPessoa(result);
 					relacionador.setRelacionamento(relacionamento);
 				}
-				relacionador.setRelacionamentoFuncao(new RelacionamentoFuncao(relacionamentoConfiguracaoVi.getRelacionadoId()));
+				relacionador.setRelacionamentoFuncao(new RelacionamentoFuncao(relacionamentoConfiguracaoVi.getRelacionadorId()));
 				pessoaRelacionamentoDao.save(relacionador);
 			}
 		}
