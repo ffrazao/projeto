@@ -55,7 +55,7 @@
     <div class="form-group">
         <label class="col-md-4 control-label" for="taxaJurosAnual">Taxa Juros Anual (%)</label>
         <div class="col-md-2">
-            <input id="taxaJurosAnual" name="taxaJurosAnual" type="text" class="form-control input-md text-right" ng-model="conteudo.registro.taxaJurosAnual" ui-money-mask="globalTaxaJuros" ng-required="true"
+            <input id="taxaJurosAnual" name="taxaJurosAnual" type="text" class="form-control input-md text-right" ng-model="conteudo.registro.taxaJurosAnual" ui-number-mask="globalTaxaJuros" ng-required="true"
             	ng-valor-min="0.001" ng-valor-max="100">
             <div class="label label-danger" ng-show="confirmacaoFrm.taxaJurosAnual.$error.required">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Campo Obrigatório
