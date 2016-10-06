@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.2.1.final using JasperReports Library version 6.2.1  -->
+<!-- 2016-08-21T21:05:27 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ProponentePropriedade" pageWidth="555" pageHeight="842" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="4f3e2a9b-c98c-497f-9ccc-4d9c8fd3b19a">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="receitaAno2" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[receitaAno2]]></fieldDescription>
+	</field>
+	<field name="receitaAno1" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[receitaAno1]]></fieldDescription>
+	</field>
+	<field name="receitaAno3" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[receitaAno3]]></fieldDescription>
+	</field>
+	<field name="excluidoMap" class="java.util.Map">
+		<fieldDescription><![CDATA[excluidoMap]]></fieldDescription>
+	</field>
+	<field name="id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[id]]></fieldDescription>
+	</field>
+	<field name="projetoCreditoRural" class="br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRural">
+		<fieldDescription><![CDATA[projetoCreditoRural]]></fieldDescription>
+	</field>
+	<field name="class" class="java.lang.Class">
+		<fieldDescription><![CDATA[class]]></fieldDescription>
+	</field>
+	<field name="cadastroAcao" class="br.gov.df.emater.aterwebsrv.modelo.dominio.CadastroAcao">
+		<fieldDescription><![CDATA[cadastroAcao]]></fieldDescription>
+	</field>
+	<field name="descricao" class="java.lang.String">
+		<fieldDescription><![CDATA[descricao]]></fieldDescription>
+	</field>
+	<variable name="totalAno1" class="java.lang.Double" incrementType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{receitaAno1}.doubleValue() + $V{totalAno1}]]></variableExpression>
+		<initialValueExpression><![CDATA[0d]]></initialValueExpression>
+	</variable>
+	<variable name="totalAno2" class="java.lang.Double" incrementType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{receitaAno2}.doubleValue() + $V{totalAno2}]]></variableExpression>
+		<initialValueExpression><![CDATA[0d]]></initialValueExpression>
+	</variable>
+	<variable name="totalAno3" class="java.lang.Double" incrementType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{receitaAno3}.doubleValue() + $V{totalAno3}]]></variableExpression>
+		<initialValueExpression><![CDATA[0d]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<staticText>
+				<reportElement x="0" y="0" width="230" height="15" uuid="89b19077-74e6-4e09-bc43-b15b48ec3f62">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descrição (Explorações)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="19" width="555" height="1" uuid="c4b82e86-c1ca-4e52-bfbb-b2a216ee4abe">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="343" y="0" width="103" height="15" uuid="9084e917-b24d-478f-b2c5-704efa4042ae">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Receita Ano -2 (R$)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="452" y="0" width="103" height="15" uuid="ec901708-d5eb-40ec-b1e3-196ccc8f1a33">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Receita Ano -1 (R$)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="234" y="0" width="103" height="15" uuid="6df78748-bd29-4f59-b4fd-dc91c3036a3b">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Receita Ano -3 (R$)]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="230" height="15" uuid="70cd7bcf-f1e8-4e2f-b761-b49fe0d7a9e6">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{descricao}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="343" y="0" width="103" height="15" uuid="a2f38415-ede2-4cb4-a826-ca09551d559e">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{receitaAno2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#0" isBlankWhenNull="true">
+				<reportElement x="452" y="0" width="103" height="15" uuid="effa2d9f-9fa4-4c95-ab1e-469d03181b61">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{receitaAno1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="234" y="0" width="103" height="15" uuid="7d5b64d8-7ea4-415a-87d6-6b9042c8473f">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{receitaAno3}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="22">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="452" y="0" width="103" height="15" uuid="24d6bae8-6641-4031-adb8-2217e54e4f63">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{totalAno1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="129" y="0" width="100" height="15" uuid="5d1a57a4-2f9b-480d-ba52-fe40a9b3fcb0"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="343" y="0" width="103" height="15" uuid="ab57db6f-4c9a-4549-a033-d69603c4ed85">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{totalAno2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="234" y="0" width="103" height="15" uuid="0628ac94-ddc3-4a0c-ab2c-d38f4ca1c7bd">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{totalAno3}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+</jasperReport>

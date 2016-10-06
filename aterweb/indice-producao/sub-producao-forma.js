@@ -183,7 +183,7 @@ angular.module(pNmModulo).controller(pNmController,
                 '                <label class="form-label">' + $scope.cadastro.apoio.producaoForma.itemANome + '</label>' +
                 '            </div>' +
                 '            <div class="col-md-3">' +
-                '                <input class="form-control text-right" id="itemAValor" name="itemAValor" ng-model="conteudo.itemAValor" ng-required="true" ui-number-mask="3">' +
+                '                <input class="form-control text-right" id="itemAValor" name="itemAValor" ng-model="conteudo.itemAValor" ng-required="true" ui-number-mask="2">' +
                 '                <div class="label label-danger" ng-show="confirmacaoFrm.itemAValor.$error.required">' +
                 '                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' +
                 '                     Campo Obrigatório' +
@@ -198,7 +198,7 @@ angular.module(pNmModulo).controller(pNmController,
                 '                <label class="form-label">' + $scope.cadastro.apoio.producaoForma.itemBNome + '</label>' +
                 '            </div>' +
                 '            <div class="col-md-3">' +
-                '                <input class="form-control text-right" id="itemBValor" name="itemBValor" ng-model="conteudo.itemBValor" ng-required="true" ui-number-mask="3">' +
+                '                <input class="form-control text-right" id="itemBValor" name="itemBValor" ng-model="conteudo.itemBValor" ng-required="true" ui-number-mask="2">' +
                 '                <div class="label label-danger" ng-show="confirmacaoFrm.itemBValor.$error.required">' +
                 '                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' +
                 '                     Campo Obrigatório' +
@@ -213,7 +213,7 @@ angular.module(pNmModulo).controller(pNmController,
                 '                <label class="form-label">' + $scope.cadastro.apoio.producaoForma.itemCNome + '</label>' +
                 '            </div>' +
                 '            <div class="col-md-3">' +
-                '                <input class="form-control  text-right" id="itemCValor" name="itemCValor" ng-model="conteudo.itemCValor" ng-required="true" ui-number-mask="3">' +
+                '                <input class="form-control  text-right" id="itemCValor" name="itemCValor" ng-model="conteudo.itemCValor" ng-required="true" ui-number-mask="2">' +
                 '                <div class="label label-danger" ng-show="confirmacaoFrm.itemCValor.$error.required">' +
                 '                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' +
                 '                     Campo Obrigatório' +
@@ -228,7 +228,7 @@ angular.module(pNmModulo).controller(pNmController,
             '            </div>' +
             '            <div class="col-md-3">' +
             '                <div class="form-control text-right">' +
-            '                   {{conteudo.formula(\"' + $scope.cadastro.apoio.producaoForma.formula + '\", conteudo.itemAValor, conteudo.itemBValor, conteudo.itemCValor) | number: 3}}' +
+            '                   {{conteudo.formula(\"' + $scope.cadastro.apoio.producaoForma.formula + '\", conteudo.itemAValor, conteudo.itemBValor, conteudo.itemCValor) | number: globalVolume}}' +
             '                </div>' +
             '            </div>' +
             '            <div class="col-md-3">' +

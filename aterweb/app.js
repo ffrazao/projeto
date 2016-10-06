@@ -513,6 +513,7 @@ var TIMEOUT_TEMPO = 10 * 60;
             $rootScope.globalFracaoHectares = '2';
             //$rootScope.globalProdutividade = '2';
             $rootScope.globalArea = '2';
+            $rootScope.globalVolume = '2';
             $rootScope.globalProducao = '2';
             $rootScope.globalMonetario = '2';
             $rootScope.globalTaxaJuros = '3';
