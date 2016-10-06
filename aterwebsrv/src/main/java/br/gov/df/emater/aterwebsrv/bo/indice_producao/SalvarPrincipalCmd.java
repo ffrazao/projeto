@@ -92,8 +92,13 @@ public class SalvarPrincipalCmd extends _Comando {
 				// se houveram novas formas de produção
 				if (!CollectionUtils.isEmpty(producaoFormaNovoList)) {
 					// inserir na producao principal
-					producaoPrincipal.getProducaoFormaList().forEach((producaoForma)->producaoFormaNovoList.add(producaoForma));
+					if (producaoPrincipal.getProducaoFormaList() == null) {
+						producaoPrincipal.setProducaoFormaList(new ArrayList<>());
+					}
+					producaoFormaNovoList.addAll(producaoPrincipal.getProducaoFormaList());
 					producaoPrincipal.setProducaoFormaList(producaoFormaNovoList);
+//					producaoPrincipal.getProducaoFormaList().forEach((producaoForma)->producaoFormaNovoList.add(producaoForma));
+//					producaoPrincipal.setProducaoFormaList(producaoFormaNovoList);
 				}
 			}
 			em.detach(producaoPrincipal);

@@ -128,6 +128,14 @@ public class SalvarCmd extends _SalvarCmd {
 
 		// restaurar os dados do bem de produção
 		result.setBem(bemDao.findOne(result.getBem().getId()));
+		List<ProducaoForma> producaoFormaList = new ArrayList<>();
+		for (ProducaoForma pf: result.getProducaoFormaList()) {
+			if (pf.getId() == null) {
+				producaoFormaList.add(new ProducaoForma(pf));
+			} else {
+				producaoFormaList.add(pf);
+			}
+		};
 
 		dao.save(result);
 
@@ -140,7 +148,7 @@ public class SalvarCmd extends _SalvarCmd {
 		excluirRegistros(result, "producaoFormaList", producaoFormaDao);
 
 		// salvar a forma de produção
-		result.getProducaoFormaList().forEach((producaoForma) -> {
+		producaoFormaList.forEach((producaoForma) -> {
 			producaoForma.setProducao(result);
 			logAtualizar(producaoForma, contexto);
 			try {
@@ -154,10 +162,13 @@ public class SalvarCmd extends _SalvarCmd {
 			} else {
 				producaoForma.setValorTotal(null);
 			}
+			
+			List<ProducaoFormaComposicao> producaoFormaComposicaoList = producaoForma.getProducaoFormaComposicaoList();
+			
 			producaoFormaDao.save(producaoForma);
 
 			Integer ordem = 0;
-			for (ProducaoFormaComposicao producaoFormaComposicao : producaoForma.getProducaoFormaComposicaoList()) {
+			for (ProducaoFormaComposicao producaoFormaComposicao : producaoFormaComposicaoList) {
 				// se não foi excluido
 				producaoFormaComposicao.setProducaoForma(producaoForma);
 				producaoFormaComposicao.setOrdem(++ordem);
