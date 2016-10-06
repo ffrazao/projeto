@@ -23,6 +23,7 @@ var TIMEOUT_TEMPO = 10 * 60;
     });
     angular.module(pNmModulo).factory('modalCadastro', function() {
         'ngInject';
+        
         return null;
     });
     // fim: codigo para habilitar o modal recursivo
