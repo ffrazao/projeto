@@ -134,6 +134,7 @@ public class SalvarCmd extends _SalvarCmd {
 			throw new BoException("Demandante também vinculado como executor à atividade");
 		}
 
+		excluirRegistros(result, "ocorrenciaList", ocorrenciaDao);
 		if (result.getOcorrenciaList() != null) {
 			result.getOcorrenciaList().forEach((ocorrencia) -> {
 				ocorrencia.setAtividade(result);

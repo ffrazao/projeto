@@ -2,6 +2,8 @@ package br.gov.df.emater.aterwebsrv.bo.projeto_credito_rural;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
@@ -88,6 +90,11 @@ public class SalvarCmd extends _SalvarCmd {
 		if (result == null) {
 			return false;
 		}
+		
+		if (result.getExcluidoMap() == null) {
+			result.setExcluidoMap(atividade.getExcluidoMap());
+		}
+		Map<String, Set<Serializable>> excluidoMap = result.getExcluidoMap();
 
 		// atualizar o campo de ligação
 		result.setAtividade(atividade);
@@ -137,6 +144,8 @@ public class SalvarCmd extends _SalvarCmd {
 
 		// salvar a tabela principal
 		result = dao.save(result);
+		
+		result.setExcluidoMap(excluidoMap);
 
 		if (!CollectionUtils.isEmpty(cronogramaPagamentoCusteioList)) {
 			cronogramaPagamentoCusteioList.forEach((custeio) -> custeio.setTipo(FinanciamentoTipo.C));
