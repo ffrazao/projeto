@@ -228,7 +228,7 @@ angular.module(pNmModulo).controller(pNmController,
             '            </div>' +
             '            <div class="col-md-3">' +
             '                <div class="form-control text-right">' +
-            '                   {{conteudo.formula(\"' + $scope.cadastro.apoio.producao.formula + '\", conteudo.itemAValor, conteudo.itemBValor, conteudo.itemCValor) | number: globalVolume}}' +
+            '                   {{conteudo.formula(\"' + $scope.cadastro.apoio.producao.formula + '\", conteudo.itemAValor, conteudo.itemBValor, conteudo.itemCValor) | number: 2}}' +
             '                </div>' +
             '            </div>' +
             '            <div class="col-md-3">' +

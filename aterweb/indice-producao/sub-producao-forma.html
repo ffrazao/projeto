@@ -82,13 +82,13 @@
                             </div>
                         </td>
                         <td ng-if="cadastro.apoio.producao.itemCNome">
-                            <input class="form-control input-sm text-right" id="itemCValor" name="itemCValor" ng-model="produtor.itemCValor" ng-required="true" ui-number-mask="3" style="min-width: 75px;">
+                            <input class="form-control input-sm text-right" id="itemCValor" name="itemCValor" ng-model="produtor.itemCValor" ng-required="true" ui-number-mask="2" style="min-width: 75px;">
                             <div class="label label-danger" ng-show="navegador.submetido && producaoFormaFrm.itemCValor.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
                         </td>
-                        <td>{{formula(cadastro.apoio.producao.formula, produtor.itemAValor, produtor.itemBValor, produtor.itemCValor) | number: globalVolume}}</td>
+                        <td>{{formula(cadastro.apoio.producao.formula, produtor.itemAValor, produtor.itemBValor, produtor.itemCValor) | number: 2}}</td>
                         <td>{{cadastro.apoio.producao.unidadeMedida}}</td>
                         <td>
                             <input class="form-control input-sm text-right" id="valorUnitario" name="valorUnitario" ng-model="produtor.valorUnitario" ng-required="false" ui-money-mask="2" style="min-width: 75px;">
