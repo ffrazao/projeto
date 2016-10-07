@@ -27,19 +27,19 @@ import br.gov.df.emater.aterwebsrv.dao.indice_producao.BemClassificacaoDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.BemDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.FormaProducaoItemDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.FormaProducaoValorDao;
-import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoDao;
+import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoProprietarioDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.UnidadeMedidaDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaDao;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.importador.apoio.ConexaoFirebird.DbSater;
 import br.gov.df.emater.aterwebsrv.importador.apoio.ImpUtil;
-import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Bem;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificado;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.FormaProducaoItem;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.FormaProducaoValor;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoProprietario;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
-import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoForma;
-import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoFormaComposicao;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoComposicao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.UnidadeMedida;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
@@ -66,7 +66,7 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 
 		private Integer bemClassificacaoPosturaCoturnicultura;
 
-		private List<Bem> bemList = new ArrayList<Bem>();
+		private List<BemClassificado> bemClassificadoList = new ArrayList<BemClassificado>();
 
 		private List<FormaProducaoItem> formaProducaoItemList = new ArrayList<FormaProducaoItem>();
 
@@ -122,31 +122,31 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 			return bemClassificacao;
 		}
 
-		private Bem bemPegar(String nome, BemClassificacao bemClassificacao) throws BoException {
+		private BemClassificado bemClassificadoPegar(String nome, BemClassificacao bemClassificacao) throws BoException {
 			if (nome == null || nome.trim().length() == 0 || bemClassificacao == null) {
 				throw new BoException("Bem não identificado [%s, %s]", nome, bemClassificacao);
 			}
-			for (Bem bem : bemList) {
-				if (bem.getNome().equalsIgnoreCase(nome)) {
-					return bem;
+			for (BemClassificado bemClassificado : bemClassificadoList) {
+				if (bemClassificado.getNome().equalsIgnoreCase(nome)) {
+					return bemClassificado;
 				}
 			}
-			List<Bem> result = bemDao.findByBemClassificacaoAndNomeLikeIgnoreCase(bemClassificacao, nome);
+			List<BemClassificado> result = bemDao.findByBemClassificacaoAndNomeLikeIgnoreCase(bemClassificacao, nome);
 			if (result == null || result.isEmpty()) {
-				Bem bem = new Bem();
-				bem.setBemClassificacao(bemClassificacao);
-				bem.setNome(nome);
-				bem = bemDao.save(bem);
-				bemList.add(bem);
-				return bem;
+				BemClassificado bemClassificado = new BemClassificado();
+				bemClassificado.setBemClassificacao(bemClassificacao);
+				bemClassificado.setNome(nome);
+				bemClassificado = bemDao.save(bemClassificado);
+				bemClassificadoList.add(bemClassificado);
+				return bemClassificado;
 			} else if (result != null && result.size() != 1 && result.get(0) == null) {
 				throw new BoException("Bem não identificado [%s, %s]", nome, bemClassificacao);
 			}
-			bemList.add(result.get(0));
+			bemClassificadoList.add(result.get(0));
 			return result.get(0);
 		}
 
-		private Bem deParaBemAgricolaFlores(ResultSet rs) throws BoException, SQLException {
+		private BemClassificado deParaBemClassificadoAgricolaFlores(ResultSet rs) throws BoException, SQLException {
 			String cultura = rs.getString("CULTURA");
 			String grupo = rs.getString("GRUPO");
 			String subgrupo = rs.getString("SUBGRUPO");
@@ -171,20 +171,20 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 			bemClassificacaoAtualizaUnidadeMedida(bemClassificacao, rs.getString("UNIDADE"));
 
 			// pegar o bem
-			Bem bem = bemPegar(cultura, bemClassificacao);
-			if (bem == null) {
+			BemClassificado bemClassificado = bemClassificadoPegar(cultura, bemClassificacao);
+			if (bemClassificado == null) {
 				throw new BoException("Não foi possível identificar o bem");
 			}
-			return bem;
+			return bemClassificado;
 		}
 
-		private List<ProducaoForma> deParaBemAgricolaFloresProducaoFormaList(Producao salvo, Bem bem, ResultSet rs) throws BoException, SQLException {
-			List<ProducaoForma> result = producaoFormaListCriar(salvo);
+		private List<Producao> deParaBemAgricolaFloresProducaoList(ProducaoProprietario salvo, BemClassificado bemClassificado, ResultSet rs) throws BoException, SQLException {
+			List<Producao> result = producaoListCriar(salvo);
 
 			FormaProducaoValor sistema = formaProducaoValorPegar(formaProducaoItemPegar("Sistema"), rs.getString("SISTEMA"));
 			FormaProducaoValor usoAgua = formaProducaoValorPegar(formaProducaoItemPegar("Uso d´água"), rs.getString("USOAGUA"));
 			FormaProducaoValor protecao = formaProducaoValorPegar(formaProducaoItemPegar("Proteção/ Época/ Forma"), rs.getString("PROTECAO"));
-			ProducaoForma pf = producaoFormaCriarOuPegar(salvo, producaoFormaComposicaoListCriar(sistema, usoAgua, protecao));
+			Producao pf = producaoCriarOuPegar(salvo, producaoComposicaoListCriar(sistema, usoAgua, protecao));
 
 			if (geral == 0) {
 				pf.setItemAValor(impUtil.captaBigDecimal(rs.getDouble("AREAESP")));
@@ -199,10 +199,10 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 			}
 			pf.setItemCValor(null);
 
-			return producaoFormaListColetar(result, pf, salvo, bem, rs);
+			return producaoListColetar(result, pf, salvo, bemClassificado, rs);
 		}
 
-		private Bem deParaBemAnimal(ResultSet rs) throws BoException, SQLException {
+		private BemClassificado deParaBemClassificadoAnimal(ResultSet rs) throws BoException, SQLException {
 			String cultura = rs.getString("CULTURA");
 
 			// pegar a classificação do bem
@@ -221,34 +221,34 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 			bemClassificacaoAtualizaUnidadeMedida(bemClassificacao, rs.getString("UNIDADE"));
 
 			// pegar o bem
-			Bem bem = bemPegar(deParaNomeBemAnimal(cultura), bemClassificacao);
-			if (bem == null) {
+			BemClassificado bemClassificado = bemClassificadoPegar(deParaNomeBemAnimal(cultura), bemClassificacao);
+			if (bemClassificado == null) {
 				throw new BoException("Não foi possível identificar o bem");
 			}
-			return bem;
+			return bemClassificado;
 		}
 
-		private List<ProducaoForma> deParaBemAnimalProducaoFormaList(Producao salvo, Bem bem, ResultSet rs) throws BoException, SQLException {
-			List<ProducaoForma> result = producaoFormaListCriar(salvo);
+		private List<Producao> deParaBemAnimalProducaoList(ProducaoProprietario salvo, BemClassificado bemClassificado, ResultSet rs) throws BoException, SQLException {
+			List<Producao> result = producaoListCriar(salvo);
 
 			FormaProducaoValor sistema = formaProducaoValorPegar(formaProducaoItemPegar("Sistema"), rs.getString("SISTEMA"));
 			FormaProducaoValor exploracao = formaProducaoValorPegar(formaProducaoItemPegar("Exploração"), rs.getString("EXPLORACAO"));
-			ProducaoForma pf = producaoFormaCriarOuPegar(salvo, producaoFormaComposicaoListCriar(sistema, exploracao));
+			Producao pf = producaoCriarOuPegar(salvo, producaoComposicaoListCriar(sistema, exploracao));
 
 			if (geral == 0) {
-				if (bem.getBemClassificacao().getId().equals(bemClassificacaoCorteAvicultura) || bem.getBemClassificacao().getId().equals(bemClassificacaoCorteBovinocultura) || bem.getBemClassificacao().getId().equals(bemClassificacaoCorteCoturnicultura)) {
+				if (bemClassificado.getBemClassificacao().getId().equals(bemClassificacaoCorteAvicultura) || bemClassificado.getBemClassificacao().getId().equals(bemClassificacaoCorteBovinocultura) || bemClassificado.getBemClassificacao().getId().equals(bemClassificacaoCorteCoturnicultura)) {
 					pf.setItemAValor(impUtil.captaBigDecimal(rs.getDouble("REBEX")));
 					pf.setItemBValor(impUtil.captaBigDecimal(rs.getDouble("REND1EX")));
 					pf.setItemCValor(impUtil.captaBigDecimal(rs.getDouble("MATEX")));
-				} else if (bem.getBemClassificacao().getId().equals(bemClassificacaoLeiteBovinocultura)) {
+				} else if (bemClassificado.getBemClassificacao().getId().equals(bemClassificacaoLeiteBovinocultura)) {
 					pf.setItemAValor(impUtil.captaBigDecimal(rs.getDouble("MATEX")));
 					pf.setItemBValor(impUtil.captaBigDecimal(rs.getDouble("REND2EX")));
 					pf.setItemCValor(impUtil.captaBigDecimal(rs.getDouble("REBEX")));
-				} else if (bem.getBemClassificacao().getId().equals(bemClassificacaoPosturaAvicultura) || bem.getBemClassificacao().getId().equals(bemClassificacaoPosturaCoturnicultura)) {
+				} else if (bemClassificado.getBemClassificacao().getId().equals(bemClassificacaoPosturaAvicultura) || bemClassificado.getBemClassificacao().getId().equals(bemClassificacaoPosturaCoturnicultura)) {
 					pf.setItemAValor(impUtil.captaBigDecimal(rs.getDouble("REBEX")));
 					pf.setItemBValor(impUtil.captaBigDecimal(rs.getDouble("REND3EX")));
 					pf.setItemCValor(null);
-				} else if (bem.getBemClassificacao().getId().equals(bemClassificacaoApiculturaAnimal)) {
+				} else if (bemClassificado.getBemClassificacao().getId().equals(bemClassificacaoApiculturaAnimal)) {
 					pf.setItemAValor(impUtil.captaBigDecimal(rs.getDouble("REBEX")));
 					pf.setItemBValor(impUtil.captaBigDecimal(rs.getDouble("REND4EX")));
 					pf.setItemCValor(null);
@@ -260,19 +260,19 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 				}
 				pf.setQuantidadeProdutores(rs.getInt("CRIADOREX"));
 			} else {
-				if (bem.getBemClassificacao().getId().equals(bemClassificacaoCorteAvicultura) || bem.getBemClassificacao().getId().equals(bemClassificacaoCorteBovinocultura) || bem.getBemClassificacao().getId().equals(bemClassificacaoCorteCoturnicultura)) {
+				if (bemClassificado.getBemClassificacao().getId().equals(bemClassificacaoCorteAvicultura) || bemClassificado.getBemClassificacao().getId().equals(bemClassificacaoCorteBovinocultura) || bemClassificado.getBemClassificacao().getId().equals(bemClassificacaoCorteCoturnicultura)) {
 					pf.setItemAValor(impUtil.captaBigDecimal(rs.getDouble("REBANHO")));
 					pf.setItemBValor(impUtil.captaBigDecimal(rs.getDouble("PROD1AC")));
 					pf.setItemCValor(impUtil.captaBigDecimal(rs.getDouble("MATRIZES")));
-				} else if (bem.getBemClassificacao().getId().equals(bemClassificacaoLeiteBovinocultura)) {
+				} else if (bemClassificado.getBemClassificacao().getId().equals(bemClassificacaoLeiteBovinocultura)) {
 					pf.setItemAValor(impUtil.captaBigDecimal(rs.getDouble("MATRIZES")));
 					pf.setItemBValor(impUtil.captaBigDecimal(rs.getDouble("PROD2AC")));
 					pf.setItemCValor(impUtil.captaBigDecimal(rs.getDouble("REBANHO")));
-				} else if (bem.getBemClassificacao().getId().equals(bemClassificacaoPosturaAvicultura) || bem.getBemClassificacao().getId().equals(bemClassificacaoPosturaCoturnicultura)) {
+				} else if (bemClassificado.getBemClassificacao().getId().equals(bemClassificacaoPosturaAvicultura) || bemClassificado.getBemClassificacao().getId().equals(bemClassificacaoPosturaCoturnicultura)) {
 					pf.setItemAValor(impUtil.captaBigDecimal(rs.getDouble("REBANHO")));
 					pf.setItemBValor(impUtil.captaBigDecimal(rs.getDouble("PROD3AC")));
 					pf.setItemCValor(null);
-				} else if (bem.getBemClassificacao().getId().equals(bemClassificacaoApiculturaAnimal)) {
+				} else if (bemClassificado.getBemClassificacao().getId().equals(bemClassificacaoApiculturaAnimal)) {
 					pf.setItemAValor(impUtil.captaBigDecimal(rs.getDouble("REBANHO")));
 					pf.setItemBValor(impUtil.captaBigDecimal(rs.getDouble("PROD4AC")));
 					pf.setItemCValor(null);
@@ -286,10 +286,10 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 				pf.setDataConfirmacao(impUtil.captaData(rs.getDate("DTIPA")));
 			}
 
-			return producaoFormaListColetar(result, pf, salvo, bem, rs);
+			return producaoListColetar(result, pf, salvo, bemClassificado, rs);
 		}
 
-		private Bem deParaBemNaoAgricola(ResultSet rs) throws BoException, SQLException {
+		private BemClassificado deParaBemClassificadoNaoAgricola(ResultSet rs) throws BoException, SQLException {
 			String projeto = rs.getString("PROJETO");
 			String produto = rs.getString("PRODUTO");
 
@@ -303,18 +303,18 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 			bemClassificacaoAtualizaUnidadeMedida(bemClassificacao, rs.getString("UNIDADE"));
 
 			// pegar o bem
-			Bem bem = bemPegar(produto, bemClassificacao);
-			if (bem == null) {
+			BemClassificado bemClassificado = bemClassificadoPegar(produto, bemClassificacao);
+			if (bemClassificado == null) {
 				throw new BoException("Não foi possível identificar o bem");
 			}
-			return bem;
+			return bemClassificado;
 		}
 
-		private List<ProducaoForma> deParaBemNaoAgricolaProducaoFormaList(Producao salvo, Bem bem, ResultSet rs) throws BoException, SQLException {
-			List<ProducaoForma> result = producaoFormaListCriar(salvo);
+		private List<Producao> deParaBemNaoAgricolaProducaoList(ProducaoProprietario salvo, BemClassificado bemClassificado, ResultSet rs) throws BoException, SQLException {
+			List<Producao> result = producaoListCriar(salvo);
 
 			FormaProducaoValor condicao = formaProducaoValorPegar(formaProducaoItemPegar("Condição"), rs.getString("CONDICAO"));
-			ProducaoForma pf = producaoFormaCriarOuPegar(salvo, producaoFormaComposicaoListCriar(condicao));
+			Producao pf = producaoCriarOuPegar(salvo, producaoComposicaoListCriar(condicao));
 
 			if (geral == 0) {
 				pf.setItemAValor(impUtil.captaBigDecimal(rs.getDouble("PRDESP")));
@@ -327,7 +327,7 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 			}
 			pf.setItemCValor(null);
 
-			return producaoFormaListColetar(result, pf, salvo, bem, rs);
+			return producaoListColetar(result, pf, salvo, bemClassificado, rs);
 		}
 
 		private String deParaFormaProducaoValorNome(String nome) {
@@ -434,26 +434,26 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 				while (rs.next()) {
 					TransactionStatus transactionStatus = transactionManager.getTransaction(transactionDefinition);
 					try {
-						Producao producao = null;
-						producao = novoProducao(rs);
+						ProducaoProprietario producaoProprietario = null;
+						producaoProprietario = novoProducao(rs);
 
 						// FIXME quebra-galho para teste. remover este código
 						// if (cont > 50) {
 						// break;
 						// }
 
-						em.detach(producao);
+						em.detach(producaoProprietario);
 
 						// salvar no MySQL e no Firebird
-						producao.setId((Integer) facadeBo.indiceProducaoSalvar(usuario, producao).getResposta());
+						producaoProprietario.setId((Integer) facadeBo.indiceProducaoSalvar(usuario, producaoProprietario).getResposta());
 
 						if (geral == 0) {
-							impUtil.chaveAterWebAtualizar(base, producao.getId(), agora, nomeTabela, "IDUND = ? AND IDIPA = ? AND SAFRA = ?", rs.getString("IDUND"), rs.getInt("IDIPA"), rs.getString("SAFRA"));
+							impUtil.chaveAterWebAtualizar(base, producaoProprietario.getId(), agora, nomeTabela, "IDUND = ? AND IDIPA = ? AND SAFRA = ?", rs.getString("IDUND"), rs.getInt("IDIPA"), rs.getString("SAFRA"));
 						} else {
 							if (tabela.equals(OrigemList.IPAN00)) {
-								impUtil.chaveAterWebAtualizar(base, producao.getId(), agora, nomeTabela, "IDUND = ? AND IDIPA = ? AND IDBEN = ?", rs.getString("IDUND"), rs.getInt("IDIPA"), rs.getString("IDBEN"));
+								impUtil.chaveAterWebAtualizar(base, producaoProprietario.getId(), agora, nomeTabela, "IDUND = ? AND IDIPA = ? AND IDBEN = ?", rs.getString("IDUND"), rs.getInt("IDIPA"), rs.getString("IDBEN"));
 							} else {
-								impUtil.chaveAterWebAtualizar(base, producao.getId(), agora, nomeTabela, "IDUND = ? AND IDIPA = ? AND IDBEN = ? AND IDPRP = ?", rs.getString("IDUND"), rs.getInt("IDIPA"), rs.getString("IDBEN"), rs.getString("IDPRP"));
+								impUtil.chaveAterWebAtualizar(base, producaoProprietario.getId(), agora, nomeTabela, "IDUND = ? AND IDIPA = ? AND IDBEN = ? AND IDPRP = ?", rs.getString("IDUND"), rs.getInt("IDIPA"), rs.getString("IDBEN"), rs.getString("IDPRP"));
 							}
 						}
 						if (cont % 500 == 0) {
@@ -496,8 +496,8 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 			}
 		}
 
-		private Producao novoProducao(ResultSet rs) throws SQLException, BoException {
-			Producao result = new Producao();
+		private ProducaoProprietario novoProducao(ResultSet rs) throws SQLException, BoException {
+			ProducaoProprietario result = new ProducaoProprietario();
 
 			// info basicas
 			result.setAno(rs.getInt("SAFRA"));
@@ -510,24 +510,24 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 			switch (tabela) {
 			case IPAA00:
 			case IPAF00:
-				result.setBem(deParaBemAgricolaFlores(rs));
+				result.setBemClassificado(deParaBemClassificadoAgricolaFlores(rs));
 				break;
 			case IPAP00:
-				result.setBem(deParaBemAnimal(rs));
+				result.setBemClassificado(deParaBemClassificadoAnimal(rs));
 				break;
 			case IPAN00:
-				result.setBem(deParaBemNaoAgricola(rs));
+				result.setBemClassificado(deParaBemClassificadoNaoAgricola(rs));
 				break;
 			}
 
 			// recuperar os IDs
-			Producao salvo = null;
+			ProducaoProprietario salvo = null;
 			if (geral == 0) {
 				result.setUnidadeOrganizacional(impUtil.deParaUnidadeOrganizacional(emater, base.getSigla()));
 				result.setPublicoAlvo(null);
 				result.setPropriedadeRural(null);
 				result.setChaveSisater(impUtil.chaveProducaoAgricolaGeral(base, rs.getString("IDUND"), rs.getInt("IDIPA"), rs.getString("SAFRA"), nomeTabela));
-				salvo = producaoDao.findOneByAnoAndBemAndUnidadeOrganizacionalAndPublicoAlvoIsNullAndPropriedadeRuralIsNull(result.getAno(), result.getBem(), result.getUnidadeOrganizacional());
+				salvo = producaoProprietarioDao.findOneByAnoAndBemClassificadoAndUnidadeOrganizacionalAndPublicoAlvoIsNullAndPropriedadeRuralIsNull(result.getAno(), result.getBemClassificado(), result.getUnidadeOrganizacional());
 			} else {
 				result.setUnidadeOrganizacional(null);
 				result.setPublicoAlvo(publicoAlvoDao.findOneByPessoaId(rs.getInt("CHAVE_ATER_WEB_PESSOA")));
@@ -550,16 +550,16 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 					// identificada");
 				}
 				result.setChaveSisater(impUtil.chaveProducaoAgricola(base, rs.getString("IDUND"), rs.getInt("IDIPA"), rs.getString("IDBEN"), tabela.equals(OrigemList.IPAN00) ? null : rs.getString("IDPRP"), nomeTabela));
-				salvo = producaoDao.findOneByAnoAndBemAndPublicoAlvoAndPropriedadeRuralAndUnidadeOrganizacionalIsNull(result.getAno(), result.getBem(), result.getPublicoAlvo(), result.getPropriedadeRural());
+				salvo = producaoProprietarioDao.findOneByAnoAndBemClassificadoAndPublicoAlvoAndPropriedadeRuralAndUnidadeOrganizacionalIsNull(result.getAno(), result.getBemClassificado(), result.getPublicoAlvo(), result.getPropriedadeRural());
 			}
 			if (salvo == null) {
-				salvo = producaoDao.findOneByChaveSisater(result.getChaveSisater());
+				salvo = producaoProprietarioDao.findOneByChaveSisater(result.getChaveSisater());
 			}
 			if (salvo != null) {
 				result.setId(salvo.getId());
-				for (int i = salvo.getProducaoFormaList().size() - 1; i >= 0; i--) {
-					if (salvo.getProducaoFormaList().get(i).getProducaoFormaComposicaoList() == null) {
-						salvo.getProducaoFormaList().remove(i);
+				for (int i = salvo.getProducaoList().size() - 1; i >= 0; i--) {
+					if (salvo.getProducaoList().get(i).getProducaoComposicaoList() == null) {
+						salvo.getProducaoList().remove(i);
 					}
 				}
 			}
@@ -567,13 +567,13 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 			switch (tabela) {
 			case IPAA00:
 			case IPAF00:
-				result.setProducaoFormaList(deParaBemAgricolaFloresProducaoFormaList(salvo, result.getBem(), rs));
+				result.setProducaoList(deParaBemAgricolaFloresProducaoList(salvo, result.getBemClassificado(), rs));
 				break;
 			case IPAP00:
-				result.setProducaoFormaList(deParaBemAnimalProducaoFormaList(salvo, result.getBem(), rs));
+				result.setProducaoList(deParaBemAnimalProducaoList(salvo, result.getBemClassificado(), rs));
 				break;
 			case IPAN00:
-				result.setProducaoFormaList(deParaBemNaoAgricolaProducaoFormaList(salvo, result.getBem(), rs));
+				result.setProducaoList(deParaBemNaoAgricolaProducaoList(salvo, result.getBemClassificado(), rs));
 				break;
 			}
 
@@ -584,8 +584,8 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 			return result;
 		}
 
-		private ProducaoForma producaoFormaClonar(ProducaoForma pfSalvo) {
-			ProducaoForma result = new ProducaoForma();
+		private Producao producaoClonar(Producao pfSalvo) {
+			Producao result = new Producao();
 			result.setAlteracaoData(pfSalvo.getAlteracaoData());
 			result.setAlteracaoUsuario(new Usuario(pfSalvo.getAlteracaoUsuario() == null ? null : pfSalvo.getAlteracaoUsuario().getId()));
 			result.setDataConfirmacao(pfSalvo.getDataConfirmacao());
@@ -598,19 +598,19 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 			result.setQuantidadeProdutores(pfSalvo.getQuantidadeProdutores());
 			result.setValorTotal(pfSalvo.getValorTotal());
 			result.setValorUnitario(pfSalvo.getValorUnitario());
-			List<ProducaoFormaComposicao> producaoFormaComposicaoList = null;
-			for (ProducaoFormaComposicao formaComposicao : pfSalvo.getProducaoFormaComposicaoList()) {
-				if (producaoFormaComposicaoList == null) {
-					producaoFormaComposicaoList = new ArrayList<ProducaoFormaComposicao>();
+			List<ProducaoComposicao> producaoComposicaoList = null;
+			for (ProducaoComposicao formaComposicao : pfSalvo.getProducaoComposicaoList()) {
+				if (producaoComposicaoList == null) {
+					producaoComposicaoList = new ArrayList<ProducaoComposicao>();
 				}
-				producaoFormaComposicaoList.add(producaoFormaComposicaoClonar(formaComposicao));
+				producaoComposicaoList.add(producaoComposicaoClonar(formaComposicao));
 			}
-			result.setProducaoFormaComposicaoList(producaoFormaComposicaoList);
+			result.setProducaoComposicaoList(producaoComposicaoList);
 			return result;
 		}
 
-		private ProducaoFormaComposicao producaoFormaComposicaoClonar(ProducaoFormaComposicao formaComposicao) {
-			ProducaoFormaComposicao result = new ProducaoFormaComposicao();
+		private ProducaoComposicao producaoComposicaoClonar(ProducaoComposicao formaComposicao) {
+			ProducaoComposicao result = new ProducaoComposicao();
 			result.setId(formaComposicao.getId());
 			FormaProducaoValor pfv = new FormaProducaoValor(formaComposicao.getFormaProducaoValor().getId());
 			pfv.setFormaProducaoItem(new FormaProducaoItem(formaComposicao.getFormaProducaoValor().getFormaProducaoItem().getId()));
@@ -619,10 +619,10 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 			return result;
 		}
 
-		private boolean producaoFormaComposicaoIguais(List<ProducaoFormaComposicao> aList, List<ProducaoFormaComposicao> bList) {
-			for (ProducaoFormaComposicao a : aList) {
+		private boolean producaoFormaComposicaoIguais(List<ProducaoComposicao> aList, List<ProducaoComposicao> bList) {
+			for (ProducaoComposicao a : aList) {
 				boolean iguais = true;
-				for (ProducaoFormaComposicao b : bList) {
+				for (ProducaoComposicao b : bList) {
 					if (!a.getFormaProducaoValor().getFormaProducaoItem().getId().equals(b.getFormaProducaoValor().getFormaProducaoItem().getId())) {
 						iguais = false;
 						break;
@@ -635,17 +635,17 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 			return false;
 		}
 
-		private List<ProducaoFormaComposicao> producaoFormaComposicaoListCriar(FormaProducaoValor... formaProducaoValorList) throws BoException {
+		private List<ProducaoComposicao> producaoComposicaoListCriar(FormaProducaoValor... formaProducaoValorList) throws BoException {
 			if (formaProducaoValorList == null || formaProducaoValorList.length == 0) {
 				throw new BoException("Lista de Valor da Forma Producao está nula");
 			}
-			List<ProducaoFormaComposicao> result = null;
+			List<ProducaoComposicao> result = null;
 			int cont = 0;
 			for (FormaProducaoValor formaProducaoValor : formaProducaoValorList) {
 				if (result == null) {
-					result = new ArrayList<ProducaoFormaComposicao>();
+					result = new ArrayList<ProducaoComposicao>();
 				}
-				ProducaoFormaComposicao producaoFormaComposicao = new ProducaoFormaComposicao();
+				ProducaoComposicao producaoFormaComposicao = new ProducaoComposicao();
 				producaoFormaComposicao.setFormaProducaoValor(formaProducaoValor);
 				producaoFormaComposicao.setOrdem(++cont);
 				result.add(producaoFormaComposicao);
@@ -653,16 +653,16 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 			return result;
 		}
 
-		private ProducaoForma producaoFormaCriarOuPegar(Producao salvo, List<ProducaoFormaComposicao> producaoFormaComposicaoList) throws BoException {
+		private Producao producaoCriarOuPegar(ProducaoProprietario salvo, List<ProducaoComposicao> producaoFormaComposicaoList) throws BoException {
 			if (producaoFormaComposicaoList == null) {
 				throw new BoException("Composição da Forma de Produção nula");
 			}
-			ProducaoForma result = new ProducaoForma();
-			result.setProducaoFormaComposicaoList(producaoFormaComposicaoList);
-			if (salvo != null && salvo.getProducaoFormaList() != null) {
-				for (ProducaoForma pfSalvo : salvo.getProducaoFormaList()) {
-					if (producaoFormaComposicaoIguais(result.getProducaoFormaComposicaoList(), pfSalvo.getProducaoFormaComposicaoList())) {
-						result = producaoFormaClonar(pfSalvo);
+			Producao result = new Producao();
+			result.setProducaoComposicaoList(producaoFormaComposicaoList);
+			if (salvo != null && salvo.getProducaoList() != null) {
+				for (Producao pfSalvo : salvo.getProducaoList()) {
+					if (producaoFormaComposicaoIguais(result.getProducaoComposicaoList(), pfSalvo.getProducaoComposicaoList())) {
+						result = producaoClonar(pfSalvo);
 						return result;
 					}
 				}
@@ -670,9 +670,9 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 			return result;
 		}
 
-		private List<ProducaoForma> producaoFormaListColetar(List<ProducaoForma> result, ProducaoForma pf, Producao salvo, Bem bem, ResultSet rs) throws BoException, SQLException {
-			for (ProducaoForma producaoForma : result) {
-				if (producaoFormaComposicaoIguais(producaoForma.getProducaoFormaComposicaoList(), pf.getProducaoFormaComposicaoList())) {
+		private List<Producao> producaoListColetar(List<Producao> result, Producao pf, ProducaoProprietario salvo, BemClassificado bemClassificado, ResultSet rs) throws BoException, SQLException {
+			for (Producao producaoForma : result) {
+				if (producaoFormaComposicaoIguais(producaoForma.getProducaoComposicaoList(), pf.getProducaoComposicaoList())) {
 					return result;
 				}
 			}
@@ -680,11 +680,11 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 			return result;
 		}
 
-		private List<ProducaoForma> producaoFormaListCriar(Producao salvo) throws BoException, SQLException {
-			List<ProducaoForma> result = new ArrayList<ProducaoForma>();
+		private List<Producao> producaoListCriar(ProducaoProprietario salvo) throws BoException, SQLException {
+			List<Producao> result = new ArrayList<Producao>();
 			if (salvo != null) {
-				for (ProducaoForma producaoForma : salvo.getProducaoFormaList()) {
-					result.add(producaoFormaClonar(producaoForma));
+				for (Producao producao : salvo.getProducaoList()) {
+					result.add(producaoClonar(producao));
 				}
 			}
 			return result;
@@ -764,7 +764,7 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 	private PessoaDao pessoaDao;
 
 	@Autowired
-	private ProducaoDao producaoDao;
+	private ProducaoProprietarioDao producaoProprietarioDao;
 
 	@Autowired
 	private PropriedadeRuralDao propriedadeRuralDao;

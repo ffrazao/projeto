@@ -227,7 +227,7 @@ angular.module(pNmModulo).controller(pNmController,
                 filtro.length > 0 && 
                 no.trim().toLowerCase().latinize().indexOf(filtro.trim().toLowerCase().latinize()) === -1);
         };
-        item.getTagBem = function($query) {
+        item.getTagBemClassificado = function($query) {
             var carregarClassificacao = function(a, r) {
                 if (r) {
                     a.push(r.nome);
@@ -248,7 +248,7 @@ angular.module(pNmModulo).controller(pNmController,
                 }
                 return result;
             };
-            return IndiceProducaoSrv.tagBem($query).then(function(response) { 
+            return IndiceProducaoSrv.tagBemClassificado($query).then(function(response) { 
                 var retorno = {data: []};
                 var classificacao;
                 for (var i in response.data.resultado) {

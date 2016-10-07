@@ -9,7 +9,7 @@ import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
-import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Bem;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificado;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.FormaProducaoValor;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
@@ -22,7 +22,7 @@ public class IndiceProducaoCadFiltroDto extends CadFiltroDtoCustom {
 
 	private List<BemClassificacao> bemClassificacaoList;
 
-	private List<Bem> bemList;
+	private List<BemClassificado> bemClassificadoList;
 
 	private List<Comunidade> comunidadeList;
 
@@ -52,8 +52,8 @@ public class IndiceProducaoCadFiltroDto extends CadFiltroDtoCustom {
 		return bemClassificacaoList;
 	}
 
-	public List<Bem> getBemList() {
-		return bemList;
+	public List<BemClassificado> getBemClassificadoList() {
+		return bemClassificadoList;
 	}
 
 	public List<Comunidade> getComunidadeList() {
@@ -96,8 +96,8 @@ public class IndiceProducaoCadFiltroDto extends CadFiltroDtoCustom {
 		this.bemClassificacaoList = bemClassificacaoList;
 	}
 
-	public void setBemList(List<Bem> bemList) {
-		this.bemList = bemList;
+	public void setBemClassificadoList(List<BemClassificado> bemClassificadoList) {
+		this.bemClassificadoList = bemClassificadoList;
 	}
 
 	public void setComunidadeList(List<Comunidade> comunidadeList) {

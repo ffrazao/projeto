@@ -11,9 +11,9 @@ import org.springframework.util.CollectionUtils;
 
 import br.gov.df.emater.aterwebsrv.dto.indice_producao.IndiceProducaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacao;
-import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoProprietario;
 
-public class ProducaoDaoImpl implements ProducaoDaoCustom {
+public class ProducaoProprietarioDaoImpl implements ProducaoProprietarioDaoCustom {
 
 	@Autowired
 	private BemClassificacaoDao bemClassificacaoDao;
@@ -32,7 +32,7 @@ public class ProducaoDaoImpl implements ProducaoDaoCustom {
 	}
 
 	@Override
-	public List<Producao> filtrar(IndiceProducaoCadFiltroDto filtro) {
+	public List<ProducaoProprietario> filtrar(IndiceProducaoCadFiltroDto filtro) {
 		// ATENCAO: quando o parametro id do filtro estiver preenchido significa
 		// que este método vai coletar uma producao especifica, ou seja, é
 		// utilizado para recuperar os dados vinculados a uma producao principal
@@ -40,21 +40,21 @@ public class ProducaoDaoImpl implements ProducaoDaoCustom {
 		// parametros ano e comunidade
 
 		// objetos de trabalho
-		List<Producao> result = null;
+		List<ProducaoProprietario> result = null;
 		List<Object> params = new ArrayList<Object>();
 		StringBuilder sql;// , sqlTemp;
 
 		// construção do sql
 		sql = new StringBuilder();
 		sql.append("select distinct p").append("\n");
-		sql.append("from Producao p").append("\n");
+		sql.append("from ProducaoProprietario p").append("\n");
 
 		if (!CollectionUtils.isEmpty(filtro.getComunidadeList())) {
 			sql.append("join p.unidadeOrganizacional.comunidadeList comun").append("\n");
 		}
 		if (!CollectionUtils.isEmpty(filtro.getFormaProducaoValorList())) {
-			sql.append("join p.producaoFormaList pfl").append("\n");
-			sql.append("join pfl.producaoFormaComposicaoList composicao").append("\n");
+			sql.append("join p.producaoList pfl").append("\n");
+			sql.append("join pfl.producaoComposicaoList composicao").append("\n");
 		}
 
 		if (filtro.getId() != null) {
@@ -90,22 +90,22 @@ public class ProducaoDaoImpl implements ProducaoDaoCustom {
 			params.add(filtro.getComunidadeList());
 			sql.append("and comun in ?").append(params.size()).append("\n");
 		}
-		if (!CollectionUtils.isEmpty(filtro.getBemList())) {
-			params.add(filtro.getBemList());
-			sql.append("and p.bem in ?").append(params.size()).append("\n");
+		if (!CollectionUtils.isEmpty(filtro.getBemClassificadoList())) {
+			params.add(filtro.getBemClassificadoList());
+			sql.append("and p.bemClassificado in ?").append(params.size()).append("\n");
 		}
 		if (!CollectionUtils.isEmpty(filtro.getBemClassificacaoList())) {
 			List<BemClassificacao> bemClassificacaoList = new ArrayList<BemClassificacao>();
 			captarBemClassificacaoList(filtro.getBemClassificacaoList(), bemClassificacaoList);
 			params.add(bemClassificacaoList);
-			sql.append("and p.bem.bemClassificacao in ?").append(params.size()).append("\n");
+			sql.append("and p.bemClassificado.bemClassificacao in ?").append(params.size()).append("\n");
 		}
 		if (!CollectionUtils.isEmpty(filtro.getFormaProducaoValorList())) {
 			params.add(filtro.getFormaProducaoValorList());
 			sql.append("and composicao.formaProducaoValor in ?").append(params.size()).append("\n");
 		}
 
-		sql.append("order by p.ano, p.bem.bemClassificacao.nome, p.bem.nome").append("\n");
+		sql.append("order by p.ano, p.bemClassificado.bemClassificacao.nome, p.bemClassificado.nome").append("\n");
 		if ((filtro.getPropriedadeRural() != null && filtro.getPropriedadeRural().getId() != null) || (filtro.getPublicoAlvo() != null && filtro.getPublicoAlvo().getId() != null)) {
 			sql.append("   , p.propriedadeRural.nome, p.publicoAlvo.pessoa.nome").append("\n");
 		} else {
@@ -113,7 +113,7 @@ public class ProducaoDaoImpl implements ProducaoDaoCustom {
 		}
 
 		// criar a query
-		TypedQuery<Producao> query = em.createQuery(sql.toString(), Producao.class);
+		TypedQuery<ProducaoProprietario> query = em.createQuery(sql.toString(), ProducaoProprietario.class);
 
 		// inserir os parametros
 		for (int i = 1; i <= params.size(); i++) {

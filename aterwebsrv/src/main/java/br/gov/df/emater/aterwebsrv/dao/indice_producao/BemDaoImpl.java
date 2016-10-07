@@ -36,7 +36,7 @@ public class BemDaoImpl implements BemDaoCustom {
 		sql.append("select b.id").append("\n");
 		sql.append("     , b.nome").append("\n");
 		sql.append("     , b.bemClassificacao").append("\n");
-		sql.append("from Bem b").append("\n");
+		sql.append("from BemClassificado b").append("\n");
 		sql.append("join b.bemClassificacao").append("\n");
 		sql.append("where 1 = 1").append("\n");
 		if (!StringUtils.isEmpty(filtro.getNome())) {

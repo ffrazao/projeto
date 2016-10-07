@@ -41,7 +41,7 @@ import br.gov.df.emater.aterwebsrv.modelo.atividade.Atividade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.ArquivoTipo;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.Coleta;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.Formulario;
-import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoProprietario;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRural;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Comando;
@@ -258,13 +258,13 @@ public class FacadeBo implements BeanFactoryAware {
 	}
 
 	@Transactional(readOnly = true)
-	public _Contexto indiceProducaoNovo(Principal usuario, Producao producao) throws Exception {
-		return this._executar(usuario, "IndiceProducaoNovoCh", producao);
+	public _Contexto indiceProducaoNovo(Principal usuario, ProducaoProprietario producaoProprietario) throws Exception {
+		return this._executar(usuario, "IndiceProducaoNovoCh", producaoProprietario);
 	}
 
 	@Transactional
-	public _Contexto indiceProducaoSalvar(Principal usuario, Producao producao) throws Exception {
-		return this._executar(usuario, "IndiceProducaoSalvarCh", producao);
+	public _Contexto indiceProducaoSalvar(Principal usuario, ProducaoProprietario producaoProprietario) throws Exception {
+		return this._executar(usuario, "IndiceProducaoSalvarCh", producaoProprietario);
 	}
 
 	@Transactional(readOnly = true)

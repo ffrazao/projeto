@@ -7,30 +7,30 @@ import org.springframework.stereotype.Service;
 
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
-import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoDao;
-import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
+import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoProprietarioDao;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoProprietario;
 
 @Service("ProjetoCreditoRuralExcluirCmd")
 public class ExcluirCmd extends _Comando {
 
 	@Autowired
-	private ProducaoDao dao;
+	private ProducaoProprietarioDao dao;
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
-		Producao producao = (Producao) contexto.getRequisicao();
-		producao = dao.findOne(producao.getId());
+		ProducaoProprietario producaoProprietario = (ProducaoProprietario) contexto.getRequisicao();
+		producaoProprietario = dao.findOne(producaoProprietario.getId());
 
-		List<Producao> produtorProducaoList = dao.findByAnoAndBemAndPropriedadeRuralComunidadeUnidadeOrganizacional(producao.getAno(), producao.getBem(), producao.getUnidadeOrganizacional());
+		List<ProducaoProprietario> produtorProducaoProprietarioList = dao.findByAnoAndBemClassificadoAndPropriedadeRuralComunidadeUnidadeOrganizacional(producaoProprietario.getAno(), producaoProprietario.getBemClassificado(), producaoProprietario.getUnidadeOrganizacional());
 
-		if (produtorProducaoList != null) {
-			for (Producao p : produtorProducaoList) {
+		if (produtorProducaoProprietarioList != null) {
+			for (ProducaoProprietario p : produtorProducaoProprietarioList) {
 				dao.delete(p);
 			}
 		}
-		dao.delete(producao);
+		dao.delete(producaoProprietario);
 
-		contexto.setResposta(producao);
+		contexto.setResposta(producaoProprietario);
 		return false;
 	}
 

@@ -37,8 +37,8 @@ angular.module(pNmModulo).controller(pNmController,
             return null;
         }
         var result = [];
-        for (var i in formaProducao.producaoFormaComposicaoList) {
-            result.push(formaProducao.producaoFormaComposicaoList[i].formaProducaoValor.id);
+        for (var i in formaProducao.producaoComposicaoList) {
+            result.push(formaProducao.producaoComposicaoList[i].formaProducaoValor.id);
         }
         // ordenar
         result.sort(function (a, b) {
@@ -49,10 +49,10 @@ angular.module(pNmModulo).controller(pNmController,
     var jaCadastrado = function(conteudo) {
         var composicao = pegaComposicaoId(conteudo);
         var j, igual;
-        for (j in $scope.cadastro.registro.producaoFormaList) {
-            igual = angular.equals(composicao, pegaComposicaoId($scope.cadastro.registro.producaoFormaList[j]));
+        for (j in $scope.cadastro.registro.producaoList) {
+            igual = angular.equals(composicao, pegaComposicaoId($scope.cadastro.registro.producaoList[j]));
             if (igual) {
-                if (conteudo.id !== $scope.cadastro.registro.producaoFormaList[j].id) {
+                if (conteudo.id !== $scope.cadastro.registro.producaoList[j].id) {
                     toastr.error('Registro já cadastrado');
                     return false;
                 } else {
@@ -129,10 +129,10 @@ angular.module(pNmModulo).controller(pNmController,
             editarItem($scope.indiceProducaoNvg.selecao.item, item);
         } else if ($scope.indiceProducaoNvg.selecao.items && $scope.indiceProducaoNvg.selecao.items.length) {
             for (i in $scope.indiceProducaoNvg.selecao.items) {
-                for (j in $scope.cadastro.registro.producaoFormaList) {
-                    if (angular.equals($scope.indiceProducaoNvg.selecao.items[i], $scope.cadastro.registro.producaoFormaList[j])) {
-                        item = angular.copy($scope.cadastro.registro.producaoFormaList[j]);
-                        editarItem($scope.cadastro.registro.producaoFormaList[j], item, i);
+                for (j in $scope.cadastro.registro.producaoList) {
+                    if (angular.equals($scope.indiceProducaoNvg.selecao.items[i], $scope.cadastro.registro.producaoList[j])) {
+                        item = angular.copy($scope.cadastro.registro.producaoList[j]);
+                        editarItem($scope.cadastro.registro.producaoList[j], item, i);
                         break;
                     }
                 }
@@ -145,7 +145,7 @@ angular.module(pNmModulo).controller(pNmController,
             if ($scope.indiceProducaoNvg.selecao.tipo === 'U' && $scope.indiceProducaoNvg.selecao.item) {
                 for (j = $scope.cadastro.registro.indiceProducaoList.length -1; j >= 0; j--) {
                     if (angular.equals($scope.cadastro.registro.indiceProducaoList[j], $scope.indiceProducaoNvg.selecao.item)) {
-                        $scope.marcarParaExclusao($scope, 'producaoFormaList', j);
+                        $scope.marcarParaExclusao($scope, 'producaoList', j);
                         //$scope.cadastro.registro.indiceProducaoList.splice(j, 1);
                         //$scope.cadastro.registro.indiceProducaoList[j].cadastroAcao = 'E';
                     }
@@ -156,7 +156,7 @@ angular.module(pNmModulo).controller(pNmController,
                 for (j = $scope.cadastro.registro.indiceProducaoList.length-1; j >= 0; j--) {
                     for (i in $scope.indiceProducaoNvg.selecao.items) {
                         if (angular.equals($scope.cadastro.registro.indiceProducaoList[j], $scope.indiceProducaoNvg.selecao.items[i])) {
-                            $scope.marcarParaExclusao($scope, 'producaoFormaList', j);
+                            $scope.marcarParaExclusao($scope, 'producaoList', j);
                             //$scope.cadastro.registro.indiceProducaoList.splice(j, 1);
                             //$scope.cadastro.registro.indiceProducaoList[j].cadastroAcao = 'E';
                             break;
@@ -228,7 +228,7 @@ angular.module(pNmModulo).controller(pNmController,
                 filtro.length > 0 && 
                 no.trim().toLowerCase().latinize().indexOf(filtro.trim().toLowerCase().latinize()) === -1);
         };
-        item.getTagBem = function($query) {
+        item.getTagBemClassificado = function($query) {
             var carregarClassificacao = function(a, r) {
                 if (r) {
                     a.push(r.nome);
@@ -249,7 +249,7 @@ angular.module(pNmModulo).controller(pNmController,
                 }
                 return result;
             };
-            return IndiceProducaoSrv.tagBem($query).then(function(response) { 
+            return IndiceProducaoSrv.tagBemClassificado($query).then(function(response) { 
                 var retorno = {data: []};
                 var classificacao;
                 for (var i in response.data.resultado) {

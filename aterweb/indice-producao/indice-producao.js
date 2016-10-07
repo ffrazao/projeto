@@ -96,8 +96,8 @@
                 if (scp.cadastro.apoio.porProdutor === true || scp.cadastro.apoio.porPropriedadeRural === true) {
                     var reg = angular.copy($scope.cadastro.registro);
                     reg.id = null;
-                    reg.bem = null;
-                    reg.producaoFormaList = null;
+                    reg.bemClassificado = null;
+                    reg.producaoList = null;
                     $rootScope.incluir(scp, reg);
                 } else {
                     $rootScope.incluir(scp, modelo ? modelo : {});
@@ -169,16 +169,16 @@
                 return result;
             };
             $scope.visualizarDepois = function(registro) {
-                $scope.cadastro.apoio.bemClassificacao = $scope.encontraBemClassificacao(registro.bem.bemClassificacao.id);
+                $scope.cadastro.apoio.bemClassificacao = $scope.encontraBemClassificacao(registro.bemClassificado.bemClassificacao.id);
                 if (!$scope.cadastro.apoio.bemClassificacao) {
                     $timeout(function() {
-                        $scope.cadastro.apoio.bemClassificacao = $scope.encontraBemClassificacao(registro.bem.bemClassificacao.id);
+                        $scope.cadastro.apoio.bemClassificacao = $scope.encontraBemClassificacao(registro.bemClassificado.bemClassificacao.id);
                     }, 2000);
                 }
                 $scope.cadastro.apoio.producaoUnidadeOrganizacional = (registro.unidadeOrganizacional && registro.unidadeOrganizacional.id);
                 $scope.cadastro.apoio.unidadeOrganizacional = angular.copy(registro.unidadeOrganizacional);
             };
-            $scope.cadastro.apoio.producaoForma = {
+            $scope.cadastro.apoio.producao = {
                 composicao: []
             };
 
@@ -397,7 +397,7 @@
                     no.trim().toLowerCase().latinize().indexOf(filtro.trim().toLowerCase().latinize()) === -1);
             };
 
-            $scope.getTagBem = function($query) {
+            $scope.getTagBemClassificado = function($query) {
                 var carregarClassificacao = function(a, r) {
                     if (r) {
                         a.push(r.nome);
@@ -418,7 +418,7 @@
                     }
                     return result;
                 };
-                return IndiceProducaoSrv.tagBem($query).then(function(response) {
+                return IndiceProducaoSrv.tagBemClassificado($query).then(function(response) {
                     var retorno = {
                         data: []
                     };
@@ -598,17 +598,17 @@
                 }
                 UtilSrv.dominio({
                     ent: [
-                        'Bem',
+                        'BemClassificado',
                     ],
                     npk: 'bemClassificacao.id',
                     vpk: novo[0]
                 }).success(function(resposta) {
                     if (resposta && resposta.mensagem === "OK") {
-                        $scope.cadastro.apoio.bemList = resposta.resultado[0];
+                        $scope.cadastro.apoio.bemClassificadoList = resposta.resultado[0];
                     }
                 });
-                $scope.cadastro.apoio.producaoForma.bemClassificacao = '';
-                $scope.cadastro.apoio.producaoForma.composicao = [];
+                $scope.cadastro.apoio.producao.bemClassificacao = '';
+                $scope.cadastro.apoio.producao.composicao = [];
                 var array = [];
                 pai(array, novo);
                 if (array.length) {
@@ -617,12 +617,12 @@
                     for (var i in array) {
                         //console.log(array[i][2]);
                         if (i > 0) {
-                            $scope.cadastro.apoio.producaoForma.bemClassificacao += '/';
+                            $scope.cadastro.apoio.producao.bemClassificacao += '/';
                         }
-                        $scope.cadastro.apoio.producaoForma.bemClassificacao += array[i][1];
+                        $scope.cadastro.apoio.producao.bemClassificacao += array[i][1];
                         if (array[i][2]) {
                             for (var j in array[i][2]) {
-                                $scope.cadastro.apoio.producaoForma.composicao.push(array[i][2][j]);
+                                $scope.cadastro.apoio.producao.composicao.push(array[i][2][j]);
                             }
                         }
                         if (!unidadeMedida && array[i][4]) {
@@ -643,16 +643,16 @@
                     }
                     // cadastrar a composicao
                     if (itemANome) {
-                        $scope.cadastro.apoio.producaoForma.itemANome = itemANome;
+                        $scope.cadastro.apoio.producao.itemANome = itemANome;
                     }
                     if (itemBNome) {
-                        $scope.cadastro.apoio.producaoForma.itemBNome = itemBNome;
+                        $scope.cadastro.apoio.producao.itemBNome = itemBNome;
                     }
                     if (itemCNome) {
-                        $scope.cadastro.apoio.producaoForma.itemCNome = itemCNome;
+                        $scope.cadastro.apoio.producao.itemCNome = itemCNome;
                     }
-                    $scope.cadastro.apoio.producaoForma.formula = formula;
-                    $scope.cadastro.apoio.producaoForma.unidadeMedida = unidadeMedida;
+                    $scope.cadastro.apoio.producao.formula = formula;
+                    $scope.cadastro.apoio.producao.unidadeMedida = unidadeMedida;
                 }
             });
 

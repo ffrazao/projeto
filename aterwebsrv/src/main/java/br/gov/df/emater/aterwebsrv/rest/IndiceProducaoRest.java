@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
 import br.gov.df.emater.aterwebsrv.dto.indice_producao.IndiceProducaoCadFiltroDto;
-import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoProprietario;
 
 @RestController
 @RequestMapping("/indice-producao")
@@ -29,8 +29,8 @@ public class IndiceProducaoRest {
 	}
 
 	@RequestMapping(value = "/editar", method = RequestMethod.POST)
-	public Resposta editar(@RequestBody Producao producao, Principal usuario) throws Exception {
-		return salvar(producao, usuario);
+	public Resposta editar(@RequestBody ProducaoProprietario producaoProprietario, Principal usuario) throws Exception {
+		return salvar(producaoProprietario, usuario);
 	}
 
 	@RequestMapping(value = "/excluir", method = RequestMethod.DELETE)
@@ -59,17 +59,17 @@ public class IndiceProducaoRest {
 	}
 
 	@RequestMapping(value = "/incluir", method = RequestMethod.POST)
-	public Resposta incluir(@RequestBody Producao producao, Principal usuario) throws Exception {
-		return salvar(producao, usuario);
+	public Resposta incluir(@RequestBody ProducaoProprietario producaoProprietario, Principal usuario) throws Exception {
+		return salvar(producaoProprietario, usuario);
 	}
 
 	@RequestMapping(value = "/novo", method = RequestMethod.POST)
-	public Resposta novo(@RequestBody Producao producao, Principal usuario) throws Exception {
-		return new Resposta(facadeBo.indiceProducaoNovo(usuario, producao).getResposta());
+	public Resposta novo(@RequestBody ProducaoProprietario producaoProprietario, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.indiceProducaoNovo(usuario, producaoProprietario).getResposta());
 	}
 
-	public Resposta salvar(@RequestBody Producao producao, Principal usuario) throws Exception {
-		return new Resposta(facadeBo.indiceProducaoSalvar(usuario, producao).getResposta());
+	public Resposta salvar(@RequestBody ProducaoProprietario producaoProprietario, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.indiceProducaoSalvar(usuario, producaoProprietario).getResposta());
 	}
 	
 	@RequestMapping(value = "/visualizar", method = RequestMethod.GET)

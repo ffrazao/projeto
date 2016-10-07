@@ -12,14 +12,14 @@ import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioNumero;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.ItemNomeResultado;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ItemNome;
-import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoForma;
-import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoFormaComposicao;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoComposicao;
 
 class ProducaoCalculo {
 
-	public static String getComposicao(ProducaoForma producaoForma) {
+	public static String getComposicao(Producao producao) {
 		List<Integer> idList = new ArrayList<Integer>();
-		for (ProducaoFormaComposicao composicao : producaoForma.getProducaoFormaComposicaoList()) {
+		for (ProducaoComposicao composicao : producao.getProducaoComposicaoList()) {
 			idList.add(composicao.getFormaProducaoValor().getId());
 		}
 		Collections.sort(idList);
@@ -52,22 +52,22 @@ class ProducaoCalculo {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void acumulaItem(String composicaoProducaoFormaId, ProducaoForma producaoForma, Object publicoAlvoId, boolean confirmado) {
+	public void acumulaItem(String composicaoProducaoId, Producao producao, Object publicoAlvoId, boolean confirmado) {
 		CalculoItem calculo = null;
 
-		if (matriz.containsKey(composicaoProducaoFormaId)) {
-			calculo = matriz.get(composicaoProducaoFormaId);
+		if (matriz.containsKey(composicaoProducaoId)) {
+			calculo = matriz.get(composicaoProducaoId);
 		} else {
 			calculo = new CalculoItem();
 		}
 
-		if (!confirmado || (confirmado && producaoForma.getDataConfirmacao() != null)) {
-			calculo.getProducaoFormaTotal().setItemAValor(acumula(producaoForma.getItemAValor(), calculo.getProducaoFormaTotal().getItemAValor()));
-			calculo.getProducaoFormaTotal().setItemBValor(acumula(producaoForma.getItemBValor(), calculo.getProducaoFormaTotal().getItemBValor()));
-			calculo.getProducaoFormaTotal().setItemCValor(acumula(producaoForma.getItemCValor(), calculo.getProducaoFormaTotal().getItemCValor()));
-			calculo.getProducaoFormaTotal().setVolume(acumula(producaoForma.getVolume(), calculo.getProducaoFormaTotal().getVolume()));
-			calculo.getProducaoFormaTotal().setValorUnitario(acumula(producaoForma.getValorUnitario(), calculo.getProducaoFormaTotal().getValorUnitario()));
-			calculo.getProducaoFormaTotal().setValorTotal(acumula(producaoForma.getValorTotal(), calculo.getProducaoFormaTotal().getValorTotal()));
+		if (!confirmado || (confirmado && producao.getDataConfirmacao() != null)) {
+			calculo.getProducaoTotal().setItemAValor(acumula(producao.getItemAValor(), calculo.getProducaoTotal().getItemAValor()));
+			calculo.getProducaoTotal().setItemBValor(acumula(producao.getItemBValor(), calculo.getProducaoTotal().getItemBValor()));
+			calculo.getProducaoTotal().setItemCValor(acumula(producao.getItemCValor(), calculo.getProducaoTotal().getItemCValor()));
+			calculo.getProducaoTotal().setVolume(acumula(producao.getVolume(), calculo.getProducaoTotal().getVolume()));
+			calculo.getProducaoTotal().setValorUnitario(acumula(producao.getValorUnitario(), calculo.getProducaoTotal().getValorUnitario()));
+			calculo.getProducaoTotal().setValorTotal(acumula(producao.getValorTotal(), calculo.getProducaoTotal().getValorTotal()));
 
 			if (publicoAlvoId != null) {
 				if (publicoAlvoId instanceof Integer) {
@@ -76,11 +76,11 @@ class ProducaoCalculo {
 					calculo.getPublicoAlvoList().addAll((Set<Integer>) publicoAlvoId);
 				}
 			} else {
-				calculo.getProducaoFormaTotal().setQuantidadeProdutores(acumula(producaoForma.getQuantidadeProdutores(), calculo.getProducaoFormaTotal().getQuantidadeProdutores()).intValue());
+				calculo.getProducaoTotal().setQuantidadeProdutores(acumula(producao.getQuantidadeProdutores(), calculo.getProducaoTotal().getQuantidadeProdutores()).intValue());
 			}
 		}
 
-		matriz.put(composicaoProducaoFormaId, calculo);
+		matriz.put(composicaoProducaoId, calculo);
 	}
 
 	public void atualizarMedias(CalculoItem calculoItem) {
@@ -88,56 +88,56 @@ class ProducaoCalculo {
 		ItemNome itemB = (ItemNome) this.bemClassificacaoList.get("itemB");
 		ItemNome itemC = (ItemNome) this.bemClassificacaoList.get("itemC");
 
-		if (calculoItem.getProducaoFormaTotal().getItemAValor() != null && itemA != null && ItemNomeResultado.M.equals(itemA.getResultado())) {
+		if (calculoItem.getProducaoTotal().getItemAValor() != null && itemA != null && ItemNomeResultado.M.equals(itemA.getResultado())) {
 			BigDecimal vlr = new BigDecimal("0");
-			if (calculoItem.getProducaoFormaTotal().getItemBValor() != null && ItemNomeResultado.S.equals(itemB.getResultado())) {
-				vlr = vlr.add(calculoItem.getProducaoFormaTotal().getItemBValor(), UtilitarioNumero.BIG_DECIMAL_PRECISAO);
+			if (calculoItem.getProducaoTotal().getItemBValor() != null && ItemNomeResultado.S.equals(itemB.getResultado())) {
+				vlr = vlr.add(calculoItem.getProducaoTotal().getItemBValor(), UtilitarioNumero.BIG_DECIMAL_PRECISAO);
 			}
-			if (calculoItem.getProducaoFormaTotal().getItemCValor() != null && ItemNomeResultado.S.equals(itemC.getResultado())) {
-				vlr = vlr.add(calculoItem.getProducaoFormaTotal().getItemCValor(), UtilitarioNumero.BIG_DECIMAL_PRECISAO);
+			if (calculoItem.getProducaoTotal().getItemCValor() != null && ItemNomeResultado.S.equals(itemC.getResultado())) {
+				vlr = vlr.add(calculoItem.getProducaoTotal().getItemCValor(), UtilitarioNumero.BIG_DECIMAL_PRECISAO);
 			}
 			if (BigDecimal.ZERO.equals(vlr)) {
-				calculoItem.getProducaoFormaTotal().setItemAValor(BigDecimal.ZERO);
+				calculoItem.getProducaoTotal().setItemAValor(BigDecimal.ZERO);
 			} else {
-				calculoItem.getProducaoFormaTotal().setItemAValor(calculoItem.getProducaoFormaTotal().getVolume().divide(vlr, UtilitarioNumero.BIG_DECIMAL_PRECISAO));
+				calculoItem.getProducaoTotal().setItemAValor(calculoItem.getProducaoTotal().getVolume().divide(vlr, UtilitarioNumero.BIG_DECIMAL_PRECISAO));
 			}
 		}
 
-		if (calculoItem.getProducaoFormaTotal().getItemBValor() != null && itemB != null && ItemNomeResultado.M.equals(itemB.getResultado())) {
+		if (calculoItem.getProducaoTotal().getItemBValor() != null && itemB != null && ItemNomeResultado.M.equals(itemB.getResultado())) {
 			BigDecimal vlr = new BigDecimal("0");
-			if (calculoItem.getProducaoFormaTotal().getItemAValor() != null && ItemNomeResultado.S.equals(itemA.getResultado())) {
-				vlr = vlr.add(calculoItem.getProducaoFormaTotal().getItemAValor(), UtilitarioNumero.BIG_DECIMAL_PRECISAO);
+			if (calculoItem.getProducaoTotal().getItemAValor() != null && ItemNomeResultado.S.equals(itemA.getResultado())) {
+				vlr = vlr.add(calculoItem.getProducaoTotal().getItemAValor(), UtilitarioNumero.BIG_DECIMAL_PRECISAO);
 			}
-			if (calculoItem.getProducaoFormaTotal().getItemCValor() != null && ItemNomeResultado.S.equals(itemC.getResultado())) {
-				vlr = vlr.add(calculoItem.getProducaoFormaTotal().getItemCValor(), UtilitarioNumero.BIG_DECIMAL_PRECISAO);
+			if (calculoItem.getProducaoTotal().getItemCValor() != null && ItemNomeResultado.S.equals(itemC.getResultado())) {
+				vlr = vlr.add(calculoItem.getProducaoTotal().getItemCValor(), UtilitarioNumero.BIG_DECIMAL_PRECISAO);
 			}
 			if (BigDecimal.ZERO.equals(vlr)) {
-				calculoItem.getProducaoFormaTotal().setItemBValor(BigDecimal.ZERO);
+				calculoItem.getProducaoTotal().setItemBValor(BigDecimal.ZERO);
 			} else {
-				calculoItem.getProducaoFormaTotal().setItemBValor(calculoItem.getProducaoFormaTotal().getVolume().divide(vlr, UtilitarioNumero.BIG_DECIMAL_PRECISAO));
+				calculoItem.getProducaoTotal().setItemBValor(calculoItem.getProducaoTotal().getVolume().divide(vlr, UtilitarioNumero.BIG_DECIMAL_PRECISAO));
 			}
 		}
 
-		if (calculoItem.getProducaoFormaTotal().getItemCValor() != null && itemC != null && ItemNomeResultado.M.equals(itemC.getResultado())) {
+		if (calculoItem.getProducaoTotal().getItemCValor() != null && itemC != null && ItemNomeResultado.M.equals(itemC.getResultado())) {
 			BigDecimal vlr = new BigDecimal("0");
-			if (calculoItem.getProducaoFormaTotal().getItemAValor() != null && ItemNomeResultado.S.equals(itemA.getResultado())) {
-				vlr = vlr.add(calculoItem.getProducaoFormaTotal().getItemAValor(), UtilitarioNumero.BIG_DECIMAL_PRECISAO);
+			if (calculoItem.getProducaoTotal().getItemAValor() != null && ItemNomeResultado.S.equals(itemA.getResultado())) {
+				vlr = vlr.add(calculoItem.getProducaoTotal().getItemAValor(), UtilitarioNumero.BIG_DECIMAL_PRECISAO);
 			}
-			if (calculoItem.getProducaoFormaTotal().getItemBValor() != null && ItemNomeResultado.S.equals(itemB.getResultado())) {
-				vlr = vlr.add(calculoItem.getProducaoFormaTotal().getItemBValor(), UtilitarioNumero.BIG_DECIMAL_PRECISAO);
+			if (calculoItem.getProducaoTotal().getItemBValor() != null && ItemNomeResultado.S.equals(itemB.getResultado())) {
+				vlr = vlr.add(calculoItem.getProducaoTotal().getItemBValor(), UtilitarioNumero.BIG_DECIMAL_PRECISAO);
 			}
 			if (BigDecimal.ZERO.equals(vlr)) {
-				calculoItem.getProducaoFormaTotal().setItemCValor(BigDecimal.ZERO);
+				calculoItem.getProducaoTotal().setItemCValor(BigDecimal.ZERO);
 			} else {
-				calculoItem.getProducaoFormaTotal().setItemCValor(calculoItem.getProducaoFormaTotal().getVolume().divide(vlr, UtilitarioNumero.BIG_DECIMAL_PRECISAO));
+				calculoItem.getProducaoTotal().setItemCValor(calculoItem.getProducaoTotal().getVolume().divide(vlr, UtilitarioNumero.BIG_DECIMAL_PRECISAO));
 			}
 		}
 
-		if (calculoItem.getProducaoFormaTotal().getVolume() != null && calculoItem.getProducaoFormaTotal().getValorTotal() != null) {
-			if (BigDecimal.ZERO.equals(calculoItem.getProducaoFormaTotal().getVolume())) {
-				calculoItem.getProducaoFormaTotal().setValorUnitario(BigDecimal.ZERO);
+		if (calculoItem.getProducaoTotal().getVolume() != null && calculoItem.getProducaoTotal().getValorTotal() != null) {
+			if (BigDecimal.ZERO.equals(calculoItem.getProducaoTotal().getVolume())) {
+				calculoItem.getProducaoTotal().setValorUnitario(BigDecimal.ZERO);
 			} else {
-				calculoItem.getProducaoFormaTotal().setValorUnitario(calculoItem.getProducaoFormaTotal().getValorTotal().divide(calculoItem.getProducaoFormaTotal().getVolume(), UtilitarioNumero.BIG_DECIMAL_PRECISAO));
+				calculoItem.getProducaoTotal().setValorUnitario(calculoItem.getProducaoTotal().getValorTotal().divide(calculoItem.getProducaoTotal().getVolume(), UtilitarioNumero.BIG_DECIMAL_PRECISAO));
 			}
 		}
 	}
@@ -157,12 +157,12 @@ class ProducaoCalculo {
 	public void totalizar() {
 		ProducaoCalculo temp = new ProducaoCalculo(bemClassificacaoList, null);
 		for (Map.Entry<String, CalculoItem> item : this.matriz.entrySet()) {
-			temp.acumulaItem("", item.getValue().getProducaoFormaTotal(), item.getValue().getPublicoAlvoList(), false);
+			temp.acumulaItem("", item.getValue().getProducaoTotal(), item.getValue().getPublicoAlvoList(), false);
 		}
 		if (temp.matriz.get("") != null) {
-			this.acumulaItem("", temp.matriz.get("").getProducaoFormaTotal(), temp.matriz.get("").getPublicoAlvoList(), false);
+			this.acumulaItem("", temp.matriz.get("").getProducaoTotal(), temp.matriz.get("").getPublicoAlvoList(), false);
 		} else {
-			this.acumulaItem("", new ProducaoForma(), null, false);
+			this.acumulaItem("", new Producao(), null, false);
 		}
 	}
 }

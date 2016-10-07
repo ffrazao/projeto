@@ -85,13 +85,13 @@
                 </div>
                 <!-- Tag-input-->
                 <div class="form-group" title="Bens de Produção">
-                    <label class="col-md-4 control-label" for="bemList">
+                    <label class="col-md-4 control-label" for="bemClassificadoList">
                         Bens de Produção
                     </label>
                     <div class="col-md-7">
-                        <tags-input id="bemList" name="bemList" ng-model="conteudo.cadastro.filtro.bemList" display-property="nome" placeholder="Digite o nome do Bem de Produção" 
+                        <tags-input id="bemClassificadoList" name="bemClassificadoList" ng-model="conteudo.cadastro.filtro.bemClassificadoList" display-property="nome" placeholder="Digite o nome do Bem de Produção" 
                             template="tag-template" add-from-autocomplete-only="true">
-                            <auto-complete source="conteudo.getTagBem($query)" min-length="0" load-on-empty="false"
+                            <auto-complete source="conteudo.getTagBemClassificado($query)" min-length="0" load-on-empty="false"
                             template="autocomplete-template"></auto-complete>
                         </tags-input>
                         <script type="text/ng-template" id="tag-template" >
@@ -112,11 +112,11 @@
                                 </div>
                             </div>
                         </script>
-                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.bemList.$error.leftoverText">
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.bemClassificadoList.$error.leftoverText">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             Valor Inválido!
                         </div>
-                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.bemList.$error.required">
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.bemClassificadoList.$error.required">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             Campo Obrigatório
                         </div>

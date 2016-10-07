@@ -17,12 +17,12 @@ import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.ater.ComunidadeDao;
 import br.gov.df.emater.aterwebsrv.dao.ater.PropriedadeRuralDao;
 import br.gov.df.emater.aterwebsrv.dao.funcional.UnidadeOrganizacionalDao;
-import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoDao;
+import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoProprietarioDao;
 import br.gov.df.emater.aterwebsrv.modelo.ater.Comunidade;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoProprietario;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
-import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoForma;
 
 @Service("IndiceProducaoSalvarPrincipalCmd")
 public class SalvarPrincipalCmd extends _Comando {
@@ -31,7 +31,7 @@ public class SalvarPrincipalCmd extends _Comando {
 	private ComunidadeDao comunidadeDao;
 
 	@Autowired
-	private ProducaoDao dao;
+	private ProducaoProprietarioDao dao;
 
 	@Autowired
 	private EntityManager em;
@@ -51,58 +51,58 @@ public class SalvarPrincipalCmd extends _Comando {
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		Integer id = (Integer) contexto.getResposta();
-		Producao producao = dao.findOne(id);
+		ProducaoProprietario producaoProprietario = dao.findOne(id);
 
 		// se a producao que acabaou de ser salva nao for a principal, ou seja,
 		// estimativa da região
-		if (producao.getUnidadeOrganizacional() == null && producao.getPropriedadeRural() != null) {
+		if (producaoProprietario.getUnidadeOrganizacional() == null && producaoProprietario.getPropriedadeRural() != null) {
 			// verificar se existe a producao principal da regiao esperada
-			PropriedadeRural pr = propriedadeRuralDao.findOne(producao.getPropriedadeRural().getId());
+			PropriedadeRural pr = propriedadeRuralDao.findOne(producaoProprietario.getPropriedadeRural().getId());
 			if (pr.getComunidade() == null) {
 				return false;
 			}
 			Comunidade comunidade = comunidadeDao.findOne(pr.getComunidade().getId());
 			UnidadeOrganizacional unidadeOrganizacional = unidadeOrganizacionalDao.findOne(comunidade.getUnidadeOrganizacional().getId());
-			Producao producaoPrincipal = dao.findOneByAnoAndBemAndUnidadeOrganizacionalAndPublicoAlvoIsNullAndPropriedadeRuralIsNull(producao.getAno(), producao.getBem(), unidadeOrganizacional);
-			if (producaoPrincipal == null) {
+			ProducaoProprietario producaoProprietarioPrincipal = dao.findOneByAnoAndBemClassificadoAndUnidadeOrganizacionalAndPublicoAlvoIsNullAndPropriedadeRuralIsNull(producaoProprietario.getAno(), producaoProprietario.getBemClassificado(), unidadeOrganizacional);
+			if (producaoProprietarioPrincipal == null) {
 				// se nao existe entao criar com base no registro atual
-				producaoPrincipal = new Producao(producao);
-				producaoPrincipal.setUnidadeOrganizacional(unidadeOrganizacional);
-				producaoPrincipal.setPropriedadeRural(null);
-				producaoPrincipal.setPublicoAlvo(null);
+				producaoProprietarioPrincipal = new ProducaoProprietario(producaoProprietario);
+				producaoProprietarioPrincipal.setUnidadeOrganizacional(unidadeOrganizacional);
+				producaoProprietarioPrincipal.setPropriedadeRural(null);
+				producaoProprietarioPrincipal.setPublicoAlvo(null);
 			} else {
 				// se existir, verificar se todas as formas de produção foram
 				// previstas
-				final List<ProducaoForma> producaoFormaNovoList = new ArrayList<>();
-				for (ProducaoForma producaoForma : producao.getProducaoFormaList()) {
+				final List<Producao> producaoNovoList = new ArrayList<>();
+				for (Producao producao : producaoProprietario.getProducaoList()) {
 					boolean encontrou = false;
-					final String composicao = getComposicaoValorId(producaoForma);
-					if (!CollectionUtils.isEmpty(producaoPrincipal.getProducaoFormaList())) {
-						for (ProducaoForma producaoFormaPrincipal : producaoPrincipal.getProducaoFormaList()) {
-							if (getComposicaoValorId(producaoFormaPrincipal).equals(composicao)) {
+					final String composicao = getComposicaoValorId(producao);
+					if (!CollectionUtils.isEmpty(producaoProprietarioPrincipal.getProducaoList())) {
+						for (Producao producaoPrincipal : producaoProprietarioPrincipal.getProducaoList()) {
+							if (getComposicaoValorId(producaoPrincipal).equals(composicao)) {
 								encontrou = true;
 								break;
 							}
 						}
 					}
 					if (!encontrou) {
-						producaoFormaNovoList.add(new ProducaoForma(producaoForma));
+						producaoNovoList.add(new Producao(producao));
 					}
 				}
 				// se houveram novas formas de produção
-				if (!CollectionUtils.isEmpty(producaoFormaNovoList)) {
+				if (!CollectionUtils.isEmpty(producaoNovoList)) {
 					// inserir na producao principal
-					if (producaoPrincipal.getProducaoFormaList() == null) {
-						producaoPrincipal.setProducaoFormaList(new ArrayList<>());
+					if (producaoProprietarioPrincipal.getProducaoList() == null) {
+						producaoProprietarioPrincipal.setProducaoList(new ArrayList<>());
 					}
-					producaoFormaNovoList.addAll(producaoPrincipal.getProducaoFormaList());
-					producaoPrincipal.setProducaoFormaList(producaoFormaNovoList);
-//					producaoPrincipal.getProducaoFormaList().forEach((producaoForma)->producaoFormaNovoList.add(producaoForma));
-//					producaoPrincipal.setProducaoFormaList(producaoFormaNovoList);
+					producaoNovoList.addAll(producaoProprietarioPrincipal.getProducaoList());
+					producaoProprietarioPrincipal.setProducaoList(producaoNovoList);
+//					producaoPrincipal.getProducaoList().forEach((producao)->producaoNovoList.add(producao));
+//					producaoPrincipal.setProducaoList(producaoNovoList);
 				}
 			}
-			em.detach(producaoPrincipal);
-			facadeBo.indiceProducaoSalvar(contexto.getUsuario(), producaoPrincipal);
+			em.detach(producaoProprietarioPrincipal);
+			facadeBo.indiceProducaoSalvar(contexto.getUsuario(), producaoProprietarioPrincipal);
 		}
 		
 		contexto.setResposta(id);

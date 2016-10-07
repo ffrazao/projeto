@@ -26,7 +26,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
-import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Bem;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificado;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.UnidadeMedida;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonFormatarBigDecimal;
 
@@ -41,8 +41,8 @@ public class CustoProducao extends EntidadeBase implements _ChavePrimaria<Intege
 	private BigDecimal area;
 
 	@ManyToOne
-	@JoinColumn(name = "bem_id")
-	private Bem bem;
+	@JoinColumn(name = "bem_classificado_id")
+	private BemClassificado bemClassificado;
 
 	@OneToMany(mappedBy = "custoProducao", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private List<CustoProducaoFormaProducao> formaProducaoList;
@@ -73,11 +73,11 @@ public class CustoProducao extends EntidadeBase implements _ChavePrimaria<Intege
 		super(id);
 	}
 
-	public CustoProducao(Integer id, String nomeFormaProducao, Bem bem, BigDecimal area, BigDecimal produtividade, UnidadeMedida unidadeMedida, List<CustoProducaoItem> itens) {
+	public CustoProducao(Integer id, String nomeFormaProducao, BemClassificado bemClassificado, BigDecimal area, BigDecimal produtividade, UnidadeMedida unidadeMedida, List<CustoProducaoItem> itens) {
 		super();
 		this.id = id;
 		this.nomeFormaProducao = nomeFormaProducao;
-		this.bem = bem;
+		this.bemClassificado = bemClassificado;
 		this.area = area;
 		this.produtividade = produtividade;
 		this.unidadeMedida = unidadeMedida;
@@ -93,10 +93,10 @@ public class CustoProducao extends EntidadeBase implements _ChavePrimaria<Intege
 		if (getClass() != obj.getClass())
 			return false;
 		CustoProducao other = (CustoProducao) obj;
-		if (bem == null) {
-			if (other.bem != null)
+		if (bemClassificado == null) {
+			if (other.bemClassificado != null)
 				return false;
-		} else if (!bem.equals(other.bem))
+		} else if (!bemClassificado.equals(other.bemClassificado))
 			return false;
 		if (formaProducaoList == null) {
 			if (other.formaProducaoList != null)
@@ -120,8 +120,8 @@ public class CustoProducao extends EntidadeBase implements _ChavePrimaria<Intege
 		return area;
 	}
 
-	public Bem getBem() {
-		return bem;
+	public BemClassificado getBemClassificado() {
+		return bemClassificado;
 	}
 
 	public List<CustoProducaoFormaProducao> getFormaProducaoList() {
@@ -153,7 +153,7 @@ public class CustoProducao extends EntidadeBase implements _ChavePrimaria<Intege
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((bem == null) ? 0 : bem.hashCode());
+		result = prime * result + ((bemClassificado == null) ? 0 : bemClassificado.hashCode());
 		result = prime * result + ((formaProducaoList == null) ? 0 : formaProducaoList.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((nomeFormaProducao == null) ? 0 : nomeFormaProducao.hashCode());
@@ -161,15 +161,15 @@ public class CustoProducao extends EntidadeBase implements _ChavePrimaria<Intege
 	}
 
 	public CustoProducao infoBasica() {
-		return new CustoProducao(this.id, this.nomeFormaProducao, infoBasicaReg(this.bem), this.area, this.produtividade, infoBasicaReg(this.unidadeMedida), infoBasicaList(this.itens));
+		return new CustoProducao(this.id, this.nomeFormaProducao, infoBasicaReg(this.bemClassificado), this.area, this.produtividade, infoBasicaReg(this.unidadeMedida), infoBasicaList(this.itens));
 	}
 
 	public void setArea(BigDecimal area) {
 		this.area = area;
 	}
 
-	public void setBem(Bem bem) {
-		this.bem = bem;
+	public void setBemClassificado(BemClassificado bemClassificado) {
+		this.bemClassificado = bemClassificado;
 	}
 
 	public void setFormaProducaoList(List<CustoProducaoFormaProducao> formaProducaoList) {

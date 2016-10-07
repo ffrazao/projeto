@@ -15,8 +15,8 @@ import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 
 @Entity
-@Table(name = "bem", schema = EntidadeBase.INDICE_PRODUCAO_SCHEMA)
-public class Bem extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<Bem> {
+@Table(name = "bem_classificado", schema = EntidadeBase.INDICE_PRODUCAO_SCHEMA)
+public class BemClassificado extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<BemClassificado> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -30,17 +30,17 @@ public class Bem extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBa
 
 	private String nome;
 
-	public Bem() {
+	public BemClassificado() {
 		super();
 	}
 
-	public Bem(Integer id, String nome, BemClassificacao bemClassificacao) {
+	public BemClassificado(Integer id, String nome, BemClassificacao bemClassificacao) {
 		this(id);
 		setNome(nome);
 		setBemClassificacao(bemClassificacao);
 	}
 
-	public Bem(Serializable id) {
+	public BemClassificado(Serializable id) {
 		super(id);
 	}
 
@@ -58,8 +58,8 @@ public class Bem extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBa
 	}
 
 	@Override
-	public Bem infoBasica() {
-		return new Bem(this.id, this.nome, this.bemClassificacao != null ? new BemClassificacao(this.bemClassificacao.getId()) : null);
+	public BemClassificado infoBasica() {
+		return new BemClassificado(this.id, this.nome, this.bemClassificacao != null ? new BemClassificacao(this.bemClassificacao.getId()) : null);
 	}
 
 	public void setBemClassificacao(BemClassificacao bemClassificacao) {

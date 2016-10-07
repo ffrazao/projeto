@@ -7,13 +7,13 @@ import org.springframework.stereotype.Service;
 import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
-import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoDao;
+import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoProprietarioDao;
 
 @Service("IndiceProducaoExcluirCmd")
 public class ExcluirCmd extends _Comando {
 
 	@Autowired
-	private ProducaoDao dao;
+	private ProducaoProprietarioDao dao;
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {

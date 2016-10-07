@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioNumero;
-import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoForma;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 
@@ -33,7 +33,7 @@ public enum FormulaProduto {
 		return this.descricao;
 	}
 
-	public BigDecimal volume(ProducaoForma producaoForma) throws InterruptedException, ExecutionException {
+	public BigDecimal volume(Producao producaoForma) throws InterruptedException, ExecutionException {
 		// ver detalhes em http://projects.congrace.de/exp4j/index.html
 		List<String> variaveis = new ArrayList<String>();
 		if (producaoForma.getItemAValor() != null) {

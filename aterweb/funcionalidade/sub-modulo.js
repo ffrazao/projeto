@@ -126,10 +126,10 @@ angular.module(pNmModulo).controller(pNmController,
             editarItem($scope.funcionalidadeModuloNvg.selecao.item.modulo, item.modulo);
         } else if ($scope.funcionalidadeModuloNvg.selecao.items && $scope.funcionalidadeModuloNvg.selecao.items.length) {
             for (i in $scope.funcionalidadeModuloNvg.selecao.items) {
-                for (j in $scope.cadastro.registro.producaoFormaList) {
-                    if (angular.equals($scope.funcionalidadeModuloNvg.selecao.items[i], $scope.cadastro.registro.producaoFormaList[j])) {
-                        item = angular.copy($scope.cadastro.registro.producaoFormaList[j]);
-                        editarItem($scope.cadastro.registro.producaoFormaList[j].modulo, item.modulo, i);
+                for (j in $scope.cadastro.registro.producaoList) {
+                    if (angular.equals($scope.funcionalidadeModuloNvg.selecao.items[i], $scope.cadastro.registro.producaoList[j])) {
+                        item = angular.copy($scope.cadastro.registro.producaoList[j]);
+                        editarItem($scope.cadastro.registro.producaoList[j].modulo, item.modulo, i);
                         break;
                     }
                 }

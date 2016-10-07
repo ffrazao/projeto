@@ -26,8 +26,8 @@ public class BemFormaProducaoMedia extends EntidadeBase implements _ChavePrimari
 	private static final long serialVersionUID = 1L;
 
 	@ManyToOne
-	@JoinColumn(name = "bem_id")
-	private Bem bem;
+	@JoinColumn(name = "bem_classificado_id")
+	private BemClassificado bemClassificado;
 
 	@OneToMany(mappedBy = "bemFormaProducaoMedia")
 	private List<BemFormaProducaoMediaComposicao> bemFormaProducaoMediaComposicaoList;
@@ -70,8 +70,8 @@ public class BemFormaProducaoMedia extends EntidadeBase implements _ChavePrimari
 		super();
 	}
 
-	public Bem getBem() {
-		return bem;
+	public BemClassificado getBemClassificado() {
+		return bemClassificado;
 	}
 
 	public List<BemFormaProducaoMediaComposicao> getBemFormaProducaoMediaComposicaoList() {
@@ -119,8 +119,8 @@ public class BemFormaProducaoMedia extends EntidadeBase implements _ChavePrimari
 		return volume;
 	}
 
-	public void setBem(Bem bem) {
-		this.bem = bem;
+	public void setBemClassificado(BemClassificado bemClassificado) {
+		this.bemClassificado = bemClassificado;
 	}
 
 	public void setBemFormaProducaoMediaComposicaoList(List<BemFormaProducaoMediaComposicao> bemFormaProducaoMediaComposicaoList) {

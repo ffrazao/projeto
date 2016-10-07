@@ -19,15 +19,15 @@ import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoDao;
 import br.gov.df.emater.aterwebsrv.dao.ferramenta.UtilDao;
 import br.gov.df.emater.aterwebsrv.dao.funcional.UnidadeOrganizacionalDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.BemDao;
+import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoProprietarioDao;
+import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoComposicaoDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoDao;
-import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoFormaComposicaoDao;
-import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoFormaDao;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioNumero;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FormulaProduto;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.UnidadeOrganizacionalClassificacao;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoProprietario;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
-import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoForma;
-import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoFormaComposicao;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoComposicao;
 
 @Service("IndiceProducaoSalvarCmd")
 public class SalvarCmd extends _SalvarCmd {
@@ -36,10 +36,10 @@ public class SalvarCmd extends _SalvarCmd {
 	private BemDao bemDao;
 
 	@Autowired
-	private ProducaoDao dao;
+	private ProducaoProprietarioDao dao;
 
 	@Autowired
-	private ProducaoFormaComposicaoDao producaoFormaComposicaoDao;
+	private ProducaoComposicaoDao producaoComposicaoDao;
 
 	@Autowired
 	private UnidadeOrganizacionalDao unidadeOrganizacionalDao;
@@ -51,7 +51,7 @@ public class SalvarCmd extends _SalvarCmd {
 	private PropriedadeRuralDao propriedadeRuralDao;
 
 	@Autowired
-	private ProducaoFormaDao producaoFormaDao;
+	private ProducaoDao producaoDao;
 
 	@Autowired
 	private UtilDao utilDao;
@@ -62,7 +62,7 @@ public class SalvarCmd extends _SalvarCmd {
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 
-		final Producao result = (Producao) contexto.getRequisicao();
+		final ProducaoProprietario result = (ProducaoProprietario) contexto.getRequisicao();
 
 		// criticar o registro
 		if (result.getUnidadeOrganizacional() == null && result.getPublicoAlvo() == null && result.getPropriedadeRural() == null) {
@@ -71,41 +71,41 @@ public class SalvarCmd extends _SalvarCmd {
 		if (result.getAno() == null) {
 			throw new BoException("Não foi informado o ano da produção.");
 		}
-		if (result.getBem() == null) {
+		if (result.getBemClassificado() == null) {
 			throw new BoException("Não foi informado o bem da produção.");
 		}
-		if (CollectionUtils.isEmpty(result.getProducaoFormaList())) {
+		if (CollectionUtils.isEmpty(result.getProducaoList())) {
 			throw new BoException("Não foi informado a forma de produção do bem.");
 		}
 
 		// atualizar o log do registro
 		logAtualizar(result, contexto);
 
-		limparChavePrimaria(result.getProducaoFormaList());
+		limparChavePrimaria(result.getProducaoList());
 
 		// avaliar e excluir duplicatas de formas de produção
 		final List<String> composicaoList = new ArrayList<>();
-		for (int i = result.getProducaoFormaList().size() - 1; i >= 0; i--) {
-			final ProducaoForma producaoForma = result.getProducaoFormaList().get(i);
-			final String composicao = getComposicaoValorId(producaoForma);
+		for (int i = result.getProducaoList().size() - 1; i >= 0; i--) {
+			final Producao producao = result.getProducaoList().get(i);
+			final String composicao = getComposicaoValorId(producao);
 			if (composicaoList.contains(composicao)) {
 				// remover as formas de produção duplicadas
-				if (producaoForma.getId() != null && producaoFormaDao.exists(producaoForma.getId())) {
-					producaoFormaDao.delete(producaoForma.getId());
+				if (producao.getId() != null && producaoDao.exists(producao.getId())) {
+					producaoDao.delete(producao.getId());
 				}
-				result.getProducaoFormaList().remove(i);
+				result.getProducaoList().remove(i);
 			}
 			composicaoList.add(composicao);
 		}
 
-		Producao salvo = null;
+		ProducaoProprietario salvo = null;
 		if (result.getPublicoAlvo() != null) {
 			result.setUnidadeOrganizacional(null);
 			result.setPublicoAlvo(publicoAlvoDao.findOne(result.getPublicoAlvo().getId()));
 			if (result.getPropriedadeRural() != null) {
 				result.setPropriedadeRural(propriedadeRuralDao.findOne(result.getPropriedadeRural().getId()));
 			}
-			salvo = dao.findOneByAnoAndBemAndPublicoAlvoAndPropriedadeRuralAndUnidadeOrganizacionalIsNull(result.getAno(), result.getBem(), result.getPublicoAlvo(), result.getPropriedadeRural());
+			salvo = dao.findOneByAnoAndBemClassificadoAndPublicoAlvoAndPropriedadeRuralAndUnidadeOrganizacionalIsNull(result.getAno(), result.getBemClassificado(), result.getPublicoAlvo(), result.getPropriedadeRural());
 		} else {
 			if (result.getUnidadeOrganizacional() == null) {
 				throw new BoException("Não foi informada a Unidade Organizacional responsável pela produção.");
@@ -118,7 +118,7 @@ public class SalvarCmd extends _SalvarCmd {
 			}
 			result.setPublicoAlvo(null);
 			result.setPropriedadeRural(null);
-			salvo = dao.findOneByAnoAndBemAndUnidadeOrganizacionalAndPublicoAlvoIsNullAndPropriedadeRuralIsNull(result.getAno(), result.getBem(), result.getUnidadeOrganizacional());
+			salvo = dao.findOneByAnoAndBemClassificadoAndUnidadeOrganizacionalAndPublicoAlvoIsNullAndPropriedadeRuralIsNull(result.getAno(), result.getBemClassificado(), result.getUnidadeOrganizacional());
 		}
 
 		// verificar se o registro já foi salvo
@@ -127,52 +127,52 @@ public class SalvarCmd extends _SalvarCmd {
 		}
 
 		// restaurar os dados do bem de produção
-		result.setBem(bemDao.findOne(result.getBem().getId()));
-		List<ProducaoForma> producaoFormaList = new ArrayList<>();
-		for (ProducaoForma pf: result.getProducaoFormaList()) {
+		result.setBemClassificado(bemDao.findOne(result.getBemClassificado().getId()));
+		List<Producao> producaoList = new ArrayList<>();
+		for (Producao pf: result.getProducaoList()) {
 			if (pf.getId() == null) {
-				producaoFormaList.add(new ProducaoForma(pf));
+				producaoList.add(new Producao(pf));
 			} else {
-				producaoFormaList.add(pf);
+				producaoList.add(pf);
 			}
 		};
 
 		dao.save(result);
 
 		// recuperar as chaves primárias do registro salvo
-		producaoFormaRecuperarId(result, salvo);
+		producaoRecuperarId(result, salvo);
 
-		final Map<String, Object> bemClassificacaoDetalhe = utilDao.ipaBemClassificacaoDetalhes(result.getBem().getBemClassificacao());
+		final Map<String, Object> bemClassificacaoDetalhe = utilDao.ipaBemClassificacaoDetalhes(result.getBemClassificado().getBemClassificacao());
 
 		// proceder a exclusao dos registros
-		excluirRegistros(result, "producaoFormaList", producaoFormaDao);
+		excluirRegistros(result, "producaoList", producaoDao);
 
 		// salvar a forma de produção
-		producaoFormaList.forEach((producaoForma) -> {
-			producaoForma.setProducao(result);
-			logAtualizar(producaoForma, contexto);
+		producaoList.forEach((producao) -> {
+			producao.setProducaoProprietario(result);
+			logAtualizar(producao, contexto);
 			try {
-				producaoForma.setVolume(((FormulaProduto) bemClassificacaoDetalhe.get("formulaProduto")).volume(producaoForma));
+				producao.setVolume(((FormulaProduto) bemClassificacaoDetalhe.get("formulaProduto")).volume(producao));
 			} catch (Exception e) {
-				producaoForma.setVolume(null);
+				producao.setVolume(null);
 				e.printStackTrace();
 			}
-			if (producaoForma.getVolume() != null && producaoForma.getValorUnitario() != null) {
-				producaoForma.setValorTotal(producaoForma.getVolume().multiply(producaoForma.getValorUnitario(), UtilitarioNumero.BIG_DECIMAL_PRECISAO));
+			if (producao.getVolume() != null && producao.getValorUnitario() != null) {
+				producao.setValorTotal(producao.getVolume().multiply(producao.getValorUnitario(), UtilitarioNumero.BIG_DECIMAL_PRECISAO));
 			} else {
-				producaoForma.setValorTotal(null);
+				producao.setValorTotal(null);
 			}
 			
-			List<ProducaoFormaComposicao> producaoFormaComposicaoList = producaoForma.getProducaoFormaComposicaoList();
+			List<ProducaoComposicao> producaoComposicaoList = producao.getProducaoComposicaoList();
 			
-			producaoFormaDao.save(producaoForma);
+			producaoDao.save(producao);
 
 			Integer ordem = 0;
-			for (ProducaoFormaComposicao producaoFormaComposicao : producaoFormaComposicaoList) {
+			for (ProducaoComposicao producaoComposicao : producaoComposicaoList) {
 				// se não foi excluido
-				producaoFormaComposicao.setProducaoForma(producaoForma);
-				producaoFormaComposicao.setOrdem(++ordem);
-				producaoFormaComposicaoDao.save(producaoFormaComposicao);
+				producaoComposicao.setProducao(producao);
+				producaoComposicao.setOrdem(++ordem);
+				producaoComposicaoDao.save(producaoComposicao);
 			}
 		});
 
@@ -182,15 +182,15 @@ public class SalvarCmd extends _SalvarCmd {
 		return false;
 	}
 
-	private void producaoFormaRecuperarId(final Producao result, final Producao salvo) {
-		if (salvo != null && !CollectionUtils.isEmpty(salvo.getProducaoFormaList()) && !CollectionUtils.isEmpty(result.getProducaoFormaList())) {
+	private void producaoRecuperarId(final ProducaoProprietario result, final ProducaoProprietario salvo) {
+		if (salvo != null && !CollectionUtils.isEmpty(salvo.getProducaoList()) && !CollectionUtils.isEmpty(result.getProducaoList())) {
 			// recuperar as chaves primárias das formas de produção
-			result.getProducaoFormaList().forEach((producaoForma) -> {
-				String composicao = getComposicaoValorId(producaoForma);
-				salvo.getProducaoFormaList().stream().filter((producaoFormaSalvo) -> producaoFormaSalvo.getId() != null && !producaoFormaSalvo.getId().equals(producaoForma.getId()) && getComposicaoValorId(producaoFormaSalvo).equals(composicao)).collect(Collectors.toList())
-						.forEach((producaoFormaSalvo) -> {
-							producaoForma.setId(producaoFormaSalvo.getId());
-							producaoForma.setProducaoFormaComposicaoList(producaoFormaSalvo.getProducaoFormaComposicaoList());
+			result.getProducaoList().forEach((producao) -> {
+				String composicao = getComposicaoValorId(producao);
+				salvo.getProducaoList().stream().filter((producaoSalvo) -> producaoSalvo.getId() != null && !producaoSalvo.getId().equals(producao.getId()) && getComposicaoValorId(producaoSalvo).equals(composicao)).collect(Collectors.toList())
+						.forEach((producaoSalvo) -> {
+							producao.setId(producaoSalvo.getId());
+							producao.setProducaoComposicaoList(producaoSalvo.getProducaoComposicaoList());
 						});
 			});
 		}

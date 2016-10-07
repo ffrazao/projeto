@@ -1,5 +1,6 @@
 package br.gov.df.emater.aterwebsrv.modelo.indice_producao;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -16,7 +17,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -25,9 +25,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo._LogInclusaoAlteracao;
-import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
-import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
-import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
@@ -49,14 +46,12 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer>, _
 	@JoinColumn(name = "alteracao_usuario_id")
 	private Usuario alteracaoUsuario;
 
-	private Integer ano;
-
-	@ManyToOne
-	@JoinColumn(name = "bem_id")
-	private Bem bem;
-
-	@Column(name = "chave_sisater")
-	private String chaveSisater;
+	@Column(name = "data_confirmacao")
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+	@JsonSerialize(using = JsonSerializerData.class)
+	@JsonDeserialize(using = JsonDeserializerData.class)
+	private Calendar dataConfirmacao;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -73,40 +68,45 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer>, _
 	@JoinColumn(name = "inclusao_usuario_id", updatable = false)
 	private Usuario inclusaoUsuario;
 
+	@Column(name = "item_a_valor")
+	private BigDecimal itemAValor;
+
+	@Column(name = "item_b_valor")
+	private BigDecimal itemBValor;
+
+	@Column(name = "item_c_valor")
+	private BigDecimal itemCValor;
+
+	@ManyToOne
+	@JoinColumn(name = "producao_proprietario_id")
+	private ProducaoProprietario producaoProprietario;
+
 	@OneToMany(mappedBy = "producao")
-	private List<ProducaoForma> producaoFormaList;
+	private List<ProducaoComposicao> producaoComposicaoList;
 
-	@ManyToOne
-	@JoinColumn(name = "propriedade_rural_id")
-	private PropriedadeRural propriedadeRural;
+	@Column(name = "quantidade_produtores")
+	private Integer quantidadeProdutores;
 
-	@ManyToOne
-	@JoinColumn(name = "publico_alvo_id")
-	private PublicoAlvo publicoAlvo;
+	@Column(name = "valor_total")
+	private BigDecimal valorTotal;
 
-	@ManyToOne
-	@JoinColumn(name = "unidade_organizacional_id")
-	private UnidadeOrganizacional unidadeOrganizacional;
+	@Column(name = "valor_unitario")
+	private BigDecimal valorUnitario;
+
+	private BigDecimal volume;
 
 	public Producao() {
 		super();
 	}
 
-	public Producao(Integer id) {
-		super(id);
-	}
-
 	public Producao(Producao producao) {
-		this.ano = producao.getAno();
-		this.bem = producao.getBem();
-		this.propriedadeRural = producao.getPropriedadeRural();
-		this.publicoAlvo = producao.getPublicoAlvo();
-		this.unidadeOrganizacional = producao.getUnidadeOrganizacional();
-		if (!CollectionUtils.isEmpty(producao.getProducaoFormaList())) {
-			if (this.producaoFormaList == null) {
-				this.producaoFormaList = new ArrayList<>();
-			}
-			producao.getProducaoFormaList().forEach((p) -> this.producaoFormaList.add(new ProducaoForma(p)));
+		if (producao.getProducaoComposicaoList() != null) {
+			producao.getProducaoComposicaoList().forEach((pfc) -> {
+				if (this.producaoComposicaoList == null) {
+					this.producaoComposicaoList = new ArrayList<>();
+				}
+				this.producaoComposicaoList.add(new ProducaoComposicao(pfc));
+			});
 		}
 	}
 
@@ -120,16 +120,8 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer>, _
 		return alteracaoUsuario;
 	}
 
-	public Integer getAno() {
-		return ano;
-	}
-
-	public Bem getBem() {
-		return bem;
-	}
-
-	public String getChaveSisater() {
-		return chaveSisater;
+	public Calendar getDataConfirmacao() {
+		return dataConfirmacao;
 	}
 
 	@Override
@@ -147,20 +139,40 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer>, _
 		return inclusaoUsuario;
 	}
 
-	public List<ProducaoForma> getProducaoFormaList() {
-		return producaoFormaList;
+	public BigDecimal getItemAValor() {
+		return itemAValor;
 	}
 
-	public PropriedadeRural getPropriedadeRural() {
-		return propriedadeRural;
+	public BigDecimal getItemBValor() {
+		return itemBValor;
 	}
 
-	public PublicoAlvo getPublicoAlvo() {
-		return publicoAlvo;
+	public BigDecimal getItemCValor() {
+		return itemCValor;
 	}
 
-	public UnidadeOrganizacional getUnidadeOrganizacional() {
-		return unidadeOrganizacional;
+	public ProducaoProprietario getProducaoProprietario() {
+		return producaoProprietario;
+	}
+
+	public List<ProducaoComposicao> getProducaoComposicaoList() {
+		return producaoComposicaoList;
+	}
+
+	public Integer getQuantidadeProdutores() {
+		return quantidadeProdutores;
+	}
+
+	public BigDecimal getValorTotal() {
+		return valorTotal;
+	}
+
+	public BigDecimal getValorUnitario() {
+		return valorUnitario;
+	}
+
+	public BigDecimal getVolume() {
+		return volume;
 	}
 
 	@Override
@@ -173,16 +185,8 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer>, _
 		this.alteracaoUsuario = alteracaoUsuario;
 	}
 
-	public void setAno(Integer ano) {
-		this.ano = ano;
-	}
-
-	public void setBem(Bem bem) {
-		this.bem = bem;
-	}
-
-	public void setChaveSisater(String chaveSisater) {
-		this.chaveSisater = chaveSisater;
+	public void setDataConfirmacao(Calendar dataConfirmacao) {
+		this.dataConfirmacao = dataConfirmacao;
 	}
 
 	@Override
@@ -200,20 +204,40 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer>, _
 		this.inclusaoUsuario = inclusaoUsuario;
 	}
 
-	public void setProducaoFormaList(List<ProducaoForma> producaoFormaList) {
-		this.producaoFormaList = producaoFormaList;
+	public void setItemAValor(BigDecimal itemAValor) {
+		this.itemAValor = itemAValor;
 	}
 
-	public void setPropriedadeRural(PropriedadeRural propriedadeRural) {
-		this.propriedadeRural = propriedadeRural;
+	public void setItemBValor(BigDecimal itemBValor) {
+		this.itemBValor = itemBValor;
 	}
 
-	public void setPublicoAlvo(PublicoAlvo publicoAlvo) {
-		this.publicoAlvo = publicoAlvo;
+	public void setItemCValor(BigDecimal itemCValor) {
+		this.itemCValor = itemCValor;
 	}
 
-	public void setUnidadeOrganizacional(UnidadeOrganizacional unidadeOrganizacional) {
-		this.unidadeOrganizacional = unidadeOrganizacional;
+	public void setProducaoProprietario(ProducaoProprietario producaoProprietario) {
+		this.producaoProprietario = producaoProprietario;
+	}
+
+	public void setProducaoComposicaoList(List<ProducaoComposicao> producaoComposicaoList) {
+		this.producaoComposicaoList = producaoComposicaoList;
+	}
+
+	public void setQuantidadeProdutores(Integer quantidadeProdutores) {
+		this.quantidadeProdutores = quantidadeProdutores;
+	}
+
+	public void setValorTotal(BigDecimal valorTotal) {
+		this.valorTotal = valorTotal;
+	}
+
+	public void setValorUnitario(BigDecimal valorUnitario) {
+		this.valorUnitario = valorUnitario;
+	}
+
+	public void setVolume(BigDecimal volume) {
+		this.volume = volume;
 	}
 
 }

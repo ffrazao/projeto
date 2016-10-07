@@ -123,8 +123,8 @@ angular.module(pNmModulo).controller(pNmController,
 
         item.principal = $scope.navegador.selecao.item;
         item.formula = $scope.formula;
-        if (!item.producaoFormaList) {
-            item.producaoFormaList = [];
+        if (!item.producaoList) {
+            item.producaoList = [];
         }
 
         mensagemSrv.confirmacao(false, form, 'Produção do Produtor', item, null, jaCadastrado).then(function (conteudo) {
@@ -204,7 +204,7 @@ angular.module(pNmModulo).controller(pNmController,
                     }).success(function(resposta) {
                     if (resposta.mensagem === 'OK') {
                         // ano: $scope.navegador.selecao.item[$scope.PRODUCAO_ANO],
-                        // bem: {id: $scope.navegador.selecao.item[$scope.PRODUCAO_BEM_ID]},
+                        // bemClassificado: {id: $scope.navegador.selecao.item[$scope.PRODUCAO_BEM_ID]},
                         if (resposta.resultado && resposta.resultado.length) {
                             var i, j, k;
                             // percorrer todas as propriedades
@@ -256,7 +256,7 @@ angular.module(pNmModulo).controller(pNmController,
         $rootScope.incluir($scope, {id: $scope.navegador.selecao.item[$scope.PRODUCAO_ID]});
     };
     $scope.incluirDepois = function(registro) {
-        $scope.cadastro.apoio.bemClassificacao = $scope.encontraBemClassificacao(registro.bem.bemClassificacao.id);
+        $scope.cadastro.apoio.bemClassificacao = $scope.encontraBemClassificacao(registro.bemClassificado.bemClassificacao.id);
         $scope.cadastro.apoio.producaoUnidadeOrganizacional = false;
         $scope.cadastro.apoio.unidadeOrganizacional = {id: $scope.navegador.selecao.item[$scope.PRODUCAO_UNID_ORG_ID], nome: $scope.navegador.selecao.item[$scope.PRODUCAO_UNID_ORG_NOME], sigla: $scope.navegador.selecao.item[$scope.PRODUCAO_UNID_ORG_SIGLA]};
         $scope.cadastro.apoio.porProdutor = true;
@@ -270,7 +270,7 @@ angular.module(pNmModulo).controller(pNmController,
                 $scope.navegador.mudarEstado('VISUALIZANDO');
                 $scope.crudVaiPara($scope, $scope.stt, 'form',  id);
                 // ajustar o registro
-                $scope.cadastro.apoio.bemClassificacao = $scope.encontraBemClassificacao(resposta.resultado.bem.bemClassificacao.id);
+                $scope.cadastro.apoio.bemClassificacao = $scope.encontraBemClassificacao(resposta.resultado.bemClassificado.bemClassificacao.id);
                 $scope.cadastro.apoio.producaoUnidadeOrganizacional = false;
                 $scope.cadastro.apoio.unidadeOrganizacional = {id: $scope.navegador.selecao.item[$scope.PRODUCAO_UNID_ORG_ID], nome: $scope.navegador.selecao.item[$scope.PRODUCAO_UNID_ORG_NOME], sigla: $scope.navegador.selecao.item[$scope.PRODUCAO_UNID_ORG_SIGLA]};
                 $scope.cadastro.apoio.porProdutor = true;

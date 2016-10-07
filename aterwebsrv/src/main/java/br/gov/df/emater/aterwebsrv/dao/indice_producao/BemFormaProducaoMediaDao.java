@@ -7,12 +7,12 @@ import org.springframework.stereotype.Repository;
 
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
-import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Bem;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificado;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemFormaProducaoMedia;
 
 @Repository("BemFormaProducaoMediaDao")
 public interface BemFormaProducaoMediaDao extends JpaRepository<BemFormaProducaoMedia, Integer> {
 
-	List<BemFormaProducaoMedia> findByBemAndPropriedadeRuralAndPublicoAlvo(Bem bem, PropriedadeRural propriedadeRural, PublicoAlvo publicoAlvo);
+	List<BemFormaProducaoMedia> findByBemClassificadoAndPropriedadeRuralAndPublicoAlvo(BemClassificado bemClassificado, PropriedadeRural propriedadeRural, PublicoAlvo publicoAlvo);
 
 }

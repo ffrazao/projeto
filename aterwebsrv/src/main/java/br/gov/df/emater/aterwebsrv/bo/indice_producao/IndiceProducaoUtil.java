@@ -7,14 +7,14 @@ import java.util.List;
 import org.springframework.util.CollectionUtils;
 
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
-import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoForma;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
 
 public final class IndiceProducaoUtil {
 
-	public static String getComposicaoValorId(ProducaoForma producaoForma) {
+	public static String getComposicaoValorId(Producao producao) {
 		List<Integer> lista = new ArrayList<Integer>();
-		if (!CollectionUtils.isEmpty(producaoForma.getProducaoFormaComposicaoList())) {
-			producaoForma.getProducaoFormaComposicaoList().forEach((composicao)-> lista.add(composicao.getFormaProducaoValor().getId()));
+		if (!CollectionUtils.isEmpty(producao.getProducaoComposicaoList())) {
+			producao.getProducaoComposicaoList().forEach((composicao)-> lista.add(composicao.getFormaProducaoValor().getId()));
 		}
 		Collections.sort(lista);
 		return CollectionUtils.isEmpty(lista) ? "" : UtilitarioString.collectionToString(lista);

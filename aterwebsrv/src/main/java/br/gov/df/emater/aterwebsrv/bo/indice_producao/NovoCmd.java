@@ -7,27 +7,27 @@ import org.springframework.stereotype.Service;
 
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
-import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoDao;
-import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
+import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoProprietarioDao;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoProprietario;
 
 @Service("IndiceProducaoNovoCmd")
 public class NovoCmd extends _Comando {
 
 	@Autowired
-	private ProducaoDao dao;
+	private ProducaoProprietarioDao dao;
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
-		Producao result = (Producao) contexto.getRequisicao();
+		ProducaoProprietario result = (ProducaoProprietario) contexto.getRequisicao();
 
 		if (result == null) {
-			result = new Producao();
+			result = new ProducaoProprietario();
 		} else {
 			if (result.getId() != null) {
-				Producao modelo = dao.findOne(result.getId());
+				ProducaoProprietario modelo = dao.findOne(result.getId());
 				result.setId(null);
 				result.setAno(modelo.getAno());
-				result.setBem(modelo.getBem());
+				result.setBemClassificado(modelo.getBemClassificado());
 			}
 		}
 		if (result.getAno() == null) {

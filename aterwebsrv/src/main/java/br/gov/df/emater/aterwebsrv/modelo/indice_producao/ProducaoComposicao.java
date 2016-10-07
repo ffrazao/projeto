@@ -12,8 +12,8 @@ import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 
 @Entity
-@Table(name = "producao_forma_composicao", schema = EntidadeBase.INDICE_PRODUCAO_SCHEMA)
-public class ProducaoFormaComposicao extends EntidadeBase implements _ChavePrimaria<Integer> {
+@Table(name = "producao_composicao", schema = EntidadeBase.INDICE_PRODUCAO_SCHEMA)
+public class ProducaoComposicao extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -28,20 +28,20 @@ public class ProducaoFormaComposicao extends EntidadeBase implements _ChavePrima
 	private Integer ordem;
 
 	@ManyToOne
-	@JoinColumn(name = "producao_forma_id")
-	private ProducaoForma producaoForma;
+	@JoinColumn(name = "producao_id")
+	private Producao producao;
 
-	public ProducaoFormaComposicao() {
+	public ProducaoComposicao() {
 
 	}
 
-	public ProducaoFormaComposicao(Integer id) {
+	public ProducaoComposicao(Integer id) {
 		super(id);
 	}
 
-	public ProducaoFormaComposicao(ProducaoFormaComposicao producaoFormaComposicao) {
-		this.formaProducaoValor = producaoFormaComposicao.getFormaProducaoValor();
-		this.ordem = producaoFormaComposicao.getOrdem();
+	public ProducaoComposicao(ProducaoComposicao producaoComposicao) {
+		this.formaProducaoValor = producaoComposicao.getFormaProducaoValor();
+		this.ordem = producaoComposicao.getOrdem();
 	}
 
 	public FormaProducaoValor getFormaProducaoValor() {
@@ -57,8 +57,8 @@ public class ProducaoFormaComposicao extends EntidadeBase implements _ChavePrima
 		return ordem;
 	}
 
-	public ProducaoForma getProducaoForma() {
-		return producaoForma;
+	public Producao getProducao() {
+		return producao;
 	}
 
 	public void setFormaProducaoValor(FormaProducaoValor formaProducaoValor) {
@@ -74,8 +74,8 @@ public class ProducaoFormaComposicao extends EntidadeBase implements _ChavePrima
 		this.ordem = ordem;
 	}
 
-	public void setProducaoForma(ProducaoForma producaoForma) {
-		this.producaoForma = producaoForma;
+	public void setProducao(Producao producao) {
+		this.producao = producao;
 	}
 
 }
