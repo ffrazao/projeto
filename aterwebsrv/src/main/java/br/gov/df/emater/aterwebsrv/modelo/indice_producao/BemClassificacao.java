@@ -40,6 +40,9 @@ public class BemClassificacao extends EntidadeBase implements _ChavePrimaria<Int
 	@OneToMany(mappedBy = "bemClassificacao")
 	private List<BemClassificacao> bemClassificacaoList;
 
+	@OneToMany(mappedBy = "bemClassificacao")
+	private List<BemClassificado> bemClassificadoList;
+
 	@Enumerated(EnumType.STRING)
 	private FormulaProduto formula;
 
@@ -73,12 +76,12 @@ public class BemClassificacao extends EntidadeBase implements _ChavePrimaria<Int
 		super(id);
 	}
 
-	public BemClassificacao(Serializable id, String nome, BemClassificacao bemClassificacao,
-			List<BemClassificacao> bemClassificacaoList) {
+	public BemClassificacao(Serializable id, String nome, BemClassificacao bemClassificacao, List<BemClassificacao> bemClassificacaoList, List<BemClassificado> bemClassificadoList) {
 		super(id);
 		setNome(nome);
 		setBemClassificacao(bemClassificacao);
 		setBemClassificacaoList(bemClassificacaoList);
+		setBemClassificadoList(bemClassificadoList);
 	}
 
 	public BemClassificacao getBemClassificacao() {
@@ -95,6 +98,10 @@ public class BemClassificacao extends EntidadeBase implements _ChavePrimaria<Int
 
 	public List<BemClassificacao> getBemClassificacaoList() {
 		return bemClassificacaoList;
+	}
+
+	public List<BemClassificado> getBemClassificadoList() {
+		return bemClassificadoList;
 	}
 
 	public FormulaProduto getFormula() {
@@ -128,9 +135,7 @@ public class BemClassificacao extends EntidadeBase implements _ChavePrimaria<Int
 
 	@Override
 	public BemClassificacao infoBasica() {
-		return new BemClassificacao(getId(), getNome(),
-				bemClassificacao == null ? null : new BemClassificacao(bemClassificacao.id),
-				infoBasicaList(bemClassificacaoList));
+		return new BemClassificacao(getId(), getNome(), bemClassificacao == null ? null : new BemClassificacao(bemClassificacao.id), infoBasicaList(bemClassificacaoList), infoBasicaList(bemClassificadoList));
 
 	}
 
@@ -138,18 +143,20 @@ public class BemClassificacao extends EntidadeBase implements _ChavePrimaria<Int
 		this.bemClassificacao = bemClassificacao;
 	}
 
-	public void setBemClassificacaoFormaProducaoItemList(
-			List<BemClassificacaoFormaProducaoItem> bemClassificacaoFormaProducaoItemList) {
+	public void setBemClassificacaoFormaProducaoItemList(List<BemClassificacaoFormaProducaoItem> bemClassificacaoFormaProducaoItemList) {
 		this.bemClassificacaoFormaProducaoItemList = bemClassificacaoFormaProducaoItemList;
 	}
 
-	public void setBemClassificacaoFormaProducaoValorList(
-			List<BemClassificacaoFormaProducaoValor> bemClassificacaoFormaProducaoValorList) {
+	public void setBemClassificacaoFormaProducaoValorList(List<BemClassificacaoFormaProducaoValor> bemClassificacaoFormaProducaoValorList) {
 		this.bemClassificacaoFormaProducaoValorList = bemClassificacaoFormaProducaoValorList;
 	}
 
 	public void setBemClassificacaoList(List<BemClassificacao> bemClassificacaoList) {
 		this.bemClassificacaoList = bemClassificacaoList;
+	}
+
+	public void setBemClassificadoList(List<BemClassificado> bemClassificadoList) {
+		this.bemClassificadoList = bemClassificadoList;
 	}
 
 	public void setFormula(FormulaProduto formula) {

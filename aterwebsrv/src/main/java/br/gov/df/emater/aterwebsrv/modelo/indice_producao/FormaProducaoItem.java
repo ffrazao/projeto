@@ -35,10 +35,14 @@ public class FormaProducaoItem extends EntidadeBase implements _ChavePrimaria<In
 		super();
 	}
 
-	public FormaProducaoItem(Integer id, String nome, List<FormaProducaoValor> formaProducaoValorList) {
+	public FormaProducaoItem(Integer id, String nome) {
 		super();
 		this.id = id;
 		this.nome = nome;
+	}
+
+	public FormaProducaoItem(Integer id, String nome, List<FormaProducaoValor> formaProducaoValorList) {
+		this(id, nome);
 		this.formaProducaoValorList = formaProducaoValorList;
 	}
 
