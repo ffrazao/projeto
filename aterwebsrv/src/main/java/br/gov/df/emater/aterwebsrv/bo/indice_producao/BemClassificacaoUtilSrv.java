@@ -1,4 +1,4 @@
-package br.gov.df.emater.aterwebsrv.bo.bem_classificacao;
+package br.gov.df.emater.aterwebsrv.bo.indice_producao;
 
 import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaList;
 import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaReg;
@@ -12,9 +12,10 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.BemClassificacaoDao;
+import br.gov.df.emater.aterwebsrv.dto.indice_producao.BemClassificacaoCadDto;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacao;
 
-@Service
+@Service("IndiceProducaoBemClassificacaoUtilSrv")
 public class BemClassificacaoUtilSrv {
 
 	@Autowired
@@ -45,8 +46,12 @@ public class BemClassificacaoUtilSrv {
 	}
 
 	@Cacheable("BemClassificacaoMatriz")
-	public List<BemClassificacao> geraMatriz() {
-		List<BemClassificacao> result = null;
+	public BemClassificacaoCadDto geraMatriz() {
+		BemClassificacaoCadDto result = new BemClassificacaoCadDto();
+		
+		List<BemClassificacao> bemClassificacaoMatrizList = null;
+		List<BemClassificacao> bemClassificacaoList = null;
+		
 		List<BemClassificacao> bancoDados = dao.findAll();
 
 		if (bancoDados != null) {
@@ -66,8 +71,8 @@ public class BemClassificacaoUtilSrv {
 				// captar o dado principal
 				acumulaBemClassificacao(bemClassificacao, item);
 
-				if (result == null) {
-					result = new ArrayList<>();
+				if (bemClassificacaoMatrizList == null) {
+					bemClassificacaoMatrizList = new ArrayList<>();
 				}
 
 				item.setUnidadeMedida(infoBasicaReg(item.getUnidadeMedida()));
@@ -77,9 +82,20 @@ public class BemClassificacaoUtilSrv {
 				item.setBemClassificacaoFormaProducaoItemList(infoBasicaList(item.getBemClassificacaoFormaProducaoItemList()));
 				item.setBemClassificacaoFormaProducaoValorList(infoBasicaList(item.getBemClassificacaoFormaProducaoValorList()));
 
-				result.add(item);
+				bemClassificacaoMatrizList.add(item);
+				
+				if (bemClassificacao.getBemClassificacao() == null) {
+					if (bemClassificacaoList == null) {
+						bemClassificacaoList = new ArrayList<>();
+					}
+					bemClassificacaoList.add(bemClassificacao.infoBasica());
+				}
 			}
 		}
+		
+		result.setBemClassificacaoMatrizList(bemClassificacaoMatrizList);		
+		result.setBemClassificacaoList(bemClassificacaoList);
+		
 		return result;
 	}
 

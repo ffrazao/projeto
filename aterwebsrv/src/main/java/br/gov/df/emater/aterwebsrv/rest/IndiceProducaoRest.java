@@ -23,6 +23,11 @@ public class IndiceProducaoRest {
 	public IndiceProducaoRest() {
 	}
 
+	@RequestMapping(value = "/bem-classificacao-matriz", method = RequestMethod.GET)
+	public Resposta bemClassificacaoMatriz(Principal usuario) throws Exception {
+		return new Resposta(facadeBo.indiceProducaoBemClassificacaoMatriz(usuario).getResposta());
+	}
+
 	@RequestMapping(value = "/editar", method = RequestMethod.POST)
 	public Resposta editar(@RequestBody Producao producao, Principal usuario) throws Exception {
 		return salvar(producao, usuario);
@@ -66,7 +71,7 @@ public class IndiceProducaoRest {
 	public Resposta salvar(@RequestBody Producao producao, Principal usuario) throws Exception {
 		return new Resposta(facadeBo.indiceProducaoSalvar(usuario, producao).getResposta());
 	}
-
+	
 	@RequestMapping(value = "/visualizar", method = RequestMethod.GET)
 	public Resposta visualizar(@RequestParam Integer id, Principal usuario) throws Exception {
 		return new Resposta(facadeBo.indiceProducaoVisualizar(usuario, id).getResposta());

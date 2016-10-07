@@ -1,4 +1,4 @@
-package br.gov.df.emater.aterwebsrv.bo.bem_classificacao;
+package br.gov.df.emater.aterwebsrv.bo.indice_producao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 
-@Service("BemProducaoMatrizCmd")
-public class MatrizCmd extends _Comando {
+@Service("IndiceProducaoBemClassificacaoMatrizCmd")
+public class BemClassificacaoMatrizCmd extends _Comando {
 
 	@Autowired
 	private BemClassificacaoUtilSrv servico;

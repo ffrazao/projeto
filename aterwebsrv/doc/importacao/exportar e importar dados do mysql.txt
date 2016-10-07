@@ -1,13 +1,28 @@
 EXPORTAR
+mysqldump -uemater -p"emater" --hex-blob --default-character-set=utf8 --single-transaction --databases ater atividade credito_rural formulario funcional indice_producao pessoa sistema > dump.sql
 
-mysqldump -uemater -p"emater" --hex-blob --databases ater atividade credito_rural formulario funcional indice_producao pessoa planejamento sistema > dump.sql
-
-
-mysqldump -uemater -p"emater" --default-character-set=utf8 --single-transaction --hex-blob --databases pessoa > pessoa.sql
+mysqldump -uemater -p"emater" --hex-blob --default-character-set=utf8 --single-transaction --databases ater > ater.sql
+mysqldump -uemater -p"emater" --hex-blob --default-character-set=utf8 --single-transaction --databases atividade > atividade.sql
+mysqldump -uemater -p"emater" --hex-blob --default-character-set=utf8 --single-transaction --databases credito_rural > credito_rural.sql
+mysqldump -uemater -p"emater" --hex-blob --default-character-set=utf8 --single-transaction --databases formulario > formulario.sql
+mysqldump -uemater -p"emater" --hex-blob --default-character-set=utf8 --single-transaction --databases funcional > funcional.sql
+mysqldump -uemater -p"emater" --hex-blob --default-character-set=utf8 --single-transaction --databases indice_producao > indice_producao.sql
+mysqldump -uemater -p"emater" --hex-blob --default-character-set=utf8 --single-transaction --databases pessoa > pessoa.sql
+mysqldump -uemater -p"emater" --hex-blob --default-character-set=utf8 --single-transaction --databases sistema > sistema.sql
 
 
 IMPORTAR
-
 mysql -uemater -p
+
 SET GLOBAL max_allowed_packet=1073741824;
+
+set foreign_key_checks = 0;
 source pessoa.sql;
+source sistema.sql;
+source funcional.sql;
+source ater.sql;
+source formulario.sql;
+source atividade.sql;
+source credito_rural.sql;
+source indice_producao.sql;
+set foreign_key_checks = 1;

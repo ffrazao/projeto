@@ -116,8 +116,8 @@ public class FacadeBo implements BeanFactoryAware {
 	}
 
 	@Transactional(readOnly = true)
-	public _Contexto bemProducaoMatriz(Principal usuario) throws Exception {
-		return this._executar(usuario, "BemProducaoMatrizCmd");
+	public _Contexto indiceProducaoBemClassificacaoMatriz(Principal usuario) throws Exception {
+		return this._executar(usuario, "IndiceProducaoBemClassificacaoMatrizCmd");
 	}
 
 	// Comunidade Lista

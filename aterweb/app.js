@@ -12,6 +12,7 @@ var TIMEOUT_TEMPO = 10 * 60;
         'ui.mask', 'ui.utils.masks', 'ui.navbar', 'ngCookies', 'uiGmapgoogle-maps', 'ngFileUpload', 'ngTagsInput', 'ui.tree',
         'ngIdle', 'angular.filter', 'qrScanner', 'webcam', 'textAngular',
         'mensagemSrv', 'segurancaSrv', 'utilSrv', 'frz.form', 'frz.tabela', 'frz.arquivo', 'frz.endereco', 'frz.painel.vidro', 'frz.navegador',
+        'frz.indice.producao', 
         'casa', 'contrato', 'info', 'offline', 'pessoa', 'formulario', 'propriedadeRural', 'atividade', 'indiceProducao', 
         'funcionalidade', 'perfil', 'usuario', 'logAcao', 'projetoCreditoRural', 
         ]);
@@ -23,6 +24,7 @@ var TIMEOUT_TEMPO = 10 * 60;
     });
     angular.module(pNmModulo).factory('modalCadastro', function() {
         'ngInject';
+        
         return null;
     });
     // fim: codigo para habilitar o modal recursivo
@@ -513,7 +515,6 @@ var TIMEOUT_TEMPO = 10 * 60;
             $rootScope.globalFracaoHectares = '2';
             //$rootScope.globalProdutividade = '2';
             $rootScope.globalArea = '2';
-            $rootScope.globalVolume = '2';
             $rootScope.globalProducao = '2';
             $rootScope.globalMonetario = '2';
             $rootScope.globalTaxaJuros = '3';

@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.indice_producao;
 
+import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaList;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -71,10 +73,12 @@ public class BemClassificacao extends EntidadeBase implements _ChavePrimaria<Int
 		super(id);
 	}
 
-	public BemClassificacao(Serializable id, String nome, BemClassificacao bemClassificacao) {
+	public BemClassificacao(Serializable id, String nome, BemClassificacao bemClassificacao,
+			List<BemClassificacao> bemClassificacaoList) {
 		super(id);
 		setNome(nome);
-		setBemClassificacao(bemClassificacao != null ? bemClassificacao.infoBasica() : null);
+		setBemClassificacao(bemClassificacao);
+		setBemClassificacaoList(bemClassificacaoList);
 	}
 
 	public BemClassificacao getBemClassificacao() {
@@ -124,18 +128,23 @@ public class BemClassificacao extends EntidadeBase implements _ChavePrimaria<Int
 
 	@Override
 	public BemClassificacao infoBasica() {
-		return new BemClassificacao(getId(), getNome(), getBemClassificacao());
+		return new BemClassificacao(getId(), getNome(),
+				bemClassificacao == null ? null : new BemClassificacao(bemClassificacao.id),
+				infoBasicaList(bemClassificacaoList));
+
 	}
 
 	public void setBemClassificacao(BemClassificacao bemClassificacao) {
 		this.bemClassificacao = bemClassificacao;
 	}
 
-	public void setBemClassificacaoFormaProducaoItemList(List<BemClassificacaoFormaProducaoItem> bemClassificacaoFormaProducaoItemList) {
+	public void setBemClassificacaoFormaProducaoItemList(
+			List<BemClassificacaoFormaProducaoItem> bemClassificacaoFormaProducaoItemList) {
 		this.bemClassificacaoFormaProducaoItemList = bemClassificacaoFormaProducaoItemList;
 	}
 
-	public void setBemClassificacaoFormaProducaoValorList(List<BemClassificacaoFormaProducaoValor> bemClassificacaoFormaProducaoValorList) {
+	public void setBemClassificacaoFormaProducaoValorList(
+			List<BemClassificacaoFormaProducaoValor> bemClassificacaoFormaProducaoValorList) {
 		this.bemClassificacaoFormaProducaoValorList = bemClassificacaoFormaProducaoValorList;
 	}
 

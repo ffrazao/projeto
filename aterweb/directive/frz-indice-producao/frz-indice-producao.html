@@ -1,0 +1,60 @@
+<div>
+    <div class="input-group">
+        <input type="text" class="form-control" ng-model="apoio.filtro" placeholder="Filtrar por Classificação">
+        <span class="input-group-btn">
+            <div class="btn-group" role="group">
+                <button
+                    class="btn btn-default" 
+                    ng-click="cadastro.apoio.bemClassificacaoFiltro = limparRegistroSelecionadoBemClassificacao(dados)">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </button>
+            </div>
+        </span>
+    </div>
+    <div class="row" style="height: 400px; overflow: scroll;">
+        <script type="text/ng-template" id="nodes_renderer.html">
+            <div ui-tree-handle>
+                <a class="btn btn-primary btn-xs Tooltip" nodrag ng-click="toggleChildren(this)" title="Expandir/Recolher" ng-show="node.bemClassificacaoList.length">
+                    <span class="glyphicon glyphicon-chevron-right" ng-show="collapsed"></span>
+                    <span class="glyphicon glyphicon-chevron-down" ng-show="!collapsed"></span>
+                </a>
+                <span ng-hide="node.bemClassificacaoList.length">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </span>
+                <label>
+                    <input type="checkbox" checklist-model="ngModel" checklist-value="node" checklist-comparator="compareFn">
+                    {{node.nome}}
+                </label>
+                <table width="100%" ng-if="node.formaProducaoList.length">
+                    <tr>
+                        <td colspan="2">&nbsp;</td>
+                        <td style="color: gray"><small>Forma de Produção</small></td>
+                    </tr>
+                    <tr ng-repeat="forma in node.formaProducaoList">
+                        <td width="30%" style="text-align: right">
+                            <small>{{forma[1]}}</small>
+                        </td>
+                        <td width="5%">
+                            &nbsp;
+                        </td>
+                        <td>
+                            <select ng-model="forma[3]" ng-options="opcao[0] as opcao[1] for opcao in forma[2] track by opcao[0]">
+                                <option value="">-- Selecione --</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <ol ui-tree-nodes="" ng-model="node.bemClassificacaoList" ng-class="{hidden: collapsed}">
+                <li ng-repeat="node in node.bemClassificacaoList | orderBy: ['nome'] track by node.id" ui-tree-node ng-include="'nodes_renderer.html'">
+                </li>
+            </ol>
+        </script>
+        <div ui-tree drag-enabled="false">
+            <ol ui-tree-nodes="" ng-model="dados" id="tree-root" ng-class="{hidden: collapsed}">
+                <li ng-repeat="node in dados | orderBy: ['nome'] track by node.id" ui-tree-node ng-include="'nodes_renderer.html'">
+                </li>
+            </ol>
+        </div>
+    </div>
+</div>

@@ -66,6 +66,11 @@ angular.module(pNmModulo).factory(pNmFactory,
                 if (typeof scp.cadastro.apoio.producaoUnidadeOrganizacional === "undefined") {
                     scp.cadastro.apoio.producaoUnidadeOrganizacional = true;
                 }
+                this.bemClassificacaoMatriz().success(function(resposta) {
+                    if (resposta && resposta.resultado) {
+                        scp.cadastro.apoio.bemClassificacaoMatriz = resposta.resultado.bemClassificacaoList;
+                    }
+                });
                 // fim captar as listas de apoio
             },
             filtrar : function(filtro) {
@@ -108,6 +113,9 @@ angular.module(pNmModulo).factory(pNmFactory,
             filtrarProducaoPorPublicoAlvo : function (filtro) {
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
                 return $http.post(this.endereco + '/filtro-producao-publico-alvo', filtro);
+            },
+            bemClassificacaoMatriz : function(id) {
+                return $http.get(this.endereco + '/bem-classificacao-matriz', {cache: true});
             },
         };
         return IndiceProducaoSrv;
