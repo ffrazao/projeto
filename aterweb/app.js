@@ -10,7 +10,7 @@ var TIMEOUT_TEMPO = 10 * 60;
 
     angular.module(pNmModulo, ['ui.bootstrap', 'ui.utils', 'ui.router', 'ngSanitize', 'ngAnimate', 'toastr', 'sticky',
         'ui.mask', 'ui.utils.masks', 'ui.navbar', 'ngCookies', 'uiGmapgoogle-maps', 'ngFileUpload', 'ngTagsInput', 'ui.tree',
-        'ngIdle', 'angular.filter', 'qrScanner', 'webcam', 'textAngular',
+        'ui.tree-filter', 'ngIdle', 'angular.filter', 'qrScanner', 'webcam', 'textAngular',
         'mensagemSrv', 'segurancaSrv', 'utilSrv', 'frz.form', 'frz.tabela', 'frz.arquivo', 'frz.endereco', 'frz.painel.vidro', 'frz.navegador',
         'frz.indice.producao', 
         'casa', 'contrato', 'info', 'offline', 'pessoa', 'formulario', 'propriedadeRural', 'atividade', 'indiceProducao', 
@@ -139,7 +139,7 @@ var TIMEOUT_TEMPO = 10 * 60;
     // fim : utilitarios
 
     angular.module(pNmModulo).config(['$stateProvider', '$urlRouterProvider', 'toastrConfig', '$locationProvider', 'uiGmapGoogleMapApiProvider', 
-           '$httpProvider', 'IdleProvider', 'KeepaliveProvider', 
+           '$httpProvider', 'IdleProvider', 'KeepaliveProvider',
             function($stateProvider, $urlRouterProvider, toastrConfig, $locationProvider, uiGmapGoogleMapApiProvider, $httpProvider, IdleProvider, 
                 KeepaliveProvider) {
             'ngInject';
@@ -229,8 +229,7 @@ var TIMEOUT_TEMPO = 10 * 60;
                 key: 'AIzaSyBDb9apXz3uMJq1RD2HjUqtUfIxSW4GIlE',
                 v: '3.24', //defaults to latest 3.X anyhow
                 libraries: 'weather,geometry,visualization,drawing,places'
-            });
-
+            });            
         }]);
 
     angular.module(pNmModulo).filter('filtrarInseridos', function() {

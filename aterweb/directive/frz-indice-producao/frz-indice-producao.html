@@ -1,11 +1,11 @@
 <div>
     <div class="input-group">
-        <input type="text" class="form-control" ng-model="apoio.filtro" placeholder="Filtrar por Classificação">
+        <input type="text" class="form-control" ng-model="filtro" placeholder="Filtrar por Classificação">
         <span class="input-group-btn">
             <div class="btn-group" role="group">
                 <button
                     class="btn btn-default" 
-                    ng-click="cadastro.apoio.bemClassificacaoFiltro = limparRegistroSelecionadoBemClassificacao(dados)">
+                    ng-click="limparFiltro()">
                     <span class="glyphicon glyphicon-trash"></span>
                 </button>
             </div>
@@ -22,37 +22,37 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 </span>
                 <label>
-                    <input type="checkbox" checklist-model="ngModel" checklist-value="node" checklist-comparator="compareFn">
+                    <input type="checkbox" checklist-model="ngModel" checklist-value="node" checklist-comparator="compareFn" ng-click="node.selecionado = !node.selecionado">
                     {{node.nome}}
                 </label>
-                <table width="100%" ng-if="node.bemClassificacaoFormaProducaoItemList.length" >
+                <table width="100%" ng-if="node.bemClassificacaoFormaProducaoItemList.length" ng-show="node.selecionado">
                     <tr>
                         <td colspan="2">&nbsp;</td>
                         <td style="color: gray"><small>Forma de Produção</small></td>
                     </tr>
                     <tr ng-repeat="forma in node.bemClassificacaoFormaProducaoItemList | orderBy: ['formaProducaoItem.nome'] track by forma.id">
-                        <td width="30%" style="text-align: right">
+                        <td width="30%" class="text-right">
                             <small>{{forma.formaProducaoItem.nome}}</small>
                         </td>
                         <td width="5%">
                             &nbsp;
                         </td>
                         <td>
-                            <select ng-model="forma[3]" ng-options="opcao as opcao for opcao in bemClassificacaoFormaProducaoValorList track by opcao.id">
+                            <select ng-model="forma.formaProducaoValor" ng-options="opcao as opcao.nome for opcao in forma.formaProducaoItem.formaProducaoValorList track by opcao.id">
                                 <option value="">-- Selecione --</option>
                             </select>
                         </td>
                     </tr>
                 </table>
             </div>
-            <ol ui-tree-nodes="" ng-model="node.bemClassificacaoList" ng-class="{hidden: collapsed}">
-                <li ng-repeat="node in node.bemClassificacaoList | orderBy: ['nome'] track by node.id" ui-tree-node ng-include="'nodes_renderer.html'">
+            <ol ui-tree-nodes="" ng-model="node.bemClassificacaoList" ng-class="{hidden: collapsed}" ng-hide="node.selecionado">
+                <li ng-repeat="node in node.bemClassificacaoList | orderBy: ['nome'] track by node.id" ui-tree-node ng-include="'nodes_renderer.html'" ng-hide="!treeFilter(node, filtro)">
                 </li>
             </ol>
         </script>
         <div ui-tree drag-enabled="false">
             <ol ui-tree-nodes="" ng-model="dados" id="tree-root" ng-class="{hidden: collapsed}">
-                <li ng-repeat="node in dados | orderBy: ['nome'] track by node.id" ui-tree-node ng-include="'nodes_renderer.html'">
+                <li ng-repeat="node in dados | orderBy: ['nome'] track by node.id" ui-tree-node ng-include="'nodes_renderer.html'" ng-hide="!treeFilter(node, filtro)">
                 </li>
             </ol>
         </div>

@@ -14,7 +14,9 @@ import br.gov.df.emater.aterwebsrv.dao.indice_producao.BemClassificacaoDao;
 import br.gov.df.emater.aterwebsrv.dto.indice_producao.BemClassificacaoCadDto;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacaoFormaProducaoItem;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacaoFormaProducaoValor;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.FormaProducaoItem;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.FormaProducaoValor;
 
 @Service("IndiceProducaoBemClassificacaoUtilSrv")
 public class BemClassificacaoUtilSrv {
@@ -45,40 +47,58 @@ public class BemClassificacaoUtilSrv {
 				}
 			}
 		}
+		
 		// acumular valor
-		if (origem.getBemClassificacaoFormaProducaoValorList() != null) {
+		if (origem.getBemClassificacaoFormaProducaoValorList() != null && origem.getBemClassificacaoFormaProducaoValorList().size() > 0) {
 			// adicionar itens com valores especificos
 			if (destino.getBemClassificacaoFormaProducaoItemList() == null) {
 				destino.setBemClassificacaoFormaProducaoItemList(new ArrayList<>());
 			}
 
-			List<FormaProducaoItem> lista = new ArrayList<>();
+			List<FormaProducaoItem> itemList = new ArrayList<>();
 
-			// FIXME parei aqui
-			// for (BemClassificacaoFormaProducaoValor reg :
-			// origem.getBemClassificacaoFormaProducaoValorList()) {
-			// FormaProducaoItem encontrou = null;
-			// for (FormaProducaoItem item: lista) {
-			// if
-			// (reg.getFormaProducaoValor().getFormaProducaoItem().getId().equals(item.getId()))
-			// {
-			// encontrou = reg.getFormaProducaoValor().getFormaProducaoItem();
-			// break;
-			// }
-			// }
-			// if (encontrou == null) {
-			// encontrou =
-			// infoBasicaReg(reg.getFormaProducaoValor().getFormaProducaoItem());
-			// lista.add(encontrou);
-			// }
-			//
-			// for () {
-			//
-			// }
-			// encontrou.setFormaProducaoValorList();
-			// }
-
+			for (BemClassificacaoFormaProducaoValor valor : origem.getBemClassificacaoFormaProducaoValorList()) {
+				FormaProducaoItem formaProducaoItemEncontrou = null;
+				for (FormaProducaoItem item : itemList) {
+					if (valor.getFormaProducaoValor().getFormaProducaoItem().getId().equals(item.getId())) {
+						formaProducaoItemEncontrou = item;
+						break;
+					}
+				}
+				if (formaProducaoItemEncontrou == null) {
+					formaProducaoItemEncontrou = new FormaProducaoItem(valor.getFormaProducaoValor().getFormaProducaoItem().getId(), valor.getFormaProducaoValor().getFormaProducaoItem().getNome());
+					formaProducaoItemEncontrou.setFormaProducaoValorList(new ArrayList<>());
+					itemList.add(formaProducaoItemEncontrou);
+				}
+				
+				boolean e = false;
+				for (FormaProducaoValor f: formaProducaoItemEncontrou.getFormaProducaoValorList()) {
+					if (valor.getFormaProducaoValor().getId().equals(f.getId())) {
+						e = true;
+						break;
+					}
+				}
+				if (!e) {
+					formaProducaoItemEncontrou.getFormaProducaoValorList().add(new FormaProducaoValor(valor.getFormaProducaoValor().getId(), valor.getFormaProducaoValor().getNome()));
+				}				
+			}
+			for (FormaProducaoItem item: itemList) {
+				boolean e = false;
+				for (BemClassificacaoFormaProducaoItem ii: destino.getBemClassificacaoFormaProducaoItemList()) {
+					if (ii.getFormaProducaoItem().getId().equals(item.getId())) {
+						ii.setFormaProducaoItem(item);
+						e = true;
+						break;
+					}
+				}
+				if (!e) {
+					BemClassificacaoFormaProducaoItem bcfpi = new BemClassificacaoFormaProducaoItem();
+					bcfpi.setFormaProducaoItem(item);
+					destino.getBemClassificacaoFormaProducaoItemList().add(bcfpi);
+				}
+			}
 		}
+		
 		destino.setFormula(origem.getFormula() != null ? origem.getFormula() : destino.getFormula());
 		destino.setItemANome(origem.getItemANome() != null ? infoBasicaReg(origem.getItemANome()) : destino.getItemANome());
 		destino.setItemBNome(origem.getItemBNome() != null ? infoBasicaReg(origem.getItemBNome()) : destino.getItemBNome());

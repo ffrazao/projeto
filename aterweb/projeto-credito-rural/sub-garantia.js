@@ -118,8 +118,9 @@ angular.module(pNmModulo).controller(pNmController,
         var result = "";
         if (garantia && garantia.participacao) {
             var item = UtilSrv.indiceDePorCampo($scope.cadastro.apoio.garantiaParticipacaoList, garantia.participacao, 'codigo');
-            if (item)
+            if (item) {
                 result += item.ordem;
+            }
         }
         if (garantia && garantia.pessoaFisica) {
             result += garantia.pessoaFisica.nome;

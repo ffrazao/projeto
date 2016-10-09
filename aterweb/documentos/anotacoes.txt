@@ -13,3 +13,6 @@ http://mbenford.github.io/ngTagsInput/
 
 04/08/2016 - Componente TextArea com html 
 http://textangular.com/
+
+08/10/2016 - Filtro para componente ui-tree-view
+https://github.com/EE/angular-ui-tree-filter

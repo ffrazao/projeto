@@ -4,10 +4,17 @@
 
     'use strict';
 
-    var FrzIndiceProducaoModule = angular.module('frz.indice.producao', ['ui.tree']);
+    var FrzIndiceProducaoModule = angular.module('frz.indice.producao', ['ui.tree', 'ui.tree-filter']);
 
-    // controller para a barra de navegacao
-    FrzIndiceProducaoModule.controller('FrzIndiceProducaoCtrl', ['$scope', 'mensagemSrv', 'UtilSrv', function($scope, mensagemSrv, UtilSrv) {
+    FrzIndiceProducaoModule.config(['uiTreeFilterSettingsProvider', function(uiTreeFilterSettingsProvider) {
+        'ngInject';
+        // config basica dos filtros de componente tree view
+        uiTreeFilterSettingsProvider.addresses = ['nome', 'descricao'];
+        uiTreeFilterSettingsProvider.descendantCollection = 'bemClassificacaoList';
+    }]);
+
+    FrzIndiceProducaoModule.controller('FrzIndiceProducaoCtrl', ['$scope', 'mensagemSrv', 'UtilSrv', '$filter', 
+        function($scope, mensagemSrv, UtilSrv, $filter) {
         'ngInject';
 		$scope.compareFn = function(obj1, obj2){
 		    return obj1 && obj2 && obj1.id === obj2.id;
@@ -15,7 +22,11 @@
         $scope.toggleChildren = function(scope) {
             scope.toggle();
         };
-
+        $scope.limparFiltro = function() {
+            $scope.filtro = '';
+            $scope.ngModel.splice(0,$scope.ngModel.length);
+        };
+        $scope.treeFilter = $filter('uiTreeFilter');
     }]);
 
     // diretiva da barra de navegação de dados
