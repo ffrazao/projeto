@@ -11,14 +11,15 @@ import org.springframework.util.CollectionUtils;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.ferramenta.UtilDao;
+import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoProprietarioDao;
 import br.gov.df.emater.aterwebsrv.dto.indice_producao.IndiceProducaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.ater.Comunidade;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.FormaProducaoValor;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ItemNome;
-import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoProprietario;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoComposicao;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoProprietario;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.UnidadeMedida;
 
 @Service("IndiceProducaoFiltrarProducaoPropriedadeRuralCmd")
@@ -29,6 +30,9 @@ public class FiltrarProducaoPropriedadeRuralCmd extends _Comando {
 
 	@Autowired
 	private UtilDao utilDao;
+	
+	@Autowired
+	private ProducaoDao producaoDao;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -236,6 +240,10 @@ public class FiltrarProducaoPropriedadeRuralCmd extends _Comando {
 				}
 			}
 
+			// FIXME Forcar a leitura da base de dados
+			produtorProducaoProprietario.setProducaoList(producaoDao.findByProducaoProprietario(produtorProducaoProprietario));
+			
+			
 			if (produtorProducaoProprietario.getProducaoList() != null) {
 				ProducaoCalculo calculoProdutorEsperada = new ProducaoCalculo(bemClassificacaoList, "Estimada");
 				ProducaoCalculo calculoProdutorConfirmada = new ProducaoCalculo(bemClassificacaoList, "Confirmada");
