@@ -145,7 +145,7 @@ angular.module(pNmModulo).controller(pNmController,
             if ($scope.indiceProducaoNvg.selecao.tipo === 'U' && $scope.indiceProducaoNvg.selecao.item) {
                 for (j = $scope.cadastro.registro.indiceProducaoList.length -1; j >= 0; j--) {
                     if (angular.equals($scope.cadastro.registro.indiceProducaoList[j], $scope.indiceProducaoNvg.selecao.item)) {
-                        IndiceProducaoSrv.excluir({id: $scope.indiceProducaoNvg.selecao.item[0]});
+                        IndiceProducaoSrv.excluir({id: $scope.indiceProducaoNvg.selecao.item[0]});                        
                         //$scope.marcarParaExclusao($scope, 'producaoList', j);
                         //$scope.cadastro.registro.indiceProducaoList.splice(j, 1);
                         //$scope.cadastro.registro.indiceProducaoList[j].cadastroAcao = 'E';
