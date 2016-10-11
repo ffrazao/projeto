@@ -87,10 +87,10 @@ public class SalvarCmd extends _SalvarCmd {
 		// return true;
 		// }
 		
-		Calendar calendar = Calendar.getInstance(); 
-		calendar.add(Calendar.DATE, -1); 
-		if(result.getInicio().before(calendar))
-			throw new BoException("Data de inicio não pode ser menor que a data de hoje.");
+		//Calendar calendar = Calendar.getInstance(); 
+		//calendar.add(Calendar.DATE, -1); 
+		//if(result.getInicio().before(calendar))
+		//	throw new BoException("Data de inicio não pode ser menor que a data de hoje.");
 
 		if (result.getId() == null) {
 			// gerar o código da atividade
