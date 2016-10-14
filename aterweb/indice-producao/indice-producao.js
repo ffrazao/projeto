@@ -397,6 +397,35 @@
                     no.trim().toLowerCase().latinize().indexOf(filtro.trim().toLowerCase().latinize()) === -1);
             };
 
+            $scope.getTagBemClassificado2 = function($query) {
+                var result = [];
+
+                var filtrado = $scope.cadastro.filtro.dados && $scope.cadastro.filtro.dados.length;
+
+                //getTagBemClassificado2
+
+
+                result.push({
+                    id: 1,
+                    nome: 'abobora',
+                    classificacao: 'x'
+                });
+
+                result.push({
+                    id: 1,
+                    nome: 'feijao',
+                    classificacao: 'x'
+                });
+
+                result.push({
+                    id: 1,
+                    nome: 'macarrao',
+                    classificacao: 'x'
+                });
+
+                return {data: result};
+            };
+
             $scope.getTagBemClassificado = function($query) {
                 var carregarClassificacao = function(a, r) {
                     if (r) {

@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.BemClassificacaoDao;
@@ -120,7 +121,7 @@ public class BemClassificacaoUtilSrv {
 		}
 	}
 
-	// @Cacheable("BemClassificacaoMatriz")
+	@Cacheable("BemClassificacaoMatriz")
 	public BemClassificacaoCadDto geraMatriz() {
 		BemClassificacaoCadDto result = new BemClassificacaoCadDto();
 
@@ -156,6 +157,9 @@ public class BemClassificacaoUtilSrv {
 				item.setItemCNome(infoBasicaReg(item.getItemCNome()));
 				item.setBemClassificacaoFormaProducaoItemList(infoBasicaList(item.getBemClassificacaoFormaProducaoItemList()));
 				item.setBemClassificacaoFormaProducaoValorList(infoBasicaList(item.getBemClassificacaoFormaProducaoValorList()));
+				
+				// teste
+				item.setBemClassificadoList(infoBasicaList(bemClassificacao.getBemClassificadoList()));
 
 				bemClassificacaoMatrizList.add(item);
 
