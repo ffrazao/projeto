@@ -11,7 +11,7 @@
             </div>
         </span>
     </div>
-    <div class="row" style="height: 400px; overflow: scroll;">
+    <div class="row" style="max-height: 400px; overflow: scroll;">
         <script type="text/ng-template" id="nodes_renderer.html">
             <div ui-tree-handle>
                 <a class="btn btn-primary btn-xs Tooltip" nodrag ng-click="toggleChildren(this)" title="Expandir/Recolher" ng-show="node.bemClassificacaoList.length">
@@ -22,7 +22,7 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 </span>
                 <label>
-                    <input type="checkbox" checklist-model="ngModel" checklist-value="node" checklist-comparator="compareFn">
+                    <input type="checkbox" ng-model="node.selecionado">
                     {{node.nome}}
                 </label>
                 <table width="100%" ng-if="node.bemClassificacaoFormaProducaoItemList.length" ng-show="node.selecionado">
@@ -30,7 +30,7 @@
                         <td colspan="2">&nbsp;</td>
                         <td style="color: gray"><small>Forma de Produção</small></td>
                     </tr>
-                    <tr ng-repeat="forma in node.bemClassificacaoFormaProducaoItemList | orderBy: ['ordem'] track by forma.id">
+                    <tr ng-repeat="forma in node.bemClassificacaoFormaProducaoItemList | orderBy: ['ordem'] track by forma.id" ng-init="node.bemClassificacaoFormaProducaoValorList = []">
                         <td width="30%" class="text-right">
                             <small>{{forma.formaProducaoItem.nome}}</small>
                         </td>
@@ -38,7 +38,7 @@
                             &nbsp;
                         </td>
                         <td>
-                            <select ng-model="forma.formaProducaoValor" ng-options="opcao as opcao.nome for opcao in forma.formaProducaoItem.formaProducaoValorList track by opcao.id">
+                            <select ng-model="node.bemClassificacaoFormaProducaoValorList[$index].formaProducaoValor" ng-options="opcao as opcao.nome for opcao in forma.formaProducaoItem.formaProducaoValorList track by opcao.id">
                                 <option value="">-- Selecione --</option>
                             </select>
                         </td>
@@ -51,8 +51,8 @@
             </ol>
         </script>
         <div ui-tree drag-enabled="false">
-            <ol ui-tree-nodes="" ng-model="dados" id="tree-root" ng-class="{hidden: collapsed}">
-                <li ng-repeat="node in dados | orderBy: ['nome'] track by node.id" ui-tree-node ng-include="'nodes_renderer.html'" ng-hide="!treeFilter(node, filtro)">
+            <ol ui-tree-nodes="" ng-model="ngModel" id="tree-root" ng-class="{hidden: collapsed}">
+                <li ng-repeat="node in ngModel | orderBy: ['nome'] track by node.id" ui-tree-node ng-include="'nodes_renderer.html'" ng-hide="!treeFilter(node, filtro)">
                 </li>
             </ol>
         </div>

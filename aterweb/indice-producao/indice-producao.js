@@ -183,6 +183,7 @@
             };
 
             $scope.confirmarFiltrarAntes = function(filtro) {
+                removerCampo(filtro, ['@jsonId']);
                 filtro.empresaList = [];
                 filtro.unidadeOrganizacionalList = [];
                 filtro.comunidadeList = [];
@@ -219,6 +220,7 @@
                     throw 'Informe pelo menos uma comunidade';
                 }
 
+/*
                 var captarBemClassificacaoList = function(lista, resultado) {
                     if (lista) {
                         for (var i in lista) {
@@ -254,6 +256,7 @@
                 };
                 filtro.formaProducaoValorList = [];
                 captarFormaProducaoValorList($scope.cadastro.apoio.bemClassificacaoList, filtro.formaProducaoValorList);
+                */
             };
 
             $scope.limparRegistroSelecionadoBemClassificacao = function(lista) {
@@ -269,12 +272,14 @@
             $scope.limpar = function(scp) {
                 var e = scp.navegador.estadoAtual();
                 if ('FILTRANDO' === e) {
-                    $scope.cadastro.apoio.bemClassificacaoFiltro = $scope.limparRegistroSelecionadoBemClassificacao($scope.cadastro.apoio.bemClassificacaoList);
-                    $scope.cadastro.apoio.localFiltro = $scope.limparRegistroSelecionado($scope.cadastro.apoio.localList);
+                    $scope.cadastro.filtro.bemClassificacaoList = angular.copy($scope.cadastro.apoio.bemClassificacaoList);
+                    $scope.cadastro.filtro.ano = $scope.cadastro.apoio.ano;
+                    $scope.cadastro.filtro.bemClassificadoList = null;
+                } else {
+                    var ano = $scope.cadastro.filtro.ano;
+                    $rootScope.limpar(scp);
+                    $scope.cadastro.filtro.ano = ano;
                 }
-                var ano = $scope.cadastro.filtro.ano;
-                $rootScope.limpar(scp);
-                $scope.cadastro.filtro.ano = ano;
             };
 
             // fim das operaçoes atribuidas ao navagador
@@ -398,30 +403,41 @@
             };
 
             $scope.getTagBemClassificado2 = function($query) {
-                var result = [];
 
-                var filtrado = $scope.cadastro.filtro.dados && $scope.cadastro.filtro.dados.length;
+                var result = [], classe;
 
-                //getTagBemClassificado2
+                if (!$query || !$query.length) {
+                    return {data: result};
+                }
+
+                var lista = $scope.cadastro.apoio.bemClassificadoList;
+                var bem, classe, compara;
+
+                compara = $query.toLowerCase().latinize();
 
 
-                result.push({
-                    id: 1,
-                    nome: 'abobora',
-                    classificacao: 'x'
-                });
+                for (var i in lista) {
+                    // atualizar a classificação dos bens
+                    if (!lista[i].bemClassificacao.nome) {
+                        for (classe in $scope.cadastro.apoio.bemClassificacaoMatrizList) {
+                            if (lista[i].bemClassificacao.id === $scope.cadastro.apoio.bemClassificacaoMatrizList[classe].id) {
+                                lista[i].bemClassificacao = $scope.cadastro.apoio.bemClassificacaoMatrizList[classe];
+                                break;
+                            }
+                        }
+                    }
 
-                result.push({
-                    id: 1,
-                    nome: 'feijao',
-                    classificacao: 'x'
-                });
+                    bem = lista[i].nome.toLowerCase().latinize();
+                    classe = lista[i].bemClassificacao.nome.toLowerCase().latinize();
 
-                result.push({
-                    id: 1,
-                    nome: 'macarrao',
-                    classificacao: 'x'
-                });
+                    if ((bem.indexOf(compara) >= 0) || (classe.indexOf(compara) >= 0)) {
+                        result.push({
+                            id: lista[i].id,
+                            nome: lista[i].nome,
+                            bemClassificacao: lista[i].bemClassificacao
+                        });
+                    }
+                }
 
                 return {data: result};
             };

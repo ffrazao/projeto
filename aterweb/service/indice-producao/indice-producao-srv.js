@@ -68,7 +68,11 @@ angular.module(pNmModulo).factory(pNmFactory,
                 }
                 this.bemClassificacaoMatriz().success(function(resposta) {
                     if (resposta && resposta.resultado) {
-                        scp.cadastro.apoio.bemClassificacaoMatriz = resposta.resultado.bemClassificacaoList;
+                        scp.cadastro.apoio.bemClassificadoList = resposta.resultado.bemClassificadoList;
+                        scp.cadastro.apoio.bemClassificacaoList = resposta.resultado.bemClassificacaoList;
+                        scp.cadastro.apoio.bemClassificacaoMatrizList = resposta.resultado.bemClassificacaoMatrizList;
+
+                        scp.cadastro.filtro.bemClassificacaoList = angular.copy(scp.cadastro.apoio.bemClassificacaoList);
                     }
                 });
                 // fim captar as listas de apoio

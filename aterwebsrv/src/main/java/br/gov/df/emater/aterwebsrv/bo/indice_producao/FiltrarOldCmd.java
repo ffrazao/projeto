@@ -21,8 +21,8 @@ import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoComposicao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.UnidadeMedida;
 
-@Service("IndiceProducaoFiltrarCmd")
-public class FiltrarCmd extends _Comando {
+@Service("IndiceProducaoFiltrarOldCmd")
+public class FiltrarOldCmd extends _Comando {
 
 	@Autowired
 	private ProducaoProprietarioDao dao;
@@ -34,8 +34,10 @@ public class FiltrarCmd extends _Comando {
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		IndiceProducaoCadFiltroDto filtro = (IndiceProducaoCadFiltroDto) contexto.getRequisicao();
-		List<ProducaoProprietario> result = dao.filtrarNovo(filtro);
-/*
+		List<Object> result = null;
+		List<ProducaoProprietario> producaoProprietarioList = null;
+		producaoProprietarioList = (List<ProducaoProprietario>) dao.filtrar(filtro);
+
 		if (producaoProprietarioList != null) {
 			// fetch no resultado
 			if (filtro.getId() != null) {
@@ -148,7 +150,7 @@ public class FiltrarCmd extends _Comando {
 				}
 			}
 		}
-*/
+
 		contexto.setResposta(result);
 		return false;
 	}

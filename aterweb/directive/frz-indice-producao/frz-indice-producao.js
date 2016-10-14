@@ -23,31 +23,18 @@
         $scope.toggleChildren = function(node) {
             node.toggle();
         };
+        var configuraDados = function(lista, valor) {
+            if (lista && lista.length) {
+                lista.forEach(function(v, k) {
+                    v.selecionado = valor;
+                    configuraDados(v.bemClassificacaoList);
+                });
+            }
+        };
         $scope.limparFiltro = function() {
             $scope.filtro = '';
-            $scope.ngModel.splice(0,$scope.ngModel.length);
+            configuraDados($scope.ngModel, false);
         };
-        $scope.marcarSelecionados = function(lista) {
-            var sel = null;
-            lista.forEach(function(v, k) {
-                v.selecionado = false;
-                for (sel in $scope.ngModel) {
-                    if (v.id === $scope.ngModel[sel].id) {
-                        v.selecionado = true;
-                        break;
-                    }
-                }
-                if (v.bemClassificacaoList && v.bemClassificacaoList.length) {
-                    $scope.marcarSelecionados(v.bemClassificacaoList);
-                }
-            });
-        };
-        $scope.$watch('ngModel', function(n, o) {
-            if (!$scope.ngModel || !$scope.dados) {
-                return;
-            }
-            $scope.marcarSelecionados($scope.dados);
-        }, true);
     }]);
 
     // diretiva da barra de navegação de dados
@@ -61,7 +48,6 @@
             templateUrl: 'directive/frz-indice-producao/frz-indice-producao.html',
             scope: {
                 ngModel: '=',
-                dados: '=',
                 onAbrir: '&',
             },
             controller: 'FrzIndiceProducaoCtrl',

@@ -1,0 +1,59 @@
+<div>
+    <div class="input-group">
+        <input type="text" class="form-control" ng-model="filtro" placeholder="Filtrar por Classificação">
+        <span class="input-group-btn">
+            <div class="btn-group" role="group">
+                <button
+                    class="btn btn-default" 
+                    ng-click="limparFiltro()">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </button>
+            </div>
+        </span>
+    </div>
+    <div class="row" style="max-height: 400px; overflow: scroll;">
+        <div ui-tree drag-enabled="false">
+            <ol ui-tree-nodes="" ng-model="ngModel">
+                <li ng-repeat="item in ngModel | orderBy: 'nome' track by item.id" ui-tree-node>
+                    <div ui-tree-handle>
+                        <a class="btn btn-primary btn-xs Tooltip" data-nodrag data-ng-click="toggleChildren(this)" title="Expandir/Recolher">
+                            <span class="glyphicon glyphicon-chevron-right" data-ng-show="collapsed"></span>
+                            <span class="glyphicon glyphicon-chevron-down" data-ng-show="!collapsed"></span>
+                        </a>
+                        <label>
+                            <input type="checkbox" ng-model="item.selecionado" ng-true-value="true" ng-false-value="false">
+                            {{item.nome}} [{{item.unidadeList.length}}]
+                        </label>
+                    </div>
+                    <ol ui-tree-nodes="" ng-model="item.unidadeList" ng-class="{hidden: collapsed}" ng-hide="item.selecionado">
+                        <li ng-repeat="subItem in item.unidadeList | unidadeOrganizacionalComunidadeFltr:filtro | orderBy: ['nome'] track by subItem.id" ui-tree-node>
+                            <div ui-tree-handle>
+                                <a class="btn btn-primary btn-xs Tooltip" data-nodrag data-ng-click="toggleChildren(this)" title="Expandir/Recolher">
+                                    <span class="glyphicon glyphicon-chevron-right" data-ng-show="collapsed"></span>
+                                    <span class="glyphicon glyphicon-chevron-down" data-ng-show="!collapsed"></span>
+                                </a>
+                                <label>
+                                    <input type="checkbox" ng-model="subItem.selecionado" ng-true-value="true" ng-false-value="false">
+                                    {{subItem.nome}} [{{subItem.comunidadeList.length}}]
+                                </label>
+                            </div>
+                            <ol ui-tree-nodes="" ng-model="subItem.comunidadeList" ng-class="{hidden: collapsed}" ng-hide="subItem.selecionado">
+                                <li ng-repeat="subSubItem in subItem.comunidadeList | orderBy: 'nome' track by subSubItem.id" ui-tree-node ng-show="visible(subSubItem)">
+                                    <div ui-tree-handle>
+                                        <span ng-hide="node.bemClassificacaoList.length">
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        </span>
+                                        <label>
+                                            <input type="checkbox" ng-model="subSubItem.selecionado" ng-true-value="true" ng-false-value="false">
+                                            {{subSubItem.nome}}
+                                        </label>
+                                    </div>
+                                </li>
+                            </ol>
+                        </li>
+                    </ol>
+                </li>
+            </ol>
+        </div>
+    </div>
+</div>

@@ -3,6 +3,7 @@ package br.gov.df.emater.aterwebsrv.bo.indice_producao;
 import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaList;
 import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaReg;
 
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -16,6 +17,7 @@ import br.gov.df.emater.aterwebsrv.dto.indice_producao.BemClassificacaoCadDto;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacaoFormaProducaoItem;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacaoFormaProducaoValor;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificado;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.FormaProducaoItem;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.FormaProducaoValor;
 
@@ -48,7 +50,7 @@ public class BemClassificacaoUtilSrv {
 				}
 			}
 		}
-		
+
 		// acumular valor
 		if (origem.getBemClassificacaoFormaProducaoValorList() != null && origem.getBemClassificacaoFormaProducaoValorList().size() > 0) {
 			// adicionar itens com valores especificos
@@ -71,9 +73,9 @@ public class BemClassificacaoUtilSrv {
 					formaProducaoItemEncontrou.setFormaProducaoValorList(new ArrayList<>());
 					itemList.add(formaProducaoItemEncontrou);
 				}
-				
+
 				boolean e = false;
-				for (FormaProducaoValor f: formaProducaoItemEncontrou.getFormaProducaoValorList()) {
+				for (FormaProducaoValor f : formaProducaoItemEncontrou.getFormaProducaoValorList()) {
 					if (valor.getFormaProducaoValor().getId().equals(f.getId())) {
 						e = true;
 						break;
@@ -81,11 +83,11 @@ public class BemClassificacaoUtilSrv {
 				}
 				if (!e) {
 					formaProducaoItemEncontrou.getFormaProducaoValorList().add(new FormaProducaoValor(valor.getFormaProducaoValor().getId(), valor.getFormaProducaoValor().getNome()));
-				}				
+				}
 			}
-			for (FormaProducaoItem item: itemList) {
+			for (FormaProducaoItem item : itemList) {
 				boolean e = false;
-				for (BemClassificacaoFormaProducaoItem ii: destino.getBemClassificacaoFormaProducaoItemList()) {
+				for (BemClassificacaoFormaProducaoItem ii : destino.getBemClassificacaoFormaProducaoItemList()) {
 					if (ii.getFormaProducaoItem().getId().equals(item.getId())) {
 						ii.setFormaProducaoItem(item);
 						e = true;
@@ -99,7 +101,7 @@ public class BemClassificacaoUtilSrv {
 				}
 			}
 		}
-		
+
 		destino.setFormula(origem.getFormula() != null ? origem.getFormula() : destino.getFormula());
 		destino.setItemANome(origem.getItemANome() != null ? infoBasicaReg(origem.getItemANome()) : destino.getItemANome());
 		destino.setItemBNome(origem.getItemBNome() != null ? infoBasicaReg(origem.getItemBNome()) : destino.getItemBNome());
@@ -127,6 +129,7 @@ public class BemClassificacaoUtilSrv {
 
 		List<BemClassificacao> bemClassificacaoMatrizList = null;
 		List<BemClassificacao> bemClassificacaoList = null;
+		List<BemClassificado> bemClassificadoList = new ArrayList<>();
 
 		List<BemClassificacao> bancoDados = dao.findAll();
 
@@ -157,9 +160,12 @@ public class BemClassificacaoUtilSrv {
 				item.setItemCNome(infoBasicaReg(item.getItemCNome()));
 				item.setBemClassificacaoFormaProducaoItemList(infoBasicaList(item.getBemClassificacaoFormaProducaoItemList()));
 				item.setBemClassificacaoFormaProducaoValorList(infoBasicaList(item.getBemClassificacaoFormaProducaoValorList()));
-				
+
 				// teste
 				item.setBemClassificadoList(infoBasicaList(bemClassificacao.getBemClassificadoList()));
+				if (item.getBemClassificadoList() != null) {
+					bemClassificadoList.addAll(infoBasicaList(item.getBemClassificadoList()));
+				}
 
 				bemClassificacaoMatrizList.add(item);
 
@@ -175,6 +181,9 @@ public class BemClassificacaoUtilSrv {
 		result.setBemClassificacaoMatrizList(bemClassificacaoMatrizList);
 		ajustaLista(bemClassificacaoList, bemClassificacaoMatrizList);
 		result.setBemClassificacaoList(bemClassificacaoList);
+
+		bemClassificadoList.sort((o1, o2) -> (o1 != null && o2 != null && o1.getNome() != null && o2.getNome() != null) ? Collator.getInstance().compare(o1.getNome(), o2.getNome()) : 0);
+		result.setBemClassificadoList(bemClassificadoList);
 
 		return result;
 	}

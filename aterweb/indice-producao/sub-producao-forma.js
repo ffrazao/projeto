@@ -239,7 +239,7 @@ angular.module(pNmModulo).controller(pNmController,
             '        </div>' +
             '        <div class="row">' +
             '            <div class="col-md-3 text-right">' +
-            '                <label class="form-label">Valor Unitário</label>' +
+            '                <label class="form-label">Preço Pago ao Produtor (Unitário)</label>' +
             '            </div>' +
             '            <div class="col-md-3">' +
             '                <input class="form-control text-right" id="valorUnitario" name="valorUnitario" ng-model="conteudo.valorUnitario" ng-required="false" ui-money-mask="2">' +
@@ -251,7 +251,7 @@ angular.module(pNmModulo).controller(pNmController,
             '        </div>' +
             '        <div class="row">' +
             '            <div class="col-md-3 text-right">' +
-            '                <label class="form-label">Valor Total</label>' +
+            '                <label class="form-label">Preço Pago ao Produtor (Total)</label>' +
             '            </div>' +
             '            <div class="col-md-3">' +
             '                <div class="form-control text-right">' +

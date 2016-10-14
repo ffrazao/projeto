@@ -4,7 +4,7 @@
         <form class="form-horizontal" name="frm.filtro" novalidate>
             <fieldset>
                 <legend>Dados Básicos</legend>
-                <!-- Select input-->
+                <!-- Ano da Produção -->
                 <div class="form-group" title="Ano da Produção">
                     <label class="col-md-4 control-label" for="ano">
                         Ano da Produção
@@ -19,14 +19,15 @@
                     </div>
                 </div>
 
+                <!-- Classificação / Forma de Produção -->
                 <div class="form-group" title="Classificação do Bem de Produção/ Forma de Produção">
                     <label class="col-md-4 control-label" for="bemClassificacaoList">
                         Classificação / Forma de Produção
                     </label>
                    <div class="col-md-7">
-                        <frz-indice-producao id="bemClassificacaoList" name="bemClassificacaoList" ng-model="cadastro.filtro.dados" dados="cadastro.apoio.bemClassificacaoMatriz">
+                        <frz-indice-producao id="bemClassificacaoList" name="bemClassificacaoList" ng-model="cadastro.filtro.bemClassificacaoList">
                         </frz-indice-producao>
-                        <input type="hidden" id="bemClassificacaoListTotal" name="bemClassificacaoListTotal" ng-model="cadastro.filtro.dados.length" ng-valor-min="0">
+                        <input type="hidden" id="bemClassificacaoListTotal" name="bemClassificacaoListTotal" ng-model="cadastro.filtro.bemClassificacaoList.length" ng-valor-min="0">
                     </div>
                     <div class="label label-danger" ng-show="navegador.submetido && (frm.filtro.bemClassificacaoListTotal.$error.required || frm.filtro.bemClassificacaoListTotal.$error.ngValorMin)">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -34,51 +35,34 @@
                     </div>
                 </div>
 
-                <!-- Tag-input-->
+                <!-- Bens de Produção -->
                 <div class="form-group" title="Bens de Produção">
                     <label class="col-md-4 control-label" for="bemClassificadoList">
                         Bens de Produção
                     </label>
                     <div class="col-md-7">
-
-                        <tags-input 
-                            id="bemClassificadoList" 
-                            name="bemClassificadoList" 
-                            ng-model="cadastro.filtro.bemClassificadoList" 
-                            display-property="nome" 
-                            placeholder="Digite o nome do Bem de Produção" 
-                            template="tag-template" 
-                            add-from-autocomplete-only="true">
-                            
-                            <auto-complete 
-                                source="getTagBemClassificado2($query)" 
-                                min-length="0" 
-                                load-on-empty="false"
-                                template="autocomplete-template">
+                        <tags-input id="bemClassificadoList" name="bemClassificadoList" ng-model="cadastro.filtro.bemClassificadoList" key-property="id" display-property="nome" placeholder="Digite o nome do Bem de Produção" template="tag-template" add-from-autocomplete-only="true">
+                            <auto-complete source="getTagBemClassificado2($query)" min-length="0" load-on-empty="false" template="autocomplete-template">
                             </auto-complete>
-
                         </tags-input>
-
                         <script type="text/ng-template" id="tag-template" >
                             <div class="tag-template">
                                 <div class="right-panel">
                                     <span>{{$getDisplayText()}}</span>
-                                    <small style="font-size: 70%;color: yellow">({{data.classificacao}})</small>
+                                    <small style="font-size: 70%;color: yellow">({{data.bemClassificacao.nome}})</small>
                                     <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
                                 </div>
                             </div>
                         </script>
-
                         <script type="text/ng-template" id="autocomplete-template">
                             <div class="autocomplete-template">
                                 <div class="right-panel">
                                     <span>{{$getDisplayText()}}</span>
-                                    <small style="font-size: 70%">({{data.classificacao}})</small>
+                                    <small style="font-size: 70%">({{data.bemClassificacao.nome}})</small>
                                     <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
                                 </div>
                             </div>
                         </script>
-
                         <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.bemClassificadoList.$error.leftoverText">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             Valor Inválido!
@@ -88,120 +72,24 @@
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             Campo Obrigatório
                         </div>
-
                     </div>
                 </div>
-                <!-- Multiple Checkboxes (inline) -->
+
+                <!-- Unidade Organizacional/Comunidade -->
                 <div class="form-group" title="Unidade Organizacional/Comunidade">
                     <label class="col-md-4 control-label" for="unidadeOrganizacionalComunidade">
                         Unidade Organizacional/Comunidade
                     </label>
-                    <div class="col-md-7">
-                        <div class="input-group">
-                            <input type="text" class="form-control" ng-model="cadastro.apoio.localFiltro" placeholder="Filtrar por Comunidade">
-                            <span class="input-group-btn">
-                                <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-default" ng-click="cadastro.apoio.localFiltro = limparRegistroSelecionado(cadastro.apoio.localList)">
-                                        <span class="glyphicon glyphicon-trash"></span>
-                                    </button>
-                                </div>
-                            </span>
-                        </div>
-                        <div class="row" style="height: 200px; overflow: scroll;">
-                            <div ui-tree drag-enabled="false">
-                                <ol ui-tree-nodes="" ng-model="cadastro.apoio.localList">
-                                    <li ng-repeat="item in cadastro.apoio.localList | orderBy: 'nome' track by item.id" ui-tree-node>
-                                        <div ui-tree-handle>
-                                            <a class="btn btn-primary btn-xs Tooltip" data-nodrag data-ng-click="toggleChildren(this)" title="Expandir/Recolher">
-                                                <span class="glyphicon glyphicon-chevron-right" data-ng-show="collapsed"></span>
-                                                <span class="glyphicon glyphicon-chevron-down" data-ng-show="!collapsed"></span>
-                                            </a>
-                                            <label>
-                                                <input type="checkbox" ng-model="item.selecionado" ng-true-value="true" ng-false-value="false">
-                                                {{item.nome}}
-                                            </label>
-                                        </div>
-                                        <ol ui-tree-nodes="" ng-model="item.unidadeList" ng-class="{hidden: collapsed}">
-                                            <li ng-repeat="subItem in item.unidadeList | unidadeOrganizacionalComunidadeFltr:cadastro.apoio.localFiltro | orderBy: ['nome'] track by subItem.id" ui-tree-node>
-                                                <div ui-tree-handle>
-                                                    <a class="btn btn-primary btn-xs Tooltip" data-nodrag data-ng-click="toggleChildren(this)" title="Expandir/Recolher">
-                                                        <span class="glyphicon glyphicon-chevron-right" data-ng-show="collapsed"></span>
-                                                        <span class="glyphicon glyphicon-chevron-down" data-ng-show="!collapsed"></span>
-                                                    </a>
-                                                    <label>
-                                                        <input type="checkbox" ng-model="subItem.selecionado" ng-true-value="true" ng-false-value="false">
-                                                        {{subItem.nome}}
-                                                    </label>
-                                                </div>
-                                                <ol ui-tree-nodes="" ng-model="subItem.comunidadeList" ng-class="{hidden: collapsed}">
-                                                    <li ng-repeat="subSubItem in subItem.comunidadeList | orderBy: 'nome' track by subSubItem.id" ui-tree-node ng-show="visible(subSubItem)">
-                                                        <div ui-tree-handle>
-                                                            <label>
-                                                                <input type="checkbox" ng-model="subSubItem.selecionado" ng-true-value="true" ng-false-value="false">
-                                                                {{subSubItem.nome}}
-                                                            </label>
-                                                        </div>
-                                                    </li>
-                                                </ol>
-                                            </li>
-                                        </ol>
-                                    </li>
-                                </ol>
-                            </div>
-                        </div>
+                   <div class="col-md-7">
+                        <frz-unidade-comunidade id="unidadeOrganizacionalComunidade" name="unidadeOrganizacionalComunidade" ng-model="cadastro.apoio.localList">
+                        </frz-unidade-comunidade>
+                        <input type="hidden" id="unidadeOrganizacionalComunidadeTotal" name="unidadeOrganizacionalComunidadeTotal" ng-model="cadastro.apoio.localList.length" ng-valor-min="0">
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.unidadeOrganizacionalComunidade.$error.required">
+                    <div class="label label-danger" ng-show="navegador.submetido && (frm.filtro.unidadeOrganizacionalComunidadeTotal.$error.required || frm.filtro.unidadeOrganizacionalComunidadeTotal.$error.ngValorMin)">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
                 </div>
-                <!--
-                <legend>Quantitativos</legend>
-                <!-- Select input --
-                <div class="form-group" title="Volume de Produção">
-                    <label class="col-md-4 control-label" for="volumeIni">
-                        Volume de produção entre 
-                    </label>
-                    <div class="col-md-4">
-                        <div class="row">
-                            <div class="col-md-5">
-                                <input id="volumeIni" name="volumeIni" type="text" placeholder="placeholder" class="form-control input-md" ng-model="cadastro.filtro.volumeIni" ui-number-mask="globalProducao">
-                            </div>
-                            <label class="col-md-2">
-                                e 
-                            </label>
-                            <div class="col-md-5">
-                                <input id="volumeFim" name="volumeFim" type="text" placeholder="placeholder" class="form-control input-md" ng-model="cadastro.filtro.volumeFim" ui-number-mask="globalProducao">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.volumeIni.$error.required">
-                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                        Campo Obrigatório
-                    </div>
-                </div>
-                <div class="form-group" title="Quantitativos" ng-repeat="item in cadastro.apoio.quantitativoList">
-                    <label class="col-md-4 control-label" for="quantitativoIni">
-                        {{item.nome}}
-                    </label>
-                    <div class="col-md-4">
-                        <div class="row">
-                            <div class="col-md-5">
-                                <input id="quantitativoIni{{item.id}}" name="quantitativoIni{{item.id}}" type="text" placeholder="placeholder" class="form-control input-md" ng-model="cadastro.filtro.quantitativoIni[item.id]" ui-number-mask="4">
-                            </div>
-                            <label class="col-md-2">
-                                e 
-                            </label>
-                            <div class="col-md-5">
-                                <input id="quantitativoFim{{item.id}}" name="quantitativoFim{{item.id}}" type="text" placeholder="placeholder" class="form-control input-md" ng-model="cadastro.filtro.quantitativoFim[item.id]" ui-number-mask="4">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.quantitativoIni{{item.id}}.$error.required">
-                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                        Campo Obrigatório
-                    </div>
-                </div>-->
             </fieldset>
         </form>
     </div>
