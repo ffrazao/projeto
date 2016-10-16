@@ -42,11 +42,11 @@ angular.module(pNmModulo).factory(pNmFactory,
                         }
                     }
                 };
-                BemClassificacaoSrv.filtrar({}).success(function(resposta) {
-                    scp.cadastro.apoio.bemClassificacaoList = resposta.resultado;
-                    identificaPai(scp.cadastro.apoio.bemClassificacaoList, null);
+                //BemClassificacaoSrv.filtrar({}).success(function(resposta) {
+                    //scp.cadastro.apoio.bemClassificacaoList = resposta.resultado;
+                    //identificaPai(scp.cadastro.apoio.bemClassificacaoList, null);
                     //console.log(scp.cadastro.apoio.bemClassificacaoList);
-                });
+                //});
                 if ($rootScope.isAuthenticated()) {
                     var t = $rootScope.token;
 
@@ -72,7 +72,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                         scp.cadastro.apoio.bemClassificacaoList = resposta.resultado.bemClassificacaoList;
                         scp.cadastro.apoio.bemClassificacaoMatrizList = resposta.resultado.bemClassificacaoMatrizList;
 
-                        scp.cadastro.filtro.bemClassificacaoList = angular.copy(scp.cadastro.apoio.bemClassificacaoList);
+                        scp.cadastro.filtro.bemClassificacaoListTemp = angular.copy(scp.cadastro.apoio.bemClassificacaoList);
                     }
                 });
                 // fim captar as listas de apoio

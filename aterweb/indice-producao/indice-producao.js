@@ -215,6 +215,26 @@
                         }
                     }
                 }
+
+
+                var bemClassificacaoList = [];
+
+                var cb = function (filtro, result) {
+                    if (filtro) {
+                        for (var r in filtro) {
+                            if (filtro[r].selecionado) {
+                                result.push(filtro[r]);
+                            } else {
+                                cb(filtro[r].bemClassificacaoList, result);
+                            }
+                        }
+                    }
+                };
+
+                cb(filtro.bemClassificacaoListTemp, bemClassificacaoList);
+
+                filtro.bemClassificacaoList = bemClassificacaoList;
+
                 if ($scope.cadastro.apoio.unidadeOrganizacionalSomenteLeitura && !$scope.cadastro.filtro.unidadeOrganizacionalList.length && !$scope.cadastro.filtro.comunidadeList.length) {
                     toastr.error('Informe pelo menos uma comunidade', 'Erro ao filtrar');
                     throw 'Informe pelo menos uma comunidade';
@@ -272,7 +292,7 @@
             $scope.limpar = function(scp) {
                 var e = scp.navegador.estadoAtual();
                 if ('FILTRANDO' === e) {
-                    $scope.cadastro.filtro.bemClassificacaoList = angular.copy($scope.cadastro.apoio.bemClassificacaoList);
+                    $scope.cadastro.filtro.bemClassificacaoListTemp = angular.copy($scope.cadastro.apoio.bemClassificacaoList);
                     $scope.cadastro.filtro.ano = $scope.cadastro.apoio.ano;
                     $scope.cadastro.filtro.bemClassificadoList = null;
                 } else {
@@ -404,7 +424,7 @@
 
             $scope.getTagBemClassificado2 = function($query) {
 
-                var result = [], classe;
+                var result = [];
 
                 if (!$query || !$query.length) {
                     return {data: result};

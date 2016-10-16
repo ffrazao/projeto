@@ -21,15 +21,15 @@
 
                 <!-- Classificação / Forma de Produção -->
                 <div class="form-group" title="Classificação do Bem de Produção/ Forma de Produção">
-                    <label class="col-md-4 control-label" for="bemClassificacaoList">
+                    <label class="col-md-4 control-label" for="bemClassificacaoListTemp">
                         Classificação / Forma de Produção
                     </label>
                    <div class="col-md-7">
-                        <frz-indice-producao id="bemClassificacaoList" name="bemClassificacaoList" ng-model="cadastro.filtro.bemClassificacaoList">
+                        <frz-indice-producao id="bemClassificacaoListTemp" name="bemClassificacaoListTemp" ng-model="cadastro.filtro.bemClassificacaoListTemp">
                         </frz-indice-producao>
-                        <input type="hidden" id="bemClassificacaoListTotal" name="bemClassificacaoListTotal" ng-model="cadastro.filtro.bemClassificacaoList.length" ng-valor-min="0">
+                        <input type="hidden" id="bemClassificacaoListTempTotal" name="bemClassificacaoListTempTotal" ng-model="cadastro.filtro.bemClassificacaoListTemp.length" ng-valor-min="0">
                     </div>
-                    <div class="label label-danger" ng-show="navegador.submetido && (frm.filtro.bemClassificacaoListTotal.$error.required || frm.filtro.bemClassificacaoListTotal.$error.ngValorMin)">
+                    <div class="label label-danger" ng-show="navegador.submetido && (frm.filtro.bemClassificacaoListTempTotal.$error.required || frm.filtro.bemClassificacaoListTempTotal.$error.ngValorMin)">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         Campo Obrigatório
                     </div>
