@@ -11,10 +11,11 @@ import br.gov.df.emater.aterwebsrv.bo.seguranca.LogCmd;
 public class FiltroExecutarCh extends _Cadeia {
 
 	@Autowired
-	public FiltroExecutarCh(AutenticarUsuarioCmd c1, FiltrarCmd c2, LogCmd c3) {
+	public FiltroExecutarCh(AutenticarUsuarioCmd c1, FiltrarCmd c2, FiltrarDetalheCmd c3, LogCmd c4) {
 		super.addCommand(c1);
 		super.addCommand(c2);
 		super.addCommand(c3);
+		super.addCommand(c4);
 	}
 
 }

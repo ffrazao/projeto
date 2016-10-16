@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.ater;
 
+import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaReg;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -126,7 +128,7 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 
 	public PublicoAlvo(Integer id, Pessoa pessoa) {
 		this(id);
-		setPessoa(pessoa.infoBasica());
+		setPessoa(pessoa);
 	}
 
 	public Calendar getCarteiraProdutorEmissao() {
@@ -196,7 +198,7 @@ public class PublicoAlvo extends EntidadeBase implements _ChavePrimaria<Integer>
 
 	@Override
 	public PublicoAlvo infoBasica() {
-		return new PublicoAlvo(getId(), getPessoa() == null ? null : getPessoa().infoBasica());
+		return new PublicoAlvo(getId(), infoBasicaReg(getPessoa()));
 	}
 
 	public void setCarteiraProdutorEmissao(Calendar carteiraProdutorEmissao) {

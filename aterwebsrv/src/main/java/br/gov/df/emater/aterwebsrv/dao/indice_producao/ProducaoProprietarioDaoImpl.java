@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
+import org.apache.commons.lang3.EnumUtils;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.transform.ResultTransformer;
@@ -22,6 +23,9 @@ import org.springframework.util.CollectionUtils;
 import br.gov.df.emater.aterwebsrv.dto.indice_producao.IndiceProducaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
+import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
+import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaTipo;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacaoFormaProducaoValor;
@@ -30,6 +34,10 @@ import br.gov.df.emater.aterwebsrv.modelo.indice_producao.FormaProducaoValor;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoComposicao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoProprietario;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.GrupoSocial;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 
 public class ProducaoProprietarioDaoImpl implements ProducaoProprietarioDaoCustom {
@@ -162,17 +170,64 @@ public class ProducaoProprietarioDaoImpl implements ProducaoProprietarioDaoCusto
 		StringBuilder sql, sqlTemp;
 
 		sql = new StringBuilder();
-		sql.append("SELECT DISTINCT a.*, d.nome as nomeBemClassificado, e.nome as nomeUnidadeOrganizacional").append("\n");
+		sql.append("SELECT DISTINCT a.*,").append("\n");
+		sql.append("                d.nome as nomeBemClassificado,").append("\n");
+		sql.append("                e.nome as nomeUnidadeOrganizacional,").append("\n");
+		sql.append("                f.nome as nomePropriedadeRural,").append("\n");
+		sql.append("                h.id as idPessoa,").append("\n");
+		sql.append("                h.nome as nomePessoa,").append("\n");
+		sql.append("                h.pessoa_tipo").append("\n");
 		sql.append("FROM   indice_producao.producao_proprietario a").append("\n");
 		sql.append("JOIN   indice_producao.producao b").append("\n");
 		sql.append("ON     b.producao_proprietario_id = a.id").append("\n");
 		sql.append("JOIN   indice_producao.producao_composicao c").append("\n");
 		sql.append("ON     c.producao_id = b.id").append("\n");
 		sql.append("JOIN   indice_producao.bem_classificado d").append("\n");
-		sql.append("ON     a.bem_classificado_id = d.id").append("\n");
-		sql.append("JOIN   funcional.unidade_organizacional e").append("\n");
-		sql.append("ON     a.unidade_organizacional_id = e.id").append("\n");
-		sql.append("WHERE  1 = 1").append("\n");
+		sql.append("ON     d.id = a.bem_classificado_id").append("\n");
+		sql.append("LEFT JOIN   funcional.unidade_organizacional e").append("\n");
+		sql.append("ON     e.id = a.unidade_organizacional_id").append("\n");
+		sql.append("LEFT JOIN   ater.propriedade_rural f").append("\n");
+		sql.append("ON     f.id = a.propriedade_rural_id").append("\n");
+		// caso o filtro seja para o detalhamento da produçao de uma unidade
+		// organizacional
+		if (filtro.getAno() != null && filtro.getBemClassificado() != null && filtro.getBemClassificado().getId() != null && filtro.getUnidadeOrganizacional() != null && filtro.getUnidadeOrganizacional().getId() != null) {
+			sql.append("LEFT JOIN   ater.comunidade f1").append("\n");
+			sql.append("ON     f1.id = f.comunidade_id").append("\n");
+		}
+		sql.append("LEFT JOIN   ater.publico_alvo g").append("\n");
+		sql.append("ON     g.id = a.publico_alvo_id").append("\n");
+		sql.append("LEFT JOIN   pessoa.pessoa h").append("\n");
+		sql.append("ON     h.id = g.pessoa_id").append("\n");
+
+		if (filtro.getId() != null) {
+			// filtrar producao especifica
+			params.add(filtro.getId());
+			sql.append("WHERE a.id = :p").append(params.size()).append("\n");
+		} else if (filtro.getPropriedadeRural() != null && filtro.getPropriedadeRural().getId() != null) {
+			// filtrar producao por propriedade rural
+			params.add(filtro.getPropriedadeRural().getId());
+			sql.append("WHERE a.propriedade_rural_id = :p").append(params.size()).append("\n");
+		} else if (filtro.getPublicoAlvo() != null && filtro.getPublicoAlvo().getId() != null) {
+			// filtrar producao por publicoalvo
+			params.add(filtro.getPublicoAlvo().getId());
+			sql.append("WHERE a.publico_alvo_id = :p").append(params.size()).append("\n");
+		} else if (filtro.getAno() != null && filtro.getBemClassificado() != null && filtro.getBemClassificado().getId() != null && filtro.getUnidadeOrganizacional() != null && filtro.getUnidadeOrganizacional().getId() != null) {
+			// filtrar a producao dos produtores de uma unidade organizacional
+			// ATENÇÃO! A ativacao deste filtro deve ser exclusiva do serviço,
+			// não permitir que a camada de visão preencha estes dados
+			// este é preenchido pelo FiltroDetalheCmd
+			params.add(filtro.getAno());
+			sql.append("WHERE a.ano = :p").append(params.size()).append("\n");
+			params.add(filtro.getBemClassificado().getId());
+			sql.append("AND   a.bem_classificado_id = :p").append(params.size()).append("\n");
+			params.add(filtro.getUnidadeOrganizacional().getId());
+			sql.append("AND   f1.unidade_organizacional_id = :p").append(params.size()).append("\n");
+		} else {
+			// filtrar producao por unidade organizacional
+			sql.append("WHERE a.propriedade_rural_id is null").append("\n");
+			sql.append("AND   a.publico_alvo_id is null").append("\n");
+		}
+
 		if (filtro.getAno() != null) {
 			params.add(filtro.getAno());
 			sql.append("AND    a.ano = :p").append(params.size()).append("\n");
@@ -213,27 +268,36 @@ public class ProducaoProprietarioDaoImpl implements ProducaoProprietarioDaoCusto
 					sqlTemp.append(sqlTempSub).append("\n");
 				}
 			}
-			if (sqlTemp.length() > 0) {				
+			if (sqlTemp.length() > 0) {
 				sql.append("AND    (").append(sqlTemp).append(")\n");
 			}
 		}
 
-		if (!CollectionUtils.isEmpty(filtro.getUnidadeOrganizacionalList()) || !CollectionUtils.isEmpty(filtro.getComunidadeList())) {
-			sqlTemp = new StringBuilder();
-			if (!CollectionUtils.isEmpty(filtro.getUnidadeOrganizacionalList())) {
-				params.add(getIdList(filtro.getUnidadeOrganizacionalList()));
-				sqlTemp.append("a.unidade_organizacional_id IN (:p").append(params.size()).append(")\n");
-			}
-			if (!CollectionUtils.isEmpty(filtro.getComunidadeList())) {
-				if (sqlTemp.length() > 0) {
-					sqlTemp.append("OR").append("\n");
+		if (filtro.getBemClassificado() == null && filtro.getUnidadeOrganizacional() == null) {
+			// este filtro só pode ser executado se nao for detalhamento
+
+			if (!CollectionUtils.isEmpty(filtro.getUnidadeOrganizacionalList()) || !CollectionUtils.isEmpty(filtro.getComunidadeList())) {
+				sqlTemp = new StringBuilder();
+
+				if (!CollectionUtils.isEmpty(filtro.getEmpresaList())) {
+					params.add(getIdList(filtro.getEmpresaList()));
+					sqlTemp.append("e.pessoa_juridica_id IN (:p").append(params.size()).append(")\n");
 				}
-				params.add(getIdList(filtro.getComunidadeList()));
-				sqlTemp.append("a.unidade_organizacional_id IN (SELECT  a2.unidade_organizacional_id").append("\n");
-				sqlTemp.append("                                FROM    ater.comunidade a2").append("\n");
-				sqlTemp.append("                                WHERE   a2.id IN (:p").append(params.size()).append("))\n");
+				if (!CollectionUtils.isEmpty(filtro.getUnidadeOrganizacionalList())) {
+					params.add(getIdList(filtro.getUnidadeOrganizacionalList()));
+					sqlTemp.append("a.unidade_organizacional_id IN (:p").append(params.size()).append(")\n");
+				}
+				if (!CollectionUtils.isEmpty(filtro.getComunidadeList())) {
+					if (sqlTemp.length() > 0) {
+						sqlTemp.append("OR").append("\n");
+					}
+					params.add(getIdList(filtro.getComunidadeList()));
+					sqlTemp.append("a.unidade_organizacional_id IN (SELECT  a2.unidade_organizacional_id").append("\n");
+					sqlTemp.append("                                FROM    ater.comunidade a2").append("\n");
+					sqlTemp.append("                                WHERE   a2.id IN (:p").append(params.size()).append("))\n");
+				}
+				sql.append("AND    (").append(sqlTemp).append(")\n");
 			}
-			sql.append("AND    (").append(sqlTemp).append(")\n");
 		}
 
 		sql.append("ORDER BY a.ano, d.nome, e.nome").append("\n");
@@ -255,6 +319,25 @@ public class ProducaoProprietarioDaoImpl implements ProducaoProprietarioDaoCusto
 				result.setInclusaoData(UtilitarioData.getInstance().sqlTimestampToCalendar((Timestamp) tuple[campos.indexOf("inclusao_data")]));
 				result.setInclusaoUsuario(new Usuario((Integer) tuple[campos.indexOf("inclusao_usuario_id")]));
 				result.setUnidadeOrganizacional(new UnidadeOrganizacional((Integer) tuple[campos.indexOf("unidade_organizacional_id")], (String) tuple[campos.indexOf("nomeUnidadeOrganizacional")], null, null, null));
+				result.setPropriedadeRural(new PropriedadeRural((Integer) tuple[campos.indexOf("propriedade_rural_id")], (String) tuple[campos.indexOf("nomePropriedadeRural")], null, null, null));
+				Pessoa pessoa = null;
+				if (tuple[campos.indexOf("pessoa_tipo")] != null) {
+					switch (EnumUtils.getEnum(PessoaTipo.class, (String) tuple[campos.indexOf("pessoa_tipo")])) {
+					case PF:
+						pessoa = new PessoaFisica((Integer) tuple[campos.indexOf("idPessoa")], (String) tuple[campos.indexOf("nomePessoa")], null, null, null, null, null, null);
+						break;
+					case PJ:
+						pessoa = new PessoaJuridica((Integer) tuple[campos.indexOf("idPessoa")], (String) tuple[campos.indexOf("nomePessoa")], null, null, null, null, null);
+						break;
+					case GS:
+						pessoa = new GrupoSocial((Integer) tuple[campos.indexOf("idPessoa")], (String) tuple[campos.indexOf("nomePessoa")], null, null, null, null, null, null);
+						break;
+					default:
+						break;
+					}
+				}
+				result.setPublicoAlvo(new PublicoAlvo((Integer) tuple[campos.indexOf("publico_alvo_id")], pessoa));
+
 				return result;
 			}
 
@@ -338,7 +421,6 @@ public class ProducaoProprietarioDaoImpl implements ProducaoProprietarioDaoCusto
 			}
 			config.put("forma_producao_valor_id", formaProducaoValorList);
 
-			
 			result.add(config);
 		}
 

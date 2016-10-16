@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -57,6 +58,23 @@ public class ProducaoProprietario extends EntidadeBase implements _ChavePrimaria
 
 	@Column(name = "chave_sisater")
 	private String chaveSisater;
+
+	@Transient
+	// esta propriedade do objeto é exclusiva para envio à camada de visão do
+	// detalhamento, ou seja, os registros de producao dos produtores da unidade
+	// organizacional. É usado como argumento de filtro os registros cuja
+	// produçao dos produtores seja do mesmo ano, do mesmo produto e da mesma
+	// unidade organizacional vinculada à comunidade da propriedade rural do
+	// produtor
+	private List<ProducaoProprietario> producaoProprietarioList;
+
+	public List<ProducaoProprietario> getProducaoProprietarioList() {
+		return producaoProprietarioList;
+	}
+
+	public void setProducaoProprietarioList(List<ProducaoProprietario> producaoProprietarioList) {
+		this.producaoProprietarioList = producaoProprietarioList;
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
