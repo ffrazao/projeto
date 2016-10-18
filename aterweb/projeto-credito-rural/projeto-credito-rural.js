@@ -126,6 +126,41 @@
                 });
             };
 
+            $scope.confirmarExcluir = function(scp) {
+
+                if(scp.navegador.selecao.tipo === 'U'){
+                    ProjetoCreditoRuralSrv.excluir({
+                        id: scp.navegador.selecao.item.atividadeId
+                    }).success(function(resposta) {
+                        if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {
+                            scp.navegador.dados.splice(UtilSrv.indiceDe(scp.navegador.dados, scp.navegador.selecao.item), 1);
+                            scp.navegador.selecao.item = null;
+                            scp.navegador.mudarEstado('LISTANDO');
+                            toastr.info('Operação realizada!', 'Informação');
+                
+                        } else {
+                            toastr.error(resposta && resposta.mensagem ? resposta.mensagem : resposta, 'Erro ao excluir');
+                        }
+                    });
+                }else{
+
+                }
+            };
+
+
+                //$rootScope.confirmarExcluir($scope);
+/*                if ($scope.navegador.selecao.tipo === 'U') {
+                        $rootScope.confirmarExcluir({registro: {id: $scope.navegador.selecao.item.id}});
+                    } else {
+                        $scope.navegador.selecao.items.forEach(function (registro) {
+                            $rootScope.confirmarExcluir({registro: {id: registro.id}});
+                        });
+                    }
+*/
+                //console.log($scope.navegador.selecao.item);
+                //$rootScope.confirmarExcluir(scp);
+           // };
+
             var editarItem = function (destino, item) {
                 var arr = [];
                 if (!destino) {
@@ -169,6 +204,8 @@
             $scope.visualizar = function(scp) {
                 editarItem($scope.cadastro.lista);
             };
+
+
 
             $scope.confirmarFiltrarAntes = function(filtro) {
                 filtro.empresaList = [];

@@ -20,6 +20,8 @@ public class ProjetoCreditoRuralCadListaDto extends CadListaDtoCustom {
 
 	private String atividadeCodigo;
 
+	private Integer atividadeId;
+
 	private String beneficiarioNome;
 
 	private BigInteger custeioTotal;
@@ -54,6 +56,10 @@ public class ProjetoCreditoRuralCadListaDto extends CadListaDtoCustom {
 
 	public String getAtividadeCodigo() {
 		return atividadeCodigo;
+	}
+
+	public Integer getAtividadeId() {
+		return atividadeId;
 	}
 
 	public String getBeneficiarioNome() {
@@ -110,6 +116,10 @@ public class ProjetoCreditoRuralCadListaDto extends CadListaDtoCustom {
 
 	public void setAtividadeCodigo(String atividadeCodigo) {
 		this.atividadeCodigo = atividadeCodigo;
+	}
+
+	public void setAtividadeId(Integer atividadeId) {
+		this.atividadeId = atividadeId;
 	}
 
 	public void setBeneficiarioNome(String beneficiarioNome) {

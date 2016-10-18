@@ -34,9 +34,9 @@ public class ProjetoCreditoRuralRest {
 		return new Resposta(facadeBo.projetoCreditoRuralCalcularFluxoCaixa(usuario, projetoCredito).getResposta());
 	}
 
-	@RequestMapping(value = "/excluir", method = RequestMethod.POST)
-	public Resposta excluir(@RequestBody ProjetoCreditoRural projetoCredito, Principal usuario) throws Exception {
-		return new Resposta(facadeBo.projetoCreditoRuralExcluir(usuario, projetoCredito).getResposta());
+	@RequestMapping(value = "/excluir", method = RequestMethod.DELETE)
+	public Resposta excluir(@RequestParam Integer id, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.projetoCreditoRuralExcluir(usuario, id).getResposta());
 	}
 
 	@RequestMapping(value = "/filtro-executar", method = RequestMethod.POST)

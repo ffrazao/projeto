@@ -68,8 +68,9 @@ angular.module(pNmModulo).factory(pNmFactory,
                 SegurancaSrv.acesso(this.funcionalidade, 'VISUALIZAR');
                 return $http.get(this.endereco + '/visualizar', {params: {'id': id}});
             },
-            excluir : function() {
+            excluir : function(registro) {
                 SegurancaSrv.acesso(this.funcionalidade, 'EXCLUIR');
+                return $http.delete(this.endereco + '/excluir',  {params: {'id': registro.id}});
             },
             salvar: function(registro) {
                 if (registro.id) {

@@ -1138,7 +1138,7 @@ var TIMEOUT_TEMPO = 10 * 60;
                     if (scp.navegador.selecao.tipo === 'U') {
                         if (scp.servico) {
                             scp.servico.excluir({
-                                id: scp.navegador.selecao.item[0]
+                                id: scp.navegador.selecao.item[0] ? scp.navegador.selecao.item[0] : scp.navegador.selecao.item.id
                             }).success(function(resposta) {
                                 if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {
                                     scp.navegador.dados.splice(UtilSrv.indiceDe(scp.navegador.dados, scp.navegador.selecao.item), 1);
@@ -1156,7 +1156,7 @@ var TIMEOUT_TEMPO = 10 * 60;
                         for (var item = scp.navegador.selecao.items.length; item--;) {
                             if (scp.servico) {
                                 scp.servico.excluir({
-                                    id: scp.navegador.selecao.items[item][0]
+                                    id: scp.navegador.selecao.items[item][0] ? scp.navegador.selecao.items[item][0] : scp.navegador.selecao.items[item].id
                                 }).success(function(resposta) {
                                     if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {
                                         scp.navegador.dados.splice(UtilSrv.indiceDe(scp.navegador.dados, scp.navegador.selecao.items[item]), 1);
@@ -1174,8 +1174,10 @@ var TIMEOUT_TEMPO = 10 * 60;
                     }
                     scp.voltar(scp);
                 }
+            
                 //toastr.info('Operação realizada!', 'Informação');
             };
+
             $rootScope.temMaisRegistros = function(scp) {
                 if (!scp.cadastro.filtro.ultimaPagina) {
                     $rootScope.confirmarFiltrar(scp, Math.ceil((scp.cadastro.lista.length / 100) + 1), 'PROXIMA_PAGINA');

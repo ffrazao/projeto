@@ -408,8 +408,8 @@ public class FacadeBo implements BeanFactoryAware {
 	}
 
 	@Transactional
-	public _Contexto projetoCreditoRuralExcluir(Principal usuario, ProjetoCreditoRural projetoCreditoRural) throws Exception {
-		return this._executar(usuario, "ProjetoCreditoRuralExcluirCh", projetoCreditoRural);
+	public _Contexto projetoCreditoRuralExcluir(Principal usuario, Integer id) throws Exception {
+		return this._executar(usuario, "ProjetoCreditoRuralExcluirCh", id);
 	}
 
 	@Transactional(readOnly = true)
