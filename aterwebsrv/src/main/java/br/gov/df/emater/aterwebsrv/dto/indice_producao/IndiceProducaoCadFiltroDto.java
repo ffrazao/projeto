@@ -45,6 +45,13 @@ public class IndiceProducaoCadFiltroDto extends CadFiltroDtoCustom {
 
 	private PublicoAlvo publicoAlvo;
 
+	// utilizado internamente pelo filtro para identificar o tipo de
+	// detalhamento dos dados
+	// situacao = esperado => indica esperado para uma unidade organizacional
+	// situacao = acumulado => indica os registro de produtores encontrados
+	// dentro de um item esperado
+	private String situacao;
+
 	// ATENÇÃO! A ativacao deste filtro deve ser exclusiva do serviço,
 	// não permitir que a camada de visão preencha estes dados
 	@JsonIgnore
@@ -100,6 +107,10 @@ public class IndiceProducaoCadFiltroDto extends CadFiltroDtoCustom {
 		return publicoAlvo;
 	}
 
+	public String getSituacao() {
+		return situacao;
+	}
+
 	public UnidadeOrganizacional getUnidadeOrganizacional() {
 		return unidadeOrganizacional;
 	}
@@ -150,6 +161,10 @@ public class IndiceProducaoCadFiltroDto extends CadFiltroDtoCustom {
 
 	public void setPublicoAlvo(PublicoAlvo publicoAlvo) {
 		this.publicoAlvo = publicoAlvo;
+	}
+
+	public void setSituacao(String situacao) {
+		this.situacao = situacao;
 	}
 
 	public void setUnidadeOrganizacional(UnidadeOrganizacional unidadeOrganizacional) {

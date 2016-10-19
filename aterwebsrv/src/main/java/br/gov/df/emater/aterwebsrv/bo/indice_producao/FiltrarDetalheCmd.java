@@ -26,6 +26,7 @@ public class FiltrarDetalheCmd extends _Comando {
 				(filtro.getPropriedadeRural() == null || filtro.getPropriedadeRural().getId() == null) && 
 				(filtro.getPublicoAlvo() == null || filtro.getPublicoAlvo().getId() == null)) {
 			List<ProducaoProprietario> resposta = (List<ProducaoProprietario>) contexto.getResposta();
+			filtro.setSituacao("Acumulado");
 			if (!CollectionUtils.isEmpty(resposta)) {
 				for (ProducaoProprietario producaoProprietario : resposta) {
 					filtro.setAno(producaoProprietario.getAno());

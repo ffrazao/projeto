@@ -278,6 +278,25 @@
                 captarFormaProducaoValorList($scope.cadastro.apoio.bemClassificacaoList, filtro.formaProducaoValorList);
                 */
             };
+            var atualizaBemClassificado = function (lista) {
+                if (lista) {
+                    lista.forEach(function(v, k) {
+                        for (var item in $scope.cadastro.apoio.bemClassificadoList) {
+                            if (!v.bemClassificado.bemClassificacao || !v.bemClassificado.bemClassificacao.nome) {
+                                if (v.bemClassificado.id === $scope.cadastro.apoio.bemClassificadoList[item].id) {
+                                    v.bemClassificado = $scope.cadastro.apoio.bemClassificadoList[item];
+                                    break;
+                                }
+                            }
+                        }
+                        atualizaBemClassificado(v.producaoProprietarioList);
+                    });
+                }
+            };
+
+            $scope.confirmarFiltrarDepois = function() {
+                atualizaBemClassificado($scope.cadastro.lista);
+            };
 
             $scope.limparRegistroSelecionadoBemClassificacao = function(lista) {
                 for (var i in lista) {

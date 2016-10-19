@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -23,6 +24,7 @@ import org.springframework.util.CollectionUtils;
 import br.gov.df.emater.aterwebsrv.dto.indice_producao.IndiceProducaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
+import br.gov.df.emater.aterwebsrv.modelo.ater.Comunidade;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaTipo;
@@ -50,6 +52,53 @@ public class ProducaoProprietarioDaoImpl implements ProducaoProprietarioDaoCusto
 
 	@Autowired
 	private SessionFactory sessionFactory;
+
+	private void captaBemClassificacao(BemClassificacao bemClassificacao, Map<String, List<_ChavePrimaria<Integer>>> result) {
+		if (bemClassificacao != null) {
+			List<_ChavePrimaria<Integer>> bemClassificadoList = result.get("bem_classificado_id");
+			// captar os bens da classificacao
+			if (bemClassificacao.getBemClassificadoList() != null) {
+				bemClassificadoList.addAll(bemClassificacao.getBemClassificadoList());
+			}
+			// captar os bens das classificacoes descendentes
+			if (bemClassificacao.getBemClassificacaoList() != null) {
+				for (BemClassificacao bc : bemClassificacao.getBemClassificacaoList()) {
+					captaBemClassificacao(bc, result);
+				}
+			}
+			result.put("bem_classificado_id", bemClassificadoList);
+		}
+	}
+
+	private List<Map<String, List<_ChavePrimaria<Integer>>>> captaBemClassificacaoParams(List<BemClassificacao> bemClassificacaoList) {
+		List<Map<String, List<_ChavePrimaria<Integer>>>> result = new ArrayList<>();
+
+		for (BemClassificacao bemClassificacao : bemClassificacaoList) {
+			Map<String, List<_ChavePrimaria<Integer>>> config = new HashMap<>();
+
+			// captar os bens
+			config.put("bem_classificado_id", new ArrayList<>());
+			captaBemClassificacao(bemClassificacaoDao.findOne(bemClassificacao.getId()), config);
+
+			// captar a forma de producao dos bens
+			List<_ChavePrimaria<Integer>> formaProducaoValorList = null;
+			if (bemClassificacao.getBemClassificacaoFormaProducaoValorList() != null) {
+				if (formaProducaoValorList == null) {
+					formaProducaoValorList = new ArrayList<>();
+				}
+				for (BemClassificacaoFormaProducaoValor bemClassificacaoFormaProducaoValor : bemClassificacao.getBemClassificacaoFormaProducaoValorList()) {
+					if (bemClassificacaoFormaProducaoValor != null && bemClassificacaoFormaProducaoValor.getFormaProducaoValor() != null) {
+						formaProducaoValorList.add(bemClassificacaoFormaProducaoValor.getFormaProducaoValor());
+					}
+				}
+			}
+			config.put("forma_producao_valor_id", formaProducaoValorList);
+
+			result.add(config);
+		}
+
+		return result;
+	}
 
 	private void captarBemClassificacaoList(List<BemClassificacao> origem, List<BemClassificacao> destino) {
 		if (origem != null) {
@@ -168,12 +217,16 @@ public class ProducaoProprietarioDaoImpl implements ProducaoProprietarioDaoCusto
 		List<ProducaoProprietario> result = null;
 		List<Object> params = new ArrayList<Object>();
 		StringBuilder sql, sqlTemp;
+		String situacao = filtro.getSituacao();
 
 		sql = new StringBuilder();
 		sql.append("SELECT DISTINCT a.*,").append("\n");
+		sql.append("                d.bem_classificacao_id,").append("\n");
 		sql.append("                d.nome as nomeBemClassificado,").append("\n");
 		sql.append("                e.nome as nomeUnidadeOrganizacional,").append("\n");
 		sql.append("                f.nome as nomePropriedadeRural,").append("\n");
+		sql.append("                f1.id as idComunidade,").append("\n");
+		sql.append("                f1.nome as nomeComunidade,").append("\n");
 		sql.append("                h.id as idPessoa,").append("\n");
 		sql.append("                h.nome as nomePessoa,").append("\n");
 		sql.append("                h.pessoa_tipo").append("\n");
@@ -190,10 +243,10 @@ public class ProducaoProprietarioDaoImpl implements ProducaoProprietarioDaoCusto
 		sql.append("ON     f.id = a.propriedade_rural_id").append("\n");
 		// caso o filtro seja para o detalhamento da produçao de uma unidade
 		// organizacional
-		if (filtro.getAno() != null && filtro.getBemClassificado() != null && filtro.getBemClassificado().getId() != null && filtro.getUnidadeOrganizacional() != null && filtro.getUnidadeOrganizacional().getId() != null) {
+//		if (filtro.getAno() != null && filtro.getBemClassificado() != null && filtro.getBemClassificado().getId() != null && filtro.getUnidadeOrganizacional() != null && filtro.getUnidadeOrganizacional().getId() != null) {
 			sql.append("LEFT JOIN   ater.comunidade f1").append("\n");
 			sql.append("ON     f1.id = f.comunidade_id").append("\n");
-		}
+//		}
 		sql.append("LEFT JOIN   ater.publico_alvo g").append("\n");
 		sql.append("ON     g.id = a.publico_alvo_id").append("\n");
 		sql.append("LEFT JOIN   pessoa.pessoa h").append("\n");
@@ -300,11 +353,23 @@ public class ProducaoProprietarioDaoImpl implements ProducaoProprietarioDaoCusto
 			}
 		}
 
-		sql.append("ORDER BY a.ano, d.nome, e.nome").append("\n");
+		sql.append("ORDER BY a.ano, d.nome, e.nome, h.nome, f.nome").append("\n");
 
 		Query query = sessionFactory.getCurrentSession().createSQLQuery(sql.toString()).setResultTransformer(new ResultTransformer() {
 
 			private static final long serialVersionUID = 1L;
+
+			@Override
+			public List transformList(List collection) {
+				List<ProducaoProprietario> result = (List<ProducaoProprietario>) collection;
+				if (result != null && result.size() > 0) {
+					List<Producao> producaoList = getProducaoList(result, situacao);
+					if (producaoList != null && producaoList.size() > 0) {
+						result.stream().forEach(o -> o.setProducaoList(producaoList.stream().filter(p -> p.getProducaoProprietario().getId().equals(o.getId())).collect(Collectors.toList())));
+					}
+				}
+				return result;
+			}
 
 			@Override
 			public Object transformTuple(Object[] tuple, String[] aliases) {
@@ -314,12 +379,12 @@ public class ProducaoProprietarioDaoImpl implements ProducaoProprietarioDaoCusto
 				result.setAlteracaoData(UtilitarioData.getInstance().sqlTimestampToCalendar((Timestamp) tuple[campos.indexOf("alteracao_data")]));
 				result.setAlteracaoUsuario(new Usuario((Integer) tuple[campos.indexOf("alteracao_usuario_id")]));
 				result.setAno((Integer) tuple[campos.indexOf("ano")]);
-				result.setBemClassificado(new BemClassificado((Integer) tuple[campos.indexOf("bem_classificado_id")], (String) tuple[campos.indexOf("nomeBemClassificado")], null));
+				result.setBemClassificado(new BemClassificado((Integer) tuple[campos.indexOf("bem_classificado_id")], (String) tuple[campos.indexOf("nomeBemClassificado")], new BemClassificacao((Integer) tuple[campos.indexOf("bem_classificacao_id")])));
 				result.setChaveSisater((String) tuple[campos.indexOf("chave_sisater")]);
 				result.setInclusaoData(UtilitarioData.getInstance().sqlTimestampToCalendar((Timestamp) tuple[campos.indexOf("inclusao_data")]));
 				result.setInclusaoUsuario(new Usuario((Integer) tuple[campos.indexOf("inclusao_usuario_id")]));
 				result.setUnidadeOrganizacional(new UnidadeOrganizacional((Integer) tuple[campos.indexOf("unidade_organizacional_id")], (String) tuple[campos.indexOf("nomeUnidadeOrganizacional")], null, null, null));
-				result.setPropriedadeRural(new PropriedadeRural((Integer) tuple[campos.indexOf("propriedade_rural_id")], (String) tuple[campos.indexOf("nomePropriedadeRural")], null, null, null));
+				result.setPropriedadeRural(new PropriedadeRural((Integer) tuple[campos.indexOf("propriedade_rural_id")], (String) tuple[campos.indexOf("nomePropriedadeRural")], new Comunidade((Integer) tuple[campos.indexOf("idComunidade")], (String) tuple[campos.indexOf("nomeComunidade")], null), null, null));
 				Pessoa pessoa = null;
 				if (tuple[campos.indexOf("pessoa_tipo")] != null) {
 					switch (EnumUtils.getEnum(PessoaTipo.class, (String) tuple[campos.indexOf("pessoa_tipo")])) {
@@ -338,18 +403,6 @@ public class ProducaoProprietarioDaoImpl implements ProducaoProprietarioDaoCusto
 				}
 				result.setPublicoAlvo(new PublicoAlvo((Integer) tuple[campos.indexOf("publico_alvo_id")], pessoa));
 
-				return result;
-			}
-
-			@Override
-			public List transformList(List collection) {
-				List<ProducaoProprietario> result = (List<ProducaoProprietario>) collection;
-				if (result != null && result.size() > 0) {
-					List<Producao> producaoList = getProducaoList(result);
-					if (producaoList != null && producaoList.size() > 0) {
-						result.stream().forEach(o -> o.setProducaoList(producaoList.stream().filter(p -> p.getProducaoProprietario().getId().equals(o.getId())).collect(Collectors.toList())));
-					}
-				}
 				return result;
 			}
 
@@ -380,55 +433,8 @@ public class ProducaoProprietarioDaoImpl implements ProducaoProprietarioDaoCusto
 		return chavePrimariaList == null ? null : chavePrimariaList.stream().map(_ChavePrimaria<Integer>::getId).collect(Collectors.toCollection(ArrayList::new));
 	}
 
-	private void captaBemClassificacao(BemClassificacao bemClassificacao, Map<String, List<_ChavePrimaria<Integer>>> result) {
-		if (bemClassificacao != null) {
-			List<_ChavePrimaria<Integer>> bemClassificadoList = result.get("bem_classificado_id");
-			// captar os bens da classificacao
-			if (bemClassificacao.getBemClassificadoList() != null) {
-				bemClassificadoList.addAll(bemClassificacao.getBemClassificadoList());
-			}
-			// captar os bens das classificacoes descendentes
-			if (bemClassificacao.getBemClassificacaoList() != null) {
-				for (BemClassificacao bc : bemClassificacao.getBemClassificacaoList()) {
-					captaBemClassificacao(bc, result);
-				}
-			}
-			result.put("bem_classificado_id", bemClassificadoList);
-		}
-	}
-
-	private List<Map<String, List<_ChavePrimaria<Integer>>>> captaBemClassificacaoParams(List<BemClassificacao> bemClassificacaoList) {
-		List<Map<String, List<_ChavePrimaria<Integer>>>> result = new ArrayList<>();
-
-		for (BemClassificacao bemClassificacao : bemClassificacaoList) {
-			Map<String, List<_ChavePrimaria<Integer>>> config = new HashMap<>();
-
-			// captar os bens
-			config.put("bem_classificado_id", new ArrayList<>());
-			captaBemClassificacao(bemClassificacaoDao.findOne(bemClassificacao.getId()), config);
-
-			// captar a forma de producao dos bens
-			List<_ChavePrimaria<Integer>> formaProducaoValorList = null;
-			if (bemClassificacao.getBemClassificacaoFormaProducaoValorList() != null) {
-				if (formaProducaoValorList == null) {
-					formaProducaoValorList = new ArrayList<>();
-				}
-				for (BemClassificacaoFormaProducaoValor bemClassificacaoFormaProducaoValor : bemClassificacao.getBemClassificacaoFormaProducaoValorList()) {
-					if (bemClassificacaoFormaProducaoValor != null && bemClassificacaoFormaProducaoValor.getFormaProducaoValor() != null) {
-						formaProducaoValorList.add(bemClassificacaoFormaProducaoValor.getFormaProducaoValor());
-					}
-				}
-			}
-			config.put("forma_producao_valor_id", formaProducaoValorList);
-
-			result.add(config);
-		}
-
-		return result;
-	}
-
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private List<Producao> getProducaoList(List<ProducaoProprietario> producaoProprietarioList) {
+	private List<Producao> getProducaoList(List<ProducaoProprietario> producaoProprietarioList, String situacao) {
 
 		// objetos de trabalho
 		List<Producao> result = null;
@@ -464,6 +470,11 @@ public class ProducaoProprietarioDaoImpl implements ProducaoProprietarioDaoCusto
 			private Producao ultimaProducao = new Producao();
 
 			@Override
+			public List transformList(List collection) {
+				return new ArrayList<>(new HashSet<>((List<Producao>) collection));
+			}
+
+			@Override
 			public Object transformTuple(Object[] tuple, String[] aliases) {
 				List<String> campos = Arrays.asList(aliases);
 
@@ -472,13 +483,9 @@ public class ProducaoProprietarioDaoImpl implements ProducaoProprietarioDaoCusto
 					result = this.ultimaProducao;
 				} else {
 					result = new Producao();
-					result.setProducaoComposicaoList(new ArrayList<>());
 					result.setId((Integer) tuple[campos.indexOf("id")]);
-					result.setAlteracaoData(UtilitarioData.getInstance().sqlTimestampToCalendar((Timestamp) tuple[campos.indexOf("alteracao_data")]));
-					result.setAlteracaoUsuario(new Usuario((Integer) tuple[campos.indexOf("alteracao_usuario_id")]));
-					result.setDataConfirmacao(UtilitarioData.getInstance().sqlTimestampToCalendar((Timestamp) tuple[campos.indexOf("data_confirmacao")]));
-					result.setInclusaoData(UtilitarioData.getInstance().sqlTimestampToCalendar((Timestamp) tuple[campos.indexOf("inclusao_data")]));
-					result.setInclusaoUsuario(new Usuario((Integer) tuple[campos.indexOf("inclusao_usuario_id")]));
+					result.setSituacao(situacao);
+					result.setProducaoComposicaoList(new ArrayList<>());
 					if (((Float) tuple[campos.indexOf("item_a_valor")]) != null) {
 						result.setItemAValor(new BigDecimal((Float) tuple[campos.indexOf("item_a_valor")]));
 					}
@@ -489,7 +496,6 @@ public class ProducaoProprietarioDaoImpl implements ProducaoProprietarioDaoCusto
 						result.setItemCValor(new BigDecimal((Float) tuple[campos.indexOf("item_c_valor")]));
 					}
 					result.setProducaoProprietario(new ProducaoProprietario((Integer) tuple[campos.indexOf("producao_proprietario_id")]));
-					result.setQuantidadeProdutores((Integer) tuple[campos.indexOf("quantidade_produtores")]);
 					if (((Float) tuple[campos.indexOf("valor_total")]) != null) {
 						result.setValorTotal(new BigDecimal((Float) tuple[campos.indexOf("valor_total")]));
 					}
@@ -499,6 +505,14 @@ public class ProducaoProprietarioDaoImpl implements ProducaoProprietarioDaoCusto
 					if (((Float) tuple[campos.indexOf("volume")]) != null) {
 						result.setVolume(new BigDecimal((Float) tuple[campos.indexOf("volume")]));
 					}
+					result.setQuantidadeProdutores((Integer) tuple[campos.indexOf("quantidade_produtores")]);
+					result.setDataConfirmacao(UtilitarioData.getInstance().sqlTimestampToCalendar((Timestamp) tuple[campos.indexOf("data_confirmacao")]));
+					
+					//result.setInclusaoUsuario(new Usuario((Integer) tuple[campos.indexOf("inclusao_usuario_id")]));
+					result.setInclusaoData(UtilitarioData.getInstance().sqlTimestampToCalendar((Timestamp) tuple[campos.indexOf("inclusao_data")]));
+					//result.setAlteracaoUsuario(new Usuario((Integer) tuple[campos.indexOf("alteracao_usuario_id")]));
+					result.setAlteracaoData(UtilitarioData.getInstance().sqlTimestampToCalendar((Timestamp) tuple[campos.indexOf("alteracao_data")]));
+					
 					this.ultimaProducao = result;
 				}
 
@@ -509,11 +523,6 @@ public class ProducaoProprietarioDaoImpl implements ProducaoProprietarioDaoCusto
 				result.getProducaoComposicaoList().add(producaoComposicao);
 
 				return result;
-			}
-
-			@Override
-			public List transformList(List collection) {
-				return collection;
 			}
 
 		});

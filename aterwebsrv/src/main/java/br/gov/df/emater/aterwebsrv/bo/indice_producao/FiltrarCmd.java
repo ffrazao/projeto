@@ -20,6 +20,7 @@ public class FiltrarCmd extends _Comando {
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		IndiceProducaoCadFiltroDto filtro = (IndiceProducaoCadFiltroDto) contexto.getRequisicao();
+		filtro.setSituacao("Esperado");
 		List<ProducaoProprietario> result = dao.filtrarNovo(filtro);
 		contexto.setResposta(result);
 		return false;

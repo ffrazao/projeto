@@ -3,7 +3,7 @@
         <div class="panel-heading container-fluid">
             <frz-navegador
                 ng-model="produtoresNvg" exibe-nome-botao="false"
-                dados="navegador.selecao.item[PRODUCAO_PRODUTOR_LIST]"
+                dados="navegador.selecao.item.producaoProprietarioList"
                 acoes-especiais="acoesEspeciais"
                 on-abrir = "abrir()"
                 on-agir = "agir()"
@@ -21,13 +21,13 @@
                 on-ultima-pagina="ultimaPagina()"
                 ></frz-navegador>
         </div>
-        <div class="painel-body"  ng-hide="navegador.selecao.item[PRODUCAO_PRODUTOR_LIST].length">
+        <div class="painel-body"  ng-hide="navegador.selecao.item.producaoProprietarioList.length">
             <div class="alert alert-warning" style="margin: 0px;" role="alert">
                 <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
                 Nenhum registro localizado!
             </div>
         </div>
-        <div class="table-responsive" ng-show="navegador.selecao.item[PRODUCAO_PRODUTOR_LIST].length > 0">
+        <div class="table-responsive" ng-show="navegador.selecao.item.producaoProprietarioList.length > 0">
 
             <table class="table table-hover table-striped">
                 <thead>
@@ -45,8 +45,8 @@
                     </tr> 
                 </thead>
                 <tbody>
-                    <tr ng-repeat-start="item in navegador.selecao.item[PRODUCAO_PRODUTOR_LIST] | orderBy: [PRODUCAO_PUBLICO_ALVO_NOME] | orderBy: [PRODUCAO_PROPRIEDADE_RURAL_NOME] | orderBy: [PRODUCAO_COMUNIDADE_NOME] | pagina: produtoresNvg.paginaAtual : produtoresNvg.tamanhoPagina | limitTo: produtoresNvg.tamanhoPagina" ng-click="produtoresNvg.folhaAtual = $index + ((produtoresNvg.paginaAtual-1) * produtoresNvg.tamanhoPagina)"
-                         title="Cadastrado por: {{item[PRODUCAO_INCLUSAO_NOME]}} em {{item[PRODUCAO_INCLUSAO_DATA] | date: 'dd/MM/yyyy'}}, alterado por: {{item[PRODUCAO_ALTERACAO_NOME]}} em {{item[PRODUCAO_ALTERACAO_DATA] | date: 'dd/MM/yyyy'}}">
+                    <tr ng-repeat-start="item in navegador.selecao.item.producaoProprietarioList | orderBy: ['publicoAlvo.pessoa.nome', 'propriedadeRural.nome', 'propriedadeRural.comunidade.nome']  | pagina: produtoresNvg.paginaAtual : produtoresNvg.tamanhoPagina | limitTo: produtoresNvg.tamanhoPagina" ng-click="produtoresNvg.folhaAtual = $index + ((produtoresNvg.paginaAtual-1) * produtoresNvg.tamanhoPagina)"
+                         title="">
                         <td width="30px" rowspan="2">
                             <input type="radio" ng-show="produtoresNvg.selecao.tipo === 'U'" ng-model="produtoresNvg.selecao.item" ng-value="item"/>
                             <input type="checkbox" ng-show="produtoresNvg.selecao.tipo === 'M'" checklist-model="produtoresNvg.selecao.items" checklist-value="item" ng-click="crudMataClick(scp, $event);"/>
@@ -55,71 +55,75 @@
                             {{$index + 1 + ((produtoresNvg.paginaAtual-1) * produtoresNvg.tamanhoPagina)}}
                         </td>
                         <td>
-                            <a ng-click="modalVerPessoa(item[PRODUCAO_PUBLICO_ALVO_PESSOA_ID])">{{item[PRODUCAO_PUBLICO_ALVO_NOME]}}</a>
+                            <a ng-click="modalVerPessoa(item.publicoAlvo.pessoa.id)">{{item.publicoAlvo.pessoa.nome}}</a>
                         </td>
-                        <td><a ng-click="modalVerPropriedadeRural(item[PRODUCAO_PROPRIEDADE_RURAL_ID])">{{item[PRODUCAO_PROPRIEDADE_RURAL_NOME]}}</a></td>
-                        <td>{{item[PRODUCAO_COMUNIDADE_NOME]}}</td>
+                        <td><a ng-click="modalVerPropriedadeRural(item.propriedadeRural.id)">{{item.propriedadeRural.nome}}</a></td>
+                        <td>{{item.propriedadeRural.comunidade.nome}}</td>
                         <td><button class="btn btn-primary btn-sm sr-only">Confirmar</button></td>
                     </tr>
-                    <tr ng-repeat-end  title="Cadastrado por: {{item[PRODUCAO_INCLUSAO_NOME]}} em {{item[PRODUCAO_INCLUSAO_DATA] | date: 'dd/MM/yyyy'}}, alterado por: {{item[PRODUCAO_ALTERACAO_NOME]}} em {{item[PRODUCAO_ALTERACAO_DATA] | date: 'dd/MM/yyyy'}}">
+                    <tr ng-repeat-end>
                         <td colspan="4">
                             <table class="table table-hover table-striped table-condensed" style="font-size: 12px;">
                                 <thead>
                                     <tr>
-                                        <th colspan="{{item[PRODUCAO_FORMA_LIST][0][FORMA_COMPOSICAO_LIST].length}}"><span ng-if="cadastro.apoio.escondeDetalhe">Forma de Producao</span></th>
+                                        <th colspan="{{item.bemClassificado.bemClassificacao.bemClassificacaoFormaProducaoItemList.length}}"><span ng-if="cadastro.apoio.escondeDetalhe">Forma de Produção</span></th>
                                         <th>A</th>
                                         <th>B</th>
                                         <th>C</th>
                                         <th>Volume</th>
-                                        <th rowspan="2">Preço Pago ao Produtor (Unitário)</th>
-                                        <th rowspan="2">Preço Pago ao Produtor (Total)</th>
+                                        <th colspan="2">Preço Pago ao Produtor</th>
                                         <th rowspan="2">Data de Confirmação</th>
                                     </tr> 
                                     <tr>
-                                        <th ng-repeat="composicao in item[PRODUCAO_FORMA_LIST][0][FORMA_COMPOSICAO_LIST]">
-                                            <span ng-if="cadastro.apoio.escondeDetalhe">{{composicao[COMPOSICAO_FORMA_PRODUCAO_VALOR_ITEM_NOME]}}</span>
+                                        <th ng-repeat="composicao in item.bemClassificado.bemClassificacao.bemClassificacaoFormaProducaoItemList | orderBy: 'ordem'">
+                                            <span ng-if="cadastro.apoio.escondeDetalhe">{{composicao.formaProducaoItem.nome}}</span>
                                         </th>
-                                        <th><small ng-if="item[PRODUCAO_NOME_ITEM_A]">({{item[PRODUCAO_NOME_ITEM_A]}})</small></th>
-                                        <th><small ng-if="item[PRODUCAO_NOME_ITEM_B]">({{item[PRODUCAO_NOME_ITEM_B]}})</small></th>
-                                        <th><small ng-if="item[PRODUCAO_NOME_ITEM_C]">({{item[PRODUCAO_NOME_ITEM_C]}})</small></th>
-                                        <th><small ng-if="item[PRODUCAO_FORMULA]">({{item[PRODUCAO_FORMULA]}})</small></th>
+                                        <th><small ng-if="item.bemClassificado.bemClassificacao.itemANome.nome">({{item.bemClassificado.bemClassificacao.itemANome.nome}})</small></th>
+                                        <th><small ng-if="item.bemClassificado.bemClassificacao.itemBNome.nome">({{item.bemClassificado.bemClassificacao.itemBNome.nome}})</small></th>
+                                        <th><small ng-if="item.bemClassificado.bemClassificacao.itemCNome.nome">({{item.bemClassificado.bemClassificacao.itemCNome.nome}})</small></th>
+                                        <th><small ng-if="item.bemClassificado.bemClassificacao.formula">({{item.bemClassificado.bemClassificacao.formula}})</small></th>
+                                        <th>(Valor Unitário R$)</th>
+                                        <th>(Valor Total R$)</th>
                                     </tr> 
                                 </thead>
-                                <tbody ng-if="cadastro.apoio.escondeDetalhe">
-                                    <tr ng-repeat="forma in item[PRODUCAO_FORMA_LIST] | limitTo: item[PRODUCAO_FORMA_LIST].length - 2" ng-class="{danger: (!forma[FORMA_DATA_CONFIRMACAO])}" title="Cadastrado por: {{forma[FORMA_INCLUSAO_NOME]}} em {{forma[FORMA_INCLUSAO_DATA] | date: 'dd/MM/yyyy'}}, alterado por: {{forma[FORMA_ALTERACAO_NOME]}} em {{forma[FORMA_ALTERACAO_DATA] | date: 'dd/MM/yyyy'}}">
-                                        <td ng-repeat="composicao in forma[FORMA_COMPOSICAO_LIST]">
-                                            {{composicao[COMPOSICAO_FORMA_PRODUCAO_VALOR_NOME]}}
-                                        </td>
-                                        <td class="text-right">{{forma[FORMA_VALOR_ITEM_A] | number: globalFracaoHectares}}</td>
-                                        <td class="text-right">{{forma[FORMA_VALOR_ITEM_B] | number: globalFracaoHectares}}</td>
-                                        <td class="text-right">{{forma[FORMA_VALOR_ITEM_C] | number: globalFracaoHectares}}</td>
-                                        <td class="text-right">{{forma[FORMA_VOLUME] | number: globalFracaoHectares}}</td>
-                                        <td class="text-right">{{forma[FORMA_VLR_UNIT] | currency}}</td>
-                                        <td class="text-right">{{forma[FORMA_VLR_TOTAL] | currency}}</td>
-                                        <td>{{forma[FORMA_DATA_CONFIRMACAO] | date: 'dd/MM/yyyy'}}</td>
-                                    </tr>
-                                </tbody>
-                                <tfoot>
-                                    <tr ng-repeat="forma in item[PRODUCAO_FORMA_LIST] | limitTo: -2">
-                                        <td class="text-right" colspan="{{item[PRODUCAO_FORMA_LIST][0][FORMA_COMPOSICAO_LIST].length}}">Total {{forma[FORMA_NOME_CALCULO]}}</td>
-                                        <td class="text-right">{{forma[FORMA_VALOR_ITEM_A] | number: globalFracaoHectares}}</td>
-                                        <td class="text-right">{{forma[FORMA_VALOR_ITEM_B] | number: globalFracaoHectares}}</td>
-                                        <td class="text-right">{{forma[FORMA_VALOR_ITEM_C] | number: globalFracaoHectares}}</td>
-                                        <td class="text-right">{{forma[FORMA_VOLUME] | number: globalFracaoHectares}}</td>
-                                        <td class="text-right">{{forma[FORMA_VLR_UNIT] | currency}}</td>
-                                        <td class="text-right">{{forma[FORMA_VLR_TOTAL] | currency}}</td>
-                                        <td>--</td>
+                                <tfoot ng-if="cadastro.apoio.escondeDetalhe">
+                                    <tr ng-repeat="producao in item.producaoList | limitTo: -2" title="">
+                                        <th ng-repeat="composicao in producao.producaoComposicaoList | orderBy: 'ordem'" ng-if="producao.producaoComposicaoList">
+                                            {{composicao.formaProducaoValor.nome}}
+                                        </th>
+                                        <th ng-if="!producao.producaoComposicaoList" colspan="{{item.bemClassificado.bemClassificacao.bemClassificacaoFormaProducaoItemList.length}}" class="text-right">
+                                            {{producao.situacao}}
+                                        </th>
+                                        <th class="text-right">{{producao.itemAValor | number: globalFracaoHectares}}</th>
+                                        <th class="text-right">{{producao.itemBValor | number: globalFracaoHectares}}</th>
+                                        <th class="text-right">{{producao.itemCValor | number: globalFracaoHectares}}</th>
+                                        <th class="text-right">{{producao.volume | number: globalFracaoHectares}}</th>
+                                        <th class="text-right">{{producao.valorUnitario | currency}}</th>
+                                        <th class="text-right">{{producao.valorTotal | currency}}</th>
+                                        <th class="text-right">{{producao.dataConfirmacao | date: 'dd/MM/yyyy'}}</th>
                                     </tr>
                                 </tfoot>
+                                <tbody ng-if="cadastro.apoio.escondeDetalhe">
+                                    <tr ng-repeat="producao in item.producaoList | limitTo: item.producaoList.length -2" ng-class="{danger: (!producao.dataConfirmacao)}" title="">
+                                        <td ng-repeat="composicao in producao.producaoComposicaoList | orderBy: 'ordem'" ng-if="producao.producaoComposicaoList">
+                                            {{composicao.formaProducaoValor.nome}}
+                                        </td>
+                                        <td ng-if="!producao.producaoComposicaoList" colspan="{{item.bemClassificado.bemClassificacao.bemClassificacaoFormaProducaoItemList.length}}" class="text-right">
+                                            {{producao.situacao}}
+                                        </td>
+                                        <td class="text-right">{{producao.itemAValor | number: globalFracaoHectares}}</td>
+                                        <td class="text-right">{{producao.itemBValor | number: globalFracaoHectares}}</td>
+                                        <td class="text-right">{{producao.itemCValor | number: globalFracaoHectares}}</td>
+                                        <td class="text-right">{{producao.volume | number: globalFracaoHectares}}</td>
+                                        <td class="text-right">{{producao.valorUnitario | currency}}</td>
+                                        <td class="text-right">{{producao.valorTotal | currency}}</td>
+                                        <td class="text-right">{{producao.dataConfirmacao | date: 'dd/MM/yyyy'}}</td>
+                                    </tr>
+                                </tbody>
                             </table>
                         </td>
                     </tr>
                 </tbody>
-                <tfoot>
-                    <tr>
-                        <th></th>
-                    </tr> 
-                </tfoot>
             </table>
         </div>
     </div>

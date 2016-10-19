@@ -36,6 +36,7 @@ import br.gov.df.emater.aterwebsrv.dto.sistema.FuncionalidadeCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.sistema.LogAcaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.sistema.PerfilCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.sistema.UsuarioCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.Atividade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.ArquivoTipo;
@@ -72,6 +73,9 @@ public class FacadeBo implements BeanFactoryAware {
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public void _logAcaoSalvar(LogAcao logAcao) throws Exception {
+		logAcao.setRequisicao(UtilitarioString.limitarTextoEm(logAcao.getRequisicao(), 16777214));
+		logAcao.setResposta(UtilitarioString.limitarTextoEm(logAcao.getResposta(), 16777214));
+		logAcao.setErro(UtilitarioString.limitarTextoEm(logAcao.getErro(), 16777214));
 		_logAcaoDao.save(logAcao);
 	}
 

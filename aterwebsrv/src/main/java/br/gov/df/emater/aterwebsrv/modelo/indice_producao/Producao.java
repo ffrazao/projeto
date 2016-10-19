@@ -1,5 +1,8 @@
 package br.gov.df.emater.aterwebsrv.modelo.indice_producao;
 
+import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaList;
+import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaReg;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -16,6 +19,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -23,6 +27,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo._LogInclusaoAlteracao;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
@@ -31,7 +36,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 
 @Entity
 @Table(name = "producao", schema = EntidadeBase.INDICE_PRODUCAO_SCHEMA)
-public class Producao extends EntidadeBase implements _ChavePrimaria<Integer>, _LogInclusaoAlteracao {
+public class Producao extends EntidadeBase implements _ChavePrimaria<Integer>, _LogInclusaoAlteracao, InfoBasica<Producao> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -77,15 +82,18 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer>, _
 	@Column(name = "item_c_valor")
 	private BigDecimal itemCValor;
 
+	@OneToMany(mappedBy = "producao")
+	private List<ProducaoComposicao> producaoComposicaoList;
+
 	@ManyToOne
 	@JoinColumn(name = "producao_proprietario_id")
 	private ProducaoProprietario producaoProprietario;
 
-	@OneToMany(mappedBy = "producao")
-	private List<ProducaoComposicao> producaoComposicaoList;
-
 	@Column(name = "quantidade_produtores")
 	private Integer quantidadeProdutores;
+
+	@Transient
+	private String situacao;
 
 	@Column(name = "valor_total")
 	private BigDecimal valorTotal;
@@ -97,6 +105,30 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer>, _
 
 	public Producao() {
 		super();
+	}
+
+	public Producao(Integer id) {
+		super(id);
+	}
+
+	public Producao(Integer id, ProducaoProprietario producaoProprietario, List<ProducaoComposicao> producaoComposicaoList, BigDecimal itemAValor, BigDecimal itemBValor, BigDecimal itemCValor, BigDecimal volume, BigDecimal valorUnitario, BigDecimal valorTotal,
+			Usuario inclusaoUsuario, Calendar inclusaoData, Usuario alteracaoUsuario, Calendar alteracaoData, Integer quantidadeProdutores, Calendar dataConfirmacao) {
+		super();
+		this.id = id;
+		this.producaoProprietario = producaoProprietario;
+		this.producaoComposicaoList = producaoComposicaoList;
+		this.itemAValor = itemAValor;
+		this.itemBValor = itemBValor;
+		this.itemCValor = itemCValor;
+		this.volume = volume;
+		this.valorUnitario = valorUnitario;
+		this.valorTotal = valorTotal;
+		this.inclusaoUsuario = inclusaoUsuario;
+		this.inclusaoData = inclusaoData;
+		this.alteracaoUsuario = alteracaoUsuario;
+		this.alteracaoData = alteracaoData;
+		this.quantidadeProdutores = quantidadeProdutores;
+		this.dataConfirmacao = dataConfirmacao;
 	}
 
 	public Producao(Producao producao) {
@@ -151,16 +183,20 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer>, _
 		return itemCValor;
 	}
 
-	public ProducaoProprietario getProducaoProprietario() {
-		return producaoProprietario;
-	}
-
 	public List<ProducaoComposicao> getProducaoComposicaoList() {
 		return producaoComposicaoList;
 	}
 
+	public ProducaoProprietario getProducaoProprietario() {
+		return producaoProprietario;
+	}
+
 	public Integer getQuantidadeProdutores() {
 		return quantidadeProdutores;
+	}
+
+	public String getSituacao() {
+		return situacao;
 	}
 
 	public BigDecimal getValorTotal() {
@@ -173,6 +209,12 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer>, _
 
 	public BigDecimal getVolume() {
 		return volume;
+	}
+
+	@Override
+	public Producao infoBasica() {
+		return new Producao(this.id, this.producaoProprietario == null ? null : new ProducaoProprietario(this.producaoProprietario.getId()), infoBasicaList(this.producaoComposicaoList), this.itemAValor, this.itemBValor, this.itemCValor, this.volume, this.valorUnitario,
+				this.valorTotal, infoBasicaReg(this.inclusaoUsuario), this.inclusaoData, infoBasicaReg(this.alteracaoUsuario), this.alteracaoData, this.quantidadeProdutores, this.dataConfirmacao);
 	}
 
 	@Override
@@ -216,16 +258,20 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer>, _
 		this.itemCValor = itemCValor;
 	}
 
-	public void setProducaoProprietario(ProducaoProprietario producaoProprietario) {
-		this.producaoProprietario = producaoProprietario;
-	}
-
 	public void setProducaoComposicaoList(List<ProducaoComposicao> producaoComposicaoList) {
 		this.producaoComposicaoList = producaoComposicaoList;
 	}
 
+	public void setProducaoProprietario(ProducaoProprietario producaoProprietario) {
+		this.producaoProprietario = producaoProprietario;
+	}
+
 	public void setQuantidadeProdutores(Integer quantidadeProdutores) {
 		this.quantidadeProdutores = quantidadeProdutores;
+	}
+
+	public void setSituacao(String situacao) {
+		this.situacao = situacao;
 	}
 
 	public void setValorTotal(BigDecimal valorTotal) {

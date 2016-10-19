@@ -1,4 +1,5 @@
 /* jshint evil:true, loopfunc: true */
+/* global removerCampo */
 
 (function(pNmModulo, pNmFactory, pNmController) {
 
@@ -68,11 +69,22 @@ angular.module(pNmModulo).factory(pNmFactory,
                 }
                 this.bemClassificacaoMatriz().success(function(resposta) {
                     if (resposta && resposta.resultado) {
+                        removerCampo(resposta.resultado, ['@jsonId']);
                         scp.cadastro.apoio.bemClassificadoList = resposta.resultado.bemClassificadoList;
                         scp.cadastro.apoio.bemClassificacaoList = resposta.resultado.bemClassificacaoList;
                         scp.cadastro.apoio.bemClassificacaoMatrizList = resposta.resultado.bemClassificacaoMatrizList;
 
                         scp.cadastro.filtro.bemClassificacaoListTemp = angular.copy(scp.cadastro.apoio.bemClassificacaoList);
+
+                        scp.cadastro.apoio.bemClassificadoList.forEach(function (v,k) {
+                            for (var classificacao in scp.cadastro.apoio.bemClassificacaoMatrizList) {
+                                if (v.bemClassificacao.id === scp.cadastro.apoio.bemClassificacaoMatrizList[classificacao].id) {
+                                    v.bemClassificacao = angular.copy(scp.cadastro.apoio.bemClassificacaoMatrizList[classificacao]);
+                                    break;
+                                }
+
+                            }
+                        });
                     }
                 });
                 // fim captar as listas de apoio

@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.indice_producao;
 
+import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaReg;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,11 +11,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 
 @Entity
 @Table(name = "producao_composicao", schema = EntidadeBase.INDICE_PRODUCAO_SCHEMA)
-public class ProducaoComposicao extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class ProducaoComposicao extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<ProducaoComposicao> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -39,6 +42,14 @@ public class ProducaoComposicao extends EntidadeBase implements _ChavePrimaria<I
 		super(id);
 	}
 
+	public ProducaoComposicao(Integer id, Producao producao, FormaProducaoValor formaProducaoValor, Integer ordem) {
+		super();
+		this.id = id;
+		this.producao = producao;
+		this.formaProducaoValor = formaProducaoValor;
+		this.ordem = ordem;
+	}
+
 	public ProducaoComposicao(ProducaoComposicao producaoComposicao) {
 		this.formaProducaoValor = producaoComposicao.getFormaProducaoValor();
 		this.ordem = producaoComposicao.getOrdem();
@@ -59,6 +70,11 @@ public class ProducaoComposicao extends EntidadeBase implements _ChavePrimaria<I
 
 	public Producao getProducao() {
 		return producao;
+	}
+
+	@Override
+	public ProducaoComposicao infoBasica() {
+		return new ProducaoComposicao(this.id, this.producao == null ? null : new Producao(this.producao.getId()), infoBasicaReg(this.formaProducaoValor), this.ordem);
 	}
 
 	public void setFormaProducaoValor(FormaProducaoValor formaProducaoValor) {

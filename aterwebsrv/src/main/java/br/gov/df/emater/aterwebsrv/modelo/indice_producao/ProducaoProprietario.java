@@ -59,23 +59,6 @@ public class ProducaoProprietario extends EntidadeBase implements _ChavePrimaria
 	@Column(name = "chave_sisater")
 	private String chaveSisater;
 
-	@Transient
-	// esta propriedade do objeto é exclusiva para envio à camada de visão do
-	// detalhamento, ou seja, os registros de producao dos produtores da unidade
-	// organizacional. É usado como argumento de filtro os registros cuja
-	// produçao dos produtores seja do mesmo ano, do mesmo produto e da mesma
-	// unidade organizacional vinculada à comunidade da propriedade rural do
-	// produtor
-	private List<ProducaoProprietario> producaoProprietarioList;
-
-	public List<ProducaoProprietario> getProducaoProprietarioList() {
-		return producaoProprietarioList;
-	}
-
-	public void setProducaoProprietarioList(List<ProducaoProprietario> producaoProprietarioList) {
-		this.producaoProprietarioList = producaoProprietarioList;
-	}
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
@@ -93,6 +76,15 @@ public class ProducaoProprietario extends EntidadeBase implements _ChavePrimaria
 
 	@OneToMany(mappedBy = "producaoProprietario")
 	private List<Producao> producaoList;
+
+	@Transient
+	// esta propriedade do objeto é exclusiva para envio à camada de visão do
+	// detalhamento, ou seja, os registros de producao dos produtores da unidade
+	// organizacional. É usado como argumento de filtro os registros cuja
+	// produçao dos produtores seja do mesmo ano, do mesmo produto e da mesma
+	// unidade organizacional vinculada à comunidade da propriedade rural do
+	// produtor
+	private List<ProducaoProprietario> producaoProprietarioList;
 
 	@ManyToOne
 	@JoinColumn(name = "propriedade_rural_id")
@@ -169,6 +161,10 @@ public class ProducaoProprietario extends EntidadeBase implements _ChavePrimaria
 		return producaoList;
 	}
 
+	public List<ProducaoProprietario> getProducaoProprietarioList() {
+		return producaoProprietarioList;
+	}
+
 	public PropriedadeRural getPropriedadeRural() {
 		return propriedadeRural;
 	}
@@ -220,6 +216,10 @@ public class ProducaoProprietario extends EntidadeBase implements _ChavePrimaria
 
 	public void setProducaoList(List<Producao> producaoList) {
 		this.producaoList = producaoList;
+	}
+
+	public void setProducaoProprietarioList(List<ProducaoProprietario> producaoProprietarioList) {
+		this.producaoProprietarioList = producaoProprietarioList;
 	}
 
 	public void setPropriedadeRural(PropriedadeRural propriedadeRural) {
