@@ -143,23 +143,22 @@
                         }
                     });
                 }else{
-
-                }
-            };
-
-
-                //$rootScope.confirmarExcluir($scope);
-/*                if ($scope.navegador.selecao.tipo === 'U') {
-                        $rootScope.confirmarExcluir({registro: {id: $scope.navegador.selecao.item.id}});
-                    } else {
-                        $scope.navegador.selecao.items.forEach(function (registro) {
-                            $rootScope.confirmarExcluir({registro: {id: registro.id}});
+                    //var reg = scp.navegador.selecao.items[scp.navegador.folhaAtual];
+                    for (var i = scp.navegador.selecao.items.length - 1; i >= 0; i--) {
+                        ProjetoCreditoRuralSrv.excluir({
+                            id: scp.navegador.selecao.items[i].atividadeId
+                        }).success(function(resposta) {
+                            if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {
+                                $scope.confirmarFiltrar($scope);                                
+                            } else {
+                                toastr.error(resposta && resposta.mensagem ? resposta.mensagem : resposta, 'Erro ao excluir');
+                            }
                         });
                     }
-*/
-                //console.log($scope.navegador.selecao.item);
-                //$rootScope.confirmarExcluir(scp);
-           // };
+                    scp.navegador.mudarEstado('LISTANDO');
+                    toastr.info('Operação realizada!', 'Informação');
+                }
+                };
 
             var editarItem = function (destino, item) {
                 var arr = [];
