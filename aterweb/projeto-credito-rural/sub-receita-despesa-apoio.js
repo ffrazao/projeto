@@ -25,7 +25,7 @@ angular.module(pNmModulo).controller(pNmController,
                 }
             }
         }
-        return 'download/modelo/projeto-credito-rural/evolucaoRebanho' + codigo + '2015.xls';
+        return $scope.servicoUrl + '/resources/modelo/projeto-credito-rural/evolucaoRebanho' + codigo + '2015.xls';
     };
 
     $scope.planilhaUpload = function (apoioItem, codigo) {

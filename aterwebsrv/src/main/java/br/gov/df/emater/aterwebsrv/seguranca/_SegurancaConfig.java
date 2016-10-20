@@ -57,14 +57,14 @@ public class _SegurancaConfig extends WebSecurityConfigurerAdapter {
 				.authorizeRequests()
 
 				// allow anonymous resource requests
-				.antMatchers("/").permitAll().antMatchers("/*").permitAll()
-
-				.antMatchers("/casa/**").permitAll().antMatchers("/contrato/**").permitAll().antMatchers("/css/**").permitAll().antMatchers("/directive/**").permitAll().antMatchers("/img/**").permitAll().antMatchers("/js/**").permitAll().antMatchers("/login/**").permitAll()
-//				.antMatchers("/api/esqueci-senha/**").permitAll().antMatchers("/node_modules/**").permitAll().antMatchers("/pessoa/**").permitAll().antMatchers("/propriedade/**").permitAll().antMatchers("/service/**").permitAll().antMatchers("/resources/**").permitAll()
-				.antMatchers("/api/esqueci-senha/**").permitAll().antMatchers("/relatorio/**").permitAll().antMatchers("/service/**").permitAll().antMatchers("/resources/**").permitAll()
+				.antMatchers("/").permitAll()
+				.antMatchers("/*").permitAll()
+				.antMatchers("/relatorio/**").permitAll()
+				.antMatchers("/resources/**").permitAll()
 
 				// allow anonymous POSTs to login
 				.antMatchers(HttpMethod.POST, "/api/login").permitAll()
+				.antMatchers("/api/esqueci-senha/**").permitAll()
 
 				// defined Admin only API area
 				.antMatchers("/admin/**").hasRole("ADMIN")
