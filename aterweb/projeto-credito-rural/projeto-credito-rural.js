@@ -493,9 +493,9 @@
                 }
             };
 
-            var validaTab = function(assistido, indTab) {
+            var validaTab = function(assistido, assistido2, indTab) {
   
-                    if(assistido.length > 0){
+                    if(assistido.length > 0 || assistido2.length > 0){
                         $scope.tabs[indTab].visivel = true;
                     }else{
                          $scope.tabs[indTab].visivel = false;
@@ -505,21 +505,15 @@
             // fim trabalho tab
 
             // inicio dos watches
-            $scope.$watch('cadastro.registro.projetoCreditoRural.custeioList', function(){
-                if($scope.cadastro.registro.projetoCreditoRural != null){
-                    validaTab($scope.cadastro.registro.projetoCreditoRural.custeioList, 3);    
+            $scope.$watch('cadastro.registro.projetoCreditoRural.custeioList + cadastro.registro.projetoCreditoRural.investimentoList', function(){
+                if($scope.cadastro.registro.projetoCreditoRural != null && $scope.cadastro.registro.projetoCreditoRural.investimentoList != null){
+                    validaTab($scope.cadastro.registro.projetoCreditoRural.custeioList, $scope.cadastro.registro.projetoCreditoRural.investimentoList, 3);    
                 }
             }, true);
-
-            $scope.$watch('cadastro.registro.projetoCreditoRural.investimentoList', function(){
-                if($scope.cadastro.registro.projetoCreditoRural != null){
-                    validaTab($scope.cadastro.registro.projetoCreditoRural.investimentoList, 3);
-                }
-            }, true);
-
-            $scope.$watch('cadastro.registro.projetoCreditoRural.cronogramaPagamentoCusteioList', function(){
-                if($scope.cadastro.registro.projetoCreditoRural != null){
-                    validaTab($scope.cadastro.registro.projetoCreditoRural.cronogramaPagamentoCusteioList, 4);
+            
+            $scope.$watch('cadastro.registro.projetoCreditoRural.cronogramaPagamentoCusteioList + cadastro.registro.projetoCreditoRural.cronogramaPagamentoInvestimentoList', function(){
+                if($scope.cadastro.registro.projetoCreditoRural != null && $scope.cadastro.registro.projetoCreditoRural.cronogramaPagamentoInvestimentoList != null){
+                    validaTab($scope.cadastro.registro.projetoCreditoRural.cronogramaPagamentoCusteioList, $scope.cadastro.registro.projetoCreditoRural.cronogramaPagamentoInvestimentoList, 4);
                 }
             }, true);
 
@@ -528,7 +522,7 @@
                     validaTab($scope.cadastro.registro.projetoCreditoRural.cronogramaPagamentoInvestimentoList, 4);
                 }
             }, true);
-
+            
             $scope.$watch('cadastro.apoio.financiamento.investimentoList.valorFinanciadoTotal + cadastro.apoio.financiamento.custeioList.valorFinanciadoTotal', function(v, o) {
                 if (!$scope.cadastro.apoio.financiamento) {
                     return;
