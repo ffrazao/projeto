@@ -204,8 +204,6 @@
                 editarItem($scope.cadastro.lista);
             };
 
-
-
             $scope.confirmarFiltrarAntes = function(filtro) {
                 filtro.empresaList = [];
                 filtro.unidadeOrganizacionalList = [];
@@ -284,7 +282,6 @@
                 ];
                 $rootScope.abrir(scp);
             };
-
 
             $scope.limpar = function(scp) {
                 var e = scp.navegador.estadoAtual();
@@ -374,9 +371,7 @@
                 }
                 return false;
             };
-
             // nomes dos campos para listagem
-
             $scope.toggleChildren = function (scope) {
                 scope.toggle();
             };
@@ -409,7 +404,6 @@
             $scope.classeAtividade = function(situacao) {
                 return {'atividade-cancelada' : situacao === 'X', 'atividade-nao-iniciada' : situacao === 'N'};
             };
-
             // fim ações especiais*/
 
             // inicio trabalho tab
@@ -494,13 +488,13 @@
             };
 
             var validaTab = function(assistido, assistido2, indTab) {
-  
+                if(assistido != null && assistido2 != null){
                     if(assistido.length > 0 || assistido2.length > 0){
                         $scope.tabs[indTab].visivel = true;
                     }else{
                          $scope.tabs[indTab].visivel = false;
                     }
-                
+                }
             };
             // fim trabalho tab
 
@@ -514,12 +508,6 @@
             $scope.$watch('cadastro.registro.projetoCreditoRural.cronogramaPagamentoCusteioList + cadastro.registro.projetoCreditoRural.cronogramaPagamentoInvestimentoList', function(){
                 if($scope.cadastro.registro.projetoCreditoRural != null && $scope.cadastro.registro.projetoCreditoRural.cronogramaPagamentoInvestimentoList != null){
                     validaTab($scope.cadastro.registro.projetoCreditoRural.cronogramaPagamentoCusteioList, $scope.cadastro.registro.projetoCreditoRural.cronogramaPagamentoInvestimentoList, 4);
-                }
-            }, true);
-
-            $scope.$watch('cadastro.registro.projetoCreditoRural.cronogramaPagamentoInvestimentoList', function(){
-                if($scope.cadastro.registro.projetoCreditoRural != null){
-                    validaTab($scope.cadastro.registro.projetoCreditoRural.cronogramaPagamentoInvestimentoList, 4);
                 }
             }, true);
             

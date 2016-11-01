@@ -12,6 +12,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -90,8 +91,11 @@ public class FacadeBo implements BeanFactoryAware {
 	}
 
 	@Transactional(readOnly = true)
-	public _Contexto atividadeFiltroNovo(Principal usuario) throws Exception {
-		return this._executar(usuario, "AtividadeFiltroNovoCmd");
+	public _Contexto atividadeFiltroNovo(Principal usuario, String opcao) throws Exception {
+		Map<String, Object> requisicao = new HashMap<String, Object>();
+		requisicao.put("opcao", opcao);
+
+		return this._executar(usuario, "AtividadeFiltroNovoCmd", requisicao);
 	}
 
 	@Transactional(readOnly = true)

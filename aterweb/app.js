@@ -683,7 +683,7 @@ var TIMEOUT_TEMPO = 10 * 60;
                     scope.servico.abrir(scope.scp);
                     if (scope.servico.filtroNovo) {
                         scope.servico.filtroNovo().success(function(resposta) {
-                            if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {
+                            if (resposta && resposta.mensagem && resposta.mensagem === 'OK' ) {
                                 scope.cadastro.filtro = resposta.resultado;
                             } else {
                                 toastr.error(resposta && resposta.mensagem ? resposta.mensagem : resposta, 'Erro ao iniciar filtro');

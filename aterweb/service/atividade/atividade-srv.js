@@ -73,6 +73,11 @@ angular.module(pNmModulo).factory(pNmFactory,
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
                 return $http.post(this.endereco + '/filtro-executar', filtro);
             },
+            filtroNovo: function() {
+                SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
+                return $http.get(this.endereco + '/filtro-novo', {params: {'opcao': $stateParams.opcao}});
+//                return $http.post(this.endereco + '/filtro-novo');
+            },
             executarFiltro : function() {
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
             },

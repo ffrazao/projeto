@@ -3,6 +3,7 @@ package br.gov.df.emater.aterwebsrv.rest;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,9 +39,10 @@ public class AtividadeRest {
 		return new Resposta(facadeBo.atividadeFiltroExecutar(usuario, filtro).getResposta());
 	}
 
-	@RequestMapping("/filtro-novo")
-	public Resposta filtroNovo(Principal usuario) throws Exception {
-		return new Resposta(facadeBo.atividadeFiltroNovo(usuario).values());
+	@RequestMapping(value = "/filtro-novo", method = RequestMethod.GET)
+	public Resposta filtroNovo(@RequestParam(name = "opcao", required = false) String opcao, Principal usuario)
+			throws Exception {
+		return new Resposta(facadeBo.atividadeFiltroNovo(usuario, opcao).getResposta());
 	}
 
 	@RequestMapping(value = "/incluir", method = RequestMethod.POST)

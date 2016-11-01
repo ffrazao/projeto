@@ -68,6 +68,10 @@ public class ProjetoCreditoRuralDaoImpl implements ProjetoCreditoRuralDaoCustom 
 		sql.append("    pessoa.pessoa agente_pessoa ON agente_pessoa.id = agente.pessoa_juridica_id").append("\n");
 		sql.append("        JOIN").append("\n");
 		sql.append("    credito_rural.linha_credito linha ON cred.linha_credito_id = linha.id").append("\n");
+		sql.append("        JOIN").append("\n");
+		sql.append("    atividade.atividade_pessoa exec ON exec.atividade_id = ativ.id AND exec.participacao = 'E'").append("\n");
+		sql.append("        JOIN").append("\n");
+		sql.append("    pessoa.pessoa pessoaExec ON pessoaExec.id = exec.pessoa_id").append("\n");
 		sql.append("WHERE 1 = 1").append("\n");
 
 		// BENEFICIARIO
@@ -114,24 +118,40 @@ public class ProjetoCreditoRuralDaoImpl implements ProjetoCreditoRuralDaoCustom 
 			sql.append("and ativ.inicio <= ?").append("\n");
 		}
 
-		// TECNICO EXECUTOR
-		// if (!CollectionUtils.isEmpty(filtro.getExecutorList())) {
-		// sql.append("and (").append("\n");
-		// sqlTemp = new StringBuilder();
-		// for (TagDto nome : filtro.getExecutorList()) {
-		// if (sqlTemp.length() > 0) {
-		// sqlTemp.append(" or ");
-		// }
-		// String n = nome.getText().replaceAll("\\s", "%");
-		// params.add(String.format("%%%s%%", n));
-		// sqlTemp.append(" (exec.pessoa.nome like ?");
-		// params.add(String.format("%%%s%%", n));
-		// sqlTemp.append(" or exec.pessoa.apelido_sigla like
-		// ?").append(")").append("\n");
-		// }
-		// sql.append(sqlTemp);
-		// sql.append(" )").append("\n");
-		// }
+		 //TECNICO EXECUTOR
+		 if (!CollectionUtils.isEmpty(filtro.getExecutorList())) {
+			 sql.append("and (").append("\n");
+			 sqlTemp = new StringBuilder();
+			 for (TagDto nome : filtro.getExecutorList()) {
+				 if (sqlTemp.length() > 0) {
+					 sqlTemp.append(" or ");
+				 }
+				 String n = nome.getText().replaceAll("\\s", "%");
+				 params.add(String.format("%%%s%%", n));
+				 sqlTemp.append(" (pessoaExec.nome like ?");
+				 params.add(String.format("%%%s%%", n));
+				 sqlTemp.append(" or pessoaExec.apelido_sigla like ?").append(")").append("\n");
+			 }
+			 sql.append(sqlTemp);
+			 sql.append(" )").append("\n");
+		 }
+		 
+		 /*if (!CollectionUtils.isEmpty(filtro.getExecutorList())) {
+				sql.append("and (").append("\n");
+				sqlTemp = new StringBuilder();
+				for (TagDto nome : filtro.getExecutorList()) {
+					if (sqlTemp.length() > 0) {
+						sqlTemp.append(" or ");
+					}
+					String n = nome.getText().replaceAll("\\s", "%");
+					params.add(String.format("%%%s%%", n));
+					sqlTemp.append(" (exec.pessoa.nome like ?").append(params.size());
+					params.add(String.format("%%%s%%", n));
+					sqlTemp.append(" or exec.pessoa.apelidoSigla like ?").append(params.size()).append(")").append("\n");
+				}
+				sql.append(sqlTemp);
+				sql.append(" )").append("\n");
+			}*/
 
 		// FINALIDADE
 		if (!CollectionUtils.isEmpty(filtro.getFinanciamentoTipoList())) {

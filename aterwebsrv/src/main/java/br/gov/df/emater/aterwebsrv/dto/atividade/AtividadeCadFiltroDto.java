@@ -39,13 +39,9 @@ public class AtividadeCadFiltroDto extends CadFiltroDtoCustom {
 
 	private List<Comunidade> comunidadeList;
 
-	private String demandante;
-
 	private Set<TagDto> demandanteList;
 	
 	private List<PessoaJuridica> empresaList;
-
-	private String executor;
 
 	private Set<TagDto> executorList;
 
@@ -89,20 +85,12 @@ public class AtividadeCadFiltroDto extends CadFiltroDtoCustom {
 		return comunidadeList;
 	}
 
-	public String getDemandante() {
-		return demandante;
-	}
-
 	public Set<TagDto> getDemandanteList() {
 		return demandanteList;
 	}
 
 	public List<PessoaJuridica> getEmpresaList() {
 		return empresaList;
-	}
-
-	public String getExecutor() {
-		return executor;
 	}
 
 	public Set<TagDto> getExecutorList() {
@@ -157,20 +145,12 @@ public class AtividadeCadFiltroDto extends CadFiltroDtoCustom {
 		this.comunidadeList = comunidadeList;
 	}
 
-	public void setDemandante(String demandante) {
-		this.demandante = demandante;
-	}
-
 	public void setDemandanteList(Set<TagDto> demandanteList) {
 		this.demandanteList = demandanteList;
 	}
 
 	public void setEmpresaList(List<PessoaJuridica> empresaList) {
 		this.empresaList = empresaList;
-	}
-
-	public void setExecutor(String executor) {
-		this.executor = executor;
 	}
 
 	public void setExecutorList(Set<TagDto> executorList) {
