@@ -2,6 +2,7 @@ package br.gov.df.emater.aterwebsrv.bo;
 
 import java.security.Principal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,6 +40,7 @@ import br.gov.df.emater.aterwebsrv.dto.sistema.PerfilCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.sistema.UsuarioCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
+import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.Atividade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.ArquivoTipo;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.Coleta;
@@ -453,6 +455,11 @@ public class FacadeBo implements BeanFactoryAware {
 	@Transactional(readOnly = true)
 	public _Contexto propriedadeRuralFiltrarPorPublicoAlvoPropriedadeRuralComunidade(Principal usuario, PublicoAlvoPropriedadeRuralCadFiltroDto filtro) throws Exception {
 		return this._executar(usuario, "PropriedadeRuralFiltrarPorPublicoAlvoPropriedadeRuralComunidadeCmd", filtro);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto propriedadeRuralFiltrarPorPublicoAlvo(Principal usuario, List<PublicoAlvo> publicoAlvoList) throws Exception {
+		return this._executar(usuario, "PropriedadeRuralFiltrarPorPublicoAlvoCmd", publicoAlvoList);
 	}
 
 	@Transactional(readOnly = true)

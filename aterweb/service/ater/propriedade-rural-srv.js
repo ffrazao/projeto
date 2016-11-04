@@ -98,6 +98,9 @@ angular.module(pNmModulo).factory(pNmFactory,
             },
             filtrarPorPublicoAlvoUnidadeOrganizacionalComunidade : function (filtro) {
                 return $http.post(this.endereco + '/filtro-publico-alvo-propriedade-rural-comunidade', filtro);
+            },
+            filtrarPorPublicoAlvo : function (publicoAlvoList) {
+                return $http.post(this.endereco + '/filtro-publico-alvo', publicoAlvoList);
             }
 
         };

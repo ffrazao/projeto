@@ -1,6 +1,7 @@
 package br.gov.df.emater.aterwebsrv.rest;
 
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +14,7 @@ import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
 import br.gov.df.emater.aterwebsrv.dto.ater.PropriedadeRuralCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.ater.PublicoAlvoPropriedadeRuralCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
+import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 
 @RestController
 @RequestMapping("/propriedade-rural")
@@ -32,6 +34,11 @@ public class PropriedadeRuralRest {
 	@RequestMapping(value = "/excluir", method = RequestMethod.DELETE)
 	public Resposta excluir(@RequestParam Integer id, Principal usuario) throws Exception {
 		return new Resposta(facadeBo.propriedadeRuralExcluir(usuario, id).getResposta());
+	}
+
+	@RequestMapping(value = "/filtro-publico-alvo", method = RequestMethod.POST)
+	public Resposta filtrarPorPublicoAlvoPropriedadeRuralComunidade(@RequestBody List<PublicoAlvo> publicoAlvoList, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.propriedadeRuralFiltrarPorPublicoAlvo(usuario, publicoAlvoList).getResposta());
 	}
 
 	@RequestMapping(value = "/filtro-publico-alvo-propriedade-rural-comunidade", method = RequestMethod.POST)
@@ -67,5 +74,4 @@ public class PropriedadeRuralRest {
 	public Resposta visualizar(@RequestParam Integer id, Principal usuario) throws Exception {
 		return new Resposta(facadeBo.propriedadeRuralVisualizar(usuario, id).getResposta());
 	}
-
 }

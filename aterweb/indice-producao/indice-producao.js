@@ -22,6 +22,8 @@
 
             // código para verificar se o modal está ou não ativo
             $scope.verificaEstado($uibModalInstance, $scope, modalCadastro ? modalCadastro.apoio.estadoInicial : 'filtro', modalCadastro, pNmFormulario);
+
+            $scope.cadastro.apoio.tipoLancamentoPadrao = 'UO';
             // inicio: atividades do Modal
             $scope.modalOk = function() {
                 // Retorno da modal
@@ -71,6 +73,21 @@
                 });
             };
 
+            var atualizaBemClassificado = function (lista) {
+                if (lista) {
+                    lista.forEach(function(v, k) {
+                        for (var item in $scope.cadastro.apoio.bemClassificadoList) {
+                            if (!v.bemClassificado.bemClassificacao || !v.bemClassificado.bemClassificacao.nome) {
+                                if (v.bemClassificado.id === $scope.cadastro.apoio.bemClassificadoList[item].id) {
+                                    v.bemClassificado = $scope.cadastro.apoio.bemClassificadoList[item];
+                                    break;
+                                }
+                            }
+                        }
+                        atualizaBemClassificado(v.producaoProprietarioList);
+                    });
+                }
+            };
             // fim: atividades do Modal
 
             // inicio das operaçoes atribuidas ao navagador
@@ -92,19 +109,10 @@
                 }, ];
                 $rootScope.abrir(scp);
             };
-            $scope.incluir = function(scp, modelo) {
-                if (scp.cadastro.apoio.porProdutor === true || scp.cadastro.apoio.porPropriedadeRural === true) {
-                    var reg = angular.copy($scope.cadastro.registro);
-                    reg.id = null;
-                    reg.bemClassificado = null;
-                    reg.producaoList = null;
-                    $rootScope.incluir(scp, reg);
-                } else {
-                    $rootScope.incluir(scp, modelo ? modelo : {});
-                }
-            };
 
             $scope.incluirDepois = function(objeto) {
+                $scope.cadastro.apoio.tipoLancamento = null;
+                
                 var t = $scope.token;
                 if (t && t.lotacaoAtual) {
                     objeto.unidadeOrganizacional = t.lotacaoAtual;
@@ -169,14 +177,9 @@
                 return result;
             };
             $scope.visualizarDepois = function(registro) {
-                $scope.cadastro.apoio.bemClassificacao = $scope.encontraBemClassificacao(registro.bemClassificado.bemClassificacao.id);
-                if (!$scope.cadastro.apoio.bemClassificacao) {
-                    $timeout(function() {
-                        $scope.cadastro.apoio.bemClassificacao = $scope.encontraBemClassificacao(registro.bemClassificado.bemClassificacao.id);
-                    }, 2000);
-                }
-                $scope.cadastro.apoio.producaoUnidadeOrganizacional = (registro.unidadeOrganizacional && registro.unidadeOrganizacional.id);
-                $scope.cadastro.apoio.unidadeOrganizacional = angular.copy(registro.unidadeOrganizacional);
+                atualizaBemClassificado([registro]);
+                registro.bemProducaoList = [angular.copy(registro.bemClassificado)];
+                $scope.cadastro.apoio.tipoLancamento = $scope.cadastro.apoio.tipoLancamentoPadrao;
             };
             $scope.cadastro.apoio.producao = {
                 composicao: []
@@ -239,59 +242,6 @@
                     toastr.error('Informe pelo menos uma comunidade', 'Erro ao filtrar');
                     throw 'Informe pelo menos uma comunidade';
                 }
-
-/*
-                var captarBemClassificacaoList = function(lista, resultado) {
-                    if (lista) {
-                        for (var i in lista) {
-                            if (lista[i][4] === true) {
-                                resultado.push({
-                                    id: lista[i][0]
-                                });
-                            } else {
-                                captarBemClassificacaoList(lista[i][3], resultado);
-                            }
-                        }
-                    }
-                };
-                filtro.bemClassificacaoList = [];
-                captarBemClassificacaoList($scope.cadastro.apoio.bemClassificacaoList, filtro.bemClassificacaoList);
-                var captarFormaProducaoValorList = function(lista, resultado) {
-                    if (lista) {
-                        var i, j;
-                        for (i in lista) {
-                            captarFormaProducaoValorList(lista[i][3], resultado);
-                            if (lista[i][2]) {
-                                for (j in lista[i][2]) {
-                                    if (lista[i][2][j][3] && lista[i][2][j][3] !== null) {
-                                        resultado.push({
-                                            id: lista[i][2][j][3]
-                                        });
-                                        lista[i][2][j][3] = null;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                };
-                filtro.formaProducaoValorList = [];
-                captarFormaProducaoValorList($scope.cadastro.apoio.bemClassificacaoList, filtro.formaProducaoValorList);
-                */
-            };
-            var atualizaBemClassificado = function (lista) {
-                if (lista) {
-                    lista.forEach(function(v, k) {
-                        for (var item in $scope.cadastro.apoio.bemClassificadoList) {
-                            if (!v.bemClassificado.bemClassificacao || !v.bemClassificado.bemClassificacao.nome) {
-                                if (v.bemClassificado.id === $scope.cadastro.apoio.bemClassificadoList[item].id) {
-                                    v.bemClassificado = $scope.cadastro.apoio.bemClassificadoList[item];
-                                    break;
-                                }
-                            }
-                        }
-                        atualizaBemClassificado(v.producaoProprietarioList);
-                    });
-                }
             };
 
             $scope.confirmarFiltrarDepois = function() {
@@ -326,56 +276,6 @@
             // inicio ações especiais
 
             // nomes dos campos para listagem
-            var idx = [];
-
-            idx[0] = 0;
-            $scope.PRODUCAO_ID = idx[0]++;
-            $scope.PRODUCAO_ANO = idx[0]++;
-            $scope.PRODUCAO_BEM_ID = idx[0]++;
-            $scope.PRODUCAO_BEM_NOME = idx[0]++;
-            $scope.PRODUCAO_BEM_CLASSIFICACAO = idx[0]++;
-            $scope.PRODUCAO_UNIDADE_MEDIDA = idx[0]++;
-            $scope.PRODUCAO_FORMULA = idx[0]++;
-            $scope.PRODUCAO_NOME_ITEM_A = idx[0]++;
-            $scope.PRODUCAO_NOME_ITEM_B = idx[0]++;
-            $scope.PRODUCAO_NOME_ITEM_C = idx[0]++;
-            $scope.PRODUCAO_UNID_ORG_ID = idx[0]++;
-            $scope.PRODUCAO_UNID_ORG_NOME = idx[0]++;
-            $scope.PRODUCAO_UNID_ORG_SIGLA = idx[0]++;
-            $scope.PRODUCAO_PUBLICO_ALVO_ID = idx[0]++;
-            $scope.PRODUCAO_PUBLICO_ALVO_PESSOA_ID = idx[0]++;
-            $scope.PRODUCAO_PUBLICO_ALVO_NOME = idx[0]++;
-            $scope.PRODUCAO_PROPRIEDADE_RURAL_ID = idx[0]++;
-            $scope.PRODUCAO_PROPRIEDADE_RURAL_NOME = idx[0]++;
-            $scope.PRODUCAO_COMUNIDADE_ID = idx[0]++;
-            $scope.PRODUCAO_COMUNIDADE_NOME = idx[0]++;
-            $scope.PRODUCAO_FORMA_LIST = idx[0]++;
-            idx[1] = 0;
-            $scope.FORMA_COMPOSICAO_LIST = idx[1]++;
-            idx[2] = 0;
-            $scope.COMPOSICAO_FORMA_PRODUCAO_VALOR_ID = idx[2]++;
-            $scope.COMPOSICAO_FORMA_PRODUCAO_VALOR_ITEM_NOME = idx[2]++;
-            $scope.COMPOSICAO_FORMA_PRODUCAO_VALOR_NOME = idx[2]++;
-            $scope.COMPOSICAO_ORDEM = idx[2]++;
-            $scope.FORMA_VALOR_ITEM_A = idx[1]++;
-            $scope.FORMA_VALOR_ITEM_B = idx[1]++;
-            $scope.FORMA_VALOR_ITEM_C = idx[1]++;
-            $scope.FORMA_VOLUME = idx[1]++;
-            $scope.FORMA_VLR_UNIT = idx[1]++;
-            $scope.FORMA_VLR_TOTAL = idx[1]++;
-            $scope.FORMA_QTD_PRODUTORES = idx[1]++;
-            $scope.FORMA_DATA_CONFIRMACAO = idx[1]++;
-            $scope.FORMA_INCLUSAO_NOME = idx[1]++;
-            $scope.FORMA_INCLUSAO_DATA = idx[1]++;
-            $scope.FORMA_ALTERACAO_NOME = idx[1]++;
-            $scope.FORMA_ALTERACAO_DATA = idx[1]++;
-            $scope.FORMA_NOME_CALCULO = idx[1]++;
-            $scope.PRODUCAO_INCLUSAO_NOME = idx[0]++;
-            $scope.PRODUCAO_INCLUSAO_DATA = idx[0]++;
-            $scope.PRODUCAO_ALTERACAO_NOME = idx[0]++;
-            $scope.PRODUCAO_ALTERACAO_DATA = idx[0]++;
-            $scope.PRODUCAO_PRODUTOR_LIST = idx[0]++;
-
             $scope.resultado = function(item, array, campo) {
                 if (!item) {
                     return null;
@@ -666,7 +566,7 @@
             // fim trabalho tab
 
             // inicio dos watches
-            var pai = function(array, item) {
+            /*var pai = function(array, item) {
                 if (!array || !item) {
                     return;
                 }
@@ -738,7 +638,7 @@
                     $scope.cadastro.apoio.producao.formula = formula;
                     $scope.cadastro.apoio.producao.unidadeMedida = unidadeMedida;
                 }
-            });
+            });*/
 
             $scope.$watch('cadastro.registro.publicoAlvo.id', function(novo) {
 
@@ -800,6 +700,25 @@
                     });
                 }
             });
+
+            $scope.$watch('cadastro.registro.producaoList', function(k, v) {
+                if (!$scope.cadastro.registro.producaoList || !$scope.cadastro.registro.producaoList.length) {
+                    return;
+                }
+                var i = 0;
+                $scope.cadastro.registro.producaoList.forEach(function (vl, ke) {
+                    vl.modelo = {nome: '', valor: []};
+                    for (var vlr in vl.formaProducaoValorList) {
+                        if (vl.formaProducaoValorList[vlr]) {
+                            if (vl.modelo.nome.length) {
+                                vl.modelo.nome += ', ';
+                            }
+                            vl.modelo.nome += vl.formaProducaoValorList[vlr].nome;
+                            vl.modelo.valor.push(vl.formaProducaoValorList[vlr]);
+                        }
+                    }
+                });
+            }, true);
 
             // fim dos watches
 

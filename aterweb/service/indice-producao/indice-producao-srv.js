@@ -98,7 +98,7 @@ angular.module(pNmModulo).factory(pNmFactory,
             },
             novo : function(modelo) {
                 SegurancaSrv.acesso(this.funcionalidade, 'INCLUIR');
-                return $http.post(this.endereco + '/novo', modelo);
+                return $http.post(this.endereco + '/novo', modelo ? modelo : {});
             },
             incluir : function(indiceProducao) {
                 SegurancaSrv.acesso(this.funcionalidade, 'INCLUIR');

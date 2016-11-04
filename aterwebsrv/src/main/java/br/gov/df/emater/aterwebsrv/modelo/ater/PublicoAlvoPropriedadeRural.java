@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.ater;
 
+import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaReg;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -147,8 +149,7 @@ public class PublicoAlvoPropriedadeRural extends EntidadeBase implements _ChaveP
 
 	@Override
 	public PublicoAlvoPropriedadeRural infoBasica() {
-		return new PublicoAlvoPropriedadeRural(this.getId(), this.getArea(), this.getComunidade() == null ? null : this.getComunidade().infoBasica(), this.getInicio(), this.getPropriedadeRural() == null ? null : this.getPropriedadeRural().infoBasica(),
-				this.getPublicoAlvo() == null ? null : this.getPublicoAlvo().infoBasica(), this.getTermino(), this.getVinculo());
+		return new PublicoAlvoPropriedadeRural(this.getId(), this.getArea(), infoBasicaReg(this.getComunidade()), this.getInicio(), infoBasicaReg(this.getPropriedadeRural()), infoBasicaReg(this.getPublicoAlvo()), this.getTermino(), this.getVinculo());
 	}
 
 	public void setArea(BigDecimal area) {
