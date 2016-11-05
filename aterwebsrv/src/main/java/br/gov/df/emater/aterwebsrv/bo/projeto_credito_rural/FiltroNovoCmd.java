@@ -3,7 +3,6 @@ package br.gov.df.emater.aterwebsrv.bo.projeto_credito_rural;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
@@ -13,7 +12,6 @@ import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dto.TagDto;
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoCreditoRuralCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
-import br.gov.df.emater.aterwebsrv.rest.AtividadeRest;
 import br.gov.df.emater.aterwebsrv.seguranca.UserAuthentication;
 
 @Service("ProjetoCreditoRuralFiltroNovoCmd")

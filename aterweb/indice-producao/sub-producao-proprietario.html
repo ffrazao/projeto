@@ -32,14 +32,16 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th rowspan="2">
+                        <th rowspan="3">
                             <frz-seletor ng-model="producaoProprietarioNvg"></frz-seletor>
                         </th>
-                        <th width="30" rowspan="2">
+                        <th width="30" rowspan="3">
                             #
                         </th>
-                        <th rowspan="2">Produtor</th>
-                        <th rowspan="2">Propriedade Rural</th>
+                        <th colspan="{{cadastro.registro.bemProducaoList[0].bemClassificacao.bemClassificacaoFormaProducaoItemList.length + 1}}">Produtor</th>
+                        <th colspan="6">Propriedade Rural</th>
+                    </tr>
+                    <tr>
                         <th colspan="{{cadastro.registro.bemProducaoList[0].bemClassificacao.bemClassificacaoFormaProducaoItemList.length}}" ng-if="cadastro.registro.bemProducaoList[0].bemClassificacao.bemClassificacaoFormaProducaoItemList.length">Forma de Produção</th>
                         <th ng-if="cadastro.registro.bemProducaoList[0].bemClassificacao.itemANome">A</th>
                         <th ng-if="cadastro.registro.bemProducaoList[0].bemClassificacao.itemBNome">B</th>
@@ -62,7 +64,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="produtor in cadastro.registro.producaoProprietarioList | orderBy: '' track by produtor.id" ng-click="producaoProprietarioNvg.folhaAtual = $index + ((producaoProprietarioNvg.paginaAtual-1) * producaoProprietarioNvg.tamanhoPagina)">
+                    <tr ng-repeat-start="produtor in cadastro.registro.producaoProprietarioList | orderBy: '' track by produtor.id" ng-click="producaoProprietarioNvg.folhaAtual = $index + ((producaoProprietarioNvg.paginaAtual-1) * producaoProprietarioNvg.tamanhoPagina)">
                         <td width="30px">
                             <input type="radio" ng-show="producaoProprietarioNvg.selecao.tipo === 'U'" ng-model="producaoProprietarioNvg.selecao.item" ng-value="produtor"/>
                             <input type="checkbox" ng-show="producaoProprietarioNvg.selecao.tipo === 'M'" checklist-model="producaoProprietarioNvg.selecao.items" checklist-value="produtor" ng-click="crudMataClick(scp, $event);"/>
@@ -70,26 +72,38 @@
                         <td>
                             {{$index + 1 + ((producaoProprietarioNvg.paginaAtual-1) * producaoProprietarioNvg.tamanhoPagina)}}
                         </td>
-                        <td>
+                        <td colspan="{{cadastro.registro.bemProducaoList[0].bemClassificacao.bemClassificacaoFormaProducaoItemList.length + 1}}">
                             {{produtor.publicoAlvo.pessoa.nome}}
                         </td>
-                        <td>
-                            <label ng-repeat-start="papr in produtor.publicoAlvo.publicoAlvoPropriedadeRuralList | orderBy: 'propriedadeRural.nome'">
-                                <input type="radio" ng-model="produtor.propriedadeRural.id" ng-value="papr.propriedadeRural.id"
-                                    id="propriedadeRural_{{$parent.$index}}_{{$index}}" name="propriedadeRural_{{$parent.$index}}"> {{papr.propriedadeRural.nome}}
-                            </label>
-                            <br ng-repeat-end>
-
-                            <div class="label label-danger" ng-show="navegador.submetido && producaoProprietarioFrm.propriedadeRural_{{$index}}.$error.required">
+                        <td colspan="6">
+                            <select id="propriedadeRural{{$index}}" name="propriedadeRural{{$index}}"
+                                class="form-control input-sm" style="min-width: 100px;" ng-required="true"
+                                ng-model="produtor.propriedadeRural.id" 
+                                ng-options="sub.propriedadeRural.id as (sub.propriedadeRural.nome) for sub in produtor.publicoAlvo.publicoAlvoPropriedadeRuralList | orderBy: 'propriedadeRural.nome'">
+                            </select>
+                            <div class="label label-danger" ng-show="navegador.submetido && producaoProprietarioFrm.propriedadeRural{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
                         </td>
+                    </tr>
+                    <tr ng-repeat="producao in produtor.producaoList">
+                        <td colspan="2">
+                            <div class="btn-group-vertical btn-group-xs" role="group" aria-label="...">
+                                <button class="btn btn-danger btn-xs" ng-if="!($first && $last)" ng-click="producaoExcluir(produtor, $index)" title="Excluir item">
+                                    <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                                </button>
+                                <button class="btn btn-success btn-xs" ng-if="$last" ng-click="producaoIncluir(produtor)" title="Inserir item">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                        </td>
                         <td ng-repeat="forma in cadastro.registro.bemProducaoList[0].bemClassificacao.bemClassificacaoFormaProducaoItemList | orderBy: 'ordem'" ng-if="cadastro.registro.bemProducaoList[0].bemClassificacao.bemClassificacaoFormaProducaoItemList.length">
-                            /{{produtor.producaoList}}/ /{{produtor.producaoList[0].producaoComposicaoList}}/
-                            <select class="form-control input-sm" ng-model="produtor.producaoList[0].producaoComposicaoList[$parent.$index].formaProducaoValor.id" 
-                                ng-options="sub.id as sub.nome for sub in forma.formaProducaoItem.formaProducaoValorList | orderBy: 'ordem' track by sub.id" style="min-width: 100px;" ng-required="true"
-                                id="formaProducaoPropriedade{{$index}}_{{$parent.$index}}" name="formaProducaoPropriedade{{$index}}_{{$parent.$index}}">
+                            <select id="formaProducaoPropriedade{{$index}}_{{$parent.$index}}" name="formaProducaoPropriedade{{$index}}_{{$parent.$index}}"
+                                class="form-control input-sm" style="min-width: 100px;" ng-required="true"
+                                ng-model="producao.producaoComposicaoList[$parent.$index].formaProducaoValor.id" 
+                                ng-options="sub.id as (sub.nome) for sub in forma.formaProducaoItem.formaProducaoValorList | orderBy: 'ordem'" 
+                                >
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && producaoProprietarioFrm.formaProducaoPropriedade{{$index}}_{{$parent.$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -97,44 +111,44 @@
                             </div>
                         </td>
                         <td ng-if="cadastro.registro.bemProducaoList[0].bemClassificacao.itemANome">
-                            <input class="form-control input-sm text-right" id="itemAValor{{$index}}" name="itemAValor{{$index}}" ng-model="produtor.itemAValor" ng-required="true" ui-number-mask="2" style="min-width: 75px;">
+                            <input class="form-control input-sm text-right" id="itemAValor{{$index}}" name="itemAValor{{$index}}" ng-model="producao.itemAValor" ng-required="true" ui-number-mask="2" style="min-width: 75px;">
                             <div class="label label-danger" ng-show="navegador.submetido && producaoProprietarioFrm.itemAValor{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
                         </td>
                         <td ng-if="cadastro.registro.bemProducaoList[0].bemClassificacao.itemBNome">
-                            <input class="form-control input-sm text-right" id="itemBValor{{$index}}" name="itemBValor{{$index}}" ng-model="produtor.itemBValor" ng-required="true" ui-number-mask="2" style="min-width: 75px;">
+                            <input class="form-control input-sm text-right" id="itemBValor{{$index}}" name="itemBValor{{$index}}" ng-model="producao.itemBValor" ng-required="true" ui-number-mask="2" style="min-width: 75px;">
                             <div class="label label-danger" ng-show="navegador.submetido && producaoProprietarioFrm.itemBValor{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
                         </td>
                         <td ng-if="cadastro.registro.bemProducaoList[0].bemClassificacao.itemCNome">
-                            <input class="form-control input-sm text-right" id="itemCValor{{$index}}" name="itemCValor{{$index}}" ng-model="produtor.itemCValor" ng-required="true" ui-number-mask="2" style="min-width: 75px;">
+                            <input class="form-control input-sm text-right" id="itemCValor{{$index}}" name="itemCValor{{$index}}" ng-model="producao.itemCValor" ng-required="true" ui-number-mask="2" style="min-width: 75px;">
                             <div class="label label-danger" ng-show="navegador.submetido && producaoProprietarioFrm.itemCValor{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
                         </td>
-                        <td>{{formula(cadastro.apoio.producao.formula, produtor.itemAValor, produtor.itemBValor, produtor.itemCValor) | number: 2}}</td>
+                        <td>{{formula(cadastro.apoio.producao.formula, producao.itemAValor, producao.itemBValor, producao.itemCValor) | number: 2}}</td>
                         <td><small>({{cadastro.registro.bemProducaoList[0].bemClassificacao.unidadeMedida.nome}})</small></td>
                         <td>
-                            <input class="form-control input-sm text-right" id="valorUnitario" name="valorUnitario" ng-model="produtor.valorUnitario" ng-required="false" ui-money-mask="2" style="min-width: 75px;">
+                            <input class="form-control input-sm text-right" id="valorUnitario" name="valorUnitario" ng-model="producao.valorUnitario" ng-required="false" ui-money-mask="2" style="min-width: 75px;">
                             <div class="label label-danger" ng-show="navegador.submetido && producaoProprietarioFrm.valorUnitario.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
                         </td>
-                        <td>{{formula(cadastro.apoio.producao.formula, produtor.itemAValor, produtor.itemBValor, produtor.itemCValor) * produtor.valorUnitario | currency }}</td>
+                        <td>{{formula(cadastro.apoio.producao.formula, producao.itemAValor, producao.itemBValor, producao.itemCValor) * producao.valorUnitario | currency }}</td>
                         <td>
                             <div class="input-group input-group-sm">
-                                <input type="text" class="form-control input-sm" id="dataConfirmacao" name="dataConfirmacao" aria-label="..." ui-date-mask ng-model="produtor.dataConfirmacao" style="min-width: 75px;">
+                                <input type="text" class="form-control input-sm" id="dataConfirmacao" name="dataConfirmacao" aria-label="..." ui-date-mask ng-model="producao.dataConfirmacao" style="min-width: 75px;">
                                 <div class="input-group-btn">
                                     <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
                                     <ul class="dropdown-menu dropdown-menu-right">
-                                        <li><a ng-click="produtor.dataConfirmacao = hoje()">Hoje</a></li>
-                                        <li><a ng-click="produtor.dataConfirmacao = null">Limpar</a></li>
+                                        <li><a ng-click="producao.dataConfirmacao = hoje()">Hoje</a></li>
+                                        <li><a ng-click="producao.dataConfirmacao = null">Limpar</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -144,6 +158,7 @@
                             </div>
                         </td>
                     </tr>
+                    <tr ng-repeat-end></tr>
                 </tbody>
                 <tfoot>
                 </tfoot>

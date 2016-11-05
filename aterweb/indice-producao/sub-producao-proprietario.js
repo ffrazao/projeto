@@ -210,6 +210,14 @@ angular.module(pNmModulo).controller(pNmController,
         });
     };
 
+    $scope.producaoIncluir = function (registro) {
+        registro.producaoList.push({});
+    };
+
+    $scope.producaoExcluir = function (registro, indice) {
+        registro.producaoList.splice(indice, 1);
+    };
+
     $scope.agir = function() {};
     $scope.ajudar = function() {};
     $scope.alterarTamanhoPagina = function() {};

@@ -4,7 +4,48 @@
         <form name="frm.formulario" novalidate>
             <fieldset ng-disabled="(modalCadastro !== true) && ['INCLUINDO', 'EDITANDO'].indexOf(navegador.estadoAtual()) < 0">
                 <div class="row">
-                    <div class="col-md-5" title="">
+                    <div class="col-md-9" title="">
+                        <div class="form-group" ng-if="cadastro.registro.id">
+                            <label class="control-label" for="ano">Bem de Produção</label>
+                            <div class="form-control">{{cadastro.registro.bemClassificado.nome}}</div>
+                            <div class="form-control">{{cadastro.registro.bemClassificado.bemClassificacao.nome}}</div>
+                        </div>
+                        <div class="form-group" ng-if="!cadastro.registro.id">
+                            <label class="control-label" for="ano">Bem de Produção</label>
+                            <tags-input id="bemClassificadoList" name="bemClassificadoList" ng-model="cadastro.registro.bemProducaoList" key-property="id" display-property="nome" placeholder="Digite o nome do Bem de Produção" template="tag-template" add-from-autocomplete-only="true">
+                                <auto-complete source="getTagBemClassificado2($query)" min-length="0" load-on-empty="false" template="autocomplete-template">
+                                </auto-complete>
+                            </tags-input>
+                            <script type="text/ng-template" id="tag-template" >
+                                <div class="tag-template">
+                                    <div class="right-panel">
+                                        <span>{{$getDisplayText()}}</span>
+                                        <small style="font-size: 70%;color: yellow">({{data.bemClassificacao.nome}})</small>
+                                        <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
+                                    </div>
+                                </div>
+                            </script>
+                            <script type="text/ng-template" id="autocomplete-template">
+                                <div class="autocomplete-template">
+                                    <div class="right-panel">
+                                        <span>{{$getDisplayText()}}</span>
+                                        <small style="font-size: 70%">({{data.bemClassificacao.nome}})</small>
+                                        <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
+                                    </div>
+                                </div>
+                            </script>
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.bemClassificadoList.$error.leftoverText">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Valor Inválido!
+                            </div>
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.bemClassificadoList.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3" title="">
                         <div class="form-group">
                             <label class="control-label" for="ano">Ano da Produção</label>
                             <div class="form-control" ng-if="cadastro.registro.id">
@@ -132,49 +173,6 @@
                     </div>
                 </div>
 
-                <div class="row" ng-show="cadastro.apoio.tipoLancamento">
-                    <div class="col-md-12" title="">
-                        <div class="form-group" ng-if="cadastro.registro.id">
-                            <label class="control-label" for="ano">Bem de Produção</label>
-                            <div class="form-control">{{cadastro.registro.bemClassificado.nome}}</div>
-                            <div class="form-control">{{cadastro.registro.bemClassificado.bemClassificacao.nome}}</div>
-                        </div>
-                        <div class="form-group" ng-if="!cadastro.registro.id">
-                            <label class="control-label" for="ano">Bem de Produção</label>
-                            <tags-input id="bemClassificadoList" name="bemClassificadoList" ng-model="cadastro.registro.bemProducaoList" key-property="id" display-property="nome" placeholder="Digite o nome do Bem de Produção" template="tag-template" add-from-autocomplete-only="true">
-                                <auto-complete source="getTagBemClassificado2($query)" min-length="0" load-on-empty="false" template="autocomplete-template">
-                                </auto-complete>
-                            </tags-input>
-                            <script type="text/ng-template" id="tag-template" >
-                                <div class="tag-template">
-                                    <div class="right-panel">
-                                        <span>{{$getDisplayText()}}</span>
-                                        <small style="font-size: 70%;color: yellow">({{data.bemClassificacao.nome}})</small>
-                                        <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
-                                    </div>
-                                </div>
-                            </script>
-                            <script type="text/ng-template" id="autocomplete-template">
-                                <div class="autocomplete-template">
-                                    <div class="right-panel">
-                                        <span>{{$getDisplayText()}}</span>
-                                        <small style="font-size: 70%">({{data.bemClassificacao.nome}})</small>
-                                        <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
-                                    </div>
-                                </div>
-                            </script>
-                            <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.bemClassificadoList.$error.leftoverText">
-                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                                Valor Inválido!
-                            </div>
-                            <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.bemClassificadoList.$error.required">
-                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                                Campo Obrigatório
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="row" ng-show="cadastro.registro.bemProducaoList.length === 1">
                     <div class="col-md-12" title="Forma de Produção">
                         <div class="form-group">
@@ -192,16 +190,16 @@
                     </div>
                 </div>
 
-                <div class="row" ng-show="cadastro.apoio.tipoLancamento === 'UO' && cadastro.registro.bemProducaoList.length === 1 && cadastro.registro.producaoList.length > 0">
+                <div class="row" ng-show="cadastro.apoio.tipoLancamento === 'UO' && cadastro.registro.bemProducaoList.length === 1">
                     <div class="col-md-12" title="Produtores">
                         <div class="form-group">
-                            <label class="control-label" for="producaoProdutoresList">Produtores [{{cadastro.registro.producaoProdutoresList.length}}]</label>
+                            <label class="control-label" for="producaoProprietarioList">Produtores [{{cadastro.registro.producaoProprietarioList.length}}]</label>
 
                             <ng-include src="'indice-producao/sub-producao-proprietario.html'" ng-controller="ProducaoProprietarioCtrl"></ng-include>
 
-                            <input type="hidden" id="producaoProdutoresList" name="producaoProdutoresList" ng-model="cadastro.registro.producaoProdutoresList.length" ng-required="true">
+                            <input type="hidden" id="producaoProprietarioListTotal" name="producaoProprietarioListTotal" ng-model="cadastro.registro.producaoProprietarioList.length" ng-required="true">
 
-                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.producaoList.$error.ngValorMin">
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.producaoProprietarioListTotal.$error.ngValorMin">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
