@@ -3,8 +3,10 @@ package br.gov.df.emater.aterwebsrv.bo.indice_producao;
 import static br.gov.df.emater.aterwebsrv.bo.indice_producao.IndiceProducaoUtil.getComposicaoValorId;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,15 +21,15 @@ import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoDao;
 import br.gov.df.emater.aterwebsrv.dao.ferramenta.UtilDao;
 import br.gov.df.emater.aterwebsrv.dao.funcional.UnidadeOrganizacionalDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.BemDao;
-import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoProprietarioDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoComposicaoDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoDao;
+import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoProprietarioDao;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioNumero;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FormulaProduto;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.UnidadeOrganizacionalClassificacao;
-import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoProprietario;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoComposicao;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoProprietario;
 
 @Service("IndiceProducaoSalvarCmd")
 public class SalvarCmd extends _SalvarCmd {
@@ -63,6 +65,8 @@ public class SalvarCmd extends _SalvarCmd {
 	public boolean executar(_Contexto contexto) throws Exception {
 
 		final ProducaoProprietario result = (ProducaoProprietario) contexto.getRequisicao();
+		
+		contexto.put("producaoProprietarioList", result.getProducaoProprietarioList());
 
 		// criticar o registro
 		if (result.getUnidadeOrganizacional() == null && result.getPublicoAlvo() == null && result.getPropriedadeRural() == null) {
@@ -82,9 +86,10 @@ public class SalvarCmd extends _SalvarCmd {
 		logAtualizar(result, contexto);
 
 		limparChavePrimaria(result.getProducaoList());
+		limparChavePrimaria(result.getProducaoProprietarioList());
 
 		// avaliar e excluir duplicatas de formas de produção
-		final List<String> composicaoList = new ArrayList<>();
+		final Set<String> composicaoList = new HashSet<>();
 		for (int i = result.getProducaoList().size() - 1; i >= 0; i--) {
 			final Producao producao = result.getProducaoList().get(i);
 			final String composicao = getComposicaoValorId(producao);

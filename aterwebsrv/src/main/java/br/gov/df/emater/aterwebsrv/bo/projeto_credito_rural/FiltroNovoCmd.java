@@ -20,17 +20,17 @@ public class FiltroNovoCmd extends _Comando {
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		ProjetoCreditoRuralCadFiltroDto filtro = new ProjetoCreditoRuralCadFiltroDto();
-		
+
 		Usuario usuario = ((UserAuthentication) contexto.get("usuario")).getDetails();
-		
+
 		filtro.setExecutorList(getListaPrepreenchida(usuario));
-		
+
 		getPeridoBusca(filtro);
 
 		contexto.setResposta(filtro);
 		return false;
 	}
-	
+
 	private void getPeridoBusca(ProjetoCreditoRuralCadFiltroDto filtro) {
 		Calendar hoje = Calendar.getInstance();
 
@@ -45,11 +45,17 @@ public class FiltroNovoCmd extends _Comando {
 
 	private Set<TagDto> getListaPrepreenchida(Usuario usuario) {
 		Set<TagDto> lista = new HashSet<>();
-		
-		lista.add(getValorDaBusca(usuario.getPessoa().getNome()));
-		lista.add(getValorDaBusca(usuario.getLotacaoAtual().getNome()));
-		lista.add(getValorDaBusca(usuario.getLotacaoAtual().getPessoaJuridica().getNome()));
-		
+
+		if (usuario.getPessoa() != null) {
+			lista.add(getValorDaBusca(usuario.getPessoa().getNome()));
+		}
+		if (usuario.getLotacaoAtual() != null) {
+			lista.add(getValorDaBusca(usuario.getLotacaoAtual().getNome()));
+			if (usuario.getLotacaoAtual().getPessoaJuridica() != null) {
+				lista.add(getValorDaBusca(usuario.getLotacaoAtual().getPessoaJuridica().getNome()));
+			}
+		}
+
 		return lista;
 	}
 

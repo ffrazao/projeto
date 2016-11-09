@@ -140,6 +140,21 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer>, _
 				this.producaoComposicaoList.add(new ProducaoComposicao(pfc));
 			});
 		}
+		this.alteracaoData = producao.getAlteracaoData();
+		this.alteracaoUsuario = producao.getAlteracaoUsuario();
+		this.dataConfirmacao = producao.getDataConfirmacao();
+		this.id = producao.getId();
+		this.inclusaoData = producao.getInclusaoData();
+		this.inclusaoUsuario = producao.getInclusaoUsuario();
+		this.itemAValor = producao.getItemAValor();
+		this.itemBValor = producao.getItemBValor();
+		this.itemCValor = producao.getItemCValor();
+		this.producaoProprietario = producao.getProducaoProprietario();
+		this.quantidadeProdutores = producao.getQuantidadeProdutores();
+		this.situacao = producao.getSituacao();
+		this.valorTotal = producao.getValorTotal();
+		this.valorUnitario = producao.getValorUnitario();
+		this.volume = producao.getVolume();
 	}
 
 	@Override

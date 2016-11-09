@@ -124,11 +124,6 @@ public class FacadeBo implements BeanFactoryAware {
 		return this._executar(usuario, "BemProducaoFiltroExecutarCh", filtro);
 	}
 
-	@Transactional(readOnly = true)
-	public _Contexto indiceProducaoBemClassificacaoMatriz(Principal usuario) throws Exception {
-		return this._executar(usuario, "IndiceProducaoBemClassificacaoMatrizCmd");
-	}
-
 	// Comunidade Lista
 	@Transactional(readOnly = true)
 	public _Contexto comunidadeLista(Principal usuario, ComunidadeListaDto filtro) throws Exception {
@@ -241,6 +236,11 @@ public class FacadeBo implements BeanFactoryAware {
 		return this._executar(usuario, "FuncionalidadeVisualizarCh", id);
 	}
 
+	@Transactional(readOnly = true)
+	public _Contexto indiceProducaoBemClassificacaoMatriz(Principal usuario) throws Exception {
+		return this._executar(usuario, "IndiceProducaoBemClassificacaoMatrizCmd");
+	}
+
 	@Transactional
 	public _Contexto indiceProducaoExcluir(Principal usuario, Integer id) throws Exception {
 		return this._executar(usuario, "IndiceProducaoExcluirCh", id);
@@ -274,6 +274,11 @@ public class FacadeBo implements BeanFactoryAware {
 	@Transactional
 	public _Contexto indiceProducaoSalvar(Principal usuario, ProducaoProprietario producaoProprietario) throws Exception {
 		return this._executar(usuario, "IndiceProducaoSalvarCh", producaoProprietario);
+	}
+
+	@Transactional
+	public _Contexto indiceProducaoSalvarDescendente(Principal usuario, ProducaoProprietario producaoProprietario) throws Exception {
+		return this._executar(usuario, "IndiceProducaoSalvarDescendenteCh", producaoProprietario);
 	}
 
 	@Transactional(readOnly = true)
@@ -452,13 +457,13 @@ public class FacadeBo implements BeanFactoryAware {
 	}
 
 	@Transactional(readOnly = true)
-	public _Contexto propriedadeRuralFiltrarPorPublicoAlvoPropriedadeRuralComunidade(Principal usuario, PublicoAlvoPropriedadeRuralCadFiltroDto filtro) throws Exception {
-		return this._executar(usuario, "PropriedadeRuralFiltrarPorPublicoAlvoPropriedadeRuralComunidadeCmd", filtro);
+	public _Contexto propriedadeRuralFiltrarPorPublicoAlvo(Principal usuario, List<PublicoAlvo> publicoAlvoList) throws Exception {
+		return this._executar(usuario, "PropriedadeRuralFiltrarPorPublicoAlvoCmd", publicoAlvoList);
 	}
 
 	@Transactional(readOnly = true)
-	public _Contexto propriedadeRuralFiltrarPorPublicoAlvo(Principal usuario, List<PublicoAlvo> publicoAlvoList) throws Exception {
-		return this._executar(usuario, "PropriedadeRuralFiltrarPorPublicoAlvoCmd", publicoAlvoList);
+	public _Contexto propriedadeRuralFiltrarPorPublicoAlvoPropriedadeRuralComunidade(Principal usuario, PublicoAlvoPropriedadeRuralCadFiltroDto filtro) throws Exception {
+		return this._executar(usuario, "PropriedadeRuralFiltrarPorPublicoAlvoPropriedadeRuralComunidadeCmd", filtro);
 	}
 
 	@Transactional(readOnly = true)

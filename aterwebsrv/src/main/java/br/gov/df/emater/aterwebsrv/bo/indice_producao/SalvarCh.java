@@ -11,11 +11,12 @@ import br.gov.df.emater.aterwebsrv.bo.seguranca.LogCmd;
 public class SalvarCh extends _Cadeia {
 
 	@Autowired
-	public SalvarCh(AutenticarUsuarioCmd c1, SalvarCmd c2, SalvarPrincipalCmd c3, LogCmd c4) {
+	public SalvarCh(AutenticarUsuarioCmd c1, SalvarCmd c2, SalvarPrincipalCmd c3, SalvarDescendenteCmd c4, LogCmd c5) {
 		super.addCommand(c1);
 		super.addCommand(c2);
 		super.addCommand(c3);
 		super.addCommand(c4);
+		super.addCommand(c5);
 	}
 
 }
