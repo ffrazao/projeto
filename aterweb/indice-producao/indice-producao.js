@@ -134,6 +134,16 @@
                 var reg = angular.copy(scp.cadastro.registro);
                 removerCampo(reg, ['@jsonId', 'formula', 'bemClassificacao']);
 
+                // atualizar o bem classificado
+                reg.bemClassificado = angular.copy(reg.bemProducaoList[0]);
+
+                if (reg.producaoProprietarioList && reg.producaoProprietarioList.length) {
+                    reg.producaoProprietarioList.forEach(function(v,k) {
+                        v.bemClassificado = angular.copy(reg.bemClassificado);
+                        v.ano = angular.copy(reg.ano);
+                    });
+                }
+
                 // preparar composicao da forma de producao
                 scp.servico.incluir(reg).success(function(resposta) {
                     if (resposta.mensagem && resposta.mensagem === 'OK') {

@@ -50,25 +50,8 @@ angular.module(pNmModulo).controller(pNmController,
             return;
         }
 
-        //if (!producaoFormaNvg.selecao || !producaoFormaNvg.selecao.tipo || producaoFormaNvg.selecao.tipo !== 'U' || !producaoFormaNvg.selecao.item) {
-        //    toastr.error('Primeiro selecione uma forma de produção.', 'Erro');
-        //    return;
-        //}
-
         producaoFormaNvg = producaoFormaNvg.selecao.item;
         var bemClassificacao = bemProducaoList[0].bemClassificacao;
-
-        //if (bemClassificacao.bemClassificacaoFormaProducaoItemList && bemClassificacao.bemClassificacaoFormaProducaoItemList.length && (!producaoFormaNvg.producaoComposicaoList || bemClassificacao.bemClassificacaoFormaProducaoItemList.length !== producaoFormaNvg.producaoComposicaoList.length)) {
-        //    toastr.error('Forma de produção incompleta.', 'Erro');
-        //    return;
-        //}
-
-        //for (var fp in bemClassificacao.bemClassificacaoFormaProducaoItemList) {
-        //    if (!producaoFormaNvg.producaoComposicaoList || !producaoFormaNvg.producaoComposicaoList[fp] || !producaoFormaNvg.producaoComposicaoList[fp].id) {
-        //        toastr.error('Forma de produção incompleta.', 'Erro');
-        //        return;
-        //    }
-        //}
 
         // abrir a modal
         var modalInstance = $uibModal.open({
@@ -130,8 +113,7 @@ angular.module(pNmModulo).controller(pNmController,
                 toastr.warning('A(s) seguinte(s) pessoa(s) não é(são) beneficiária(s) de ATER: ' + rejeitadoList, 'Erro');
             }
             if (publicoAlvoList.length) {
-                PropriedadeRuralSrv.filtrarPorPublicoAlvo(publicoAlvoList)
-                .success(function (resposta) {
+                PropriedadeRuralSrv.filtrarPorPublicoAlvo(publicoAlvoList).success(function (resposta) {
                     if (resposta.mensagem === 'OK') {
                         var rejeitadoList = '';
                         for (var i in resposta.resultado) {
@@ -142,11 +124,12 @@ angular.module(pNmModulo).controller(pNmController,
                                 rejeitadoList += resposta.resultado[i].pessoa.nome;
                             } else {
                                 var item = $scope.criarElemento($scope.cadastro.registro, 'producaoProprietarioList', {});
-                                item.producaoList = {producaoComposicaoList : []};
+                                item.producaoList = [{producaoComposicaoList:[]}];
                                 item.bemClassificado = angular.copy(bemProducaoList[0]);
-                                if (producaoFormaNvg && producaoFormaNvg.producaoList.producaoComposicaoList) {
-                                    for (var fp in producaoFormaNvg.producaoList.producaoComposicaoList) {
-                                        item.producaoList.producaoComposicaoList.push(angular.copy(producaoFormaNvg.producaoList.producaoComposicaoList[fp]));
+                                item.ano = angular.copy($scope.cadastro.registro.ano);
+                                if (producaoFormaNvg && producaoFormaNvg.producaoComposicaoList) {
+                                    for (var fp in producaoFormaNvg.producaoComposicaoList) {
+                                        item.producaoList[0].producaoComposicaoList.push(angular.copy(producaoFormaNvg.producaoComposicaoList[fp]));
                                     }
                                 }
                                 item.publicoAlvo = resposta.resultado[i];

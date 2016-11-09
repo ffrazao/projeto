@@ -12,7 +12,7 @@
                         </div>
                         <div class="form-group" ng-if="!cadastro.registro.id">
                             <label class="control-label" for="ano">Bem de Produção</label>
-                            <tags-input id="bemClassificadoList" name="bemClassificadoList" ng-model="cadastro.registro.bemProducaoList" key-property="id" display-property="nome" placeholder="Digite o nome do Bem de Produção" template="tag-template" add-from-autocomplete-only="true">
+                            <tags-input id="bemClassificadoList" name="bemClassificadoList" ng-model="cadastro.registro.bemProducaoList" key-property="id" display-property="nome" placeholder="Digite o nome do Bem de Produção" template="tag-template" add-from-autocomplete-only="true" required="true">
                                 <auto-complete source="getTagBemClassificado2($query)" min-length="0" load-on-empty="false" template="autocomplete-template">
                                 </auto-complete>
                             </tags-input>
@@ -34,11 +34,11 @@
                                     </div>
                                 </div>
                             </script>
-                            <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.bemClassificadoList.$error.leftoverText">
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.bemClassificadoList.$error.leftoverText">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Valor Inválido!
                             </div>
-                            <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.bemClassificadoList.$error.required">
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.bemClassificadoList.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
@@ -86,7 +86,7 @@
                         </table>
                         <table class="table" ng-if="!cadastro.registro.id">
                             <tr>
-                                <td width="20px"><input type="radio" name="tipoLancamento" id="tipoLancamento-UO" value="UO" ng-model="cadastro.apoio.tipoLancamento"></td>
+                                <td width="20px"><input type="radio" name="tipoLancamento" id="tipoLancamento-UO" value="UO" ng-model="cadastro.apoio.tipoLancamento" ng-required="true"></td>
                                 <td>
                                     <label class="label-form" for="tipoLancamento-UO">Unidade Organizacional</label>
                                     <select class="form-control" id="unidadeOrganizacional" name="unidadeOrganizacional" ng-model="cadastro.registro.unidadeOrganizacional" ng-options="item as item.nome for item in cadastro.apoio.unidadeOrganizacionalList | filter: {'classificacao': 'OP'} | orderBy:'nome' track by item.id" ng-required="true" ng-if="!cadastro.registro.id && cadastro.apoio.tipoLancamento === 'UO'">
@@ -98,7 +98,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><input type="radio" name="tipoLancamento" id="tipoLancamento-PA" value="PA" ng-model="cadastro.apoio.tipoLancamento"></td>
+                                <td><input type="radio" name="tipoLancamento" id="tipoLancamento-PA" value="PA" ng-model="cadastro.apoio.tipoLancamento" ng-required="true"></td>
                                 <td>
                                     <label class="control-label" for="tipoLancamento-PA">Produtor Rural</label>
                                     <div class="form-group" ng-if="!cadastro.registro.id && cadastro.apoio.tipoLancamento === 'PA'">
@@ -135,7 +135,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><input type="radio" name="tipoLancamento" id="tipoLancamento-PR" value="PR" ng-model="cadastro.apoio.tipoLancamento"></td>
+                                <td><input type="radio" name="tipoLancamento" id="tipoLancamento-PR" value="PR" ng-model="cadastro.apoio.tipoLancamento" ng-required="true"></td>
                                 <td>
                                     <label class="control-label" for="tipoLancamento-PR">Propriedade Rural</label>
                                     <div class="form-group" ng-if="!cadastro.registro.id && cadastro.apoio.tipoLancamento === 'PR'">
@@ -170,6 +170,10 @@
                                 </td>
                             </tr>
                         </table>
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.tipoLancamento.$error.required">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Campo Obrigatório
+                        </div>
                     </div>
                 </div>
 
@@ -197,7 +201,7 @@
 
                             <ng-include src="'indice-producao/sub-producao-proprietario.html'" ng-controller="ProducaoProprietarioCtrl"></ng-include>
 
-                            <input type="hidden" id="producaoProprietarioListTotal" name="producaoProprietarioListTotal" ng-model="cadastro.registro.producaoProprietarioList.length" ng-required="true">
+                            <input type="hidden" id="producaoProprietarioListTotal" name="producaoProprietarioListTotal" ng-model="cadastro.registro.producaoProprietarioList.length" ng-required="false">
 
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.producaoProprietarioListTotal.$error.ngValorMin">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
