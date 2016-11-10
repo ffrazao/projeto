@@ -7,6 +7,7 @@ import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.bo._SalvarCmd;
 import br.gov.df.emater.aterwebsrv.dao.sistema.ManualOnlineDao;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.ManualOnline;
+import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 
 @Service("ManualOnlineSalvarCmd")
 public class SalvarCmd extends _SalvarCmd {
@@ -24,6 +25,10 @@ public class SalvarCmd extends _SalvarCmd {
 		logAtualizar(result, contexto);
 		
 		result.setCodigo(result.getCodigo().toUpperCase().replaceAll("\\s", "_"));
+		
+		// para testes remover assim que possivel
+		result.setInclusaoUsuario(new Usuario(1));
+		result.setAlteracaoUsuario(new Usuario(1));
 
 		// preparar para salvar
 		dao.save(result);

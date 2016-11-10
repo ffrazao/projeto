@@ -42,7 +42,7 @@ public class ManualOnlineRest {
 
 	@RequestMapping("/filtro-novo")
 	public Resposta filtroNovo(Principal usuario) throws Exception {
-		return new Resposta(facadeBo.manualOnlineFiltroNovo(usuario).values());
+		return new Resposta(facadeBo.manualOnlineFiltroNovo(usuario).getResposta());
 	}
 
 	@RequestMapping(value = "/incluir", method = RequestMethod.POST)
