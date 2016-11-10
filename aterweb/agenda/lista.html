@@ -1,0 +1,59 @@
+<div class="panel panel-default">
+    <div class="panel-heading"><h4>{{nomeFormulario}}</h4></div>
+    <div class="panel-body" ng-if="!navegador.dados.length">
+        <div class="alert alert-warning" style="margin: 0px;" role="alert">
+            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+            Nenhum registro localizado!
+        </div>
+    </div>
+    <div class="table-responsive" ng-if="navegador.dados.length">
+      <!--  <div ui-calendar="uiConfig.calendar" class="span8 calendar" ng-model="eventSources">-->  
+             <div role="main">
+                <div class="container">
+                    <section id="directives-calendar">
+                        <div class="well">
+                            <div class="row-fluid">
+                                <div>
+                                    <tabset>
+                                        <tab select="renderCalendar('calendar');">
+                                            <div class="alert-success calAlert" ng-show="alertMessage != undefined && alertMessage != ''">
+                                             <h4>{{alertMessage}}</h4>
+                                            </div>
+                                            <div class="btn-toolbar">
+                                                <div class="btn-group">
+                                                 <button class="btn btn-success" ng-click="changeView('agendaDay', 'calendar')">Dia</button>
+                                                 <button class="btn btn-success" ng-click="changeView('agendaWeek', 'calendar')">Semana</button>
+                                                 <button class="btn btn-success" ng-click="changeView('month', 'calendar')">Mês</button>
+                                                </div>
+                                            </div>
+                                            <div class="calendar" ng-model="eventSources" calendar="calendar" ui-calendar="uiConfig.calendar"></div>
+                                        </tab>                                     
+                                    </tabset>
+                                </div> 
+                                <div>
+                                    <div class="btn-group calTools">              
+                                        <!--<button class="btn" ng-click="addRemoveEventSource(eventSources,eventSource)">
+                                         Toggle Source
+                                        </button>-->
+                                        <button type="button" class="btn btn-primary" ng-click="addEvent()">
+                                         Novo Evento
+                                        </button>
+                                    </div>
+                                    <ul class="unstyled">
+                                        <li ng-repeat="e in events">
+                                            <div class="alert alert-info">
+                                             <a class="close" ng-click="remove($index)">x</a>
+                                             <b> <input ng-model="e.title"></b> 
+                                                {{e.start | date:"dd MMM"}} - {{e.end | date:"dd MMM"}}
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>                             
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>  
+</div>

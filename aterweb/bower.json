@@ -52,6 +52,6 @@
     "br-validations": "~0.3.0",
     "string-mask": "~0.3.0",
     "jquery": ">=1.7.1",
-    "fullcalendar": "~2.7.1"
+    "fullcalendar": "^3.0.1"
   }
 }

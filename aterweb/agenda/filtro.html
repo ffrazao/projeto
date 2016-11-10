@@ -1,0 +1,135 @@
+<div class="panel panel-default">
+    <div class="panel-heading"><h4>{{nomeFormulario}}</h4></div>
+    <div class="panel-body">
+        <form class="form-horizontal" name="frm.filtro" novalidate>
+            <fieldset>
+                <legend>Dados Básicos</legend>
+                <div class="form-group" title="Unidade Organizacional/Comunidade">
+                    <label class="col-md-4 control-label" for="unidadeOrganizacionalComunidade">
+                        Unidade Organizacional/Comunidade
+                    </label>
+                    <div class="col-md-7">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="cadastro.apoio.localFiltro" placeholder="Filtrar por Comunidade">
+                            <span class="input-group-btn">
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-default" ng-click="cadastro.apoio.localFiltro = limparRegistroSelecionado(cadastro.apoio.localList)">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </button>
+                                </div>
+                            </span>
+                        </div>
+                        <div class="row" style="height: 200px; overflow: scroll;">
+                            <div ui-tree drag-enabled="false">
+                                <ol ui-tree-nodes="" ng-model="cadastro.apoio.localList">
+                                    <li ng-repeat="item in cadastro.apoio.localList | orderBy: 'nome' track by item.id" ui-tree-node>
+                                        <div ui-tree-handle>
+                                            <a class="btn btn-primary btn-xs Tooltip" data-nodrag data-ng-click="toggleChildren(this)" title="Expandir/Recolher">
+                                                <span class="glyphicon glyphicon-chevron-right" data-ng-show="collapsed"></span>
+                                                <span class="glyphicon glyphicon-chevron-down" data-ng-show="!collapsed"></span>
+                                            </a>
+                                            <label>
+                                                <input type="checkbox" ng-model="item.selecionado" ng-true-value="true" ng-false-value="false">
+                                                {{item.nome}}
+                                            </label>
+                                        </div>
+                                        <ol ui-tree-nodes="" ng-model="item.unidadeList" ng-class="{hidden: collapsed}">
+                                            <li ng-repeat="subItem in item.unidadeList | unidadeOrganizacionalComunidadeFltr:cadastro.apoio.localFiltro | orderBy: ['nome'] track by subItem.id" ui-tree-node>
+                                                <div ui-tree-handle>
+                                                    <a class="btn btn-primary btn-xs Tooltip" data-nodrag data-ng-click="toggleChildren(this)" title="Expandir/Recolher">
+                                                        <span class="glyphicon glyphicon-chevron-right" data-ng-show="collapsed"></span>
+                                                        <span class="glyphicon glyphicon-chevron-down" data-ng-show="!collapsed"></span>
+                                                    </a>
+                                                    <label>
+                                                        <input type="checkbox" ng-model="subItem.selecionado" ng-true-value="true" ng-false-value="false">
+                                                        {{subItem.nome}}
+                                                    </label>
+                                                </div>
+                                                <ol ui-tree-nodes="" ng-model="subItem.comunidadeList" ng-class="{hidden: collapsed}">
+                                                    <li ng-repeat="subSubItem in subItem.comunidadeList | orderBy: 'nome' track by subSubItem.id" ui-tree-node ng-show="visible(subSubItem)">
+                                                        <div ui-tree-handle>
+                                                            <label>
+                                                                <input type="checkbox" ng-model="subSubItem.selecionado" ng-true-value="true" ng-false-value="false">
+                                                                {{subSubItem.nome}}
+                                                            </label>
+                                                        </div>
+                                                    </li>
+                                                </ol>
+                                            </li>
+                                        </ol>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.unidadeOrganizacionalComunidade.$error.required">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        Campo Obrigatório
+                    </div>
+                </div>
+                <div class="form-group" title="Período">
+                    <label class="col-md-4 control-label" for="inicio">
+                        Período entre
+                    </label>
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" id="inicio" name="inicio" ng-model="cadastro.filtro.inicio" ui-date-mask ng-required="true">
+                                <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.inicio.$error.required">
+                                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                    Campo Obrigatório
+                                </div>
+                                <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.inicio.$error.date">
+                                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                    Data Inválida!
+                                </div>
+                            </div>
+                            <label class="col-md-2">
+                                e 
+                            </label>
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" id="termino" name="termino" ng-model="cadastro.filtro.termino" ui-date-mask ng-required="true">
+                                <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.termino.$error.required">
+                                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                    Campo Obrigatório
+                                </div>
+                                <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.termino.$error.date">
+                                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                    Data Inválida!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" title="Método">
+                    <label class="col-md-4 control-label" for="metodo">
+                        Método
+                    </label>
+                    <div class="col-md-6">
+                        <select class="form-control" id="metodo" name="metodo" ng-model="cadastro.filtro.metodo" ng-options="item as item.nome for item in cadastro.apoio.metodoList track by item.id">
+                            <option value="">-- Ignorar --</option>
+                        </select>
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.metodo.$error.required">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Campo Obrigatório
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" title="Assunto">
+                    <label class="col-md-4 control-label" for="assunto">
+                        Assunto
+                    </label>
+                    <div class="col-md-6">
+                        <select class="form-control" id="assunto" name="assunto" ng-model="cadastro.filtro.assunto" ng-options="item as item.nome for item in cadastro.apoio.assuntoList track by item.id">
+                            <option value="">-- Ignorar --</option>
+                        </select>
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.assunto.$error.required">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Campo Obrigatório
+                        </div>
+                    </div>
+                </div>                
+            </fieldset>
+        </form>
+    </div>
+</div>

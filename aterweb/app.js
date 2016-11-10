@@ -10,11 +10,11 @@ var TIMEOUT_TEMPO = 10 * 60;
 
     angular.module(pNmModulo, ['ui.bootstrap', 'ui.utils', 'ui.router', 'ngSanitize', 'ngAnimate', 'toastr', 'sticky',
         'ui.mask', 'ui.utils.masks', 'ui.navbar', 'ngCookies', 'uiGmapgoogle-maps', 'ngFileUpload', 'ngTagsInput', 'ui.tree',
-        'ui.tree-filter', 'ngIdle', 'angular.filter', 'qrScanner', 'webcam', 'textAngular',
+        'ui.tree-filter', 'ngIdle', 'angular.filter', 'qrScanner', 'webcam', 'textAngular', 'ui.calendar',
         'mensagemSrv', 'segurancaSrv', 'utilSrv', 'frz.form', 'frz.tabela', 'frz.arquivo', 'frz.endereco', 'frz.painel.vidro', 'frz.navegador',
         'frz.indice.producao', 'frz.unidade.comunidade', 
         'casa', 'contrato', 'info', 'offline', 'pessoa', 'formulario', 'propriedadeRural', 'atividade', 'indiceProducao', 
-        'funcionalidade', 'perfil', 'usuario', 'logAcao', 'projetoCreditoRural', 
+        'funcionalidade', 'perfil', 'usuario', 'logAcao', 'projetoCreditoRural', 'agenda', 
         ]);
 
     // inicio: codigo para habilitar o modal recursivo

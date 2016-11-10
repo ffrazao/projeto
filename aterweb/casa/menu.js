@@ -95,7 +95,7 @@
                 subtree: [
                     {
                         name: 'Planejar',
-                        link: '#',
+                        link: 'p.agenda.filtro',
                         funcionalidade: 'PLANEJAR',
                         visivel: false,
                     },
