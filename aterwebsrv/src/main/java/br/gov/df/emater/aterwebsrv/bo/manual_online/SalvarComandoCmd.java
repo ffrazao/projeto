@@ -1,0 +1,31 @@
+package br.gov.df.emater.aterwebsrv.bo.manual_online;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import br.gov.df.emater.aterwebsrv.bo._Comando;
+import br.gov.df.emater.aterwebsrv.bo._Contexto;
+import br.gov.df.emater.aterwebsrv.dao.sistema.ComandoDao;
+import br.gov.df.emater.aterwebsrv.modelo.sistema.Comando;
+
+@Service("ManualOnlineSalvarComandoCmd")
+public class SalvarComandoCmd extends _Comando {
+
+	@Autowired
+	private ComandoDao dao;
+
+	public SalvarComandoCmd() {
+	}
+
+	@Override
+	public boolean executar(_Contexto contexto) throws Exception {
+		Comando result = (Comando) contexto.getRequisicao();
+
+		result.setCodigo(result.getCodigo().toUpperCase().replaceAll("\\s", "_"));
+
+		dao.save(result);
+
+		contexto.setResposta(result.getId());
+		return false;
+	}
+}

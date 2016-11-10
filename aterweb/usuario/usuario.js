@@ -141,6 +141,18 @@
                 executaIncluir();
             };
 
+            var confirmarSalvar = function(cadastro) {
+                removerCampo(cadastro, ['@jsonId']);
+            };
+
+            $scope.confirmarIncluirAntes = function(cadastro) {
+                return confirmarSalvar(cadastro);
+            };
+
+            $scope.confirmarEditarAntes = function(cadastro) {
+                return confirmarSalvar(cadastro);
+            };
+
             var preparaEmailList = function(registro) {
                 $scope.cadastro.apoio.pessoaEmailList = [];
                 if (registro.pessoa && registro.pessoa.emailList) {                    

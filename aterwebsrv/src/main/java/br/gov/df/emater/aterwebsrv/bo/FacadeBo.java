@@ -35,6 +35,7 @@ import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoCreditoRural
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoCreditoRuralReceitaDespesaApoioDto;
 import br.gov.df.emater.aterwebsrv.dto.sistema.FuncionalidadeCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.sistema.LogAcaoCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.sistema.ManualOnlineCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.sistema.PerfilCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.sistema.UsuarioCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
@@ -50,6 +51,7 @@ import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRu
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Comando;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Funcionalidade;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.LogAcao;
+import br.gov.df.emater.aterwebsrv.modelo.sistema.ManualOnline;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Modulo;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Perfil;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
@@ -319,6 +321,46 @@ public class FacadeBo implements BeanFactoryAware {
 	@Transactional(readOnly = true)
 	public _Contexto logAcaoVisualizar(Principal usuario, Integer id) throws Exception {
 		return this._executar(usuario, "LogAcaoVisualizarCh", id);
+	}
+
+	@Transactional
+	public _Contexto manualOnlineExcluir(Principal usuario, Integer id) throws Exception {
+		return this._executar(usuario, "ManualOnlineExcluirCh", id);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto manualOnlineFiltroExecutar(Principal usuario, ManualOnlineCadFiltroDto filtro) throws Exception {
+		return this._executar(usuario, "ManualOnlineFiltroExecutarCh", filtro);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto manualOnlineFiltroNovo(Principal usuario) throws Exception {
+		return this._executar(usuario, "ManualOnlineFiltroNovoCmd");
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto manualOnlineNovo(Principal usuario, ManualOnline manualOnline) throws Exception {
+		return this._executar(usuario, "ManualOnlineNovoCh", manualOnline);
+	}
+
+	@Transactional
+	public _Contexto manualOnlineSalvar(Principal usuario, ManualOnline manualOnline) throws Exception {
+		return this._executar(usuario, "ManualOnlineSalvarCh", manualOnline);
+	}
+
+	@Transactional
+	public _Contexto manualOnlineSalvarComando(Principal usuario, Comando comando) throws Exception {
+		return this._executar(usuario, "ManualOnlineSalvarComandoCh", comando);
+	}
+
+	@Transactional
+	public _Contexto manualOnlineSalvarModulo(Principal usuario, Modulo modulo) throws Exception {
+		return this._executar(usuario, "ManualOnlineSalvarModuloCh", modulo);
+	}
+
+	@Transactional(readOnly = true)
+	public _Contexto manualOnlineVisualizar(Principal usuario, Integer id) throws Exception {
+		return this._executar(usuario, "ManualOnlineVisualizarCh", id);
 	}
 
 	@Transactional
