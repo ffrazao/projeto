@@ -119,7 +119,7 @@
                 height: 450,
                 editable: true,
                 header:{
-                  left: '',
+                  left: 'title',
                   center: '',
                   right: 'today prev,next'
                 },
