@@ -357,7 +357,8 @@
     }]);
 
     // diretiva da barra de navegação de dados
-    frzNavegadorModule.directive('frzNavegador', ['$rootScope', function($rootScope) {
+    frzNavegadorModule.directive('frzNavegador', ['$rootScope', 'mensagemSrv', 'ManualOnlineSrv', '$sce', 'toastr', 
+            function($rootScope, mensagemSrv, ManualOnlineSrv, $sce, toastr) {
         'ngInject';
 
         return {
@@ -370,11 +371,10 @@
 
                 exibeNomeBotao: '=?',
                 exibeEstadoAtual: '=?',
-
                 funcionalidade: '=?',
+                codigoAjuda: '=?',
 
                 onAbrir: '&',
-
                 onTemMaisRegistros: '&',
                 onAgir: '&',
                 onAjudar: '&',
@@ -412,6 +412,8 @@
                 scope.exibeNomeBotao = !angular.isUndefined(attributes.exibeNomeBotao) && (attributes.exibeNomeBotao.toLowerCase() === 'true');
                 scope.exibeEstadoAtual = !angular.isUndefined(attributes.exibeEstadoAtual) && (attributes.exibeEstadoAtual.toLowerCase() === 'true');
                 scope.funcionalidade = !angular.isUndefined(scope.funcionalidade) && scope.funcionalidade ? scope.funcionalidade.toUpperCase().trim() : null;
+                scope.codigoAjuda = !angular.isUndefined(attributes.codigoAjuda) && attributes.codigoAjuda ? attributes.codigoAjuda.toUpperCase().trim() : null;
+
                 scope.estados = {
                     'FILTRANDO': {botoes: ['ok', 'inclusao', 'limpar', 'voltar', 'acao', 'ajuda', ], },
                     'LISTANDO': {botoes: ['informacao', 'filtro', 'inclusao', 'primeiro', 'anterior', 'tamanhoPagina', 'proximo', 'ultimo', 'visualizacao', 'exclusao', 'acao', 'ajuda', ], }, 
@@ -780,7 +782,22 @@
                                 classe: 'btn-default',
                                 glyphicon: 'glyphicon glyphicon-question-sign',
                                 acao: function() {
-                                    scope.onAjudar();
+                                    if (scope.codigoAjuda !== null) {                                    
+                                        scope.onAjudar();
+                                        ManualOnlineSrv.ajuda(scope.codigoAjuda)
+                                        .success(function(resposta) {
+                                            if (resposta && resposta.mensagem && resposta.mensagem === 'OK' ) {
+                                                mensagemSrv.alerta(false, '<div ng-bind-html="conteudo"></div>', 'Ajuda Online', $sce.trustAsHtml(resposta.resultado));
+                                            } else {
+                                                toastr.error(resposta && resposta.mensagem ? resposta.mensagem : resposta, 'Erro ao buscar o conteúdo da ajuda');
+                                            }
+                                        })
+                                        .error(function(erro) {
+                                            toastr.error(erro, 'Erro ao buscar o conteúdo da ajuda');
+                                        });
+                                    } else {
+                                        toastr.error('O conteúdo ainda não foi escrito', 'Erro ao buscar o conteúdo da ajuda');
+                                    }
                                 },
                             },
                         ],

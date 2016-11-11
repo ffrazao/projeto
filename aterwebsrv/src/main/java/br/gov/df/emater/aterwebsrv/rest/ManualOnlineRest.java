@@ -74,4 +74,9 @@ public class ManualOnlineRest {
 		return new Resposta(facadeBo.manualOnlineVisualizar(usuario, id).getResposta());
 	}
 
+	@RequestMapping(value = "/ajuda", method = RequestMethod.GET)
+	public Resposta ajuda(@RequestParam String codigo, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.manualOnlineAjuda(usuario, codigo).getResposta());
+	}
+
 }

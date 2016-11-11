@@ -363,6 +363,11 @@ public class FacadeBo implements BeanFactoryAware {
 		return this._executar(usuario, "ManualOnlineVisualizarCh", id);
 	}
 
+	@Transactional(readOnly = true)
+	public _Contexto manualOnlineAjuda(Principal usuario, String codigo) throws Exception {
+		return this._executar(usuario, "ManualOnlineAjudaCmd", codigo);
+	}
+
 	@Transactional
 	public _Contexto perfilExcluir(Principal usuario, Integer id) throws Exception {
 		return this._executar(usuario, "PerfilExcluirCh", id);
