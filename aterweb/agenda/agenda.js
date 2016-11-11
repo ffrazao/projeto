@@ -30,8 +30,7 @@
             var date = new Date();
             var d = date.getDate();
             var m = date.getMonth();
-            var y = date.getFullYear();
-            
+            var y = date.getFullYear();            
     
             $scope.eventSource = {
                     googleCalendarApiKey: 'AIzaSyA7cCD_hoZyFmAS1IXGOizoBO1xMaHDRvc',
@@ -129,7 +128,9 @@
                 eventRender: $scope.eventRender
               }
             };
-
+                
+                $scope.uiConfig.calendar.months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+                $scope.uiConfig.calendar.monthsShort = ["Jan", "Fev", "Mar", "Abr", "Maio", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
                 $scope.uiConfig.calendar.dayNames = ["Domingo", "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado"];
                 $scope.uiConfig.calendar.dayNamesShort = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
