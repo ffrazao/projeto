@@ -96,7 +96,7 @@ public class VisualizarPerfilCmd extends _Comando {
 				for (Emprego emprego : empregoDao.findByPessoaRelacionamentoListPessoaIn(usuario.getPessoa())) {
 					if ((emprego.getInicio() == null || emprego.getInicio().before(Calendar.getInstance())) && (emprego.getTermino() == null || emprego.getTermino().after(Calendar.getInstance()))) {
 						// inicio avaliar perfis da lotacoes do usuario
-						for (Lotacao l : lotacaoDao.findByEmprego(emprego)) {
+						for (Lotacao l : lotacaoDao.findAllByEmprego(emprego)) {
 							if ((l.getInicio() == null || l.getInicio().before(Calendar.getInstance())) && (l.getTermino() == null || l.getTermino().after(Calendar.getInstance()))) {
 								lotacaoList.add(l);
 							}

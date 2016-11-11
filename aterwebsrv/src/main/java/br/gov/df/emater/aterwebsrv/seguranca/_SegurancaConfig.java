@@ -65,7 +65,7 @@ public class _SegurancaConfig extends WebSecurityConfigurerAdapter {
 				// allow anonymous POSTs to login
 				.antMatchers(HttpMethod.POST, "/api/login").permitAll()
 				.antMatchers("/api/esqueci-senha/**").permitAll()
-				.antMatchers("/manual-online/**").permitAll()
+				.antMatchers("/agenda/**").permitAll()
 
 				// defined Admin only API area
 				.antMatchers("/admin/**").hasRole("ADMIN")

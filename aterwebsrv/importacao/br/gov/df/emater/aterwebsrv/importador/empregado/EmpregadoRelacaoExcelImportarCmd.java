@@ -200,7 +200,7 @@ public class EmpregadoRelacaoExcelImportarCmd extends _Comando {
 				// identificar a lotacao
 				Lotacao lotacao = null;
 				String funcao = (String) reg.get("FUNÇÃO");
-				List<Lotacao> lotacaoList = lotacaoDao.findByEmprego(emprego);
+				List<Lotacao> lotacaoList = lotacaoDao.findAllByEmprego(emprego);
 				if (lotacaoList == null || lotacaoList.size() == 0) {
 					lotacao = novaLotacao(emprego, unidadeOrganizacional, emprego.getInicio(), funcao);
 				} else {

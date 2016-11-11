@@ -19,4 +19,6 @@ public interface UnidadeOrganizacionalDao extends JpaRepository<UnidadeOrganizac
 
 	UnidadeOrganizacional findOneByPessoaJuridicaAndSigla(PessoaJuridica pessoa, String lotacaoSigla);
 
+	List<UnidadeOrganizacional> findAllByPessoaJuridica(PessoaJuridica pessoaJuridica);
+
 }

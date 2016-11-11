@@ -127,7 +127,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 					avaliarPerfil(usuarioEmpregador.getAuthorities(), authoritiesRetorno, perfilFuncionalidadeComandoListRetorno, perfilFuncionalidadeComandoListNegadoRetorno);
 				}
 				// inicio avaliar perfis da lotacoes do usuario
-				for (Lotacao lotacao : lotacaoDao.findByEmprego(emprego)) {
+				for (Lotacao lotacao : lotacaoDao.findAllByEmprego(emprego)) {
 					for (Usuario usuarioUnidadeOrganizacional : usuarioDao.findByUnidadeOrganizacional(lotacao.getUnidadeOrganizacional())) {
 						avaliarPerfil(usuarioUnidadeOrganizacional.getAuthorities(), authoritiesRetorno, perfilFuncionalidadeComandoListRetorno, perfilFuncionalidadeComandoListNegadoRetorno);
 					}

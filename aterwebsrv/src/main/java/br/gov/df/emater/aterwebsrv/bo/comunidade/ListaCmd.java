@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -24,6 +25,7 @@ public class ListaCmd extends _Comando {
 	private ComunidadeDao dao;
 
 	@Override
+	@Cacheable("comunidadeLista")
 	public boolean executar(_Contexto contexto) throws Exception {
 		ComunidadeListaDto filtro = (ComunidadeListaDto) contexto.getRequisicao();
 		List<Comunidade> comunidadeList = null;

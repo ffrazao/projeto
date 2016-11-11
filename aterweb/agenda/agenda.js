@@ -15,13 +15,13 @@
 
     angular.module(pNmModulo).constant('uiCalendarConfig', {calendars: {}});
 
-    angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'AtividadeSrv',
+    angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'AgendaSrv',
          '$compile', 'uiCalendarConfig',
-        function($scope,  toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, AtividadeSrv, $compile, uiCalendarConfig) {
+        function($scope,  toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, AgendaSrv, $compile, uiCalendarConfig) {
             'ngInject';            
 
             // inicializacao
-            $scope.crudInit($scope, $state, null, pNmFormulario, AtividadeSrv);
+            $scope.crudInit($scope, $state, null, pNmFormulario, AgendaSrv);
 
             // código para verificar se o modal está ou não ativo
             $scope.verificaEstado($uibModalInstance, $scope, 'filtro', modalCadastro, pNmFormulario);
