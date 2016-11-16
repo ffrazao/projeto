@@ -26,9 +26,12 @@ import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 
+/*
+ * ATENÇÃO! Qualquer alteração na estrutura desta classe também deve ser feita na interface UnidadeOrganizacionalHierarquiaBase 
+ */
 @Entity
 @Table(name = "unidade_organizacional_hierarquia", schema = EntidadeBase.FUNCIONAL_SCHEMA)
-public class UnidadeOrganizacionalHierarquia extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<UnidadeOrganizacionalHierarquia> {
+public class UnidadeOrganizacionalHierarquia extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<UnidadeOrganizacionalHierarquia>, UnidadeOrganizacionalHierarquiaBase {
 
 	private static final long serialVersionUID = 1L;
 
@@ -67,10 +70,12 @@ public class UnidadeOrganizacionalHierarquia extends EntidadeBase implements _Ch
 		this(id);
 	}
 
+	@Override
 	public UnidadeOrganizacional getAscendente() {
 		return ascendente;
 	}
 
+	@Override
 	public UnidadeOrganizacional getDescendente() {
 		return descendente;
 	}
@@ -80,10 +85,12 @@ public class UnidadeOrganizacionalHierarquia extends EntidadeBase implements _Ch
 		return id;
 	}
 
+	@Override
 	public Calendar getInicio() {
 		return inicio;
 	}
 
+	@Override
 	public Calendar getTermino() {
 		return termino;
 	}
@@ -93,10 +100,12 @@ public class UnidadeOrganizacionalHierarquia extends EntidadeBase implements _Ch
 		return new UnidadeOrganizacionalHierarquia(this.id, infoBasicaReg(this.ascendente), infoBasicaReg(this.descendente), this.inicio, this.termino);
 	}
 
+	@Override
 	public void setAscendente(UnidadeOrganizacional ascendente) {
 		this.ascendente = ascendente;
 	}
 
+	@Override
 	public void setDescendente(UnidadeOrganizacional descendente) {
 		this.descendente = descendente;
 	}
@@ -106,10 +115,12 @@ public class UnidadeOrganizacionalHierarquia extends EntidadeBase implements _Ch
 		this.id = id;
 	}
 
+	@Override
 	public void setInicio(Calendar inicio) {
 		this.inicio = inicio;
 	}
 
+	@Override
 	public void setTermino(Calendar termino) {
 		this.termino = termino;
 	}

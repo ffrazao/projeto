@@ -25,9 +25,12 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 
+/*
+ * ATENÇÃO! Qualquer alteração na estrutura desta classe também deve ser feita na interface LotacaoBase 
+ */
 @Entity
 @Table(name = "lotacao", schema = EntidadeBase.FUNCIONAL_SCHEMA)
-public class Lotacao extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class Lotacao extends EntidadeBase implements _ChavePrimaria<Integer>, LotacaoBase {
 
 	private static final long serialVersionUID = 1L;
 
@@ -64,10 +67,12 @@ public class Lotacao extends EntidadeBase implements _ChavePrimaria<Integer> {
 	public Lotacao() {
 	}
 
+	@Override
 	public Emprego getEmprego() {
 		return emprego;
 	}
 
+	@Override
 	public Confirmacao getGestor() {
 		return gestor;
 	}
@@ -77,26 +82,32 @@ public class Lotacao extends EntidadeBase implements _ChavePrimaria<Integer> {
 		return id;
 	}
 
+	@Override
 	public Calendar getInicio() {
 		return inicio;
 	}
 
+	@Override
 	public Confirmacao getTemporario() {
 		return temporario;
 	}
 
+	@Override
 	public Calendar getTermino() {
 		return termino;
 	}
 
+	@Override
 	public UnidadeOrganizacional getUnidadeOrganizacional() {
 		return unidadeOrganizacional;
 	}
 
+	@Override
 	public void setEmprego(Emprego emprego) {
 		this.emprego = emprego;
 	}
 
+	@Override
 	public void setGestor(Confirmacao gestor) {
 		this.gestor = gestor;
 	}
@@ -106,18 +117,22 @@ public class Lotacao extends EntidadeBase implements _ChavePrimaria<Integer> {
 		this.id = id;
 	}
 
+	@Override
 	public void setInicio(Calendar inicio) {
 		this.inicio = inicio;
 	}
 
+	@Override
 	public void setTemporario(Confirmacao temporario) {
 		this.temporario = temporario;
 	}
 
+	@Override
 	public void setTermino(Calendar termino) {
 		this.termino = termino;
 	}
 
+	@Override
 	public void setUnidadeOrganizacional(UnidadeOrganizacional unidadeOrganizacional) {
 		this.unidadeOrganizacional = unidadeOrganizacional;
 	}

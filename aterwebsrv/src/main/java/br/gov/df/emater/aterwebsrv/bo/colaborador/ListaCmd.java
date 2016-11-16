@@ -12,22 +12,18 @@ import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.funcional.EmpregadorDao;
 import br.gov.df.emater.aterwebsrv.dao.funcional.LotacaoAtivaViDao;
-import br.gov.df.emater.aterwebsrv.dao.funcional.UnidadeOrganizacionalAtivaViDao;
 import br.gov.df.emater.aterwebsrv.dao.funcional.UnidadeOrganizacionalHierarquiaAtivaViDao;
 import br.gov.df.emater.aterwebsrv.dto.funcional.UnidadeOrganizacionalHierarquiaDto;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.Empregador;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.LotacaoAtivaVi;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
-import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacionalHierarquia;
+import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacionalHierarquiaAtivaVi;
 
 @Service("ColaboradorListaCmd")
 public class ListaCmd extends _Comando {
 
 	@Autowired
 	private EmpregadorDao empregadorDao;
-
-	@Autowired
-	private UnidadeOrganizacionalAtivaViDao unidadeOrganizacionalAtivaViDao;
 
 	@Autowired
 	private UnidadeOrganizacionalHierarquiaAtivaViDao unidadeOrganizacionalHierarquiaAtivaViDao;
@@ -54,23 +50,23 @@ public class ListaCmd extends _Comando {
 	private void montarArvore(List<UnidadeOrganizacionalHierarquiaDto> result, Empregador empregador, UnidadeOrganizacional unidadeOrganizacional) {
 		// TODO Auto-generated method stub
 		Integer id = 0;
-		List<UnidadeOrganizacionalHierarquia> unidadeOrganizacionalHierarquiaList = unidadeOrganizacionalHierarquiaAtivaViDao.findAllByAscendentePessoaJuridicaOrDescendentePessoaJuridica(empregador);
+		List<UnidadeOrganizacionalHierarquiaAtivaVi> unidadeOrganizacionalHierarquiaList = unidadeOrganizacionalHierarquiaAtivaViDao.findAllByAscendentePessoaJuridicaOrDescendentePessoaJuridica(empregador, empregador);
 		if (!CollectionUtils.isEmpty(unidadeOrganizacionalHierarquiaList)) {
-			for (UnidadeOrganizacionalHierarquia uo : unidadeOrganizacionalHierarquiaList) {
+			for (UnidadeOrganizacionalHierarquiaAtivaVi uo : unidadeOrganizacionalHierarquiaList) {
 				UnidadeOrganizacionalHierarquiaDto unidadeOrganizacionalHierarquiaDto = new UnidadeOrganizacionalHierarquiaDto();
 				unidadeOrganizacionalHierarquiaDto.setId(++id);
 				unidadeOrganizacionalHierarquiaDto.setId(++id);
 				// captar pessoas lotadas
-				List<LotacaoAtivaVi> lotacaoList = lotacaoAtivaViDao.findAllByUnidadeOrganizacional(uo);
+				List<LotacaoAtivaVi> lotacaoList = lotacaoAtivaViDao.findAllByUnidadeOrganizacionalId(uo.getId());
 				if (!CollectionUtils.isEmpty(lotacaoList)) {
 					for (LotacaoAtivaVi lotacao : lotacaoList) {
-						
+
 					}
 				}
-				
+
 			}
 		}
-		
+
 	}
 
 }

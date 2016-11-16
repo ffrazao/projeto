@@ -32,9 +32,12 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 
+/*
+ * ATENÇÃO! Qualquer alteração na estrutura desta classe também deve ser feita na interface UnidadeOrganizacionalBase 
+ */
 @Entity
 @Table(name = "unidade_organizacional", schema = EntidadeBase.FUNCIONAL_SCHEMA)
-public class UnidadeOrganizacional extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<UnidadeOrganizacional> {
+public class UnidadeOrganizacional extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<UnidadeOrganizacional>, UnidadeOrganizacionalBase {
 
 	private static final long serialVersionUID = 1L;
 
@@ -50,7 +53,6 @@ public class UnidadeOrganizacional extends EntidadeBase implements _ChavePrimari
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
-	
 
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
@@ -87,14 +89,17 @@ public class UnidadeOrganizacional extends EntidadeBase implements _ChavePrimari
 		setClassificacao(classificacao);
 	}
 
+	@Override
 	public String getChaveSisater() {
 		return chaveSisater;
 	}
 
+	@Override
 	public UnidadeOrganizacionalClassificacao getClassificacao() {
 		return classificacao;
 	}
 
+	@Override
 	public List<Comunidade> getComunidadeList() {
 		return comunidadeList;
 	}
@@ -104,22 +109,27 @@ public class UnidadeOrganizacional extends EntidadeBase implements _ChavePrimari
 		return id;
 	}
 
+	@Override
 	public Calendar getInicio() {
 		return inicio;
 	}
 
+	@Override
 	public String getNome() {
 		return nome;
 	}
 
+	@Override
 	public PessoaJuridica getPessoaJuridica() {
 		return pessoaJuridica;
 	}
 
+	@Override
 	public String getSigla() {
 		return sigla;
 	}
 
+	@Override
 	public Calendar getTermino() {
 		return termino;
 	}
@@ -129,14 +139,17 @@ public class UnidadeOrganizacional extends EntidadeBase implements _ChavePrimari
 		return new UnidadeOrganizacional(this.id, this.nome, this.sigla, this.pessoaJuridica == null ? null : (PessoaJuridica) pessoaJuridica.infoBasica(), this.classificacao);
 	}
 
+	@Override
 	public void setChaveSisater(String chaveSisater) {
 		this.chaveSisater = chaveSisater;
 	}
 
+	@Override
 	public void setClassificacao(UnidadeOrganizacionalClassificacao classificacao) {
 		this.classificacao = classificacao;
 	}
 
+	@Override
 	public void setComunidadeList(List<Comunidade> comunidadeList) {
 		this.comunidadeList = comunidadeList;
 	}
@@ -146,22 +159,27 @@ public class UnidadeOrganizacional extends EntidadeBase implements _ChavePrimari
 		this.id = id;
 	}
 
+	@Override
 	public void setInicio(Calendar inicio) {
 		this.inicio = inicio;
 	}
 
+	@Override
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
 
+	@Override
 	public void setPessoaJuridica(PessoaJuridica pessoaJuridica) {
 		this.pessoaJuridica = pessoaJuridica;
 	}
 
+	@Override
 	public void setSigla(String sigla) {
 		this.sigla = sigla;
 	}
 
+	@Override
 	public void setTermino(Calendar termino) {
 		this.termino = termino;
 	}
