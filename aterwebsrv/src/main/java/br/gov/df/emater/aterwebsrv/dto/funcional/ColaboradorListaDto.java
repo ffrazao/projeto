@@ -1,48 +1,31 @@
 package br.gov.df.emater.aterwebsrv.dto.funcional;
 
-import java.util.Set;
+import java.util.List;
 
 import br.gov.df.emater.aterwebsrv.dto.CadFiltroDtoCustom;
+import br.gov.df.emater.aterwebsrv.modelo.funcional.Empregador;
 
 public class ColaboradorListaDto extends CadFiltroDtoCustom {
 
 	private static final long serialVersionUID = 1L;
 
-	private String nome;
+	private Empregador empregador;
 
-	private Set<Integer> pessoaJuridicaList;
+	private List<UnidadeOrganizacionalListaDto> unidadeOrganizacionalList;
 
-	private Set<Integer> unidadeOrganizacionalList;
-
-	public String getNome() {
-		return nome;
+	public Empregador getEmpregador() {
+		return empregador;
 	}
 
-	public String getNomeLike() {
-		if (this.nome != null) {
-			return String.format("%%%s%%", this.nome);
-		} else {
-			return "%";
-		}
-	}
-
-	public Set<Integer> getPessoaJuridicaList() {
-		return pessoaJuridicaList;
-	}
-
-	public Set<Integer> getUnidadeOrganizacionalList() {
+	public List<UnidadeOrganizacionalListaDto> getUnidadeOrganizacionalList() {
 		return unidadeOrganizacionalList;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setEmpregador(Empregador empregador) {
+		this.empregador = empregador;
 	}
 
-	public void setPessoaJuridicaList(Set<Integer> pessoaJuridicaList) {
-		this.pessoaJuridicaList = pessoaJuridicaList;
-	}
-
-	public void setUnidadeOrganizacionalList(Set<Integer> unidadeOrganizacionalList) {
+	public void setUnidadeOrganizacionalList(List<UnidadeOrganizacionalListaDto> unidadeOrganizacionalList) {
 		this.unidadeOrganizacionalList = unidadeOrganizacionalList;
 	}
 

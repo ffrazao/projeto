@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.funcional;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Escolaridade;
@@ -19,7 +22,7 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 
 @Entity
 @Table(name = "cargo", schema = EntidadeBase.FUNCIONAL_SCHEMA)
-public class Cargo extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class Cargo extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<Cargo> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -45,6 +48,24 @@ public class Cargo extends EntidadeBase implements _ChavePrimaria<Integer> {
 	@ManyToOne
 	@JoinColumn(name = "tabela_cbo_id")
 	private TabelaCbo tabelaCbo;
+
+	public Cargo() {
+		super();
+	}
+
+	public Cargo(Integer id, PessoaJuridica pessoaJuridica, String nome, String codigoExterno, Confirmacao efetivo, Escolaridade escolaridade) {
+		super();
+		this.id = id;
+		this.pessoaJuridica = pessoaJuridica;
+		this.nome = nome;
+		this.codigoExterno = codigoExterno;
+		this.efetivo = efetivo;
+		this.escolaridade = escolaridade;
+	}
+
+	public Cargo(Serializable id) {
+		super(id);
+	}
 
 	public String getCodigoExterno() {
 		return codigoExterno;
@@ -73,6 +94,11 @@ public class Cargo extends EntidadeBase implements _ChavePrimaria<Integer> {
 
 	public TabelaCbo getTabelaCbo() {
 		return tabelaCbo;
+	}
+
+	@Override
+	public Cargo infoBasica() {
+		return new Cargo(this.id, this.pessoaJuridica == null ? null : new PessoaJuridica(this.pessoaJuridica.getId()), this.nome, this.codigoExterno, this.efetivo, this.escolaridade);
 	}
 
 	public void setCodigoExterno(String codigoExterno) {

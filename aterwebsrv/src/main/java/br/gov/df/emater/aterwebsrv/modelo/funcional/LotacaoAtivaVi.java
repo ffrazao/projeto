@@ -1,5 +1,8 @@
 package br.gov.df.emater.aterwebsrv.modelo.funcional;
 
+import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaReg;
+
+import java.io.Serializable;
 import java.util.Calendar;
 
 import javax.persistence.Entity;
@@ -21,6 +24,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
@@ -32,7 +36,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 @Entity
 @Table(name = "lotacao_ativa_vi", schema = EntidadeBase.FUNCIONAL_SCHEMA)
 @Immutable
-public class LotacaoAtivaVi extends EntidadeBase implements _ChavePrimaria<Integer>, LotacaoBase {
+public class LotacaoAtivaVi extends EntidadeBase implements _ChavePrimaria<Integer>, LotacaoBase, InfoBasica<LotacaoAtivaVi> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -69,6 +73,20 @@ public class LotacaoAtivaVi extends EntidadeBase implements _ChavePrimaria<Integ
 	public LotacaoAtivaVi() {
 	}
 
+	public LotacaoAtivaVi(Serializable id) {
+		super(id);
+	}
+
+	public LotacaoAtivaVi(Serializable id, UnidadeOrganizacional unidadeOrganizacional, Emprego emprego, Confirmacao gestor, Calendar inicio, Confirmacao temporario, Calendar termino) {
+		super(id);
+		this.unidadeOrganizacional = unidadeOrganizacional;
+		this.emprego = emprego;
+		this.gestor = gestor;
+		this.inicio = inicio;
+		this.temporario = temporario;
+		this.termino = termino;
+	}
+
 	@Override
 	public Emprego getEmprego() {
 		return emprego;
@@ -102,6 +120,11 @@ public class LotacaoAtivaVi extends EntidadeBase implements _ChavePrimaria<Integ
 	@Override
 	public UnidadeOrganizacional getUnidadeOrganizacional() {
 		return unidadeOrganizacional;
+	}
+
+	@Override
+	public LotacaoAtivaVi infoBasica() {
+		return new LotacaoAtivaVi(this.id, infoBasicaReg(this.unidadeOrganizacional), (Emprego) infoBasicaReg(this.emprego), this.gestor, this.inicio, this.temporario, this.termino);
 	}
 
 	@Override

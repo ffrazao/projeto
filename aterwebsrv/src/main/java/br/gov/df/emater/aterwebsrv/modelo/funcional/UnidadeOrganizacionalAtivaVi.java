@@ -18,7 +18,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.hibernate.annotations.Immutable;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -38,7 +37,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
  */
 @Entity
 @Table(name = "unidade_organizacional_ativa_vi", schema = EntidadeBase.FUNCIONAL_SCHEMA)
-@Immutable
+// @Immutable
 public class UnidadeOrganizacionalAtivaVi extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<UnidadeOrganizacional>, UnidadeOrganizacionalBase {
 
 	private static final long serialVersionUID = 1L;

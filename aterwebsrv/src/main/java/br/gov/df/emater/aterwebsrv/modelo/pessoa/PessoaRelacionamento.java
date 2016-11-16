@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.pessoa;
 
+import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaReg;
+
 import java.io.Serializable;
 import java.util.Calendar;
 
@@ -24,6 +26,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Escolaridade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;
@@ -38,7 +41,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
  */
 @Entity
 @Table(name = "pessoa_relacionamento", schema = EntidadeBase.PESSOA_SCHEMA)
-public class PessoaRelacionamento extends EntidadeBase implements _ChavePrimaria<Integer>, PessoaFisicaDadosBasicos {
+public class PessoaRelacionamento extends EntidadeBase implements _ChavePrimaria<Integer>, PessoaFisicaDadosBasicos, InfoBasica<PessoaRelacionamento> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -261,6 +264,11 @@ public class PessoaRelacionamento extends EntidadeBase implements _ChavePrimaria
 	@Override
 	public String getRgUf() {
 		return rgUf;
+	}
+
+	@Override
+	public PessoaRelacionamento infoBasica() {
+		return new PessoaRelacionamento(this.id, this.relacionamento == null ? null : new Relacionamento(this.relacionamento.getId()), infoBasicaReg(this.pessoa), infoBasicaReg(this.relacionamentoFuncao));
 	}
 
 	@Override

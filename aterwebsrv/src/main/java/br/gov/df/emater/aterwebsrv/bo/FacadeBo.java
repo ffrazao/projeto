@@ -26,7 +26,7 @@ import br.gov.df.emater.aterwebsrv.dto.ater.PublicoAlvoPropriedadeRuralCadFiltro
 import br.gov.df.emater.aterwebsrv.dto.atividade.AtividadeCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.formulario.FormularioCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.formulario.FormularioColetaCadFiltroDto;
-import br.gov.df.emater.aterwebsrv.dto.funcional.ColaboradorListaDto;
+import br.gov.df.emater.aterwebsrv.dto.funcional.ColaboradorListaCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.funcional.UnidadeOrganizacionalCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.indice_producao.BemClassificacaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.indice_producao.BemProducaoCadFiltroDto;
@@ -142,7 +142,7 @@ public class FacadeBo implements BeanFactoryAware {
 
 	// Colaborador
 	@Transactional(readOnly = true)
-	public _Contexto colaboradorLista(Principal usuario, ColaboradorListaDto filtro) throws Exception {
+	public _Contexto colaboradorLista(Principal usuario, ColaboradorListaCadFiltroDto filtro) throws Exception {
 		return this._executar(usuario, "ColaboradorListaCmd", filtro);
 	}
 

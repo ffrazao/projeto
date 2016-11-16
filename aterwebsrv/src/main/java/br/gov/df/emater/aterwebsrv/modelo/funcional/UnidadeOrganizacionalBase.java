@@ -15,8 +15,6 @@ public interface UnidadeOrganizacionalBase {
 
 	public List<Comunidade> getComunidadeList();
 
-	public Integer getId();
-
 	public Calendar getInicio();
 
 	public String getNome();
@@ -34,8 +32,6 @@ public interface UnidadeOrganizacionalBase {
 	public void setClassificacao(UnidadeOrganizacionalClassificacao classificacao);
 
 	public void setComunidadeList(List<Comunidade> comunidadeList);
-
-	public void setId(Integer id);
 
 	public void setInicio(Calendar inicio);
 

@@ -14,8 +14,6 @@ public interface UnidadeOrganizacionalHierarquiaBase {
 
 	public Calendar getTermino();
 
-	public UnidadeOrganizacionalHierarquia infoBasica();
-
 	public void setAscendente(UnidadeOrganizacional ascendente);
 
 	public void setDescendente(UnidadeOrganizacional descendente);

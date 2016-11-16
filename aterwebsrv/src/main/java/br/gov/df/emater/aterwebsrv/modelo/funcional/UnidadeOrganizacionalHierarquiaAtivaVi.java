@@ -33,7 +33,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 @Entity
 @Table(name = "unidade_organizacional_hierarquia_ativa_vi", schema = EntidadeBase.FUNCIONAL_SCHEMA)
 @Immutable
-public class UnidadeOrganizacionalHierarquiaAtivaVi extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<UnidadeOrganizacionalHierarquia>, UnidadeOrganizacionalHierarquiaBase {
+public class UnidadeOrganizacionalHierarquiaAtivaVi extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<UnidadeOrganizacionalHierarquiaAtivaVi>, UnidadeOrganizacionalHierarquiaBase {
 
 	private static final long serialVersionUID = 1L;
 
@@ -97,9 +97,8 @@ public class UnidadeOrganizacionalHierarquiaAtivaVi extends EntidadeBase impleme
 		return termino;
 	}
 
-	@Override
-	public UnidadeOrganizacionalHierarquia infoBasica() {
-		return new UnidadeOrganizacionalHierarquia(this.id, infoBasicaReg(this.ascendente), infoBasicaReg(this.descendente), this.inicio, this.termino);
+	public UnidadeOrganizacionalHierarquiaAtivaVi infoBasica() {
+		return new UnidadeOrganizacionalHierarquiaAtivaVi(this.id, infoBasicaReg(this.ascendente), infoBasicaReg(this.descendente), this.inicio, this.termino);
 	}
 
 	@Override

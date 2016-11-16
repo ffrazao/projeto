@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
-import br.gov.df.emater.aterwebsrv.dto.funcional.ColaboradorListaDto;
+import br.gov.df.emater.aterwebsrv.dto.funcional.ColaboradorListaCadFiltroDto;
 
 @RestController
 @RequestMapping("/colaborador")
@@ -22,7 +22,7 @@ public class ColaboradorRest {
 	}
 
 	@RequestMapping(value = "/lista", method = RequestMethod.POST)
-	public Resposta lista(@RequestBody ColaboradorListaDto filtro, Principal usuario) throws Exception {
+	public Resposta lista(@RequestBody ColaboradorListaCadFiltroDto filtro, Principal usuario) throws Exception {
 		return new Resposta(facadeBo.colaboradorLista(usuario, filtro).getResposta());
 	}
 

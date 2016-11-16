@@ -1,5 +1,8 @@
 package br.gov.df.emater.aterwebsrv.modelo.pessoa;
 
+import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaReg;
+
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 
@@ -75,6 +78,10 @@ public class Relacionamento extends EntidadeBase implements _ChavePrimaria<Integ
 		setRelacionamentoTipo(relacionamentoTipo);
 	}
 
+	public Relacionamento(Serializable id) {
+		super(id);
+	}
+
 	@Override
 	public Integer getId() {
 		return id;
@@ -98,7 +105,7 @@ public class Relacionamento extends EntidadeBase implements _ChavePrimaria<Integ
 
 	@Override
 	public Relacionamento infoBasica() {
-		return new Relacionamento(getId(), getInicio(), getTermino(), getRelacionamentoTipo().infoBasica());
+		return new Relacionamento(getId(), getInicio(), getTermino(), infoBasicaReg(getRelacionamentoTipo()));
 	}
 
 	@Override
