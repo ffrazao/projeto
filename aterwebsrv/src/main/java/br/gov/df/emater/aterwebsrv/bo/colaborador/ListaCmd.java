@@ -16,7 +16,7 @@ import br.gov.df.emater.aterwebsrv.dao.funcional.UnidadeOrganizacionalAtivaViDao
 import br.gov.df.emater.aterwebsrv.dao.funcional.UnidadeOrganizacionalHierarquiaAtivaViDao;
 import br.gov.df.emater.aterwebsrv.dto.funcional.UnidadeOrganizacionalHierarquiaDto;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.Empregador;
-import br.gov.df.emater.aterwebsrv.modelo.funcional.Lotacao;
+import br.gov.df.emater.aterwebsrv.modelo.funcional.LotacaoAtivaVi;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacionalHierarquia;
 
@@ -53,17 +53,17 @@ public class ListaCmd extends _Comando {
 
 	private void montarArvore(List<UnidadeOrganizacionalHierarquiaDto> result, Empregador empregador, UnidadeOrganizacional unidadeOrganizacional) {
 		// TODO Auto-generated method stub
-		List<UnidadeOrganizacionalHierarquia> unidadeOrganizacionalHierarquiaList = 
-		unidadeOrganizacionalHierarquiaAtivaViDao.findAllByAscendentePessoaJuridicaOrDescendentePessoaJuridica(empregador);
-		if (!CollectionUtils.isEmpty(unidadeOrganizacionalList)) {
-			for (UnidadeOrganizacional unidadeOrganizacional : unidadeOrganizacionalList) {
+		Integer id = 0;
+		List<UnidadeOrganizacionalHierarquia> unidadeOrganizacionalHierarquiaList = unidadeOrganizacionalHierarquiaAtivaViDao.findAllByAscendentePessoaJuridicaOrDescendentePessoaJuridica(empregador);
+		if (!CollectionUtils.isEmpty(unidadeOrganizacionalHierarquiaList)) {
+			for (UnidadeOrganizacionalHierarquia uo : unidadeOrganizacionalHierarquiaList) {
 				UnidadeOrganizacionalHierarquiaDto unidadeOrganizacionalHierarquiaDto = new UnidadeOrganizacionalHierarquiaDto();
 				unidadeOrganizacionalHierarquiaDto.setId(++id);
 				unidadeOrganizacionalHierarquiaDto.setId(++id);
 				// captar pessoas lotadas
-				List<Lotacao> lotacaoList = lotacaoAtivaViDao.findAllByUnidadeOrganizacional(unidadeOrganizacional);
+				List<LotacaoAtivaVi> lotacaoList = lotacaoAtivaViDao.findAllByUnidadeOrganizacional(uo);
 				if (!CollectionUtils.isEmpty(lotacaoList)) {
-					for (Lotacao lotacao : lotacaoList) {
+					for (LotacaoAtivaVi lotacao : lotacaoList) {
 						
 					}
 				}
