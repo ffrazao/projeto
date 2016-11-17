@@ -44,9 +44,9 @@
                         Unidade Organizacional/Colaborador
                     </label>
                    <div class="col-md-7">
-                        <frz-unidade-colaborador id="unidadeOrganizacionalColaborador" name="unidadeOrganizacionalColaborador" ng-model="cadastro.apoio.localList">
+                        <frz-unidade-colaborador id="unidadeOrganizacionalColaborador" name="unidadeOrganizacionalColaborador" ng-model="cadastro.apoio.colaboradorList">
                         </frz-unidade-colaborador>
-                        <input type="hidden" id="unidadeOrganizacionalColaboradorTotal" name="unidadeOrganizacionalColaboradorTotal" ng-model="cadastro.apoio.localList.length" ng-valor-min="0">
+                        <input type="hidden" id="unidadeOrganizacionalColaboradorTotal" name="unidadeOrganizacionalColaboradorTotal" ng-model="cadastro.apoio.colaboradorList.length" ng-valor-min="0">
                     </div>
                     <div class="label label-danger" ng-show="navegador.submetido && (frm.filtro.unidadeOrganizacionalColaboradorTotal.$error.required || frm.filtro.unidadeOrganizacionalColaboradorTotal.$error.ngValorMin)">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>

@@ -50,14 +50,15 @@ angular.module(pNmModulo).factory(pNmFactory,
                     var t = $rootScope.token;
 
                     scp.cadastro.apoio.localList = [];
+                    scp.cadastro.apoio.colaboradorList = [];
                     var fltr = null;
                     if (scp.cadastro.apoio.unidadeOrganizacionalSomenteLeitura) {
                         fltr = {unidadeOrganizacionalList: scp.cadastro.filtro.unidadeOrganizacionalList};
                     } else {
                         fltr = {pessoaJuridicaList: (t && t.lotacaoAtual && t.lotacaoAtual.pessoaJuridica) ? [angular.fromJson(t.lotacaoAtual.pessoaJuridica.id)] : null};
                     }
-                    ComunidadeSrv.lista(fltr, scp.cadastro.apoio.localList, t);
-                    ColaboradorSrv.lista(fltr, scp.cadastro.apoio.localList, t);
+                    //ComunidadeSrv.lista(fltr, scp.cadastro.apoio.localList, t);
+                    ColaboradorSrv.lista(fltr, scp.cadastro.apoio.colaboradorList, t);
 
                     if (!t || !t.lotacaoAtual || !t.lotacaoAtual.pessoaJuridica) {
                         toastr.warning('Não foi possível identificar a sua lotação', 'Erro ao carregar os dados');

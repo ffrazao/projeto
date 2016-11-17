@@ -33,17 +33,17 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 @Entity
 @Table(name = "unidade_organizacional_hierarquia_ativa_vi", schema = EntidadeBase.FUNCIONAL_SCHEMA)
 @Immutable
-public class UnidadeOrganizacionalHierarquiaAtivaVi extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<UnidadeOrganizacionalHierarquiaAtivaVi>, UnidadeOrganizacionalHierarquiaBase {
+public class UnidadeOrganizacionalHierarquiaAtivaVi extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<UnidadeOrganizacionalHierarquiaAtivaVi> {
 
 	private static final long serialVersionUID = 1L;
 
 	@ManyToOne
 	@JoinColumn(name = "unidade_organizacional_ascendente_id")
-	private UnidadeOrganizacional ascendente;
+	private UnidadeOrganizacionalAtivaVi ascendente;
 
 	@ManyToOne
 	@JoinColumn(name = "unidade_organizacional_descendente_id")
-	private UnidadeOrganizacional descendente;
+	private UnidadeOrganizacionalAtivaVi descendente;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -68,17 +68,15 @@ public class UnidadeOrganizacionalHierarquiaAtivaVi extends EntidadeBase impleme
 		super(id);
 	}
 
-	public UnidadeOrganizacionalHierarquiaAtivaVi(Serializable id, UnidadeOrganizacional ascendente, UnidadeOrganizacional descendente, Calendar inicio, Calendar termino) {
+	public UnidadeOrganizacionalHierarquiaAtivaVi(Serializable id, UnidadeOrganizacionalAtivaVi ascendente, UnidadeOrganizacionalAtivaVi descendente, Calendar inicio, Calendar termino) {
 		this(id);
 	}
 
-	@Override
-	public UnidadeOrganizacional getAscendente() {
+	public UnidadeOrganizacionalAtivaVi getAscendente() {
 		return ascendente;
 	}
 
-	@Override
-	public UnidadeOrganizacional getDescendente() {
+	public UnidadeOrganizacionalAtivaVi getDescendente() {
 		return descendente;
 	}
 
@@ -87,12 +85,10 @@ public class UnidadeOrganizacionalHierarquiaAtivaVi extends EntidadeBase impleme
 		return id;
 	}
 
-	@Override
 	public Calendar getInicio() {
 		return inicio;
 	}
 
-	@Override
 	public Calendar getTermino() {
 		return termino;
 	}
@@ -101,13 +97,11 @@ public class UnidadeOrganizacionalHierarquiaAtivaVi extends EntidadeBase impleme
 		return new UnidadeOrganizacionalHierarquiaAtivaVi(this.id, infoBasicaReg(this.ascendente), infoBasicaReg(this.descendente), this.inicio, this.termino);
 	}
 
-	@Override
-	public void setAscendente(UnidadeOrganizacional ascendente) {
+	public void setAscendente(UnidadeOrganizacionalAtivaVi ascendente) {
 		this.ascendente = ascendente;
 	}
 
-	@Override
-	public void setDescendente(UnidadeOrganizacional descendente) {
+	public void setDescendente(UnidadeOrganizacionalAtivaVi descendente) {
 		this.descendente = descendente;
 	}
 
@@ -116,12 +110,10 @@ public class UnidadeOrganizacionalHierarquiaAtivaVi extends EntidadeBase impleme
 		this.id = id;
 	}
 
-	@Override
 	public void setInicio(Calendar inicio) {
 		this.inicio = inicio;
 	}
 
-	@Override
 	public void setTermino(Calendar termino) {
 		this.termino = termino;
 	}

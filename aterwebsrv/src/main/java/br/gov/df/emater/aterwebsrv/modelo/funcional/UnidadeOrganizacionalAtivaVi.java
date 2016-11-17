@@ -38,7 +38,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 @Entity
 @Table(name = "unidade_organizacional_ativa_vi", schema = EntidadeBase.FUNCIONAL_SCHEMA)
 // @Immutable
-public class UnidadeOrganizacionalAtivaVi extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<UnidadeOrganizacional>, UnidadeOrganizacionalBase {
+public class UnidadeOrganizacionalAtivaVi extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<UnidadeOrganizacionalAtivaVi> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -90,17 +90,14 @@ public class UnidadeOrganizacionalAtivaVi extends EntidadeBase implements _Chave
 		setClassificacao(classificacao);
 	}
 
-	@Override
 	public String getChaveSisater() {
 		return chaveSisater;
 	}
 
-	@Override
 	public UnidadeOrganizacionalClassificacao getClassificacao() {
 		return classificacao;
 	}
 
-	@Override
 	public List<Comunidade> getComunidadeList() {
 		return comunidadeList;
 	}
@@ -110,47 +107,38 @@ public class UnidadeOrganizacionalAtivaVi extends EntidadeBase implements _Chave
 		return id;
 	}
 
-	@Override
 	public Calendar getInicio() {
 		return inicio;
 	}
 
-	@Override
 	public String getNome() {
 		return nome;
 	}
 
-	@Override
 	public PessoaJuridica getPessoaJuridica() {
 		return pessoaJuridica;
 	}
 
-	@Override
 	public String getSigla() {
 		return sigla;
 	}
 
-	@Override
 	public Calendar getTermino() {
 		return termino;
 	}
 
-	@Override
-	public UnidadeOrganizacional infoBasica() {
-		return new UnidadeOrganizacional(this.id, this.nome, this.sigla, this.pessoaJuridica == null ? null : (PessoaJuridica) pessoaJuridica.infoBasica(), this.classificacao);
+	public UnidadeOrganizacionalAtivaVi infoBasica() {
+		return new UnidadeOrganizacionalAtivaVi(this.id, this.nome, this.sigla, this.pessoaJuridica == null ? null : (PessoaJuridica) pessoaJuridica.infoBasica(), this.classificacao);
 	}
 
-	@Override
 	public void setChaveSisater(String chaveSisater) {
 		this.chaveSisater = chaveSisater;
 	}
 
-	@Override
 	public void setClassificacao(UnidadeOrganizacionalClassificacao classificacao) {
 		this.classificacao = classificacao;
 	}
 
-	@Override
 	public void setComunidadeList(List<Comunidade> comunidadeList) {
 		this.comunidadeList = comunidadeList;
 	}
@@ -160,27 +148,22 @@ public class UnidadeOrganizacionalAtivaVi extends EntidadeBase implements _Chave
 		this.id = id;
 	}
 
-	@Override
 	public void setInicio(Calendar inicio) {
 		this.inicio = inicio;
 	}
 
-	@Override
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
 
-	@Override
 	public void setPessoaJuridica(PessoaJuridica pessoaJuridica) {
 		this.pessoaJuridica = pessoaJuridica;
 	}
 
-	@Override
 	public void setSigla(String sigla) {
 		this.sigla = sigla;
 	}
 
-	@Override
 	public void setTermino(Calendar termino) {
 		this.termino = termino;
 	}

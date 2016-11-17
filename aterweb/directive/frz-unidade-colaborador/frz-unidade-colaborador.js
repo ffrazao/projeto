@@ -16,24 +16,24 @@
     FrzUnidadeColaboradorModule.filter('unidadeOrganizacionalColaboradorFltr', function() {
         'ngInject';
         var isVisivel = function (item, filtro) {
-            return !(filtro && filtro.length > 0 && item.nome.trim().toLowerCase().latinize().indexOf(filtro.trim().toLowerCase().latinize()) === -1);
+            return !(filtro && filtro.length > 0 && item.unidadeOrganizacional.nome.trim().toLowerCase().latinize().indexOf(filtro.trim().toLowerCase().latinize()) === -1);
         };
-        return function (unidadeOrganizacionalList, filtro) {
+        return function (lista, filtro) {
             var result = [], i, encontrou;
-            if (unidadeOrganizacionalList) {
-                angular.forEach(unidadeOrganizacionalList, function(unidadeOrganizacional) {
-                    if (unidadeOrganizacional.colaboradorList) {
+            if (lista) {
+                angular.forEach(lista, function(valor) {
+                    if (valor.descendenteList) {
                         encontrou = false;
-                        for (i = 0; i < unidadeOrganizacional.colaboradorList.length; i++) {
-                            if (isVisivel(unidadeOrganizacional.colaboradorList[i], filtro)) {
+                        for (i = 0; i < valor.descendenteList.length; i++) {
+                            if (isVisivel(valor.descendenteList[i], filtro)) {
                                 encontrou = true;
-                                result.push(unidadeOrganizacional);
+                                result.push(valor);
                                 break;
                             }
                         }
                         if (!encontrou) {
-                            if (isVisivel(unidadeOrganizacional, filtro)) {
-                                result.push(unidadeOrganizacional);
+                            if (isVisivel(valor, filtro)) {
+                                result.push(valor);
                             }
                         }
                     }

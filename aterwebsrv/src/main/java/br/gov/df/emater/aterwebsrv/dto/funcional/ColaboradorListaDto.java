@@ -11,22 +11,22 @@ public class ColaboradorListaDto extends CadFiltroDtoCustom {
 
 	private Empregador empregador;
 
-	private List<UnidadeOrganizacionalListaDto> unidadeOrganizacionalList;
+	private List<OrganogramaDto> organogramaList;
 
 	public Empregador getEmpregador() {
 		return empregador;
-	}
-
-	public List<UnidadeOrganizacionalListaDto> getUnidadeOrganizacionalList() {
-		return unidadeOrganizacionalList;
 	}
 
 	public void setEmpregador(Empregador empregador) {
 		this.empregador = empregador;
 	}
 
-	public void setUnidadeOrganizacionalList(List<UnidadeOrganizacionalListaDto> unidadeOrganizacionalList) {
-		this.unidadeOrganizacionalList = unidadeOrganizacionalList;
+	public List<OrganogramaDto> getOrganogramaList() {
+		return organogramaList;
+	}
+
+	public void setOrganogramaList(List<OrganogramaDto> organogramaList) {
+		this.organogramaList = organogramaList;
 	}
 
 }

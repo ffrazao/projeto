@@ -1,0 +1,28 @@
+<div ui-tree-handle>
+    <a class="btn btn-primary btn-xs Tooltip" data-nodrag data-ng-click="toggleChildren(this)" title="Expandir/Recolher">
+        <span class="glyphicon glyphicon-chevron-right" data-ng-show="collapsed"></span>
+        <span class="glyphicon glyphicon-chevron-down" data-ng-show="!collapsed"></span>
+    </a>
+    <label>
+        <input type="checkbox" ng-model="item.selecionado" ng-true-value="true" ng-false-value="false">
+        {{item.unidadeOrganizacional.nome}} [{{item.descendenteList.length}}]
+    </label>
+</div>
+<ol ui-tree-nodes="" ng-model="item.lotacaoList" ng-class="{hidden: collapsed}" ng-hide="item.selecionado">
+    <li ng-repeat="subSubItem in item.lotacaoList | orderBy: 'emprego.matricula'" ui-tree-node ng-show="visible(subSubItem)">
+        <div ui-tree-handle>
+            <span ng-hide="node.bemClassificacaoList.length">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </span>
+            <label>
+                <input type="checkbox" ng-model="subSubItem.selecionado" ng-true-value="true" ng-false-value="false">
+                {{subSubItem.emprego.matricula}}
+                <span ng-repeat="relacionamento in subSubItem.emprego.pessoaRelacionamentoList | filter: {relacionamentoFuncao:{nomeSeMasculino:'Contratado'}}" ng-class="{azul: subSubItem.gestor === 'S'}">{{relacionamento.pessoa.nome}} </span>
+            </label>
+        </div>
+    </li>
+</ol>
+<ol ui-tree-nodes="" ng-model="item.descendenteList" ng-class="{hidden: collapsed}" ng-hide="item.selecionado">
+    <li ng-repeat="item in item.descendenteList | orderBy: 'unidadeOrganizacional.nome'" ui-tree-node ng-show="visible(subSubItem)" ng-include src="'directive/frz-unidade-colaborador/organograma.html'">
+    </li>
+</ol>
