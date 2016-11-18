@@ -16,7 +16,9 @@
     FrzUnidadeColaboradorModule.filter('unidadeOrganizacionalColaboradorFltr', function() {
         'ngInject';
         var isVisivel = function (item, filtro) {
-            return !(filtro && filtro.length > 0 && item.unidadeOrganizacional.nome.trim().toLowerCase().latinize().indexOf(filtro.trim().toLowerCase().latinize()) === -1);
+            return !(filtro &&
+                filtro.length > 0 && ((item) && (item.emprego) && (item.emprego.pessoaRelacionamentoList[0]) && (item.emprego.pessoaRelacionamentoList[0].pessoa) && (item.emprego.pessoaRelacionamentoList[0].pessoa.nome) &&
+                item.emprego.pessoaRelacionamentoList[0].pessoa.nome.trim().toLowerCase().latinize().indexOf(filtro.trim().toLowerCase().latinize()) === -1));
         };
         return function (lista, filtro) {
             var result = [], i, encontrou;
@@ -69,8 +71,8 @@
 
         $scope.visible = function(item) {
             return !($scope.filtro &&
-                $scope.filtro.length > 0 &&
-                item.nome.trim().toLowerCase().latinize().indexOf($scope.filtro.trim().toLowerCase().latinize()) === -1);
+                $scope.filtro.length > 0 && ((item) && (item.emprego) && (item.emprego.pessoaRelacionamentoList[0]) && (item.emprego.pessoaRelacionamentoList[0].pessoa) && (item.emprego.pessoaRelacionamentoList[0].pessoa.nome) &&
+                item.emprego.pessoaRelacionamentoList[0].pessoa.nome.trim().toLowerCase().latinize().indexOf($scope.filtro.trim().toLowerCase().latinize()) === -1));
         };
     }]);
 

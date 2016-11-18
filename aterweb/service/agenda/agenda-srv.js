@@ -5,8 +5,8 @@
 'use strict';
 
 angular.module(pNmModulo).factory(pNmFactory,
-  ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams', 'ComunidadeSrv', 'ColaboradorSrv',
-    function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams, ComunidadeSrv, ColaboradorSrv) {
+  ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams', 'ColaboradorSrv',
+    function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams, ColaboradorSrv) {
         'ngInject';
         
         var AgendaSrv = {
@@ -57,19 +57,12 @@ angular.module(pNmModulo).factory(pNmFactory,
                     } else {
                         fltr = {pessoaJuridicaList: (t && t.lotacaoAtual && t.lotacaoAtual.pessoaJuridica) ? [angular.fromJson(t.lotacaoAtual.pessoaJuridica.id)] : null};
                     }
-                    //ComunidadeSrv.lista(fltr, scp.cadastro.apoio.localList, t);
                     ColaboradorSrv.lista(fltr, scp.cadastro.apoio.colaboradorList, t);
 
                     if (!t || !t.lotacaoAtual || !t.lotacaoAtual.pessoaJuridica) {
                         toastr.warning('Não foi possível identificar a sua lotação', 'Erro ao carregar os dados');
                     }
                 }
-
-                scp.cadastro.filtro.inicio = new Date();
-                scp.cadastro.filtro.inicio.setMonth(scp.cadastro.filtro.inicio.getMonth() - 6);
-                scp.cadastro.filtro.inicio.setDate(1);
-                scp.cadastro.filtro.termino = new Date();
-
             },
             filtrar : function(filtro) {
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');

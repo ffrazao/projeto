@@ -14,19 +14,21 @@
     <div class="row" style="max-height: 400px; overflow: scroll;">
         <div ui-tree drag-enabled="false">
             <ol ui-tree-nodes="" ng-model="ngModel">
-                <li ng-repeat="item in ngModel | orderBy: 'nome'" ui-tree-node>
+                <li ui-tree-node ng-repeat="item in ngModel | orderBy: 'nome' track by item.id" ng-show="visible(item)">
                     <div ui-tree-handle>
                         <a class="btn btn-primary btn-xs Tooltip" data-nodrag data-ng-click="toggleChildren(this)" title="Expandir/Recolher">
                             <span class="glyphicon glyphicon-chevron-right" data-ng-show="collapsed"></span>
                             <span class="glyphicon glyphicon-chevron-down" data-ng-show="!collapsed"></span>
                         </a>
                         <label>
-                            <input type="checkbox" ng-model="item.selecionado" ng-true-value="true" ng-false-value="false">
-                            {{item.empregador.nome}} [{{item.organogramaList.length}}]
+                            <!-- input type="checkbox" ng-model="item.selecionado" ng-true-value="true" ng-false-value="false" -->
+                            {{item.empregador.nome}}
                         </label>
                     </div>
-                    <ol ui-tree-nodes="" ng-model="item.organogramaList" ng-class="{hidden: collapsed}" ng-hide="item.selecionado">
-                        <li ng-repeat="item in item.organogramaList | unidadeOrganizacionalColaboradorFltr:filtro | orderBy: ['nome']" ui-tree-node ng-include src="'directive/frz-unidade-colaborador/organograma.html'">
+                    <ol ui-tree-nodes="" ng-model="item.organogramaList" ng-class="{hidden: collapsed}" ng-hide="item.selecionado" ng-show="visible(item)">
+                        <li ui-tree-node 
+                            ng-repeat="item in item.organogramaList | unidadeOrganizacionalColaboradorFltr:filtro | orderBy: ['nome'] track by item.id" 
+                            ng-include src="'directive/frz-unidade-colaborador/organograma.html'">
                         </li>
                     </ol>
                 </li>

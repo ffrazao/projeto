@@ -1,3 +1,4 @@
+/{{cadastro.filtro}}/
 <div class="panel panel-default">
     <div class="panel-heading"><h4>{{nomeFormulario}}</h4></div>
     <div class="panel-body">
@@ -58,7 +59,7 @@
                         Método
                     </label>
                     <div class="col-md-6">
-                        <select class="form-control" id="metodo" name="metodo" ng-model="cadastro.filtro.metodo" ng-options="item as item.nome for item in cadastro.apoio.metodoList track by item.id">
+                        <select class="form-control" id="metodo" name="metodo" ng-model="cadastro.filtro.metodo.id" ng-options="item.id as item.nome for item in cadastro.apoio.metodoList track by item.id">
                             <option value="">-- Ignorar --</option>
                         </select>
                         <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.metodo.$error.required">
@@ -72,7 +73,7 @@
                         Assunto
                     </label>
                     <div class="col-md-6">
-                        <select class="form-control" id="assunto" name="assunto" ng-model="cadastro.filtro.assunto" ng-options="item as item.nome for item in cadastro.apoio.assuntoList track by item.id">
+                        <select class="form-control" id="assunto" name="assunto" ng-model="cadastro.filtro.assunto.id" ng-options="item.id as item.nome for item in cadastro.apoio.assuntoList track by item.id">
                             <option value="">-- Ignorar --</option>
                         </select>
                         <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.assunto.$error.required">
