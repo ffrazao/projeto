@@ -59,6 +59,8 @@ angular.module(pNmModulo).factory(pNmFactory,
                     }
                     ColaboradorSrv.lista(fltr, scp.cadastro.apoio.colaboradorList, t);
 
+                    scp.cadastro.filtro.pessoaIdList = scp.cadastro.filtro.pessoaIdList || [];
+
                     if (!t || !t.lotacaoAtual || !t.lotacaoAtual.pessoaJuridica) {
                         toastr.warning('Não foi possível identificar a sua lotação', 'Erro ao carregar os dados');
                     }

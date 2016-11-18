@@ -55,18 +55,9 @@
         $scope.toggleChildren = function(node) {
             node.toggle();
         };
-        var configuraDados = function(lista, valor) {
-            if (lista && lista.length) {
-                lista.forEach(function(v, k) {
-                    v.selecionado = valor;
-                    configuraDados(v.unidadeList);
-                    configuraDados(v.colaboradorList);
-                });
-            }
-        };
         $scope.limparFiltro = function() {
             $scope.filtro = '';
-            configuraDados($scope.ngModel, false);
+            $scope.ngModel.length = 0;
         };
 
         $scope.visible = function(item) {
@@ -87,16 +78,13 @@
             templateUrl: 'directive/frz-unidade-colaborador/frz-unidade-colaborador.html',
             scope: {
                 ngModel: '=',
+                dados: '=',
                 onAbrir: '&',
             },
             controller: 'FrzUnidadeColaboradorCtrl',
             link: function(scope, element, attributes, $parse) {
-            	if (!scope.ngModel) {
-            		scope.ngModel = [];
-            	}
-
                 // executar o estado inicial
-                if (scope.ngModel.onAbrir) {
+                if (scope.ngModel && scope.ngModel.onAbrir) {
                     scope.ngModel.onAbrir();
                 }
             },

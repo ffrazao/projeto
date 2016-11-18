@@ -15,7 +15,7 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </span>
             <label>
-                <input type="checkbox" ng-model="subSubItem.selecionado" ng-true-value="true" ng-false-value="false">
+                <input type="checkbox" ng-model="subSubItem.selecionado" checklist-model="ngModel" checklist-value="subSubItem.emprego.pessoaRelacionamentoList[0].pessoa.id">
                 {{subSubItem.emprego.matricula}}
                 <span ng-class="{azul: subSubItem.gestor === 'S'}">{{subSubItem.emprego.pessoaRelacionamentoList[0].pessoa.nome}}</span>
             </label>

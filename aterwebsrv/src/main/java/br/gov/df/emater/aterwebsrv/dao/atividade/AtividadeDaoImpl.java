@@ -2,14 +2,20 @@ package br.gov.df.emater.aterwebsrv.dao.atividade;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
+import org.hibernate.Query;
+import org.hibernate.SessionFactory;
+import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 
 import br.gov.df.emater.aterwebsrv.dto.TagDto;
+import br.gov.df.emater.aterwebsrv.dto.agenda.AgendaCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.agenda.AgendaDto;
 import br.gov.df.emater.aterwebsrv.dto.atividade.AtividadeCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.ferramenta.Util;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
@@ -22,6 +28,9 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 
 	@Autowired
 	private EntityManager em;
+	
+	@Autowired
+	private SessionFactory sessionFactory;
 
 	@Override
 	public List<Object[]> filtrar(AtividadeCadFiltroDto filtro) {
@@ -102,7 +111,7 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 			params.add(filtro.getAssunto());
 			sqlFiltro.append("and ass.assunto = ?").append(params.size()).append("\n");
 		}
-		
+
 		if (!CollectionUtils.isEmpty(filtro.getDemandanteList())) {
 			sql.append("and (").append("\n");
 			sqlTemp = new StringBuilder();
@@ -136,7 +145,7 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 			sql.append(sqlTemp);
 			sql.append(" )").append("\n");
 		}
-		
+
 		// filtro de beneficiario
 		boolean benef = false;
 		if (!CollectionUtils.isEmpty(filtro.getSegmento()) && (PublicoAlvoSegmento.values().length != (filtro.getSegmento().size()))) {
@@ -310,6 +319,75 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 
 		// executar a consulta
 		result = query.getResultList();
+
+		// retornar
+		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<AgendaDto> filtrarAgenda(AgendaCadFiltroDto filtro) {
+		List<AgendaDto> result = null;
+		List<Object> params = new ArrayList<Object>();
+		StringBuilder sql;
+
+		// construção do sql
+		sql = new StringBuilder();
+		sql.append("select distinct").append("\n");
+		sql.append("        a.id").append("\n");
+		sql.append("      , a.codigo as title").append("\n");
+		sql.append("      , a.inicio as start").append("\n");
+		sql.append("      , a.conclusao as end").append("\n");
+		sql.append("      , b.id as metodoId").append("\n");
+		sql.append("      , b.nome as metodoNome").append("\n");
+		sql.append("      , d.id as pessoaId").append("\n");
+		sql.append("      , d.nome as pessoaNome").append("\n");
+		sql.append("      , a.detalhamento").append("\n");
+		sql.append("from    atividade.atividade a").append("\n");
+		sql.append("join    atividade.metodo b").append("\n");
+		sql.append("on      b.id = a.metodo_id").append("\n");
+		sql.append("join    atividade.atividade_pessoa c").append("\n");
+		sql.append("on      c.atividade_id = a.id").append("\n");
+		sql.append("and     c.participacao = 'E'").append("\n");
+		sql.append("join    pessoa.pessoa d").append("\n");
+		sql.append("on      d.id = c.pessoa_id").append("\n");
+		sql.append("join    atividade.atividade_assunto e").append("\n");
+		sql.append("on      e.atividade_id = a.id").append("\n");
+		sql.append("where   a.inicio between ?0 and ?1").append("\n");
+		sql.append("and     (a.conclusao is null or a.conclusao between ?0 and ?1)").append("\n");
+		params.add(filtro.getInicio());
+		params.add(filtro.getTermino());
+		// remover o item null
+		if (!CollectionUtils.isEmpty(filtro.getPessoaIdList())) {
+			filtro.setPessoaIdList(filtro.getPessoaIdList().stream().filter(n -> n != null).collect(Collectors.toSet()));
+		}
+		if (!CollectionUtils.isEmpty(filtro.getPessoaIdList())) {
+			params.add(filtro.getPessoaIdList());
+			sql.append("and    c.pessoa_id in ?").append(params.size()).append("\n");
+		}
+		if (filtro.getMetodo() != null && filtro.getMetodo().getId() != null) {
+			params.add(filtro.getMetodo().getId());
+			sql.append("and    a.metodo_id = ?").append(params.size()).append("\n");
+		}
+		if (filtro.getAssunto() != null && filtro.getAssunto().getId() != null) {
+			params.add(filtro.getAssunto().getId());
+			sql.append("and    d.assunto_id = ?").append(params.size()).append("\n");
+		}
+		sql.append("order by a.inicio, d.nome").append("\n");
+		
+		// criar a query
+		Query query = sessionFactory.getCurrentSession().createSQLQuery(sql.toString()).setResultTransformer(Transformers.aliasToBean(AgendaDto.class));
+
+		// inserir os parametros
+		for (int i = 1; i <= params.size(); i++) {
+			query.setParameter(i - 1, params.get(i - 1));
+		}
+
+		// definir a pagina a ser consultada
+		filtro.configuraPaginacao(query);
+
+		// executar a consulta
+		result = query.list();
 
 		// retornar
 		return result;
