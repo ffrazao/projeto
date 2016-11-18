@@ -1,27 +1,34 @@
 package br.gov.df.emater.aterwebsrv.bo.atividade;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.Atividade;
+import br.gov.df.emater.aterwebsrv.modelo.atividade.AtividadePessoa;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.AtividadeFinalidade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.AtividadeFormato;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.AtividadeNatureza;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.AtividadePessoaParticipacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.AtividadePrioridade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.AtividadeSituacao;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
+import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
+import br.gov.df.emater.aterwebsrv.seguranca.UserAuthentication;
 
 @Service("AtividadeNovoCmd")
 public class NovoCmd extends _Comando {
 
-//	@Autowired
-//	private MetodoDao metodoDao;
-
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
-		Atividade result = (Atividade) contexto.getRequisicao();
+		Atividade result = null;
+		
+		String opcao = (String) contexto.getRequisicao();
+		Usuario usuario = ((UserAuthentication) contexto.get("usuario")).getDetails();
 
 		if (result == null) {
 			result = new Atividade();
@@ -32,10 +39,25 @@ public class NovoCmd extends _Comando {
 		result.setFinalidade(AtividadeFinalidade.O);
 		result.setNatureza(AtividadeNatureza.D);
 		result.setSituacao(AtividadeSituacao.C);
-
+		
+		List<AtividadePessoa> pessoaList = new ArrayList<>();
+		pessoaList.addAll(getAtividadePessoa(usuario, opcao));
+		
+		
+			if(opcao != null){
+				if ("demandar".equals(opcao)) {
+				result.setPessoaDemandanteList(pessoaList);
+				} else {
+					result.setPessoaExecutorList(pessoaList);
+				}
+			}else{
+				result.setPessoaExecutorList(pessoaList);
+			}
+			
+		/*
 		// FIXME quebra galho para facilitar a construção do credito rural,
 		// remover assim que terminar
-		/*
+		
 		result.setPublicoEstimado(1);
 		result.setMetodo(metodoDao.findOneByCodigo(MetodoCodigo.PROJETO_CREDITO_RURAL));
 		List<AtividadeAssunto> assuntoList = new ArrayList<>();
@@ -125,6 +147,43 @@ public class NovoCmd extends _Comando {
 		contexto.setResposta(result);
 
 		return true;
+	}
+
+	private ArrayList<AtividadePessoa> getAtividadePessoa(Usuario usuario, String opcao) {
+		ArrayList<AtividadePessoa> dadosPessoaAtividade = new ArrayList<>();
+		
+		AtividadePessoa ap = new AtividadePessoa();
+		ap.setId(-999);
+		
+		Usuario usr = getUsuario(usuario.getUsername());
+		ap.setPessoa(usr.getPessoa().infoBasica());
+		if ("demandar".equals(opcao)) {
+			ap.setParticipacao(AtividadePessoaParticipacao.D);
+		} else {
+			ap.setParticipacao(AtividadePessoaParticipacao.E);
+		}
+		ap.setResponsavel(Confirmacao.S);
+		ap.setAtivo(Confirmacao.S);
+		ap.setInicio(Calendar.getInstance());
+		
+		dadosPessoaAtividade.add(ap);
+		
+		if(usuario.getLotacaoAtual() != null){
+			ap = new AtividadePessoa();
+			ap.setId(-998);
+			ap.setPessoa(usuario.getLotacaoAtual().getPessoaJuridica().infoBasica());
+			if ("demandar".equals(opcao)) {
+				ap.setParticipacao(AtividadePessoaParticipacao.D);
+			} else {
+				ap.setParticipacao(AtividadePessoaParticipacao.E);
+			}
+			ap.setResponsavel(Confirmacao.N);
+			ap.setAtivo(Confirmacao.S);
+			ap.setInicio(Calendar.getInstance());
+			dadosPessoaAtividade.add(ap);
+		}
+		
+		return dadosPessoaAtividade;
 	}
 
 }

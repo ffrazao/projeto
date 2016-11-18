@@ -179,7 +179,7 @@ public class SalvarCmd extends _SalvarCmd {
 		sb.insert(9, "-");
 		return sb.toString();
 	}
-
+	
 	private int modulo10(String numero) {
 		// variáveis de instancia
 		int soma = 0;

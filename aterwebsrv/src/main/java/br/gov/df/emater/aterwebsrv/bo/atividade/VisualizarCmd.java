@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.bo.atividade;
 
+import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaList;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,7 +75,8 @@ public class VisualizarCmd extends _Comando {
 				AtividadePessoa n = new AtividadePessoa();
 				n.setId(r.getId());
 				n.setPessoa(r.getPessoa() == null ? null : r.getPessoa().infoBasica());
-				n.setUnidadeOrganizacional(r.getUnidadeOrganizacional() == null ? null : r.getUnidadeOrganizacional().infoBasica());
+				n.setUnidadeOrganizacional(
+						r.getUnidadeOrganizacional() == null ? null : r.getUnidadeOrganizacional().infoBasica());
 				n.setResponsavel(r.getResponsavel());
 				n.setInicio(r.getInicio());
 				n.setAtivo(r.getAtivo());
@@ -98,6 +101,8 @@ public class VisualizarCmd extends _Comando {
 			}
 			result.setOcorrenciaList(l);
 		}
+
+		result.setChaveSisaterList(infoBasicaList(result.getChaveSisaterList()));
 
 		em.detach(result);
 		contexto.setResposta(result);

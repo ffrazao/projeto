@@ -52,6 +52,7 @@ public class VisualizarCmd extends _Comando {
 		if (result.getPublicoAlvo() != null) {
 			result.getPublicoAlvo().setPublicoAlvoPropriedadeRuralList(publicoAlvoPropriedadeRuralList);
 		}
+		result.setAtividade(new Atividade(atividade.getId()));
 
 		em.detach(result);
 

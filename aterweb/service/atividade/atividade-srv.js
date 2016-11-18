@@ -83,7 +83,7 @@ angular.module(pNmModulo).factory(pNmFactory,
             },
             novo : function() {
                 SegurancaSrv.acesso(this.funcionalidade, 'INCLUIR');
-                return $http.get(this.endereco + '/novo');
+                return $http.get(this.endereco + '/novo', {params: {'opcao': $stateParams.opcao}});
             },
             incluir : function(atividade) {
                 SegurancaSrv.acesso(this.funcionalidade, 'INCLUIR');

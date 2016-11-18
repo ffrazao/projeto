@@ -116,8 +116,11 @@ public class FacadeBo implements BeanFactoryAware {
 	}
 
 	@Transactional(readOnly = true)
-	public _Contexto atividadeNovo(Principal usuario, Atividade atividade) throws Exception {
-		return this._executar(usuario, "AtividadeNovoCh", atividade);
+	public _Contexto atividadeNovo(Principal usuario, String opcao) throws Exception {
+		Map<String, Object> requisicao = new HashMap<String, Object>();
+		requisicao.put("opcao", opcao);
+		
+		return this._executar(usuario, "AtividadeNovoCh", opcao);
 	}
 
 	@Transactional

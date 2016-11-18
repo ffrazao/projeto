@@ -73,6 +73,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                 return $http.delete(this.endereco + '/excluir',  {params: {'id': registro.id}});
             },
             salvar: function(registro) {
+                removerCampo(registro, ['@jsonId']);
                 if (registro.id) {
                     return AtividadeSrv.editar(registro);
                 } else {

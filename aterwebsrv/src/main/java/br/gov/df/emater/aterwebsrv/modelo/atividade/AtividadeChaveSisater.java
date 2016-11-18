@@ -10,11 +10,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 
 @Entity
 @Table(name = "atividade_chave_sisater", schema = EntidadeBase.ATIVIDADE_SCHEMA)
-public class AtividadeChaveSisater extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class AtividadeChaveSisater extends EntidadeBase
+		implements _ChavePrimaria<Integer>, InfoBasica<AtividadeChaveSisater> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -41,6 +43,12 @@ public class AtividadeChaveSisater extends EntidadeBase implements _ChavePrimari
 		this.setChaveSisater(chaveSisater);
 	}
 
+	public AtividadeChaveSisater(Integer id, Atividade atividade, String chaveSisater) {
+		this.id = id;
+		this.atividade = atividade;
+		this.chaveSisater = chaveSisater;
+	}
+
 	public Atividade getAtividade() {
 		return atividade;
 	}
@@ -65,6 +73,12 @@ public class AtividadeChaveSisater extends EntidadeBase implements _ChavePrimari
 	@Override
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	@Override
+	public AtividadeChaveSisater infoBasica() {
+		return new AtividadeChaveSisater(getId(), getAtividade() == null ? null : new Atividade(getAtividade().getId()),
+				getChaveSisater());
 	}
 
 }

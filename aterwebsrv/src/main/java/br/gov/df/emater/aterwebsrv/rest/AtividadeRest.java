@@ -47,10 +47,10 @@ public class AtividadeRest {
 	public Resposta incluir(@RequestBody Atividade atividade, Principal usuario) throws Exception {
 		return salvar(atividade, usuario);
 	}
-
+	
 	@RequestMapping(value = "/novo", method = RequestMethod.GET)
-	public Resposta novo(@RequestParam(value = "id", required = false) Integer id, Principal usuario) throws Exception {
-		return new Resposta(facadeBo.atividadeNovo(usuario, id == null ? null : new Atividade(id)).getResposta());
+	public Resposta novo(@RequestParam(name = "opcao", required = false) String opcao ,Principal usuario) throws Exception {
+		return new Resposta(facadeBo.atividadeNovo(usuario, opcao).getResposta());
 	}
 
 	public Resposta salvar(@RequestBody Atividade atividade, Principal usuario) throws Exception {

@@ -24,9 +24,9 @@ public class FiltroNovoCmd extends _Comando {
 		Usuario usuario = ((UserAuthentication) contexto.get("usuario")).getDetails();
 
 		filtro.setExecutorList(getListaPrepreenchida(usuario));
-
+		
 		getPeridoBusca(filtro);
-
+		
 		contexto.setResposta(filtro);
 		return false;
 	}
@@ -43,7 +43,7 @@ public class FiltroNovoCmd extends _Comando {
 		filtro.setTermino(termino);
 	}
 
-	private Set<TagDto> getListaPrepreenchida(Usuario usuario) {
+	public Set<TagDto> getListaPrepreenchida(Usuario usuario) {
 		Set<TagDto> lista = new HashSet<>();
 
 		if (usuario.getPessoa() != null) {
