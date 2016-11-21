@@ -735,7 +735,7 @@ public class ImpUtil {
 
 	public UnidadeOrganizacional deParaUnidadeOrganizacional(PessoaJuridica empresa, String registro) throws BoException {
 		for (UnidadeOrganizacional uo : unidadeOrganizacionalList) {
-			if (uo.getSigla().equalsIgnoreCase(registro)) {
+			if (uo.getApelidoSigla().equalsIgnoreCase(registro)) {
 				return uo;
 			}
 		}

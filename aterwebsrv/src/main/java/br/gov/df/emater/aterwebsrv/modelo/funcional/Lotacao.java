@@ -122,7 +122,7 @@ public class Lotacao extends EntidadeBase implements _ChavePrimaria<Integer>, Lo
 
 	@Override
 	public Lotacao infoBasica() {
-		return new Lotacao(this.id, infoBasicaReg(this.unidadeOrganizacional), (Emprego) infoBasicaReg(this.emprego), this.gestor, this.inicio, this.temporario, this.termino);
+		return new Lotacao(this.id, (UnidadeOrganizacional) infoBasicaReg(this.unidadeOrganizacional), (Emprego) infoBasicaReg(this.emprego), this.gestor, this.inicio, this.temporario, this.termino);
 	}
 
 	@Override

@@ -124,7 +124,7 @@ public class LotacaoAtivaVi extends EntidadeBase implements _ChavePrimaria<Integ
 
 	@Override
 	public LotacaoAtivaVi infoBasica() {
-		return new LotacaoAtivaVi(this.id, infoBasicaReg(this.unidadeOrganizacional), (Emprego) infoBasicaReg(this.emprego), this.gestor, this.inicio, this.temporario, this.termino);
+		return new LotacaoAtivaVi(this.id, (UnidadeOrganizacional) infoBasicaReg(this.unidadeOrganizacional), (Emprego) infoBasicaReg(this.emprego), this.gestor, this.inicio, this.temporario, this.termino);
 	}
 
 	@Override

@@ -338,6 +338,7 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 		sql.append("      , a.codigo as title").append("\n");
 		sql.append("      , a.inicio as start").append("\n");
 		sql.append("      , a.conclusao as end").append("\n");
+		sql.append("      , '' as className").append("\n");
 		sql.append("      , b.id as metodoId").append("\n");
 		sql.append("      , b.nome as metodoNome").append("\n");
 		sql.append("      , d.id as pessoaId").append("\n");
@@ -353,8 +354,8 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 		sql.append("on      d.id = c.pessoa_id").append("\n");
 		sql.append("join    atividade.atividade_assunto e").append("\n");
 		sql.append("on      e.atividade_id = a.id").append("\n");
-		sql.append("where   a.inicio between ?0 and ?1").append("\n");
-		sql.append("and     (a.conclusao is null or a.conclusao between ?0 and ?1)").append("\n");
+		sql.append("where   a.inicio between :p0 and :p1").append("\n");
+		sql.append("and     (a.conclusao is null or a.conclusao between :p0 and :p1)").append("\n");
 		params.add(filtro.getInicio());
 		params.add(filtro.getTermino());
 		// remover o item null
@@ -363,15 +364,15 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 		}
 		if (!CollectionUtils.isEmpty(filtro.getPessoaIdList())) {
 			params.add(filtro.getPessoaIdList());
-			sql.append("and    c.pessoa_id in ?").append(params.size()).append("\n");
+			sql.append("and    c.pessoa_id in :p").append(params.size()).append("\n");
 		}
 		if (filtro.getMetodo() != null && filtro.getMetodo().getId() != null) {
 			params.add(filtro.getMetodo().getId());
-			sql.append("and    a.metodo_id = ?").append(params.size()).append("\n");
+			sql.append("and    a.metodo_id = :p").append(params.size()).append("\n");
 		}
 		if (filtro.getAssunto() != null && filtro.getAssunto().getId() != null) {
 			params.add(filtro.getAssunto().getId());
-			sql.append("and    d.assunto_id = ?").append(params.size()).append("\n");
+			sql.append("and    d.assunto_id = :p").append(params.size()).append("\n");
 		}
 		sql.append("order by a.inicio, d.nome").append("\n");
 		
@@ -379,8 +380,8 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 		Query query = sessionFactory.getCurrentSession().createSQLQuery(sql.toString()).setResultTransformer(Transformers.aliasToBean(AgendaDto.class));
 
 		// inserir os parametros
-		for (int i = 1; i <= params.size(); i++) {
-			query.setParameter(i - 1, params.get(i - 1));
+		for (int i = 0; i < params.size(); i++) {
+			query.setParameter(String.format("p%d", i), params.get(i));
 		}
 
 		// definir a pagina a ser consultada

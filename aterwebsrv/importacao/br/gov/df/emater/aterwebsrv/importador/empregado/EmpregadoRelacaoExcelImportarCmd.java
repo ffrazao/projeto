@@ -136,7 +136,7 @@ public class EmpregadoRelacaoExcelImportarCmd extends _Comando {
 						unidadeOrganizacional = new UnidadeOrganizacional();
 						unidadeOrganizacional.setPessoaJuridica(emater);
 						unidadeOrganizacional.setNome(lotacaoNome);
-						unidadeOrganizacional.setSigla(lotacaoSigla);
+						unidadeOrganizacional.setApelidoSigla(lotacaoSigla);
 						unidadeOrganizacional.setClassificacao(UnidadeOrganizacionalClassificacao.AD);
 						unidadeOrganizacional = unidadeOrganizacionalDao.save(unidadeOrganizacional);
 					}

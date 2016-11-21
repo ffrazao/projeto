@@ -1,0 +1,75 @@
+-- MySQL Workbench Synchronization
+-- Generated: 2016-11-21 12:34
+-- Model: New Model
+-- Version: 1.0
+-- Project: Name of the project
+-- Author: frazao
+
+set sql_safe_updates = 0;
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+SET @maxId = (select max(id) from pessoa.pessoa);
+
+insert into pessoa.pessoa (id, nome, apelido_sigla, pessoa_tipo) (select id + @maxId, nome, sigla, 'GS' from funcional.unidade_organizacional);
+insert into pessoa.grupo_social (id, grupo_social_tipo_id, escopo) (select id + @maxId, 2, 'E' from funcional.unidade_organizacional);
+
+UPDATE funcional.unidade_organizacional set id = id + @maxId;
+UPDATE ater.comunidade SET unidade_organizacional_id = unidade_organizacional_id + @maxId;
+UPDATE atividade.atividade_pessoa SET unidade_organizacional_id = unidade_organizacional_id + @maxId;
+UPDATE funcional.lotacao SET unidade_organizacional_id = unidade_organizacional_id + @maxId;
+UPDATE funcional.unidade_organizacional_hierarquia SET unidade_organizacional_ascendente_id = unidade_organizacional_ascendente_id + @maxId;
+UPDATE funcional.unidade_organizacional_hierarquia SET unidade_organizacional_descendente_id = unidade_organizacional_descendente_id + @maxId;
+UPDATE indice_producao.bem_classificado_forma_producao_media SET unidade_organizacional_id = unidade_organizacional_id + @maxId;
+UPDATE indice_producao.producao_proprietario SET unidade_organizacional_id = unidade_organizacional_id + @maxId;
+UPDATE sistema.usuario SET unidade_organizacional_id = unidade_organizacional_id + @maxId;
+
+ALTER TABLE `funcional`.`unidade_organizacional` 
+ADD CONSTRAINT `fk_unidade_organizacional_2`
+  FOREIGN KEY (`id`)
+  REFERENCES `pessoa`.`grupo_social` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+ALTER TABLE `funcional`.`unidade_organizacional` 
+DROP COLUMN `termino`,
+DROP COLUMN `inicio`,
+DROP COLUMN `sigla`,
+DROP COLUMN `nome`,
+DROP INDEX `uq_unidade_organizacional1` ,
+-- ADD UNIQUE INDEX `uq_unidade_organizacional1` (`pessoa_juridica_id` ASC),
+DROP INDEX `uq_unidade_organizacional2` 
+-- , ADD UNIQUE INDEX `uq_unidade_organizacional2` (`pessoa_juridica_id` ASC)
+;
+
+-- -----------------------------------------------------
+-- Placeholder table for view `funcional`.`unidade_organizacional_ativa_vi`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `funcional`.`unidade_organizacional_ativa_vi` (`nome` INT, `sigla_apelido` INT, `inicio` INT, `termino` INT, `id` INT, `pessoa_juridica_id` INT, `classificacao` INT, `chave_sisater` INT, `formalizada` INT);
+
+USE `funcional`;
+
+-- -----------------------------------------------------
+-- View `funcional`.`unidade_organizacional_ativa_vi`
+-- -----------------------------------------------------
+/*DROP TABLE IF EXISTS `funcional`.`unidade_organizacional_ativa_vi`;
+USE `funcional`;
+CREATE  OR REPLACE VIEW `unidade_organizacional_ativa_vi` AS
+SELECT a.nome
+     , a.apelido_sigla
+     , a.inicio
+     , a.termino
+	 , c.*
+FROM   pessoa.pessoa a
+JOIN   pessoa.grupo_social b
+ON     b.id = a.id
+JOIN   funcional.unidade_organizacional c
+ON     c.id = a.id
+WHERE  b.inicio <= NOW()
+AND    (b.termino IS NULL OR b.termino > NOW());*/
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+set sql_safe_updates = 1;

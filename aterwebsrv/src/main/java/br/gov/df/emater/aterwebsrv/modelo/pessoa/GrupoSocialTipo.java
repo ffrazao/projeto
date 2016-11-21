@@ -32,7 +32,7 @@ public class GrupoSocialTipo extends EntidadeBase implements _ChavePrimaria<Inte
 	private Codigo codigo;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name="existe_fisicamente")
+	@Column(name = "existe_fisicamente")
 	private Confirmacao existeFisicamente;
 
 	@Id
@@ -42,6 +42,10 @@ public class GrupoSocialTipo extends EntidadeBase implements _ChavePrimaria<Inte
 	private String nome;
 
 	public GrupoSocialTipo() {
+	}
+
+	public GrupoSocialTipo(Codigo codigo) {
+		this.codigo = codigo;
 	}
 
 	public GrupoSocialTipo(Integer id) {

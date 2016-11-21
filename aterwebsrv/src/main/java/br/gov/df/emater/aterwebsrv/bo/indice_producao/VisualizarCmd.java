@@ -21,6 +21,7 @@ import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoComposicaoDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoProprietarioDao;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
+import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoComposicao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoProprietario;
@@ -70,7 +71,7 @@ public class VisualizarCmd extends _Comando {
 		result.setAlteracaoUsuario(infoBasicaReg(result.getAlteracaoUsuario()));
 
 		if (result.getUnidadeOrganizacional() != null) {
-			result.setUnidadeOrganizacional(infoBasicaReg(result.getUnidadeOrganizacional()));
+			result.setUnidadeOrganizacional((UnidadeOrganizacional) infoBasicaReg(result.getUnidadeOrganizacional()));
 		}
 
 		if (result.getPublicoAlvo() != null) {

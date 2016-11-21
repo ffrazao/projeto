@@ -176,7 +176,7 @@ public class FiltrarOldCmd extends _Comando {
 
 		result.add(producaoProprietario.getUnidadeOrganizacional() == null ? null : producaoProprietario.getUnidadeOrganizacional().getId()); // PRODUCAO_UNID_ORG_ID
 		result.add(producaoProprietario.getUnidadeOrganizacional() == null ? null : producaoProprietario.getUnidadeOrganizacional().getNome()); // PRODUCAO_UNID_ORG_NOME
-		result.add(producaoProprietario.getUnidadeOrganizacional() == null ? null : producaoProprietario.getUnidadeOrganizacional().getSigla()); // PRODUCAO_UNID_ORG_SIGLA
+		result.add(producaoProprietario.getUnidadeOrganizacional() == null ? null : producaoProprietario.getUnidadeOrganizacional().getApelidoSigla()); // PRODUCAO_UNID_ORG_SIGLA
 
 		result.add(producaoProprietario.getPublicoAlvo() == null ? null : producaoProprietario.getPublicoAlvo().getId()); // PRODUCAO_PUBLICO_ALVO_ID
 		result.add(producaoProprietario.getPublicoAlvo() == null ? null : producaoProprietario.getPublicoAlvo().getPessoa().getId()); // PRODUCAO_PUBLICO_ALVO_PESSOA_ID

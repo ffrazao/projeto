@@ -28,12 +28,13 @@ public class AgendaDto extends CadFiltroDtoCustom {
 
 	private String title;
 
-	public AgendaDto(Integer id, String title, Calendar start, Calendar end, Integer metodoId, String metodoNome, Integer pessoaId, String pessoaNome, String detalhamento) {
+	public AgendaDto(Integer id, String title, Calendar start, Calendar end, String[] className, Integer metodoId, String metodoNome, Integer pessoaId, String pessoaNome, String detalhamento) {
 		super();
 		this.id = id;
 		this.title = title;
 		this.start = start;
 		this.end = end;
+		this.className = className;
 		this.metodoId = metodoId;
 		this.metodoNome = metodoNome;
 		this.pessoaId = pessoaId;

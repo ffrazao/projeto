@@ -1,5 +1,6 @@
 package br.gov.df.emater.aterwebsrv.modelo.pessoa;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -159,11 +160,11 @@ public abstract class Pessoa extends EntidadeBase implements _ChavePrimaria<Inte
 	public Pessoa() {
 	}
 
-	public Pessoa(Integer id) {
+	public Pessoa(Serializable id) {
 		super(id);
 	}
 
-	public Pessoa(Integer id, PessoaTipo pessoaTipo, String nome, String apelidoSigla, Arquivo perfilArquivo, PessoaSituacao situacao, Confirmacao publicoAlvoConfirmacao) {
+	public Pessoa(Serializable id, PessoaTipo pessoaTipo, String nome, String apelidoSigla, Arquivo perfilArquivo, PessoaSituacao situacao, Confirmacao publicoAlvoConfirmacao) {
 		this(id);
 		setPessoaTipo(pessoaTipo);
 		setNome(nome);

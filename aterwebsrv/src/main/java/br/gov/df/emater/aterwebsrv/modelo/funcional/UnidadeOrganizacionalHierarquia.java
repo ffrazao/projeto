@@ -97,7 +97,7 @@ public class UnidadeOrganizacionalHierarquia extends EntidadeBase implements _Ch
 
 	@Override
 	public UnidadeOrganizacionalHierarquia infoBasica() {
-		return new UnidadeOrganizacionalHierarquia(this.id, infoBasicaReg(this.ascendente), infoBasicaReg(this.descendente), this.inicio, this.termino);
+		return new UnidadeOrganizacionalHierarquia(this.id, (UnidadeOrganizacional) infoBasicaReg(this.ascendente), (UnidadeOrganizacional) infoBasicaReg(this.descendente), this.inicio, this.termino);
 	}
 
 	@Override
