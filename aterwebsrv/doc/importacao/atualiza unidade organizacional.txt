@@ -53,13 +53,13 @@ USE `funcional`;
 -- -----------------------------------------------------
 -- View `funcional`.`unidade_organizacional_ativa_vi`
 -- -----------------------------------------------------
-/*DROP TABLE IF EXISTS `funcional`.`unidade_organizacional_ativa_vi`;
+DROP TABLE IF EXISTS `funcional`.`unidade_organizacional_ativa_vi`;
 USE `funcional`;
 CREATE  OR REPLACE VIEW `unidade_organizacional_ativa_vi` AS
 SELECT a.nome
      , a.apelido_sigla
-     , a.inicio
-     , a.termino
+     , b.inicio
+     , b.termino
 	 , c.*
 FROM   pessoa.pessoa a
 JOIN   pessoa.grupo_social b
@@ -67,7 +67,7 @@ ON     b.id = a.id
 JOIN   funcional.unidade_organizacional c
 ON     c.id = a.id
 WHERE  b.inicio <= NOW()
-AND    (b.termino IS NULL OR b.termino > NOW());*/
+AND    (b.termino IS NULL OR b.termino > NOW());
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
