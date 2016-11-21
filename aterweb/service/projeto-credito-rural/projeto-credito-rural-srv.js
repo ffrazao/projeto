@@ -1,4 +1,4 @@
-/* global moment, zeroEsq, isUndefOrNull */
+/* global moment, zeroEsq, isUndefOrNull, removerCampo*/
 
 (function(pNmModulo, pNmFactory, pNmController) {
 
