@@ -1,6 +1,11 @@
 package br.gov.df.emater.aterwebsrv.dao.atividade;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,7 +14,7 @@ import javax.persistence.TypedQuery;
 
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
-import org.hibernate.transform.Transformers;
+import org.hibernate.transform.ResultTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 
@@ -28,7 +33,7 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 
 	@Autowired
 	private EntityManager em;
-	
+
 	@Autowired
 	private SessionFactory sessionFactory;
 
@@ -148,22 +153,26 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 
 		// filtro de beneficiario
 		boolean benef = false;
-		if (!CollectionUtils.isEmpty(filtro.getSegmento()) && (PublicoAlvoSegmento.values().length != (filtro.getSegmento().size()))) {
+		if (!CollectionUtils.isEmpty(filtro.getSegmento())
+				&& (PublicoAlvoSegmento.values().length != (filtro.getSegmento().size()))) {
 			benef = true;
 			params.add(filtro.getSegmento());
 			sqlFiltro.append("and deman.pessoa.publicoAlvo.segmento in ?").append(params.size()).append("\n");
 		}
-		if (!CollectionUtils.isEmpty(filtro.getCategoria()) && (PublicoAlvoCategoria.values().length != (filtro.getCategoria().size()))) {
+		if (!CollectionUtils.isEmpty(filtro.getCategoria())
+				&& (PublicoAlvoCategoria.values().length != (filtro.getCategoria().size()))) {
 			benef = true;
 			params.add(filtro.getCategoria());
 			sqlFiltro.append("and deman.pessoa.publicoAlvo.categoria in ?").append(params.size()).append("\n");
 		}
-		if (!CollectionUtils.isEmpty(filtro.getGenero()) && (PessoaGenero.values().length != (filtro.getGenero().size()))) {
+		if (!CollectionUtils.isEmpty(filtro.getGenero())
+				&& (PessoaGenero.values().length != (filtro.getGenero().size()))) {
 			benef = true;
 			params.add(filtro.getGenero().iterator().next());
 			sqlFiltro.append("and pf.genero = ?").append(params.size()).append("\n");
 		}
-		if (!CollectionUtils.isEmpty(filtro.getGeracao()) && (PessoaGeracao.values().length != (filtro.getGeracao().size()))) {
+		if (!CollectionUtils.isEmpty(filtro.getGeracao())
+				&& (PessoaGeracao.values().length != (filtro.getGeracao().size()))) {
 			benef = true;
 			sqlFiltro.append("and (").append("\n");
 			sqlTemp = new StringBuilder();
@@ -180,7 +189,9 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 		}
 
 		// pesquisar por localizacao
-		if (!CollectionUtils.isEmpty(filtro.getEmpresaList()) || !CollectionUtils.isEmpty(filtro.getUnidadeOrganizacionalList()) || !CollectionUtils.isEmpty(filtro.getComunidadeList())) {
+		if (!CollectionUtils.isEmpty(filtro.getEmpresaList())
+				|| !CollectionUtils.isEmpty(filtro.getUnidadeOrganizacionalList())
+				|| !CollectionUtils.isEmpty(filtro.getComunidadeList())) {
 			benef = true;
 			sql.append("and deman.pessoa in (select publ.pessoa").append("\n");
 			sql.append("                     from PublicoAlvo publ").append("\n");
@@ -188,7 +199,8 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 			sql.append("                     where 1 = 1").append("\n");
 			if (!CollectionUtils.isEmpty(filtro.getEmpresaList())) {
 				params.add(filtro.getEmpresaList());
-				sql.append("and parr.comunidade.unidadeOrganizacional.pessoaJuridica in ?").append(params.size()).append("\n");
+				sql.append("and parr.comunidade.unidadeOrganizacional.pessoaJuridica in ?").append(params.size())
+						.append("\n");
 			}
 			if (!CollectionUtils.isEmpty(filtro.getUnidadeOrganizacionalList())) {
 				params.add(filtro.getUnidadeOrganizacionalList());
@@ -336,8 +348,10 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 		sql.append("select distinct").append("\n");
 		sql.append("        a.id").append("\n");
 		sql.append("      , a.codigo as title").append("\n");
-		sql.append("      , a.inicio as start").append("\n");
-		sql.append("      , a.conclusao as end").append("\n");
+//		sql.append("      , DATE_FORMAT(a.inicio, '%d/%m/%Y %H:%i:%s') as  d1").append("\n");
+//		sql.append("      , DATE_FORMAT(a.conclusao, '%d/%m/%Y %H:%i:%s') as d2").append("\n");
+		sql.append("      , a.inicio as startF").append("\n");
+		sql.append("      , a.conclusao as endF").append("\n");
 		sql.append("      , '' as className").append("\n");
 		sql.append("      , b.id as metodoId").append("\n");
 		sql.append("      , b.nome as metodoNome").append("\n");
@@ -360,7 +374,8 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 		params.add(filtro.getTermino());
 		// remover o item null
 		if (!CollectionUtils.isEmpty(filtro.getPessoaIdList())) {
-			filtro.setPessoaIdList(filtro.getPessoaIdList().stream().filter(n -> n != null).collect(Collectors.toSet()));
+			filtro.setPessoaIdList(
+					filtro.getPessoaIdList().stream().filter(n -> n != null).collect(Collectors.toSet()));
 		}
 		if (!CollectionUtils.isEmpty(filtro.getPessoaIdList())) {
 			params.add(filtro.getPessoaIdList());
@@ -375,9 +390,36 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 			sql.append("and    d.assunto_id = :p").append(params.size()).append("\n");
 		}
 		sql.append("order by a.inicio, d.nome").append("\n");
-		
+
 		// criar a query
-		Query query = sessionFactory.getCurrentSession().createSQLQuery(sql.toString()).setResultTransformer(Transformers.aliasToBean(AgendaDto.class));
+		Query query = sessionFactory.getCurrentSession().createSQLQuery(sql.toString())
+				.setResultTransformer(new ResultTransformer() {
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public List transformList(List collection) {
+						return new ArrayList<>(new HashSet<>((List<AgendaDto>) collection));
+					}
+
+					@Override
+					public Object transformTuple(Object[] tuple, String[] aliases) {
+						List<String> campos = Arrays.asList(aliases);
+
+						return new AgendaDto((Integer) tuple[campos.indexOf("id")],
+
+								(String) tuple[campos.indexOf("title")],
+								UtilitarioData.getInstance().sqlTimestampToCalendar((Timestamp) tuple[campos.indexOf("startF")]),
+								UtilitarioData.getInstance().sqlTimestampToCalendar((Timestamp) tuple[campos.indexOf("endF")]),
+								new String[]{},
+								(Integer) tuple[campos.indexOf("metodoId")],
+								(String) tuple[campos.indexOf("metodoNome")],
+								(Integer) tuple[campos.indexOf("pessoaId")],
+								(String) tuple[campos.indexOf("pessoaNome")],
+								(String) tuple[campos.indexOf("detalhamento")]);
+					}
+
+				});
 
 		// inserir os parametros
 		for (int i = 0; i < params.size(); i++) {

@@ -97,6 +97,15 @@ angular.module(pNmModulo).factory(pNmFactory,
                 SegurancaSrv.acesso(this.funcionalidade, 'EDITAR');
                 return $http.post(this.endereco + '/editar', atividade);
             },
+            salvar: function(registro) {
+                removerCampo(registro, ['@jsonId']);
+                if (registro.id) {
+                    return this.editar(registro);
+                } else {
+                    return this.incluir(registro);
+                }
+            },
+
             excluir : function(registro) {
                 SegurancaSrv.acesso(this.funcionalidade, 'EXCLUIR');
                 return $http.delete(this.endereco + '/excluir', {params: {'id': registro.id}});

@@ -7,7 +7,6 @@
         </div>
     </div>
     <div class="table-responsive" ng-if="navegador.dados.length">
-      <!--  <div ui-calendar="uiConfig.calendar" class="span8 calendar" ng-model="eventSources">-->  
              <div role="main">
                 <div class="container">
                     <section id="directives-calendar">
@@ -22,16 +21,16 @@
                                                  <button class="btn btn-success" ng-click="changeView('agendaWeek', 'calendar')">Semana</button>
                                                  <button class="btn btn-success" ng-click="changeView('month', 'calendar')">Mês</button>
                                                  <button class="btn btn-success" ng-click="changeView('listMonth', 'calendar')">Lista</button>
-                                                    <div class="btn-group calTools">
-                                                        <button type="button" class="btn btn-primary" ng-click="addEvent()">
-                                                         Novo Evento
-                                                        </button>
+                                                    <div class="alert-success calAlert" ng-show="alertMessage != undefined && alertMessage != ''">
+                                                     <h4>{{alertMessage}}</h4>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="calendar" ng-model="eventSources" calendar="calendar" ui-calendar="uiConfig.calendar"></div>
+                                            <div class="calendar" ng-model="eventSources" calendar="calendar" ui-calendar="uiConfig.calendar">
+                                                
+                                            </div>
                                             <ul class="unstyled">
-                                                    <li ng-repeat="e in events">
+                                                    <li ng-repeat="e in eventSources[0]">
                                                         <div class="alert alert-info">
                                                          <a class="close" ng-click="remove($index)">x</a>
                                                          <b> <input ng-model="e.title"></b> 

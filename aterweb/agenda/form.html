@@ -3,7 +3,41 @@
     <div class="panel-body">
         <form name="frm.formulario" novalidate>
             <fieldset ng-disabled="['INCLUINDO', 'EDITANDO'].indexOf(navegador.estadoAtual()) < 0 && !modalCadastro">
-                <div ui-calendar="uiConfig.calendar" class="span8 calendar" ng-model="eventSources"></div>
+                <!--<div ui-calendar="uiConfig.calendar" class="span8 calendar" ng-model="eventSources"></div>-->
+                <div role="main">
+                <div class="container">
+                    <section id="directives-calendar">
+                        <div class="well">
+                            <div class="row">
+                                <div>
+                                    <tabset>
+                                        <tab select="renderCalendar('calendar');">
+                                            <div class="btn-toolbar">
+                                                <div class="btn-group">
+                                                 <button class="btn btn-success" ng-click="changeView('agendaDay', 'calendar')">Dia</button>
+                                                 <button class="btn btn-success" ng-click="changeView('agendaWeek', 'calendar')">Semana</button>
+                                                 <button class="btn btn-success" ng-click="changeView('month', 'calendar')">Mês</button>
+                                                 <button class="btn btn-success" ng-click="changeView('listMonth', 'calendar')">Lista</button>
+                                                </div>
+                                            </div>
+                                            <div class="calendar" ng-model="eventSources" calendar="calendar" ui-calendar="uiConfig.calendar"></div>
+                                            <!--<ul class="unstyled">
+                                                    <li ng-repeat="e in events">
+                                                        <div class="alert alert-info">
+                                                         <a class="close" ng-click="remove($index)">x</a>
+                                                         <b> <input ng-model="e.title"></b> 
+                                                         {{e.start | date:"dd MMM"}} - {{e.end | date:"dd MMM"}}
+                                                        </div>
+                                                    </li> 
+                                            </ul>-->                                            
+                                        </tab>                                     
+                                    </tabset>
+                                </div>                                                             
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
             </fieldset>
         </form>
     </div>

@@ -53,7 +53,7 @@ public class ListaCmd extends _Comando {
 					// verificar se é necessário inserir o elemento raiz
 					if (siglaUoPrincipal != null) {
 						for (UnidadeOrganizacionalHierarquiaAtivaVi uo : unidadeOrganizacionalHierarquiaList) {
-							if ((uo.getAscendente() == null && siglaUoPrincipal == null) || (uo.getAscendente() != null && uo.getAscendente().getSigla().equals(siglaUoPrincipal))) {
+							if ((uo.getAscendente() == null && siglaUoPrincipal == null) || (uo.getAscendente() != null && uo.getAscendente().getApelidoSigla().equals(siglaUoPrincipal))) {
 								OrganogramaDto item = new OrganogramaDto();
 								item.setUnidadeOrganizacional(uo.getAscendente().infoBasica());
 								item.setDescendenteList(organogramaList);
@@ -78,14 +78,14 @@ public class ListaCmd extends _Comando {
 		List<OrganogramaDto> result = null;
 		if (!CollectionUtils.isEmpty(lista)) {
 			for (UnidadeOrganizacionalHierarquiaAtivaVi uo : lista) {
-				if ((uo.getAscendente() == null && sigla == null) || (uo.getAscendente() != null && uo.getAscendente().getSigla().equals(sigla))) {
+				if ((uo.getAscendente() == null && sigla == null) || (uo.getAscendente() != null && uo.getAscendente().getApelidoSigla().equals(sigla))) {
 					if (result == null) {
 						result = new ArrayList<>();
 					}
 					OrganogramaDto item = new OrganogramaDto();
 					item.setUnidadeOrganizacional(uo.getDescendente().infoBasica());
 					item.setLotacaoList(UtilitarioInfoBasica.infoBasicaList(lotacaoAtivaViDao.findAllByUnidadeOrganizacionalId(item.getUnidadeOrganizacional().getId())));
-					item.setDescendenteList(montarOrganograma(lista, item.getUnidadeOrganizacional().getSigla()));
+					item.setDescendenteList(montarOrganograma(lista, item.getUnidadeOrganizacional().getApelidoSigla()));
 					result.add(item);
 				}
 			}

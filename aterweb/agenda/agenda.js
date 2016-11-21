@@ -15,53 +15,108 @@
 
     angular.module(pNmModulo).constant('uiCalendarConfig', {calendars: {}});
 
-    angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'AgendaSrv',
+    angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'AgendaSrv', 'AtividadeSrv',
          '$compile', 'uiCalendarConfig',
-        function($scope,  toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, AgendaSrv, $compile, uiCalendarConfig) {
+        function($scope,  toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, AgendaSrv, AtividadeSrv, $compile, uiCalendarConfig) {
             'ngInject';            
 
             // inicializacao
             $scope.crudInit($scope, $state, null, pNmFormulario, AgendaSrv);
 
             // código para verificar se o modal está ou não ativo
-            $scope.verificaEstado($uibModalInstance, $scope, 'filtro', modalCadastro, pNmFormulario);
-
-            // inicio: atividades do Modal
-            var date = new Date();
-            var d = date.getDate();
-            var m = date.getMonth();
-            var y = date.getFullYear();            
+            $scope.verificaEstado($uibModalInstance, $scope, 'filtro', modalCadastro, pNmFormulario);            
     
             $scope.eventSource = {
                     googleCalendarApiKey: 'AIzaSyA7cCD_hoZyFmAS1IXGOizoBO1xMaHDRvc',
-                    /*url: "http://www.google.com/calendar/feeds/usa__en%40holiday.calendar.google.com/public/basic",*/
                     className: 'gcal-event',           // an option!
                     currentTimezone: 'America/Chicago' // an option!
             };
             /* event source that contains custom events on the scope */
-            $scope.events = [];
-            /* event source that calls a function on every view switch */
-            $scope.eventsF = function (start, end, timezone, callback) {
-              var s = new Date(start).getTime() / 1000;
-              var e = new Date(end).getTime() / 1000;
-              var m = new Date(start).getMonth();
-              var events = [{title: 'Feed Me ' + m,start: s + (50000),end: s + (100000),allDay: false, className: ['customFeed']}];
-              callback(events);
+            $scope.confirmarFiltrarDepois = function(){
+              $scope.eventSources[0].length = 0;
+              $scope.cadastro.lista.forEach(function (v) {
+                $scope.eventSources[0].push(v);
+              });
             };
 
-            $scope.calEventsExt = {
-               color: '#f00',
-               textColor: 'yellow',
-               events: [ 
-                  {type:'party',title: 'Lunch',start: new Date(y, m, d, 12, 0),end: new Date(y, m, d, 14, 0),allDay: false},
-                  {type:'party',title: 'Lunch 2',start: new Date(y, m, d, 12, 0),end: new Date(y, m, d, 14, 0),allDay: false},
-                  {type:'party',title: 'Click for Google',start: new Date(y, m, 28),end: new Date(y, m, 29),url: 'http://google.com/'}
-                ]
+            $scope.events = [];
+
+            var salvar = function(registro, modal) {
+                removerCampo(registro, ['@jsonId']);
+                AtividadeSrv.salvar(registro.cadastro).success(function(resposta) {
+                    if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {
+                        $scope.confirmarFiltrar($scope, $scope.cadastro.filtro.numeroPagina, $scope.cadastro.filtro.temMaisRegistros);
+                        toastr.info('Operação realizada!', 'Informação');
+                        modal.dismiss();
+                    } else {
+                        toastr.error(resposta && resposta.mensagem ? resposta.mensagem : resposta, 'Erro ao salvar');
+                    }
+                }).error(function(erro) {
+                    toastr.error(erro, 'Erro ao salvar');
+                });
+
             };
+            
+            var editarItem = function (destino, item) {
+                var arr = [];
+                if (!destino) {
+                    arr.push({registro: {}});
+                } else {                
+                    arr.push({registro: item});
+                }
+                if (!arr.length) {
+                    toastr.error('Dados não informados', 'Erro ao abrir formulário');
+                } else {
+                    arr.forEach(function(registro) {
+                        var modalInstance = $uibModal.open({
+                            animation: true,
+                            controller: 'AtividadeCtrl',
+                            size : 'lg',
+                            templateUrl: 'atividade/atividade-form-modal.html',
+                            resolve: {
+                                modalCadastro: function() {
+                                    registro.modalOk = salvar;
+                                    return registro;
+                                },
+                            },
+                        });
+                        modalInstance.result.then(function(conteudo) {
+                        }, function () {
+                        });
+                    });
+                }
+            };
+
             /* alert on eventClick */
             $scope.alertOnEventClick = function( date, jsEvent, view){
+                editarItem($scope.events, {id: date.id});
                 $scope.alertMessage = (date.title + ' was clicked ');
             };
+
+            $scope.eventMouseover = function (Events, jsEvent) {
+            var tooltip = '<div class="tooltipevent">' + calEvent.description + '</div>';
+            $("body").append(tooltip);
+            $(this).mouseover(function (e) {
+            $(this).css('z-index', 10000);
+            $('.tooltipevent').fadeIn('500');
+            $('.tooltipevent').fadeTo('10', 1.9);
+            }).mousemove(function (e) {
+            $('.tooltipevent').css('top', e.pageY + 10);
+            $('.tooltipevent').css('left', e.pageX + 20);
+            });
+            }
+
+            $scope.eventMouseout = function (calEvent, jsEvent) {
+            $(this).css('z-index', 8);
+            $('.tooltipevent').remove();
+            },
+            $scope.eventRender = function( event, element, view ) { 
+              $timeout(function(){
+            $(element).attr('tooltip', event.title);
+            $compile(element)($scope);
+            });
+            };
+
             /* alert on Drop */
              $scope.alertOnDrop = function(event, delta, revertFunc, jsEvent, ui, view){
                $scope.alertMessage = ('Event Droped to make dayDelta ' + delta);
@@ -86,10 +141,10 @@
             /* add custom event*/
             $scope.addEvent = function() {
               $scope.events.push({
-                title: 'Novo Evento',
+                title: 'Nova Atividade',
                 start: new Date(y, m, d),
                 end: new Date(y, m, d),
-                className: ['novoEvento']
+                className: ['novaAtividade']
               });
             };
             /* remove event */
@@ -135,9 +190,8 @@
                 $scope.uiConfig.calendar.dayNamesShort = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
             /* event sources array*/
-            $scope.eventSources = [$scope.events, $scope.eventSource, $scope.eventsF];
-            $scope.eventSources2 = [$scope.calEventsExt, $scope.eventsF, $scope.events];
-        }
+            $scope.eventSources = [$scope.events];
+          }
     ]);
 
 })('agenda', 'AgendaCtrl', 'Cadastro de Agenda', 'agenda');

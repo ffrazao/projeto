@@ -38,9 +38,13 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 @Entity
 @Table(name = "unidade_organizacional_ativa_vi", schema = EntidadeBase.FUNCIONAL_SCHEMA)
 // @Immutable
-public class UnidadeOrganizacionalAtivaVi extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<UnidadeOrganizacionalAtivaVi> {
+public class UnidadeOrganizacionalAtivaVi extends EntidadeBase
+		implements _ChavePrimaria<Integer>, InfoBasica<UnidadeOrganizacionalAtivaVi> {
 
 	private static final long serialVersionUID = 1L;
+
+	@Column(name = "apelido_sigla")
+	private String apelidoSigla;
 
 	@Column(name = "chave_sisater")
 	private String chaveSisater;
@@ -67,8 +71,6 @@ public class UnidadeOrganizacionalAtivaVi extends EntidadeBase implements _Chave
 	@JoinColumn(name = "pessoa_juridica_id")
 	private PessoaJuridica pessoaJuridica;
 
-	private String sigla;
-
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	@JsonSerialize(using = JsonSerializerData.class)
@@ -82,12 +84,17 @@ public class UnidadeOrganizacionalAtivaVi extends EntidadeBase implements _Chave
 		super(id);
 	}
 
-	public UnidadeOrganizacionalAtivaVi(Serializable id, String nome, String sigla, PessoaJuridica pessoaJuridica, UnidadeOrganizacionalClassificacao classificacao) {
+	public UnidadeOrganizacionalAtivaVi(Serializable id, String nome, String sigla, PessoaJuridica pessoaJuridica,
+			UnidadeOrganizacionalClassificacao classificacao) {
 		this(id);
 		setNome(nome);
-		setSigla(sigla);
+		setApelidoSigla(sigla);
 		setPessoaJuridica(pessoaJuridica);
 		setClassificacao(classificacao);
+	}
+
+	public String getApelidoSigla() {
+		return apelidoSigla;
 	}
 
 	public String getChaveSisater() {
@@ -119,16 +126,17 @@ public class UnidadeOrganizacionalAtivaVi extends EntidadeBase implements _Chave
 		return pessoaJuridica;
 	}
 
-	public String getSigla() {
-		return sigla;
-	}
-
 	public Calendar getTermino() {
 		return termino;
 	}
 
 	public UnidadeOrganizacionalAtivaVi infoBasica() {
-		return new UnidadeOrganizacionalAtivaVi(this.id, this.nome, this.sigla, this.pessoaJuridica == null ? null : (PessoaJuridica) pessoaJuridica.infoBasica(), this.classificacao);
+		return new UnidadeOrganizacionalAtivaVi(this.id, this.nome, this.apelidoSigla,
+				this.pessoaJuridica == null ? null : (PessoaJuridica) pessoaJuridica.infoBasica(), this.classificacao);
+	}
+
+	public void setApelidoSigla(String apelidoSigla) {
+		this.apelidoSigla = apelidoSigla;
 	}
 
 	public void setChaveSisater(String chaveSisater) {
@@ -158,10 +166,6 @@ public class UnidadeOrganizacionalAtivaVi extends EntidadeBase implements _Chave
 
 	public void setPessoaJuridica(PessoaJuridica pessoaJuridica) {
 		this.pessoaJuridica = pessoaJuridica;
-	}
-
-	public void setSigla(String sigla) {
-		this.sigla = sigla;
 	}
 
 	public void setTermino(Calendar termino) {

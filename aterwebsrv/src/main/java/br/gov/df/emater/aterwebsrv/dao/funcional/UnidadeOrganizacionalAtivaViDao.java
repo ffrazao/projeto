@@ -18,7 +18,7 @@ public interface UnidadeOrganizacionalAtivaViDao extends JpaRepository<UnidadeOr
 
 	UnidadeOrganizacional findOneByPessoaJuridicaAndNome(PessoaJuridica emater, String lotacaoNome);
 
-	UnidadeOrganizacional findOneByPessoaJuridicaAndSigla(PessoaJuridica pessoa, String lotacaoSigla);
+	UnidadeOrganizacional findOneByPessoaJuridicaAndApelidoSigla(PessoaJuridica pessoa, String lotacaoApelidoSigla);
 
 	List<UnidadeOrganizacional> findAllByPessoaJuridica(PessoaJuridica pessoaJuridica);
 
