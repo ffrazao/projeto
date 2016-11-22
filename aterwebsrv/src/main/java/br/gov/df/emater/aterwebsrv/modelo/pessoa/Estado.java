@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.pessoa;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -59,6 +61,10 @@ public class Estado extends EntidadeBase implements _ChavePrimaria<Integer>, Inf
 		this.setSigla(sigla);
 		this.setPadrao(padrao);
 		this.setCapital(capital);
+	}
+
+	public Estado(Serializable id) {
+		super(id);
 	}
 
 	public Confirmacao getCapital() {

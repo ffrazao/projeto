@@ -1,16 +1,26 @@
 package br.gov.df.emater.aterwebsrv.modelo.pessoa;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaTipo;
+import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
+import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 
 /**
  * The persistent class for the pessoa_juridica database table.
@@ -29,6 +39,12 @@ public class PessoaJuridica extends Pessoa {
 
 	// @Field(index = Index.YES, store = Store.YES)
 	private String cnpj;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+	@JsonSerialize(using = JsonSerializerData.class)
+	@JsonDeserialize(using = JsonDeserializerData.class)
+	private Calendar fundacao;
 
 	public PessoaJuridica() {
 		this(null, null, null, null, null, null, null);
@@ -51,6 +67,10 @@ public class PessoaJuridica extends Pessoa {
 		return cnpj;
 	}
 
+	public Calendar getFundacao() {
+		return fundacao;
+	}
+
 	@Override
 	public Pessoa infoBasica() {
 		return new PessoaJuridica(this.getId(), this.getNome(), this.getApelidoSigla(), this.getPerfilArquivo() == null ? null : this.getPerfilArquivo().infoBasica(), this.getSituacao(), this.getPublicoAlvoConfirmacao(), this.getCnpj());
@@ -62,6 +82,10 @@ public class PessoaJuridica extends Pessoa {
 
 	public void setCnpj(String cnpj) {
 		this.cnpj = cnpj;
+	}
+
+	public void setFundacao(Calendar fundacao) {
+		this.fundacao = fundacao;
 	}
 
 }

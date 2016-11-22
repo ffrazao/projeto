@@ -11,5 +11,7 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 public interface PessoaJuridicaDao extends JpaRepository<PessoaJuridica, Integer> {
 
 	List<PessoaJuridica> findByCnpj(String cnpj);
+	
+	PessoaJuridica findOneByNome(String nome);
 
 }

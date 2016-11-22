@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.pessoa;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -57,6 +59,10 @@ public class Cidade extends EntidadeBase implements _ChavePrimaria<Integer>, Inf
 	public Cidade(Integer id, String nome, String sigla) {
 		this(id, nome);
 		this.setSigla(sigla);
+	}
+
+	public Cidade(Serializable id) {
+		super(id);
 	}
 
 	public String getCodigo() {

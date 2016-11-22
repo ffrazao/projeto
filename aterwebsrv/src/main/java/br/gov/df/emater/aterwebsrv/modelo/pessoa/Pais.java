@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.pessoa;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -49,6 +51,10 @@ public class Pais extends EntidadeBase implements _ChavePrimaria<Integer>, InfoB
 		this(id, nome);
 		this.setSigla(sigla);
 		this.setPadrao(padrao);
+	}
+
+	public Pais(Serializable id) {
+		super(id);
 	}
 
 	public String getCodigo() {

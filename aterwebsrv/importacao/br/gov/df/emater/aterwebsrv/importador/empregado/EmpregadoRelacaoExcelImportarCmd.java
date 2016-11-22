@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.springframework.util.StringUtils;
 
 import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
@@ -24,17 +25,20 @@ import br.gov.df.emater.aterwebsrv.dao.funcional.CargoDao;
 import br.gov.df.emater.aterwebsrv.dao.funcional.EmpregoDao;
 import br.gov.df.emater.aterwebsrv.dao.funcional.LotacaoDao;
 import br.gov.df.emater.aterwebsrv.dao.funcional.UnidadeOrganizacionalDao;
+import br.gov.df.emater.aterwebsrv.dao.pessoa.GrupoSocialTipoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaFisicaDao;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Escolaridade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.UnidadeOrganizacionalClassificacao;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.Cargo;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.Emprego;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.Lotacao;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.GrupoSocialTipo;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
@@ -44,6 +48,9 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoTipo;
 
 @Service
 public class EmpregadoRelacaoExcelImportarCmd extends _Comando {
+	
+	@Autowired
+	private GrupoSocialTipoDao grupoSocialTipoDao;
 
 	@Autowired
 	private CargoDao cargoDao;
@@ -67,13 +74,15 @@ public class EmpregadoRelacaoExcelImportarCmd extends _Comando {
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		List<Map<String, Object>> mapa = (List<Map<String, Object>>) contexto.get("RelacaoEmpregadosExcel");
-
+		
 		EntityManager em = (EntityManager) contexto.get("em");
 		FacadeBo facadeBo = (FacadeBo) contexto.get("facadeBo");
 		RelacionamentoFuncao empregadorFuncao = (RelacionamentoFuncao) contexto.get("empregadorFuncao");
 		RelacionamentoTipo relacionamentoTipo = (RelacionamentoTipo) contexto.get("relacionamentoTipo");
 		Calendar agora = (Calendar) contexto.get("agora");
 		PessoaJuridica emater = (PessoaJuridica) contexto.get("emater");
+		
+		GrupoSocialTipo uoGrupoSocialTipo = grupoSocialTipoDao.findOneByCodigo(GrupoSocialTipo.Codigo.UNIDADE_ORGANIZACIONAL);
 
 		PlatformTransactionManager transactionManager = (PlatformTransactionManager) contexto.get("transactionManager");
 		DefaultTransactionDefinition transactionDefinition = (DefaultTransactionDefinition) contexto.get("transactionDefinition");
@@ -102,7 +111,7 @@ public class EmpregadoRelacaoExcelImportarCmd extends _Comando {
 				String cargoExcel = UtilitarioString.formataNomeProprio((String) reg.get("CARGO"));
 				String especialidade = UtilitarioString.formataNomeProprio((String) reg.get("ESPECIALIDADE"));
 				StringBuilder nomeCargo = new StringBuilder(cargoExcel);
-				if (especialidade.trim().length() > 0 && !cargoExcel.equalsIgnoreCase(especialidade)) {
+				if (!StringUtils.isEmpty(especialidade) && !cargoExcel.equalsIgnoreCase(especialidade)) {
 					nomeCargo.append(", ").append(especialidade);
 				}
 				Cargo cargo = cargoDao.findOneByPessoaJuridicaAndNome(empregador, nomeCargo.toString());
@@ -138,6 +147,10 @@ public class EmpregadoRelacaoExcelImportarCmd extends _Comando {
 						unidadeOrganizacional.setNome(lotacaoNome);
 						unidadeOrganizacional.setApelidoSigla(lotacaoSigla);
 						unidadeOrganizacional.setClassificacao(UnidadeOrganizacionalClassificacao.AD);
+						unidadeOrganizacional.setSituacao(PessoaSituacao.A);
+						unidadeOrganizacional.setInicio(agora);
+						unidadeOrganizacional.setSituacaoData(agora);
+						unidadeOrganizacional.setGrupoSocialTipo(uoGrupoSocialTipo);
 						unidadeOrganizacional = unidadeOrganizacionalDao.save(unidadeOrganizacional);
 					}
 				}

@@ -34,21 +34,6 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 @Table(name = "grupo_social", schema = EntidadeBase.PESSOA_SCHEMA)
 @PrimaryKeyJoinColumn(name = "id")
 public class GrupoSocial extends Pessoa {
-	
-
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	@JsonSerialize(using = JsonSerializerData.class)
-	@JsonDeserialize(using = JsonDeserializerData.class)
-	private Calendar inicio;
-
-
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	@JsonSerialize(using = JsonSerializerData.class)
-	@JsonDeserialize(using = JsonDeserializerData.class)
-	private Calendar termino;
-
 
 	private static final long serialVersionUID = 1L;
 
@@ -58,6 +43,18 @@ public class GrupoSocial extends Pessoa {
 	@ManyToOne
 	@JoinColumn(name = "grupo_social_tipo_id")
 	private GrupoSocialTipo grupoSocialTipo;
+
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@JsonSerialize(using = JsonSerializerData.class)
+	@JsonDeserialize(using = JsonDeserializerData.class)
+	private Calendar inicio;
+
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@JsonSerialize(using = JsonSerializerData.class)
+	@JsonDeserialize(using = JsonDeserializerData.class)
+	private Calendar termino;
 
 	public GrupoSocial() {
 		this(null, null, null, null, null, null, null, null);
@@ -81,6 +78,14 @@ public class GrupoSocial extends Pessoa {
 		return grupoSocialTipo;
 	}
 
+	public Calendar getInicio() {
+		return inicio;
+	}
+
+	public Calendar getTermino() {
+		return termino;
+	}
+
 	@Override
 	public GrupoSocial infoBasica() {
 		return new GrupoSocial(this.getId(), this.getNome(), this.getApelidoSigla(), this.getPerfilArquivo(), this.getSituacao(), this.getPublicoAlvoConfirmacao(), this.getGrupoSocialTipo(), this.getEscopo());
@@ -92,6 +97,14 @@ public class GrupoSocial extends Pessoa {
 
 	public void setGrupoSocialTipo(GrupoSocialTipo grupoSocialTipo) {
 		this.grupoSocialTipo = grupoSocialTipo;
+	}
+
+	public void setInicio(Calendar inicio) {
+		this.inicio = inicio;
+	}
+
+	public void setTermino(Calendar termino) {
+		this.termino = termino;
 	}
 
 }
