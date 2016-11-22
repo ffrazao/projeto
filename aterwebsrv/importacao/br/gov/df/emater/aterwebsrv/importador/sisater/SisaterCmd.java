@@ -50,7 +50,7 @@ public class SisaterCmd extends _Comando {
 						map.putAll(contexto);
 						map.put("base", base);
 						map.put("conexao", con);
-						map.put("unidadeOrganizacional", unidadeOrganizacionalDao.findOneByPessoaJuridicaAndSigla((PessoaJuridica) contexto.get("emater"), base.getSigla()));
+						map.put("unidadeOrganizacional", unidadeOrganizacionalDao.findOneByPessoaJuridicaAndApelidoSigla((PessoaJuridica) contexto.get("emater"), base.getSigla()));
 
 						switch (importando) {
 						case "Emprego":

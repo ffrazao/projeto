@@ -739,7 +739,7 @@ public class ImpUtil {
 				return uo;
 			}
 		}
-		UnidadeOrganizacional uo = unidadeOrganizacionalDao.findOneByPessoaJuridicaAndSigla(empresa, registro);
+		UnidadeOrganizacional uo = unidadeOrganizacionalDao.findOneByPessoaJuridicaAndApelidoSigla(empresa, registro);
 		if (uo != null) {
 			unidadeOrganizacionalList.add(uo);
 		} else {

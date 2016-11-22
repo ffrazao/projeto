@@ -129,7 +129,7 @@ public class EmpregadoRelacaoExcelImportarCmd extends _Comando {
 				if (lotacaoSigla.equals("CEDIDOS")) {
 					lotacaoNome = lotacaoNome + ", " + lotacaoSigla;
 				}
-				UnidadeOrganizacional unidadeOrganizacional = unidadeOrganizacionalDao.findOneByPessoaJuridicaAndSigla(emater, lotacaoSigla);
+				UnidadeOrganizacional unidadeOrganizacional = unidadeOrganizacionalDao.findOneByPessoaJuridicaAndApelidoSigla(emater, lotacaoSigla);
 				if (unidadeOrganizacional == null) {
 					unidadeOrganizacional = unidadeOrganizacionalDao.findOneByPessoaJuridicaAndNome(emater, lotacaoNome);
 					if (unidadeOrganizacional == null) {
