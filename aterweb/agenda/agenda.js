@@ -15,16 +15,20 @@
 
     angular.module(pNmModulo).constant('uiCalendarConfig', {calendars: {}});
 
-    angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'AgendaSrv', 'AtividadeSrv',
-         '$compile', 'uiCalendarConfig',
-        function($scope,  toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, AgendaSrv, AtividadeSrv, $compile, uiCalendarConfig) {
+    angular.module(pNmModulo).controller(pNmController, ['$scope', '$timeout', '$compile', 'uiCalendarConfig', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'AgendaSrv', 'AtividadeSrv',
+        function($scope, $timeout, $compile, uiCalendarConfig, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, AgendaSrv, AtividadeSrv) {
             'ngInject';            
 
             // inicializacao
-            $scope.crudInit($scope, $state, null, pNmFormulario, AgendaSrv);
+            $scope.crudInit($scope, $state, $scope.cadastro, pNmFormulario, AgendaSrv);
 
             // código para verificar se o modal está ou não ativo
-            $scope.verificaEstado($uibModalInstance, $scope, 'filtro', modalCadastro, pNmFormulario);            
+            $scope.verificaEstado($uibModalInstance, $scope, 'filtro', modalCadastro, pNmFormulario);
+            
+            var date = new Date();
+            var d = date.getDate();
+            var m = date.getMonth();
+            var y = date.getFullYear();            
     
             $scope.eventSource = {
                     googleCalendarApiKey: 'AIzaSyA7cCD_hoZyFmAS1IXGOizoBO1xMaHDRvc',
@@ -94,7 +98,7 @@
             };
 
             $scope.eventMouseover = function (Events, jsEvent) {
-            var tooltip = '<div class="tooltipevent">' + calEvent.description + '</div>';
+            var tooltip = '<div class="tooltipevent">' + Events.description + '</div>';
             $("body").append(tooltip);
             $(this).mouseover(function (e) {
             $(this).css('z-index', 10000);
@@ -104,13 +108,13 @@
             $('.tooltipevent').css('top', e.pageY + 10);
             $('.tooltipevent').css('left', e.pageX + 20);
             });
-            }
-
-            $scope.eventMouseout = function (calEvent, jsEvent) {
+            };
+ 
+            $scope.eventMouseout = function (Events, jsEvent) {
             $(this).css('z-index', 8);
             $('.tooltipevent').remove();
-            },
-            $scope.eventRender = function( event, element, view ) { 
+            };
+            $scope.eventRender = function( events, element, view ) { 
               $timeout(function(){
             $(element).attr('tooltip', event.title);
             $compile(element)($scope);

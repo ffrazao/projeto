@@ -1,4 +1,4 @@
-/* global moment */
+/* global removerCampo */
 
 (function(pNmModulo, pNmFactory, pNmController) {
 
