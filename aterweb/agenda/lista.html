@@ -29,15 +29,15 @@
                                             <div class="calendar" ng-model="eventSources" calendar="calendar" ui-calendar="uiConfig.calendar">
                                                 
                                             </div>
-                                            <ul class="unstyled">
-                                                    <li ng-repeat="e in eventSources[0]">
-                                                        <div class="alert alert-info">
-                                                         <a class="close" ng-click="remove($index)">x</a>
-                                                         <b> <input ng-model="e.title"></b> 
-                                                         {{e.start | date:"dd MMM"}} - {{e.end | date:"dd MMM"}}
-                                                        </div>
-                                                    </li>
-                                            </ul>                                            
+                                            <!--<ul class="unstyled">
+                                                <li ng-repeat="e in eventSources[0]">
+                                                    <div class="alert alert-info">
+                                                     <a class="close" ng-click="remove($index)">x</a>
+                                                     <b> <input ng-model="e.title"></b> 
+                                                     {{e.start | date:"dd MMM"}} - {{e.end | date:"dd MMM"}}
+                                                    </div>
+                                                </li>
+                                            </ul>-->                                            
                                         </tab>                                     
                                     </tabset>
                                 </div>                                                             

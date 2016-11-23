@@ -96,31 +96,6 @@
                 editarItem($scope.events, {id: date.id});
                 $scope.alertMessage = (date.title + ' was clicked ');
             };
-
-            $scope.eventMouseover = function (Events, jsEvent) {
-            var tooltip = '<div class="tooltipevent">' + Events.description + '</div>';
-            $("body").append(tooltip);
-            $(this).mouseover(function (e) {
-            $(this).css('z-index', 10000);
-            $('.tooltipevent').fadeIn('500');
-            $('.tooltipevent').fadeTo('10', 1.9);
-            }).mousemove(function (e) {
-            $('.tooltipevent').css('top', e.pageY + 10);
-            $('.tooltipevent').css('left', e.pageX + 20);
-            });
-            };
- 
-            $scope.eventMouseout = function (Events, jsEvent) {
-            $(this).css('z-index', 8);
-            $('.tooltipevent').remove();
-            };
-            $scope.eventRender = function( events, element, view ) { 
-              $timeout(function(){
-            $(element).attr('tooltip', event.title);
-            $compile(element)($scope);
-            });
-            };
-
             /* alert on Drop */
              $scope.alertOnDrop = function(event, delta, revertFunc, jsEvent, ui, view){
                $scope.alertMessage = ('Event Droped to make dayDelta ' + delta);
@@ -166,11 +141,15 @@
               }
             };
              /* Render Tooltip */
-            $scope.eventRender = function( event, element, view ) { 
-                element.attr({'tooltip': event.title,
-                             'tooltip-append-to-body': true});
-                $compile(element)($scope);
+            $scope.eventRender = function( event, element, view ) {
+              element.attr({ 
+            "tooltip-placement":"auto", 
+            "uib-tooltip-html": "'<table class=\"table\"><tr><th>Codigo Atividade</th><th>"+event.title+"</th></tr><tr><th>Executor</th><th>"+event.pessoaNome+"</th></tr><tr><th>Metodo</th><th>"+event.metodoNome+"</th></tr><tr><th>Detalhamento</th><th>"+event.detalhamento+"</th></tr></table>'",
+            "tooltip-append-to-body": true 
+            });
+              $compile(element)($scope);
             };
+
             /* config object */
             $scope.uiConfig = {
               calendar:{
