@@ -13,6 +13,7 @@ import br.gov.df.emater.aterwebsrv.dto.TagDto;
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoCreditoRuralCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 import br.gov.df.emater.aterwebsrv.seguranca.UserAuthentication;
+import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 
 @Service("ProjetoCreditoRuralFiltroNovoCmd")
 public class FiltroNovoCmd extends _Comando {

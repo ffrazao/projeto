@@ -207,6 +207,7 @@
             };
 
             $scope.confirmarFiltrarAntes = function(filtro) {
+
                 filtro.empresaList = [];
                 filtro.unidadeOrganizacionalList = [];
                 filtro.comunidadeList = [];
@@ -214,6 +215,7 @@
                 for (i in $scope.cadastro.apoio.localList) {
                     // filtrar as empressas
                     if ($scope.cadastro.apoio.localList[i].selecionado) {
+                        
                         filtro.empresaList.push({id: $scope.cadastro.apoio.localList[i].id, '@class': 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica'});
                     } else {
                         for (j in $scope.cadastro.apoio.localList[i].unidadeList) {

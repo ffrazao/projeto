@@ -57,6 +57,7 @@ import br.gov.df.emater.aterwebsrv.modelo.sistema.ManualOnline;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Modulo;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Perfil;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
+import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 
 @Service
 public class FacadeBo implements BeanFactoryAware {

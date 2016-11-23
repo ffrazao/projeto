@@ -98,7 +98,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                 return $http.post(this.endereco + '/editar', atividade);
             },
             salvar: function(registro) {
-                removerCampo(registro, ['@jsonId']);
+                //removerCampo(registro, ['@jsonId']);
                 if (registro.id) {
                     return this.editar(registro);
                 } else {

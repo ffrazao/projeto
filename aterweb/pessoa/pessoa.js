@@ -201,12 +201,14 @@
                 for (i in $scope.cadastro.apoio.localList) {
                     // filtrar as empressas
                     if ($scope.cadastro.apoio.localList[i].selecionado) {
+                        filtro.unidadeOrganizacionalList.push({id: $scope.cadastro.apoio.localList[i].id, '@class': 'br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional'});
                         filtro.empresaList.push({id: $scope.cadastro.apoio.localList[i].id, '@class': 'br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica'});
                     } else {
-                        for (j in $scope.cadastro.apoio.localList[i].unidadeList) {
+
+                        for (j in $scope.cadastro.apoio.localList[i].unidadeList) { 
                             // filtrar as unidades organizacionais
                             if ($scope.cadastro.apoio.localList[i].unidadeList[j].selecionado) {
-                                filtro.unidadeOrganizacionalList.push({id: $scope.cadastro.apoio.localList[i].unidadeList[j].id});
+                                filtro.unidadeOrganizacionalList.push({id: $scope.cadastro.apoio.localList[i].unidadeList[j].id, '@class': 'br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional'});
                             } else {
                                 for (k in $scope.cadastro.apoio.localList[i].unidadeList[j].comunidadeList) {
                                     // filtrar as unidades organizacionais
