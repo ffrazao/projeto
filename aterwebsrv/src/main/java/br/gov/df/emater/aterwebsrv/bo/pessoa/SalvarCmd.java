@@ -190,6 +190,14 @@ public class SalvarCmd extends _SalvarCmd {
 		limparChavePrimaria(result.getGrupoSocialList());
 		limparChavePrimaria(result.getArquivoList());
 		limparChavePrimaria(result.getPendenciaList());
+		
+		//Atribuir valores padrao
+		if(result.getSituacao() == null){
+			result.setSituacao(PessoaSituacao.A);
+		}
+		if(result.getSituacaoData() == null){
+			result.setSituacaoData(Calendar.getInstance());
+		}
 
 		// ajustar os dados de nascimento da pessoa
 		if (result instanceof PessoaFisica) {
