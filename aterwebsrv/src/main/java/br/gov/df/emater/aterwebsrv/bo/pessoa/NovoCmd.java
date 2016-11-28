@@ -16,6 +16,7 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Situacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.UnidadeOrganizacionalClassificacao;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.Formulario;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.GrupoSocial;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 import br.gov.df.emater.aterwebsrv.seguranca.UserAuthentication;
@@ -38,21 +39,24 @@ public class NovoCmd extends _Comando {
 
 		UserAuthentication usuario = (UserAuthentication) contexto.getUsuario();
 
-		if (usuario != null && usuario.getDetails() != null && ((Usuario) usuario.getDetails()).getLotacaoAtual() != null) {
-			if (UnidadeOrganizacionalClassificacao.OP.equals(((Usuario) usuario.getDetails()).getLotacaoAtual().getClassificacao())) {
-				result.setPublicoAlvoConfirmacao(Confirmacao.S);
+		if (!(result instanceof GrupoSocial)) {
+			
+			if (usuario != null && usuario.getDetails() != null && ((Usuario) usuario.getDetails()).getLotacaoAtual() != null) {
+				if (UnidadeOrganizacionalClassificacao.OP.equals(((Usuario) usuario.getDetails()).getLotacaoAtual().getClassificacao())) {
+					result.setPublicoAlvoConfirmacao(Confirmacao.S);
+				}
 			}
-		}
-
-		// captar os formularios ativos
-		_Contexto formularioResposta = facadeBo.formularioFiltroExecutar(contexto.getUsuario(),
-				new FormularioCadFiltroDto(Confirmacao.S));
-		if (formularioResposta.getResposta() != null) {
-			result.setDiagnosticoList(new ArrayList<Formulario>());
-			for (Object[] diagnostico : (List<Object[]>) formularioResposta.getResposta()) {
-				((ArrayList<Formulario>) result.getDiagnosticoList())
-						.add(new Formulario((Integer) diagnostico[0], (String) diagnostico[1], (String) diagnostico[2],
-								(Situacao) diagnostico[3], (Calendar) diagnostico[4], (Calendar) diagnostico[5]));
+			
+			// captar os formularios ativos
+			_Contexto formularioResposta = facadeBo.formularioFiltroExecutar(contexto.getUsuario(),
+					new FormularioCadFiltroDto(Confirmacao.S));
+			if (formularioResposta.getResposta() != null) {
+				result.setDiagnosticoList(new ArrayList<Formulario>());
+				for (Object[] diagnostico : (List<Object[]>) formularioResposta.getResposta()) {
+					((ArrayList<Formulario>) result.getDiagnosticoList())
+					.add(new Formulario((Integer) diagnostico[0], (String) diagnostico[1], (String) diagnostico[2],
+							(Situacao) diagnostico[3], (Calendar) diagnostico[4], (Calendar) diagnostico[5]));
+				}
 			}
 		}
 
