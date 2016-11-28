@@ -13,4 +13,6 @@ public interface RelacionamentoConfiguracaoViDao extends JpaRepository<Relaciona
 
 	RelacionamentoConfiguracaoVi findOneByTipoCodigoAndRelacionadorParticipacao(String tipoCodigo, RelacionamentoParticipacao participacao);
 
+	RelacionamentoConfiguracaoVi findOneByTipoCodigoAndRelacionadorId(String tipoCodigo, Integer funcaoRelacionamentoId);
+
 }

@@ -502,7 +502,7 @@ public class ImpUtil {
 	}
 
 	public EstadoCivil deParaEstadoCivil(String registro) {
-		if (registro == null) {
+		if (StringUtils.isEmpty(registro)) {
 			return null;
 		}
 

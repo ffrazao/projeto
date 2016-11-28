@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ import br.gov.df.emater.aterwebsrv.dao.funcional.UnidadeOrganizacionalDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.GrupoSocialTipoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaFisicaDao;
+import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaJuridicaDao;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Escolaridade;
@@ -39,16 +41,17 @@ import br.gov.df.emater.aterwebsrv.modelo.funcional.Emprego;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.Lotacao;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.GrupoSocialTipo;
-import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaRelacionamento;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoFuncao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoTipo;
+import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
+import br.gov.df.emater.aterwebsrv.seguranca.UserAuthentication;
 
 @Service
 public class EmpregadoRelacaoExcelImportarCmd extends _Comando {
-	
+
 	@Autowired
 	private GrupoSocialTipoDao grupoSocialTipoDao;
 
@@ -65,6 +68,9 @@ public class EmpregadoRelacaoExcelImportarCmd extends _Comando {
 	private PessoaDao pessoaDao;
 
 	@Autowired
+	private PessoaJuridicaDao pessoaJuridicaDao;
+
+	@Autowired
 	private PessoaFisicaDao pessoaFisicaDao;
 
 	@Autowired
@@ -74,37 +80,42 @@ public class EmpregadoRelacaoExcelImportarCmd extends _Comando {
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		List<Map<String, Object>> mapa = (List<Map<String, Object>>) contexto.get("RelacaoEmpregadosExcel");
-		
+
 		EntityManager em = (EntityManager) contexto.get("em");
 		FacadeBo facadeBo = (FacadeBo) contexto.get("facadeBo");
 		RelacionamentoFuncao empregadorFuncao = (RelacionamentoFuncao) contexto.get("empregadorFuncao");
 		RelacionamentoTipo relacionamentoTipo = (RelacionamentoTipo) contexto.get("relacionamentoTipo");
 		Calendar agora = (Calendar) contexto.get("agora");
 		PessoaJuridica emater = (PessoaJuridica) contexto.get("emater");
-		
+
 		GrupoSocialTipo uoGrupoSocialTipo = grupoSocialTipoDao.findOneByCodigo(GrupoSocialTipo.Codigo.UNIDADE_ORGANIZACIONAL);
 
 		PlatformTransactionManager transactionManager = (PlatformTransactionManager) contexto.get("transactionManager");
 		DefaultTransactionDefinition transactionDefinition = (DefaultTransactionDefinition) contexto.get("transactionDefinition");
 
+		PessoaJuridica sab = null;
+
 		int cont = 0;
-		for (Map<String, Object> reg : mapa) {
-			TransactionStatus transactionStatus = transactionManager.getTransaction(transactionDefinition);
-			try {
+		TransactionStatus transactionStatus = transactionManager.getTransaction(transactionDefinition);
+		try {
+			for (Map<String, Object> reg : mapa) {
 				// identificar o empregador
 				PessoaJuridica empregador = null;
 				if (Arrays.asList(new String[] { "2 - NORMAL", "8 - CEDIDO" }).contains(reg.get("STATUS"))) {
 					empregador = emater;
 				} else {
-					Pessoa sab = pessoaDao.findOneByApelidoSigla("SAB");
 					if (sab == null) {
-						sab = new PessoaJuridica();
-						sab.setNome("Sociedade de Abastecimento de Brasília");
-						sab.setApelidoSigla("SAB");
-						sab.setPublicoAlvoConfirmacao(Confirmacao.N);
-						sab.setId((Integer) facadeBo.pessoaSalvar(contexto.getUsuario(), sab).getResposta());
+						sab = pessoaJuridicaDao.findOneByNome("Sociedade de Abastecimento de Brasília S/A");
+						if (sab == null) {
+							sab = new PessoaJuridica();
+							sab.setNome("Sociedade de Abastecimento de Brasília S/A");
+							sab.setApelidoSigla("SAB");
+							sab.setPublicoAlvoConfirmacao(Confirmacao.N);
+							sab.setCnpj("00.037.226/0001-67");
+							sab.setId((Integer) facadeBo.pessoaSalvar(contexto.getUsuario(), sab).getResposta());
+						}
 					}
-					empregador = (PessoaJuridica) sab;
+					empregador = sab;
 				}
 
 				// identificar o cargo
@@ -151,6 +162,8 @@ public class EmpregadoRelacaoExcelImportarCmd extends _Comando {
 						unidadeOrganizacional.setInicio(agora);
 						unidadeOrganizacional.setSituacaoData(agora);
 						unidadeOrganizacional.setGrupoSocialTipo(uoGrupoSocialTipo);
+						unidadeOrganizacional.setInclusaoUsuario((Usuario) ((UserAuthentication) contexto.getUsuario()).getDetails());
+						unidadeOrganizacional.setAlteracaoUsuario((Usuario) ((UserAuthentication) contexto.getUsuario()).getDetails());
 						unidadeOrganizacional = unidadeOrganizacionalDao.save(unidadeOrganizacional);
 					}
 				}
@@ -165,35 +178,40 @@ public class EmpregadoRelacaoExcelImportarCmd extends _Comando {
 
 				List<PessoaFisica> empregadoList = pessoaFisicaDao.findByNomeIgnoreCaseAndGenero(nomeExcel, genero);
 				PessoaFisica empregado = null;
-				if (empregadoList == null || empregadoList.isEmpty()) {
-					empregado = new PessoaFisica();
-					empregado.setNome(nomeExcel);
-					empregado.setApelidoSigla(nomeExcel.split("\\s")[0]);
-					empregado.setPublicoAlvoConfirmacao(Confirmacao.N);
-					empregado.setGenero(genero);
-					empregado.setNascimento(nascimento);
-
+				if (CollectionUtils.isEmpty(empregadoList)) {
 					// identificar o emprego
-					List<PessoaRelacionamento> relacionamentoList = new ArrayList<PessoaRelacionamento>();
-					PessoaRelacionamento pessoaRelacionamento = new PessoaRelacionamento();
-					pessoaRelacionamento.setPessoa(empregador);
-					pessoaRelacionamento.setRelacionamentoFuncao(empregadorFuncao);
 					Emprego emprego = new Emprego();
+					emprego.setRelacionamentoTipo(relacionamentoTipo);
 					emprego.setInicio(admissao);
 					emprego.setMatricula(UtilitarioString.zeroEsquerda(reg.get("MATRICULA").toString().trim().toUpperCase(), 8));
 					emprego.setCargo(cargo);
-					emprego.setRelacionamentoTipo(relacionamentoTipo);
+					
+					PessoaRelacionamento pessoaRelacionamento = new PessoaRelacionamento();
 					pessoaRelacionamento.setRelacionamento(emprego);
+					pessoaRelacionamento.setPessoa(empregador);
+					pessoaRelacionamento.setRelacionamentoFuncao(empregadorFuncao);
+					
+					List<PessoaRelacionamento> relacionamentoList = new ArrayList<PessoaRelacionamento>();
 					relacionamentoList.add(pessoaRelacionamento);
+					
+					empregado = new PessoaFisica();
+					empregado.setNome(nomeExcel);
+					empregado.setApelidoSigla(nomeExcel.split("\\s")[0]);
+					empregado.setGenero(genero);
+					empregado.setPublicoAlvoConfirmacao(Confirmacao.N);
+					empregado.setNascimento(nascimento);
 					empregado.setRelacionamentoList(relacionamentoList);
+					
 					empregado.setId((Integer) facadeBo.pessoaSalvar(contexto.getUsuario(), empregado).getResposta());
+					
 					em.detach(empregado);
 					empregado = pessoaFisicaDao.findOne(empregado.getId());
+					
+				} else if (empregadoList.size() > 1) {
+					throw new BoException("Empregados Homônimos!!! [%s]", nomeExcel);
 				} else {
 					empregado = empregadoList.get(0);
 				}
-				// if (true)
-				// continue;
 
 				Emprego emprego = null;
 				List<Emprego> empregoList = empregoDao.findByPessoaRelacionamentoListPessoaIn(empregado);
@@ -202,19 +220,19 @@ public class EmpregadoRelacaoExcelImportarCmd extends _Comando {
 						if (emprego == null) {
 							emprego = e;
 						} else {
-							throw new BoException("Empregado com mais de um emprego ativo");
+							throw new BoException("Empregado com mais de um emprego ativo [%s]", nomeExcel);
 						}
 					}
 				}
 				if (emprego == null) {
-					throw new BoException("Não foi possível identificar o emprego da pessoa");
+					throw new BoException("Não foi possível identificar o emprego da pessoa [%s]", nomeExcel);
 				}
 
 				// identificar a lotacao
 				Lotacao lotacao = null;
 				String funcao = (String) reg.get("FUNÇÃO");
 				List<Lotacao> lotacaoList = lotacaoDao.findAllByEmprego(emprego);
-				if (lotacaoList == null || lotacaoList.size() == 0) {
+				if (CollectionUtils.isEmpty(lotacaoList)) {
 					lotacao = novaLotacao(emprego, unidadeOrganizacional, emprego.getInicio(), funcao);
 				} else {
 					for (Lotacao l : lotacaoList) {
@@ -223,7 +241,6 @@ public class EmpregadoRelacaoExcelImportarCmd extends _Comando {
 								if (lotacao != null) {
 									throw new BoException("Empregado com mais de uma lotacao ativa");
 								}
-
 								l.setTermino(agora);
 								lotacaoDao.save(l);
 								lotacao = novaLotacao(emprego, unidadeOrganizacional, agora, funcao);
@@ -246,12 +263,13 @@ public class EmpregadoRelacaoExcelImportarCmd extends _Comando {
 				pessoaDao.flush();
 
 				cont++;
-				transactionManager.commit(transactionStatus);
-			} catch (Exception e) {
-				logger.error(e);
-				e.printStackTrace();
-				transactionManager.rollback(transactionStatus);
 			}
+			transactionManager.commit(transactionStatus);
+		} catch (Exception e) {
+			logger.error(e);
+			e.printStackTrace();
+			transactionManager.rollback(transactionStatus);
+			throw e;
 		}
 
 		if (logger.isDebugEnabled()) {

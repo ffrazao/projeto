@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -22,6 +23,7 @@ import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.bo.util.ArquivoConstantes;
 import br.gov.df.emater.aterwebsrv.dao.funcional.CargoDao;
 import br.gov.df.emater.aterwebsrv.dao.funcional.EmpregoDao;
+import br.gov.df.emater.aterwebsrv.dao.funcional.EmpregoViDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.ArquivoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaRelacionamentoDao;
@@ -36,6 +38,7 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.Cargo;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.Emprego;
+import br.gov.df.emater.aterwebsrv.modelo.funcional.EmpregoVi;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Arquivo;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica;
@@ -78,6 +81,9 @@ public class SisaterEmpregadoCmd extends _Comando {
 	@Autowired
 	private EmpregoDao empregoDao;
 
+	@Autowired
+	private EmpregoViDao empregoViDao;
+
 	private ImpUtil impUtil;
 
 	@Autowired
@@ -114,7 +120,7 @@ public class SisaterEmpregadoCmd extends _Comando {
 		result.setTamanho(result.getConteudo().length);
 		result.setLocalDiretorioWeb(ArquivoConstantes.DIRETORIO_PERFIL.concat(File.separator).concat(result.getMd5()));
 		result = arquivoDao.save(result);
-		pessoa.setPerfilArquivo(salvo);
+		pessoa.setPerfilArquivo(result);
 		return;
 	}
 
@@ -153,6 +159,15 @@ public class SisaterEmpregadoCmd extends _Comando {
 					}
 
 					List<Emprego> empregoList = empregoDao.findByMatricula(matricula);
+					
+					if (CollectionUtils.isEmpty(empregoList)) {
+						// tentar encontrar pelo nome
+						List<EmpregoVi> empregoViList = empregoViDao.findAllByEmpregadoNome(rs.getString("EMNOME"));
+						if (empregoViList != null && empregoViList.size() == 1) {
+							empregoList = empregoDao.findByMatricula(empregoViList.get(0).getMatricula());
+						}
+					}
+					
 					if (empregoList != null && empregoList.size() == 1) {
 						List<PessoaRelacionamento> pessoaRelacionamentoList = empregoList.get(0).getPessoaRelacionamentoList();
 						if (pessoaRelacionamentoList == null) {
@@ -183,8 +198,9 @@ public class SisaterEmpregadoCmd extends _Comando {
 						empregado.setInclusaoData(agora);
 						empregado.setAlteracaoUsuario(ematerUsuario);
 						empregado.setAlteracaoData(agora);
-						empregado.setPublicoAlvoConfirmacao(Confirmacao.N);
 						empregado.setSituacao(PessoaSituacao.A);
+						empregado.setSituacaoData(agora);
+						empregado.setPublicoAlvoConfirmacao(Confirmacao.N);
 						captarPerfilArquivo(empregado, rs);
 						empregado = pessoaDao.save(empregado);
 

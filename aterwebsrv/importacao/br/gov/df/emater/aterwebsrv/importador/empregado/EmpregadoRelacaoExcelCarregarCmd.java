@@ -17,9 +17,7 @@ public class EmpregadoRelacaoExcelCarregarCmd extends _Comando {
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 
-		File tempDir = (File) contexto.get("tempDir");
-
-		File relacaoEmpregados = new File(tempDir, "quadro_de_especialidades_da_emater-df_2016_11_22.xlsx");
+		File relacaoEmpregados = new File((File) contexto.get("tempDir"), "quadro_de_especialidades_da_emater-df_2016_11_22.xlsx");
 		if (!relacaoEmpregados.exists()) {
 			UtilitarioArquivo.downloadOrigem("http://extranet.emater.df.gov.br/index.php/component/phocadownload/category/1-institucional?download=1034:relacao-de-funcionarios-da-emater-df", relacaoEmpregados);
 		}

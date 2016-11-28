@@ -59,9 +59,9 @@ public class EmpregadoDemitidosExcelImportarCmd extends _Comando {
 		DefaultTransactionDefinition transactionDefinition = (DefaultTransactionDefinition) contexto.get("transactionDefinition");
 
 		int cont = 0;
-		for (Map<String, Object> reg : mapa) {
-			TransactionStatus transactionStatus = transactionManager.getTransaction(transactionDefinition);
-			try {
+		TransactionStatus transactionStatus = transactionManager.getTransaction(transactionDefinition);
+		try {
+			for (Map<String, Object> reg : mapa) {
 				// identificar o empregador
 				PessoaJuridica empregador = null;
 				if (Arrays.asList(new String[] { "2 - NORMAL", "8 - CEDIDO", "5 - DESLIGADO" }).contains(reg.get("STATUS"))) {
@@ -91,18 +91,22 @@ public class EmpregadoDemitidosExcelImportarCmd extends _Comando {
 				String matricula = UtilitarioString.zeroEsquerda(reg.get("MATRICULA").toString().trim().toUpperCase(), 8);
 				String nome = UtilitarioString.formataNomeProprio((String) reg.get("NOME"));
 				Calendar admissao = new GregorianCalendar();
-				try {					
+				try {
 					admissao.setTime(DateUtil.getJavaDate((double) reg.get("ADMISSÃO")));
 				} catch (ClassCastException e) {
 					admissao = (Calendar) UtilitarioData.getInstance().stringParaData((String) reg.get("ADMISSÃO"));
 				}
-				Calendar demissao = new GregorianCalendar();
-				try {
-					demissao.setTime(DateUtil.getJavaDate((double) reg.get("DESLIGAMENTO")));
-				} catch (ClassCastException e) {
-					String temp = (String) reg.get("DESLIGAMENTO");
-					if (!"99/99/9999".equals(temp)) {						
-						demissao = (Calendar) UtilitarioData.getInstance().stringParaData(temp);
+				Calendar demissao = null;
+				Object desligamentoObj = reg.get("DESLIGAMENTO");
+				if (desligamentoObj != null) {
+					try {
+						demissao = new GregorianCalendar();
+						demissao.setTime(DateUtil.getJavaDate((double) desligamentoObj));
+					} catch (ClassCastException e) {
+						String temp = (String) desligamentoObj;
+						if (!"99/99/9999".equals(temp)) {
+							demissao = (Calendar) UtilitarioData.getInstance().stringParaData(temp);
+						}
 					}
 				}
 				String cpf = UtilitarioString.formataCpf((String) reg.get("CPF"));
@@ -157,12 +161,13 @@ public class EmpregadoDemitidosExcelImportarCmd extends _Comando {
 				pessoaDao.flush();
 
 				cont++;
-				transactionManager.commit(transactionStatus);
-			} catch (Exception e) {
-				logger.error(e);
-				e.printStackTrace();
-				transactionManager.rollback(transactionStatus);
 			}
+
+			transactionManager.commit(transactionStatus);
+		} catch (Exception e) {
+			logger.error(e);
+			e.printStackTrace();
+			transactionManager.rollback(transactionStatus);
 		}
 
 		if (logger.isDebugEnabled()) {

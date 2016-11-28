@@ -1,10 +1,8 @@
 package br.gov.df.emater.aterwebsrv.dao.atividade;
 
 import java.sql.Timestamp;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;

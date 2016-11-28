@@ -1,6 +1,8 @@
 package br.gov.df.emater.aterwebsrv.modelo.pessoa;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,7 +26,8 @@ public class RelacionamentoTipo extends EntidadeBase implements _ChavePrimaria<I
 
 	private static final long serialVersionUID = 1L;
 
-	private String codigo;
+	@Enumerated(EnumType.STRING)
+	private Codigo codigo;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,7 +43,7 @@ public class RelacionamentoTipo extends EntidadeBase implements _ChavePrimaria<I
 		setNome(nome);
 	}
 
-	public String getCodigo() {
+	public Codigo getCodigo() {
 		return codigo;
 	}
 
@@ -58,7 +61,7 @@ public class RelacionamentoTipo extends EntidadeBase implements _ChavePrimaria<I
 		return new RelacionamentoTipo(getId(), getNome());
 	}
 
-	public void setCodigo(String codigo) {
+	public void setCodigo(Codigo codigo) {
 		this.codigo = codigo;
 	}
 

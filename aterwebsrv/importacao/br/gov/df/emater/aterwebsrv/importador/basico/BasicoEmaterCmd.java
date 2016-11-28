@@ -18,6 +18,7 @@ import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaJuridicaDao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
+import br.gov.df.emater.aterwebsrv.modelo.funcional.Empregador;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Cidade;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Email;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Endereco;
@@ -26,7 +27,6 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Municipio;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pais;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaEmail;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaEndereco;
-import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 
 @Service
 public class BasicoEmaterCmd extends _Comando {
@@ -38,14 +38,14 @@ public class BasicoEmaterCmd extends _Comando {
 	public boolean executar(_Contexto contexto) throws Exception {
 		FacadeBo facadeBo = (FacadeBo) contexto.get("facadeBo");
 
-		PessoaJuridica emater = null;
-		while ((emater = pessoaDao.findOneByNome("Empresa de Assistência Técnica e Extensão Rural do Distrito Federal")) == null) {
+		Empregador emater = null;
+		while ((emater = (Empregador) pessoaDao.findOneByNome("Empresa de Assistência Técnica e Extensão Rural do Distrito Federal")) == null) {
 			PlatformTransactionManager transactionManager = (PlatformTransactionManager) contexto.get("transactionManager");
 			DefaultTransactionDefinition transactionDefinition = (DefaultTransactionDefinition) contexto.get("transactionDefinition");
 
 			TransactionStatus transactionStatus = transactionManager.getTransaction(transactionDefinition);
 			try {
-				emater = new PessoaJuridica();
+				emater = new Empregador();
 				emater.setNome("Empresa de Assistência Técnica e Extensão Rural do Distrito Federal");
 				emater.setApelidoSigla("EMATER-DF");
 				emater.setPublicoAlvoConfirmacao(Confirmacao.N);

@@ -32,6 +32,7 @@ import br.gov.df.emater.aterwebsrv.dao.formulario.ColetaDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.ArquivoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.EstadoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.GrupoSocialDao;
+import br.gov.df.emater.aterwebsrv.dao.pessoa.GrupoSocialTipoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.MunicipioDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PaisDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaDao;
@@ -49,6 +50,7 @@ import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.ArquivoTipo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.CadastroAcao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.GrupoSocialEscopo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaNacionalidade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
@@ -61,6 +63,7 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Email;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Endereco;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Estado;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.GrupoSocial;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.GrupoSocialTipo;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Municipio;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pais;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
@@ -459,6 +462,15 @@ public class SisaterPublicoAlvoCmd extends _Comando {
 
 	private List<GrupoSocial> grupoSocialList;
 
+	private GrupoSocialTipo grupoSocialTipo;
+
+	public SisaterPublicoAlvoCmd() {
+		super();
+	}
+
+	@Autowired
+	private GrupoSocialTipoDao grupoSocialTipoDao;
+
 	private ImpUtil impUtil;
 
 	@Autowired
@@ -694,7 +706,7 @@ public class SisaterPublicoAlvoCmd extends _Comando {
 					}
 
 					captarDiagnosticoList(rs, pessoa);
-					
+
 					if (cont % 500 == 0) {
 						long memo = Runtime.getRuntime().freeMemory();
 						if (logger.isInfoEnabled()) {
@@ -731,8 +743,20 @@ public class SisaterPublicoAlvoCmd extends _Comando {
 			}
 		}
 		GrupoSocial grupoSocial = grupoSocialDao.findByNome(nome);
+		if (grupoSocial == null) {
+			grupoSocial = new GrupoSocial(null, nome, null, null, PessoaSituacao.A, Confirmacao.N, getGrupoSocialTipo(), GrupoSocialEscopo.E);
+			grupoSocial.setSituacaoData(Calendar.getInstance());
+			grupoSocial = grupoSocialDao.save(grupoSocial);
+		}
 		grupoSocialList.add(grupoSocial);
 		return grupoSocial;
+	}
+
+	private GrupoSocialTipo getGrupoSocialTipo() {
+		if (this.grupoSocialTipo == null) {
+			grupoSocialTipo = grupoSocialTipoDao.findOneByCodigo(GrupoSocialTipo.Codigo.PROGRAMA_SOCIAL);
+		}
+		return grupoSocialTipo;
 	}
 
 	private RelacionamentoFuncao getRelacionamentoFuncao(String nomeSeMasculino) {
@@ -751,7 +775,7 @@ public class SisaterPublicoAlvoCmd extends _Comando {
 
 	private RelacionamentoTipo getRelacionamentoTipoFamiliar() {
 		if (relacionamentoTipoFamiliar == null) {
-			relacionamentoTipoFamiliar = relacionamentoTipoDao.findByCodigo(RelacionamentoTipo.Codigo.FAMILIAR.name());
+			relacionamentoTipoFamiliar = relacionamentoTipoDao.findOneByCodigo(RelacionamentoTipo.Codigo.FAMILIAR);
 		}
 		return relacionamentoTipoFamiliar;
 	}

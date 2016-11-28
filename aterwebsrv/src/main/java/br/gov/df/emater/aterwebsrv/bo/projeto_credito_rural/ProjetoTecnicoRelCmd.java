@@ -658,7 +658,7 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 
 	private void iniciarRelacionamento() {
 		if (this.relacionamentoTipo == null) {
-			this.relacionamentoTipo = relacionamentoTipoDao.findByCodigo(RelacionamentoTipo.Codigo.FAMILIAR.name());
+			this.relacionamentoTipo = relacionamentoTipoDao.findOneByCodigo(RelacionamentoTipo.Codigo.FAMILIAR);
 			this.funcaoPaiMae = relacionamentoFuncaoDao.findOneByNomeSeMasculino("Pai");
 			this.funcaoConjuge = relacionamentoFuncaoDao.findOneByNomeSeMasculino("Esposo");
 		}

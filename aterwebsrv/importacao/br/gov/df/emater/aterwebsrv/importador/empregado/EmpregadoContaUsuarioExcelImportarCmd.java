@@ -6,11 +6,13 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.springframework.util.CollectionUtils;
 
 import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
@@ -23,6 +25,7 @@ import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaEmailDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaRelacionamentoDao;
 import br.gov.df.emater.aterwebsrv.dao.sistema.UsuarioDao;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.UsuarioStatusConta;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.Emprego;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Email;
@@ -67,10 +70,10 @@ public class EmpregadoContaUsuarioExcelImportarCmd extends _Comando {
 		DefaultTransactionDefinition transactionDefinition = (DefaultTransactionDefinition) contexto.get("transactionDefinition");
 
 		int cont = 0;
-		for (Map<String, Object> reg : mapa) {
-			TransactionStatus transactionStatus = transactionManager.getTransaction(transactionDefinition);
-			try {
-				if (((String) reg.get("User Logon Name")) == null || ((String) reg.get("User Logon Name")).trim().length() == 0) {
+		TransactionStatus transactionStatus = transactionManager.getTransaction(transactionDefinition);
+		try {
+			for (Map<String, Object> reg : mapa) {
+				if (StringUtils.isEmpty((String) reg.get("User Logon Name"))) {
 					continue;
 				}
 				String conta[] = ((String) reg.get("User Logon Name")).split("\\@");
@@ -80,10 +83,10 @@ public class EmpregadoContaUsuarioExcelImportarCmd extends _Comando {
 				String matricula = UtilitarioString.zeroEsquerda(conta[0].substring(3).toUpperCase(), 8);
 				String emailExcel = ((String) reg.get("E-Mail Address")).toLowerCase();
 				List<Emprego> empregoList = empregoDao.findByMatricula(matricula);
-				if (empregoList != null && empregoList.size() > 0) {
+				if (!CollectionUtils.isEmpty(empregoList)) {
 					Emprego emprego = null;
 					for (Emprego e : empregoList) {
-						if (e.getInicio().before(agora) && e.getTermino() == null || e.getTermino().after(agora)) {
+						if (e.getInicio().before(agora) && (e.getTermino() == null || e.getTermino().after(agora))) {
 							if (emprego == null) {
 								emprego = e;
 							} else {
@@ -127,6 +130,7 @@ public class EmpregadoContaUsuarioExcelImportarCmd extends _Comando {
 									pessoaEmail.setEmail(email);
 									pessoaEmail.setFinalidade("C");
 									pessoaEmail.setPessoa(pessoa);
+									pessoaEmail.setPrincipal(Confirmacao.S);
 									pessoaEmail.setOrdem(pessoa.getEmailList() == null ? 1 : pessoa.getEmailList().size() + 1);
 
 									pessoaEmail = pessoaEmailDao.save(pessoaEmail);
@@ -146,12 +150,12 @@ public class EmpregadoContaUsuarioExcelImportarCmd extends _Comando {
 					}
 				}
 				cont++;
-				transactionManager.commit(transactionStatus);
-			} catch (Exception e) {
-				logger.error(e);
-				e.printStackTrace();
-				transactionManager.rollback(transactionStatus);
 			}
+			transactionManager.commit(transactionStatus);
+		} catch (Exception e) {
+			logger.error(e);
+			e.printStackTrace();
+			transactionManager.rollback(transactionStatus);
 		}
 
 		if (logger.isDebugEnabled()) {

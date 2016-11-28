@@ -4,9 +4,6 @@ import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +37,7 @@ import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaRelacionamentoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaTelefoneDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoConfiguracaoViDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoDao;
+import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoTipoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.TelefoneDao;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
@@ -73,6 +71,9 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Telefone;
 public class SalvarCmd extends _SalvarCmd {
 
 	@Autowired
+	private RelacionamentoTipoDao relacionamentoTipoDao;
+
+	@Autowired
 	private ArquivoDao arquivoDao;
 
 	@Autowired
@@ -86,9 +87,6 @@ public class SalvarCmd extends _SalvarCmd {
 
 	@Autowired
 	private PessoaDao dao;
-
-	@Autowired
-	private EntityManager em;
 
 	@Autowired
 	private EmailDao emailDao;
@@ -403,7 +401,8 @@ public class SalvarCmd extends _SalvarCmd {
 		}
 
 		// tratar a exclusao de registros
-		//excluirRegistros(result, "relacionamentoList", pessoaRelacionamentoDao);
+		// excluirRegistros(result, "relacionamentoList",
+		// pessoaRelacionamentoDao);
 		if (result.getExcluidoMap() != null && result.getExcluidoMap().get("relacionamentoList") != null) {
 			result.getExcluidoMap().get("relacionamentoList").forEach((registro) -> {
 				PessoaRelacionamento pr = pessoaRelacionamentoDao.findOne((Integer) registro);
@@ -413,60 +412,51 @@ public class SalvarCmd extends _SalvarCmd {
 
 		// salvar relacionamentos
 		if (!CollectionUtils.isEmpty(result.getRelacionamentoList())) {
-			for (PessoaRelacionamento pessoaRelacionamento : result.getRelacionamentoList()) {
-				Relacionamento relacionamento = pessoaRelacionamento.getRelacionamento();
-
-				if (relacionamento == null || relacionamento.getId() == null) {
-					if (relacionamento == null) {
-						relacionamento = new Relacionamento();
-					}
-					if (relacionamento.getRelacionamentoTipo() == null) {
-						relacionamento.setRelacionamentoTipo(pessoaRelacionamento.getRelacionamento().getRelacionamentoTipo());
-					}
-				} else {
-					Relacionamento salvo = relacionamentoDao.findById(relacionamento.getId());
-					List<PessoaRelacionamento> prList = salvo.getPessoaRelacionamentoList();
-					prList.size();
-					BeanUtils.copyProperties(salvo, relacionamento);
-					relacionamento = salvo;
-					relacionamento.setPessoaRelacionamentoList(prList);
-					em.detach(salvo);
-					salvo = null;
+			// salvar o relacionamento
+			for (PessoaRelacionamento relacionador : result.getRelacionamentoList()) {
+				if (relacionador.getRelacionamento() == null || relacionador.getRelacionamento().getRelacionamentoTipo() == null || relacionador.getRelacionamento().getRelacionamentoTipo().getCodigo() == null || relacionador == null
+						|| relacionador.getRelacionamentoFuncao() == null || relacionador.getRelacionamentoFuncao().getId() == null) {
+					throw new BoException("Os dados do relacionamento da pessoa estão incompletos!");
 				}
-				relacionamento.setInicio(pessoaRelacionamento.getRelacionamento().getInicio());
-				relacionamento.setTermino(pessoaRelacionamento.getRelacionamento().getTermino());
+				// evitar o auto relacionamento
+				if (relacionador.getPessoa() == null || result.getId().equals(relacionador.getPessoa().getId())) {
+					continue;
+				}
+
+				// savar o objeto do relacionamento
+				Relacionamento relacionamento = relacionador.getRelacionamento();
+
+				relacionamento.setRelacionamentoTipo(relacionamentoTipoDao.findOneByCodigo(relacionamento.getRelacionamentoTipo().getCodigo()));
+
 				if (relacionamento instanceof Emprego) {
 					relacionamento = empregoDao.save((Emprego) relacionamento);
 				} else {
 					relacionamento = relacionamentoDao.save(relacionamento);
 				}
 
-				// salvar o relacionado
-				pessoaRelacionamento.setRelacionamento(relacionamento);
-				pessoaRelacionamentoDao.save(pessoaRelacionamento);
+				RelacionamentoConfiguracaoVi config = relacionamentoConfiguracaoViDao.findOneByTipoCodigoAndRelacionadorId(relacionamento.getRelacionamentoTipo().getCodigo().toString(), relacionador.getRelacionamentoFuncao().getId());
 
-				RelacionamentoConfiguracaoVi relacionamentoConfiguracaoVi = relacionamentoConfiguracaoViDao.findByTipoIdAndRelacionadorId(pessoaRelacionamento.getRelacionamento().getRelacionamentoTipo().getId(), pessoaRelacionamento.getRelacionamentoFuncao().getId());
+				// salvar o registro da pessoa atual
+				relacionador.setRelacionamento(relacionamento);
+				pessoaRelacionamentoDao.save(relacionador);
 
-				// salvar o relacionador
-				PessoaRelacionamento relacionador = null;
-				boolean encontrou = false;
-				if (relacionamento.getPessoaRelacionamentoList() != null) {
-					for (PessoaRelacionamento rel : relacionamento.getPessoaRelacionamentoList()) {
-						if (rel.getPessoa() != null && rel.getPessoa().getId().equals(result.getId())) {
-							relacionador = rel;
-							encontrou = true;
-							break;
-						}
+				// salvar o registro da pessoa relacionada
+				PessoaRelacionamento relacionado = new PessoaRelacionamento();
+				// recuperar informações já salvas
+				List<PessoaRelacionamento> prList = pessoaRelacionamentoDao.findByRelacionamento(relacionamento);
+				for (PessoaRelacionamento pr : prList) {
+					if (result.getId().equals(pr.getPessoa().getId()) && !pr.getId().equals(relacionador.getId())) {
+						relacionado = pr;
 					}
 				}
-				if (!encontrou) {
-					relacionador = new PessoaRelacionamento();
-					relacionador.setPessoa(result);
-					relacionador.setRelacionamento(relacionamento);
-				}
-				relacionador.setRelacionamentoFuncao(new RelacionamentoFuncao(relacionamentoConfiguracaoVi.getRelacionadorId()));
-				pessoaRelacionamentoDao.save(relacionador);
+				relacionado.setRelacionamento(relacionamento);
+				relacionado.setPessoa(result);
+				relacionado.setRelacionamentoFuncao(new RelacionamentoFuncao(config.getRelacionadoId()));
+				pessoaRelacionamentoDao.save(relacionado);
+
 			}
+			// as pessoas do relacionamento
+
 		}
 
 		// tratar a exclusao de registros
@@ -544,3 +534,62 @@ public class SalvarCmd extends _SalvarCmd {
 	}
 
 }
+
+// Relacionamento relacionamento = pessoaRelacionamento.getRelacionamento();
+//
+// if (relacionamento == null || relacionamento.getId() == null) {
+// if (relacionamento == null) {
+// relacionamento = new Relacionamento();
+// }
+// if (relacionamento.getRelacionamentoTipo() == null) {
+// relacionamento.setRelacionamentoTipo(pessoaRelacionamento.getRelacionamento().getRelacionamentoTipo());
+// }
+// } else {
+// Relacionamento salvo = relacionamentoDao.findById(relacionamento.getId());
+// List<PessoaRelacionamento> prList = salvo.getPessoaRelacionamentoList();
+// prList.size();
+// BeanUtils.copyProperties(salvo, relacionamento);
+// relacionamento = salvo;
+// relacionamento.setPessoaRelacionamentoList(prList);
+// em.detach(salvo);
+// salvo = null;
+// }
+// relacionamento.setInicio(pessoaRelacionamento.getRelacionamento().getInicio());
+// relacionamento.setTermino(pessoaRelacionamento.getRelacionamento().getTermino());
+// if (relacionamento instanceof Emprego) {
+// relacionamento = empregoDao.save((Emprego) relacionamento);
+// } else {
+// relacionamento = relacionamentoDao.save(relacionamento);
+// }
+//
+// // salvar o relacionado
+// pessoaRelacionamento.setRelacionamento(relacionamento);
+// pessoaRelacionamentoDao.save(pessoaRelacionamento);
+//
+// RelacionamentoConfiguracaoVi relacionamentoConfiguracaoVi =
+// relacionamentoConfiguracaoViDao.findByTipoIdAndRelacionadorId(pessoaRelacionamento.getRelacionamento().getRelacionamentoTipo().getId(),
+// pessoaRelacionamento.getRelacionamentoFuncao().getId());
+//
+// // salvar o relacionador
+// PessoaRelacionamento relacionador = null;
+// boolean encontrou = false;
+// if (relacionamento.getPessoaRelacionamentoList() != null) {
+// for (PessoaRelacionamento rel : relacionamento.getPessoaRelacionamentoList())
+// {
+// if (rel.getPessoa() != null &&
+// rel.getPessoa().getId().equals(result.getId())) {
+// relacionador = rel;
+// encontrou = true;
+// break;
+// }
+// }
+// }
+// if (!encontrou) {
+// relacionador = new PessoaRelacionamento();
+// relacionador.setPessoa(result);
+// relacionador.setRelacionamento(relacionamento);
+// }
+// relacionador.setRelacionamentoFuncao(new
+// RelacionamentoFuncao(relacionamentoConfiguracaoVi.getRelacionadorId()));
+// pessoaRelacionamentoDao.save(relacionador);*/
+// }
