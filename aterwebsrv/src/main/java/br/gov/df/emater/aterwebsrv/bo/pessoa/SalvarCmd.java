@@ -296,6 +296,10 @@ public class SalvarCmd extends _SalvarCmd {
 						publicoAlvoPropriedadeRural.setPropriedadeRural(propriedadeRuralDao.findOne(publicoAlvoPropriedadeRural.getPropriedadeRural().getId()));
 						publicoAlvoPropriedadeRural.setComunidade(publicoAlvoPropriedadeRural.getPropriedadeRural().getComunidade());
 					}
+					if(publicoAlvoPropriedadeRural.getPrincipal() == null){
+						publicoAlvoPropriedadeRural.setPrincipal(Confirmacao.N);
+					}
+					
 					publicoAlvoPropriedadeRuralDao.save(publicoAlvoPropriedadeRural);
 				}
 				if (comunidade && tot > 1) {

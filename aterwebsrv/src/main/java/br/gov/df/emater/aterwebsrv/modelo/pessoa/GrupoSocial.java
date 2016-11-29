@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.GrupoSocialEscopo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
@@ -88,7 +89,7 @@ public class GrupoSocial extends Pessoa {
 
 	@Override
 	public GrupoSocial infoBasica() {
-		return new GrupoSocial(this.getId(), this.getNome(), this.getApelidoSigla(), this.getPerfilArquivo(), this.getSituacao(), this.getPublicoAlvoConfirmacao(), this.getGrupoSocialTipo(), this.getEscopo());
+		return new GrupoSocial(this.getId(), this.getNome(), this.getApelidoSigla(), this.getPerfilArquivo(), this.getSituacao(), this.getPublicoAlvoConfirmacao(), UtilitarioInfoBasica.infoBasicaReg(this.getGrupoSocialTipo()), this.getEscopo());
 	}
 
 	public void setEscopo(GrupoSocialEscopo escopo) {

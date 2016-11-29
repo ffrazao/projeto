@@ -52,7 +52,7 @@ angular.module(pNmModulo).controller(pNmController,
     // fim rotinas de apoio
 
     $scope.grupoSocialList = [];
-    UtilSrv.dominioLista($scope.grupoSocialList, {ent:['GrupoSocial']});
+    UtilSrv.dominioLista($scope.grupoSocialList, {ent:['GrupoSocial'], npk: 'grupoSocialTipo.id', vpk: 1});
 
     // inicio das operaçoes atribuidas ao navagador
     $scope.abrir = function() { $scope.pessoaGrupoSocialNvg.mudarEstado('ESPECIAL'); };

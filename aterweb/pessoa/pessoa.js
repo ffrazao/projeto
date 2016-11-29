@@ -118,6 +118,12 @@
             };
             var validaRegistro = function(scp, acao) {
                 var registro = scp.cadastro.registro;
+                removerCampo(registro, ['@jsonId']);
+                if (registro.grupoSocialList) {
+                    registro.grupoSocialList.forEach(function(v,k) {
+                        v.grupoSocial['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.GrupoSocial';
+                    });
+                }
                 if (registro.publicoAlvoConfirmacao === 'S' && (!registro.publicoAlvo ||
                     !registro.publicoAlvo.publicoAlvoPropriedadeRuralList ||
                     !registro.publicoAlvo.publicoAlvoPropriedadeRuralList.length)) {
