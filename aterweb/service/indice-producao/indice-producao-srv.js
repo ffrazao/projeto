@@ -34,6 +34,11 @@ angular.module(pNmModulo).factory(pNmFactory,
                         scp.cadastro.apoio.confirmadoList = resposta.resultado[0];
                         scp.cadastro.apoio.quantitativoList = resposta.resultado[1];
                         scp.cadastro.apoio.unidadeOrganizacionalList = resposta.resultado[2];
+                        if(scp.cadastro.apoio.unidadeOrganizacionalList) {
+                            for (var i = scp.cadastro.apoio.unidadeOrganizacionalList.length - 1; i >= 0; i--) {
+                                scp.cadastro.apoio.unidadeOrganizacionalList[i]['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional';
+                            }
+                        }
                     }
                 });
                 var identificaPai = function(lista, pai) {

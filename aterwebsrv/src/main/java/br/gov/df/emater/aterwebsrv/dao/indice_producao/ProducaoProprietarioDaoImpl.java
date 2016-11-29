@@ -223,7 +223,7 @@ public class ProducaoProprietarioDaoImpl implements ProducaoProprietarioDaoCusto
 		sql.append("SELECT DISTINCT a.*,").append("\n");
 		sql.append("                d.bem_classificacao_id,").append("\n");
 		sql.append("                d.nome as nomeBemClassificado,").append("\n");
-		sql.append("                e.nome as nomeUnidadeOrganizacional,").append("\n");
+		sql.append("                e1.nome as nomeUnidadeOrganizacional,").append("\n");
 		sql.append("                f.nome as nomePropriedadeRural,").append("\n");
 		sql.append("                f1.id as idComunidade,").append("\n");
 		sql.append("                f1.nome as nomeComunidade,").append("\n");
@@ -239,6 +239,8 @@ public class ProducaoProprietarioDaoImpl implements ProducaoProprietarioDaoCusto
 		sql.append("ON     d.id = a.bem_classificado_id").append("\n");
 		sql.append("LEFT JOIN   funcional.unidade_organizacional e").append("\n");
 		sql.append("ON     e.id = a.unidade_organizacional_id").append("\n");
+		sql.append("LEFT JOIN   pessoa.pessoa e1").append("\n");
+		sql.append("ON     e1.id = e.id").append("\n");
 		sql.append("LEFT JOIN   ater.propriedade_rural f").append("\n");
 		sql.append("ON     f.id = a.propriedade_rural_id").append("\n");
 		// caso o filtro seja para o detalhamento da produçao de uma unidade
@@ -353,7 +355,7 @@ public class ProducaoProprietarioDaoImpl implements ProducaoProprietarioDaoCusto
 			}
 		}
 
-		sql.append("ORDER BY a.ano, d.nome, e.nome, h.nome, f.nome").append("\n");
+		sql.append("ORDER BY a.ano, d.nome, e1.nome, h.nome, f.nome").append("\n");
 
 		Query query = sessionFactory.getCurrentSession().createSQLQuery(sql.toString()).setResultTransformer(new ResultTransformer() {
 
