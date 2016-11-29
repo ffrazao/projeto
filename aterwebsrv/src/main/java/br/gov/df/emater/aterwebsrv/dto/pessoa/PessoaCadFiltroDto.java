@@ -8,6 +8,7 @@ import br.gov.df.emater.aterwebsrv.dto.TagDto;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.ater.Comunidade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.ConfirmacaoDap;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PendenciaTipo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGeracao;
@@ -60,7 +61,7 @@ public class PessoaCadFiltroDto extends CadFiltroDtoCustom {
 
 	private Set<Confirmacao> publicoAlvoComprasInstitucionais;
 
-	private Set<Confirmacao> publicoAlvoDap;
+	private Set<ConfirmacaoDap> publicoAlvoDap;
 
 	private Set<Confirmacao> publicoAlvoIncra;
 
@@ -156,7 +157,7 @@ public class PessoaCadFiltroDto extends CadFiltroDtoCustom {
 		return publicoAlvoComprasInstitucionais;
 	}
 
-	public Set<Confirmacao> getPublicoAlvoDap() {
+	public Set<ConfirmacaoDap> getPublicoAlvoDap() {
 		return publicoAlvoDap;
 	}
 
@@ -276,7 +277,7 @@ public class PessoaCadFiltroDto extends CadFiltroDtoCustom {
 		this.publicoAlvoComprasInstitucionais = publicoAlvoComprasInstitucionais;
 	}
 
-	public void setPublicoAlvoDap(Set<Confirmacao> publicoAlvoDap) {
+	public void setPublicoAlvoDap(Set<ConfirmacaoDap> publicoAlvoDap) {
 		this.publicoAlvoDap = publicoAlvoDap;
 	}
 

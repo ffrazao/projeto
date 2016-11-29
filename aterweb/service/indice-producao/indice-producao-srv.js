@@ -18,6 +18,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                 // captar as listas de apoio
                 scp.cadastro.apoio.ano = new Date().getFullYear();
                 scp.cadastro.filtro.ano = scp.cadastro.apoio.ano;
+                
                 for (var ano = scp.cadastro.filtro.ano + 1; ano > scp.cadastro.filtro.ano - 20; ano--) {
                     if (!scp.cadastro.apoio.anoList) {
                         scp.cadastro.apoio.anoList = [];

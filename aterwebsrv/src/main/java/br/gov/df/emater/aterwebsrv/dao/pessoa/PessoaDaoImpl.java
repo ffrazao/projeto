@@ -312,6 +312,10 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 			params.add(filtro.getPendencia());
 			sql.append("and pendencia.tipo in ?").append(params.size()).append("\n");
 		}
+		if (!CollectionUtils.isEmpty(filtro.getPublicoAlvoDap())) {
+			params.add(filtro.getPublicoAlvoDap());
+			sql.append("and alvo.dapSituacao in ?").append(params.size()).append("\n");
+		}
 		sql.append("order by p.nome, p.apelidoSigla").append("\n");
 
 		// criar a query

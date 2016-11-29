@@ -589,7 +589,7 @@
                         for (j in $scope.cadastro.apoio.localList[i].unidadeList) {
                             // filtrar as unidades organizacionais
                             if ($scope.cadastro.apoio.localList[i].unidadeList[j].selecionado) {
-                                filtro.unidadeOrganizacionalList.push({id: $scope.cadastro.apoio.localList[i].unidadeList[j].id, '@class': 'br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional'});
+                               filtro.unidadeOrganizacionalList.push({id: $scope.cadastro.apoio.localList[i].unidadeList[j].id, '@class': 'br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional'});
                             } else {
                                 for (k in $scope.cadastro.apoio.localList[i].unidadeList[j].comunidadeList) {
                                     // filtrar as unidades organizacionais
