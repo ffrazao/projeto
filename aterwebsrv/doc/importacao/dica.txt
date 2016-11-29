@@ -1,11 +1,12 @@
 ## exportar
-mysqldump -uemater -pemater --default-character-set=utf8 ater      > ater.sql
-mysqldump -uemater -pemater --default-character-set=utf8 enquete   > enquete.sql
-mysqldump -uemater -pemater --default-character-set=utf8 funcional > funcional.sql
-mysqldump -uemater -pemater --default-character-set=utf8 pessoa    > pessoa.sql
-mysqldump -uemater -pemater --default-character-set=utf8 seguranca > seguranca.sql
-mysqldump -uemater -pemater --default-character-set=utf8 sistema   > sistema.sql
-
+mysqldump -uemater -pemater --default-character-set=utf8 ater            > ater.sql
+mysqldump -uemater -pemater --default-character-set=utf8 atividade       > atividade.sql
+mysqldump -uemater -pemater --default-character-set=utf8 credito_rural   > credito_rural.sql
+mysqldump -uemater -pemater --default-character-set=utf8 formulario      > formulario.sql
+mysqldump -uemater -pemater --default-character-set=utf8 funcional       > funcional.sql
+mysqldump -uemater -pemater --default-character-set=utf8 indice_producao > indice_producao.sql
+mysqldump -uemater -pemater --default-character-set=utf8 pessoa          > pessoa.sql
+mysqldump -uemater -pemater --default-character-set=utf8 sistema         > sistema.sql
 
 ## importar
 mysql -uemater -pemater --default-character-set=utf8 ater      < ater.sql
@@ -14,3 +15,14 @@ mysql -uemater -pemater --default-character-set=utf8 funcional < funcional.sql
 mysql -uemater -pemater --default-character-set=utf8 pessoa    < pessoa.sql
 mysql -uemater -pemater --default-character-set=utf8 seguranca < seguranca.sql
 mysql -uemater -pemater --default-character-set=utf8 sistema   < sistema.sql
+
+
+
+mysql -uemater -pemater --default-character-set=utf8 ater            > ater.sql
+mysql -uemater -pemater --default-character-set=utf8 atividade       > atividade.sql
+mysql -uemater -pemater --default-character-set=utf8 credito_rural   > credito_rural.sql
+mysql -uemater -pemater --default-character-set=utf8 formulario      > formulario.sql
+mysql -uemater -pemater --default-character-set=utf8 funcional       > funcional.sql
+mysql -uemater -pemater --default-character-set=utf8 indice_producao > indice_producao.sql
+mysql -uemater -pemater --default-character-set=utf8 pessoa          > pessoa.sql
+mysql -uemater -pemater --default-character-set=utf8 sistema         > sistema.sql

@@ -673,7 +673,7 @@ public class ImpUtil {
 	}
 
 	public RegimeCasamento deParaRegimeCasamento(String registro) {
-		if (registro == null) {
+		if (StringUtils.isBlank(registro)) {
 			return null;
 		}
 		switch (UtilitarioString.semAcento(registro.trim().toLowerCase())) {

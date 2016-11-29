@@ -7,6 +7,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.regex.Pattern;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -94,6 +97,9 @@ public class UtilitarioString {
 			return null;
 		}
 		numero = zeroEsquerda(soNumero(numero.trim()), 8);
+		if (StringUtils.isBlank(numero)) {
+			return null;
+		}
 		return Pattern.compile("(\\d{2})(\\d{3})(\\d{3})").matcher(numero).replaceAll("$1.$2-$3");
 	}
 
@@ -252,6 +258,17 @@ public class UtilitarioString {
 
 	public static boolean isEmpty(String vlr) {
 		return StringUtils.isBlank(vlr);
+	}
+
+	public static boolean isValidEmail(String email) {
+		boolean result = true;
+		try {
+			InternetAddress emailAddr = new InternetAddress(email);
+			emailAddr.validate();
+		} catch (AddressException ex) {
+			result = false;
+		}
+		return result;
 	}
 
 	public static String limitarTextoEm(String texto, int tamanho) {

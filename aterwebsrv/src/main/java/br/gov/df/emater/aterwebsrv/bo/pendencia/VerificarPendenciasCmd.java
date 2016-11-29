@@ -1,11 +1,9 @@
 package br.gov.df.emater.aterwebsrv.bo.pendencia;
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -32,24 +30,26 @@ public abstract class VerificarPendenciasCmd extends _Comando {
 	@Autowired
 	protected PropriedadeRuralPendenciaDao propriedadeRuralPendenciaDao;
 
-	private String adicionarDescricao(String descricaoTxt, String descricao) throws IOException {
-		if (descricao == null) {
-			return descricaoTxt;
-		}
-		if (descricaoTxt == null) {
-			descricaoTxt = "";
-		}
-		List<String> descricaoList = IOUtils.readLines(new StringReader(descricaoTxt));
-		if (descricaoList.contains(descricao)) {
-			return descricaoTxt;
-		}
-		descricaoList.add(descricao);
-		StringBuilder result = new StringBuilder();
-		for (String linha : descricaoList) {
-			result.append(linha).append("\n");
-		}
-		return result.toString();
-	}
+	// private String adicionarDescricao(String descricaoTxt, String descricao)
+	// throws IOException {
+	// if (descricao == null) {
+	// return descricaoTxt;
+	// }
+	// if (descricaoTxt == null) {
+	// descricaoTxt = "";
+	// }
+	// List<String> descricaoList = IOUtils.readLines(new
+	// StringReader(descricaoTxt));
+	// if (descricaoList.contains(descricao)) {
+	// return descricaoTxt;
+	// }
+	// descricaoList.add(descricao);
+	// StringBuilder result = new StringBuilder();
+	// for (String linha : descricaoList) {
+	// result.append(linha).append("\n");
+	// }
+	// return result.toString();
+	// }
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public final void adicionarPendencia(_Contexto contexto, String descricao) throws IOException {
@@ -66,25 +66,33 @@ public abstract class VerificarPendenciasCmd extends _Comando {
 		// inserir no objeto analisado
 		if (getPendenciavel() instanceof Pessoa) {
 			pendencia = new PessoaPendencia(getCodigo(), descricao);
-			Pessoa pessoa = (Pessoa) getPendenciavel();
-			if (pessoa != null && pessoa.getId() != null) {
-				PessoaPendencia salvo = pessoaPendenciaDao.findOneByPessoaAndCodigo(pessoa, getCodigo().name());
-				if (salvo != null) {
-					pendencia.setId(salvo.getId());
-					pendencia.setDescricao(adicionarDescricao(salvo.getDescricao(), descricao));
-				}
-			}
+			// Pessoa pessoa = (Pessoa) getPendenciavel();
+			// if (pessoa != null && pessoa.getId() != null) {
+			// PessoaPendencia salvo =
+			// pessoaPendenciaDao.findOneByPessoaAndCodigo(pessoa,
+			// getCodigo().name());
+			// if (salvo != null) {
+			// pendencia.setId(salvo.getId());
+			// pendencia.setDescricao(adicionarDescricao(salvo.getDescricao(),
+			// descricao));
+			// }
+			// }
 			((Pendenciavel<PessoaPendencia>) getPendenciavel()).getPendenciaList().add((PessoaPendencia) pendencia);
 		} else if (getPendenciavel() instanceof PropriedadeRural) {
 			pendencia = new PropriedadeRuralPendencia(getCodigo(), descricao);
-			PropriedadeRural propriedadeRural = (PropriedadeRural) getPendenciavel();
-			if (propriedadeRural != null && propriedadeRural.getId() != null) {
-				PropriedadeRuralPendencia salvo = propriedadeRuralPendenciaDao.findOneByPropriedadeRuralAndCodigo(propriedadeRural, getCodigo().name());
-				if (salvo != null) {
-					pendencia.setId(salvo.getId());
-					pendencia.setDescricao(adicionarDescricao(salvo.getDescricao(), descricao));
-				}
-			}
+			// PropriedadeRural propriedadeRural = (PropriedadeRural)
+			// getPendenciavel();
+			// if (propriedadeRural != null && propriedadeRural.getId() != null)
+			// {
+			// PropriedadeRuralPendencia salvo =
+			// propriedadeRuralPendenciaDao.findOneByPropriedadeRuralAndCodigo(propriedadeRural,
+			// getCodigo().name());
+			// if (salvo != null) {
+			// pendencia.setId(salvo.getId());
+			// pendencia.setDescricao(adicionarDescricao(salvo.getDescricao(),
+			// descricao));
+			// }
+			// }
 			((Pendenciavel<PropriedadeRuralPendencia>) getPendenciavel()).getPendenciaList().add((PropriedadeRuralPendencia) pendencia);
 		}
 	}

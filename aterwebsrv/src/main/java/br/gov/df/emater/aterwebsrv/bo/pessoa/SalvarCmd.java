@@ -354,8 +354,7 @@ public class SalvarCmd extends _SalvarCmd {
 				}
 				Telefone telefone = telefoneDao.findByNumero(pessoaTelefone.getTelefone().getNumero());
 				if (telefone == null) {
-					telefone = pessoaTelefone.getTelefone();
-					telefone.setId(null);
+					telefone = new Telefone(pessoaTelefone.getTelefone().getNumero());
 					telefone = telefoneDao.save(telefone);
 				}
 				PessoaTelefone salvo = pessoaTelefoneDao.findOneByPessoaAndTelefone(result, telefone);
@@ -380,14 +379,17 @@ public class SalvarCmd extends _SalvarCmd {
 			// tratar a insersao de registros
 			Integer ordem = 0;
 			for (PessoaEmail pessoaEmail : result.getEmailList()) {
-				if (pessoaEmail.getEmail() == null || StringUtils.isBlank(pessoaEmail.getEmail().getEndereco())) {
+				if (pessoaEmail.getEmail() == null || StringUtils.isBlank(pessoaEmail.getEmail().getEndereco()) || StringUtils.isBlank(UtilitarioString.formataEmail(pessoaEmail.getEmail().getEndereco()))) {
 					throw new BoException("E-mail não informado");
 				}
+				pessoaEmail.getEmail().setEndereco(UtilitarioString.formataEmail(pessoaEmail.getEmail().getEndereco().trim().toLowerCase()));
+				if (!UtilitarioString.isValidEmail(pessoaEmail.getEmail().getEndereco())) {
+					throw new BoException("E-mail inválido [%s]", pessoaEmail.getEmail().getEndereco());
+				}
+				
 				Email email = emailDao.findByEndereco(pessoaEmail.getEmail().getEndereco());
 				if (email == null) {
-					email = pessoaEmail.getEmail();
-					email.setId(null);
-					email.setEndereco(email.getEndereco().trim().toLowerCase());
+					email = new Email(pessoaEmail.getEmail().getEndereco());
 					email = emailDao.save(email);
 				}
 				PessoaEmail salvo = pessoaEmailDao.findOneByPessoaAndEmail(result, email);

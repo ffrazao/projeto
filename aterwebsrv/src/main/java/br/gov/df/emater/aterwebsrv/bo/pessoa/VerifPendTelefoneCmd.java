@@ -24,12 +24,14 @@ public class VerifPendTelefoneCmd extends VerificarPendenciasCmd {
 			for (int i = pessoa.getTelefoneList().size() - 1; i >= 0; i--) {
 				if (pessoa.getTelefoneList().get(i).getTelefone() == null) {
 					pessoa.getTelefoneList().remove(i);
+					continue;
 				}
 				String informado = pessoa.getTelefoneList().get(i).getTelefone().getNumero();
 				if (StringUtils.isBlank(informado)) {
 					pessoa.getTelefoneList().remove(i);
+					continue;
 				}
-				if (!UtilitarioString.soNumero(informado).equals(UtilitarioString.soNumero(UtilitarioString.formataTelefone(informado)))) {
+				if (!UtilitarioString.soNumero(UtilitarioString.formataTelefone(informado)).endsWith(UtilitarioString.soNumero(informado))) {
 					mensagemList.add(String.format("Telefone, número ou formato inválido [%s]", informado));
 				} else {
 					pessoa.getTelefoneList().get(i).getTelefone().setNumero(UtilitarioString.formataTelefone(informado));

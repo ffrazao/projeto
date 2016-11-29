@@ -31,12 +31,16 @@ public class VerifPendEmailCmd extends VerificarPendenciasCmd {
 					pessoa.getEmailList().remove(i);
 					continue;
 				}
-				if (!Util.isEmailValido(informado)) {
+				if (!Util.isEmailValido(informado) || !UtilitarioString.isValidEmail(informado)) {
 					mensagemList.add(String.format("Email inválido [%s]", informado));
+					pessoa.getEmailList().remove(i);
+					continue;
 				} else {
 					informado = UtilitarioString.formataEmail(informado);
 					if (!Util.isEmailValido(informado)) {
 						mensagemList.add(String.format("Email inválido [%s]", informado));
+						pessoa.getEmailList().remove(i);
+						continue;
 					} else {
 						pessoa.getEmailList().get(i).getEmail().setEndereco(informado);
 					}
