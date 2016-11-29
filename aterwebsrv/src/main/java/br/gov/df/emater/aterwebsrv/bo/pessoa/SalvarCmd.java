@@ -414,19 +414,23 @@ public class SalvarCmd extends _SalvarCmd {
 		if (!CollectionUtils.isEmpty(result.getRelacionamentoList())) {
 			// salvar o relacionamento
 			for (PessoaRelacionamento relacionador : result.getRelacionamentoList()) {
-				if (relacionador.getRelacionamento() == null || relacionador.getRelacionamento().getRelacionamentoTipo() == null || relacionador.getRelacionamento().getRelacionamentoTipo().getCodigo() == null || relacionador == null
+				if (relacionador == null || relacionador.getRelacionamento() == null || relacionador.getRelacionamento().getRelacionamentoTipo() == null || (relacionador.getRelacionamento().getRelacionamentoTipo().getId() == null && relacionador.getRelacionamento().getRelacionamentoTipo().getCodigo() == null)
 						|| relacionador.getRelacionamentoFuncao() == null || relacionador.getRelacionamentoFuncao().getId() == null) {
 					throw new BoException("Os dados do relacionamento da pessoa estão incompletos!");
 				}
 				// evitar o auto relacionamento
-				if (relacionador.getPessoa() == null || result.getId().equals(relacionador.getPessoa().getId())) {
+				if (relacionador.getPessoa() != null && relacionador.getPessoa().getId() != null && result.getId().equals(relacionador.getPessoa().getId())) {
 					continue;
 				}
 
 				// savar o objeto do relacionamento
 				Relacionamento relacionamento = relacionador.getRelacionamento();
 
-				relacionamento.setRelacionamentoTipo(relacionamentoTipoDao.findOneByCodigo(relacionamento.getRelacionamentoTipo().getCodigo()));
+				if (relacionamento.getRelacionamentoTipo().getCodigo() != null) {
+					relacionamento.setRelacionamentoTipo(relacionamentoTipoDao.findOneByCodigo(relacionamento.getRelacionamentoTipo().getCodigo()));
+				} else {
+					relacionamento.setRelacionamentoTipo(relacionamentoTipoDao.findOne(relacionamento.getRelacionamentoTipo().getId()));
+				}
 
 				if (relacionamento instanceof Emprego) {
 					relacionamento = empregoDao.save((Emprego) relacionamento);
@@ -445,7 +449,7 @@ public class SalvarCmd extends _SalvarCmd {
 				// recuperar informações já salvas
 				List<PessoaRelacionamento> prList = pessoaRelacionamentoDao.findByRelacionamento(relacionamento);
 				for (PessoaRelacionamento pr : prList) {
-					if (result.getId().equals(pr.getPessoa().getId()) && !pr.getId().equals(relacionador.getId())) {
+					if (pr.getPessoa() !=null && result.getId().equals(pr.getPessoa().getId()) && !pr.getId().equals(relacionador.getId())) {
 						relacionado = pr;
 					}
 				}

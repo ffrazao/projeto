@@ -38,9 +38,10 @@ public class RelacionamentoTipo extends EntidadeBase implements _ChavePrimaria<I
 	public RelacionamentoTipo() {
 	}
 
-	public RelacionamentoTipo(Integer id, String nome) {
+	public RelacionamentoTipo(Integer id, String nome, Codigo codigo) {
 		setId(id);
 		setNome(nome);
+		setCodigo(codigo);
 	}
 
 	public Codigo getCodigo() {
@@ -58,7 +59,7 @@ public class RelacionamentoTipo extends EntidadeBase implements _ChavePrimaria<I
 
 	@Override
 	public RelacionamentoTipo infoBasica() {
-		return new RelacionamentoTipo(getId(), getNome());
+		return new RelacionamentoTipo(getId(), getNome(), getCodigo());
 	}
 
 	public void setCodigo(Codigo codigo) {

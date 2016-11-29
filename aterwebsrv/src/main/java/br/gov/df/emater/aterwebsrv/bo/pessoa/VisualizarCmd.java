@@ -154,7 +154,7 @@ public class VisualizarCmd extends _Comando {
 					} else {
 						// informações principais
 						relacionador.setId(relacionado.getId());
-						relacionador.setRelacionamentoFuncao(relacionador.getRelacionamentoFuncao() == null ? null : relacionador.getRelacionamentoFuncao().infoBasica());
+						relacionador.setRelacionamentoFuncao(relacionado.getRelacionamentoFuncao() == null ? null : relacionado.getRelacionamentoFuncao().infoBasica());
 						relacionador.setChaveSisater(relacionado.getChaveSisater());
 
 						// captar os dados do relacionado
