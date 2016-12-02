@@ -75,7 +75,7 @@ public class SalvarCmd extends _SalvarCmd {
 		if (result.getAno() == null) {
 			throw new BoException("Não foi informado o ano da produção.");
 		}
-		if (result.getBemClassificado() == null) {
+		if (result.getBemClassificado() == null || result.getBemClassificado().getId() == null) {
 			throw new BoException("Não foi informado o bem da produção.");
 		}
 		if (CollectionUtils.isEmpty(result.getProducaoList())) {
@@ -104,17 +104,7 @@ public class SalvarCmd extends _SalvarCmd {
 		}
 
 		ProducaoProprietario salvo = null;
-		if (result.getPublicoAlvo() != null) {
-			result.setUnidadeOrganizacional(null);
-			result.setPublicoAlvo(publicoAlvoDao.findOne(result.getPublicoAlvo().getId()));
-			if (result.getPropriedadeRural() != null) {
-				result.setPropriedadeRural(propriedadeRuralDao.findOne(result.getPropriedadeRural().getId()));
-			}
-			salvo = dao.findOneByAnoAndBemClassificadoAndPublicoAlvoAndPropriedadeRuralAndUnidadeOrganizacionalIsNull(result.getAno(), result.getBemClassificado(), result.getPublicoAlvo(), result.getPropriedadeRural());
-		} else {
-			if (result.getUnidadeOrganizacional() == null) {
-				throw new BoException("Não foi informada a Unidade Organizacional responsável pela produção.");
-			}
+		if (result.getUnidadeOrganizacional() != null) {
 			result.setUnidadeOrganizacional(unidadeOrganizacionalDao.findOne(result.getUnidadeOrganizacional().getId()));
 			if (!UnidadeOrganizacionalClassificacao.OP.equals(result.getUnidadeOrganizacional().getClassificacao())) {
 				// TODO - remover este comentário após apresentação ao presid
@@ -124,6 +114,15 @@ public class SalvarCmd extends _SalvarCmd {
 			result.setPublicoAlvo(null);
 			result.setPropriedadeRural(null);
 			salvo = dao.findOneByAnoAndBemClassificadoAndUnidadeOrganizacionalAndPublicoAlvoIsNullAndPropriedadeRuralIsNull(result.getAno(), result.getBemClassificado(), result.getUnidadeOrganizacional());
+		} else {
+			result.setUnidadeOrganizacional(null);
+			if (result.getPublicoAlvo() != null) {
+				result.setPublicoAlvo(publicoAlvoDao.findOne(result.getPublicoAlvo().getId()));
+			}
+			if (result.getPropriedadeRural() != null) {
+				result.setPropriedadeRural(propriedadeRuralDao.findOne(result.getPropriedadeRural().getId()));
+			}
+			salvo = dao.findOneByAnoAndBemClassificadoAndPublicoAlvoAndPropriedadeRuralAndUnidadeOrganizacionalIsNull(result.getAno(), result.getBemClassificado(), result.getPublicoAlvo(), result.getPropriedadeRural());
 		}
 
 		// verificar se o registro já foi salvo

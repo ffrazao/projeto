@@ -224,7 +224,7 @@ public class SisaterPublicoAlvoCmd extends _Comando {
 				return;
 			}
 
-			PessoaEndereco sisater = new PessoaEndereco(null, new Endereco(null, logradouro, cep), "P");
+			PessoaEndereco sisater = new PessoaEndereco(null, new Endereco(null, logradouro, cep), "C");
 			sisater.getEndereco().setPropriedadeRuralConfirmacao(Confirmacao.N);
 			sisater.getEndereco().setEnderecoAtualizado(Confirmacao.N);
 			sisater.setChaveSisater(impUtil.chavePessoaEndereco(base, rs.getString("IDUND"), rs.getString("IDBEN"), nomeCampo));
@@ -382,7 +382,7 @@ public class SisaterPublicoAlvoCmd extends _Comando {
 		public void avalia(List<PessoaTelefone> result, String nomeCampo, TelefoneTipo tipo) throws SQLException {
 			String informado = rs.getString(nomeCampo);
 			if (informado != null && informado.trim().length() > 0) {
-				PessoaTelefone sisater = new PessoaTelefone(null, new Telefone(informado), "P", tipo);
+				PessoaTelefone sisater = new PessoaTelefone(null, new Telefone(informado), "C", tipo);
 				sisater.setChaveSisater(impUtil.chavePessoaTelefone(base, rs.getString("IDUND"), rs.getString("IDBEN"), nomeCampo));
 
 				boolean encontrou = false;
@@ -520,7 +520,7 @@ public class SisaterPublicoAlvoCmd extends _Comando {
 		if (emailStr != null && emailStr.trim().length() > 0) {
 			result = new ArrayList<PessoaEmail>();
 
-			PessoaEmail sisater = new PessoaEmail(null, new Email(emailStr), "P");
+			PessoaEmail sisater = new PessoaEmail(null, new Email(emailStr), "C");
 			sisater.setChaveSisater(impUtil.chavePessoaEmail(base, rs.getString("IDUND"), rs.getString("IDBEN")));
 
 			boolean encontrou = false;

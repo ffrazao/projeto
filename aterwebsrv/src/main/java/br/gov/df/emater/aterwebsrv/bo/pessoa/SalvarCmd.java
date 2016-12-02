@@ -188,12 +188,12 @@ public class SalvarCmd extends _SalvarCmd {
 		limparChavePrimaria(result.getGrupoSocialList());
 		limparChavePrimaria(result.getArquivoList());
 		limparChavePrimaria(result.getPendenciaList());
-		
-		//Atribuir valores padrao
-		if(result.getSituacao() == null){
+
+		// Atribuir valores padrao
+		if (result.getSituacao() == null) {
 			result.setSituacao(PessoaSituacao.A);
 		}
-		if(result.getSituacaoData() == null){
+		if (result.getSituacaoData() == null) {
 			result.setSituacaoData(Calendar.getInstance());
 		}
 
@@ -296,10 +296,10 @@ public class SalvarCmd extends _SalvarCmd {
 						publicoAlvoPropriedadeRural.setPropriedadeRural(propriedadeRuralDao.findOne(publicoAlvoPropriedadeRural.getPropriedadeRural().getId()));
 						publicoAlvoPropriedadeRural.setComunidade(publicoAlvoPropriedadeRural.getPropriedadeRural().getComunidade());
 					}
-					if(publicoAlvoPropriedadeRural.getPrincipal() == null){
+					if (publicoAlvoPropriedadeRural.getPrincipal() == null) {
 						publicoAlvoPropriedadeRural.setPrincipal(Confirmacao.N);
 					}
-					
+
 					publicoAlvoPropriedadeRuralDao.save(publicoAlvoPropriedadeRural);
 				}
 				if (comunidade && tot > 1) {
@@ -386,7 +386,7 @@ public class SalvarCmd extends _SalvarCmd {
 				if (!UtilitarioString.isValidEmail(pessoaEmail.getEmail().getEndereco())) {
 					throw new BoException("E-mail inválido [%s]", pessoaEmail.getEmail().getEndereco());
 				}
-				
+
 				Email email = emailDao.findByEndereco(pessoaEmail.getEmail().getEndereco());
 				if (email == null) {
 					email = new Email(pessoaEmail.getEmail().getEndereco());
@@ -420,8 +420,10 @@ public class SalvarCmd extends _SalvarCmd {
 		if (!CollectionUtils.isEmpty(result.getRelacionamentoList())) {
 			// salvar o relacionamento
 			for (PessoaRelacionamento relacionador : result.getRelacionamentoList()) {
-				if (relacionador == null || relacionador.getRelacionamento() == null || relacionador.getRelacionamento().getRelacionamentoTipo() == null || (relacionador.getRelacionamento().getRelacionamentoTipo().getId() == null && relacionador.getRelacionamento().getRelacionamentoTipo().getCodigo() == null)
-						|| relacionador.getRelacionamentoFuncao() == null || relacionador.getRelacionamentoFuncao().getId() == null) {
+				// verificar se os dados mínimos necessários estão presentes
+				if (relacionador == null || relacionador.getRelacionamento() == null || relacionador.getRelacionamento().getRelacionamentoTipo() == null
+						|| (relacionador.getRelacionamento().getRelacionamentoTipo().getId() == null && relacionador.getRelacionamento().getRelacionamentoTipo().getCodigo() == null) || relacionador.getRelacionamentoFuncao() == null
+						|| relacionador.getRelacionamentoFuncao().getId() == null) {
 					throw new BoException("Os dados do relacionamento da pessoa estão incompletos!");
 				}
 				// evitar o auto relacionamento
@@ -429,33 +431,30 @@ public class SalvarCmd extends _SalvarCmd {
 					continue;
 				}
 
-				// savar o objeto do relacionamento
+				// salvar o objeto do relacionamento entre as pessoas
 				Relacionamento relacionamento = relacionador.getRelacionamento();
-
 				if (relacionamento.getRelacionamentoTipo().getCodigo() != null) {
 					relacionamento.setRelacionamentoTipo(relacionamentoTipoDao.findOneByCodigo(relacionamento.getRelacionamentoTipo().getCodigo()));
 				} else {
 					relacionamento.setRelacionamentoTipo(relacionamentoTipoDao.findOne(relacionamento.getRelacionamentoTipo().getId()));
 				}
-
 				if (relacionamento instanceof Emprego) {
 					relacionamento = empregoDao.save((Emprego) relacionamento);
 				} else {
 					relacionamento = relacionamentoDao.save(relacionamento);
 				}
 
-				RelacionamentoConfiguracaoVi config = relacionamentoConfiguracaoViDao.findOneByTipoCodigoAndRelacionadorId(relacionamento.getRelacionamentoTipo().getCodigo().toString(), relacionador.getRelacionamentoFuncao().getId());
-
-				// salvar o registro da pessoa atual
+				// salvar o registro da outra pessoa
 				relacionador.setRelacionamento(relacionamento);
 				pessoaRelacionamentoDao.save(relacionador);
 
-				// salvar o registro da pessoa relacionada
+				// salvar o registro da pessoa atual
+				RelacionamentoConfiguracaoVi config = relacionamentoConfiguracaoViDao.findOneByTipoCodigoAndRelacionadorId(relacionamento.getRelacionamentoTipo().getCodigo().toString(), relacionador.getRelacionamentoFuncao().getId());
 				PessoaRelacionamento relacionado = new PessoaRelacionamento();
 				// recuperar informações já salvas
 				List<PessoaRelacionamento> prList = pessoaRelacionamentoDao.findByRelacionamento(relacionamento);
 				for (PessoaRelacionamento pr : prList) {
-					if (pr.getPessoa() !=null && result.getId().equals(pr.getPessoa().getId()) && !pr.getId().equals(relacionador.getId())) {
+					if (pr.getPessoa() != null && result.getId().equals(pr.getPessoa().getId()) && !pr.getId().equals(relacionador.getId())) {
 						relacionado = pr;
 					}
 				}
@@ -463,10 +462,7 @@ public class SalvarCmd extends _SalvarCmd {
 				relacionado.setPessoa(result);
 				relacionado.setRelacionamentoFuncao(new RelacionamentoFuncao(config.getRelacionadoId()));
 				pessoaRelacionamentoDao.save(relacionado);
-
 			}
-			// as pessoas do relacionamento
-
 		}
 
 		// tratar a exclusao de registros
@@ -544,62 +540,3 @@ public class SalvarCmd extends _SalvarCmd {
 	}
 
 }
-
-// Relacionamento relacionamento = pessoaRelacionamento.getRelacionamento();
-//
-// if (relacionamento == null || relacionamento.getId() == null) {
-// if (relacionamento == null) {
-// relacionamento = new Relacionamento();
-// }
-// if (relacionamento.getRelacionamentoTipo() == null) {
-// relacionamento.setRelacionamentoTipo(pessoaRelacionamento.getRelacionamento().getRelacionamentoTipo());
-// }
-// } else {
-// Relacionamento salvo = relacionamentoDao.findById(relacionamento.getId());
-// List<PessoaRelacionamento> prList = salvo.getPessoaRelacionamentoList();
-// prList.size();
-// BeanUtils.copyProperties(salvo, relacionamento);
-// relacionamento = salvo;
-// relacionamento.setPessoaRelacionamentoList(prList);
-// em.detach(salvo);
-// salvo = null;
-// }
-// relacionamento.setInicio(pessoaRelacionamento.getRelacionamento().getInicio());
-// relacionamento.setTermino(pessoaRelacionamento.getRelacionamento().getTermino());
-// if (relacionamento instanceof Emprego) {
-// relacionamento = empregoDao.save((Emprego) relacionamento);
-// } else {
-// relacionamento = relacionamentoDao.save(relacionamento);
-// }
-//
-// // salvar o relacionado
-// pessoaRelacionamento.setRelacionamento(relacionamento);
-// pessoaRelacionamentoDao.save(pessoaRelacionamento);
-//
-// RelacionamentoConfiguracaoVi relacionamentoConfiguracaoVi =
-// relacionamentoConfiguracaoViDao.findByTipoIdAndRelacionadorId(pessoaRelacionamento.getRelacionamento().getRelacionamentoTipo().getId(),
-// pessoaRelacionamento.getRelacionamentoFuncao().getId());
-//
-// // salvar o relacionador
-// PessoaRelacionamento relacionador = null;
-// boolean encontrou = false;
-// if (relacionamento.getPessoaRelacionamentoList() != null) {
-// for (PessoaRelacionamento rel : relacionamento.getPessoaRelacionamentoList())
-// {
-// if (rel.getPessoa() != null &&
-// rel.getPessoa().getId().equals(result.getId())) {
-// relacionador = rel;
-// encontrou = true;
-// break;
-// }
-// }
-// }
-// if (!encontrou) {
-// relacionador = new PessoaRelacionamento();
-// relacionador.setPessoa(result);
-// relacionador.setRelacionamento(relacionamento);
-// }
-// relacionador.setRelacionamentoFuncao(new
-// RelacionamentoFuncao(relacionamentoConfiguracaoVi.getRelacionadorId()));
-// pessoaRelacionamentoDao.save(relacionador);*/
-// }

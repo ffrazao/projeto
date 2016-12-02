@@ -445,6 +445,9 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 						em.detach(producaoProprietario);
 
 						// salvar no MySQL e no Firebird
+						if (producaoProprietario.getBemClassificado() == null) {
+							System.out.println("nulo bem classificado");
+						}
 						producaoProprietario.setId((Integer) facadeBo.indiceProducaoSalvar(usuario, producaoProprietario).getResposta());
 
 						if (geral == 0) {
@@ -518,6 +521,10 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 			case IPAN00:
 				result.setBemClassificado(deParaBemClassificadoNaoAgricola(rs));
 				break;
+			}
+			
+			if (result.getBemClassificado() == null) {
+				System.out.println("bem classificação não identificado!");
 			}
 
 			// recuperar os IDs

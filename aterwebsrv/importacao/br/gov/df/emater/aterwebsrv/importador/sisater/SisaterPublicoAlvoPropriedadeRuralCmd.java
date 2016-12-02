@@ -23,6 +23,7 @@ import br.gov.df.emater.aterwebsrv.importador.apoio.ConexaoFirebird.DbSater;
 import br.gov.df.emater.aterwebsrv.importador.apoio.ImpUtil;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 
 @Service
@@ -135,6 +136,7 @@ public class SisaterPublicoAlvoPropriedadeRuralCmd extends _Comando {
 		result.setArea(impUtil.captaBigDecimal(rs.getDouble("EXPAREA")));
 		result.setInicio(agora);
 		result.setVinculo(impUtil.deParaPropriedadeRuralVinculoTipo(rs.getString("EXPREG")));
+		result.setPrincipal(Confirmacao.N);
 
 		return result;
 	}

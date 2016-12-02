@@ -17,12 +17,13 @@ import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.ater.ComunidadeDao;
 import br.gov.df.emater.aterwebsrv.dao.ater.PropriedadeRuralDao;
 import br.gov.df.emater.aterwebsrv.dao.funcional.UnidadeOrganizacionalDao;
+import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoProprietarioDao;
 import br.gov.df.emater.aterwebsrv.modelo.ater.Comunidade;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
-import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoProprietario;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoProprietario;
 
 @Service("IndiceProducaoSalvarPrincipalCmd")
 public class SalvarPrincipalCmd extends _Comando {
@@ -32,6 +33,9 @@ public class SalvarPrincipalCmd extends _Comando {
 
 	@Autowired
 	private ProducaoProprietarioDao dao;
+
+	@Autowired
+	private ProducaoDao producaoDao;
 
 	@Autowired
 	private EntityManager em;
@@ -74,19 +78,24 @@ public class SalvarPrincipalCmd extends _Comando {
 				// se existir, verificar se todas as formas de produção foram
 				// previstas
 				final List<Producao> producaoNovoList = new ArrayList<>();
-				for (Producao producao : producaoProprietario.getProducaoList()) {
-					boolean encontrou = false;
-					final String composicao = getComposicaoValorId(producao);
-					if (!CollectionUtils.isEmpty(producaoProprietarioPrincipal.getProducaoList())) {
-						for (Producao producaoPrincipal : producaoProprietarioPrincipal.getProducaoList()) {
-							if (getComposicaoValorId(producaoPrincipal).equals(composicao)) {
-								encontrou = true;
-								break;
+				// restaurar producoes
+				producaoProprietario.setProducaoList(producaoDao.findByProducaoProprietario(producaoProprietario));
+				producaoProprietarioPrincipal.setProducaoList(producaoDao.findByProducaoProprietario(producaoProprietarioPrincipal));
+				if (producaoProprietario.getProducaoList() != null) {					
+					for (Producao producao : producaoProprietario.getProducaoList()) {
+						boolean encontrou = false;
+						final String composicao = getComposicaoValorId(producao);
+						if (!CollectionUtils.isEmpty(producaoProprietarioPrincipal.getProducaoList())) {
+							for (Producao producaoPrincipal : producaoProprietarioPrincipal.getProducaoList()) {
+								if (getComposicaoValorId(producaoPrincipal).equals(composicao)) {
+									encontrou = true;
+									break;
+								}
 							}
 						}
-					}
-					if (!encontrou) {
-						producaoNovoList.add(new Producao(producao));
+						if (!encontrou) {
+							producaoNovoList.add(new Producao(producao));
+						}
 					}
 				}
 				// se houveram novas formas de produção
