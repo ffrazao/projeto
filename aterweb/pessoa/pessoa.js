@@ -655,7 +655,7 @@
                 }
             });
             $scope.$watch('cadastro.registro.publicoAlvoConfirmacao + cadastro.registro.publicoAlvo.dapSituacao + cadastro.registro.publicoAlvo.dapValidade', function(newValue, oldValue) {
-                $scope.cadastro.apoio.dapImagem = '';
+                $scope.cadastro.apoio.dapImagem = "img/dap-vencida.png";
                 if ($scope.cadastro.registro.publicoAlvoConfirmacao !== 'S' || !$scope.cadastro.registro.publicoAlvo || $scope.cadastro.registro.publicoAlvo.dapSituacao !== 'S' || !$scope.cadastro.registro.publicoAlvo.dapValidade) {
                     return;
                 }
