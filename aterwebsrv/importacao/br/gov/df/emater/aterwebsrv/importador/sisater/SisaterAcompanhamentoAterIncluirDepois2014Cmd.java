@@ -167,6 +167,7 @@ public class SisaterAcompanhamentoAterIncluirDepois2014Cmd extends _Comando {
 						transactionManager.commit(transactionStatus);
 					} catch (Exception e) {
 						logger.error(e);
+						atividade = null;
 						e.printStackTrace();
 						transactionManager.rollback(transactionStatus);
 					}

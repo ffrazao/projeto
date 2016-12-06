@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import br.gov.df.emater.aterwebsrv.modelo.funcional.EmpregoVi;
-import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica;
 
 @Repository("EmpregoViDao")
 public interface EmpregoViDao extends JpaRepository<EmpregoVi, Integer> {
