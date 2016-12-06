@@ -24,7 +24,7 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Area;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Arquivo;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Endereco;
 
-@Service("PropriedadeRuralSalvarCmd")
+@Service("PlanejamentoSalvarCmd")
 public class SalvarCmd extends _SalvarCmd {
 
 	@Autowired

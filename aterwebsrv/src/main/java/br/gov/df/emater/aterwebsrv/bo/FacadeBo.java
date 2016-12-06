@@ -13,6 +13,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,9 +58,9 @@ import br.gov.df.emater.aterwebsrv.modelo.sistema.ManualOnline;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Modulo;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Perfil;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
-import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 
 @Service
+@Primary
 public class FacadeBo implements BeanFactoryAware {
 
 	@Autowired

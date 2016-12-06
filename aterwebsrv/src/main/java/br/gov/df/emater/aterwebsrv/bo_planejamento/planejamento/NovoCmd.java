@@ -16,7 +16,7 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.PropriedadeRuralSituacao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Area;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Endereco;
 
-@Service("PropriedadeRuralNovoCmd")
+@Service("PlanejamentoNovoCmd")
 public class NovoCmd extends _Comando {
 
 	@Override

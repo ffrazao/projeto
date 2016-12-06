@@ -13,7 +13,7 @@ import br.gov.df.emater.aterwebsrv.dto.ater.PublicoAlvoPropriedadeRuralCadFiltro
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 
-@Service
+@Service("FacadeBoPlanejamento")
 public class FacadeBoPlanejamento extends FacadeBo {
 
 	@Transactional

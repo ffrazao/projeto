@@ -21,7 +21,7 @@ import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRuralFormaUtilizacaoEs
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRuralPendencia;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
 
-@Service("PropriedadeRuralVisualizarCmd")
+@Service("PlanejamentoVisualizarCmd")
 public class VisualizarCmd extends _Comando {
 
 	@Autowired

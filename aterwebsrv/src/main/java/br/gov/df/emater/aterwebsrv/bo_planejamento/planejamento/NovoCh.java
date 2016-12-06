@@ -8,11 +8,11 @@ import br.gov.df.emater.aterwebsrv.bo._Cadeia;
 import br.gov.df.emater.aterwebsrv.bo.seguranca.AutenticarUsuarioCmd;
 import br.gov.df.emater.aterwebsrv.bo.seguranca.LogCmd;
 
-@Service("PropriedadeRuralNovoCh")
+@Service("PlanejamentoNovoCh")
 public class NovoCh extends _Cadeia {
 
 	@Autowired
-	public NovoCh(AutenticarUsuarioCmd c1, @Qualifier("PropriedadeRuralNovoCmd") NovoCmd c2, LogCmd c3) {
+	public NovoCh(AutenticarUsuarioCmd c1, @Qualifier("PlanejamentoNovoCmd") NovoCmd c2, LogCmd c3) {
 		super.addCommand(c1);
 		super.addCommand(c2);
 		super.addCommand(c3);

@@ -9,7 +9,7 @@ import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.ater.PropriedadeRuralDao;
 
-@Service("PropriedadeRuralExcluirCmd")
+@Service("PlanejamentoExcluirCmd")
 public class ExcluirCmd extends _Comando {
 
 	@Autowired

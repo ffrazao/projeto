@@ -7,7 +7,7 @@ import br.gov.df.emater.aterwebsrv.bo._Cadeia;
 import br.gov.df.emater.aterwebsrv.bo.seguranca.AutenticarUsuarioCmd;
 import br.gov.df.emater.aterwebsrv.bo.seguranca.LogCmd;
 
-@Service("PropriedadeRuralVisualizarCh")
+@Service("PlanejamentoVisualizarCh")
 public class VisualizarCh extends _Cadeia {
 
 	@Autowired
