@@ -12,6 +12,7 @@ import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.sistema.UsuarioDao;
+import br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaEmail;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
@@ -59,9 +60,10 @@ public class VisualizarCmd extends _Comando {
 			usuario.getPessoaEmail().setEmail(usuario.getPessoaEmail().getEmail().infoBasica());
 			usuario.getPessoaEmail().setPessoa(null);
 		}
-
+		
 		if (usuario.getAuthorities() != null) {
 			for (UsuarioPerfil usuarioPerfil : usuario.getAuthorities()) {
+				usuarioPerfil.setPerfil(UtilitarioInfoBasica.infoBasicaReg(usuarioPerfil.getPerfil()));
 				usuarioPerfil.setUsuario(null);
 			}
 		}

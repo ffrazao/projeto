@@ -12,12 +12,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
+import br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 
 @Entity
 @Table(name = "perfil_funcionalidade_comando", schema = EntidadeBase.SISTEMA_SCHEMA)
-public class PerfilFuncionalidadeComando extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class PerfilFuncionalidadeComando extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<PerfilFuncionalidadeComando> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -100,6 +102,20 @@ public class PerfilFuncionalidadeComando extends EntidadeBase implements _ChaveP
 
 	public void setPerfil(Perfil perfil) {
 		this.perfil = perfil;
+	}
+
+	@Override
+	public PerfilFuncionalidadeComando infoBasica() {
+		return new PerfilFuncionalidadeComando(this.id, this.perfil != null ? new Perfil(this.perfil.getId()) : null, UtilitarioInfoBasica.infoBasicaReg(this.funcionalidadeComando), this.conceder);
+	}
+
+	public PerfilFuncionalidadeComando(Integer id, Perfil perfil, FuncionalidadeComando funcionalidadeComando,
+			Confirmacao conceder) {
+		super();
+		this.id = id;
+		this.perfil = perfil;
+		this.funcionalidadeComando = funcionalidadeComando;
+		this.conceder = conceder;
 	}
 
 }

@@ -53,15 +53,16 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerTimestamp;
 @Entity
 @Table(name = "usuario", schema = EntidadeBase.SISTEMA_SCHEMA)
 // @Indexed
-public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, UserDetails, InfoBasica<Usuario>, _LogInclusaoAlteracao {
+public class Usuario extends EntidadeBase
+		implements _ChavePrimaria<Integer>, UserDetails, InfoBasica<Usuario>, _LogInclusaoAlteracao {
 
 	private static final long serialVersionUID = 1L;
 
 	@Column(name = "acesso_expira_em")
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
-	@JsonSerialize(using = JsonSerializerTimestamp.class)
-	@JsonDeserialize(using = JsonDeserializerTimestamp.class)
+	@JsonSerialize(using = JsonSerializerData.class)
+	@JsonDeserialize(using = JsonDeserializerData.class)
 	private Calendar acessoExpiraEm;
 
 	@Column(name = "alteracao_data", insertable = false, updatable = false)
@@ -290,7 +291,8 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 
 	@Override
 	public Usuario infoBasica() {
-		return new Usuario(this.username, this.pessoa == null ? null : this.pessoa.infoBasica(), this.unidadeOrganizacional == null ? null : this.unidadeOrganizacional.infoBasica());
+		return new Usuario(this.username, this.pessoa == null ? null : this.pessoa.infoBasica(),
+				this.unidadeOrganizacional == null ? null : this.unidadeOrganizacional.infoBasica());
 	}
 
 	@Override
@@ -314,7 +316,8 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 	@Override
 	@JsonIgnore
 	public boolean isEnabled() {
-		return Arrays.asList(UsuarioStatusConta.A, UsuarioStatusConta.R).contains(getUsuarioStatusConta()) && PessoaSituacao.A.equals(getPessoa().getSituacao());
+		return Arrays.asList(UsuarioStatusConta.A, UsuarioStatusConta.R).contains(getUsuarioStatusConta())
+				&& PessoaSituacao.A.equals(getPessoa().getSituacao());
 	}
 
 	public void setAcessoExpiraEm(Calendar acessoExpiraEm) {
@@ -412,7 +415,8 @@ public class Usuario extends EntidadeBase implements _ChavePrimaria<Integer>, Us
 
 	@Override
 	public String toString() {
-		return (pessoa == null ? getUsername() : (pessoa.getApelidoSigla() == null ? pessoa.getNome() : pessoa.getApelidoSigla()));
+		return (pessoa == null ? getUsername()
+				: (pessoa.getApelidoSigla() == null ? pessoa.getNome() : pessoa.getApelidoSigla()));
 	}
 
 }

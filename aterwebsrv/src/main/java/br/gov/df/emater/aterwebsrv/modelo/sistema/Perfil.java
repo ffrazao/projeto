@@ -15,6 +15,7 @@ import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
+import br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 
@@ -106,7 +107,9 @@ public class Perfil extends EntidadeBase implements _ChavePrimaria<Integer>, Inf
 
 	@Override
 	public Perfil infoBasica() {
-		return new Perfil(getId(), getNome(), getCodigo(), getAtivo());
+		Perfil perfil = new Perfil(getId(), getNome(), getCodigo(), getAtivo());
+		perfil.setPerfilFuncionalidadeComandoList(UtilitarioInfoBasica.infoBasicaList(perfil.getPerfilFuncionalidadeComandoList()));
+		return perfil; 
 	}
 
 	public void setAtivo(Confirmacao ativo) {

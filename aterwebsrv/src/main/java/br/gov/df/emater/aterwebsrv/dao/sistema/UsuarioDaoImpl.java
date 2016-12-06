@@ -34,8 +34,8 @@ public class UsuarioDaoImpl implements UsuarioDaoCustom {
 		sql = new StringBuilder();
 
 		sql.append("select          a.id").append("\n");
-		sql.append("               ,ifnull(b.nome, c.nome) as nome").append("\n");
-		sql.append("               ,if(c.nome is null, b.pessoa_tipo, 'UO') as tipo").append("\n");
+		sql.append("               ,ifnull(b.nome, c1.nome) as nome").append("\n");
+		sql.append("               ,if(c1.nome is null, b.pessoa_tipo, 'UO') as tipo").append("\n");
 		sql.append("               ,d.md5").append("\n");
 		sql.append("               ,b.situacao as pessoa_situacao").append("\n");
 		sql.append("               ,a.situacao as usuario_situacao").append("\n");
@@ -47,6 +47,8 @@ public class UsuarioDaoImpl implements UsuarioDaoCustom {
 		sql.append("on              b.id = a.pessoa_id").append("\n");
 		sql.append("left join       funcional.unidade_organizacional c").append("\n");
 		sql.append("on              c.id = a.unidade_organizacional_id").append("\n");
+		sql.append("left join       pessoa.pessoa c1").append("\n");
+		sql.append("on              c1.id = c.id").append("\n");
 		sql.append("left join       pessoa.arquivo d").append("\n");
 		sql.append("on              d.id = b.perfil_arquivo_id").append("\n");
 		sql.append("left join       pessoa.pessoa_email e").append("\n");
@@ -63,7 +65,7 @@ public class UsuarioDaoImpl implements UsuarioDaoCustom {
 				}
 				String n = nome.getText().replaceAll("\\s", "%");
 				params.add(String.format("%%%s%%", n));
-				sqlTemp.append(" (ifnull(b.nome, c.nome) like ?").append(params.size());
+				sqlTemp.append(" (ifnull(b.nome, c1.nome) like ?").append(params.size());
 				params.add(String.format("%%%s%%", n));
 				sqlTemp.append(" or ifnull(b.apelido_sigla, '') like ?").append(params.size()).append(")").append("\n");
 			}
