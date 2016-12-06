@@ -1,15 +1,17 @@
 package br.gov.df.emater.aterwebsrv.modelo_planejamento.planejamento;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 
-//@Entity
-//@Table(name = "matriz_planejamento", schema = EntidadeBase.PLANEJAMENTO_SCHEMA)
+@Entity
+@Table(name = "matriz_planejamento", schema = EntidadeBase.PLANEJAMENTO_SCHEMA)
 public class MatrizPlanejamento extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<MatrizPlanejamento> {
 
 	private static final long serialVersionUID = 1L;
