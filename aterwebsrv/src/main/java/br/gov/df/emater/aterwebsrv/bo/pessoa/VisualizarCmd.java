@@ -88,6 +88,7 @@ public class VisualizarCmd extends _Comando {
 			filtro.setAno(hoje.get(Calendar.YEAR));
 			filtro.setPublicoAlvo(publicoAlvo);
 			publicoAlvo.setIndiceProducaoList((List<Object>) facadeBo.indiceProducaoFiltroProducaoPublicoAlvo(contexto.getUsuario(), filtro).getResposta());
+			publicoAlvo.setPessoa(null);
 		}
 
 		// fetch nas tabelas de apoio

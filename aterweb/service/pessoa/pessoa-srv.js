@@ -142,6 +142,7 @@ angular.module(pNmModulo).factory(pNmFactory,
             },
             incluir : function(registro) {
                 SegurancaSrv.acesso(this.funcionalidade, 'INCLUIR');
+                removerCampo(registro, ['@jsonId']);
                 return $http.post(this.endereco + '/incluir', registro);
             },
             visualizar : function(id) {
@@ -150,6 +151,7 @@ angular.module(pNmModulo).factory(pNmFactory,
             },
             editar : function(registro) {
                 SegurancaSrv.acesso(this.funcionalidade, 'EDITAR');
+                removerCampo(registro, ['@jsonId']);
                 return $http.post(this.endereco + '/editar', registro);
             },
             excluir : function(registro) {
