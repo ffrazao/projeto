@@ -10,8 +10,8 @@ public class SisaterAcompanhamentoAterCh extends _Cadeia {
 
 	@Autowired
 	public SisaterAcompanhamentoAterCh(SisaterAcompanhamentoAterExcluirCmd c1, SisaterAcompanhamentoAterIncluirAntes2014Cmd c2, SisaterAcompanhamentoAterIncluirDepois2014Cmd c3) {
-		// super.addCommand(c1);
-		// super.addCommand(c2);
+		super.addCommand(c1);
+		super.addCommand(c2);
 		super.addCommand(c3);
 	}
 
