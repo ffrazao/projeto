@@ -116,6 +116,7 @@ angular.module(pNmModulo).factory(pNmFactory,
             },
             editar : function(indiceProducao) {
                 SegurancaSrv.acesso(this.funcionalidade, 'EDITAR');
+                removerCampo(indiceProducao, ['@jsonId']);
                 return $http.post(this.endereco + '/editar', indiceProducao);
             },
             excluir : function(registro) {

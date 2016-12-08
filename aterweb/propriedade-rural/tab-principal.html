@@ -144,11 +144,11 @@
         <label class="control-label">Outorga</label>
         <div>
         <label class="radio-inline" for="radio-outorga">
-        <input type="radio" name="outorga" id="outorga-1" ng-model="cadastro.registro.outorga" ng-true-value="'S'" ng-false-value="'N'">
+        <input type="radio" name="outorga" id="outorga-1" ng-model="cadastro.registro.outorga" ng-value="'S'">
         <label for="outorga-1">Sim</label>
         </label>
         <label class="radio-inline" for="radio-outorga">
-        <input type="radio" name="outorga" id="outorga-2" ng-model="cadastro.registro.outorga" ng-true-value="'S'" ng-false-value="'N'">
+        <input type="radio" name="outorga" id="outorga-2" ng-model="cadastro.registro.outorga" ng-value="'N'">
         <label for="outorga-2">Não</label>
         </label>
         </div>
@@ -159,15 +159,15 @@
     </div>
 
 
-    <div class="form-group col-md-3">
+    <div class="form-group col-md-3" ng-show="cadastro.registro.outorga === 'S'">
         <label class="control-label">Data de Validade</label>
-        <input class="form-control input-md" id="outorgaValidade" name="outorgaValidade" ng-model="cadastro.registro.outorgaValidade" ui-date-mask>
+        <input class="form-control input-md" id="outorgaValidade"  name="outorgaValidade" ng-model="cadastro.registro.outorgaValidade" ui-date-mask>
         <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.outorgaValidade.$error.required">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             Campo Obrigatório
         </div>
     </div>
-    <div class="form-group col-md-3">
+    <div class="form-group col-md-3" ng-show="cadastro.registro.outorga === 'S'">
         <label class="control-label">Nº da Outorga</label>
         <input class="form-control input-md" id="outorgaNumero" name="outorgaNumero" ng-model="cadastro.registro.outorgaNumero" maxlength="30" ng-maxlength="30">
         <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.outorgaNumero.$error.required">
