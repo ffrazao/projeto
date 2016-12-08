@@ -1,12 +1,18 @@
-servidor
+servidores
 
-homologacao:
+desenvolvimento / importacao (Windows 7):
+
+	10.22.1.3
+	usuario admgetin
+	senha suporte@getin
+
+homologacao (Linux Debian):
 
 	10.233.33.11
 	usuario root
 	senha emater123
 
-producao:
+producao (Linux Debian):
 
 	10.233.33.12
 	usuario root
