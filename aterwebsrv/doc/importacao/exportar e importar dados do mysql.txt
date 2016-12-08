@@ -1,5 +1,5 @@
 EXPORTAR
-mysqldump -uemater -p"emater" --hex-blob --default-character-set=utf8 --single-transaction --databases ater atividade credito_rural formulario funcional indice_producao pessoa sistema > dump.sql
+// mysqldump -uemater -p"emater" --hex-blob --default-character-set=utf8 --single-transaction --databases ater atividade credito_rural formulario funcional indice_producao pessoa sistema > dump.sql
 
 mysqldump -uemater -p"emater" --hex-blob --default-character-set=utf8 --single-transaction --databases ater > ater.sql
 mysqldump -uemater -p"emater" --hex-blob --default-character-set=utf8 --single-transaction --databases atividade > atividade.sql
