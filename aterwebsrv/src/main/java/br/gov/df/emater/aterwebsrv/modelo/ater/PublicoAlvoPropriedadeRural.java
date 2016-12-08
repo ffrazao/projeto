@@ -20,8 +20,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.NumberFormat;
-import org.springframework.format.annotation.NumberFormat.Style;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -32,7 +30,6 @@ import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PropriedadeRuralVinculoTipo;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
-import br.gov.df.emater.aterwebsrv.rest.json.JsonFormatarBigDecimal;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 
 @Entity
@@ -42,8 +39,7 @@ public class PublicoAlvoPropriedadeRural extends EntidadeBase implements _ChaveP
 	private static final long serialVersionUID = 1L;
 
 	@Column(name = "area")
-	@NumberFormat(style = Style.NUMBER)
-	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
+//	@JsonDeserialize(using = JsonFormatarBigDecimal.class)
 	private BigDecimal area;
 
 	@Column(name = "chave_sisater")
