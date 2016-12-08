@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.sistema;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -19,7 +21,8 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 
 @Entity
 @Table(name = "perfil_funcionalidade_comando", schema = EntidadeBase.SISTEMA_SCHEMA)
-public class PerfilFuncionalidadeComando extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<PerfilFuncionalidadeComando> {
+public class PerfilFuncionalidadeComando extends EntidadeBase
+		implements _ChavePrimaria<Integer>, InfoBasica<PerfilFuncionalidadeComando> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -38,6 +41,23 @@ public class PerfilFuncionalidadeComando extends EntidadeBase implements _ChaveP
 	@ManyToOne
 	@JoinColumn(name = "perfil_id")
 	private Perfil perfil;
+
+	public PerfilFuncionalidadeComando() {
+		super();
+	}
+
+	public PerfilFuncionalidadeComando(Integer id, Perfil perfil, FuncionalidadeComando funcionalidadeComando,
+			Confirmacao conceder) {
+		super();
+		this.id = id;
+		this.perfil = perfil;
+		this.funcionalidadeComando = funcionalidadeComando;
+		this.conceder = conceder;
+	}
+
+	public PerfilFuncionalidadeComando(Serializable id) {
+		super(id);
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -87,6 +107,12 @@ public class PerfilFuncionalidadeComando extends EntidadeBase implements _ChaveP
 		return result;
 	}
 
+	@Override
+	public PerfilFuncionalidadeComando infoBasica() {
+		return new PerfilFuncionalidadeComando(this.id, this.perfil != null ? new Perfil(this.perfil.getId()) : null,
+				UtilitarioInfoBasica.infoBasicaReg(this.funcionalidadeComando), this.conceder);
+	}
+
 	public void setConceder(Confirmacao conceder) {
 		this.conceder = conceder;
 	}
@@ -102,20 +128,6 @@ public class PerfilFuncionalidadeComando extends EntidadeBase implements _ChaveP
 
 	public void setPerfil(Perfil perfil) {
 		this.perfil = perfil;
-	}
-
-	@Override
-	public PerfilFuncionalidadeComando infoBasica() {
-		return new PerfilFuncionalidadeComando(this.id, this.perfil != null ? new Perfil(this.perfil.getId()) : null, UtilitarioInfoBasica.infoBasicaReg(this.funcionalidadeComando), this.conceder);
-	}
-
-	public PerfilFuncionalidadeComando(Integer id, Perfil perfil, FuncionalidadeComando funcionalidadeComando,
-			Confirmacao conceder) {
-		super();
-		this.id = id;
-		this.perfil = perfil;
-		this.funcionalidadeComando = funcionalidadeComando;
-		this.conceder = conceder;
 	}
 
 }
