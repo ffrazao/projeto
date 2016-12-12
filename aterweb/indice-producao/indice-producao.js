@@ -650,8 +650,9 @@
 
             $scope.$watch('cadastro.registro.publicoAlvo.id', function(novo) {
 
-                if ($scope.cadastro.apoio.porProdutor === true &&
-                    $scope.cadastro.registro.publicoAlvo && $scope.cadastro.registro.publicoAlvo.id) {
+                if ($scope.cadastro.apoio.tipoLancamento === 'PA' &&
+                    $scope.cadastro.registro.publicoAlvo &&
+                    $scope.cadastro.registro.publicoAlvo.id) {
 
                     PropriedadeRuralSrv.filtrarPorPublicoAlvoUnidadeOrganizacionalComunidade({
                         publicoAlvoList: [{
@@ -677,13 +678,16 @@
 
             $scope.$watch('cadastro.registro.propriedadeRural.id', function(novo) {
 
-                if ($scope.cadastro.apoio.porPropriedadeRural === true && $scope.cadastro.apoio.unidadeOrganizacional && $scope.cadastro.apoio.unidadeOrganizacional.id &&
-                    $scope.cadastro.registro.propriedadeRural && $scope.cadastro.registro.propriedadeRural.id) {
+                if ($scope.cadastro.apoio.tipoLancamento === 'PR' && 
+                    /*$scope.cadastro.apoio.unidadeOrganizacional && 
+                    $scope.cadastro.apoio.unidadeOrganizacional.id &&*/
+                    $scope.cadastro.registro.propriedadeRural &&
+                    $scope.cadastro.registro.propriedadeRural.id) {
 
                     PropriedadeRuralSrv.filtrarPorPublicoAlvoUnidadeOrganizacionalComunidade({
-                        unidadeOrganizacionalList: [{
+                        /*unidadeOrganizacionalList: [{
                             id: $scope.cadastro.apoio.unidadeOrganizacional.id
-                        }],
+                        }],*/
                         propriedadeRuralList: [{
                             id: $scope.cadastro.registro.propriedadeRural.id
                         }],
@@ -709,6 +713,8 @@
                 }
             });
 
+
+
             $scope.$watch('cadastro.registro.producaoList', function(k, v) {
                 if (!$scope.cadastro.registro.producaoList || !$scope.cadastro.registro.producaoList.length) {
                     return;
@@ -726,6 +732,12 @@
                         }
                     }
                 });
+            }, true);
+
+            $scope.$watch('cadastro.apoio.tipoLancamento', function(k, v) {
+                $scope.cadastro.registro.unidadeOrganizacional = null;
+                $scope.cadastro.registro.publicoAlvo = null;
+                $scope.cadastro.registro.propriedadeRural = null;
             }, true);
 
             // fim dos watches
