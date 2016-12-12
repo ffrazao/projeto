@@ -6,14 +6,33 @@ desenvolvimento / importacao (Windows 7):
 	usuario admgetin
 	senha suporte@getin
 
+	banco de dados: localhost
+	usuario root
+	senha root
+	usuario emater
+	senha emater
+
 homologacao (Linux Debian):
 
 	10.233.33.11
 	usuario root
 	senha emater123
 
+	banco de dados: localhost
+	usuario root
+	senha root
+	usuario emater
+	senha emater
+
+
 producao (Linux Debian):
 
 	10.233.33.12
 	usuario root
 	senha emater123
+
+	banco de dados: localhost
+	usuario root
+	senha suportegetin
+	usuario emater
+	senha emater
