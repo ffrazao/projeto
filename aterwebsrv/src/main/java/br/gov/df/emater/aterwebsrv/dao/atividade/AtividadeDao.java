@@ -8,4 +8,6 @@ import br.gov.df.emater.aterwebsrv.modelo.atividade.Atividade;
 @Repository("AtividadeDao")
 public interface AtividadeDao extends JpaRepository<Atividade, Integer>, AtividadeDaoCustom {
 
+	Atividade findOneByCodigo(String codigo);
+
 }

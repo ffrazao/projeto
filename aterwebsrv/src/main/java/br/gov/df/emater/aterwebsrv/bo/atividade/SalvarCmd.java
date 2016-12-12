@@ -29,7 +29,9 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 @Service("AtividadeSalvarCmd")
 public class SalvarCmd extends _SalvarCmd {
 
-	private static final String CODIGO_ATIVIDADE_CARACTERES = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";;
+	private static final String CODIGO_ATIVIDADE_CARACTERES = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+	private static final String[] NOME_INDEVIDO = { "PAU", "CU", "P1NT0", "B0CET", "V1ADO", "V1AD0", "V14D0", "VI4D0", "C4R4LH", "M3RDA", "M3RD4" };
 
 	@Autowired
 	private AtividadeAssuntoDao atividadeAssuntoDao;
@@ -71,7 +73,7 @@ public class SalvarCmd extends _SalvarCmd {
 
 		// captar o registro de atualização da tabela
 		logAtualizar(result, contexto);
-		
+
 		limparChavePrimaria(result.getAssuntoList());
 		limparChavePrimaria(result.getPessoaDemandanteList());
 		limparChavePrimaria(result.getPessoaExecutorList());
@@ -79,17 +81,6 @@ public class SalvarCmd extends _SalvarCmd {
 
 		List<AtividadePessoa> atividadePessoaDemandList = result.getPessoaDemandanteList();
 		List<AtividadePessoa> atividadePessoaExecList = result.getPessoaExecutorList();
-
-		// FIX-ME somente para a importação, depois remover esta condição
-		// if (atividadePessoaDemandList == null || atividadePessoaExecList ==
-		// null) {
-		// return true;
-		// }
-		
-		//Calendar calendar = Calendar.getInstance(); 
-		//calendar.add(Calendar.DATE, -1); 
-		//if(result.getInicio().before(calendar))
-		//	throw new BoException("Data de inicio não pode ser menor que a data de hoje.");
 
 		if (result.getId() == null) {
 			// gerar o código da atividade
@@ -167,19 +158,36 @@ public class SalvarCmd extends _SalvarCmd {
 	}
 
 	private String gerarCodigoAtividade() {
-		String str = CODIGO_ATIVIDADE_CARACTERES;
-		StringBuilder sb = new StringBuilder();
-		Random r = new Random();
-		for (int i = 0; i < 8; i++) {
-			int j = r.nextInt(str.length());
-			sb.append(str.charAt(j));
-		}
-		sb.append(modulo10(extraiNumeroProtocolo(sb.toString())));
-		sb.insert(4, ".");
-		sb.insert(9, "-");
-		return sb.toString();
+		StringBuilder result = null;
+		do {
+			do {
+				result = new StringBuilder();
+				Random random = new Random();
+				int letra = 0;
+				while (result.length() < 8) {
+					int posicao = random.nextInt(letra > 3 ? 10 : CODIGO_ATIVIDADE_CARACTERES.length());
+					if (posicao > 9) {
+						letra++;
+					} else {
+						letra = 0;
+					}
+					// para evitar que códigos possuam mais de 3 letras
+					// consecutivas
+					if (letra > 3) {
+						continue;
+					}
+					result.append(CODIGO_ATIVIDADE_CARACTERES.charAt(posicao));
+				}
+				// evitar nomes indevidos
+			} while (nomeIndevido(result.toString()));
+			result.append(modulo10(extraiNumeroProtocolo(result.toString())));
+			result.insert(4, ".");
+			result.insert(9, "-");
+			// evitar códigos repetidos
+		} while (dao.findOneByCodigo(result.toString()) != null);
+		return result.toString();
 	}
-	
+
 	private int modulo10(String numero) {
 		// variáveis de instancia
 		int soma = 0;
@@ -235,9 +243,21 @@ public class SalvarCmd extends _SalvarCmd {
 		return dv;
 	}
 
+	private boolean nomeIndevido(String codigo) {
+		if (codigo == null) {
+			return false;
+		}
+		for (String nome : NOME_INDEVIDO) {
+			if (codigo.toUpperCase().indexOf(nome) >= 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	private List<Integer> salvarAtividadePessoaList(Atividade atividade, List<AtividadePessoa> atividadePessoaList, AtividadePessoaParticipacao participacao) throws BoException {
 		// tratar a exclusão de registros
-		excluirRegistros(atividade, participacao.equals(AtividadePessoaParticipacao.D) ? "pessoaDemandanteList" : "pessoaExecutorList" , atividadePessoaDao);
+		excluirRegistros(atividade, participacao.equals(AtividadePessoaParticipacao.D) ? "pessoaDemandanteList" : "pessoaExecutorList", atividadePessoaDao);
 		Pessoa responsavel = null;
 		List<Integer> result = new ArrayList<Integer>();
 		for (AtividadePessoa ativPess : atividadePessoaList) {
@@ -259,7 +279,11 @@ public class SalvarCmd extends _SalvarCmd {
 			atividadePessoaDao.save(ativPess);
 		}
 		if (responsavel == null) {
-			throw new BoException("O %s responsável não foi identificado", participacao.toString());
+			if (atividadePessoaList.size() > 0) {
+				atividadePessoaList.get(0).setResponsavel(Confirmacao.S);
+			} else {				
+				throw new BoException("O %s responsável não foi identificado", participacao.toString());
+			}
 		}
 		return result;
 	}
