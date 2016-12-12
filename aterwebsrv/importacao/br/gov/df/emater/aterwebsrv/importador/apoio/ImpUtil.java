@@ -470,7 +470,7 @@ public class ImpUtil {
 	}
 
 	public Escolaridade deParaEscolaridade(String registro) {
-		if (registro == null) {
+		if (registro == null || StringUtils.isEmpty(registro) || StringUtils.isEmpty(registro.trim())) {
 			return null;
 		}
 
@@ -502,7 +502,7 @@ public class ImpUtil {
 	}
 
 	public EstadoCivil deParaEstadoCivil(String registro) {
-		if (StringUtils.isEmpty(registro)) {
+		if (StringUtils.isEmpty(registro) || StringUtils.isEmpty(registro.trim())) {
 			return null;
 		}
 

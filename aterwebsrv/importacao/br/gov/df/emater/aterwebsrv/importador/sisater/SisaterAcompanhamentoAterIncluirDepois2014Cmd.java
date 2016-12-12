@@ -66,11 +66,11 @@ public class SisaterAcompanhamentoAterIncluirDepois2014Cmd extends _Comando {
 		private String idUnd;
 
 		private void acumulaAssunto(Assunto assunto) {
+			if (atividade == null || assunto == null) {
+				return;
+			}
 			if (atividade.getAssuntoList() == null) {
 				atividade.setAssuntoList(new ArrayList<AtividadeAssunto>());
-			}
-			if (assunto == null) {
-				return;
 			}
 			for (AtividadeAssunto item : atividade.getAssuntoList()) {
 				if (assunto.getId().equals(item.getAssunto().getId())) {
