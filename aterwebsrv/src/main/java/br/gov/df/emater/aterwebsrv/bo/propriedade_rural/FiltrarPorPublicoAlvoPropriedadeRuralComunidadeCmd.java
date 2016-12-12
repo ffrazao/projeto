@@ -26,8 +26,10 @@ public class FiltrarPorPublicoAlvoPropriedadeRuralComunidadeCmd extends _Comando
 		List<PublicoAlvoPropriedadeRural> list = null;
 		if (!CollectionUtils.isEmpty(filtro.getPublicoAlvoList())) {
 			list = dao.findByPublicoAlvoInAndPropriedadeRuralIdIsNotNull(filtro.getPublicoAlvoList());
-		} else {
+		} else if (!CollectionUtils.isEmpty(filtro.getPropriedadeRuralList()) && !CollectionUtils.isEmpty(filtro.getUnidadeOrganizacionalList())) {
 			list = dao.findByPropriedadeRuralInAndComunidadeUnidadeOrganizacionalInAndPublicoAlvoIdIsNotNull(filtro.getPropriedadeRuralList(), filtro.getUnidadeOrganizacionalList());
+		} else if (!CollectionUtils.isEmpty(filtro.getPropriedadeRuralList())) {
+			list = dao.findByPropriedadeRuralInAndPublicoAlvoIdIsNotNull(filtro.getPropriedadeRuralList());
 		}
 		if (list != null) {
 			for (PublicoAlvoPropriedadeRural papr : list) {
