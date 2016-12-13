@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.bo.propriedade_rural;
 
+import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaReg;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -29,7 +31,7 @@ public class VisualizarCmd extends _Comando {
 
 	@Autowired
 	private EntityManager em;
-	
+
 	@Autowired
 	private FacadeBo facadeBo;
 
@@ -43,21 +45,21 @@ public class VisualizarCmd extends _Comando {
 			throw new BoException("Registro não localizado");
 		}
 
-		result.setInclusaoUsuario(result.getInclusaoUsuario() == null ? null : result.getInclusaoUsuario().infoBasica());
-		result.setAlteracaoUsuario(result.getAlteracaoUsuario() == null ? null : result.getAlteracaoUsuario().infoBasica());
-		result.setEndereco(result.getEndereco().infoBasica());
-		result.setBaciaHidrografica(result.getBaciaHidrografica().infoBasica());
-		result.setComunidade(result.getComunidade().infoBasica());
-		result.setEndereco(result.getEndereco().infoBasica());
+		result.setInclusaoUsuario(infoBasicaReg(result.getInclusaoUsuario()));
+		result.setAlteracaoUsuario(infoBasicaReg(result.getAlteracaoUsuario()));
+		result.setEndereco(infoBasicaReg(result.getEndereco()));
+		result.setBaciaHidrografica(infoBasicaReg(result.getBaciaHidrografica()));
+		result.setComunidade(infoBasicaReg(result.getComunidade()));
+		result.setEndereco(infoBasicaReg(result.getEndereco()));
 
 		if (result.getPublicoAlvoPropriedadeRuralList() != null) {
 			List<PublicoAlvoPropriedadeRural> paprList = new ArrayList<PublicoAlvoPropriedadeRural>();
 			for (PublicoAlvoPropriedadeRural papr : result.getPublicoAlvoPropriedadeRuralList()) {
 				PublicoAlvoPropriedadeRural p = new PublicoAlvoPropriedadeRural(papr.getId());
 				p.setArea(papr.getArea());
-				p.setComunidade(papr.getComunidade().infoBasica());
+				p.setComunidade(infoBasicaReg(papr.getComunidade()));
 				p.setInicio(papr.getInicio());
-				p.setPublicoAlvo(papr.getPublicoAlvo().infoBasica());
+				p.setPublicoAlvo(infoBasicaReg(papr.getPublicoAlvo()));
 				p.setTermino(papr.getTermino());
 				p.setVinculo(papr.getVinculo());
 				paprList.add(p);
@@ -68,18 +70,18 @@ public class VisualizarCmd extends _Comando {
 		if (result.getFormaUtilizacaoEspacoRuralList() != null) {
 			for (PropriedadeRuralFormaUtilizacaoEspacoRural formaUtilizacaoEspacoRural : result.getFormaUtilizacaoEspacoRuralList()) {
 				formaUtilizacaoEspacoRural.setPropriedadeRural(null);
-				formaUtilizacaoEspacoRural.setFormaUtilizacaoEspacoRural(formaUtilizacaoEspacoRural.getFormaUtilizacaoEspacoRural().infoBasica());
+				formaUtilizacaoEspacoRural.setFormaUtilizacaoEspacoRural(infoBasicaReg(formaUtilizacaoEspacoRural.getFormaUtilizacaoEspacoRural()));
 			}
 		}
-		
+
 		if (result.getArquivoList() != null) {
 			for (PropriedadeRuralArquivo a : result.getArquivoList()) {
 				a.getId();
-				a.setArquivo(a.getArquivo().infoBasica());
+				a.setArquivo(infoBasicaReg(a.getArquivo()));
 				a.setPropriedadeRural(null);
 			}
 		}
-		
+
 		if (result.getPendenciaList() != null) {
 			for (PropriedadeRuralPendencia propriedadeRuralPendencia : result.getPendenciaList()) {
 				propriedadeRuralPendencia.setPropriedadeRural(null);
@@ -98,4 +100,5 @@ public class VisualizarCmd extends _Comando {
 
 		return false;
 	}
+
 }

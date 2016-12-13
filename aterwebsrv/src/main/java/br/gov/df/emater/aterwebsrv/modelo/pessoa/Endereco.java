@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.pessoa;
 
+import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaReg;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +28,7 @@ import com.vividsolutions.jts.geom.Point;
 
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerGeometry;
@@ -38,7 +41,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerGeometry;
 @Entity
 @Table(name = "endereco", schema = EntidadeBase.PESSOA_SCHEMA)
 // @Indexed
-public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<Endereco> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -252,8 +255,8 @@ public class Endereco extends EntidadeBase implements _ChavePrimaria<Integer> {
 	}
 
 	public Endereco infoBasica() {
-		return new Endereco(this.bairro, this.cep, this.cidade == null ? null : this.cidade.infoBasica(), this.codigoIbge, this.complemento, this.enderecoSisater, this.estado == null ? null : this.estado.infoBasica(), this.id, this.entradaPrincipal, this.logradouro,
-				this.municipio == null ? null : this.municipio.infoBasica(), this.nomePropriedadeRuralOuEstabelecimento, this.numero, this.pais == null ? null : this.pais.infoBasica(), this.propriedadeRuralConfirmacao, this.roteiroAcessoOuEnderecoInternacional, this.areaList);
+		return new Endereco(this.bairro, this.cep, infoBasicaReg(this.cidade), this.codigoIbge, this.complemento, this.enderecoSisater, infoBasicaReg(this.estado), this.id, this.entradaPrincipal, this.logradouro, infoBasicaReg(this.municipio),
+				this.nomePropriedadeRuralOuEstabelecimento, this.numero, infoBasicaReg(this.pais), this.propriedadeRuralConfirmacao, this.roteiroAcessoOuEnderecoInternacional, this.areaList);
 	}
 
 	public void setAreaList(List<Area> areaList) {
