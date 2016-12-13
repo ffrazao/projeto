@@ -46,6 +46,11 @@
                         visivel: true,
                     },
                     {
+                        name: 'Planejamento',
+                        link: 'info({"nome": "Planejamento", "endereco": "http://extranet.emater.df.gov.br/planejamento"})',
+                        visivel: true,
+                    },
+                    {
                         name: 'Painel de Resultados',
                         link: 'info({"nome": "Painel de Resultados", "endereco": "http://extranet.emater.df.gov.br/painelresultados/"})',
                         visivel: true,

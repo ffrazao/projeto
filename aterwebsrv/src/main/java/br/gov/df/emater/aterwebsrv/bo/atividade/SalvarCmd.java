@@ -31,7 +31,7 @@ public class SalvarCmd extends _SalvarCmd {
 
 	private static final String CODIGO_ATIVIDADE_CARACTERES = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-	private static final String[] NOME_INDEVIDO = { "PAU", "CU", "P1NT0", "B0CET", "V1ADO", "V1AD0", "V14D0", "VI4D0", "C4R4LH", "M3RDA", "M3RD4" };
+	private static final String[] NOME_INDEVIDO = { "B0CET", "C4R4LH", "CU", "G4I", "G4Y", "GAI", "GAY", "M3RD4", "M3RDA", "P1NT0", "PAU", "V14D0", "V1AD0", "V1ADO", "VI4D0", "V4GIN", "V4G1N" };
 
 	@Autowired
 	private AtividadeAssuntoDao atividadeAssuntoDao;
@@ -281,7 +281,7 @@ public class SalvarCmd extends _SalvarCmd {
 		if (responsavel == null) {
 			if (atividadePessoaList.size() > 0) {
 				atividadePessoaList.get(0).setResponsavel(Confirmacao.S);
-			} else {				
+			} else {
 				throw new BoException("O %s responsável não foi identificado", participacao.toString());
 			}
 		}

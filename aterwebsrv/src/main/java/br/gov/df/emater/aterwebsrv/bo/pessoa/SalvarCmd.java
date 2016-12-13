@@ -315,6 +315,7 @@ public class SalvarCmd extends _SalvarCmd {
 		if (!CollectionUtils.isEmpty(result.getEnderecoList())) {
 			// tratar a insersao de registros
 			Integer ordem = 0;
+			boolean principal = false;
 			for (PessoaEndereco pessoaEndereco : result.getEnderecoList()) {
 				Endereco endereco = pessoaEndereco.getEndereco();
 				List<Endereco> pesquisa = enderecoDao.procurar(endereco);
@@ -336,9 +337,14 @@ public class SalvarCmd extends _SalvarCmd {
 				pessoaEndereco.setOrdem(++ordem);
 				if (pessoaEndereco.getPrincipal() == null) {
 					pessoaEndereco.setPrincipal(Confirmacao.N);
+				} else if (Confirmacao.S.equals(pessoaEndereco.getPrincipal())) { 
+					principal = true;
 				}
 				pessoaEnderecoDao.save(pessoaEndereco);
-
+			}
+			if (!principal && !CollectionUtils.isEmpty(result.getEnderecoList())) {
+				result.getEnderecoList().get(0).setPrincipal(Confirmacao.S);
+				pessoaEnderecoDao.save(result.getEnderecoList().get(0));
 			}
 		}
 
@@ -348,6 +354,7 @@ public class SalvarCmd extends _SalvarCmd {
 		// salvar telefones
 		if (!CollectionUtils.isEmpty(result.getTelefoneList())) {
 			Integer ordem = 0;
+			boolean principal = false;
 			for (PessoaTelefone pessoaTelefone : result.getTelefoneList()) {
 				if (pessoaTelefone.getTelefone() == null || StringUtils.isBlank(pessoaTelefone.getTelefone().getNumero())) {
 					throw new BoException("Telefone não informado");
@@ -366,8 +373,14 @@ public class SalvarCmd extends _SalvarCmd {
 				pessoaTelefone.setOrdem(++ordem);
 				if (pessoaTelefone.getPrincipal() == null) {
 					pessoaTelefone.setPrincipal(Confirmacao.N);
+				} else if (Confirmacao.S.equals(pessoaTelefone.getPrincipal())) { 
+					principal = true;
 				}
 				pessoaTelefoneDao.save(pessoaTelefone);
+			}
+			if (!principal && !CollectionUtils.isEmpty(result.getTelefoneList())) {
+				result.getTelefoneList().get(0).setPrincipal(Confirmacao.S);
+				pessoaTelefoneDao.save(result.getTelefoneList().get(0));
 			}
 		}
 
@@ -378,6 +391,7 @@ public class SalvarCmd extends _SalvarCmd {
 		if (!CollectionUtils.isEmpty(result.getEmailList())) {
 			// tratar a insersao de registros
 			Integer ordem = 0;
+			boolean principal = false;
 			for (PessoaEmail pessoaEmail : result.getEmailList()) {
 				if (pessoaEmail.getEmail() == null || StringUtils.isBlank(pessoaEmail.getEmail().getEndereco()) || StringUtils.isBlank(UtilitarioString.formataEmail(pessoaEmail.getEmail().getEndereco()))) {
 					throw new BoException("E-mail não informado");
@@ -401,8 +415,14 @@ public class SalvarCmd extends _SalvarCmd {
 				pessoaEmail.setOrdem(++ordem);
 				if (pessoaEmail.getPrincipal() == null) {
 					pessoaEmail.setPrincipal(Confirmacao.N);
+				} else if (Confirmacao.S.equals(pessoaEmail.getPrincipal())) { 
+					principal = true;
 				}
 				pessoaEmailDao.save(pessoaEmail);
+			}
+			if (!principal && !CollectionUtils.isEmpty(result.getEmailList())) {
+				result.getEmailList().get(0).setPrincipal(Confirmacao.S);
+				pessoaEmailDao.save(result.getEmailList().get(0));
 			}
 		}
 
