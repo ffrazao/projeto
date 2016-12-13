@@ -1,0 +1,22 @@
+-- testar se a lotação foi modificada
+select *
+from funcional.lotacao_ativa_vi
+where emprego_id = 111;
+
+-- para encontrar o id do emprego (o id do emprego é o id desta query)
+select *
+from funcional.emprego_vi
+where empregado_nome like '%Fraz%';
+
+
+-- para achar a unidade organizacional
+select *
+from pessoa.pessoa a
+join funcional.unidade_organizacional b
+on b.id = a.id;
+
+-- para visualizar as lotações de um emprego e modifica-las
+select *
+from funcional.lotacao
+where emprego_id = 111;
+
