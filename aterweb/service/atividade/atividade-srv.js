@@ -63,10 +63,10 @@ angular.module(pNmModulo).factory(pNmFactory,
                     }
                 }
 
-                scp.cadastro.filtro.inicio = new Date();
-                scp.cadastro.filtro.inicio.setMonth(scp.cadastro.filtro.inicio.getMonth() - 6);
-                scp.cadastro.filtro.inicio.setDate(1);
-                scp.cadastro.filtro.termino = new Date();
+                //scp.cadastro.filtro.inicio = new Date();
+                //scp.cadastro.filtro.inicio.setMonth(scp.cadastro.filtro.inicio.getMonth() - 6);
+                //scp.cadastro.filtro.inicio.setDate(1);
+                //scp.cadastro.filtro.termino = new Date();
 
             },
             filtrar : function(filtro) {

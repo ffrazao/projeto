@@ -712,6 +712,14 @@
                         break;
                     }
                 }
+                if ($scope.cadastro.registro.publicoAlvoConfirmacao && $scope.cadastro.registro.publicoAlvoConfirmacao === 'S' && $scope.cadastro.registro.publicoAlvo && $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList) {
+                    for (i in $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList) {
+                        if ($scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList[i].principal === 'S'){
+                            encontrou = true;
+                            break;
+                        }
+                    }
+                }
                 $scope.frm.formulario.$setValidity("enderecoPrincipal", encontrou);
             },true);
 

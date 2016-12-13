@@ -1,6 +1,7 @@
 package br.gov.df.emater.aterwebsrv.bo.atividade;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import br.gov.df.emater.aterwebsrv.dto.TagDto;
 import br.gov.df.emater.aterwebsrv.dto.atividade.AtividadeCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
 import br.gov.df.emater.aterwebsrv.seguranca.UserAuthentication;
 
@@ -36,12 +38,10 @@ public class FiltroNovoCmd implements Command {
 
 		Calendar hoje = Calendar.getInstance();
 
-		Calendar inicio = Calendar.getInstance();
-		inicio.set(hoje.get(Calendar.YEAR), hoje.get(Calendar.YEAR), hoje.get(Calendar.DATE));
-		inicio.set(Calendar.MONTH, -1);
-
-		Calendar termino = Calendar.getInstance();
-		termino.set(hoje.get(Calendar.YEAR), hoje.get(Calendar.YEAR), hoje.get(Calendar.DATE));
+		Calendar inicio = new GregorianCalendar(hoje.get(Calendar.YEAR), hoje.get(Calendar.MONTH), 1);
+		inicio.add(Calendar.MONTH, -3);
+		
+		Calendar termino = new GregorianCalendar(hoje.get(Calendar.YEAR), hoje.get(Calendar.MONTH), hoje.get(Calendar.DATE));
 
 		filtro.setInicio(inicio);
 		filtro.setTermino(termino);

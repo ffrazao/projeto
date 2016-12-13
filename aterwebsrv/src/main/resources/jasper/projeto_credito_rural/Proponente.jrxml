@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
-<!-- 2016-11-08T11:04:46 -->
+<!-- 2016-12-13T13:46:00 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Capa" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4be54963-8492-4271-af5b-1a708b6a64c7">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="RelatorioNome" class="java.lang.String" isForPrompting="false">
@@ -748,7 +748,7 @@
 				<textElement>
 					<font isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{proponente}.getNome()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{proponente}.getProfissao().getNome()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="300" y="245" width="140" height="13" uuid="e60c0d44-024d-4db9-921e-208c4088254f">
@@ -1293,7 +1293,7 @@
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<textField>
 				<reportElement x="0" y="8" width="210" height="15" uuid="1b954dc6-4ce3-4eb7-991f-8d34ca5f2b8e"/>
-				<textFieldExpression><![CDATA[$P{Usuario}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{Usuario}.getUsername()]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="210" y="8" width="140" height="15" uuid="4ea6635b-fa82-4fea-a077-46e6c85a2af9">

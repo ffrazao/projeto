@@ -470,9 +470,12 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 			// encontrar o endereco principal
 			if (!CollectionUtils.isEmpty(pcrg.getPessoaFisica().getEnderecoList())) {
 				for (PessoaEndereco pEnd : pcrg.getPessoaFisica().getEnderecoList()) {
-					if (garantiaAvalista.getLogradouro() == null || Confirmacao.S.equals(pEnd.getPrincipal())) {
+					if (pEnd.getEndereco() != null && (garantiaAvalista.getLogradouro() == null || Confirmacao.S.equals(pEnd.getPrincipal()))) {
 						garantiaAvalista.setLogradouro(String.format("%s, %s, %s", pEnd.getEndereco().getLogradouro(), pEnd.getEndereco().getComplemento(), pEnd.getEndereco().getNumero()));
-						garantiaAvalista.setLocalidade(String.format("%s, %s", pEnd.getEndereco().getBairro(), pEnd.getEndereco().getEstado() == null ? "" : pEnd.getEndereco().getEstado().getSigla()));
+						garantiaAvalista.setLocalidade(String.format("%s%s%s",
+								pEnd.getEndereco().getBairro() == null ? "" : pEnd.getEndereco().getBairro().concat(", "), 
+								pEnd.getEndereco().getCidade() == null ? "" : pEnd.getEndereco().getCidade().getNome().concat(", "), 
+								pEnd.getEndereco().getEstado() == null ? "" : pEnd.getEndereco().getEstado().getSigla()));
 						garantiaAvalista.setCep(pEnd.getEndereco().getCep());
 					}
 				}
@@ -520,6 +523,7 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 			garantiaAvalista.setParticipacao(pcrg.getParticipacao());
 			garantiaAvalista.setProfissao(pcrg.getPessoaFisica().getProfissao());
 			garantiaAvalista.setRendaLiquida(pcrg.getRendaLiquida());
+			
 
 			garantiaAvalistaList.add(garantiaAvalista);
 		}
