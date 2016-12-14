@@ -58,7 +58,7 @@ public class BasicoEmaterCmd extends _Comando {
 				emater.setEnderecoList(pessoaEnderecoList);
 				emater.setCnpj("00.509.612/0001-04");
 				emater.setFundacao(new GregorianCalendar(1978, 5, 19));
-				emater.setId((Integer) facadeBo.pessoaSalvar(null, emater).getResposta());
+				facadeBo.pessoaSalvar(null, emater).getResposta();
 
 				transactionManager.commit(transactionStatus);
 			} catch (Exception e) {

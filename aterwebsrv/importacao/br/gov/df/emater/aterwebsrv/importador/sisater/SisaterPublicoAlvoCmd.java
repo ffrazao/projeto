@@ -685,7 +685,12 @@ public class SisaterPublicoAlvoCmd extends _Comando {
 					pessoa.setObservacoes(rs.getString("OBSERVACAO"));
 
 					pessoa.setPerfilArquivo(captarPerfilArquivo(rs.getString("IDBEN")));
-					pessoa.setSituacao(PessoaSituacao.A);
+					// status da pessoa
+					if ("ativo".equalsIgnoreCase(rs.getString("STATUS"))) {
+						pessoa.setSituacao(PessoaSituacao.A);
+					} else {
+						pessoa.setSituacao(PessoaSituacao.O);
+					}
 					pessoa.setSituacaoData(agora);
 
 					// salvar no MySQL e no Firebird
@@ -701,7 +706,7 @@ public class SisaterPublicoAlvoCmd extends _Comando {
 							pessoa.setInclusaoData(atualizacaoData);
 							pessoa.setAlteracaoData(atualizacaoData);
 						}
-						pessoa.setAlteracaoUsuario(atualizador);
+						pessoa.setInclusaoUsuario(atualizador);
 						pessoaDao.save(pessoa);
 					}
 

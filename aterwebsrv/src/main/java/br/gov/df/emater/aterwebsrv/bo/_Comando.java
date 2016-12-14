@@ -44,7 +44,9 @@ public abstract class _Comando implements Command {
 		}
 		_LogInclusaoAlteracao result = (_LogInclusaoAlteracao) entidadeBase;
 		if (((_ChavePrimaria) result).getId() == null) {
-			result.setInclusaoUsuario(getUsuario(contexto.getUsuario() == null ? null : contexto.getUsuario().getName()));
+			if (result.getInclusaoUsuario() == null || result.getInclusaoUsuario().getUsername() == null) {
+				result.setInclusaoUsuario(getUsuario(contexto.getUsuario() == null ? null : contexto.getUsuario().getName()));
+			}
 		} else {
 			result.setInclusaoUsuario(getUsuario(result.getInclusaoUsuario() == null ? contexto.getUsuario() == null ? null : contexto.getUsuario().getName() : result.getInclusaoUsuario().getUsername()));
 		}
