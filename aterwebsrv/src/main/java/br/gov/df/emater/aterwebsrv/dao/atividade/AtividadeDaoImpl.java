@@ -22,6 +22,7 @@ import br.gov.df.emater.aterwebsrv.dto.agenda.AgendaDto;
 import br.gov.df.emater.aterwebsrv.dto.atividade.AtividadeCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.ferramenta.Util;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
+import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGeracao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PublicoAlvoCategoria;
@@ -366,8 +367,8 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 		sql.append("on      d.id = c.pessoa_id").append("\n");
 		sql.append("join    atividade.atividade_assunto e").append("\n");
 		sql.append("on      e.atividade_id = a.id").append("\n");
-		sql.append("where   a.inicio between :p0 and :p1").append("\n");
-		sql.append("and     (a.conclusao is null or a.conclusao between :p0 and :p1)").append("\n");
+		sql.append("where   a.inicio between :p1 and :p2").append("\n");
+		sql.append("and     (a.conclusao is null or a.conclusao between :p1 and :p2)").append("\n");
 		params.add(filtro.getInicio());
 		params.add(filtro.getTermino());
 		// remover o item null
@@ -376,8 +377,7 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 					filtro.getPessoaIdList().stream().filter(n -> n != null).collect(Collectors.toSet()));
 		}
 		if (!CollectionUtils.isEmpty(filtro.getPessoaIdList())) {
-			params.add(filtro.getPessoaIdList());
-			sql.append("and    c.pessoa_id in :p").append(params.size()).append("\n");
+			sql.append("and    c.pessoa_id in (").append(UtilitarioString.collectionToString(filtro.getPessoaIdList())).append(")").append("\n");
 		}
 		if (filtro.getMetodo() != null && filtro.getMetodo().getId() != null) {
 			params.add(filtro.getMetodo().getId());
@@ -385,7 +385,7 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 		}
 		if (filtro.getAssunto() != null && filtro.getAssunto().getId() != null) {
 			params.add(filtro.getAssunto().getId());
-			sql.append("and    d.assunto_id = :p").append(params.size()).append("\n");
+			sql.append("and    e.assunto_id = :p").append(params.size()).append("\n");
 		}
 		sql.append("order by a.inicio, d.nome").append("\n");
 
@@ -420,8 +420,8 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 				});
 
 		// inserir os parametros
-		for (int i = 0; i < params.size(); i++) {
-			query.setParameter(String.format("p%d", i), params.get(i));
+		for (int i = 1; i <= params.size(); i++) {
+			query.setParameter(String.format("p%d", i), params.get(i-1));
 		}
 
 		// definir a pagina a ser consultada
