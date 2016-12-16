@@ -111,6 +111,9 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer>, 
 	@JsonDeserialize(using = JsonDeserializerData.class)
 	private Calendar inicio;
 
+	@OneToMany(mappedBy = "atividade")
+	private List<AtividadeMetaTatica> metaTaticaList;
+
 	@ManyToOne
 	@JoinColumn(name = "metodo_id")
 	private Metodo metodo;
@@ -242,6 +245,10 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer>, 
 		return inicio;
 	}
 
+	public List<AtividadeMetaTatica> getMetaTaticaList() {
+		return metaTaticaList;
+	}
+
 	public Metodo getMetodo() {
 		return metodo;
 	}
@@ -365,6 +372,10 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer>, 
 
 	public void setInicio(Calendar inicio) {
 		this.inicio = inicio;
+	}
+
+	public void setMetaTaticaList(List<AtividadeMetaTatica> metaTaticaList) {
+		this.metaTaticaList = metaTaticaList;
 	}
 
 	public void setMetodo(Metodo metodo) {

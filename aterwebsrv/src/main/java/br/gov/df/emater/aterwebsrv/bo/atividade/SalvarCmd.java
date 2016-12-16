@@ -15,8 +15,10 @@ import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.bo._SalvarCmd;
 import br.gov.df.emater.aterwebsrv.dao.atividade.AtividadeAssuntoDao;
 import br.gov.df.emater.aterwebsrv.dao.atividade.AtividadeDao;
+import br.gov.df.emater.aterwebsrv.dao.atividade.AtividadeMetaTaticaDao;
 import br.gov.df.emater.aterwebsrv.dao.atividade.AtividadePessoaDao;
 import br.gov.df.emater.aterwebsrv.dao.atividade.OcorrenciaDao;
+import br.gov.df.emater.aterwebsrv.dao_planejamento.planejamento.MetaTaticaDao;
 import br.gov.df.emater.aterwebsrv.ferramenta.Util;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.Atividade;
@@ -25,6 +27,7 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.AtividadeFinalidade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.AtividadePessoaParticipacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
+import br.gov.df.emater.aterwebsrv.modelo_planejamento.planejamento.MetaTatica;
 
 @Service("AtividadeSalvarCmd")
 public class SalvarCmd extends _SalvarCmd {
@@ -37,10 +40,16 @@ public class SalvarCmd extends _SalvarCmd {
 	private AtividadeAssuntoDao atividadeAssuntoDao;
 
 	@Autowired
+	private AtividadeMetaTaticaDao atividadeMetaTaticaDao;
+
+	@Autowired
 	private AtividadePessoaDao atividadePessoaDao;
 
 	@Autowired
 	private AtividadeDao dao;
+
+	@Autowired
+	private MetaTaticaDao metaTaticaDao;
 
 	@Autowired
 	private OcorrenciaDao ocorrenciaDao;
@@ -75,6 +84,7 @@ public class SalvarCmd extends _SalvarCmd {
 		logAtualizar(result, contexto);
 
 		limparChavePrimaria(result.getAssuntoList());
+		limparChavePrimaria(result.getMetaTaticaList());
 		limparChavePrimaria(result.getPessoaDemandanteList());
 		limparChavePrimaria(result.getPessoaExecutorList());
 		limparChavePrimaria(result.getOcorrenciaList());
@@ -119,6 +129,17 @@ public class SalvarCmd extends _SalvarCmd {
 			result.getAssuntoList().forEach((assunto) -> {
 				assunto.setAtividade(result);
 				atividadeAssuntoDao.save(assunto);
+			});
+		}
+
+		excluirRegistros(result, "metaTaticaList", atividadeMetaTaticaDao);
+
+		if (!CollectionUtils.isEmpty(result.getMetaTaticaList())) {
+			result.getMetaTaticaList().forEach((metaTatica) -> {
+				metaTatica.setAtividade(result);
+				MetaTatica mt = metaTaticaDao.findOne(metaTatica.getMetaTaticaId());
+				metaTatica.setMetaTaticaNome(mt.getDescricao());
+				atividadeMetaTaticaDao.save(metaTatica);
 			});
 		}
 

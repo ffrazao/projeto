@@ -20,7 +20,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EntityScan(basePackages = { _PlanejamentoDaoConfig.MODELO })
-@EnableJpaRepositories(basePackages = { _PlanejamentoDaoConfig.DAO }, entityManagerFactoryRef = "planejamentoEntityManagerFactory", transactionManagerRef = "planejamentoTransactionManager")
+@EnableJpaRepositories(basePackages = {
+		_PlanejamentoDaoConfig.DAO }, entityManagerFactoryRef = "planejamentoEntityManagerFactory", transactionManagerRef = "planejamentoTransactionManager")
 @EnableTransactionManagement
 public class _PlanejamentoDaoConfig {
 
@@ -60,7 +61,8 @@ public class _PlanejamentoDaoConfig {
 	@Bean(name = "planejamentoTransactionManager")
 	@Qualifier(value = "planejamentoTransactionManager")
 	@Autowired
-	public PlatformTransactionManager planejamentoTransactionManager(@Qualifier("planejamentoEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
+	public PlatformTransactionManager planejamentoTransactionManager(
+			@Qualifier("planejamentoEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
 		JpaTransactionManager txManager = new JpaTransactionManager();
 		txManager.setEntityManagerFactory(entityManagerFactory);
 		return txManager;

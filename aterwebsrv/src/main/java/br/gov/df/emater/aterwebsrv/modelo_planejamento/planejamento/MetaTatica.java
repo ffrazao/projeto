@@ -12,7 +12,7 @@ import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 
 @Entity
 @Table(name = "matriz_planejamento", schema = EntidadeBase.PLANEJAMENTO_SCHEMA)
-public class MatrizPlanejamento extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<MatrizPlanejamento> {
+public class MetaTatica extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<MetaTatica> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -22,15 +22,15 @@ public class MatrizPlanejamento extends EntidadeBase implements _ChavePrimaria<I
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
-	public MatrizPlanejamento() {
+	public MetaTatica() {
 		super();
 	}
 
-	public MatrizPlanejamento(Integer id) {
+	public MetaTatica(Integer id) {
 		super(id);
 	}
 
-	public MatrizPlanejamento(Integer id, String descricao) {
+	public MetaTatica(Integer id, String descricao) {
 		this(id);
 		setDescricao(descricao);
 	}
@@ -45,8 +45,8 @@ public class MatrizPlanejamento extends EntidadeBase implements _ChavePrimaria<I
 	}
 
 	@Override
-	public MatrizPlanejamento infoBasica() {
-		return new MatrizPlanejamento(getId(), getDescricao());
+	public MetaTatica infoBasica() {
+		return new MetaTatica(getId(), getDescricao());
 	}
 
 	public void setDescricao(String descricao) {

@@ -16,8 +16,10 @@ import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.atividade.AtividadeDao;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.Atividade;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.AtividadeAssunto;
+import br.gov.df.emater.aterwebsrv.modelo.atividade.AtividadeMetaTatica;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.AtividadePessoa;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.Ocorrencia;
+import br.gov.df.emater.aterwebsrv.modelo_planejamento.planejamento.MetaTatica;
 
 @Service("AtividadeVisualizarCmd")
 public class VisualizarCmd extends _Comando {
@@ -53,6 +55,20 @@ public class VisualizarCmd extends _Comando {
 			result.setAssuntoList(l);
 		}
 
+		if (result.getMetaTaticaList() != null) {
+			List<AtividadeMetaTatica> l = new ArrayList<AtividadeMetaTatica>();
+			for (AtividadeMetaTatica r : result.getMetaTaticaList()) {
+				AtividadeMetaTatica n = new AtividadeMetaTatica();
+				n.setId(r.getId());
+				n.setMetaTaticaId(r.getMetaTaticaId());
+				n.setMetaTaticaNome(r.getMetaTaticaNome());
+				n.setMetaTatica( new MetaTatica(r.getMetaTaticaId(),r.getMetaTaticaNome() ) );
+				l.add(n);
+			}
+			result.setMetaTaticaList(l);
+		}
+
+		
 		if (result.getPessoaDemandanteList() != null) {
 			List<AtividadePessoa> l = new ArrayList<AtividadePessoa>();
 			for (AtividadePessoa r : result.getPessoaDemandanteList()) {
