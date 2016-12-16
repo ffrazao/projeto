@@ -41,9 +41,9 @@
     </div>
     <div class="col-md-6" title="Plano de Ação" ng-show="cadastro.registro.assuntoList.length">
         <div class="form-group" ng-class="{'ng-invalid': frm.formulario.planoAcaoTotal.$error.ngValorMin}">
-            <label class="control-label" for="planoAcaoTotal">Plano de Ação</label>
+            <label class="control-label" for="planoAcaoTotal">Meta Tática</label>
 
-            <ng-include src="'atividade/sub-plano-acao.html'" ng-controller="AtividadePlanoAcaoCtrl"/>
+            <ng-include src="'atividade/sub-meta-tatica.html'" ng-controller="AtividadeMetaTaticaCtrl"/>
 
             <input type="hidden" id="planoAcaoTotal" name="planoAcaoTotal" ng-model="cadastro.registro.planoAcaoList.length">
             
