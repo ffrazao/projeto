@@ -55,7 +55,7 @@
                         <th ng-if="cadastro.registro.bemProducaoList[0].bemClassificacao.itemANome"><small>{{cadastro.registro.bemProducaoList[0].bemClassificacao.itemANome.nome}}</small></th>
                         <th ng-if="cadastro.registro.bemProducaoList[0].bemClassificacao.itemBNome"><small>{{cadastro.registro.bemProducaoList[0].bemClassificacao.itemBNome.nome}}</small></th>
                         <th ng-if="cadastro.registro.bemProducaoList[0].bemClassificacao.itemCNome"><small>{{cadastro.registro.bemProducaoList[0].bemClassificacao.itemCNome.nome}}</small></th>
-                        <th><small>({{cadastro.registro.bemProducaoList[0].bemClassificacao.formula}})</small></th>
+                        <th><small>({{UtilSrv.indiceDePorCampo(cadastro.apoio.formulaProdutoList, cadastro.registro.bemProducaoList[0].bemClassificacao.formula, 'codigo').descricao}})</small></th>
                         <th>(Unitário)</th>
                         <th>(Total)</th>
                     </tr>
@@ -103,7 +103,9 @@
                                 Campo Obrigatório
                             </div>
                         </td>
-                        <td>{{formula(cadastro.apoio.producao.formula, produtor.itemAValor, produtor.itemBValor, produtor.itemCValor) | number: 2}}</td>
+                        <td>
+                            {{formula(UtilSrv.indiceDePorCampo(cadastro.apoio.formulaProdutoList, cadastro.registro.bemProducaoList[0].bemClassificacao.formula, 'codigo').descricao, produtor.itemAValor, produtor.itemBValor, produtor.itemCValor) | number: 2}}
+                        </td>
                         <td><small>({{cadastro.registro.bemProducaoList[0].bemClassificacao.unidadeMedida.nome}})</small></td>
                         <td>
                             <input class="form-control input-sm text-right" id="valorUnitario_{{$index}}" name="valorUnitario_{{$index}}" ng-model="produtor.valorUnitario" ng-required="false" ui-money-mask="2" style="min-width: 75px;">
@@ -112,7 +114,7 @@
                                 Campo Obrigatório
                             </div>
                         </td>
-                        <td>{{formula(cadastro.apoio.producao.formula, produtor.itemAValor, produtor.itemBValor, produtor.itemCValor) * produtor.valorUnitario | currency }}</td>
+                        <td>{{formula(UtilSrv.indiceDePorCampo(cadastro.apoio.formulaProdutoList, cadastro.registro.bemProducaoList[0].bemClassificacao.formula, 'codigo').descricao, produtor.itemAValor, produtor.itemBValor, produtor.itemCValor) * produtor.valorUnitario | currency }}</td>
                         <td ng-if="cadastro.registro.unidadeOrganizacional.id">
                             <input class="form-control input-sm text-right" id="quantidadeProdutores_{{$index}}" name="quantidadeProdutores_{{$index}}" ng-model="produtor.quantidadeProdutores" ng-required="false" ui-number-mask="0" style="min-width: 75px;">
                             <div class="label label-danger" ng-show="navegador.submetido && producaoFormaFrm.quantidadeProdutores_{{$index}}.$error.required">
