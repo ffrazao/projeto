@@ -30,6 +30,7 @@
                 </tr>
             </thead>
             <tbody>
+
                 <tr ng-repeat-start="item in navegador.dados | orderBy: 'nome' | pagina: navegador.paginaAtual : navegador.tamanhoPagina | limitTo: navegador.tamanhoPagina" ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)"
                     ng-class="{'riscado': item[12] !== 'A', 'danger': item[17], 'warning': item[18]}">
                     <td width="30px" rowspan="2">

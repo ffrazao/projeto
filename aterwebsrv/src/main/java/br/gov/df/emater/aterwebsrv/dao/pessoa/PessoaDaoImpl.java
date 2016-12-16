@@ -136,7 +136,11 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 					Date temp2 = (Date) dapResObj[1];
 
 					if (temp1 == null || temp2 == null) {
-						registro.add(null);
+						if (temp2 == null) {
+							registro.add("img/dap-vencida.png");
+						} else {							
+							registro.add(null);
+						}
 					} else {
 						ConfirmacaoDap sit = ConfirmacaoDap.valueOf(temp1.toString());
 						Calendar valid = new GregorianCalendar();
