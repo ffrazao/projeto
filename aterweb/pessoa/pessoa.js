@@ -386,15 +386,18 @@
 
             // Filtros de segurança by Emerson
             $scope.editar = function(scp) {
-                var autoriza = false;
-                if( $scope.cadastro.registro.publicoAlvo ){
-                    for (var t in $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList ) {
-                        autoriza = autoriza || ( $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList[t].comunidade.unidadeOrganizacional.id === $rootScope.token.lotacaoAtual.id );
-                    }      
-                    if ( !autoriza ) {
-                          toastr.error('Pessoa registrada em outra unidade organizacional!', 'Erro'); 
-                          return;
-                    } 
+                var autoriza = true;
+                if( $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList ){
+                    if( $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList.length > 0 ){
+                        autoriza = false;
+                        for (var t in $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList ) {
+                            autoriza = autoriza || ( $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList[t].propriedadeRural.comunidade.unidadeOrganizacional.id === $rootScope.token.lotacaoAtual.id );
+                        }      
+                        if ( !autoriza ) {
+                              toastr.error('Pessoa registrada em outra unidade organizacional!', 'Erro'); 
+                              return;
+                        } 
+                    }
                 }
                 $rootScope.editar(scp);
             };
