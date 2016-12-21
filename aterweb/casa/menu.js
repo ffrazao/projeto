@@ -84,13 +84,13 @@
                         link: 'p.contrato.filtro',
                         funcionalidade: 'CONTRATO',
                         visivel: false,
-                    },
+                    } /*,
                     {
                         name: 'Formulários',
                         link: 'p.formulario.filtro',
                         funcionalidade: 'FORMULARIO',
                         visivel: false,
-                    },
+                    }, */
                 ]
             },
             {
@@ -98,19 +98,19 @@
                 link: '#',
                 visivel: false,
                 subtree: [
-                    {
+/*                    {
                         name: 'Agenda',
                         link: 'p.agenda.filtro',
                         funcionalidade: 'ATIVIDADE',
                         visivel: false,
                     },
-                    {
+ */                   {
                         name: 'Executar',
                         link: 'p.atividade.filtro({opcao: "executar"})',
                         funcionalidade: 'ATIVIDADE',
                         visivel: false,
                     },
-                    {
+/*                    {
                         name: 'Demandar',
                         link: 'p.atividade.filtro({opcao: "demandar"})',
                         funcionalidade: 'ATIVIDADE',
@@ -122,7 +122,7 @@
                         funcionalidade: 'AGENDA',
                         visivel: false,
                     },
-                    {
+ */                   {
                         name: 'Projeto de Crédito Rural',
                         link: 'p.projetoCreditoRural.filtro',
                         funcionalidade: 'PROJETO_CREDITO_RURAL',

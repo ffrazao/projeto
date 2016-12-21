@@ -384,6 +384,21 @@
                 });
             };
 
+            // Filtros de segurança by Emerson
+            $scope.editar = function(scp) {
+                var autoriza = false;
+                if( $scope.cadastro.registro.publicoAlvo ){
+                    for (var t in $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList ) {
+                        autoriza = autoriza || ( $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList[t].comunidade.unidadeOrganizacional.id === $rootScope.token.lotacaoAtual.id );
+                    }      
+                    if ( !autoriza ) {
+                          toastr.error('Pessoa registrada em outra unidade organizacional!', 'Erro'); 
+                          return;
+                    } 
+                }
+                $rootScope.editar(scp);
+            };
+
             $scope.abrir = function(scp) {
                 // ajustar o menu das acoes especiais
                 $scope.navegador.botao('acao', 'acao')['subFuncoes'] = [

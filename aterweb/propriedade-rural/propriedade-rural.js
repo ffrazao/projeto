@@ -182,6 +182,18 @@
             // Inicio Trabalho com uso do solo
             // Fim Trabalho com uso do solo
 
+
+            // Filtros de segurança by Emerson
+            $scope.editar = function(scp) {
+                //Não pode editar atividade de outra gerência
+                if ( $scope.cadastro.registro.comunidade.unidadeOrganizacional.id != $rootScope.token.lotacaoAtual.id ) {
+                     toastr.error('Propriedeade cadastrada em outra unidade organizacional!', 'Erro'); 
+                } else {
+                    $rootScope.editar(scp);
+                }
+            };
+
+
             $scope.toggleChildren = function(scope) {
                 scope.toggle();
             };
