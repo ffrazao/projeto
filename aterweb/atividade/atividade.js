@@ -211,15 +211,19 @@
            
             // Filtros de segurança by Emerson
             $scope.editar = function(scp) {
-                //Não pode editar atividade de 2016 pra traz
-                if( $scope.cadastro.registro.inicio.substring(7,4) < "2017") {
+            	if (! $rootScope.token.lotacaoAtual.id) {
+                    toastr.error('Usuário não possui lotação!', 'Erro'); 
+                    return;
+                }
+                //Não pode editar atividade de 2016 pra trás
+                else if( $scope.cadastro.registro.inicio.substring(7,4) < "2017") {
                     toastr.error('Atividades registradas antes de 01/01/2017 não podem ser alteradas!', 'Erro'); 
                     return;
                 } else {
                     //Não pode editar atividade de outra gerência
                     for (var t in $scope.cadastro.registro.pessoaExecutorList) {
                         if( $scope.cadastro.registro.pessoaExecutorList[t].unidadeOrganizacional ) {
-                            if ( $scope.cadastro.registro.pessoaExecutorList[t].unidadeOrganizacional.id != $rootScope.token.lotacaoAtual.id ) {
+                            if ( $scope.cadastro.registro.pessoaExecutorList[t].unidadeOrganizacional.id !== $rootScope.token.lotacaoAtual.id ) {
                                  toastr.error('Atividades registrada em outra unidade organizacional!', 'Erro'); 
                                  return;
                             }

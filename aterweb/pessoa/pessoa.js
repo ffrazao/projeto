@@ -387,7 +387,10 @@
             // Filtros de segurança by Emerson
             $scope.editar = function(scp) {
                 var autoriza = true;
-                if( $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList ){
+                if (! $rootScope.token.lotacaoAtual.id) {
+                    toastr.error('Usuário não possui lotação!', 'Erro'); 
+                    return;
+                } else if ( $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList ) {
                     if( $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList.length > 0 ){
                         autoriza = false;
                         for (var t in $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList ) {

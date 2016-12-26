@@ -185,9 +185,13 @@
 
             // Filtros de segurança by Emerson
             $scope.editar = function(scp) {
+                if (! $rootScope.token.lotacaoAtual.id) {
+                    toastr.error('Usuário não possui lotação!', 'Erro'); 
+                    return;
+                }
                 //Não pode editar atividade de outra gerência
-                if ( $scope.cadastro.registro.comunidade.unidadeOrganizacional.id != $rootScope.token.lotacaoAtual.id ) {
-                     toastr.error('Propriedeade cadastrada em outra unidade organizacional!', 'Erro'); 
+                else if ( $scope.cadastro.registro.comunidade.unidadeOrganizacional.id !== $rootScope.token.lotacaoAtual.id ) {
+                     toastr.error('Propriedade cadastrada em outra unidade organizacional!', 'Erro'); 
                 } else {
                     $rootScope.editar(scp);
                 }
