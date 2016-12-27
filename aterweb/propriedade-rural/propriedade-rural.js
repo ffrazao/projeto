@@ -185,7 +185,7 @@
 
             // Filtros de segurança by Emerson
             $scope.editar = function(scp) {
-                if (! $rootScope.token.lotacaoAtual.id) {
+                if (! $rootScope.token.lotacaoAtual) {
                     toastr.error('Usuário não possui lotação!', 'Erro'); 
                     return;
                 }
