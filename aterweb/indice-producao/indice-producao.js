@@ -110,6 +110,15 @@
                 $rootScope.abrir(scp);
             };
 
+            $scope.editar = function(scp) {
+                if (! $rootScope.token.lotacaoAtual) {
+                    toastr.error('Usuário não possui lotação!', 'Erro'); 
+                    return;
+                } else {
+                    $rootScope.editar(scp);
+                }
+            };
+
             $scope.incluirDepois = function(objeto) {
                 $scope.cadastro.apoio.tipoLancamento = null;
                 
