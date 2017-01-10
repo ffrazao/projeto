@@ -216,7 +216,7 @@
                     return;
                 }
                 //Não pode editar atividade de 2016 pra trás
-                else if( $scope.cadastro.registro.inicio.substring(7,4) < "2017") {
+                else if( $scope.cadastro.registro.inicio.substring(6,10) < "2017") {
                     toastr.error('Atividades registradas antes de 01/01/2017 não podem ser alteradas!', 'Erro'); 
                     return;
                 } else {

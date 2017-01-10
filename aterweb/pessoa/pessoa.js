@@ -394,7 +394,12 @@
                     if( $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList.length > 0 ){
                         autoriza = false;
                         for (var t in $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList ) {
-                            autoriza = autoriza || ( $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList[t].propriedadeRural.comunidade.unidadeOrganizacional.id === $rootScope.token.lotacaoAtual.id );
+                            if( $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList[t].comunidade ){
+                                autoriza = autoriza || ( $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList[t].comunidade.unidadeOrganizacional.id === $rootScope.token.lotacaoAtual.id );
+                            }
+                            if(  $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList[t].propriedadeRural ){
+                                autoriza = autoriza || ( $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList[t].propriedadeRural.comunidade.unidadeOrganizacional.id === $rootScope.token.lotacaoAtual.id );
+                            }
                         }      
                         if ( !autoriza ) {
                               toastr.error('Pessoa registrada em outra unidade organizacional!', 'Erro'); 
