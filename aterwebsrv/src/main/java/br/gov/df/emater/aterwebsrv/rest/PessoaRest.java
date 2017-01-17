@@ -43,6 +43,16 @@ public class PessoaRest {
 	public Resposta carteiraProdutorVerificar(@RequestBody CarteiraProdutorRelFiltroDto filtro, Principal usuario) throws Exception {
 		return new Resposta(facadeBo.pessoaCarteiraProdutorVerificar(usuario, filtro).getResposta());
 	}
+	
+	@RequestMapping(value = "/declaracao-produtor-rel", method = RequestMethod.POST)
+	public Resposta declaracaoProdutorRel(@RequestBody CarteiraProdutorRelFiltroDto filtro, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.pessoaDeclaracaoProdutorRel(usuario, filtro).getResposta());
+	}
+
+	@RequestMapping(value = "/declaracao-produtor-verificar", method = RequestMethod.POST)
+	public Resposta declaracaoProdutorVerificar(@RequestBody CarteiraProdutorRelFiltroDto filtro, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.pessoaDeclaracaoProdutorVerificar(usuario, filtro).getResposta());
+	}
 
 	@RequestMapping(value = "/editar", method = RequestMethod.POST)
 	public Resposta editar(@RequestBody Pessoa pessoa, Principal usuario) throws Exception {
