@@ -168,8 +168,14 @@ angular.module(pNmModulo).factory(pNmFactory,
             carteiraProdutorVerificar : function (filtro) {
                 return $http.post(this.endereco + '/carteira-produtor-verificar', filtro);
             },
+            declaracaoProdutorVerificar : function (filtro) {
+                return $http.post(this.endereco + '/declaracao-produtor-verificar', filtro);
+            },
             carteiraProdutorRel : function (filtro) {
                 return $http.post(this.endereco + '/carteira-produtor-rel', filtro);
+            },
+            declaracaoProdutorRel : function (filtro) {
+                return $http.post(this.endereco + '/declaracao-produtor-rel', filtro);
             },
             publicoAlvoPorPessoaId : function (id) {
                 return $http.get(this.endereco + '/publico-alvo-por-pessoa-id', {params: {'id': id}});
