@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
-<!-- 2017-01-16T14:54:47 -->
+<!-- 2017-01-19T14:28:26 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RelatorioTeste" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" uuid="74a58a1f-20c1-4882-a004-63331c202191">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -104,7 +104,7 @@
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="166" y="99" width="102" height="26" uuid="3bea7a66-aec0-491e-b4ce-e7c9bca47a66"/>
-				<textFieldExpression><![CDATA[$F{comunidade}.getUnidadeOrganizacional().getNome()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{comunidade}.getUnidadeOrganizacional().getNome().substring(20)]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement isPrintRepeatedValues="false" x="20" y="136" width="130" height="15" uuid="5e64ee1c-48ee-4821-900e-a37dd137a601"/>
