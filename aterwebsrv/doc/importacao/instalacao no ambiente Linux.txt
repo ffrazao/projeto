@@ -8,6 +8,9 @@ sql_mode        = "STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DI
 
 Motivo, a opção ONLY_FULL_GROUP_BY, que vem marcada por default no ambient linux estava causando problemas com queries do sistema (o teste foi feito rodando o filtro do indice de produção)
 
+max_allowed_packet=1073741824
+
+Motivo, ampliar o tamanho de transaçoes de bancos de dados
 
 Para parar o servidor utilize
 sudo /etc/init.d/mysql stop
