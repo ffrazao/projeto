@@ -3,6 +3,7 @@ package br.gov.df.emater.aterwebsrv.modelo.pessoa;
 import java.io.Serializable;
 import java.util.Calendar;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -38,6 +39,9 @@ public class GrupoSocial extends Pessoa {
 
 	private static final long serialVersionUID = 1L;
 
+	@Column(name = "apelido")
+	protected String apelido;
+
 	@Enumerated(EnumType.STRING)
 	private GrupoSocialEscopo escopo;
 
@@ -65,10 +69,17 @@ public class GrupoSocial extends Pessoa {
 		this(id, null, null, null, null, null, null, null);
 	}
 
-	public GrupoSocial(Serializable id, String nome, String apelidoSigla, Arquivo perfilArquivo, PessoaSituacao situacao, Confirmacao publicoAlvoConfirmacao, GrupoSocialTipo grupoSocialTipo, GrupoSocialEscopo escopo) {
-		super((Integer) id, PessoaTipo.GS, nome, apelidoSigla, perfilArquivo, situacao, publicoAlvoConfirmacao == null ? Confirmacao.N : publicoAlvoConfirmacao);
+	public GrupoSocial(Serializable id, String nome, String apelidoSigla, Arquivo perfilArquivo,
+			PessoaSituacao situacao, Confirmacao publicoAlvoConfirmacao, GrupoSocialTipo grupoSocialTipo,
+			GrupoSocialEscopo escopo) {
+		super((Integer) id, PessoaTipo.GS, nome, apelidoSigla, perfilArquivo, situacao,
+				publicoAlvoConfirmacao == null ? Confirmacao.N : publicoAlvoConfirmacao);
 		setGrupoSocialTipo(grupoSocialTipo);
 		setEscopo(escopo);
+	}
+
+	public String getApelido() {
+		return apelido;
 	}
 
 	public GrupoSocialEscopo getEscopo() {
@@ -89,7 +100,13 @@ public class GrupoSocial extends Pessoa {
 
 	@Override
 	public GrupoSocial infoBasica() {
-		return new GrupoSocial(this.getId(), this.getNome(), this.getApelidoSigla(), this.getPerfilArquivo(), this.getSituacao(), this.getPublicoAlvoConfirmacao(), UtilitarioInfoBasica.infoBasicaReg(this.getGrupoSocialTipo()), this.getEscopo());
+		return new GrupoSocial(this.getId(), this.getNome(), this.getApelidoSigla(), this.getPerfilArquivo(),
+				this.getSituacao(), this.getPublicoAlvoConfirmacao(),
+				UtilitarioInfoBasica.infoBasicaReg(this.getGrupoSocialTipo()), this.getEscopo());
+	}
+
+	public void setApelido(String apelido) {
+		this.apelido = apelido;
 	}
 
 	public void setEscopo(GrupoSocialEscopo escopo) {

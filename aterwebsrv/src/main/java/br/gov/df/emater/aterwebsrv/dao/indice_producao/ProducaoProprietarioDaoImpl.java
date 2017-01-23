@@ -385,7 +385,7 @@ public class ProducaoProprietarioDaoImpl implements ProducaoProprietarioDaoCusto
 				result.setChaveSisater((String) tuple[campos.indexOf("chave_sisater")]);
 				result.setInclusaoData(UtilitarioData.getInstance().sqlTimestampToCalendar((Timestamp) tuple[campos.indexOf("inclusao_data")]));
 				result.setInclusaoUsuario(new Usuario((Integer) tuple[campos.indexOf("inclusao_usuario_id")]));
-				result.setUnidadeOrganizacional(new UnidadeOrganizacional((Integer) tuple[campos.indexOf("unidade_organizacional_id")], (String) tuple[campos.indexOf("nomeUnidadeOrganizacional")], null, null, null));
+				result.setUnidadeOrganizacional(new UnidadeOrganizacional((Integer) tuple[campos.indexOf("unidade_organizacional_id")], (String) tuple[campos.indexOf("nomeUnidadeOrganizacional")], null, null, null, null));
 				result.setPropriedadeRural(new PropriedadeRural((Integer) tuple[campos.indexOf("propriedade_rural_id")], (String) tuple[campos.indexOf("nomePropriedadeRural")], new Comunidade((Integer) tuple[campos.indexOf("idComunidade")], (String) tuple[campos.indexOf("nomeComunidade")], null), null, null));
 				Pessoa pessoa = null;
 				if (tuple[campos.indexOf("pessoa_tipo")] != null) {

@@ -52,7 +52,7 @@ public class UnidadeOrganizacional extends GrupoSocial implements _ChavePrimaria
 		super(id);
 	}
 
-	public UnidadeOrganizacional(Serializable id, String nome, String apelidoSigla, PessoaJuridica pessoaJuridica, UnidadeOrganizacionalClassificacao classificacao) {
+	public UnidadeOrganizacional(Serializable id, String nome, String apelidoSigla, PessoaJuridica pessoaJuridica, UnidadeOrganizacionalClassificacao classificacao, String apelido) {
 		this(id);
 		setNome(nome);
 		setApelidoSigla(apelidoSigla);
@@ -60,6 +60,7 @@ public class UnidadeOrganizacional extends GrupoSocial implements _ChavePrimaria
 		setClassificacao(classificacao);
 		setPessoaTipo(PessoaTipo.GS);
 		setGrupoSocialTipo(new GrupoSocialTipo(GrupoSocialTipo.Codigo.UNIDADE_ORGANIZACIONAL));
+		setApelido(apelido);
 	}
 
 	@Override
@@ -86,7 +87,7 @@ public class UnidadeOrganizacional extends GrupoSocial implements _ChavePrimaria
 
 	@Override
 	public UnidadeOrganizacional infoBasica() {
-		return new UnidadeOrganizacional(this.id, this.nome, this.apelidoSigla, this.pessoaJuridica == null ? null : (PessoaJuridica) pessoaJuridica.infoBasica(), this.classificacao);
+		return new UnidadeOrganizacional(this.id, this.nome, this.apelidoSigla, this.pessoaJuridica == null ? null : (PessoaJuridica) pessoaJuridica.infoBasica(), this.classificacao, this.apelido);
 	}
 
 	@Override
