@@ -489,7 +489,7 @@
                         '                <tr>' +
                         '                    <td colspan="3">' + 
                         '                             Observações:' +
-                        '                             <br/><textarea maxlines="5" maxlines-prevent-enter="true" ng-model="conteudo.observacao" ng-required="true" name="observacao" rows="5" cols="80" maxlength="500"></textarea>' +
+                        '                             <br/><textarea maxlines="10" maxlines-prevent-enter="true" ng-model="conteudo.observacao" ng-required="true" name="observacao" rows="5" cols="80" maxlength="500"></textarea>' +
                         '                    </td>   ' +
                         '                </tr>' +
                         '            </tbody>' +
@@ -533,7 +533,7 @@
 
             // Filtros de segurança by Emerson
             $scope.editar = function(scp) {
-                var autoriza = true;
+/*                var autoriza = true;
                 if (! $rootScope.token.lotacaoAtual) {
                     toastr.error('Usuário não possui lotação!', 'Erro'); 
                     return;
@@ -549,7 +549,7 @@
                         } 
                     }
                 }
-                $rootScope.editar(scp);
+ */               $rootScope.editar(scp);
             };
 
             $scope.abrir = function(scp) {
