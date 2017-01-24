@@ -33,6 +33,7 @@ import br.gov.df.emater.aterwebsrv.dto.indice_producao.BemClassificacaoCadFiltro
 import br.gov.df.emater.aterwebsrv.dto.indice_producao.BemProducaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.indice_producao.IndiceProducaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.pessoa.CarteiraProdutorRelFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.pessoa.DeclaracaoProdutorRelFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.pessoa.PessoaCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoCreditoRuralCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoCreditoRuralReceitaDespesaApoioDto;
@@ -449,12 +450,12 @@ public class FacadeBo implements BeanFactoryAware {
 	}
 	
 	@Transactional
-	public _Contexto pessoaDeclaracaoProdutorRel(Principal usuario, CarteiraProdutorRelFiltroDto filtro) throws Exception {
+	public _Contexto pessoaDeclaracaoProdutorRel(Principal usuario, DeclaracaoProdutorRelFiltroDto filtro) throws Exception {
 		return this._executar(usuario, "PessoaDeclaracaoProdutorRelCmd", filtro);
 	}
 	
 	@Transactional(readOnly = true)
-	public _Contexto pessoaDeclaracaoProdutorVerificar(Principal usuario, CarteiraProdutorRelFiltroDto filtro) throws Exception {
+	public _Contexto pessoaDeclaracaoProdutorVerificar(Principal usuario, DeclaracaoProdutorRelFiltroDto filtro) throws Exception {
 		return this._executar(usuario, "PessoaDeclaracaoProdutorVerificarCmd", filtro);
 	}
 

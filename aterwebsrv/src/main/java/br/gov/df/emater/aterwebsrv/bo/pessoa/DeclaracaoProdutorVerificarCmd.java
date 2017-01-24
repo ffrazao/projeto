@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaDao;
-import br.gov.df.emater.aterwebsrv.dto.pessoa.CarteiraProdutorRelFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.pessoa.DeclaracaoProdutorRelFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
@@ -50,7 +50,7 @@ public class DeclaracaoProdutorVerificarCmd extends _Comando {
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
-		CarteiraProdutorRelFiltroDto filtro = (CarteiraProdutorRelFiltroDto) contexto.getRequisicao();
+		DeclaracaoProdutorRelFiltroDto filtro = (DeclaracaoProdutorRelFiltroDto) contexto.getRequisicao();
 		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
 
 		if (filtro.getPessoaIdList() != null) {

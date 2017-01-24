@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
 import br.gov.df.emater.aterwebsrv.dto.pessoa.CarteiraProdutorRelFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.pessoa.DeclaracaoProdutorRelFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.pessoa.PessoaCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 
@@ -45,12 +46,12 @@ public class PessoaRest {
 	}
 	
 	@RequestMapping(value = "/declaracao-produtor-rel", method = RequestMethod.POST)
-	public Resposta declaracaoProdutorRel(@RequestBody CarteiraProdutorRelFiltroDto filtro, Principal usuario) throws Exception {
+	public Resposta declaracaoProdutorRel(@RequestBody DeclaracaoProdutorRelFiltroDto filtro, Principal usuario) throws Exception {
 		return new Resposta(facadeBo.pessoaDeclaracaoProdutorRel(usuario, filtro).getResposta());
 	}
 
 	@RequestMapping(value = "/declaracao-produtor-verificar", method = RequestMethod.POST)
-	public Resposta declaracaoProdutorVerificar(@RequestBody CarteiraProdutorRelFiltroDto filtro, Principal usuario) throws Exception {
+	public Resposta declaracaoProdutorVerificar(@RequestBody DeclaracaoProdutorRelFiltroDto filtro, Principal usuario) throws Exception {
 		return new Resposta(facadeBo.pessoaDeclaracaoProdutorVerificar(usuario, filtro).getResposta());
 	}
 

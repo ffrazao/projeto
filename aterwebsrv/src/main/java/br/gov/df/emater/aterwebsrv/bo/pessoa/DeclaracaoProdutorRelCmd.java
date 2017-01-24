@@ -1,6 +1,5 @@
 package br.gov.df.emater.aterwebsrv.bo.pessoa;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -14,8 +13,7 @@ import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoDao;
 import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoPropriedadeRuralDao;
-import br.gov.df.emater.aterwebsrv.dto.pessoa.CarteiraProdutorRelFiltroDto;
-import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
+import br.gov.df.emater.aterwebsrv.dto.pessoa.DeclaracaoProdutorRelFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoSetor;
 import br.gov.df.emater.aterwebsrv.relatorio._Relatorio;
@@ -34,9 +32,9 @@ public class DeclaracaoProdutorRelCmd extends _Comando {
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
-		CarteiraProdutorRelFiltroDto filtro = (CarteiraProdutorRelFiltroDto) contexto.getRequisicao();
+		DeclaracaoProdutorRelFiltroDto filtro = (DeclaracaoProdutorRelFiltroDto) contexto.getRequisicao();
 		List<PublicoAlvoPropriedadeRural> lista = null;
-		lista = dao.findAll(filtro.getPublicoAlvoPropriedadeRuralIdList());
+		lista = (List<PublicoAlvoPropriedadeRural>) dao.findAll(filtro.getPublicoAlvoPropriedadeRuralIdList());
 		String principalAtividadeProdutiva = "";
 
 		Calendar emissao = Calendar.getInstance();
@@ -67,6 +65,7 @@ public class DeclaracaoProdutorRelCmd extends _Comando {
 		Map<String, Object> parametros = new HashMap<String, Object>();
 		parametros.put("Usuario", getUsuario(contexto.getUsuario().getName()));
 		parametros.put("RelatorioNome", "DECLARAÇÃO DE ATIVIDADE RURAL");
+		parametros.put("Observacao", filtro.getObservacao());
 
 		byte[] result = relatorio.imprimir("pessoa/DeclaracaoProdutorRel", parametros, lista);
 
