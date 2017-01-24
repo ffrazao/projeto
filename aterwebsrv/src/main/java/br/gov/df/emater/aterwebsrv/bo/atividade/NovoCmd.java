@@ -171,7 +171,9 @@ public class NovoCmd extends _Comando {
 		if(usuario.getLotacaoAtual() != null){
 			ap = new AtividadePessoa();
 			ap.setId(-998);
-			ap.setPessoa(usuario.getLotacaoAtual().getPessoaJuridica().infoBasica());
+			
+			ap.setPessoa(usuario.getLotacaoAtual().infoBasica()   );
+			//ap.setPessoa(usuario.getLotacaoAtual().getPessoaJuridica().infoBasica());
 			if ("demandar".equals(opcao)) {
 				ap.setParticipacao(AtividadePessoaParticipacao.D);
 			} else {

@@ -104,7 +104,7 @@
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="166" y="99" width="102" height="26" uuid="3bea7a66-aec0-491e-b4ce-e7c9bca47a66"/>
-				<textFieldExpression><![CDATA[$F{comunidade}.getUnidadeOrganizacional().getNome().substring(20)]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{comunidade}.getUnidadeOrganizacional().getNome().substring(27)]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement isPrintRepeatedValues="false" x="20" y="136" width="130" height="15" uuid="5e64ee1c-48ee-4821-900e-a37dd137a601"/>
