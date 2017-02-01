@@ -256,7 +256,10 @@ angular.module(pNmModulo).controller(pNmController,
             }
             toastr.info('Operação realizada!', 'Informação');
         }, function () {
-            captaRelacionamento(destino, item);
+            // INI 2017/02/01 - Frz - Desabilitação para cadastro de dados complementares ao relacionamento
+            // A linha abaixo foi comentada
+            // captaRelacionamento(destino, item);
+            // FIM 2017/02/01 - Frz - Desabilitação para cadastro de dados complementares ao relacionamento
         });
     };
     // fim rotinas de apoio
