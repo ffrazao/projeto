@@ -103,7 +103,7 @@ public class DeclaracaoProdutorVerificarCmd extends _Comando {
 							if (publicoAlvoPropriedadeRural.getVinculo() == null) {
 								acumulaItem(paprReg, "erroList", "Tipo de Vinculo à Propriedade Rural não identificado!");
 							} else {
-								if (Arrays.asList(new PropriedadeRuralVinculoTipo[] { PropriedadeRuralVinculoTipo.PR, PropriedadeRuralVinculoTipo.PR }).indexOf(publicoAlvoPropriedadeRural.getVinculo()) < 0) {
+								if (Arrays.asList(new PropriedadeRuralVinculoTipo[] { PropriedadeRuralVinculoTipo.PR, PropriedadeRuralVinculoTipo.PA, PropriedadeRuralVinculoTipo.AR }).indexOf(publicoAlvoPropriedadeRural.getVinculo()) < 0) {
 									acumulaItem(paprReg, "erroList", "O vinculo à Propriedade Rural não permite emissão de carteira!");
 								}
 							}

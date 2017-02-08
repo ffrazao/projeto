@@ -173,6 +173,7 @@ angular.module(pNmModulo).controller(pNmController,
                     if (p.ano && p.ano !== ano) {
                         somaCronograma(ano, amortizacaoTotal, p.saldoDevedorFinal);
                         ano = p.ano;
+                        amortizacaoTotal = 0 ;
                     }
                 });
                 somaCronograma(ano, amortizacaoTotal, cp.cronogramaPagamentoList[cp.cronogramaPagamentoList.length -1].saldoDevedorFinal);

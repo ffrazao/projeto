@@ -30,6 +30,8 @@ public class MetaTaticaDaoImpl implements MetaTaticaDaoCustom {
 
 		// construção do sql
 		sql = new StringBuilder();
+		
+/*		
 		sql.append("select distinct planejamento.matriz_planejamento.id, ").append("\n");
 		sql.append("     concat( planejamento.matriz_planejamento.codigo, ' - ',  planejamento.matriz_planejamento.descricao ) as descricao, ").append("\n");
 		sql.append("     planejamento.gerencia_tatica.nome, ").append("\n");
@@ -69,6 +71,19 @@ public class MetaTaticaDaoImpl implements MetaTaticaDaoCustom {
 		//params.add(filtro.getUnidadeOrganizacional());
 		sql.append("  and pessoa.tbr_unidade.ematerweb in ( 8, ").append(filtro.getUnidadeOrganizacional().getId()).append(" ) ").append("\n");
 		sql.append(" order by metodo+assunto desc, metodo desc, assunto desc, planejamento.matriz_planejamento.codigo ").append("\n");
+
+*/		
+		
+		sql.append(" select distinct planejamento.matriz_planejamento.id, ").append("\n");
+		sql.append(" concat( planejamento.matriz_planejamento.codigo, ' - ',  planejamento.matriz_planejamento.descricao ) as descricao, ").append("\n");
+		sql.append(" 	     planejamento.gerencia_tatica.nome ").append("\n");
+		sql.append(" from planejamento.meta_estrategica ").append("\n");
+		sql.append("      inner join planejamento.matriz_planejamento on planejamento.matriz_planejamento.meta_estrategica_id = planejamento.meta_estrategica.id ").append("\n"); 
+        sql.append("      inner join planejamento.gerencia_tatica on planejamento.gerencia_tatica.id = planejamento.matriz_planejamento.gerencia_tatica_id ").append("\n");
+        sql.append("      inner join planejamento.plano_acao on planejamento.plano_acao.matriz_planejamento_id = planejamento.matriz_planejamento.id ").append("\n");
+        sql.append("      inner join pessoa.tbr_unidade on pessoa.tbr_unidade.int_id = planejamento.matriz_planejamento.unidade_organizacional_id ").append("\n");
+		sql.append("where planejamento.meta_estrategica.ano = ").append(filtro.getAno()).append(" ").append("\n");
+		sql.append("order by planejamento.matriz_planejamento.codigo ").append("\n");
 
 		// criar a query
 		Query query = em.createNativeQuery(sql.toString());

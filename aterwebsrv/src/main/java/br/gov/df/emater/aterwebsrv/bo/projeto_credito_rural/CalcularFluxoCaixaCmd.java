@@ -116,14 +116,18 @@ public class CalcularFluxoCaixaCmd extends _Comando {
 			throw new BoException("Não informado a(s) Propriedade(s) Rural(ais) do beneficiário do Projeto de Crédito Rural");
 		}
 		// remover os cronogramas não utilizados
-		for (int i = result.getCronogramaPagamentoInvestimentoList().size(); i > 0; i--) {
-			if (Confirmacao.N.equals(result.getCronogramaPagamentoInvestimentoList().get(i - 1).getSelecionado())) {
-				result.getCronogramaPagamentoInvestimentoList().remove(i - 1);
+		if (result.getCronogramaPagamentoInvestimentoList() != null) {			
+			for (int i = result.getCronogramaPagamentoInvestimentoList().size(); i > 0; i--) {
+				if (Confirmacao.N.equals(result.getCronogramaPagamentoInvestimentoList().get(i - 1).getSelecionado())) {
+					result.getCronogramaPagamentoInvestimentoList().remove(i - 1);
+				}
 			}
 		}
-		for (int i = result.getCronogramaPagamentoCusteioList().size(); i > 0; i--) {
-			if (Confirmacao.N.equals(result.getCronogramaPagamentoCusteioList().get(i - 1).getSelecionado())) {
-				result.getCronogramaPagamentoCusteioList().remove(i - 1);
+		if (result.getCronogramaPagamentoCusteioList() != null) {			
+			for (int i = result.getCronogramaPagamentoCusteioList().size(); i > 0; i--) {
+				if (Confirmacao.N.equals(result.getCronogramaPagamentoCusteioList().get(i - 1).getSelecionado())) {
+					result.getCronogramaPagamentoCusteioList().remove(i - 1);
+				}
 			}
 		}
 

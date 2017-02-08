@@ -5,7 +5,7 @@
 
 	<groupId>br.gov.df.emater</groupId>
 	<artifactId>aterwebsrv</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.1</version>
 
 	<name>ATER web</name>
 	<description>Serviços do ATER web</description>

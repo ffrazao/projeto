@@ -29,11 +29,15 @@ import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRu
 
 public enum FluxoCaixaCodigo {
 
-	DESPESA_AMORTIZACAO_DIVIDAS_EXISTENTE("Amortização dívidas existentes", 8, new FluxoCaixaCodigoDespesaAmortizacaoDividasExistente(), FluxoCaixaTipo.D, Confirmacao.S), DESPESA_ATIVIDADE_AGROPECUARIA("Atividades agropecuárias", 3,
-			new FluxoCaixaCodigoReceitaDespesaAtividadeAgropecuaria("Despesa"), FluxoCaixaTipo.D, Confirmacao.S), DESPESA_IMPOSTO_TAXA("Impostos e taxas", 6, new Calculo(), FluxoCaixaTipo.D, Confirmacao.N), DESPESA_MANUTENCAO_BENFEITORIA_MAQUINA(
-					"Manutenção de Benfeitorias e Máquinas", 5, new FluxoCaixaCodigoDespesaManutencaoBenfeitoriaMaquina(), FluxoCaixaTipo.D, Confirmacao.S), DESPESA_MAO_DE_OBRA("Mão de obra", 4, new FluxoCaixaCodigoDespesaMaoDeObra(), FluxoCaixaTipo.D,
-							Confirmacao.S), DESPESA_OUTRO("Outras despesas", 9, new Calculo(), FluxoCaixaTipo.D, Confirmacao.N), DESPESA_REMUNERACAO_PRODUTOR("Remuneração do Produtor", 7, new Calculo(), FluxoCaixaTipo.D, Confirmacao.N), RECEITA_ATIVIDADE_AGROPECUARIA(
-									"Atividades agropecuárias", 1, new FluxoCaixaCodigoReceitaDespesaAtividadeAgropecuaria("Receita"), FluxoCaixaTipo.R, Confirmacao.S), RECEITA_OUTRO("Outras receitas", 2, new Calculo(), FluxoCaixaTipo.R, Confirmacao.N);
+	DESPESA_AMORTIZACAO_DIVIDAS_EXISTENTE("Amortização dívidas existentes", 8, new FluxoCaixaCodigoDespesaAmortizacaoDividasExistente(), FluxoCaixaTipo.D, Confirmacao.S, Confirmacao.S ), 
+	DESPESA_ATIVIDADE_AGROPECUARIA("Atividades agropecuárias", 3, new FluxoCaixaCodigoReceitaDespesaAtividadeAgropecuaria("Despesa"), FluxoCaixaTipo.D, Confirmacao.S, Confirmacao.N), 
+	DESPESA_IMPOSTO_TAXA("Impostos e taxas", 6, new Calculo(), FluxoCaixaTipo.D, Confirmacao.N,  Confirmacao.N), 
+	DESPESA_MANUTENCAO_BENFEITORIA_MAQUINA("Manutenção de Benfeitorias e Máquinas", 5, new FluxoCaixaCodigoDespesaManutencaoBenfeitoriaMaquina(), FluxoCaixaTipo.D, Confirmacao.S, Confirmacao.N), 
+	DESPESA_MAO_DE_OBRA("Mão de obra", 4, new FluxoCaixaCodigoDespesaMaoDeObra(), FluxoCaixaTipo.D,Confirmacao.S, Confirmacao.N), 
+	DESPESA_OUTRO("Outras despesas", 9, new Calculo(), FluxoCaixaTipo.D, Confirmacao.N, Confirmacao.N), 
+	DESPESA_REMUNERACAO_PRODUTOR("Remuneração do Produtor", 7, new Calculo(), FluxoCaixaTipo.D, Confirmacao.N, Confirmacao.N), 
+	RECEITA_ATIVIDADE_AGROPECUARIA("Atividades agropecuárias", 1, new FluxoCaixaCodigoReceitaDespesaAtividadeAgropecuaria("Receita"), FluxoCaixaTipo.R, Confirmacao.S, Confirmacao.N), 
+	RECEITA_OUTRO("Outras receitas", 2, new Calculo(), FluxoCaixaTipo.R, Confirmacao.N, Confirmacao.N);
 
 	static class Calculo {
 
@@ -124,12 +128,15 @@ public enum FluxoCaixaCodigo {
 
 	private FluxoCaixaTipo tipo;
 
-	private FluxoCaixaCodigo(String descricao, Integer ordem, Calculo calculo, FluxoCaixaTipo tipo, Confirmacao somenteLeitura) {
+	private Confirmacao totalAcumulado;
+
+	private FluxoCaixaCodigo(String descricao, Integer ordem, Calculo calculo, FluxoCaixaTipo tipo, Confirmacao somenteLeitura, Confirmacao totalAcumulado) {
 		this.descricao = descricao;
 		this.ordem = ordem;
 		this.calculo = calculo;
 		this.somenteLeitura = somenteLeitura;
 		this.tipo = tipo;
+		this.totalAcumulado = totalAcumulado;
 	}
 
 	public ProjetoCreditoRuralFluxoCaixa calcular(ProjetoCreditoRural projetoCreditoRural) throws BoException {
@@ -174,6 +181,10 @@ public enum FluxoCaixaCodigo {
 		return tipo;
 	}
 
+	public Confirmacao getTotalAcumulado() {
+		return totalAcumulado;
+	}
+
 	@Override
 	public String toString() {
 		return this.descricao;
@@ -181,6 +192,15 @@ public enum FluxoCaixaCodigo {
 }
 
 class FluxoCaixaCodigoDespesaAmortizacaoDividasExistente extends FluxoCaixaCodigo.Calculo {
+
+	private void acumulaValor(ProjetoCreditoRuralFluxoCaixa modelo, Integer ano, BigDecimal valor) {
+		for (FluxoCaixaAno fca : modelo.getFluxoCaixaAnoList()) {
+			if (fca.getAno().equals(ano)) {
+				fca.setValor(fca.getValor().add(valor));
+				break;
+			}
+		}
+	}
 
 	@Override
 	@SuppressWarnings("unchecked")
@@ -231,32 +251,6 @@ class FluxoCaixaCodigoDespesaAmortizacaoDividasExistente extends FluxoCaixaCodig
 		return modelo;
 	}
 
-	private void acumulaValor(ProjetoCreditoRuralFluxoCaixa modelo, Integer ano, BigDecimal valor) {
-		for (FluxoCaixaAno fca : modelo.getFluxoCaixaAnoList()) {
-			if (fca.getAno().equals(ano)) {
-				fca.setValor(fca.getValor().add(valor));
-				break;
-			}
-		}
-	}
-
-	private List<Integer> criarReguaFinanciamento(Calendar inicio, Integer totalAnos, List<Integer> lista) {
-		List<Integer> result = lista == null ? new ArrayList<>() : lista;
-		for (Integer ano = inicio.get(Calendar.YEAR); ano <= inicio.get(Calendar.YEAR) + totalAnos; ano++) {
-			boolean encontrou = false;
-			for (Integer i = 0; i < result.size(); i++) {
-				if (result.get(i).equals(ano)) {
-					encontrou = true;
-					break;
-				}
-			}
-			if (!encontrou) {
-				result.add(ano);
-			}
-		}
-		return result;
-	}
-
 	private List<Integer> calcularReguaFinanciamento(List<ProjetoCreditoRuralCronogramaPagamento> cronogramaPagamentoInvestimentoList, List<Integer> anoFinanciamento) {
 		if (!CollectionUtils.isEmpty(cronogramaPagamentoInvestimentoList)) {
 			Calendar inicioFinanciamento = null;
@@ -279,6 +273,23 @@ class FluxoCaixaCodigoDespesaAmortizacaoDividasExistente extends FluxoCaixaCodig
 			anoFinanciamento = criarReguaFinanciamento(inicioFinanciamento, totalAnos, anoFinanciamento);
 		}
 		return anoFinanciamento;
+	}
+
+	private List<Integer> criarReguaFinanciamento(Calendar inicio, Integer totalAnos, List<Integer> lista) {
+		List<Integer> result = lista == null ? new ArrayList<>() : lista;
+		for (Integer ano = inicio.get(Calendar.YEAR); ano <= inicio.get(Calendar.YEAR) + totalAnos; ano++) {
+			boolean encontrou = false;
+			for (Integer i = 0; i < result.size(); i++) {
+				if (result.get(i).equals(ano)) {
+					encontrou = true;
+					break;
+				}
+			}
+			if (!encontrou) {
+				result.add(ano);
+			}
+		}
+		return result;
 	}
 
 }
@@ -379,6 +390,7 @@ class FluxoCaixaCodigoReceitaDespesaAtividadeAgropecuaria extends FluxoCaixaCodi
 			// contabilizar todos os registros do mesmo ano
 			for (ProjetoCreditoRuralReceitaDespesa r : lista) {
 				if (fluxoCaixaAno.getAno().equals(r.getAno())) {
+//					if( this.equals(obj).getTotalAcumulado().equals( Confirmacao.S ) ){
 					fluxoCaixaAno.setValor(fluxoCaixaAno.getValor().add(r.getValorTotal()));
 				}
 			}

@@ -135,6 +135,7 @@ public class CalcularCronogramaCmd extends _Comando {
 		}
 
 		// inserir os juros da carência
+		int ano = 1, epoca = 1;
 		BigDecimal jurosCarencia = new BigDecimal("0");
 		Long diasCarencia = TimeUnit.DAYS.convert(cronograma.getDataFinalCarencia().getTimeInMillis() - cronograma.getDataContratacao().getTimeInMillis(), TimeUnit.MILLISECONDS);
 		if (diasCarencia.compareTo(new Long("1")) >= 0) {
@@ -157,11 +158,23 @@ public class CalcularCronogramaCmd extends _Comando {
 			cronograma.setValorTotalJuros(cronograma.getValorTotalJuros().add(cronogramaPagamento.getJuros()));
 
 			cronogramaPagamentoList.add(cronogramaPagamento);
-		}
 
+			// ajustar identificação da parcela quanto ao ano e parcelas iniciais
+			
+			Long saltos = diasCarencia / cronograma.getPeriodicidade().getTotalDiasPeriodo();
+			saltos += 1 + (diasCarencia % cronograma.getPeriodicidade().getTotalDiasPeriodo()) > 0 ? 1 : 0;
+			for (int salto = 1; salto <= saltos; salto++) {
+				epoca++;
+				if (!((epoca) <= cronograma.getPeriodicidade().getMaxEpoca())) {
+					epoca = 1;
+					ano++;
+				}
+			}
+		}
+		
 		// calcular as demais prestações
 		List<Map<String, Object>> tabelaPriceList = UtilitarioFinanceiro.getInstance().tabelaPriceCalculaParcelas(cronograma.getValorFinanciamento().add(jurosCarencia), taxaJurosAnualAjustada, cronograma.getQuantidadeParcelas());
-		int ano = 1, epoca = 0;
+		
 		for (int i = 0; i < tabelaPriceList.size(); i++) {
 			Map<String, Object> tabelaPrice = tabelaPriceList.get(i);
 
@@ -170,7 +183,7 @@ public class CalcularCronogramaCmd extends _Comando {
 			if (i == 0) {
 				cronogramaPagamento.setAno(ano);
 			}
-			if ((++epoca) <= cronograma.getPeriodicidade().getMaxEpoca()) {
+			if ((epoca) <= cronograma.getPeriodicidade().getMaxEpoca()) {
 				cronogramaPagamento.setEpoca(epoca);
 			} else {
 				epoca = 1;
@@ -190,6 +203,7 @@ public class CalcularCronogramaCmd extends _Comando {
 			cronograma.setValorTotalPrestacoes(cronograma.getValorTotalPrestacoes().add(cronogramaPagamento.getPrestacao()));
 
 			cronogramaPagamentoList.add(cronogramaPagamento);
+			epoca++;
 		}
 
 		cronograma.setCronogramaPagamentoList(cronogramaPagamentoList);

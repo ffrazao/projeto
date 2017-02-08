@@ -1,0 +1,17 @@
+08/02/2017
+
+- Ajustes
+  Projeto de Crédito
+     . Numeração das parcelas com calrulos saltos..
+     . Retirada da acumulação dos valores de amortização do projeto
+
+  Pessoas 
+     . Ajustes no relacionamento inibindo dados na tabela relacionamento_pessoa passando a utilizar registros localizado na tabela de pessoa.
+     . Ajustes no banco para satifazer a alteração acima
+     
+     . Regra para emissão de declaração igual ao da carteira
+     
+  Atividade
+     . acerto na query que pega as metas táticas.
+     
+     

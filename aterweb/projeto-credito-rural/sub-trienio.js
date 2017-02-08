@@ -53,6 +53,11 @@ angular.module(pNmModulo).controller(pNmController,
         });
     };
 
+    $scope.repetirColuna = function( objeto ) {
+        objeto['receitaAno2'] = objeto['receitaAno3'];
+        objeto['receitaAno1'] = objeto['receitaAno3'];
+    };
+
     // fim das operaçoes atribuidas ao navagador
 
     $scope.$watch('cadastro.registro.projetoCreditoRural.trienioList', function() {
