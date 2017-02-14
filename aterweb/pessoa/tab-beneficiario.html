@@ -119,9 +119,9 @@
 <div class="row">
     <div class="form-group col-md-2" ng-class="{'ng-invalid': frm.formulario.publicoAlvoSetorListTotal.$error.ngValorMin}">
         <label class="control-label">Setor</label>
-
         <div class="pre-scrollable">
-            <div class="checkbox" ng-repeat="item in cadastro.apoio.publicoAlvoSetorList | orderBy: ['setor.nome']">
+
+            <div class="checkbox" ng-repeat="item in cadastro.apoio.publicoAlvoSetorListCompara | orderBy: ['nome']">
                 <label for="publicoAlvoSetorList{{$index}}">
                     <input type="checkbox" name="publicoAlvoSetorList" id="publicoAlvoSetorList{{$index}}" checklist-model="cadastro.registro.publicoAlvo.publicoAlvoSetorList" checklist-value="item">
                     {{item.setor.nome}}

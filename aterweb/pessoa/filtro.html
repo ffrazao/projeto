@@ -167,7 +167,7 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="publicoAlvoSetor">Setor</label>
                     <div class="col-md-4">
-                        <select id="publicoAlvoSetor" name="publicoAlvoSetor" class="form-control" ng-model="cadastro.filtro.publicoAlvoSetor" ng-options="item as item.nome for item in cadastro.apoio.setorList track by item.id">
+                        <select id="publicoAlvoSetor" name="publicoAlvoSetor" class="form-control" ng-model="cadastro.filtro.publicoAlvoSetor" ng-options="item.id as item.nome for item in cadastro.apoio.publicoAlvoSetorList track by item.id">
                             <option value="">-- Ignorar --</option>
                         </select>
                     </div>
@@ -176,9 +176,8 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="publicoAlvoPropriedadeUtilizacaoEspacoRural">Espaco Rural</label>
                     <div class="col-md-4">
-                        <select id="publicoAlvoPropriedadeUtilizacaoEspacoRural" name="publicoAlvoPropriedadeUtilizacaoEspacoRural" class="form-control" ng-model="cadastro.filtro.publicoAlvoPropriedadeUtilizacaoEspacoRural">
-                            <option value="1">A</option>
-                            <option value="2">B</option>
+                        <select id="publicoAlvoPropriedadeUtilizacaoEspacoRural" name="publicoAlvoPropriedadeUtilizacaoEspacoRural" class="form-control" ng-model="cadastro.filtro.publicoAlvoPropriedadeUtilizacaoEspacoRural" ng-options="item.id as item.nome for item in cadastro.apoio.formaUtilizacaoEspacoRuralList track by item.id">>
+                            <option value="">-- Ignorar --</option>
                         </select>
                     </div>
                 </div>
@@ -197,7 +196,9 @@
                         Campo Obrigatório
                     </div>
                 </div>
-                <!-- Multiple Checkboxes (inline) -->
+
+                <!-- 
+
                 <div class="form-group" title="ATER">
                     <label class="col-md-4 control-label" for="publicoAlvoAter">ATER</label>
                     <div class="col-md-6">
@@ -211,7 +212,6 @@
                         Campo Obrigatório
                     </div>
                 </div>
-                <!-- Multiple Checkboxes (inline) -->
                 <div class="form-group" title="DAP">
                     <label class="col-md-4 control-label" for="publicoAlvoDap">DAP</label>
                     <div class="col-md-6">
@@ -225,7 +225,6 @@
                         Campo Obrigatório
                     </div>
                 </div>
-                <!-- Multiple Checkboxes (inline) -->
                 <div class="form-group" title="Compras Institucionais">
                     <label class="col-md-4 control-label" for="publicoAlvoComprasInstitucionais">Compras Institucionais</label>
                     <div class="col-md-6">
@@ -239,7 +238,6 @@
                         Campo Obrigatório
                     </div>
                 </div>
-                <!-- Multiple Checkboxes (inline) -->
                 <div class="form-group" title="Beneficio Social">
                     <label class="col-md-4 control-label" for="publicoAlvoBeneficioSocial">Beneficio Social</label>
                     <div class="col-md-6">
@@ -253,7 +251,7 @@
                         Campo Obrigatório
                     </div>
                 </div>
-                <!-- Multiple Checkboxes (inline) -->
+
                 <div class="form-group sr-only" title="Incra">
                     <label class="col-md-4 control-label" for="publicoAlvoIncra">Incra</label>
                     <div class="col-md-6">
@@ -267,7 +265,6 @@
                         Campo Obrigatório
                     </div>
                 </div>
-                <!-- Multiple Checkboxes (inline) -->
                 <div class="form-group sr-only" title="Atepa">
                     <label class="col-md-4 control-label" for="publicoAlvoAtepa">Atepa</label>
                     <div class="col-md-6">
@@ -281,7 +278,6 @@
                         Campo Obrigatório
                     </div>
                 </div>
-                <!-- Multiple Checkboxes (inline) -->
                 <div class="form-group sr-only" title="BSM">
                     <label class="col-md-4 control-label" for="publicoAlvoBsm">BSM</label>
                     <div class="col-md-6">
@@ -295,7 +291,6 @@
                         Campo Obrigatório
                     </div>
                 </div>
-                <!-- Multiple Checkboxes (inline) -->
                 <div class="form-group sr-only" title="Sustentabilidade">
                     <label class="col-md-4 control-label" for="publicoAlvoSustentabilidade">Sustentabilidade</label>
                     <div class="col-md-6">
@@ -309,7 +304,6 @@
                         Campo Obrigatório
                     </div>
                 </div>
-                <!-- Multiple Checkboxes (inline) -->
                 <div class="form-group" title="IPA Agricola">
                     <label class="col-md-4 control-label" for="publicoAlvoIpaAgricola">IPA Agricola</label>
                     <div class="col-md-6">
@@ -323,7 +317,6 @@
                         Campo Obrigatório
                     </div>
                 </div>
-                <!-- Multiple Checkboxes (inline) -->
                 <div class="form-group" title="IPA Animal">
                     <label class="col-md-4 control-label" for="publicoAlvoIpaAnimal">IPA Animal</label>
                     <div class="col-md-6">
@@ -337,7 +330,6 @@
                         Campo Obrigatório
                     </div>
                 </div>
-                <!-- Multiple Checkboxes (inline) -->
                 <div class="form-group" title="IPA Nao Agricola">
                     <label class="col-md-4 control-label" for="publicoAlvoIpaNaoAgricola">IPA Nao Agricola</label>
                     <div class="col-md-6">
@@ -351,7 +343,6 @@
                         Campo Obrigatório
                     </div>
                 </div>
-                <!-- Multiple Checkboxes (inline) -->
                 <div class="form-group" title="IPA Flores">
                     <label class="col-md-4 control-label" for="publicoAlvoIpaFlores">IPA Flores</label>
                     <div class="col-md-6">
@@ -365,7 +356,6 @@
                         Campo Obrigatório
                     </div>
                 </div>
-                <!-- Multiple Checkboxes (inline) -->
                 <div class="form-group" title="Organização">
                     <label class="col-md-4 control-label" for="publicoAlvoOrganizacao">Organização</label>
                     <div class="col-md-6">
@@ -379,6 +369,8 @@
                         Campo Obrigatório
                     </div>
                 </div>
+                -->
+                
             </fieldset>
         </form>
     </div>

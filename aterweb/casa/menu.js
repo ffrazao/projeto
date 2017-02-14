@@ -84,14 +84,14 @@
                         link: 'p.contrato.filtro',
                         funcionalidade: 'CONTRATO',
                         visivel: false,
-                    } /*,
-                    {
+                    } ,
+/*                    {
                         name: 'Formulários',
                         link: 'p.formulario.filtro',
                         funcionalidade: 'FORMULARIO',
                         visivel: false,
-                    }, */
-                ]
+                    },  
+*/                ]
             },
             {
                 name: 'Atividade',

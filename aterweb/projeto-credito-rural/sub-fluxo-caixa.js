@@ -164,17 +164,23 @@ angular.module(pNmModulo).controller(pNmController,
         }
         lista.forEach(function(cp) {
             if (cp.selecionado === 'S') {
-                var ano = null, amortizacaoTotal = 0, encontrou;
-                cp.cronogramaPagamentoList.forEach(function(p) {
-                    if (ano == null) {
-                        ano = p.ano;
+                var ano = cp.cronogramaPagamentoList[0].ano, amortizacaoTotal = 0;
+                // ignorar o registro de carência
+                if (cp.cronogramaPagamentoList && cp.cronogramaPagamentoList[0] && !cp.cronogramaPagamentoList[0].ano) {
+                    // neste caso, pular a linha de carência e calcular os anos que não serão pagos
+                    // zerar o periodo de carência
+                    ano = cp.cronogramaPagamentoList[1].ano;
+                    for (var i = cp.cronogramaPagamentoList[1].ano; i >= 1; i--) {
+                        somaCronograma(i, 0, 0);
                     }
-                    amortizacaoTotal += p.amortizacao;
+                }
+                cp.cronogramaPagamentoList.forEach(function(p) {
                     if (p.ano && p.ano !== ano) {
                         somaCronograma(ano, amortizacaoTotal, p.saldoDevedorFinal);
                         ano = p.ano;
                         amortizacaoTotal = 0 ;
                     }
+                    amortizacaoTotal += p.prestacao;
                 });
                 somaCronograma(ano, amortizacaoTotal, cp.cronogramaPagamentoList[cp.cronogramaPagamentoList.length -1].saldoDevedorFinal);
             }

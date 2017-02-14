@@ -93,6 +93,7 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.voltar = function() {};
     // fim das operaçoes atribuidas ao navagador
 
+/*
     $scope.$watch('cadastro.registro.metodo', function() {
 
         if( !$scope.cadastro.registro.metodo || !$scope.cadastro.registro.metodo.id ){
@@ -116,6 +117,7 @@ angular.module(pNmModulo).controller(pNmController,
         } );
 
     }, true);
+*/
 
 } // fim função
 ]);

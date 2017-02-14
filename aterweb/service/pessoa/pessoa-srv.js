@@ -43,7 +43,8 @@ angular.module(pNmModulo).factory(pNmFactory,
                    'Estado',
                    'PendenciaTipo',
                    'GrupoSocialTipo',
-                   'GrupoSocialEscopo'
+                   'GrupoSocialEscopo',
+                   'FormaUtilizacaoEspacoRural'
                 ]}).success(function(resposta) {
                     if (resposta && resposta.mensagem === 'OK') {
                         scp.cadastro.apoio.pessoaTipoList = resposta.resultado[0];
@@ -87,6 +88,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                         scp.cadastro.apoio.pendenciaTipoList = resposta.resultado[26];
                         scp.cadastro.apoio.grupoSocialTipoList = resposta.resultado[27];
                         scp.cadastro.apoio.grupoSocialEscopoList = resposta.resultado[28];
+                        scp.cadastro.apoio.formaUtilizacaoEspacoRuralList = resposta.resultado[29];
 
                         scp.cadastro.apoio.tradicaoList = [];
                         var anoAtual = new Date().getFullYear();
@@ -109,7 +111,8 @@ angular.module(pNmModulo).factory(pNmFactory,
                           delete elemento['@jsonId'];
                           involucro.push({'setor': elemento});
                         });
-                        scp.cadastro.apoio.publicoAlvoSetorList = involucro;
+                        scp.cadastro.apoio.publicoAlvoSetorListCompara = involucro;
+
                     }
                 });
                 if ($rootScope.isAuthenticated()) {

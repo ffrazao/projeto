@@ -1,4 +1,4 @@
-/* global StringMask:false, converterStringParaData */ /* jslint evil: true */
+/* global criarEstadosPadrao, isUndefOrNull, removerCampo, StringMask:false, converterStringParaData */ /* jslint evil: true */
 
 (function(pNmModulo, pNmController, pNmFormulario) {
 
@@ -108,8 +108,8 @@ angular.module(pNmModulo).controller(pNmController,
             dd.formularioVersao = {id: $scope.propriedadeRuralDiagnosticoCaptacaoNvg.selecao.item[9].id};
             dd.dataColeta = $scope.hoje();
             dd.finalizada = 'N';
-            dd.inclusaoUsuario = $scope.token;
-            dd.alteracaoUsuario = $scope.token;
+            //dd.inclusaoUsuario = $scope.token;
+            //dd.alteracaoUsuario = $scope.token;
 
             var id = $scope.propriedadeRuralDiagnosticoCaptacaoNvg.selecao.item[0];
             var versao = $scope.propriedadeRuralDiagnosticoCaptacaoNvg.selecao.item[9].versao;
@@ -153,6 +153,8 @@ angular.module(pNmModulo).controller(pNmController,
             });
         },
         funcaoSalvarDepois: function(form, dd, acao) {
+            dd.propriedadeRural = { id : $scope.cadastro.registro.id };
+            removerCampo(dd, ['@jsonId']);
             FormularioSrv.coletar(dd).success(function(resposta) {
                 if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {
                 } else {

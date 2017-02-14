@@ -499,7 +499,7 @@
                                 nome: 'Voltar',
                                 descricao: 'Voltar para a tela anterior',
                                 classe: 'btn-info',
-                                glyphicon: 'glyphicon-share-alt',
+                                glyphicon: 'glyphicon-share-alt gly-flip-horizontal',
                                 acao: function() {
                                     scope.onVoltar();
                                 },

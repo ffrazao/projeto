@@ -95,9 +95,12 @@ angular.module(pNmModulo).factory(pNmFactory,
                     tipo: 'array',
                     nome: f.nome,
                 };
-                if (!f.formularioVersaoList || f.formularioVersaoList.length === 0) {
+                if ( ( !f.formularioVersaoList || f.formularioVersaoList.length === 0 ) && ( ( f.formulario) && (!f.formulario.formularioVersaoList || f.formulario.formularioVersaoList.length === 0 ) ) ) {
                     toastr.error('Formulário incompleto', 'Erro ao montar');
                     return;
+                }
+                if(  f.formulario ){
+                    f =  f.formulario;
                 }
                 var pos, v = -1;
                 for (var i in f.formularioVersaoList) {

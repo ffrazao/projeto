@@ -370,7 +370,7 @@
                 }, registro, 500);
             };
             $scope.confirmarEditarAntes = function(cadastro) {
-                removerCampo($scope.cadastro.registro, ['@jsonId']);
+                //removerCampo($scope.cadastro.registro, ['@jsonId']);
                 return $scope.confirmarIncluirAntes(cadastro);
             };
             $scope.confirmarIncluirAntes = function(cadastro) {

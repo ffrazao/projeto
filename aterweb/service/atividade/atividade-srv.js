@@ -29,6 +29,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                    'Metodo',
                    'Assunto',
                    'Confirmacao',
+                   'MetaTatica'
                 ]}).success(function(resposta) {
                     if (resposta && resposta.resultado) {
                         scp.cadastro.apoio.generoList = resposta.resultado[0];
@@ -44,6 +45,14 @@ angular.module(pNmModulo).factory(pNmFactory,
                         scp.cadastro.apoio.metodoList = resposta.resultado[10];
                         scp.cadastro.apoio.assuntoList = resposta.resultado[11];
                         scp.cadastro.apoio.confirmacaoList = resposta.resultado[12];
+                        scp.cadastro.apoio.metaTaticaList = [];
+                        var anoAtual = new Date().getFullYear();
+                        anoAtual += '';
+                        resposta.resultado[13].forEach(function(item) {
+                          if( item.ano === anoAtual ){
+                            scp.cadastro.apoio.metaTaticaList.push(item);
+                          } 
+                        });
                    }
                 });
                 if ($rootScope.isAuthenticated()) {
