@@ -62,7 +62,7 @@ public class VisualizarCmd extends _Comando {
 				n.setId(r.getId());
 				n.setMetaTaticaId(r.getMetaTaticaId());
 				n.setMetaTaticaNome(r.getMetaTaticaNome());
-				n.setMetaTatica( new MetaTatica(r.getMetaTaticaId(),r.getMetaTaticaNome() ) );
+				n.setMetaTatica( new MetaTatica(r.getMetaTaticaId(),r.getMetaTaticaNome(), null ) );
 				l.add(n);
 			}
 			result.setMetaTaticaList(l);

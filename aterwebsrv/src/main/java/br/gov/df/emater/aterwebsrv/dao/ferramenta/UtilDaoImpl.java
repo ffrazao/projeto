@@ -2,6 +2,7 @@ package br.gov.df.emater.aterwebsrv.dao.ferramenta;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -9,10 +10,12 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
@@ -31,6 +34,10 @@ public class UtilDaoImpl implements UtilDao {
 
 	@Autowired
 	private EntityManager entityManager;
+
+	@Autowired
+	@Qualifier("planejamentoEntityManager")
+	private EntityManager planejamentoEntityManager;
 
 	/**
 	 * Método genérico para retorno de entidades de domínio do sistema
@@ -65,36 +72,45 @@ public class UtilDaoImpl implements UtilDao {
 		if (order != null && order.trim().length() > 0) {
 			sql.append("order by ").append(order).append("\n");
 		}
-
-		Query query = entityManager.createQuery(sql.toString());
-
-		if (nomeChavePrimaria != null && nomeChavePrimaria.trim().length() > 0 && valorChavePrimaria != null) {
+		
+ 		List<EntityManager> emList = Arrays.asList(entityManager, planejamentoEntityManager);
+		for (int i = 0; i < emList.size(); i++) {
 			try {
-				query.setParameter("1", Integer.parseInt(valorChavePrimaria));
-			} catch (NumberFormatException e) {
-				try {
-					query.setParameter("1", valorChavePrimaria);
-				} catch (IllegalArgumentException ex) {
-					Class<?> enumList = getEnumClass(nomeEnum);
-					Object vlr = Enum.valueOf((Class<Enum>) enumList, valorChavePrimaria);
-					query.setParameter("1", vlr);
+				Query query = emList.get(i).createQuery(sql.toString());
+
+				if (nomeChavePrimaria != null && nomeChavePrimaria.trim().length() > 0 && valorChavePrimaria != null) {
+					try {
+						query.setParameter("1", Integer.parseInt(valorChavePrimaria));
+					} catch (NumberFormatException e) {
+						try {
+							query.setParameter("1", valorChavePrimaria);
+						} catch (IllegalArgumentException ex) {
+							Class<?> enumList = getEnumClass(nomeEnum);
+							Object vlr = Enum.valueOf((Class<Enum>) enumList, valorChavePrimaria);
+							query.setParameter("1", vlr);
+						}
+					}
+				}
+
+				List<?> result = query.getResultList();
+
+				if (result != null && result.size() > 0 && result.get(0) != null) {
+					if (result.get(0) instanceof InfoBasica) {
+						List<Object> newResult = new ArrayList<Object>();
+						for (Object info : result) {
+							newResult.add(((InfoBasica) info).infoBasica());
+						}
+						result = newResult;
+					}
+				}
+				return result;
+			} catch (PersistenceException e) {
+				if (i > 0) {
+					throw e;
 				}
 			}
 		}
-
-		List<?> result = query.getResultList();
-
-		if (result != null && result.size() > 0 && result.get(0) != null) {
-			if (result.get(0) instanceof InfoBasica) {
-				List<Object> newResult = new ArrayList<Object>();
-				for (Object info : result) {
-					newResult.add(((InfoBasica) info).infoBasica());
-				}
-				result = newResult;
-			}
-		}
-
-		return result;
+		return null;
 	}
 
 	private Class<?> getEnumClass(String enumeracao) throws DaoException {

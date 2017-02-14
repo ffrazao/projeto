@@ -72,10 +72,26 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 		sql.append("     , a.alteracaoUsuario.pessoa.nome").append("\n"); // ATIV_ALTERACAO_USUARIO_PESSOA_NOME
 		sql.append("     , a.alteracaoData").append("\n"); // ATIV_ALTERACAO_DATA
 		sql.append("from Atividade a").append("\n");
-		sql.append("join a.assuntoList ass").append("\n");
-		sql.append("join a.pessoaExecutorList exec").append("\n");
-		sql.append("join a.pessoaDemandanteList deman").append("\n");
-		sql.append("join Treat(deman.pessoa as PessoaFisica) pf").append("\n");
+		
+		if (!CollectionUtils.isEmpty(filtro.getExecutorList())) {
+			sql.append("left join a.pessoaExecutorList exec").append("\n");
+		}
+		
+		if (!CollectionUtils.isEmpty(filtro.getDemandanteList())) {
+			sql.append("left join a.pessoaDemandanteList deman").append("\n");
+		}
+
+		if (filtro.getAssunto() != null) {
+			sql.append("left join a.assuntoList ass").append("\n");
+		}
+		
+		if (!CollectionUtils.isEmpty(filtro.getGenero()) || (!CollectionUtils.isEmpty(filtro.getGeracao()))) {
+			sql.append("join Treat(deman.pessoa as PessoaFisica) pf").append("\n");
+		}
+		
+		if (filtro.getMetaTatica() != null) {
+			sql.append("left join a.metaTaticaList metaTatica").append("\n");
+		}
 
 		sql.append("where 1 = 1").append("\n");
 
@@ -114,6 +130,10 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 		if (filtro.getAssunto() != null) {
 			params.add(filtro.getAssunto());
 			sqlFiltro.append("and ass.assunto = ?").append(params.size()).append("\n");
+		}
+		if (filtro.getMetaTatica() != null) {
+			params.add(filtro.getMetaTatica());
+			sql.append("and metaTatica.metaTaticaId = ?").append(params.size()).append("\n");
 		}
 
 		if (!CollectionUtils.isEmpty(filtro.getDemandanteList())) {
@@ -347,8 +367,10 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 		sql.append("select distinct").append("\n");
 		sql.append("        a.id").append("\n");
 		sql.append("      , a.codigo as title").append("\n");
-//		sql.append("      , DATE_FORMAT(a.inicio, '%d/%m/%Y %H:%i:%s') as  d1").append("\n");
-//		sql.append("      , DATE_FORMAT(a.conclusao, '%d/%m/%Y %H:%i:%s') as d2").append("\n");
+		// sql.append(" , DATE_FORMAT(a.inicio, '%d/%m/%Y %H:%i:%s') as
+		// d1").append("\n");
+		// sql.append(" , DATE_FORMAT(a.conclusao, '%d/%m/%Y %H:%i:%s') as
+		// d2").append("\n");
 		sql.append("      , a.inicio as startF").append("\n");
 		sql.append("      , a.conclusao as endF").append("\n");
 		sql.append("      , '' as className").append("\n");
@@ -377,7 +399,8 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 					filtro.getPessoaIdList().stream().filter(n -> n != null).collect(Collectors.toSet()));
 		}
 		if (!CollectionUtils.isEmpty(filtro.getPessoaIdList())) {
-			sql.append("and    c.pessoa_id in (").append(UtilitarioString.collectionToString(filtro.getPessoaIdList())).append(")").append("\n");
+			sql.append("and    c.pessoa_id in (").append(UtilitarioString.collectionToString(filtro.getPessoaIdList()))
+					.append(")").append("\n");
 		}
 		if (filtro.getMetodo() != null && filtro.getMetodo().getId() != null) {
 			params.add(filtro.getMetodo().getId());
@@ -407,10 +430,11 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 						return new AgendaDto((Integer) tuple[campos.indexOf("id")],
 
 								(String) tuple[campos.indexOf("title")],
-								UtilitarioData.getInstance().sqlTimestampToCalendar((Timestamp) tuple[campos.indexOf("startF")]),
-								UtilitarioData.getInstance().sqlTimestampToCalendar((Timestamp) tuple[campos.indexOf("endF")]),
-								new String[]{},
-								(Integer) tuple[campos.indexOf("metodoId")],
+								UtilitarioData.getInstance()
+										.sqlTimestampToCalendar((Timestamp) tuple[campos.indexOf("startF")]),
+								UtilitarioData.getInstance()
+										.sqlTimestampToCalendar((Timestamp) tuple[campos.indexOf("endF")]),
+								new String[] {}, (Integer) tuple[campos.indexOf("metodoId")],
 								(String) tuple[campos.indexOf("metodoNome")],
 								(Integer) tuple[campos.indexOf("pessoaId")],
 								(String) tuple[campos.indexOf("pessoaNome")],
@@ -421,7 +445,7 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 
 		// inserir os parametros
 		for (int i = 1; i <= params.size(); i++) {
-			query.setParameter(String.format("p%d", i), params.get(i-1));
+			query.setParameter(String.format("p%d", i), params.get(i - 1));
 		}
 
 		// definir a pagina a ser consultada

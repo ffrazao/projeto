@@ -22,6 +22,9 @@ public class ColetarCmd extends _Comando {
 	public boolean executar(_Contexto contexto) throws Exception {
 		Coleta coleta = (Coleta) contexto.getRequisicao();
 		coleta.setValorString(coleta.getValor() == null ? null : om.writeValueAsString(coleta.getValor()));
+		if( coleta.getId()==null){
+			coleta.setInclusaoUsuario(null);
+		}
 		logAtualizar(coleta, contexto);
 		dao.save(coleta);
 		contexto.setResposta(coleta.getId());

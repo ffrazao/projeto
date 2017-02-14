@@ -32,7 +32,7 @@ public class AtividadeCadFiltroDto extends CadFiltroDtoCustom {
 	private static final long serialVersionUID = 1L;
 
 	private Assunto assunto;
-
+	
 	private Set<PublicoAlvoCategoria> categoria;
 
 	private Set<TagDto> codigoList;
@@ -40,13 +40,13 @@ public class AtividadeCadFiltroDto extends CadFiltroDtoCustom {
 	private List<Comunidade> comunidadeList;
 
 	private Set<TagDto> demandanteList;
-	
+
 	private List<PessoaJuridica> empresaList;
 
 	private Set<TagDto> executorList;
 
 	private Set<PessoaGenero> genero;
-
+	
 	private Set<PessoaGeracao> geracao;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -54,6 +54,8 @@ public class AtividadeCadFiltroDto extends CadFiltroDtoCustom {
 	@JsonSerialize(using = JsonSerializerData.class)
 	@JsonDeserialize(using = JsonDeserializerData.class)
 	private Calendar inicio;
+
+	private Integer metaTatica;
 
 	private Metodo metodo;
 
@@ -107,6 +109,10 @@ public class AtividadeCadFiltroDto extends CadFiltroDtoCustom {
 
 	public Calendar getInicio() {
 		return inicio;
+	}
+
+	public Integer getMetaTatica() {
+		return metaTatica;
 	}
 
 	public Metodo getMetodo() {
@@ -167,6 +173,10 @@ public class AtividadeCadFiltroDto extends CadFiltroDtoCustom {
 
 	public void setInicio(Calendar inicio) {
 		this.inicio = inicio;
+	}
+
+	public void setMetaTatica(Integer metaTatica) {
+		this.metaTatica = metaTatica;
 	}
 
 	public void setMetodo(Metodo metodo) {

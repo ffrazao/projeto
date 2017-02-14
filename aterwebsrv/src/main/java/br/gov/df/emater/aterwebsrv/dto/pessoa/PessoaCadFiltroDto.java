@@ -75,7 +75,7 @@ public class PessoaCadFiltroDto extends CadFiltroDtoCustom {
 
 	private Set<Confirmacao> publicoAlvoOrganizacao;
 
-	private PropriedadeUtilizacaoEspacoRural publicoAlvoPropriedadeUtilizacaoEspacoRural;
+	private Integer publicoAlvoPropriedadeUtilizacaoEspacoRural;
 
 	private Set<PublicoAlvoSegmento> publicoAlvoSegmento;
 
@@ -185,7 +185,7 @@ public class PessoaCadFiltroDto extends CadFiltroDtoCustom {
 		return publicoAlvoOrganizacao;
 	}
 
-	public PropriedadeUtilizacaoEspacoRural getPublicoAlvoPropriedadeUtilizacaoEspacoRural() {
+	public Integer getPublicoAlvoPropriedadeUtilizacaoEspacoRural() {
 		return publicoAlvoPropriedadeUtilizacaoEspacoRural;
 	}
 
@@ -305,7 +305,7 @@ public class PessoaCadFiltroDto extends CadFiltroDtoCustom {
 		this.publicoAlvoOrganizacao = publicoAlvoOrganizacao;
 	}
 
-	public void setPublicoAlvoPropriedadeUtilizacaoEspacoRural(PropriedadeUtilizacaoEspacoRural publicoAlvoPropriedadeUtilizacaoEspacoRural) {
+	public void setPublicoAlvoPropriedadeUtilizacaoEspacoRural(Integer publicoAlvoPropriedadeUtilizacaoEspacoRural) {
 		this.publicoAlvoPropriedadeUtilizacaoEspacoRural = publicoAlvoPropriedadeUtilizacaoEspacoRural;
 	}
 
