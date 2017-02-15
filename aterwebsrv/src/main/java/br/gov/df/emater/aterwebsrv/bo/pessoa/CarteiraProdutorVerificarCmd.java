@@ -67,12 +67,12 @@ public class CarteiraProdutorVerificarCmd extends _Comando {
 				if (pessoa.getPerfilArquivo() == null || pessoa.getPerfilArquivo().getConteudo() == null) {
 					acumulaItem(pessoaReg, "erroList", "Foto do beneficiário não cadastrada!");
 				}
-				if (!(pessoa instanceof PessoaFisica)) {
+/*				if (!(pessoa instanceof PessoaFisica)) {
 					acumulaItem(pessoaReg, "erroList", "Carteira disponível somente a pessoas físicas!");
 				} else if (((PessoaFisica) pessoa).getCpf() == null) {
 					acumulaItem(pessoaReg, "erroList", "Documento CPF não informado!");
 				}
-				if (pessoa.getPublicoAlvo() == null) {
+*/				if (pessoa.getPublicoAlvo() == null) {
 					acumulaItem(pessoaReg, "erroList", "Cadastro de Beneficiário incompleto!");
 				} else {
 					PublicoAlvo publicoAlvo = pessoa.getPublicoAlvo();
@@ -102,12 +102,13 @@ public class CarteiraProdutorVerificarCmd extends _Comando {
 							}
 							if (publicoAlvoPropriedadeRural.getVinculo() == null) {
 								acumulaItem(paprReg, "erroList", "Tipo de Vinculo à Propriedade Rural não identificado!");
-							} else {
+							} 
+/*							  else {
 								if (Arrays.asList(new PropriedadeRuralVinculoTipo[] { PropriedadeRuralVinculoTipo.PR, PropriedadeRuralVinculoTipo.PA, PropriedadeRuralVinculoTipo.AR }).indexOf(publicoAlvoPropriedadeRural.getVinculo()) < 0) {
 									acumulaItem(paprReg, "erroList", "O vinculo à Propriedade Rural não permite emissão de carteira!");
 								}
 							}
-							if (publicoAlvoPropriedadeRural.getInicio() != null && publicoAlvoPropriedadeRural.getInicio().after(Calendar.getInstance())) {
+*/							if (publicoAlvoPropriedadeRural.getInicio() != null && publicoAlvoPropriedadeRural.getInicio().after(Calendar.getInstance())) {
 								acumulaItem(paprReg, "erroList", "Início do vinculo à Propriedade Rural inválido!");
 							}
 							if (publicoAlvoPropriedadeRural.getTermino() != null && publicoAlvoPropriedadeRural.getTermino().before(Calendar.getInstance())) {

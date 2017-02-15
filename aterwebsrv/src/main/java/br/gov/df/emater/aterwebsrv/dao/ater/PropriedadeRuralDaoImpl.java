@@ -62,7 +62,7 @@ public class PropriedadeRuralDaoImpl implements PropriedadeRuralDaoCustom {
 		sql.append("from PropriedadeRural p").append("\n");
 		sql.append("left join p.publicoAlvoPropriedadeRuralList vinculados").append("\n");
 		if (!CollectionUtils.isEmpty(filtro.getPendencia())) {
-			sql.append("join p.pendenciaList pendencia").append("\n");
+			sql.append("left p.pendenciaList pendencia").append("\n");
 		}
 		sql.append("where (1 = 1)").append("\n");
 

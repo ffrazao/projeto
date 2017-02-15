@@ -162,7 +162,10 @@ public class CalcularCronogramaCmd extends _Comando {
 			// ajustar identificação da parcela quanto ao ano e parcelas iniciais
 			
 			Long saltos = diasCarencia / cronograma.getPeriodicidade().getTotalDiasPeriodo();
-			saltos += 1 + (diasCarencia % cronograma.getPeriodicidade().getTotalDiasPeriodo()) > 0 ? 1 : 0;
+			if( (diasCarencia % cronograma.getPeriodicidade().getTotalDiasPeriodo()) > 0 ){
+				saltos++ ; 
+			}
+			/* saltos += ( (diasCarencia % cronograma.getPeriodicidade().getTotalDiasPeriodo())) > 0 ? 1 : 0; */
 			for (int salto = 1; salto <= saltos; salto++) {
 				epoca++;
 				if (!((epoca) <= cronograma.getPeriodicidade().getMaxEpoca())) {
