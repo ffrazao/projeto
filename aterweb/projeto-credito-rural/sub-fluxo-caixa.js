@@ -153,37 +153,35 @@ angular.module(pNmModulo).controller(pNmController,
         }
     };
 
-    var somaCronograma = function (ano, amortizacao, saldoDevedor) {
-        $scope.cadastro.apoio.fluxoCaixa.Amortizacao.fluxoCaixaAnoList[ano -1].valor += amortizacao;
+
+    var somaCronograma = function (ano, prestacao, saldoDevedor) {
+        $scope.cadastro.apoio.fluxoCaixa.Amortizacao.fluxoCaixaAnoList[ano -1].valor += prestacao;
         $scope.cadastro.apoio.fluxoCaixa.SaldoDevedor.fluxoCaixaAnoList[ano -1].valor += saldoDevedor;
-    };
+    }
 
     var contabilizaCronograma = function(lista) {
-        if (!lista || !lista.length) {
-            return;
-        }
+        if (!lista || !lista.length) { return;}
         lista.forEach(function(cp) {
             if (cp.selecionado === 'S') {
-                var ano = cp.cronogramaPagamentoList[0].ano, amortizacaoTotal = 0;
-                // ignorar o registro de carência
-                if (cp.cronogramaPagamentoList && cp.cronogramaPagamentoList[0] && !cp.cronogramaPagamentoList[0].ano) {
-                    // neste caso, pular a linha de carência e calcular os anos que não serão pagos
-                    // zerar o periodo de carência
-                    ano = cp.cronogramaPagamentoList[1].ano;
-                    for (var i = cp.cronogramaPagamentoList[1].ano; i >= 1; i--) {
-                        somaCronograma(i, 0, 0);
-                    }
-                }
+                var ano = 0, somaPrestacao = 0, saldoDevedor = 0;
                 cp.cronogramaPagamentoList.forEach(function(p) {
-                    if (p.ano && p.ano !== ano) {
-                        somaCronograma(ano, amortizacaoTotal, p.saldoDevedorFinal);
-                        ano = p.ano;
-                        amortizacaoTotal = 0 ;
+                    if( !p.parcela ) {
+                        ano = cp.cronogramaPagamentoList[1].ano;
+                        for (var i = (ano-1); i >= 1; i--) {
+                            somaCronograma(i, 0, cp.cronogramaPagamentoList[0].saldoDevedorFinal);
+                        }
+                    } else {
+                        if( (p.ano && p.ano !== ano) ){
+                          somaCronograma(ano, somaPrestacao, saldoDevedor );
+                          ano = p.ano;
+                          somaPrestacao = 0;
+                        }
+                        somaPrestacao += p.prestacao;
+                        saldoDevedor = p.saldoDevedorFinal;
                     }
-                    amortizacaoTotal += p.prestacao;
                 });
-                somaCronograma(ano, amortizacaoTotal, cp.cronogramaPagamentoList[cp.cronogramaPagamentoList.length -1].saldoDevedorFinal);
-            }
+                somaCronograma(ano, somaPrestacao, saldoDevedor );
+            };
         });
     };
 
