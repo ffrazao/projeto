@@ -209,7 +209,6 @@
                 return confirmarSalvar(cadastro);
             };
            
-            // Filtros de segurança by Emerson
             $scope.editar = function(scp) {
             	if (! $rootScope.token.lotacaoAtual) {
                     toastr.error('Usuário não possui lotação!', 'Erro'); 
@@ -338,13 +337,14 @@
                 }
             });
             $scope.$watch('cadastro.registro.inicio', function(v, o) {
+                var i = 0;
                 if( $scope.cadastro.registro.pessoaDemandanteList ){
-                    for (var i = 0; i < $scope.cadastro.registro.pessoaDemandanteList.length; i++) {
+                    for (i=0; i < $scope.cadastro.registro.pessoaDemandanteList.length; i++) {
                         $scope.cadastro.registro.pessoaDemandanteList[i].inicio = $scope.cadastro.registro.inicio;
                     }
                 }
                 if( $scope.cadastro.registro.pessoaExecutorList ){
-                    for (var i = 0; i < $scope.cadastro.registro.pessoaExecutorList.length; i++) {
+                    for (i=0; i < $scope.cadastro.registro.pessoaExecutorList.length; i++) {
                         $scope.cadastro.registro.pessoaExecutorList[i].inicio = $scope.cadastro.registro.inicio;
                     }
                 }

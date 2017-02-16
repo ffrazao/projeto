@@ -157,7 +157,7 @@ angular.module(pNmModulo).controller(pNmController,
     var somaCronograma = function (ano, prestacao, saldoDevedor) {
         $scope.cadastro.apoio.fluxoCaixa.Amortizacao.fluxoCaixaAnoList[ano -1].valor += prestacao;
         $scope.cadastro.apoio.fluxoCaixa.SaldoDevedor.fluxoCaixaAnoList[ano -1].valor += saldoDevedor;
-    }
+    };
 
     var contabilizaCronograma = function(lista) {
         if (!lista || !lista.length) { return;}
@@ -181,7 +181,7 @@ angular.module(pNmModulo).controller(pNmController,
                     }
                 });
                 somaCronograma(ano, somaPrestacao, saldoDevedor );
-            };
+            }
         });
     };
 
