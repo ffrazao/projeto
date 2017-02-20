@@ -21,7 +21,7 @@ import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 public class RelacionamentoTipo extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<RelacionamentoTipo> {
 
 	public static enum Codigo {
-		ACADEMICO, FAMILIAR, PROFISSIONAL
+		ACADEMICO, FAMILIAR, PROFISSIONAL, ASSOCIATIVISMO
 	}
 
 	private static final long serialVersionUID = 1L;
