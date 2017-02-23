@@ -256,7 +256,7 @@
                 ProjetoCreditoRuralSrv.projetoTecnicoRel(idList)
                     .success(function(resposta) {
                         if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {
-                            window.open("data:application/zip;base64,"+resposta.resultado);
+                            window.open("data:application/pdf;base64,"+resposta.resultado);
                         } else {
                             toastr.error(resposta && resposta.mensagem ? resposta.mensagem : resposta, 'Erro ao emitir relatório');
                         }

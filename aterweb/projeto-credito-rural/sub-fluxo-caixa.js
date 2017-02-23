@@ -163,14 +163,18 @@ angular.module(pNmModulo).controller(pNmController,
         if (!lista || !lista.length) { return;}
         lista.forEach(function(cp) {
             if (cp.selecionado === 'S') {
-                var ano = 0, somaPrestacao = 0, saldoDevedor = 0;
+                var ano = 0;
+                if( cp.cronogramaPagamentoList[0].parcela ){
+                    ano = cp.cronogramaPagamentoList[0].ano;
+                } else {
+                    ano = cp.cronogramaPagamentoList[1].ano;
+                    for (var i = (ano-1); i >= 1; i--) {
+                        somaCronograma(i, 0, cp.cronogramaPagamentoList[0].saldoDevedorFinal);
+                    }
+                }
+                var somaPrestacao = 0, saldoDevedor = 0;
                 cp.cronogramaPagamentoList.forEach(function(p) {
-                    if( !p.parcela ) {
-                        ano = cp.cronogramaPagamentoList[1].ano;
-                        for (var i = (ano-1); i >= 1; i--) {
-                            somaCronograma(i, 0, cp.cronogramaPagamentoList[0].saldoDevedorFinal);
-                        }
-                    } else {
+                    if( p.parcela ) {
                         if( (p.ano && p.ano !== ano) ){
                           somaCronograma(ano, somaPrestacao, saldoDevedor );
                           ano = p.ano;
