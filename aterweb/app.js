@@ -435,7 +435,7 @@ var TIMEOUT_TEMPO = 10 * 60;
             'ngInject';
 
             // definir o servidor padrão
-            $rootScope.servicoUrl = 'http://homologa.emater.df.gov.br:8080/aterwebsrv';
+            $rootScope.servicoUrl = 'http://localhost:8080/aterwebsrv';
 
             // verificar se tem um servidor alternativo
             var servicoUrl = $.ajax({

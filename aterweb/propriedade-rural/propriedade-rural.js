@@ -192,9 +192,9 @@
                 //Não pode editar atividade de outra gerência
                 else if ( $scope.cadastro.registro.comunidade.unidadeOrganizacional.id !== $rootScope.token.lotacaoAtual.id ) {
                      toastr.error('Propriedade cadastrada em outra unidade organizacional!', 'Erro'); 
-                } else {
-                    $rootScope.editar(scp);
+                     return;
                 }
+                $rootScope.editar(scp);
             };
 
 

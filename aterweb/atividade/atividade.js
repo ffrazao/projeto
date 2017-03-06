@@ -208,9 +208,9 @@
             $scope.confirmarEditarAntes = function(cadastro) {
                 return confirmarSalvar(cadastro);
             };
-           
+            // Segurança by Emerson
             $scope.editar = function(scp) {
-            	if (! $rootScope.token.lotacaoAtual) {
+           	    if (! $rootScope.token.lotacaoAtual) {
                     toastr.error('Usuário não possui lotação!', 'Erro'); 
                     return;
                 }
@@ -228,8 +228,8 @@
                             }
                         }
                     }
-                    $rootScope.editar(scp);
                 }
+                $rootScope.editar(scp);
             };
 
             $scope.limpar = function(scp) {
