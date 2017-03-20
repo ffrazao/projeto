@@ -684,7 +684,11 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 		}
 		parametros.put("RelatorioNome", relatorioNome);
 		parametros.put("Parte", parteList.size() + 1);
-		JasperPrint impressao = relatorio.montarRelatorio(String.format("projeto_credito_rural/%s", nomeArquivo), parametros, pList);
+		if(relatorioNome.equalsIgnoreCase("OBJETIVOS E PARECER TÉCNICO")){
+			pList.remove(pList.get(5));
+		}
+			JasperPrint impressao = relatorio.montarRelatorio(String.format("projeto_credito_rural/%s", nomeArquivo), parametros, pList);
+			
 		parteList.add(impressao);
 	}
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
-<!-- 2016-12-13T13:46:00 -->
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-03-16T15:27:56 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Capa" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4be54963-8492-4271-af5b-1a708b6a64c7">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="RelatorioNome" class="java.lang.String" isForPrompting="false">
@@ -150,12 +150,6 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{RelatorioNome}]]></textFieldExpression>
 			</textField>
-			<image hAlign="Right" vAlign="Middle">
-				<reportElement x="510" y="0" width="45" height="30" uuid="fac3df18-a495-49d6-a48c-d30d4fadac46">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<imageExpression><![CDATA["jasper/imagens/logo-transparente.png"]]></imageExpression>
-			</image>
 		</band>
 	</pageHeader>
 	<detail>
@@ -534,7 +528,7 @@
 				<textElement>
 					<font isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{mae}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{mae}.getNome()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="169" width="104" height="13" uuid="3d6b31b2-84d1-4ca6-b1b7-3e31a923fdbb"/>
@@ -967,7 +961,7 @@
 				</textElement>
 				<text><![CDATA[Patrimônio Total]]></text>
 			</staticText>
-			<textField isBlankWhenNull="true">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="286" y="427" width="94" height="13" uuid="71219aad-9690-4282-be3f-5310fb2dc145"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1015,7 +1009,7 @@
 				</textElement>
 				<text><![CDATA[Salário Mensal (R$)]]></text>
 			</staticText>
-			<textField isBlankWhenNull="true">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="401" y="404" width="154" height="13" uuid="2614a8f6-489a-4dbf-8860-48bab160c35d"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1039,7 +1033,7 @@
 				</textElement>
 				<text><![CDATA[Máq. Equip.]]></text>
 			</staticText>
-			<textField isBlankWhenNull="true">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="182" y="404" width="92" height="13" uuid="8c5eac07-df90-474f-b671-4355cc4aab58"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1159,7 +1153,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{patrimonioSemoventes}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="286" y="368" width="94" height="13" uuid="2108d309-9c63-4866-b287-e8cf99528ece"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1292,15 +1286,11 @@
 		<band height="30">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<textField>
-				<reportElement x="0" y="8" width="210" height="15" uuid="1b954dc6-4ce3-4eb7-991f-8d34ca5f2b8e"/>
-				<textFieldExpression><![CDATA[$P{Usuario}.getUsername()]]></textFieldExpression>
-			</textField>
-			<textField>
 				<reportElement x="210" y="8" width="140" height="15" uuid="4ea6635b-fa82-4fea-a077-46e6c85a2af9">
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date())]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format(new Date())]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="555" height="5" uuid="ce6a8542-5463-4dd8-ab79-442baca94637"/>
@@ -1309,11 +1299,12 @@
 				</box>
 				<text><![CDATA[]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="350" y="8" width="205" height="15" uuid="12aedea3-038a-4355-83b1-7fb143d6844e"/>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA["Parte " + $P{Parte} + " pág. " + $V{PAGE_NUMBER}]]></textFieldExpression>
-			</textField>
+			<image hAlign="Right" vAlign="Middle">
+				<reportElement x="0" y="0" width="45" height="30" uuid="fac3df18-a495-49d6-a48c-d30d4fadac46">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<imageExpression><![CDATA["jasper/imagens/logo-transparente.png"]]></imageExpression>
+			</image>
 		</band>
 	</pageFooter>
 </jasperReport>

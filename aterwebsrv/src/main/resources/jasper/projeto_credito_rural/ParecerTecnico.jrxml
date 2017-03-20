@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
-<!-- 2016-12-12T11:08:36 -->
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-03-17T12:03:11 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Capa" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4be54963-8492-4271-af5b-1a708b6a64c7">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="RelatorioNome" class="java.lang.String" isForPrompting="false">
@@ -72,12 +72,6 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{RelatorioNome}]]></textFieldExpression>
 			</textField>
-			<image hAlign="Right" vAlign="Middle">
-				<reportElement x="510" y="0" width="45" height="30" uuid="fac3df18-a495-49d6-a48c-d30d4fadac46">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<imageExpression><![CDATA["jasper/imagens/logo-transparente.png"]]></imageExpression>
-			</image>
 		</band>
 	</pageHeader>
 	<detail>
@@ -98,30 +92,120 @@
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="30">
+		<band height="206">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<rectangle>
+				<reportElement x="0" y="4" width="555" height="165" uuid="d1d68b61-a32c-4110-b298-df5572b06b5f"/>
+			</rectangle>
 			<textField>
-				<reportElement x="0" y="8" width="210" height="15" uuid="1b954dc6-4ce3-4eb7-991f-8d34ca5f2b8e"/>
-				<textFieldExpression><![CDATA[$P{Usuario}.getUsername()]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="210" y="8" width="140" height="15" uuid="4ea6635b-fa82-4fea-a077-46e6c85a2af9">
+				<reportElement x="210" y="177" width="140" height="15" uuid="4ea6635b-fa82-4fea-a077-46e6c85a2af9">
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date())]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format(new Date())]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="555" height="5" uuid="ce6a8542-5463-4dd8-ab79-442baca94637"/>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="169" width="555" height="5" uuid="ce6a8542-5463-4dd8-ab79-442baca94637"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<image hAlign="Right" vAlign="Middle">
+				<reportElement x="0" y="174" width="45" height="30" uuid="fac3df18-a495-49d6-a48c-d30d4fadac46">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<imageExpression><![CDATA["jasper/imagens/logo-transparente.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="211" y="4" width="135" height="16" uuid="30726cdf-dfee-4b6e-a436-3c13d054b9bb"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[RESPONSÁVEL TÉCNICO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="26" y="35" width="61" height="13" uuid="10d2cc9e-701b-4c06-834e-ac561b55aac9"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TÉCNICO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="67" width="140" height="20" uuid="bcc6a415-3c2d-4110-9d97-bb169eb764ad"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TERMO DE COMPROMISSO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="45" y="82" width="465" height="38" uuid="c01ed2be-28e8-4d47-afef-72e5e32f1412"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Comprometo-me a aplicar os recursos de acordo com o orçamento apresentado, seguir as recomendações técnicas e comunicar a EMATER-DF quaisquer alterações referentes às condições expressas no presente projeto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="492" y="5" width="51" height="19" uuid="f7ff61d3-571d-40ec-9e62-39952d3a5218"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATA]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="492" y="19" width="74" height="19" uuid="e6853433-866a-44da-ba59-9d5cb84e65d7"/>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{projetoCreditoRural}.getAtividade().getConclusao().getTimeInMillis())]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="26" y="50" width="61" height="13" uuid="f3743c8f-7958-4c02-8813-5b456dab25f5"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[REGISTRO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" x="7" y="33" width="360" height="1" uuid="51712626-45e4-434c-9b90-ab54776421bd"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="140" width="84" height="13" uuid="62cefc44-dc9b-4bec-b31e-0a8998341c31"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PROPONENTE:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="28" y="155" width="61" height="13" uuid="cf6225f8-2824-4568-903e-bba38537a6c8"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CPF:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" x="10" y="140" width="360" height="1" uuid="904fdf8b-aa59-4dfa-b92a-66858fd600b2"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 				</box>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="350" y="8" width="205" height="15" uuid="12aedea3-038a-4355-83b1-7fb143d6844e"/>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA["Parte " + $P{Parte} + " pág. " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				<reportElement x="93" y="34" width="274" height="14" uuid="8e230ca5-28af-4ecf-b893-67cb3480ec83"/>
+				<textFieldExpression><![CDATA[$F{projetoCreditoRural}.getAtividade().getPessoaExecutorList().toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="93" y="49" width="274" height="14" uuid="97b9f1d0-a376-42d6-aa79-cc4f80083396"/>
+				<textFieldExpression><![CDATA[$F{usuario}.getUsername()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="96" y="140" width="274" height="14" uuid="3a626168-99fd-44f6-9dec-3145ccbe0f6d"/>
+				<textFieldExpression><![CDATA[$F{projetoCreditoRural}.getPublicoAlvo().getPessoa().getNome()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="96" y="155" width="274" height="14" uuid="e8ae07cd-f6d5-4818-b811-5dd57c4fd3dd"/>
+				<textFieldExpression><![CDATA[$F{projetoCreditoRural}.getPublicoAlvo().getPessoa().getCpf()]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>
