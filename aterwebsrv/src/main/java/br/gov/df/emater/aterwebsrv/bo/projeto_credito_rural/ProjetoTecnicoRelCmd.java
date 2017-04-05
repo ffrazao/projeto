@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.bo.projeto_credito_rural;
 
+import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaReg;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -122,51 +124,88 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 			reg.setProponente(proponente);
 			reg.setPublicoAlvo(pcr.getPublicoAlvo());
 
-			PessoaFisica pai = null;
-			PessoaFisica mae = null;
-			PessoaFisica conjuge = null;
+			PessoaRelacionamento pai = null;
+			PessoaRelacionamento mae = null;
+			PessoaRelacionamento conjuge = null;
 			iniciarRelacionamento();
+			
 			if (!CollectionUtils.isEmpty(proponente.getRelacionamentoList())) {
-				for (PessoaRelacionamento pessoaRelacionamento : proponente.getRelacionamentoList()) {
-					if (this.relacionamentoTipo.getId().equals(pessoaRelacionamento.getRelacionamento().getRelacionamentoTipo().getId())) {
-						if (this.funcaoConjuge.getId().equals(pessoaRelacionamento.getRelacionamentoFuncao().getId())) {
-							if (pessoaRelacionamento.getPessoa() != null) {
-								conjuge = (PessoaFisica) pessoaRelacionamento.getPessoa();
-							} else {
-								conjuge = new PessoaFisica();
-								conjuge.setNome(pessoaRelacionamento.getNome());
-								conjuge.setGenero(pessoaRelacionamento.getGenero());
-								conjuge.setCpf(pessoaRelacionamento.getCpf());
-								conjuge.setRgNumero(pessoaRelacionamento.getRgNumero());
-								conjuge.setRgOrgaoEmissor(pessoaRelacionamento.getRgOrgaoEmissor());
-								conjuge.setRgDataEmissao(pessoaRelacionamento.getRgDataEmissao());
-								conjuge.setNascimentoMunicipio(pessoaRelacionamento.getNascimentoMunicipio());
-								conjuge.setNascimentoEstado(pessoaRelacionamento.getNascimentoEstado());
-								conjuge.setNascimentoPais(pessoaRelacionamento.getNascimentoPais());
-								conjuge.setProfissao(pessoaRelacionamento.getProfissao());
+				for (PessoaRelacionamento relacionador : proponente.getRelacionamentoList()) {
+					for (PessoaRelacionamento relacionado : relacionador.getRelacionamento().getPessoaRelacionamentoList()) {
+						// aqui o registro original vem selecionado como o do
+						// relacionador, ou seja, da pessoa que foi consultada
+						// por isso é necessário inverter os dados com o do
+						// relacionado, para envio a tela, para futuras modificações
+						if (relacionado.getPessoa() != null && proponente.getId().equals(relacionado.getPessoa().getId())) {
+							continue;
+						}
+						if (relacionado.getPessoa() == null) {
+							// informações principais
+							relacionador.setId(relacionado.getId());
+							relacionador.setRelacionamentoFuncao(infoBasicaReg(relacionado.getRelacionamentoFuncao()));
+							relacionador.setChaveSisater(relacionado.getChaveSisater());
+
+							// captar os dados do relacionado
+							relacionador.setPessoa(null);
+							relacionador.setCpf(relacionado.getCpf());
+							relacionador.setGenero(relacionado.getGenero());
+							relacionador.setNascimento(relacionado.getNascimento());
+							if (relacionado.getNascimentoMunicipio() != null) {
+								relacionador.setNascimentoEstado(infoBasicaReg(relacionado.getNascimentoMunicipio().getEstado()));
+								relacionador.setNascimentoMunicipio(infoBasicaReg(relacionado.getNascimentoMunicipio()));
 							}
-						} else if (this.funcaoPaiMae.getId().equals(pessoaRelacionamento.getRelacionamentoFuncao().getId())) {
-							if (pessoaRelacionamento.getPessoa() != null) {
-								if (PessoaGenero.M.equals(((PessoaFisica) pessoaRelacionamento.getPessoa()).getGenero())) {
-									pai = (PessoaFisica) pessoaRelacionamento.getPessoa();
-								} else {
-									mae = (PessoaFisica) pessoaRelacionamento.getPessoa();
-								}
+							relacionador.setNome(relacionado.getNome());
+							relacionador.setNomeMae(relacionado.getNomeMae());
+							relacionador.setProfissao(infoBasicaReg(relacionado.getProfissao()));
+							relacionador.setRgDataEmissao(relacionado.getRgDataEmissao());
+							relacionador.setRgNumero(relacionado.getRgNumero());
+							relacionador.setRgOrgaoEmissor(relacionado.getRgOrgaoEmissor());
+							relacionador.setRgUf(relacionado.getRgUf());
+						} else {
+							// informações principais
+							relacionador.setId(relacionado.getId());
+							relacionador.setRelacionamentoFuncao(infoBasicaReg(relacionado.getRelacionamentoFuncao()));
+							relacionador.setChaveSisater(relacionado.getChaveSisater());
+
+							// captar os dados do relacionado
+							relacionador.setPessoa(infoBasicaReg(relacionado.getPessoa()));
+							
+							PessoaFisica pessoaTemp =  (PessoaFisica) relacionado.getPessoa() ;
+							relacionador.setCpf( pessoaTemp.getCpf() );
+							relacionador.setGenero(pessoaTemp.getGenero());
+							relacionador.setNascimento(pessoaTemp.getNascimento());
+							if (pessoaTemp.getNascimentoMunicipio() != null) {
+								pessoaTemp.setNascimentoEstado(infoBasicaReg(relacionado.getNascimentoMunicipio().getEstado()));
+								pessoaTemp.setNascimentoMunicipio(infoBasicaReg(relacionado.getNascimentoMunicipio()));
+							}
+							relacionador.setNome(pessoaTemp.getNome());
+							relacionador.setNomeMae(pessoaTemp.getNomeMae());
+							relacionador.setProfissao(infoBasicaReg(pessoaTemp.getProfissao()));
+							relacionador.setRgDataEmissao(pessoaTemp.getRgDataEmissao());
+							relacionador.setRgNumero(pessoaTemp.getRgNumero());
+							relacionador.setRgOrgaoEmissor(pessoaTemp.getRgOrgaoEmissor());
+							relacionador.setRgUf(pessoaTemp.getRgUf());
+
+						}
+
+												
+						if (this.funcaoConjuge.getId().equals(relacionador.getRelacionamentoFuncao().getId())) {
+							conjuge = relacionador;
+						} else if (this.funcaoPaiMae.getId().equals(relacionador.getRelacionamentoFuncao().getId())) {															
+							if (PessoaGenero.M.equals( relacionador.getGenero() ) ) {
+								pai = relacionador;
 							} else {
-								if (PessoaGenero.M.equals(pessoaRelacionamento.getGenero())) {
-									pai = new PessoaFisica();
-									pai.setNome(pessoaRelacionamento.getNome());
-									pai.setGenero(PessoaGenero.M);
-								} else {
-									mae = new PessoaFisica();
-									mae.setNome(pessoaRelacionamento.getNome());
-									mae.setGenero(PessoaGenero.F);
-								}
+								mae = relacionador;
 							}
 						}
+
+						
 					}
+					//relacionador.setRelacionamento(infoBasicaReg(relacionador.getRelacionamento()));
 				}
 			}
+
+		
 			reg.setPai(pai);
 			reg.setMae(mae);
 			reg.setConjuge(conjuge);
@@ -594,17 +633,21 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 		List<byte[]> resultList = new ArrayList<>();
 		Map<String, Object> parametros = new HashMap<String, Object>();
 		parametros.put("Usuario", getUsuario(contexto.getUsuario().getName()));
-
+		
 		for (ProjetoCreditoRural projeto : lista) {
+
 
 			List<ProjetoCreditoRural> pList = new ArrayList<>();
 			pList.add(projeto);
 
 			List<JasperPrint> parteList = new ArrayList<>();
 
+			List<ProjetoTecnicoProponenteRelDto> prop = captarCadastroProponente(contexto, pList);
+			parametros.put("CPF", ((ProjetoTecnicoProponenteRelDto) prop.get(0)).getProponente().getCpf() );
+			
 			// montar as partes do relatório
 			montaParte("CAPA", "Capa", parametros, pList, parteList);
-			montaParte("CADASTRO DO PROPONENTE", "Proponente", parametros, captarCadastroProponente(contexto, pList), parteList);
+			montaParte("CADASTRO DO PROPONENTE", "Proponente", parametros, prop, parteList);
 			montaParte("CADASTRO DA PROPRIEDADE RURAL", "PropriedadeRural", parametros, captarCadastroPropriedadeRural(contexto, pList), parteList);
 			montaParte("TRIÊNIO, INVERSÕES, CUSTOS E RECEITAS", "Solicitacao", parametros, pList, parteList);
 
@@ -613,7 +656,7 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 
 			montaParte("CRONOGRAMA DE REEMBOLSO", "Cronograma", parametros, pList, parteList);
 			montaParte("FLUXO DE CAIXA", "FluxoCaixa", parametros, captarFluxoCaixa(pList.get(0).getFluxoCaixaList()), parteList);
-			montaParte("OBJETIVOS E PARECER TÉCNICO", "ParecerTecnico", parametros, projeto.getParecerTecnicoList(), parteList);
+			montaParte("OBJETIVOS E PARECER TÉCNICO", "ParecerTecnico", parametros, pList, parteList);
 			montaParte("GARANTIAS - AVALISTAS", "Garantia", parametros, captarGarantia(pList), parteList);
 
 			// juntar as partes do relatório
@@ -684,10 +727,8 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 		}
 		parametros.put("RelatorioNome", relatorioNome);
 		parametros.put("Parte", parteList.size() + 1);
-		if(relatorioNome.equalsIgnoreCase("OBJETIVOS E PARECER TÉCNICO")){
-			pList.remove(pList.get(5));
-		}
-			JasperPrint impressao = relatorio.montarRelatorio(String.format("projeto_credito_rural/%s", nomeArquivo), parametros, pList);
+		
+		JasperPrint impressao = relatorio.montarRelatorio(String.format("projeto_credito_rural/%s", nomeArquivo), parametros, pList);
 			
 		parteList.add(impressao);
 	}

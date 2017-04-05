@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-03-16T15:27:56 -->
+<!-- 2017-03-22T16:08:03 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Capa" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4be54963-8492-4271-af5b-1a708b6a64c7">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="RelatorioNome" class="java.lang.String" isForPrompting="false">
@@ -53,7 +53,7 @@
 	<field name="patrimonioTerras" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[patrimonioTerras]]></fieldDescription>
 	</field>
-	<field name="mae" class="br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica">
+	<field name="mae" class="br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaRelacionamento">
 		<fieldDescription><![CDATA[mae]]></fieldDescription>
 	</field>
 	<field name="patrimonioSemoventeList" class="java.util.List">
@@ -62,10 +62,10 @@
 	<field name="celular" class="br.gov.df.emater.aterwebsrv.modelo.pessoa.Telefone">
 		<fieldDescription><![CDATA[celular]]></fieldDescription>
 	</field>
-	<field name="conjuge" class="br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica">
+	<field name="conjuge" class="br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaRelacionamento">
 		<fieldDescription><![CDATA[conjuge]]></fieldDescription>
 	</field>
-	<field name="pai" class="br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica">
+	<field name="pai" class="br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaRelacionamento">
 		<fieldDescription><![CDATA[pai]]></fieldDescription>
 	</field>
 	<field name="class" class="java.lang.Class">
@@ -167,7 +167,7 @@
 				<text><![CDATA[Nome]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="144" y="19" width="100" height="13" uuid="4287c54d-6be1-410d-9c73-ec7cc8f17560">
+				<reportElement x="198" y="19" width="88" height="13" uuid="4287c54d-6be1-410d-9c73-ec7cc8f17560">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 				</reportElement>
 				<textElement>
@@ -176,7 +176,7 @@
 				<text><![CDATA[CPF / CNPJ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="244" y="19" width="100" height="13" uuid="4e6e0f1d-137a-432c-82de-a6b436a3afea">
+				<reportElement x="286" y="19" width="100" height="13" uuid="4e6e0f1d-137a-432c-82de-a6b436a3afea">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 				</reportElement>
 				<textElement>
@@ -185,7 +185,7 @@
 				<text><![CDATA[Identidade]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="350" y="19" width="100" height="13" uuid="2be8f8ea-1094-4df3-b40d-58fd6e4b723e">
+				<reportElement x="389" y="19" width="87" height="13" uuid="2be8f8ea-1094-4df3-b40d-58fd6e4b723e">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 				</reportElement>
 				<textElement>
@@ -194,7 +194,7 @@
 				<text><![CDATA[Órgao Expedidor]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="455" y="19" width="100" height="13" uuid="60c89dd8-f7f0-4e05-b324-95cc292b1b0c">
+				<reportElement x="480" y="19" width="75" height="13" uuid="60c89dd8-f7f0-4e05-b324-95cc292b1b0c">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 				</reportElement>
 				<textElement>
@@ -310,7 +310,7 @@
 				<text><![CDATA[Tradição na atividade]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="34" width="140" height="13" uuid="fd78d237-92ac-470f-bd69-dc3756b2a61f"/>
+				<reportElement x="0" y="34" width="190" height="13" uuid="fd78d237-92ac-470f-bd69-dc3756b2a61f"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -323,7 +323,7 @@
 				<textFieldExpression><![CDATA[$F{proponente}.getNome()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="144" y="34" width="89" height="13" uuid="c74a6f2b-ccb9-4806-8f40-85969ade14b8"/>
+				<reportElement x="198" y="34" width="88" height="13" uuid="c74a6f2b-ccb9-4806-8f40-85969ade14b8"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -336,7 +336,7 @@
 				<textFieldExpression><![CDATA[$F{proponente}.getCpf()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="244" y="34" width="100" height="13" uuid="3ada445b-21ca-4b4d-89b5-58b797ca8248"/>
+				<reportElement x="286" y="34" width="100" height="13" uuid="3ada445b-21ca-4b4d-89b5-58b797ca8248"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -349,7 +349,7 @@
 				<textFieldExpression><![CDATA[$F{proponente}.getRgNumero()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="350" y="34" width="100" height="13" uuid="42e36a98-0da4-48cc-8979-9e21e0d666c7"/>
+				<reportElement x="389" y="34" width="87" height="13" uuid="42e36a98-0da4-48cc-8979-9e21e0d666c7"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -362,7 +362,7 @@
 				<textFieldExpression><![CDATA[$F{proponente}.getRgOrgaoEmissor() + " / " + $F{proponente}.getRgUf()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="455" y="34" width="100" height="13" uuid="1a486cfb-69c2-4389-9bbd-571317fd8ee8"/>
+				<reportElement x="480" y="34" width="75" height="13" uuid="1a486cfb-69c2-4389-9bbd-571317fd8ee8"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -515,7 +515,7 @@
 				<textElement>
 					<font isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{pai}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{pai}.getNome()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement key="" x="281" y="131" width="274" height="13" uuid="d22186b9-8d52-4441-a813-1fb1e8064149"/>
@@ -819,7 +819,7 @@
 				</textElement>
 				<text><![CDATA[Total anual]]></text>
 			</staticText>
-			<textField isBlankWhenNull="true">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="3" y="444" width="101" height="13" uuid="d905c47f-411e-4479-ace2-73fb27e722e6"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1105,7 +1105,7 @@
 				</textElement>
 				<text><![CDATA[Dívidas]]></text>
 			</staticText>
-			<textField isBlankWhenNull="true">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="286" y="404" width="94" height="13" uuid="abe2801c-1113-49fe-885a-317cf9b1ac1d"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1140,7 +1140,7 @@
 				</textElement>
 				<text><![CDATA[Semoventes]]></text>
 			</staticText>
-			<textField isBlankWhenNull="true">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="286" y="332" width="94" height="13" uuid="d5d3598d-18d5-49d0-842d-1658642ea7dc"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>

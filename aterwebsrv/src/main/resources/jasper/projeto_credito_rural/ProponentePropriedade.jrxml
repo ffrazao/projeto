@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.2.1.final using JasperReports Library version 6.2.1  -->
-<!-- 2016-08-15T10:47:43 -->
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-03-22T16:03:20 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ProponentePropriedade" pageWidth="555" pageHeight="842" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="4f3e2a9b-c98c-497f-9ccc-4d9c8fd3b19a">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -63,7 +63,7 @@
 				<text><![CDATA[Nome da Propriedade Rural]]></text>
 			</staticText>
 			<staticText>
-				<reportElement stretchType="RelativeToBandHeight" x="0" y="15" width="555" height="1" uuid="c4b82e86-c1ca-4e52-bfbb-b2a216ee4abe">
+				<reportElement stretchType="RelativeToBandHeight" x="39" y="15" width="555" height="1" uuid="c4b82e86-c1ca-4e52-bfbb-b2a216ee4abe">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -75,7 +75,7 @@
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="321" y="1" width="140" height="15" uuid="9084e917-b24d-478f-b2c5-704efa4042ae">
+				<reportElement x="360" y="1" width="129" height="15" uuid="9084e917-b24d-478f-b2c5-704efa4042ae">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
@@ -85,7 +85,7 @@
 				<text><![CDATA[Regime de Exploração]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="463" y="0" width="92" height="15" uuid="ec901708-d5eb-40ec-b1e3-196ccc8f1a33">
+				<reportElement x="500" y="0" width="55" height="15" uuid="ec901708-d5eb-40ec-b1e3-196ccc8f1a33">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
@@ -100,7 +100,7 @@
 		<band height="16" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<textField>
-				<reportElement x="0" y="0" width="310" height="15" uuid="70cd7bcf-f1e8-4e2f-b761-b49fe0d7a9e6">
+				<reportElement x="0" y="0" width="350" height="15" uuid="70cd7bcf-f1e8-4e2f-b761-b49fe0d7a9e6">
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
@@ -113,7 +113,7 @@
 				<textFieldExpression><![CDATA[$F{propriedadeRural}.getNome()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="321" y="0" width="129" height="15" uuid="a2f38415-ede2-4cb4-a826-ca09551d559e">
+				<reportElement x="360" y="0" width="129" height="15" uuid="a2f38415-ede2-4cb4-a826-ca09551d559e">
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
@@ -127,7 +127,7 @@
 				<textFieldExpression><![CDATA[$F{vinculo}.toString()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="463" y="0" width="92" height="15" uuid="effa2d9f-9fa4-4c95-ab1e-469d03181b61">
+				<reportElement x="500" y="0" width="55" height="15" uuid="effa2d9f-9fa4-4c95-ab1e-469d03181b61">
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>

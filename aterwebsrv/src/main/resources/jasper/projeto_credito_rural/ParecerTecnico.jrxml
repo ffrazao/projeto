@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-03-17T12:03:11 -->
+<!-- 2017-03-24T16:38:18 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Capa" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4be54963-8492-4271-af5b-1a708b6a64c7">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="RelatorioNome" class="java.lang.String" isForPrompting="false">
@@ -11,44 +11,38 @@
 		<parameterDescription><![CDATA[Usuário Autenticado pelo no Sistema]]></parameterDescription>
 		<defaultValueExpression><![CDATA[$P{Usuario}.getUsername()]]></defaultValueExpression>
 	</parameter>
+	<parameter name="DiretorioJasper" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[DiretorioJasper]]></parameterDescription>
+	</parameter>
+	<parameter name="CPF" class="java.lang.String">
+		<parameterDescription><![CDATA[CPF]]></parameterDescription>
+	</parameter>
 	<parameter name="Parte" class="java.lang.Integer">
 		<parameterDescription><![CDATA[Número da Parte do Relatório]]></parameterDescription>
 	</parameter>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
-	<field name="codigo" class="br.gov.df.emater.aterwebsrv.modelo.dominio.ParecerTecnicoCodigo">
-		<fieldDescription><![CDATA[codigo]]></fieldDescription>
+	<field name="parecerTecnicoList" class="java.util.List">
+		<fieldDescription><![CDATA[parecerTecnicoList]]></fieldDescription>
 	</field>
-	<field name="conteudo" class="java.lang.String">
-		<fieldDescription><![CDATA[conteudo]]></fieldDescription>
+	<field name="publicoAlvo" class="br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo">
+		<fieldDescription><![CDATA[publicoAlvo]]></fieldDescription>
 	</field>
-	<field name="data" class="java.util.Calendar">
-		<fieldDescription><![CDATA[data]]></fieldDescription>
-	</field>
-	<field name="ordem" class="java.lang.Integer">
-		<fieldDescription><![CDATA[ordem]]></fieldDescription>
+	<field name="atividade" class="br.gov.df.emater.aterwebsrv.modelo.atividade.Atividade">
+		<fieldDescription><![CDATA[atividade]]></fieldDescription>
 	</field>
 	<field name="excluidoMap" class="java.util.Map">
 		<fieldDescription><![CDATA[excluidoMap]]></fieldDescription>
 	</field>
-	<field name="usuario" class="br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario">
-		<fieldDescription><![CDATA[usuario]]></fieldDescription>
-	</field>
 	<field name="id" class="java.lang.Integer">
 		<fieldDescription><![CDATA[id]]></fieldDescription>
-	</field>
-	<field name="projetoCreditoRural" class="br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRural">
-		<fieldDescription><![CDATA[projetoCreditoRural]]></fieldDescription>
 	</field>
 	<field name="class" class="java.lang.Class">
 		<fieldDescription><![CDATA[class]]></fieldDescription>
 	</field>
 	<field name="cadastroAcao" class="br.gov.df.emater.aterwebsrv.modelo.dominio.CadastroAcao">
 		<fieldDescription><![CDATA[cadastroAcao]]></fieldDescription>
-	</field>
-	<field name="descricao" class="java.lang.String">
-		<fieldDescription><![CDATA[descricao]]></fieldDescription>
 	</field>
 	<background>
 		<band splitType="Stretch"/>
@@ -57,7 +51,7 @@
 		<band height="30">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<image hAlign="Center" vAlign="Middle">
-				<reportElement x="10" y="0" width="70" height="30" uuid="7d69541a-dcc9-4b4a-8027-e16e3e715247">
+				<reportElement x="10" y="0" width="70" height="30" uuid="5139c920-81bd-4fc4-91c5-2db53a849b2f">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
@@ -66,7 +60,7 @@
 				<imageExpression><![CDATA["jasper/imagens/logo-emater-df.jpg"]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="90" y="0" width="380" height="30" uuid="92e574c4-eaeb-4e7c-8124-72bff9694afe">
+				<reportElement x="90" y="0" width="380" height="30" uuid="1f187842-4e03-4911-8b35-b856c69ba064">
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
@@ -75,138 +69,120 @@
 		</band>
 	</pageHeader>
 	<detail>
-		<band height="54">
+		<band height="36">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="0" y="24" width="555" height="30" uuid="15a76007-7e2e-4a3a-96b4-0142d8122992"/>
-				<textElement markup="html"/>
-				<textFieldExpression><![CDATA[$F{conteudo}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement mode="Opaque" x="0" y="0" width="555" height="15" backcolor="#C8C8C8" uuid="50fee803-fe2f-4db9-8caf-e7a09704b6e6"/>
-				<textElement>
-					<font isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{codigo}.toString() + ", " + $F{codigo}.getExplicacao()]]></textFieldExpression>
-			</textField>
+			<subreport>
+				<reportElement x="0" y="10" width="555" height="20" uuid="2c385bfe-dc3e-4dca-931d-e1d63dd1ad30"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{parecerTecnicoList})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{DiretorioJasper} + "/projeto_credito_rural/ParecerTecnicoConteudo.jasper"]]></subreportExpression>
+			</subreport>
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="206">
+		<band>
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-			<rectangle>
-				<reportElement x="0" y="4" width="555" height="165" uuid="d1d68b61-a32c-4110-b298-df5572b06b5f"/>
-			</rectangle>
-			<textField>
-				<reportElement x="210" y="177" width="140" height="15" uuid="4ea6635b-fa82-4fea-a077-46e6c85a2af9">
-					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-				</reportElement>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format(new Date())]]></textFieldExpression>
-			</textField>
+		</band>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="180">
 			<staticText>
-				<reportElement stretchType="RelativeToBandHeight" x="0" y="169" width="555" height="5" uuid="ce6a8542-5463-4dd8-ab79-442baca94637"/>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="172" width="555" height="5" uuid="ce6a8542-5463-4dd8-ab79-442baca94637"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 				</box>
 				<text><![CDATA[]]></text>
 			</staticText>
-			<image hAlign="Right" vAlign="Middle">
-				<reportElement x="0" y="174" width="45" height="30" uuid="fac3df18-a495-49d6-a48c-d30d4fadac46">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<imageExpression><![CDATA["jasper/imagens/logo-transparente.png"]]></imageExpression>
-			</image>
+			<rectangle>
+				<reportElement x="0" y="7" width="555" height="165" uuid="f45da899-0788-45c8-b4f0-1c691655d88f"/>
+			</rectangle>
 			<staticText>
-				<reportElement x="211" y="4" width="135" height="16" uuid="30726cdf-dfee-4b6e-a436-3c13d054b9bb"/>
+				<reportElement x="211" y="7" width="135" height="16" uuid="922e83ef-39cb-4ae2-a53c-e63fa68d3625"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[RESPONSÁVEL TÉCNICO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="26" y="35" width="61" height="13" uuid="10d2cc9e-701b-4c06-834e-ac561b55aac9"/>
+				<reportElement stretchType="RelativeToBandHeight" x="7" y="36" width="360" height="1" uuid="d3fde933-a2f1-42dc-850f-f8c26cab45d3"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="26" y="38" width="61" height="13" uuid="56ffee0d-6670-4d81-ad0a-14cf93e90289"/>
 				<textElement textAlignment="Right">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[TÉCNICO:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="5" y="67" width="140" height="20" uuid="bcc6a415-3c2d-4110-9d97-bb169eb764ad"/>
+				<reportElement x="26" y="53" width="61" height="13" uuid="8d9e5c84-e82a-4b05-9e28-e95df9832418"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[REGISTRO:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="93" y="37" width="274" height="14" uuid="ac425d49-f441-41d5-ac46-2f656164880d"/>
+			</textField>
+			<textField>
+				<reportElement x="93" y="52" width="274" height="14" uuid="b6d4ffd6-9824-4c23-97df-6cf2e000fa1c"/>
+			</textField>
+			<textField>
+				<reportElement x="492" y="22" width="74" height="19" uuid="833ecfd2-cbfe-4328-b3ae-e2f117c39d44"/>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{atividade}.getConclusao().getTimeInMillis())]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="492" y="8" width="51" height="19" uuid="422111fa-87e1-4fd3-b4dc-19594e80c814"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="70" width="140" height="20" uuid="700f5b06-ed58-4dee-a999-fd4d75a6075c"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[TERMO DE COMPROMISSO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="45" y="82" width="465" height="38" uuid="c01ed2be-28e8-4d47-afef-72e5e32f1412"/>
+				<reportElement x="45" y="85" width="465" height="38" uuid="ea365f52-346b-4e45-9ed8-89551cb5e1c5"/>
 				<textElement textAlignment="Center">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Comprometo-me a aplicar os recursos de acordo com o orçamento apresentado, seguir as recomendações técnicas e comunicar a EMATER-DF quaisquer alterações referentes às condições expressas no presente projeto]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="492" y="5" width="51" height="19" uuid="f7ff61d3-571d-40ec-9e62-39952d3a5218"/>
-				<textElement>
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[DATA]]></text>
-			</staticText>
 			<textField>
-				<reportElement x="492" y="19" width="74" height="19" uuid="e6853433-866a-44da-ba59-9d5cb84e65d7"/>
-				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{projetoCreditoRural}.getAtividade().getConclusao().getTimeInMillis())]]></textFieldExpression>
+				<reportElement x="96" y="143" width="274" height="14" uuid="d7b4e627-fb75-4567-9047-f36ece4e09e6"/>
+				<textFieldExpression><![CDATA[$F{publicoAlvo}.getPessoa().getNome()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="26" y="50" width="61" height="13" uuid="f3743c8f-7958-4c02-8813-5b456dab25f5"/>
-				<textElement textAlignment="Right">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[REGISTRO:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement stretchType="RelativeToBandHeight" x="7" y="33" width="360" height="1" uuid="51712626-45e4-434c-9b90-ab54776421bd"/>
+				<reportElement stretchType="RelativeToBandHeight" x="10" y="143" width="360" height="1" uuid="b6b68b04-f79b-4836-91db-d5aeef7602ec"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 				</box>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="5" y="140" width="84" height="13" uuid="62cefc44-dc9b-4bec-b31e-0a8998341c31"/>
+				<reportElement x="5" y="143" width="84" height="13" uuid="d079b5e3-b8fb-423c-a082-93669cab2946"/>
 				<textElement textAlignment="Right">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[PROPONENTE:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="28" y="155" width="61" height="13" uuid="cf6225f8-2824-4568-903e-bba38537a6c8"/>
+				<reportElement x="28" y="158" width="61" height="13" uuid="46b89099-ccbc-46e5-b58e-f49d2ee1228f"/>
 				<textElement textAlignment="Right">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[CPF:]]></text>
 			</staticText>
-			<staticText>
-				<reportElement stretchType="RelativeToBandHeight" x="10" y="140" width="360" height="1" uuid="904fdf8b-aa59-4dfa-b92a-66858fd600b2"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-				</box>
-				<text><![CDATA[]]></text>
-			</staticText>
 			<textField>
-				<reportElement x="93" y="34" width="274" height="14" uuid="8e230ca5-28af-4ecf-b893-67cb3480ec83"/>
-				<textFieldExpression><![CDATA[$F{projetoCreditoRural}.getAtividade().getPessoaExecutorList().toString()]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="93" y="49" width="274" height="14" uuid="97b9f1d0-a376-42d6-aa79-cc4f80083396"/>
-				<textFieldExpression><![CDATA[$F{usuario}.getUsername()]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="96" y="140" width="274" height="14" uuid="3a626168-99fd-44f6-9dec-3145ccbe0f6d"/>
-				<textFieldExpression><![CDATA[$F{projetoCreditoRural}.getPublicoAlvo().getPessoa().getNome()]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="96" y="155" width="274" height="14" uuid="e8ae07cd-f6d5-4818-b811-5dd57c4fd3dd"/>
-				<textFieldExpression><![CDATA[$F{projetoCreditoRural}.getPublicoAlvo().getPessoa().getCpf()]]></textFieldExpression>
+				<reportElement x="96" y="158" width="274" height="14" uuid="d7cf5909-6582-42ca-abac-f14973fae643"/>
+				<textFieldExpression><![CDATA[$P{CPF}]]></textFieldExpression>
 			</textField>
 		</band>
-	</pageFooter>
+	</lastPageFooter>
 </jasperReport>

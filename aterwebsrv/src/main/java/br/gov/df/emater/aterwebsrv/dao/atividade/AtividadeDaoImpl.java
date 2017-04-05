@@ -73,13 +73,8 @@ public class AtividadeDaoImpl implements AtividadeDaoCustom {
 		sql.append("     , a.alteracaoData").append("\n"); // ATIV_ALTERACAO_DATA
 		sql.append("from Atividade a").append("\n");
 		
-		if (!CollectionUtils.isEmpty(filtro.getExecutorList())) {
-			sql.append("left join a.pessoaExecutorList exec").append("\n");
-		}
-		
-		if (!CollectionUtils.isEmpty(filtro.getDemandanteList())) {
-			sql.append("left join a.pessoaDemandanteList deman").append("\n");
-		}
+		sql.append("left join a.pessoaExecutorList exec").append("\n");
+		sql.append("left join a.pessoaDemandanteList deman").append("\n");
 
 		if (filtro.getAssunto() != null) {
 			sql.append("left join a.assuntoList ass").append("\n");

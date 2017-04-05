@@ -10,6 +10,7 @@ import br.gov.df.emater.aterwebsrv.modelo.formulario.Coleta;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Email;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Endereco;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaRelacionamento;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Telefone;
 
 public class ProjetoTecnicoProponenteRelDto implements Dto {
@@ -20,7 +21,7 @@ public class ProjetoTecnicoProponenteRelDto implements Dto {
 
 	private Telefone celular;
 
-	private PessoaFisica conjuge;
+	private PessoaRelacionamento conjuge;
 
 	private List<DividaExistenteRelDto> dividaExistenteList;
 
@@ -34,9 +35,9 @@ public class ProjetoTecnicoProponenteRelDto implements Dto {
 
 	private BigDecimal forcaTrabalhoTrabalhadorPermanente;
 
-	private PessoaFisica mae;
+	private PessoaRelacionamento mae;
 
-	private PessoaFisica pai;
+	private PessoaRelacionamento pai;
 
 	private BigDecimal patrimonioBenfeitorias;
 
@@ -94,7 +95,7 @@ public class ProjetoTecnicoProponenteRelDto implements Dto {
 		return celular;
 	}
 
-	public PessoaFisica getConjuge() {
+	public PessoaRelacionamento getConjuge() {
 		return conjuge;
 	}
 
@@ -122,11 +123,11 @@ public class ProjetoTecnicoProponenteRelDto implements Dto {
 		return forcaTrabalhoTrabalhadorPermanente;
 	}
 
-	public PessoaFisica getMae() {
+	public PessoaRelacionamento getMae() {
 		return mae;
 	}
 
-	public PessoaFisica getPai() {
+	public PessoaRelacionamento getPai() {
 		return pai;
 	}
 
@@ -234,7 +235,7 @@ public class ProjetoTecnicoProponenteRelDto implements Dto {
 		this.celular = celular;
 	}
 
-	public void setConjuge(PessoaFisica conjuge) {
+	public void setConjuge(PessoaRelacionamento conjuge) {
 		this.conjuge = conjuge;
 	}
 
@@ -262,11 +263,11 @@ public class ProjetoTecnicoProponenteRelDto implements Dto {
 		this.forcaTrabalhoTrabalhadorPermanente = forcaTrabalhoTrabalhadorPermanente;
 	}
 
-	public void setMae(PessoaFisica mae) {
+	public void setMae(PessoaRelacionamento mae) {
 		this.mae = mae;
 	}
 
-	public void setPai(PessoaFisica pai) {
+	public void setPai(PessoaRelacionamento pai) {
 		this.pai = pai;
 	}
 
