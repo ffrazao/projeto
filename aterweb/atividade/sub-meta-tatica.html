@@ -46,23 +46,9 @@
                         <td>
                             {{$index + 1 + ((atividadeMetaTaticaNvg.paginaAtual-1) * atividadeMetaTaticaNvg.tamanhoPagina)}}
                         </td>
-                        <td> 
-                            <label ng-show= "reg.id>0" > {{ reg.metaTaticaNome }} </label>
-                            <select class="form-control input-sm" id="metaTatica" ng-show= "reg.id<0" name="metaTatica{{$index}}" ng-model="reg.metaTaticaId" ng-required="true" uib-tooltip="{{item.descricao}}" >
-                                <option ng-repeat="item in cadastro.apoio.metaTaticaList" 
-                                    ng-value="item.id" 
-                                    ng-selected="item.id === reg.metaTaticaId"
-                                    ng-disabled="item | filtrarInseridos:cadastro.registro.metaTaticaList:'id':'metaTatica.id'">
-                                    {{item.descricao}} 
-                                </option>
-                            </select>
-                            <div class="label label-danger" ng-show="navegador.submetido && metaTaticaListFrm.metaTatica{{$index}}.$error.required">
-                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                                Campo Obrigatório
-                            </div>
-                        </td>
-                        <td class="sr-only">
-                            <textarea class="form-control input-sm" id="descricao{{$index}}" name="descricao{{$index}}" ng-model="reg.descricao"></textarea>
+                        <td align="justify">
+                            {{reg.metaTaticaNome}}
+                            <input type="hidden" class="form-control input-sm" id="descricao{{$index}}" name="descricao{{$index}}" >
                             <div class="label label-danger" ng-show="navegador.submetido && metaTaticaListFrm.descricao{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório

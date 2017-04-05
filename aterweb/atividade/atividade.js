@@ -1,5 +1,5 @@
 /* jslint evil: true, browser: true, plusplus: true, loopfunc: true */
-/* global criarEstadosPadrao, removerCampo, isUndefOrNull */ 
+/* global criarEstadosPadrao, segAutorizaAcesso, removerCampo, isUndefOrNull */ 
 
 (function(pNmModulo, pNmController, pNmFormulario, pUrlModulo) {
 
@@ -208,28 +208,14 @@
             $scope.confirmarEditarAntes = function(cadastro) {
                 return confirmarSalvar(cadastro);
             };
+
             // Segurança by Emerson
             $scope.editar = function(scp) {
-           	    if (! $rootScope.token.lotacaoAtual) {
-                    toastr.error('Usuário não possui lotação!', 'Erro'); 
-                    return;
-                }
-                //Não pode editar atividade de 2016 pra trás
-                else if( $scope.cadastro.registro.inicio.substring(6,10) < "2017") {
-                    toastr.error('Atividades registradas antes de 01/01/2017 não podem ser alteradas!', 'Erro'); 
-                    return;
+                if( ! segAutorizaAcesso( $rootScope.token, $scope.cadastro.registro ) ){
+                    toastr.error('Ativiade registrada em outra unidade organizacional!', 'Erro'); 
                 } else {
-                    //Não pode editar atividade de outra gerência
-                    for (var t in $scope.cadastro.registro.pessoaExecutorList) {
-                        if( $scope.cadastro.registro.pessoaExecutorList[t].unidadeOrganizacional ) {
-                            if ( $scope.cadastro.registro.pessoaExecutorList[t].unidadeOrganizacional.id !== $rootScope.token.lotacaoAtual.id ) {
-                                 toastr.error('Atividades registrada em outra unidade organizacional!', 'Erro'); 
-                                 return;
-                            }
-                        }
-                    }
-                }
-                $rootScope.editar(scp);
+                    $rootScope.editar(scp);
+                }   
             };
 
             $scope.limpar = function(scp) {

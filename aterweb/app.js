@@ -14,7 +14,7 @@ var TIMEOUT_TEMPO = 10 * 60;
         'mensagemSrv', 'segurancaSrv', 'utilSrv', 'frz.form', 'frz.tabela', 'frz.arquivo', 'frz.endereco', 'frz.painel.vidro', 'frz.navegador',
         'frz.indice.producao', 'frz.unidade.comunidade', 'frz.unidade.colaborador', 
         'casa', 'contrato', 'info', 'offline', 'pessoa', 'formulario', 'propriedadeRural', 'atividade', 'indiceProducao', 
-        'funcionalidade', 'perfil', 'usuario', 'logAcao', 'projetoCreditoRural', 'agenda', 
+        'funcionalidade', 'perfil', 'usuario', 'logAcao', 'projetoCreditoRural', 'agenda', 'metaTatica',
         ]);
 
     // inicio: codigo para habilitar o modal recursivo
@@ -660,6 +660,38 @@ var TIMEOUT_TEMPO = 10 * 60;
                     // processar o retorno negativo da modal
                 });
             };
+            //
+            $rootScope.modalVerMetaTatica = function(id) {
+                // abrir a modal
+                var modalInstance = $uibModal.open({
+                    animation: true,
+                    template: '<ng-include src=\"\'planejamento/meta-tatica-modal.html\'\"></ng-include>',
+                    controller: 'MetaTaticaCtrl',
+                    size: 'lg',
+                    resolve: {
+                        modalCadastro: function() {
+                            var cadastro = {
+                                registro: {
+                                    id: id
+                                },
+                                filtro: {},
+                                lista: [],
+                                original: {},
+                                apoio: [],
+                            };
+                            return cadastro;
+                        }
+                    }
+                });
+                // processar retorno da modal
+                modalInstance.result.then(function(cadastroModificado) {
+                    // processar o retorno positivo da modal
+                }, function() {
+                    // processar o retorno negativo da modal
+                });
+            };
+
+            //
             $rootScope.cadastroBase = function() {
                 return {
                     filtro: {},
@@ -1541,3 +1573,63 @@ var criarEstadosPadrao = function(stateProvider, nomeModulo, nomeController, url
         url: '/form/:id',
     });
 };
+
+// Verifica a existência de um objeto
+var exists = function( obj ){
+    return (typeof obj !== 'undefined') ;
+};
+
+// Procura unidade organizacional de um objeto
+var catchUnidade = function( obj ){
+    var unidade = [];
+
+    if( exists(obj.unidadeOrganizacional) ){
+        return obj.unidadeOrganizacional.id ;
+
+    } else if( exists(obj.lotacaoAtual) ){
+        return obj.lotacaoAtual.id;
+
+    } else if( exists(obj.comunidade) ){
+        return catchUnidade( obj.comunidade );
+
+    } else if( exists(obj.publicoAlvo) ){
+        return catchUnidade( obj.publicoAlvo );
+
+    } else if( exists( obj.publicoAlvoPropriedadeRuralList ) ){
+        obj.publicoAlvoPropriedadeRuralList.forEach(  function(value, index) { unidade.push( catchUnidade( value ) ); } ); 
+        return unidade;
+
+    } else if( exists( obj.pessoaExecutorList ) ){
+        obj.pessoaExecutorList.forEach(  function(value, index) { 
+            if(  value.pessoa.pessoaTipo === 'GS' ) {
+                unidade.push( value.pessoa.id ) ; 
+            }
+        } ); 
+        return unidade;
+
+    } else {
+        return null;
+    }
+
+};
+    
+// Retorna autorizaçãod e acesso    
+var segAutorizaAcesso = function( usr, obj ){
+
+    var usrUnidade = catchUnidade( usr );
+    var objUnidade = catchUnidade( obj );
+    var autoriza = false;
+
+    if( usrUnidade === 98 ) {  // só valida se ñ for da getin
+        autoriza = true;
+    } else {    
+        if( Array.isArray(objUnidade) ){
+            objUnidade.forEach(  function(value, index) { autoriza = autoriza || ( value === usrUnidade ) ; } );
+        } else if( objUnidade != null ) {
+            autoriza = autoriza || ( objUnidade === usrUnidade ) ;
+        }
+    }
+    return autoriza ;
+};
+
+//  QUebr linhs pra select

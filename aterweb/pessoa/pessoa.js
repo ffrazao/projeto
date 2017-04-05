@@ -1,4 +1,4 @@
-/* global criarEstadosPadrao, moment, removerCampo */
+/* global criarEstadosPadrao, segAutorizaAcesso, moment, removerCampo */
 
 (function(pNmModulo, pNmController, pNmFormulario, pUrlModulo) {
     'use strict';
@@ -533,23 +533,11 @@
 
             // Filtros de segurança by Emerson
             $scope.editar = function(scp) {
-                var autoriza = true;
-                if (! $rootScope.token.lotacaoAtual) {
-                    toastr.error('Usuário não possui lotação!', 'Erro'); 
-                    return;
-                } else if ( $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList ) {
-                    if( $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList.length > 0 ){
-                        autoriza = false;
-                        for (var t in $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList ) {
-                            autoriza = autoriza || ( $scope.cadastro.registro.publicoAlvo.publicoAlvoPropriedadeRuralList[t].propriedadeRural.comunidade.unidadeOrganizacional.id === $rootScope.token.lotacaoAtual.id );
-                        }      
-                        if ( !autoriza ) {
-                              toastr.error('Pessoa registrada em outra unidade organizacional!', 'Erro'); 
-                              return;
-                        } 
-                    }
+                if( ! segAutorizaAcesso( $rootScope.token, $scope.cadastro.registro ) ){
+                    toastr.error('Pessoa registrada em outra unidade organizacional!', 'Erro'); 
+                } else {
+                    $rootScope.editar(scp);
                 }
-                $rootScope.editar(scp);
             };
 
             $scope.abrir = function(scp) {

@@ -9,7 +9,7 @@ angular.module(pNmModulo).factory(pNmFactory,
     function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams, ComunidadeSrv) {
         'ngInject';
         
-        var MetaTatica2Srv = {
+        var MetaTaticaSrv = {
             endereco: $rootScope.servicoUrl + '/planejamento',
 
             filtrar : function(filtro) {
@@ -17,9 +17,9 @@ angular.module(pNmModulo).factory(pNmFactory,
             },
         
         };
-        return MetaTatica2Srv;
+        return MetaTaticaSrv;
     }
 ]);
 
-})('principal', 'MetaTatica2Srv');
+})('principal', 'MetaTaticaSrv');
 

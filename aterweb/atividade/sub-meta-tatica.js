@@ -32,6 +32,62 @@ angular.module(pNmModulo).controller(pNmController,
         }
         return true;
     };
+
+
+$scope.modalSelecinarMetaTatica = function (destino) {
+        // abrir a modal
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'planejamento/meta-tatica-modal.html',
+            controller: 'MetaTaticaCtrl',
+            size: 'lg',
+            resolve: {
+                modalCadastro: function() {
+                    return $scope.cadastroBase();
+                }
+            }
+        });
+        // processar retorno da modal
+        modalInstance.result.then(function (resultado) {
+            // processar o retorno positivo da modal
+            var reg = null;
+            if (!angular.isArray($scope.cadastro.registro.metaTaticaList)) {
+                $scope.cadastro.registro.metaTaticaList = [];
+            }
+ 
+            if (resultado.selecao.tipo === 'U') {
+                reg = { metaTatica : resultado.selecao.item,
+                        metaTaticaId : resultado.selecao.item.id,
+                        metaTaticaNome : resultado.selecao.item.descricao,
+                        id : resultado.selecao.item.id,
+                        descricao : resultado.selecao.item.descricao
+                };
+                reg = $scope.criarElemento($scope.$parent.cadastro.registro, 'metaTaticaList', reg);
+                $scope.cadastro.registro.metaTaticaList.push(reg);
+
+            } else {
+
+                resultado.selecao.items.forEach(function(value, key){
+
+                    reg = { metaTatica : value,
+                            metaTaticaId : value.id,
+                            metaTaticaNome : value.descricao,
+                            id : value.id,
+                            descricao : value.descricao
+                    };
+                reg = $scope.criarElemento($scope.$parent.cadastro.registro, 'metaTaticaList', reg);
+                $scope.cadastro.registro.metaTaticaList.push(reg);
+
+                });
+
+            }
+            toastr.info('Operação realizada!', 'Informação');
+        }, function () {
+            // processar o retorno negativo da modal
+            
+        });
+    };
+
     // fim rotinas de apoio
 
     // inicio das operaçoes atribuidas ao navagador
@@ -41,10 +97,19 @@ angular.module(pNmModulo).controller(pNmController,
         // desabilitar a edição
         $scope.atividadeMetaTaticaNvg.botao('edicao').exibir = function() {return false;};
     };
+
     $scope.incluir = function() {
         init();
         $scope.cadastro.registro.metaTaticaList.push($scope.criarElemento($scope.cadastro.registro, 'metaTaticaList', {}));
     };
+
+    $scope.incluir = function(destino) {
+        if (!angular.isArray($scope.$parent.cadastro.registro[destino])) {
+            $scope.$parent.cadastro.registro[destino] = [];
+        }
+        $scope.modalSelecinarMetaTatica(destino);
+    };
+
     $scope.editar = function() {};
     $scope.excluir = function() {
         mensagemSrv.confirmacao(false, 'confirme a exclusão').then(function (conteudo) {

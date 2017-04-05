@@ -1,0 +1,10 @@
+<div class="modal-header">
+    <h3 class="modal-title">Selecione uma Meta Tática!</h3>
+</div>
+<div class="modal-body">
+    <ng-include src="'planejamento/meta-tatica.html'"></ng-include>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="modalOk()" ng-show="navegador.selecao.selecionado">OK</button>
+    <button class="btn btn-warning" ng-click="modalCancelar()">Cancelar</button>
+</div>

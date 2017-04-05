@@ -1,4 +1,4 @@
-/* global criarEstadosPadrao, isUndefOrNull, removerCampo */
+/* global criarEstadosPadrao, segAutorizaAcesso, isUndefOrNull, removerCampo */
 
 (function(pNmModulo, pNmController, pNmFormulario, pUrlModulo) {
     'use strict';
@@ -185,18 +185,12 @@
 
             // Filtros de segurança by Emerson
             $scope.editar = function(scp) {
-                if (! $rootScope.token.lotacaoAtual) {
-                    toastr.error('Usuário não possui lotação!', 'Erro'); 
-                    return;
-                }
-                //Não pode editar atividade de outra gerência
-                else if ( $scope.cadastro.registro.comunidade.unidadeOrganizacional.id !== $rootScope.token.lotacaoAtual.id ) {
-                     toastr.error('Propriedade cadastrada em outra unidade organizacional!', 'Erro'); 
-                     return;
-                }
-                $rootScope.editar(scp);
-            };
-
+                if( ! segAutorizaAcesso( $rootScope.token, $scope.cadastro.registro ) ){
+                    toastr.error('Propeiddade registrada em outra unidade organizacional!', 'Erro'); 
+                } else {
+                    $rootScope.editar(scp);
+                }        
+           };
 
             $scope.toggleChildren = function(scope) {
                 scope.toggle();
