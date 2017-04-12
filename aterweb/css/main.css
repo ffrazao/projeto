@@ -357,3 +357,5 @@ tr.angular-ui-tree-empty {
   -o-transform: scale(1, -1);
   transform: scale(1, -1);
 }
+  white-space: normal;
+}
