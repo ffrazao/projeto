@@ -76,7 +76,7 @@ public class MetaTaticaDaoImpl implements MetaTaticaDaoCustom {
 		
 		sql.append(" select distinct planejamento.matriz_planejamento.id, ").append("\n");
 		sql.append(" concat( planejamento.matriz_planejamento.codigo, ' - ',  planejamento.matriz_planejamento.descricao ) as descricao, ").append("\n");
-		sql.append(" 	     planejamento.gerencia_tatica.nome ").append("\n");
+		sql.append(" 	     planejamento.gerencia_tatica.nome as gerenciaTatica ").append("\n");
 		sql.append(" from planejamento.meta_estrategica ").append("\n");
 		sql.append("      inner join planejamento.matriz_planejamento on planejamento.matriz_planejamento.meta_estrategica_id = planejamento.meta_estrategica.id ").append("\n"); 
         sql.append("      inner join planejamento.gerencia_tatica on planejamento.gerencia_tatica.id = planejamento.matriz_planejamento.gerencia_tatica_id ").append("\n");
@@ -98,6 +98,7 @@ public class MetaTaticaDaoImpl implements MetaTaticaDaoCustom {
 				MetaTatica m = new MetaTatica();
 				m.setId((Integer) l[0]); 
 				m.setDescricao((String) l[1]);
+				m.setGerenciaTatica((String) l[2]);
 				result.add(m);
 			}
 		}
