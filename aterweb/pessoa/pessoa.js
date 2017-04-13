@@ -274,88 +274,7 @@
                     }
                 }
                 PessoaSrv.carteiraProdutorVerificar({pessoaIdList: pessoaIdList, publicoAlvoPropriedadeRuralIdList: publicoAlvoPropriedadeRuralIdList}).success(function(resposta) {
-                    var conf = 
-                        '<div class="form-group">' +
-                        '    <div class="table-responsive">' +
-                        '        <table class="table table-hover table-striped">' +
-                        '            <thead>' +
-                        '                <tr>' +
-                        '                    <th>#</th>' +
-                        '                    <th>Pessoa</th>' +
-                        '                    <th>Lista de Errors</th>' +
-                        '                    <th>Pronto para emitir</th>' +
-                        '                </tr>' +
-                        '            </thead>' +
-                        '            <tbody>' +
-                        '                <tr ng-repeat-start="item in conteudo">' +
-                        '                    <td>{{$index + 1}}.</td>' +
-                        '                    <td><a ng-click="modalVerPessoa(item.pessoa.id)">{{item.pessoa.nome}}</a></td>' +
-                        '                    <td>' +
-                        '                        <ul>' +
-                        '                            <li ng-if="!item.erroList.length">' +
-                        '                               <div class="label label-success">' +
-                        '                                   <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>' +
-                        '                                   Sem erros' +
-                        '                               </div>' +
-                        '                            </li>' +
-                        '                            <li ng-repeat="erro in item.erroList track by $index" ng-if="item.erroList.length">' +
-                        '                               <div class="label label-danger">' +
-                        '                                   <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' +
-                        '                                   {{erro}}' +
-                        '                               </div>' +
-                        '                            </li>' +
-                        '                        </ul>' +
-                        '                    </td>' +
-                        '                    <td rowspan="2" style="vertical-align:middle">' +
-                        '                        <div class="label label-success" ng-if="item.emite">' +
-                        '                            <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>' +
-                        '                            Pronto' +
-                        '                        </div>' +
-                        '                    </td>' +
-                        '                </tr>' +
-                        '                <tr ng-repeat-end>' +
-                        '                    <td colspan="3">' +
-                        '                       <table class="table table-hover table-striped">' +
-                        '                           <thead>' +
-                        '                               <tr>' +
-                        '                                   <th>Comunidade</th>' +
-                        '                                   <th>Propriedade Rural</th>' +
-                        '                                   <th>Lista de Errors</th>' +
-                        '                                   <th>Selecione um registro para Emitir o Cartão</th>' +
-                        '                               </tr>' +
-                        '                           </thead>' +
-                        '                           <tbody>' +
-                        '                              <tr ng-repeat="prop in item.publicoAlvoPropriedadeRuralList">' +
-                        '                                  <td>{{prop.publicoAlvoPropriedadeRural.comunidade.nome}}</td>' +
-                        '                                  <td><a ng-click="modalVerPropriedadeRural(prop.publicoAlvoPropriedadeRural.propriedadeRural.id)">{{prop.publicoAlvoPropriedadeRural.propriedadeRural.nome}}</a></td>' +
-                        '                                  <td>' +
-                        '                                      <ul>' +
-                        '                                          <li ng-if="!prop.erroList.length">' +
-                        '                                             <div class="label label-success">' +
-                        '                                                 <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>' +
-                        '                                                 Sem erros' +
-                        '                                             </div>' +
-                        '                                          </li>' +
-                        '                                          <li ng-repeat="erroProp in prop.erroList track by $index">' +
-                        '                                             <div class="label label-danger" ng-if="prop.erroList.length">' +
-                        '                                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' +
-                        '                                                 {{erroProp}}' +
-                        '                                             </div>' +
-                        '                                          </li>' +
-                        '                                      </ul>' +
-                        '                                  </td>' +
-                        '                                  <td>' +
-                        '                                      <label ng-if="!prop.erroList.length && !item.erroList.length"><input type="radio" ng-model="item.emite" value="{{prop.publicoAlvoPropriedadeRural.id}}">OK</label>' +
-                        '                                  </td>' +
-                        '                              </tr>' +
-                        '                          </tbody>' +
-                        '                       </table>' +
-                        '                    </td>' +
-                        '                </tr>' +
-                        '            </tbody>' +
-                        '        </table>' +
-                        '    </div>' +
-                        '</div>';
+                    var conf = '<ng-include src=\"\'pessoa/sub-produtor-carteira-verificar.html\'\"></ng-include>';
 
                     mensagemSrv.confirmacao(false, conf, 'Confirme emissão do Cartão do Produtor', resposta.resultado, null, null, null, function(escopo) {
                     }).then(function(conteudo) {
@@ -408,94 +327,7 @@
                     }
                 }
                 PessoaSrv.declaracaoProdutorVerificar({pessoaIdList: pessoaIdList, publicoAlvoPropriedadeRuralIdList: publicoAlvoPropriedadeRuralIdList}).success(function(resposta) {
-                    var conf = 
-                        '<div class="form-group">' +
-                        '    <div class="table-responsive">' +
-                        '        <table class="table table-hover table-striped">' +
-                        '            <thead>' +
-                        '                <tr>' +
-                        '                    <th>#</th>' +
-                        '                    <th>Pessoa</th>' +
-                        '                    <th>Lista de Errors</th>' +
-                        '                    <th>Pronto para emitir</th>' +
-                        '                </tr>' +
-                        '            </thead>' +
-                        '            <tbody>' +
-                        '                <tr ng-repeat-start="item in conteudo">' +
-                        '                    <td>{{$index + 1}}.</td>' +
-                        '                    <td><a ng-click="modalVerPessoa(item.pessoa.id)">{{item.pessoa.nome}}</a></td>' +
-                        '                    <td>' +
-                        '                        <ul>' +
-                        '                            <li ng-if="!item.erroList.length">' +
-                        '                               <div class="label label-success">' +
-                        '                                   <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>' +
-                        '                                   Sem erros' +
-                        '                               </div>' +
-                        '                            </li>' +
-                        '                            <li ng-repeat="erro in item.erroList track by $index" ng-if="item.erroList.length">' +
-                        '                               <div class="label label-danger">' +
-                        '                                   <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' +
-                        '                                   {{erro}}' +
-                        '                               </div>' +
-                        '                            </li>' +
-                        '                        </ul>' +
-                        '                    </td>' +
-                        '                    <td rowspan="2" style="vertical-align:middle">' +
-                        '                        <div class="label label-success" ng-if="item.emite">' +
-                        '                            <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>' +
-                        '                            Pronto' +
-                        '                        </div>' +
-                        '                    </td>' +
-                        '                </tr>' +
-                        '                <tr ng-repeat-end>' +
-                        '                    <td colspan="3">' +
-                        '                       <table class="table table-hover table-striped">' +
-                        '                           <thead>' +
-                        '                               <tr>' +
-                        '                                   <th>Comunidade</th>' +
-                        '                                   <th>Propriedade Rural</th>' +
-                        '                                   <th>Lista de Errors</th>' +
-                        '                                   <th>Selecione um registro para Emitir o Cartão</th>' +
-                        '                               </tr>' +
-                        '                           </thead>' +
-                        '                           <tbody>' +
-                        '                              <tr ng-repeat="prop in item.publicoAlvoPropriedadeRuralList">' +
-                        '                                  <td>{{prop.publicoAlvoPropriedadeRural.comunidade.nome}}</td>' +
-                        '                                  <td><a ng-click="modalVerPropriedadeRural(prop.publicoAlvoPropriedadeRural.propriedadeRural.id)">{{prop.publicoAlvoPropriedadeRural.propriedadeRural.nome}}</a></td>' +
-                        '                                  <td>' +
-                        '                                      <ul>' +
-                        '                                          <li ng-if="!prop.erroList.length">' +
-                        '                                             <div class="label label-success">' +
-                        '                                                 <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>' +
-                        '                                                 Sem erros' +
-                        '                                             </div>' +
-                        '                                          </li>' +
-                        '                                          <li ng-repeat="erroProp in prop.erroList track by $index">' +
-                        '                                             <div class="label label-danger" ng-if="prop.erroList.length">' +
-                        '                                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' +
-                        '                                                 {{erroProp}}' +
-                        '                                             </div>' +
-                        '                                          </li>' +
-                        '                                      </ul>' +
-                        '                                  </td>' +
-                        '                                  <td>' +
-                        '                                      <label ng-if="!prop.erroList.length && !item.erroList.length"><input type="radio" ng-model="item.emite" value="{{prop.publicoAlvoPropriedadeRural.id}}">OK</label>' +
-                        '                                  </td>' +
-                        '                              </tr>' +
-                        '                          </tbody>' +
-                        '                       </table>' +
-                        '                    </td>' +
-                        '                </tr>' +
-                        '                <tr>' +
-                        '                    <td colspan="3">' + 
-                        '                             Observações:' +
-                        '                             <br/><textarea maxlines="10" maxlines-prevent-enter="true" ng-model="conteudo.observacao" ng-required="true" name="observacao" rows="5" cols="80" maxlength="500"></textarea>' +
-                        '                    </td>   ' +
-                        '                </tr>' +
-                        '            </tbody>' +
-                        '        </table>' +
-                        '    </div>' +
-                        '</div>';
+                    var conf = '<ng-include src=\"\'pessoa/sub-produtor-declaracao-verificar.html\'\"></ng-include>';
 
                     mensagemSrv.confirmacao(false, conf, 'Confirme emissão da Declaração do Produtor', resposta.resultado, null, null, null, function(escopo) {
                     }).then(function(conteudo) {
@@ -522,6 +354,59 @@
                             });
                         } else {
                             toastr.error('Nenhum registro selecionado', 'Erro ao emitir Cartão do Produtor');
+                        }
+                    }, function() {
+                        // processar o retorno negativo da modal
+                        //$log.info('Modal dismissed at: ' + new Date());
+                    });
+
+                });
+            };
+
+             $scope.selecionaDeclaracaoCeasa = function() {
+                var pessoaIdList = [];
+                var publicoAlvoPropriedadeRuralIdList = [];
+                if ($scope.navegador.estadoAtual() === 'LISTANDO') {
+                    if ($scope.navegador.selecao.tipo === 'U' && $scope.navegador.selecao.selecionado) {
+                        pessoaIdList.push($scope.navegador.selecao.item[0]);
+                    } else if ($scope.navegador.selecao.tipo === 'M' && $scope.navegador.selecao.marcado > 0) {
+                        $scope.navegador.selecao.items.forEach( function(item) {
+                            pessoaIdList.push(item[0]);
+                        });
+                    }
+                } else if ($scope.navegador.estadoAtual() === 'VISUALIZANDO' && $scope.cadastro.registro.id) {
+                    pessoaIdList.push($scope.cadastro.registro.id);
+                    if ($scope.publicoAlvoPropriedadeRuralNvg) {
+                        if ($scope.publicoAlvoPropriedadeRuralNvg.selecao.tipo === 'U' && $scope.publicoAlvoPropriedadeRuralNvg.selecao.selecionado) {
+                            publicoAlvoPropriedadeRuralIdList.push($scope.publicoAlvoPropriedadeRuralNvg.selecao.item.id);
+                        } else if ($scope.publicoAlvoPropriedadeRuralNvg.selecao.tipo === 'M' && $scope.publicoAlvoPropriedadeRuralNvg.selecao.marcado > 0) {
+                            $scope.publicoAlvoPropriedadeRuralNvg.selecao.items.forEach( function(item) {
+                                publicoAlvoPropriedadeRuralIdList.push(item.id);
+                            });
+                        }
+                    }
+                }
+                PessoaSrv.declaracaoCeasaVerificar({pessoaIdList: pessoaIdList, publicoAlvoPropriedadeRuralIdList: publicoAlvoPropriedadeRuralIdList}).success(function(resposta) {
+                    var conf =  '<ng-include src=\"\'pessoa/sub-produtor-declaracao-ceasa.html\'\"></ng-include>';
+
+                    mensagemSrv.confirmacao(false, conf, 'Confirme emissão da Declaração da Ceasa', resposta.resultado, null, null, null, function(escopo) {
+                    }).then(function(conteudo) {
+                        var publicoAlvoPropriedadeRuralIdList = [];
+                        conteudo.forEach(function(item) {
+                            if (item.emite) {
+                                publicoAlvoPropriedadeRuralIdList.push(item.emite);
+                            }
+                        });
+                        if (publicoAlvoPropriedadeRuralIdList.length) {
+                            PessoaSrv.declaracaoCeasaRel({publicoAlvoPropriedadeRuralIdList: publicoAlvoPropriedadeRuralIdList}).success(function(resposta) {
+                                if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {
+                                    window.open("data:application/pdf;base64,"+resposta.resultado);
+                                } else {
+                                    toastr.error(resposta && resposta.mensagem ? resposta.mensagem : resposta, 'Erro ao imprimir!');
+                                }
+                            });
+                        } else {
+                            toastr.error('Nenhum registro selecionado', 'Erro ao emitir Declaração da Ceasa');
                         }
                     }, function() {
                         // processar o retorno negativo da modal
@@ -560,6 +445,19 @@
                         nome: 'Declaração do Produtor',
                         descricao: 'Emitir Declaração do Produtor',
                         acao: $scope.selecionaDeclaracaoProdutor,
+                        exibir: function() {
+                            return (
+                                ($scope.navegador.estadoAtual() === 'VISUALIZANDO' && $scope.cadastro.registro.id) || 
+                                ($scope.navegador.estadoAtual() === 'LISTANDO' && 
+                                    ($scope.navegador.selecao.tipo === 'U' && $scope.navegador.selecao.selecionado) || 
+                                    ($scope.navegador.selecao.tipo === 'M' && $scope.navegador.selecao.marcado > 0))
+                            );
+                        },
+                    },
+                    {
+                        nome: 'Declaração Ceasa',
+                        descricao: 'Emitir Declaração da Ceasa',
+                        acao: $scope.selecionaDeclaracaoCeasa,
                         exibir: function() {
                             return (
                                 ($scope.navegador.estadoAtual() === 'VISUALIZANDO' && $scope.cadastro.registro.id) || 

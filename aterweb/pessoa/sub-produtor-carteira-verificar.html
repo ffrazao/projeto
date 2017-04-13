@@ -1,0 +1,81 @@
+<div class="form-group"> 
+        <div class="table-responsive">
+                <table class="table table-hover table-striped">
+                        <thead>
+                                <tr>
+                                        <th>#</th>
+                                        <th>Pessoa</th>
+                                        <th>Lista de Errors</th>
+                                        <th>Pronto para emitir</th>
+                                </tr>
+                        </thead>
+                        <tbody>
+                                <tr ng-repeat-start="item in conteudo">
+                                        <td>{{$index + 1}}.</td>
+                                        <td><a ng-click="modalVerPessoa(item.pessoa.id)">{{item.pessoa.nome}}</a></td>
+                                        <td>
+                                                <ul>
+                                                        <li ng-if="!item.erroList.length">
+                                                                <div class="label label-success">
+                                                                        <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+                                                                        Sem erros
+                                                                </div>
+                                                        </li>
+                                                        <li ng-repeat="erro in item.erroList track by $index" ng-if="item.erroList.length">
+                                                                <div class="label label-danger">
+                                                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                                                        {{erro}}
+                                                                </div>
+                                                        </li>
+                                                </ul>
+                                        </td>
+                                        <td rowspan="2" style="vertical-align:middle">
+                                                <div class="label label-success" ng-if="item.emite">
+                                                        <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+                                                        Pronto
+                                                </div>
+                                        </td>
+                                </tr>
+                                <tr ng-repeat-end>
+                                        <td colspan="3">
+                                                <table class="table table-hover table-striped">
+                                                        <thead>
+                                                                <tr>
+                                                                        <th>Comunidade</th>
+                                                                        <th>Propriedade Rural</th>
+                                                                        <th>Lista de Errors</th>
+                                                                        <th>Selecione um registro para Emitir o Cartão</th>
+                                                                </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                                <tr ng-repeat="prop in item.publicoAlvoPropriedadeRuralList">
+                                                                        <td>{{prop.publicoAlvoPropriedadeRural.comunidade.nome}}</td>
+                                                                        <td><a ng-click="modalVerPropriedadeRural(prop.publicoAlvoPropriedadeRural.propriedadeRural.id)">{{prop.publicoAlvoPropriedadeRural.propriedadeRural.nome}}</a></td>
+                                                                        <td>
+                                                                                <ul>
+                                                                                        <li ng-if="!prop.erroList.length">
+                                                                                                <div class="label label-success">
+                                                                                                        <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+                                                                                                        Sem erros
+                                                                                                </div>
+                                                                                        </li>
+                                                                                        <li ng-repeat="erroProp in prop.erroList track by $index">
+                                                                                                <div class="label label-danger" ng-if="prop.erroList.length">
+                                                                                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                                                                                        {{erroProp}}
+                                                                                                </div>
+                                                                                        </li>
+                                                                                </ul>
+                                                                        </td>
+                                                                        <td>
+                                                                                <label ng-if="!prop.erroList.length && !item.erroList.length"><input type="radio" ng-model="item.emite" value="{{prop.publicoAlvoPropriedadeRural.id}}" ng-checked="item.emite = prop.publicoAlvoPropriedadeRural.id">OK</label>
+                                                                        </td>
+                                                                </tr>
+                                                        </tbody>
+                                                </table>
+                                        </td>
+                                </tr>
+                        </tbody>
+                </table>
+        </div>
+</div>

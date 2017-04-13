@@ -174,11 +174,17 @@ angular.module(pNmModulo).factory(pNmFactory,
             declaracaoProdutorVerificar : function (filtro) {
                 return $http.post(this.endereco + '/declaracao-produtor-verificar', filtro);
             },
+            declaracaoCeasaVerificar : function (filtro) {
+                return $http.post(this.endereco + '/ceasa-produtor-verificar', filtro);
+            },
             carteiraProdutorRel : function (filtro) {
                 return $http.post(this.endereco + '/carteira-produtor-rel', filtro);
             },
             declaracaoProdutorRel : function (filtro) {
                 return $http.post(this.endereco + '/declaracao-produtor-rel', filtro);
+            },
+            declaracaoCeasaRel : function (filtro) {
+                return $http.post(this.endereco + '/ceasa-produtor-rel', filtro);
             },
             publicoAlvoPorPessoaId : function (id) {
                 return $http.get(this.endereco + '/publico-alvo-por-pessoa-id', {params: {'id': id}});
