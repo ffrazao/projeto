@@ -61,6 +61,9 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer>, 
 	@OneToMany(mappedBy = "atividade")
 	private List<AtividadeAssunto> assuntoList;
 
+	@OneToMany(mappedBy = "atividade")
+	private List<AtividadeCadeiaProdutiva> cadeiaProdutivaList;
+
 	@OneToMany(mappedBy = "atividade", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	private List<AtividadeChaveSisater> chaveSisaterList = new ArrayList<AtividadeChaveSisater>();
 
@@ -139,7 +142,7 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer>, 
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	@JsonSerialize(using = JsonSerializerData.class)
 	@JsonDeserialize(using = JsonDeserializerData.class)
-	@Column(name="previsao_conclusao")
+	@Column(name = "previsao_conclusao")
 	private Calendar previsaoConclusao;
 
 	@Enumerated(EnumType.STRING)
@@ -188,6 +191,10 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer>, 
 
 	public List<AtividadeAssunto> getAssuntoList() {
 		return assuntoList;
+	}
+
+	public List<AtividadeCadeiaProdutiva> getCadeiaProdutivaList() {
+		return cadeiaProdutivaList;
 	}
 
 	public List<AtividadeChaveSisater> getChaveSisaterList() {
@@ -317,6 +324,10 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer>, 
 
 	public void setAssuntoList(List<AtividadeAssunto> assuntoList) {
 		this.assuntoList = assuntoList;
+	}
+
+	public void setCadeiaProdutivaList(List<AtividadeCadeiaProdutiva> cadeiaProdutivaList) {
+		this.cadeiaProdutivaList = cadeiaProdutivaList;
 	}
 
 	public void setChaveSisaterList(List<AtividadeChaveSisater> chaveSisaterList) {

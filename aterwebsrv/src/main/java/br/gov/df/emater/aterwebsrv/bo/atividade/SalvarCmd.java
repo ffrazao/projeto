@@ -14,6 +14,7 @@ import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.bo._SalvarCmd;
 import br.gov.df.emater.aterwebsrv.dao.atividade.AtividadeAssuntoDao;
+import br.gov.df.emater.aterwebsrv.dao.atividade.AtividadeCadeiaProdutivaDao;
 import br.gov.df.emater.aterwebsrv.dao.atividade.AtividadeDao;
 import br.gov.df.emater.aterwebsrv.dao.atividade.AtividadeMetaTaticaDao;
 import br.gov.df.emater.aterwebsrv.dao.atividade.AtividadePessoaDao;
@@ -38,6 +39,9 @@ public class SalvarCmd extends _SalvarCmd {
 
 	@Autowired
 	private AtividadeAssuntoDao atividadeAssuntoDao;
+
+	@Autowired
+	private AtividadeCadeiaProdutivaDao atividadeCadeiaProdutivaDao;
 
 	@Autowired
 	private AtividadeMetaTaticaDao atividadeMetaTaticaDao;
@@ -84,6 +88,7 @@ public class SalvarCmd extends _SalvarCmd {
 		logAtualizar(result, contexto);
 
 		limparChavePrimaria(result.getAssuntoList());
+		limparChavePrimaria(result.getCadeiaProdutivaList());
 		limparChavePrimaria(result.getMetaTaticaList());
 		limparChavePrimaria(result.getPessoaDemandanteList());
 		limparChavePrimaria(result.getPessoaExecutorList());
@@ -124,16 +129,23 @@ public class SalvarCmd extends _SalvarCmd {
 
 		// tratar a exclusão de registros
 		excluirRegistros(result, "assuntoList", atividadeAssuntoDao);
-
 		if (!CollectionUtils.isEmpty(result.getAssuntoList())) {
 			result.getAssuntoList().forEach((assunto) -> {
 				assunto.setAtividade(result);
 				atividadeAssuntoDao.save(assunto);
 			});
 		}
+		
+		excluirRegistros(result, "cadeiaProdutivaList", atividadeCadeiaProdutivaDao);
+		if (!CollectionUtils.isEmpty(result.getCadeiaProdutivaList())) {
+			result.getCadeiaProdutivaList().forEach((cadeiaProdutiva) -> {
+				cadeiaProdutiva.setAtividade(result);
+				atividadeCadeiaProdutivaDao.save(cadeiaProdutiva);
+			});
+		}
+
 
 		excluirRegistros(result, "metaTaticaList", atividadeMetaTaticaDao);
-
 		if (!CollectionUtils.isEmpty(result.getMetaTaticaList())) {
 			result.getMetaTaticaList().forEach((metaTatica) -> {
 				metaTatica.setAtividade(result);
@@ -142,6 +154,7 @@ public class SalvarCmd extends _SalvarCmd {
 				atividadeMetaTaticaDao.save(metaTatica);
 			});
 		}
+
 
 		List<Integer> demandanteList = salvarAtividadePessoaList(result, atividadePessoaDemandList, AtividadePessoaParticipacao.D);
 

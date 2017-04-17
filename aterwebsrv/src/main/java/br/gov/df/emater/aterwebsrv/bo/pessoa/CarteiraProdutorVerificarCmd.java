@@ -1,7 +1,6 @@
 package br.gov.df.emater.aterwebsrv.bo.pessoa;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -20,9 +19,7 @@ import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaSituacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PropriedadeRuralSituacao;
-import br.gov.df.emater.aterwebsrv.modelo.dominio.PropriedadeRuralVinculoTipo;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
-import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica;
 
 @Service("PessoaCarteiraProdutorVerificarCmd")
 public class CarteiraProdutorVerificarCmd extends _Comando {

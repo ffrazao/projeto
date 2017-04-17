@@ -16,6 +16,7 @@ import br.gov.df.emater.aterwebsrv.dto.CadFiltroDtoCustom;
 import br.gov.df.emater.aterwebsrv.dto.TagDto;
 import br.gov.df.emater.aterwebsrv.modelo.ater.Comunidade;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.Assunto;
+import br.gov.df.emater.aterwebsrv.modelo.atividade.CadeiaProdutiva;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.Metodo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;
@@ -32,6 +33,8 @@ public class AtividadeCadFiltroDto extends CadFiltroDtoCustom {
 	private static final long serialVersionUID = 1L;
 
 	private Assunto assunto;
+	
+	private CadeiaProdutiva cadeiaProdutiva;
 	
 	private Set<PublicoAlvoCategoria> categoria;
 

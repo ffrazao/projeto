@@ -16,6 +16,7 @@ import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoPropriedadeRuralDao;
 import br.gov.df.emater.aterwebsrv.dto.pessoa.DeclaracaoProdutorRelFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoSetor;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaTipo;
 import br.gov.df.emater.aterwebsrv.relatorio._Relatorio;
 
 @Service("PessoaDeclaracaoProdutorRelCmd")
@@ -36,6 +37,8 @@ public class DeclaracaoProdutorRelCmd extends _Comando {
 		List<PublicoAlvoPropriedadeRural> lista = null;
 		lista = (List<PublicoAlvoPropriedadeRural>) dao.findAll(filtro.getPublicoAlvoPropriedadeRuralIdList());
 		String principalAtividadeProdutiva = "";
+		String tipoPessoa = "";
+		
 
 		Calendar emissao = Calendar.getInstance();
 		Calendar expiracao = Calendar.getInstance();
@@ -52,12 +55,16 @@ public class DeclaracaoProdutorRelCmd extends _Comando {
 					principalAtividadeProdutiva += pas.getSetor().getNome()+", ";
 					publicoAlvoPropriedadeRural.getPropriedadeRural().setPrincipaisAtividadesProdutivas(principalAtividadeProdutiva);
 				}
+				tipoPessoa = publicoAlvoPropriedadeRural.getPublicoAlvo().getPessoa().getPessoaTipo().toString();
 			}
-			if (carteiraExpiracao == null || carteiraExpiracao.before(fimCarencia)) {
-				publicoAlvoPropriedadeRural.getPublicoAlvo().setCarteiraProdutorEmissao(emissao);
-				publicoAlvoPropriedadeRural.getPublicoAlvo().setCarteiraProdutorExpiracao(expiracao);
-				publicoAlvoDao.save(publicoAlvoPropriedadeRural.getPublicoAlvo());
-			}
+
+			
+
+//			if (carteiraExpiracao == null || carteiraExpiracao.before(fimCarencia)) {
+//				publicoAlvoPropriedadeRural.getPublicoAlvo().setCarteiraProdutorEmissao(emissao);
+//				publicoAlvoPropriedadeRural.getPublicoAlvo().setCarteiraProdutorExpiracao(expiracao);
+//				publicoAlvoDao.save(publicoAlvoPropriedadeRural.getPublicoAlvo());
+//			}
 			
 		}
 		
@@ -66,6 +73,7 @@ public class DeclaracaoProdutorRelCmd extends _Comando {
 		parametros.put("Usuario", getUsuario(contexto.getUsuario().getName()));
 		parametros.put("RelatorioNome", "DECLARAÇÃO DE ATIVIDADE RURAL");
 		parametros.put("Observacao", filtro.getObservacao());
+		parametros.put("TipoPessoa", tipoPessoa);
 
 		byte[] result = relatorio.imprimir("pessoa/DeclaracaoProdutorRel", parametros, lista);
 

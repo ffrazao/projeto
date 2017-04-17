@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
-<!-- 2017-01-24T10:37:08 -->
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-04-17T13:49:29 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RelatorioTeste" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" uuid="74a58a1f-20c1-4882-a004-63331c202191">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -20,6 +20,10 @@
 	<parameter name="Usuario" class="br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario">
 		<parameterDescription><![CDATA[Usuário Autenticado pelo no Sistema]]></parameterDescription>
 		<defaultValueExpression><![CDATA[$P{Usuario}.getUsername()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="TipoPessoa" class="java.lang.String">
+		<parameterDescription><![CDATA[TipoPessoa]]></parameterDescription>
+		<defaultValueExpression><![CDATA[$P{TipoPessoa}]]></defaultValueExpression>
 	</parameter>
 	<parameter name="Observacao" class="java.lang.String">
 		<parameterDescription><![CDATA[Observacao]]></parameterDescription>
@@ -103,7 +107,7 @@
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Left"/>
-				<textFieldExpression><![CDATA[$F{publicoAlvo}.getPessoa().getClass().asSubclass(PessoaFisica.class).cast($F{publicoAlvo}.getPessoa()).getCpf()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{publicoAlvo}.getPessoa().getClass().asSubclass(PessoaFisica.class).cast($F{publicoAlvo}.getPessoa()).getCpf() ]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="190" y="356" width="332" height="15" uuid="c12847fd-21dd-4977-b5b2-a9e4cec85190"/>
@@ -127,7 +131,7 @@
 			</staticText>
 			<staticText>
 				<reportElement x="34" y="114" width="138" height="17" uuid="3797bba0-3910-42e2-a580-d3db12dc044a"/>
-				<text><![CDATA[CPF.....................................:]]></text>
+				<text><![CDATA[CPF / CNPJ.........................:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="34" y="132" width="138" height="17" uuid="755e52bf-8334-4a3e-9c7e-a487ae75dd87"/>
