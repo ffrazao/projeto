@@ -57,6 +57,14 @@
                 ATIV_ASSUNTO_ASSUNTO_NOME : ordem++,
                 ATIV_ASSUNTO_OBSERVACAO : ordem++,
             };
+
+            ordem = 0;
+            var ATIV_CADEIA_PRODUTIVA_LIST = {
+                ATIV_CADEIA_PRODUTIVA_ID : ordem++,
+                ATIV_CADEIA_PRODUTIVA_ASSUNTO_ID : ordem++,
+                ATIV_CADEIA_PRODUTIVA_ASSUNTO_NOME : ordem++,
+            };
+
             ordem = 0;
             var ATIV_PESS_LIST = {
                 ATIV_PESS_ID : ordem++,
@@ -109,6 +117,7 @@
                 ATIV_ALTERACAO_USUARIO_PESSOA_NOME : ordem++,
                 ATIV_ALTERACAO_DATA : ordem++,
                 ATIV_ASSUNTO_LIST : [ordem++, ATIV_ASSUNTO_LIST],
+                ATIV_CADEIA_PRODUTIVA_LIST : [ordem++, ATIV_CADEIA_PRODUTIVA_LIST],
                 DEMAND_LIST : [ordem++, ATIV_PESS_LIST],
                 EXECUT_LIST : [ordem++, ATIV_PESS_LIST],
                 OCORR_LIST : [ordem++, OCORR_LIST],
@@ -121,7 +130,7 @@
             $scope.verificaEstado($uibModalInstance, $scope, 'filtro', modalCadastro, pNmFormulario);
             // inicio: atividades do Modal
             var confirmarSalvar = function(cadastro) {
-                removerCampo(cadastro, ['@jsonId']);
+                //removerCampo(cadastro, ['@jsonId']);
             };
 
             $scope.modalOk = function() {
