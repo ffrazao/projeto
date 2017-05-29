@@ -459,6 +459,12 @@ public class FacadeBo implements BeanFactoryAware {
 		return this._executar(usuario, "PessoaDeclaracaoProdutorVerificarCmd", filtro);
 	}
 
+	@Transactional(readOnly = true)
+	public _Contexto mesclarPessoas(Principal usuario, Map<String, Integer> pessoas) throws Exception {
+		return this._executar(usuario, "MescalrPessoasCmd", pessoas);
+	}
+
+
 	@Transactional
 	public _Contexto pessoaExcluir(Principal usuario, Integer id) throws Exception {
 		return this._executar(usuario, "PessoaExcluirCh", id);

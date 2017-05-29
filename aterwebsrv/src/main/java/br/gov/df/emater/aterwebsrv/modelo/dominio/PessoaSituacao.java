@@ -2,7 +2,7 @@ package br.gov.df.emater.aterwebsrv.modelo.dominio;
 
 public enum PessoaSituacao {
 
-	A("Ativo", 1), F("Inativo por Falecimento", 3), O("Inativo por Outro Motivo", 4), P("Inativo por Pendências Cadastrais", 5), U("Inativo por Falta de Uso", 2);
+	A("Ativo", 1), F("Inativo por Falecimento", 3), O("Inativo por Outro Motivo", 4), P("Inativo por Pendências Cadastrais", 5), U("Inativo por Falta de Uso", 2), M("Inativo Mescalgem", 6);
 
 	private String descricao;
 

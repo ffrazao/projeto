@@ -1,6 +1,8 @@
 package br.gov.df.emater.aterwebsrv.rest;
 
 import java.security.Principal;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,6 +55,12 @@ public class PessoaRest {
 	@RequestMapping(value = "/declaracao-produtor-verificar", method = RequestMethod.POST)
 	public Resposta declaracaoProdutorVerificar(@RequestBody DeclaracaoProdutorRelFiltroDto filtro, Principal usuario) throws Exception {
 		return new Resposta(facadeBo.pessoaDeclaracaoProdutorVerificar(usuario, filtro).getResposta());
+	}
+
+	@RequestMapping(value = "/mesclar-pessoas", method = RequestMethod.POST)
+	public Resposta mesclarPessoas(@RequestBody Map<String, Integer> pessoas, Principal usuario) throws Exception {
+		return new Resposta ("sdfasdfasdfasdf");
+		//return new Resposta(facadeBo.mesclarPessoas(usuario, pessoas).getResposta());
 	}
 
 	@RequestMapping(value = "/editar", method = RequestMethod.POST)
