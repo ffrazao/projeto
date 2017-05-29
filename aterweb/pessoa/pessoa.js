@@ -389,6 +389,7 @@
                 PessoaSrv.declaracaoCeasaVerificar({pessoaIdList: pessoaIdList, publicoAlvoPropriedadeRuralIdList: publicoAlvoPropriedadeRuralIdList}).success(function(resposta) {
                     var conf =  '<ng-include src=\"\'pessoa/sub-produtor-declaracao-ceasa.html\'\"></ng-include>';
 
+
                     mensagemSrv.confirmacao(false, conf, 'Confirme emissão da Declaração da Ceasa', resposta.resultado, null, null, null, function(escopo) {
                     }).then(function(conteudo) {
                         var publicoAlvoPropriedadeRuralIdList = [];
@@ -415,6 +416,47 @@
 
                 });
             };
+
+            // Mesclar Pessoas
+            $scope.mesclarPessoas = function() {
+
+                var pessoaIdList = [];
+                    $scope.navegador.selecao.items.forEach( function(item) {
+                        pessoaIdList.push(item[0]);
+                    });
+                var publicoAlvoPropriedadeRuralIdList = [];
+
+                PessoaSrv.declaracaoProdutorVerificar({pessoaIdList: pessoaIdList, publicoAlvoPropriedadeRuralIdList: publicoAlvoPropriedadeRuralIdList}).success(function(resposta) {
+                var conf =  '<ng-include src=\"\'pessoa/sub-pessoa-mesclar.html\'\"></ng-include>';
+                     
+                mensagemSrv.confirmacao(false, conf, 'Confirme mesclagem de pessoas', resposta.resultado, null, null, null, function(escopo) {
+                    }).then(function(conteudo) {
+
+          
+                        if (conteudo.principal) {
+
+                            pessoaIdList = [];
+                            conteudo.forEach( function(item) {
+                                pessoaIdList.push( [item.pessoa.id, item.pessoa.id === conteudo.principal.pessoa.id ? "1" :"0" ]  );
+                            });
+
+                            mensagemSrv.confirmacao(false, '<Font color=red size=4><center>NÃO É POSSÍVEL REVERTER ESSE PROCEDIMENTO! <BR> Tem certeza que você quer mesclar ??? </center></font> ').then(function (conteudo) {
+                               PessoaSrv.mesclarPessoas({ pessoaIdList: pessoaIdList }).success(function(resposta) {
+                                    toastr.error('MESCLAGEM CONFIRMADA!!'); 
+                                });    
+                            });    
+                        } else {
+                            toastr.error('Nenhum registro foi marcado como principal', 'Erro ao mesclar pessoas');
+                        }
+                        }, function() {
+                        // processar o retorno negativo da modal
+                        //$log.info('Modal dismissed at: ' + new Date());
+                    });
+
+                });
+   
+            };
+
 
             // Filtros de segurança by Emerson
             $scope.editar = function(scp) {
@@ -467,6 +509,18 @@
                             );
                         },
                     },
+                    {
+                        nome: 'Mesclar Pessoas',
+                        descricao: 'Mesclar o Cadastro de Duas ou Mais Pessoas',
+                        acao: $scope.mesclarPessoas,
+                        exibir: function() {
+                            return (
+                                ($scope.navegador.estadoAtual() === 'LISTANDO' && 
+                                    ($scope.navegador.selecao.tipo === 'M' && $scope.navegador.selecao.marcado > 1))
+                            );
+                        },
+                    },
+
                 ];
                 $rootScope.abrir(scp);
             };

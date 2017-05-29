@@ -189,6 +189,12 @@ angular.module(pNmModulo).factory(pNmFactory,
             publicoAlvoPorPessoaId : function (id) {
                 return $http.get(this.endereco + '/publico-alvo-por-pessoa-id', {params: {'id': id}});
             },
+            mesclarPessoasVerificar : function (filtro) {
+                return $http.post(this.endereco + '/mesclar-pessoa-verificar', filtro);
+            },
+            mesclarPessoas : function (filtro) {
+                return $http.post(this.endereco + '/mesclar-pessoas', filtro);
+            },
         };
         return PessoaSrv;
     }
