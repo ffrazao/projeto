@@ -3,6 +3,7 @@ package br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural;
 import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaList;
 import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaReg;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -17,8 +18,14 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Where;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
 import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
@@ -26,13 +33,15 @@ import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.Atividade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.ProjetoCreditoRuralStatus;
+import br.gov.df.emater.aterwebsrv.rest.json.JsonDeserializerData;
+import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 
 @Entity
 @Table(name = "projeto_credito_rural", schema = EntidadeBase.CREDITO_RURAL_SCHEMA)
 public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<ProjetoCreditoRural> {
 
 	private static final long serialVersionUID = 1L;
-
+	
 	private String agencia;
 
 	@ManyToOne
@@ -45,6 +54,12 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 	@ManyToOne
 	@JoinColumn(name = "atividade_id")
 	private Atividade atividade;
+
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@JsonSerialize(using = JsonSerializerData.class)
+	@JsonDeserialize(using = JsonDeserializerData.class)
+	private Calendar contratacao;
 
 	@OneToMany(mappedBy = "projetoCreditoRural")
 	@Where(clause = "tipo = 'C'")
@@ -105,7 +120,16 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 	private ProjetoCreditoRuralStatus status;
 
 	@OneToMany(mappedBy = "projetoCreditoRural")
+	private List<SupervisaoCredito> supervisaoCreditoList;
+
+	@OneToMany(mappedBy = "projetoCreditoRural")
 	private List<ProjetoCreditoRuralHistoricoReceita> trienioList;
+
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@JsonSerialize(using = JsonSerializerData.class)
+	@JsonDeserialize(using = JsonDeserializerData.class)
+	private Calendar vencimento;
 
 	public ProjetoCreditoRural() {
 		super();
@@ -118,7 +142,8 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 	public ProjetoCreditoRural(Integer id, String agencia, AgenteFinanceiro agenteFinanceiro, String garantiaReal, LinhaCredito linhaCredito, String numeroCedula, PublicoAlvo publicoAlvo, ProjetoCreditoRuralStatus status,
 			List<ProjetoCreditoRuralCronogramaPagamento> cronogramaPagamentoCusteioList, List<ProjetoCreditoRuralCronogramaPagamento> cronogramaPagamentoInvestimentoList, List<ProjetoCreditoRuralFinanciamento> custeioList, List<ProjetoCreditoRuralReceitaDespesa> despesaList,
 			List<ProjetoCreditoRuralFluxoCaixa> fluxoCaixaList, List<ProjetoCreditoRuralGarantia> garantiaList, List<ProjetoCreditoRuralFinanciamento> investimentoList, List<ProjetoCreditoRuralParecerTecnico> parecerTecnicoList,
-			List<ProjetoCreditoRuralPublicoAlvoPropriedadeRural> publicoAlvoPropriedadeRuralList, List<ProjetoCreditoRuralReceitaDespesa> receitaList, List<ProjetoCreditoRuralHistoricoReceita> trienioList, List<ProjetoCreditoRuralArquivo> arquivoList) {
+			List<ProjetoCreditoRuralPublicoAlvoPropriedadeRural> publicoAlvoPropriedadeRuralList, List<ProjetoCreditoRuralReceitaDespesa> receitaList, List<ProjetoCreditoRuralHistoricoReceita> trienioList, List<ProjetoCreditoRuralArquivo> arquivoList, List<SupervisaoCredito> supervisaoCreditoList,
+			Calendar contratacao, Calendar vencimento) {
 		super();
 		this.agencia = agencia;
 		this.agenteFinanceiro = agenteFinanceiro;
@@ -140,6 +165,9 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 		this.status = status;
 		this.trienioList = trienioList;
 		this.arquivoList = arquivoList;
+		this.supervisaoCreditoList = supervisaoCreditoList;
+		this.contratacao = contratacao;
+		this.vencimento = vencimento;
 	}
 
 	public String getAgencia() {
@@ -156,6 +184,10 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 
 	public Atividade getAtividade() {
 		return atividade;
+	}
+
+	public Calendar getContratacao() {
+		return contratacao;
 	}
 
 	public List<ProjetoCreditoRuralCronogramaPagamento> getCronogramaPagamentoCusteioList() {
@@ -223,15 +255,24 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 		return status;
 	}
 
+	public List<SupervisaoCredito> getSupervisaoCreditoList() {
+		return supervisaoCreditoList;
+	}
+
 	public List<ProjetoCreditoRuralHistoricoReceita> getTrienioList() {
 		return trienioList;
+	}
+
+	public Calendar getVencimento() {
+		return vencimento;
 	}
 
 	@Override
 	public ProjetoCreditoRural infoBasica() {
 		return new ProjetoCreditoRural(this.id, this.agencia, infoBasicaReg(this.agenteFinanceiro), this.garantiaReal, infoBasicaReg(this.linhaCredito), this.numeroCedula, infoBasicaReg(this.publicoAlvo), this.status, infoBasicaList(this.cronogramaPagamentoCusteioList),
 				infoBasicaList(this.cronogramaPagamentoInvestimentoList), infoBasicaList(this.custeioList), infoBasicaList(this.despesaList), infoBasicaList(this.fluxoCaixaList), infoBasicaList(this.garantiaList), infoBasicaList(this.investimentoList),
-				infoBasicaList(this.parecerTecnicoList), infoBasicaList(this.publicoAlvoPropriedadeRuralList), infoBasicaList(this.receitaList), infoBasicaList(this.trienioList), infoBasicaList(this.arquivoList));
+				infoBasicaList(this.parecerTecnicoList), infoBasicaList(this.publicoAlvoPropriedadeRuralList), infoBasicaList(this.receitaList), infoBasicaList(this.trienioList), infoBasicaList(this.arquivoList), infoBasicaList(this.supervisaoCreditoList), 
+				this.contratacao, this.vencimento);
 	}
 
 	public void setAgencia(String agencia) {
@@ -248,6 +289,10 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 
 	public void setAtividade(Atividade atividade) {
 		this.atividade = atividade;
+	}
+
+	public void setContratacao(Calendar contratacao) {
+		this.contratacao = contratacao;
 	}
 
 	public void setCronogramaPagamentoCusteioList(List<ProjetoCreditoRuralCronogramaPagamento> cronogramaPagamentoCusteioList) {
@@ -315,8 +360,16 @@ public class ProjetoCreditoRural extends EntidadeBase implements _ChavePrimaria<
 		this.status = status;
 	}
 
+	public void setSupervisaoCreditoList(List<SupervisaoCredito> supervisaoCreditoList) {
+		this.supervisaoCreditoList = supervisaoCreditoList;
+	}
+
 	public void setTrienioList(List<ProjetoCreditoRuralHistoricoReceita> trienioList) {
 		this.trienioList = trienioList;
+	}
+
+	public void setVencimento(Calendar vencimento) {
+		this.vencimento = vencimento;
 	}
 
 }

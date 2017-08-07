@@ -344,6 +344,119 @@
                 });
             };
 
+            $scope.gerarSupervisaoCredito = function(reg, local) {
+                var dataContratacao = moment();
+                var dataVencimento = moment().add(1, 'y');
+                var conteudo = {registro: {
+                    dataContratacao : dataContratacao,
+                    dataVencimento : dataVencimento,
+                    quantidadeSupervisoes : 1,
+                    intervaloSupervisoes : 1,
+                    tipoIntervalo : 'y',
+                }, apoio: {}};
+
+                mensagemSrv.confirmacao(true, 'projeto-credito-rural/mod-supervisao-credito.html', 'Supervisão de Crédito', conteudo, null, null, null, function(scope) {
+                    scope.$watch('conteudo.registro.dataContratacao + conteudo.registro.dataVencimento + conteudo.registro.intervaloSupervisoes + conteudo.registro.quantidadeSupervisoes + conteudo.registro.tipoIntervalo + conteudo.registro.numeroCedula', function(v, o) {
+                        if (!scope.conteudo.registro) {
+                            return;
+                        }
+                        scope.conteudo.registro.supervisaoCreditoList = [];
+                        if (scope.confirmacaoFrm.$valid) {
+                            var parcelaNumero = 0;
+                            var parcelaData = null;
+                            if (scope.conteudo.registro.dataContratacao instanceof Date) {
+                                parcelaData = moment(scope.conteudo.registro.dataContratacao);
+                            } else {
+                                parcelaData = moment(angular.copy(scope.conteudo.registro.dataContratacao), "DD/MM/YYYY");
+                            }
+                            for (parcelaNumero = 0; parcelaNumero < scope.conteudo.registro.quantidadeSupervisoes; parcelaNumero++) {
+                                parcelaData.add(scope.conteudo.registro.intervaloSupervisoes, scope.conteudo.registro.tipoIntervalo);
+                                scope.conteudo.registro.supervisaoCreditoList.push($scope.criarElemento(scope.conteudo.registro, 'supervisaoCreditoList', {
+                                    'dataPrevista': angular.copy(parcelaData),
+                                    'ordem': (parcelaNumero + 1)
+                                }));
+                            }                            
+                        }
+                    });
+                }).then(function (conteudo) {
+                    reg.contratacao = conteudo.registro.dataContratacao;
+                    reg.vencimento = conteudo.registro.dataVencimento;
+                    reg.numeroCedula = conteudo.registro.numeroCedula;
+                    reg.supervisaoCreditoList = angular.copy(conteudo.registro.supervisaoCreditoList);
+                    reg.supervisaoCreditoListCont = angular.copy(conteudo.registro.supervisaoCreditoListCont);
+                }, function (erro) {
+                    toastr.error(erro, 'Erro ao captar informação');
+                });
+            };
+            $scope.exibeEmpregado = function(emprego) {
+                var result = null;
+                if (emprego && emprego.pessoaRelacionamentoList) {
+                    emprego.pessoaRelacionamentoList.forEach(function (k) {
+                        if ("Contratado" === k.relacionamentoFuncao.nomeSeMasculino) {
+                            result = k.pessoa.nome;
+                        }
+                    });
+                }
+                return result;
+            };
+            $scope.selecionaEmpregado = function(projetoCreditoRural, reg) {
+                if (projetoCreditoRural && projetoCreditoRural.publicoAlvoPropriedadeRuralList) {
+                    var unidadeOrganizacionalList = [];
+                    projetoCreditoRural.publicoAlvoPropriedadeRuralList.forEach(function(k) {
+                        unidadeOrganizacionalList.push(k.publicoAlvoPropriedadeRural.comunidade.unidadeOrganizacional.id);
+                    });
+                    if (unidadeOrganizacionalList) {
+                        ProjetoCreditoRuralSrv.empregadoPorUnidadeOrganizacional(unidadeOrganizacionalList)
+                            .success(function(resposta) {
+                                // console.log(resposta);
+                                if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {
+
+                                    resposta.resultado.forEach(function(k) {
+                                        var nome = null;
+                                        k.pessoaRelacionamentoList.forEach(function (k1) {
+                                            if ("Contratado" === k1.relacionamentoFuncao.nomeSeMasculino) {
+                                                nome = k1.pessoa.nome;
+                                            }
+                                        });
+                                        k.nome = nome;
+                                    });
+                                    var conteudo = {
+                                        apoio: {
+                                            tecnicoResponsavelList: angular.copy(resposta.resultado)
+                                        }
+                                    };
+                                    mensagemSrv.confirmacao(false, 
+                                        '<div class="container-fluid">' +
+                                        '    <div class="row">' +
+                                        '        <div class="col-md-9" title="Técnico">' +
+                                        '            <label class="control-label" for="tecnico">Técnico</label>' +
+                                        '            <select id="tecnico" name="tecnico" class="form-control" ng-model="conteudo.registro.tecnico" ng-required="true" ng-options="item as item.nome for item in conteudo.apoio.tecnicoResponsavelList | orderBy: \'nome\' track by item.id">' +
+                                        '            </select>' +
+                                        '            <div class="label label-danger" ng-show="confirmacaoFrm.tecnico.$error.required">' +
+                                        '                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' +
+                                        '                Campo Obrigatório' +
+                                        '            </div>' +
+                                        '        </div>' +
+                                        '    </div>' +
+                                        '</div>', 'Selecionar Técnico Responsável', conteudo, null, null, null, function(scope) {
+                                    }).then(function (conteudo) {
+                                        reg.emprego = angular.copy(conteudo.registro.tecnico);
+                                        reg.emprego['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.funcional.Emprego';
+                                    }, function (erro) {
+                                        toastr.error(erro, 'Erro ao captar informação');
+                                    });
+                                } else {
+                                    toastr.error(resposta && resposta.mensagem ? resposta.mensagem : resposta, 'Erro ao pesquisar técnicos');
+                                }
+                            })
+                            .error(function(resposta) {
+                                console.log(resposta);
+                                toastr.error(resposta, 'Erro ao pesquisar técnicos');
+                            });
+                    }
+                }
+            };
+
             $scope.propriedadeRuralComparador = function(a, b) {
                 if (a && a.publicoAlvoPropriedadeRural && b && b.publicoAlvoPropriedadeRural) {
                     return a.publicoAlvoPropriedadeRural.id === b.publicoAlvoPropriedadeRural.id;
@@ -470,6 +583,13 @@
                     'indice': indice++,
                     'ativo': false,
                 }, 
+                {
+                    'nome': 'Supervisao de Crédito',
+                    'include': 'projeto-credito-rural/tab-supervisao-credito.html',
+                    'visivel': true,
+                    'indice': indice++,
+                    'ativo': false,
+                }, 
             ];
             $scope.setTabAtiva = function(nome) {
                 $scope.tabs.forEach(function(item, idx) {
@@ -557,6 +677,27 @@
                     $scope.frm.formularioProjetoCreditoRural.$setValidity('qtdBenefInvalida', ($scope.cadastro.registro.pessoaDemandanteList.length <= 1));
                 }
             });
+
+            $scope.$watch('cadastro.registro.projetoCreditoRural.status', function(n, o) {
+                if ($scope.cadastro.registro && $scope.cadastro.registro.projetoCreditoRural && $scope.cadastro.registro.projetoCreditoRural.status) {
+                    $scope.tabs.forEach(function(k) {
+                        if ('Supervisao de Crédito' === k.nome) {
+                            switch ($scope.cadastro.registro.projetoCreditoRural.status) {
+                                case null: // nao informado, 
+                                case "": // nao informado, 
+                                case "EA": // ("Em análise", 1), 
+                                case "EE": // ("Em elaboração", 2), 
+                                    k.visivel = false;
+                                break;
+                                default:
+                                    // CA("Cancelado", 6), CO("Contratado", 3), LI("Liquidado", 7), NC("Não contratado", 4), NE("Negado", 5), PR("Pró-Rural", 8);
+                                    k.visivel = true;
+                                break;
+                            }
+                        }
+                    });
+                }
+            }, true);
             
             // fim dos watches
         }

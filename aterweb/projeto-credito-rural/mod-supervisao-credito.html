@@ -1,0 +1,107 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4" title="Data da Contratação">
+            <label class="control-label" for="dataContratacao">Data da Contratação</label>
+            <input type="text" class="form-control text-right" id="dataContratacao" name="dataContratacao" ng-required="true" ng-model="conteudo.registro.dataContratacao" ui-date-mask>
+            <div class="label label-danger" ng-show="confirmacaoFrm.dataContratacao.$error.required">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                Campo Obrigatório
+            </div>
+            <div class="label label-danger" ng-show="confirmacaoFrm.dataContratacao.$error.date">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                Data Inválida!
+            </div>
+        </div>
+        <div class="col-md-4" title="Data do Vencimento">
+            <label class="control-label" for="dataVencimento">Data do Vencimento</label>
+            <input type="text" class="form-control text-right" id="dataVencimento" name="dataVencimento" ng-required="true" ng-model="conteudo.registro.dataVencimento" ui-date-mask>
+            <div class="label label-danger" ng-show="confirmacaoFrm.dataVencimento.$error.required">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                Campo Obrigatório
+            </div>
+            <div class="label label-danger" ng-show="confirmacaoFrm.dataVencimento.$error.date">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                Data Inválida!
+            </div>
+        </div>
+        <div class="col-md-4" title="Número da Cédula">
+            <label class="control-label" for="numeroCedula">Número da Cédula</label>
+            <input type="text" class="form-control text-right" id="numeroCedula" name="numeroCedula" ng-required="true" ng-model="conteudo.registro.numeroCedula" ng-maxlength="250">
+            <div class="label label-danger" ng-show="confirmacaoFrm.numeroCedula.$error.required">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                Campo Obrigatório
+            </div>
+            <div class="label label-danger" ng-show="confirmacaoFrm.numeroCedula.$error.maxlength">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                Muitos caracteres
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4" title="Quantidade de Supervisões">
+            <label class="control-label" for="quantidadeSupervisoes">Quantidade de Supervisões</label>
+            <input type="text" class="form-control text-right" id="quantidadeSupervisoes" name="quantidadeSupervisoes" ng-required="true" ng-model="conteudo.registro.quantidadeSupervisoes" ui-number-mask="0">
+            <div class="label label-danger" ng-show="confirmacaoFrm.quantidadeSupervisoes.$error.required">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                Campo Obrigatório
+            </div>
+            <div class="label label-danger" ng-show="confirmacaoFrm.quantidadeSupervisoes.$error.number">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                Valor Inválido!
+            </div>
+        </div>
+        <div class="col-md-4" title="Intervalo de Supervisões">
+            <label class="control-label" for="intervaloSupervisoes">Intervalo de Supervisões</label>
+            <input type="text" class="form-control text-right" id="intervaloSupervisoes" name="intervaloSupervisoes" ng-required="true" ng-model="conteudo.registro.intervaloSupervisoes" ui-number-mask="0">
+            <div class="label label-danger" ng-show="confirmacaoFrm.intervaloSupervisoes.$error.required">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                Campo Obrigatório
+            </div>
+            <div class="label label-danger" ng-show="confirmacaoFrm.intervaloSupervisoes.$error.number">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                Valor Inválido!
+            </div>
+        </div>
+        <div class="col-md-4" title="Em">
+            <label class="control-label" for="tipoIntervalo">Em</label>
+            <select id="tipoIntervalo" name="tipoIntervalo" class="form-control" ng-model="conteudo.registro.tipoIntervalo" ng-required="true">
+                <option value="y">Anos</option>
+                <option value="M">Meses</option>
+                <option value="d">Dias</option>
+            </select>
+            <div class="label label-danger" ng-show="confirmacaoFrm.tipoIntervalo.$error.required">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                Campo Obrigatório
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12" title="Supervisões de Crédito">
+            <label class="control-label" for="supervisaoCreditoList">Supervisões de Crédito</label>
+            <div class="table-responsive">
+                <ng-form name="supervisaoCreditoListFrm">
+                    <table class="table table-striped table-hover">
+                        <tr>
+                            <th>#</th>
+                            <th>Data Prevista para a próxima Supervisão</th>
+                        </tr>
+                        <tr ng-repeat="item in conteudo.registro.supervisaoCreditoList">
+                            <td>{{$index + 1}}</td>
+                            <td class="text-right">
+                                <input type="text" class="form-control text-right" id="dataPrevista_{{$index}}" name="dataPrevista_{{$index}}" ng-required="true" ng-model="item.dataPrevista" ui-date-mask>
+                                <div class="label label-danger" ng-show="supervisaoCreditoListFrm['dataPrevista_' + $index].$error.required">
+                                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                    Campo Obrigatório
+                                </div>
+                                <div class="label label-danger" ng-show="supervisaoCreditoListFrm['dataPrevista_' + $index].$error.date">
+                                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                    Data Inválida!
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </ng-form>
+            </div>
+        </div>
+    </div>
+</div>

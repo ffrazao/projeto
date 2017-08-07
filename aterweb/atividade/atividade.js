@@ -130,7 +130,7 @@
             $scope.verificaEstado($uibModalInstance, $scope, 'filtro', modalCadastro, pNmFormulario);
             // inicio: atividades do Modal
             var confirmarSalvar = function(cadastro) {
-                //removerCampo(cadastro, ['@jsonId']);
+                removerCampo(cadastro, ['@jsonId']);
             };
 
             $scope.modalOk = function() {
@@ -220,11 +220,11 @@
 
             // Segurança by Emerson
             $scope.editar = function(scp) {
-                if( ! segAutorizaAcesso( $rootScope.token, $scope.cadastro.registro ) ){
-                    toastr.error('Ativiade registrada em outra unidade organizacional!', 'Erro'); 
-                } else {
+                // if( ! segAutorizaAcesso( $rootScope.token, $scope.cadastro.registro ) ){
+                //     toastr.error('Ativiade registrada em outra unidade organizacional!', 'Erro'); 
+                // } else {
                     $rootScope.editar(scp);
-                }   
+                // }   
             };
 
             $scope.limpar = function(scp) {

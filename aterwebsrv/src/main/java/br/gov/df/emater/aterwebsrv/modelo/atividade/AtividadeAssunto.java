@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.atividade;
 
+import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaReg;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,11 +11,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 
 @Entity
 @Table(name = "atividade_assunto", schema = EntidadeBase.ATIVIDADE_SCHEMA)
-public class AtividadeAssunto extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class AtividadeAssunto extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<AtividadeAssunto> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -48,6 +51,14 @@ public class AtividadeAssunto extends EntidadeBase implements _ChavePrimaria<Int
 		setAssunto(assunto);
 	}
 
+	public AtividadeAssunto(Integer id, Assunto assunto, Atividade atividade, String observacao) {
+		super();
+		this.id = id;
+		this.assunto = assunto;
+		this.atividade = atividade;
+		this.observacao = observacao;
+	}
+
 	public Assunto getAssunto() {
 		return assunto;
 	}
@@ -63,6 +74,12 @@ public class AtividadeAssunto extends EntidadeBase implements _ChavePrimaria<Int
 
 	public String getObservacao() {
 		return observacao;
+	}
+
+	@Override
+	public AtividadeAssunto infoBasica() {
+		return new AtividadeAssunto(this.id, infoBasicaReg(this.assunto),
+				new Atividade(this.atividade == null ? null : this.atividade.getId()), this.observacao);
 	}
 
 	public void setAssunto(Assunto assunto) {

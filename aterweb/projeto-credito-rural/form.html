@@ -127,7 +127,7 @@
                     <div class="col-sm-2" title="Linha de Crédito">
                         <div class="form-group">
                             <label class="control-label" for="linhaCredito">Linha de Crédito</label>
-                            <select id="linhaCredito" name="linhaCredito" class="form-control" ng-model="cadastro.registro.projetoCreditoRural.linhaCredito" ng-required="true" ng-options="item.linhaCredito as item.linhaCredito.nome for item in cadastro.registro.projetoCreditoRural.agenteFinanceiro.linhaCreditoList track by item.linhaCredito.id">
+                            <select id="linhaCredito" name="linhaCredito" class="form-control" ng-model="cadastro.registro.projetoCreditoRural.linhaCredito" ng-required="true" ng-options="item as item.nome for item in cadastro.apoio.linhaCreditoList track by item.id">
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formularioProjetoCreditoRural.linhaCredito.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>

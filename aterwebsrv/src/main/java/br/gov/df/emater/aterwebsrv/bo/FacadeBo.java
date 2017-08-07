@@ -540,6 +540,11 @@ public class FacadeBo implements BeanFactoryAware {
 		return this._executar(usuario, "ProjetoCreditoRuralProjetoTecnicoRelCh", idList);
 	}
 
+	@Transactional(readOnly = true)
+	public _Contexto projetoCreditoRuralSupervisaoCreditoRel(Principal usuario, Integer[] supervisaoIdList) throws Exception {
+		return this._executar(usuario, "ProjetoCreditoRuralSupervisaoCreditoRelCh", supervisaoIdList);
+	}
+
 	@Transactional
 	public _Contexto propriedadeRuralExcluir(Principal usuario, Integer id) throws Exception {
 		return this._executar(usuario, "PropriedadeRuralExcluirCh", id);
@@ -616,6 +621,11 @@ public class FacadeBo implements BeanFactoryAware {
 	}
 
 	// Unidade Organizacional Lista
+	@Transactional(readOnly = true)
+	public _Contexto unidadeOrganizacionalEmpregadoPorUnidadeOrganizacional(Principal usuario, Integer[] unidadeOrganizacionalIdList) throws Exception {
+		return this._executar(usuario, "UnidadeOrganizacionalEmpregadoPorUnidadeOrganizacionalCh", unidadeOrganizacionalIdList);
+	}
+
 	@Transactional(readOnly = true)
 	public _Contexto unidadeOrganizacionalFiltroExecutar(Principal usuario, UnidadeOrganizacionalCadFiltroDto filtro) throws Exception {
 		return this._executar(usuario, "UnidadeOrganizacionalFiltroExecutarCh", filtro);

@@ -5,8 +5,8 @@
 'use strict';
 
 angular.module(pNmModulo).factory(pNmFactory,
-  ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams', 'ComunidadeSrv', 'PessoaSrv', 'AtividadeSrv',
-    function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams, ComunidadeSrv, PessoaSrv, AtividadeSrv) {
+  ['$rootScope', '$http', 'toastr', 'SegurancaSrv', 'UtilSrv', '$stateParams', 'ComunidadeSrv', 'PessoaSrv', 'AtividadeSrv', 'UnidadeOrganizacionalSrv',
+    function($rootScope, $http, toastr, SegurancaSrv, UtilSrv, $stateParams, ComunidadeSrv, PessoaSrv, AtividadeSrv, UnidadeOrganizacionalSrv) {
         'ngInject';
         
         var ProjetoCreditoRuralSrv = {
@@ -30,6 +30,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                 ]}).success(function(resposta) {
                     if (resposta && resposta.resultado) {
                         var i = 0;
+                        removerCampo(resposta.resultado, ['@jsonId']);
                         scp.cadastro.apoio.periodicidadeList = resposta.resultado[i++];
                         scp.cadastro.apoio.confirmacaoList = resposta.resultado[i++];
                         scp.cadastro.apoio.fluxoCaixaCodigoList = resposta.resultado[i++];
@@ -100,8 +101,15 @@ angular.module(pNmModulo).factory(pNmFactory,
                 }
                 return $http.get(this.endereco + '/projeto-tecnico-rel', {params: {'idList': idList}});
             }, 
+            supervisaoCreditoRel: function(supervisaoIdList) {
+                SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
+                return $http.get(this.endereco + '/supervisao-credito-rel', {params: {'supervisaoIdList': supervisaoIdList}});
+            }, 
             planilhaUpload: function(registro) {
                 return $http.post(this.endereco + '/planilha-upload', registro);
+            },
+            empregadoPorUnidadeOrganizacional: function(unidadeOrganizacionalList) {
+                return UnidadeOrganizacionalSrv.empregadoPorUnidadeOrganizacional(unidadeOrganizacionalList);
             }
         };
         return ProjetoCreditoRuralSrv;
