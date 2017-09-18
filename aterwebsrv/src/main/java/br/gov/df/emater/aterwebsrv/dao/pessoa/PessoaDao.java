@@ -18,6 +18,8 @@ public interface PessoaDao extends JpaRepository<Pessoa, Integer>, PessoaDaoCust
 
 	Pessoa findByNome(String nome);
 
+	Pessoa findOneById(Integer id);
+
 	Pessoa findOneByApelidoSigla(String string);
 
 	Pessoa findOneByChaveSisater(String chaveSisater);

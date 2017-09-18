@@ -81,7 +81,7 @@ public class MetaTaticaDaoImpl implements MetaTaticaDaoCustom {
 		sql.append("      inner join planejamento.matriz_planejamento on planejamento.matriz_planejamento.meta_estrategica_id = planejamento.meta_estrategica.id ").append("\n"); 
         sql.append("      inner join planejamento.gerencia_tatica on planejamento.gerencia_tatica.id = planejamento.matriz_planejamento.gerencia_tatica_id ").append("\n");
         sql.append("      inner join planejamento.plano_acao on planejamento.plano_acao.matriz_planejamento_id = planejamento.matriz_planejamento.id ").append("\n");
-        sql.append("      inner join pessoa.tbr_unidade on pessoa.tbr_unidade.int_id = planejamento.matriz_planejamento.unidade_organizacional_id ").append("\n");
+        // sql.append("      inner join pessoa.tbr_unidade on pessoa.tbr_unidade.int_id = planejamento.matriz_planejamento.unidade_organizacional_id ").append("\n");
 		sql.append("where planejamento.meta_estrategica.ano = ").append(filtro.getAno()).append(" ").append("\n");
 		sql.append("order by planejamento.matriz_planejamento.codigo ").append("\n");
 

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
 import br.gov.df.emater.aterwebsrv.dto.pessoa.CarteiraProdutorRelFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.pessoa.DeclaracaoProdutorRelFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.pessoa.MesclarPessoaDto;
 import br.gov.df.emater.aterwebsrv.dto.pessoa.PessoaCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 
@@ -58,9 +59,8 @@ public class PessoaRest {
 	}
 
 	@RequestMapping(value = "/mesclar-pessoas", method = RequestMethod.POST)
-	public Resposta mesclarPessoas(@RequestBody Map<String, Integer> pessoas, Principal usuario) throws Exception {
-		return new Resposta ("sdfasdfasdfasdf");
-		//return new Resposta(facadeBo.mesclarPessoas(usuario, pessoas).getResposta());
+	public Resposta mesclarPessoas(@RequestBody MesclarPessoaDto pessoas, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.mesclarPessoas(usuario, pessoas).getResposta());
 	}
 
 	@RequestMapping(value = "/editar", method = RequestMethod.POST)

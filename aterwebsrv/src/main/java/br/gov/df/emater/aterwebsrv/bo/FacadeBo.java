@@ -34,6 +34,7 @@ import br.gov.df.emater.aterwebsrv.dto.indice_producao.BemProducaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.indice_producao.IndiceProducaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.pessoa.CarteiraProdutorRelFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.pessoa.DeclaracaoProdutorRelFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.pessoa.MesclarPessoaDto;
 import br.gov.df.emater.aterwebsrv.dto.pessoa.PessoaCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoCreditoRuralCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoCreditoRuralReceitaDespesaApoioDto;
@@ -459,9 +460,9 @@ public class FacadeBo implements BeanFactoryAware {
 		return this._executar(usuario, "PessoaDeclaracaoProdutorVerificarCmd", filtro);
 	}
 
-	@Transactional(readOnly = true)
-	public _Contexto mesclarPessoas(Principal usuario, Map<String, Integer> pessoas) throws Exception {
-		return this._executar(usuario, "MescalrPessoasCmd", pessoas);
+	@Transactional
+	public _Contexto mesclarPessoas(Principal usuario, MesclarPessoaDto pessoas) throws Exception {
+		return this._executar(usuario, "MesclarPessoasCmd", pessoas);
 	}
 
 
