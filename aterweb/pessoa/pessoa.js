@@ -437,11 +437,13 @@
 
                             pessoaIdList = [];
                             conteudo.forEach( function(item) {
-                                pessoaIdList.push( [item.pessoa.id, item.pessoa.id === conteudo.principal.pessoa.id ? "1" :"0" ]  );
+                                pessoaIdList.push( item.pessoa.id );
                             });
+                            var principalId ;
+                            principalId = conteudo.principal.pessoa.id;
 
                             mensagemSrv.confirmacao(false, '<Font color=red size=4><center>NÃO É POSSÍVEL REVERTER ESSE PROCEDIMENTO! <BR> Tem certeza que você quer mesclar ??? </center></font> ').then(function (conteudo) {
-                               PessoaSrv.mesclarPessoas({ pessoaIdList: pessoaIdList }).success(function(resposta) {
+                               PessoaSrv.mesclarPessoas( { pessoaIdList : pessoaIdList, principalId : principalId } ).success(function(resposta) {
                                     toastr.error('MESCLAGEM CONFIRMADA!!'); 
                                 });    
                             });    

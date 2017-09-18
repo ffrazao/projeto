@@ -226,7 +226,8 @@ var TIMEOUT_TEMPO = 10 * 60;
             });
 
             uiGmapGoogleMapApiProvider.configure({
-                key: 'AIzaSyBDb9apXz3uMJq1RD2HjUqtUfIxSW4GIlE',
+                //key: 'AIzaSyBDb9apXz3uMJq1RD2HjUqtUfIxSW4GIlE',
+                key: 'AIzaSyCkeh_Crkja1TqgT_fjCwpJXyx4TToaZHU',
                 v: '3.24', //defaults to latest 3.X anyhow
                 libraries: 'weather,geometry,visualization,drawing,places'
             });            
