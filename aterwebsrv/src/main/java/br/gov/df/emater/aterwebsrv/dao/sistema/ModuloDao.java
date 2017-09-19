@@ -12,5 +12,7 @@ import br.gov.df.emater.aterwebsrv.modelo.sistema.Modulo;
 public interface ModuloDao extends JpaRepository<Modulo, Integer> {
 	
 	List<Modulo> findByPrincipal(Confirmacao principal);
+
+	Modulo findOneByPrincipal(Confirmacao confirmacao);
 	
 }

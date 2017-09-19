@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.atividade;
 
+import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaReg;
+
 import java.util.Calendar;
 
 import javax.persistence.Entity;
@@ -21,6 +23,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario;
@@ -29,7 +32,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerMilisegundos;
 
 @Entity
 @Table(name = "ocorrencia", schema = EntidadeBase.ATIVIDADE_SCHEMA)
-public class Ocorrencia extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class Ocorrencia extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<Ocorrencia> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -68,6 +71,18 @@ public class Ocorrencia extends EntidadeBase implements _ChavePrimaria<Integer> 
 		super(id);
 	}
 
+	public Ocorrencia(Integer id, Atividade atividade, Confirmacao automatico, Confirmacao incidente, Calendar registro,
+			String relato, Usuario usuario) {
+		super();
+		this.id = id;
+		this.atividade = atividade;
+		this.automatico = automatico;
+		this.incidente = incidente;
+		this.registro = registro;
+		this.relato = relato;
+		this.usuario = usuario;
+	}
+
 	public Atividade getAtividade() {
 		return atividade;
 	}
@@ -95,6 +110,12 @@ public class Ocorrencia extends EntidadeBase implements _ChavePrimaria<Integer> 
 
 	public Usuario getUsuario() {
 		return usuario;
+	}
+
+	@Override
+	public Ocorrencia infoBasica() {
+		return new Ocorrencia(this.id, new Atividade(this.atividade == null ? null : this.atividade.getId()),
+				this.automatico, this.incidente, this.registro, this.relato, infoBasicaReg(this.usuario));
 	}
 
 	public void setAtividade(Atividade atividade) {

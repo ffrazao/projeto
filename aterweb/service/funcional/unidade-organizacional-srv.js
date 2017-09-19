@@ -9,9 +9,11 @@ angular.module(pNmModulo).factory(pNmFactory,
         
         var UnidadeOrganizacionalSrv = {
             endereco: $rootScope.servicoUrl + '/unidade-organizacional',
-            // TODO antes avia um metodo aqui para selecionar comunidades da unidade organizacional. Não existe mais
+            // TODO antes havia um metodo aqui para selecionar comunidades da unidade organizacional. Não existe mais
             // TODO inserir aqui novos metodos
-
+            empregadoPorUnidadeOrganizacional: function(unidadeOrganizacional) {
+                return $http.get(this.endereco + '/empregado-por-unidade-organizacional', {'params': {'unidadeOrganizacionalIdList': unidadeOrganizacional}});
+            }
         };
         return UnidadeOrganizacionalSrv;
     }

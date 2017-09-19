@@ -1,5 +1,8 @@
 package br.gov.df.emater.aterwebsrv.modelo.atividade;
 
+import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaList;
+import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaReg;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -29,6 +32,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo._LogInclusaoAlteracao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.AtividadeFinalidade;
@@ -43,7 +47,8 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 
 @Entity
 @Table(name = "atividade", schema = EntidadeBase.ATIVIDADE_SCHEMA)
-public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer>, _LogInclusaoAlteracao {
+public class Atividade extends EntidadeBase
+		implements _ChavePrimaria<Integer>, _LogInclusaoAlteracao, InfoBasica<Atividade> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -179,6 +184,51 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer>, 
 		super(id);
 	}
 
+	public Atividade(Integer id, Calendar alteracaoData, Usuario alteracaoUsuario, List<AtividadeAssunto> assuntoList,
+			List<AtividadeCadeiaProdutiva> cadeiaProdutivaList, List<AtividadeChaveSisater> chaveSisaterList,
+			String codigo, Calendar conclusao, String detalhamento, Integer duracaoEstimada, Integer duracaoReal,
+			Integer duracaoSuspensao, AtividadeFinalidade finalidade, AtividadeFormato formato, Calendar inclusaoData,
+			Usuario inclusaoUsuario, Calendar inicio, List<AtividadeMetaTatica> metaTaticaList, Metodo metodo,
+			AtividadeNatureza natureza, List<Ocorrencia> ocorrenciaList, Integer percentualConclusao,
+			List<AtividadePessoa> pessoaDemandanteList, List<AtividadePessoa> pessoaExecutorList,
+			Calendar previsaoConclusao, AtividadePrioridade prioridade, ProjetoCreditoRural projetoCreditoRural,
+			Integer publicoEstimado, Integer publicoReal, AtividadeSituacao situacao, Calendar situacaoData,
+			String situacaoMotivo) {
+		super();
+		this.id = id;
+		this.alteracaoData = alteracaoData;
+		this.alteracaoUsuario = alteracaoUsuario;
+		this.assuntoList = assuntoList;
+		this.cadeiaProdutivaList = cadeiaProdutivaList;
+		this.chaveSisaterList = chaveSisaterList;
+		this.codigo = codigo;
+		this.conclusao = conclusao;
+		this.detalhamento = detalhamento;
+		this.duracaoEstimada = duracaoEstimada;
+		this.duracaoReal = duracaoReal;
+		this.duracaoSuspensao = duracaoSuspensao;
+		this.finalidade = finalidade;
+		this.formato = formato;
+		this.inclusaoData = inclusaoData;
+		this.inclusaoUsuario = inclusaoUsuario;
+		this.inicio = inicio;
+		this.metaTaticaList = metaTaticaList;
+		this.metodo = metodo;
+		this.natureza = natureza;
+		this.ocorrenciaList = ocorrenciaList;
+		this.percentualConclusao = percentualConclusao;
+		this.pessoaDemandanteList = pessoaDemandanteList;
+		this.pessoaExecutorList = pessoaExecutorList;
+		this.previsaoConclusao = previsaoConclusao;
+		this.prioridade = prioridade;
+		this.projetoCreditoRural = projetoCreditoRural;
+		this.publicoEstimado = publicoEstimado;
+		this.publicoReal = publicoReal;
+		this.situacao = situacao;
+		this.situacaoData = situacaoData;
+		this.situacaoMotivo = situacaoMotivo;
+	}
+
 	@Override
 	public Calendar getAlteracaoData() {
 		return alteracaoData;
@@ -310,6 +360,20 @@ public class Atividade extends EntidadeBase implements _ChavePrimaria<Integer>, 
 
 	public String getSituacaoMotivo() {
 		return situacaoMotivo;
+	}
+
+	@Override
+	public Atividade infoBasica() {
+		return new Atividade(this.id, this.alteracaoData, infoBasicaReg(this.alteracaoUsuario),
+				infoBasicaList(this.assuntoList), infoBasicaList(this.cadeiaProdutivaList),
+				infoBasicaList(this.chaveSisaterList), this.codigo, this.conclusao, this.detalhamento,
+				this.duracaoEstimada, this.duracaoReal, this.duracaoSuspensao, this.finalidade, this.formato,
+				this.inclusaoData, infoBasicaReg(this.inclusaoUsuario), this.inicio,
+				infoBasicaList(this.metaTaticaList), infoBasicaReg(this.metodo), this.natureza,
+				infoBasicaList(this.ocorrenciaList), this.percentualConclusao,
+				infoBasicaList(this.pessoaDemandanteList), infoBasicaList(this.pessoaExecutorList),
+				this.previsaoConclusao, this.prioridade, infoBasicaReg(this.projetoCreditoRural), this.publicoEstimado,
+				this.publicoReal, this.situacao, this.situacaoData, this.situacaoMotivo);
 	}
 
 	@Override

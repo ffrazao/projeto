@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-07-16T18:17:30 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Capa" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4be54963-8492-4271-af5b-1a708b6a64c7">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Dataset1" uuid="9bec22f8-66f8-421e-b140-89de9192ac33">
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+	</subDataset>
+	<parameter name="RelatorioNome" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Nome do Relatório]]></parameterDescription>
+		<defaultValueExpression><![CDATA[$P{RelatorioNome}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Usuario" class="br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario" isForPrompting="false">
+		<parameterDescription><![CDATA[Usuário Autenticado pelo no Sistema]]></parameterDescription>
+		<defaultValueExpression><![CDATA[$P{Usuario}.getUsername()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Parte" class="java.lang.Integer">
+		<parameterDescription><![CDATA[Número da Parte do Relatório]]></parameterDescription>
+	</parameter>
+	<parameter name="DiretorioJasper" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[DiretorioJasper]]></parameterDescription>
+	</parameter>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="observacao" class="java.lang.String">
+		<fieldDescription><![CDATA[observacao]]></fieldDescription>
+	</field>
+	<field name="dataEmissao" class="java.util.Calendar">
+		<fieldDescription><![CDATA[dataEmissao]]></fieldDescription>
+	</field>
+	<field name="investimentoProprio" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[investimentoProprio]]></fieldDescription>
+	</field>
+	<field name="agencia" class="java.lang.String">
+		<fieldDescription><![CDATA[agencia]]></fieldDescription>
+	</field>
+	<field name="dataRealizacao" class="java.util.Calendar">
+		<fieldDescription><![CDATA[dataRealizacao]]></fieldDescription>
+	</field>
+	<field name="elaboracao" class="java.util.Calendar">
+		<fieldDescription><![CDATA[elaboracao]]></fieldDescription>
+	</field>
+	<field name="custeioProprio" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[custeioProprio]]></fieldDescription>
+	</field>
+	<field name="investimentoList" class="java.util.List">
+		<fieldDescription><![CDATA[investimentoList]]></fieldDescription>
+	</field>
+	<field name="responsavelTecnicoNome" class="java.lang.String">
+		<fieldDescription><![CDATA[responsavelTecnicoNome]]></fieldDescription>
+	</field>
+	<field name="contratacao" class="java.util.Calendar">
+		<fieldDescription><![CDATA[contratacao]]></fieldDescription>
+	</field>
+	<field name="custeioOrcado" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[custeioOrcado]]></fieldDescription>
+	</field>
+	<field name="linhaCredito" class="java.lang.String">
+		<fieldDescription><![CDATA[linhaCredito]]></fieldDescription>
+	</field>
+	<field name="custeioList" class="java.util.List">
+		<fieldDescription><![CDATA[custeioList]]></fieldDescription>
+	</field>
+	<field name="class" class="java.lang.Class">
+		<fieldDescription><![CDATA[class]]></fieldDescription>
+	</field>
+	<field name="unidadeOrganizacional" class="java.lang.String">
+		<fieldDescription><![CDATA[unidadeOrganizacional]]></fieldDescription>
+	</field>
+	<field name="agenteFinanceiro" class="java.lang.String">
+		<fieldDescription><![CDATA[agenteFinanceiro]]></fieldDescription>
+	</field>
+	<field name="finalidade" class="java.lang.String">
+		<fieldDescription><![CDATA[finalidade]]></fieldDescription>
+	</field>
+	<field name="custeioFinanciado" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[custeioFinanciado]]></fieldDescription>
+	</field>
+	<field name="liberacao" class="java.lang.String">
+		<fieldDescription><![CDATA[liberacao]]></fieldDescription>
+	</field>
+	<field name="numeroCedula" class="java.lang.String">
+		<fieldDescription><![CDATA[numeroCedula]]></fieldDescription>
+	</field>
+	<field name="vencimento" class="java.util.Calendar">
+		<fieldDescription><![CDATA[vencimento]]></fieldDescription>
+	</field>
+	<field name="numeroSupervisao" class="java.lang.Integer">
+		<fieldDescription><![CDATA[numeroSupervisao]]></fieldDescription>
+	</field>
+	<field name="investimentoFinanciado" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[investimentoFinanciado]]></fieldDescription>
+	</field>
+	<field name="proponenteNome" class="java.lang.String">
+		<fieldDescription><![CDATA[proponenteNome]]></fieldDescription>
+	</field>
+	<field name="investimentoOrcado" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[investimentoOrcado]]></fieldDescription>
+	</field>
+	<field name="proponenteCpfCnpj" class="java.lang.String">
+		<fieldDescription><![CDATA[proponenteCpfCnpj]]></fieldDescription>
+	</field>
+	<field name="propriedadeNomeList" class="java.util.List">
+		<fieldDescription><![CDATA[propriedadeNomeList]]></fieldDescription>
+	</field>
+	<field name="dataPrevista" class="java.util.Calendar">
+		<fieldDescription><![CDATA[dataPrevista]]></fieldDescription>
+	</field>
+	<field name="recomendacao" class="java.lang.String">
+		<fieldDescription><![CDATA[recomendacao]]></fieldDescription>
+	</field>
+	<field name="status" class="java.lang.String">
+		<fieldDescription><![CDATA[status]]></fieldDescription>
+	</field>
+	<variable name="totalInsumo" class="java.lang.Double" resetType="None">
+		<initialValueExpression><![CDATA[0d]]></initialValueExpression>
+	</variable>
+	<variable name="totalServico" class="java.lang.Double" resetType="None">
+		<initialValueExpression><![CDATA[0d]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="30">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement x="10" y="0" width="70" height="30" uuid="7d69541a-dcc9-4b4a-8027-e16e3e715247">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<imageExpression><![CDATA["jasper/imagens/logo-emater-df.jpg"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="90" y="0" width="380" height="30" uuid="92e574c4-eaeb-4e7c-8124-72bff9694afe">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{RelatorioNome}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20">
+			<staticText>
+				<reportElement x="0" y="0" width="251" height="20" uuid="205a4e60-1d7a-484a-9999-5b4bae161427"/>
+				<textElement verticalAlignment="Top">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Proponente]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="365">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField>
+				<reportElement x="0" y="22" width="251" height="15" uuid="72ec352e-8a38-4183-ab5b-169eab915420">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box padding="0">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$F{proponenteNome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="261" y="22" width="95" height="15" uuid="3e440c37-1fe5-4ad1-9786-22bafe8ec632"/>
+				<box padding="0">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{proponenteCpfCnpj}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="374" y="92" width="200" height="200" uuid="705d5cf1-b4f7-4713-97b3-a47c05a30699"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["src/main/resources/jasper/supervisao_credito/Propriedade.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="38">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField>
+				<reportElement x="210" y="8" width="140" height="15" uuid="4ea6635b-fa82-4fea-a077-46e6c85a2af9">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format(new Date())]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="555" height="2" uuid="ce6a8542-5463-4dd8-ab79-442baca94637"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<image hAlign="Right" vAlign="Middle">
+				<reportElement x="0" y="8" width="45" height="30" uuid="fac3df18-a495-49d6-a48c-d30d4fadac46">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<imageExpression><![CDATA["jasper/imagens/logo-transparente.png"]]></imageExpression>
+			</image>
+		</band>
+	</pageFooter>
+</jasperReport>

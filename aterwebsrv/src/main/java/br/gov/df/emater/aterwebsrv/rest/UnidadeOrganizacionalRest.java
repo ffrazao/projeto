@@ -31,4 +31,9 @@ public class UnidadeOrganizacionalRest {
 		return new Resposta(facadeBo.unidadeOrganizacionalFiltroExecutar(usuario, filtro).getResposta());
 	}
 
+	@RequestMapping(value = "/empregado-por-unidade-organizacional", method = RequestMethod.GET)
+	public Resposta empregadoPorUnidadeOrganizacional(Integer[] unidadeOrganizacionalIdList, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.unidadeOrganizacionalEmpregadoPorUnidadeOrganizacional(usuario, unidadeOrganizacionalIdList).getResposta());
+	}
+
 }

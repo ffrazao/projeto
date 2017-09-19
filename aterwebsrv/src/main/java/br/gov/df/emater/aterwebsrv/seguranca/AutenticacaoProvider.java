@@ -104,6 +104,8 @@ public class AutenticacaoProvider extends DaoAuthenticationProvider {
 			} else {
 				modulo = moduloDao.findOne((Integer) moduloId);
 			}
+		} else {
+			modulo = moduloDao.findOneByPrincipal(Confirmacao.S);
 		}
 		if (modulo == null) {
 			throw new BadCredentialsException("Módulo de acesso não identificado!");

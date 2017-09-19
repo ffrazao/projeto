@@ -1,4 +1,4 @@
-/* global criarEstadosPadrao, segAutorizaAcesso, isUndefOrNull, removerCampo */
+/* global criarEstadosPadrao, segAutorizaAcesso, isUndefOrNull, removerCampo, google */
 
 (function(pNmModulo, pNmController, pNmFormulario, pUrlModulo) {
     'use strict';

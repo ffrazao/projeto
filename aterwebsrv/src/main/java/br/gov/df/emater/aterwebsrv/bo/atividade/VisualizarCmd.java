@@ -16,6 +16,7 @@ import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.dao.atividade.AtividadeDao;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.Atividade;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.AtividadeAssunto;
+import br.gov.df.emater.aterwebsrv.modelo.atividade.AtividadeCadeiaProdutiva;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.AtividadeMetaTatica;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.AtividadePessoa;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.Ocorrencia;
@@ -66,6 +67,19 @@ public class VisualizarCmd extends _Comando {
 				l.add(n);
 			}
 			result.setMetaTaticaList(l);
+		}
+
+		if (result.getCadeiaProdutivaList() != null) {
+			List<AtividadeCadeiaProdutiva> l = new ArrayList<AtividadeCadeiaProdutiva>();
+			for (AtividadeCadeiaProdutiva r : result.getCadeiaProdutivaList()) {
+				AtividadeCadeiaProdutiva n = new AtividadeCadeiaProdutiva();
+				n.setId(r.getId());
+				if (r.getCadeiaProdutiva() != null) {					
+					n.setCadeiaProdutiva(r.getCadeiaProdutiva().infoBasica());
+				}
+				l.add(n);
+			}
+			result.setCadeiaProdutivaList(l);
 		}
 
 		

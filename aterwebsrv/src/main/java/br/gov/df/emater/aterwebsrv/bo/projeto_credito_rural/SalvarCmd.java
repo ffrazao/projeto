@@ -27,6 +27,7 @@ import br.gov.df.emater.aterwebsrv.dao.projeto_credito_rural.ProjetoCreditoRural
 import br.gov.df.emater.aterwebsrv.dao.projeto_credito_rural.ProjetoCreditoRuralParecerTecnicoDao;
 import br.gov.df.emater.aterwebsrv.dao.projeto_credito_rural.ProjetoCreditoRuralPublicoAlvoPropriedadeRuralDao;
 import br.gov.df.emater.aterwebsrv.dao.projeto_credito_rural.ProjetoCreditoRuralReceitaDespesaDao;
+import br.gov.df.emater.aterwebsrv.dao.projeto_credito_rural.SupervisaoCreditoDao;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.Atividade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FinanciamentoTipo;
@@ -41,6 +42,7 @@ import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRu
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralParecerTecnico;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralPublicoAlvoPropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralReceitaDespesa;
+import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.SupervisaoCredito;
 
 @Service("ProjetoCreditoRuralSalvarCmd")
 public class SalvarCmd extends _SalvarCmd {
@@ -77,6 +79,9 @@ public class SalvarCmd extends _SalvarCmd {
 
 	@Autowired
 	private ProjetoCreditoRuralReceitaDespesaDao projetoCreditoRuralReceitaDespesaDao;
+	
+	@Autowired
+	private SupervisaoCreditoDao supervisaoCreditoDao;
 
 	public SalvarCmd() {
 	}
@@ -111,6 +116,7 @@ public class SalvarCmd extends _SalvarCmd {
 		List<ProjetoCreditoRuralPublicoAlvoPropriedadeRural> publicoAlvoPropriedadeRuralList = null;
 		List<ProjetoCreditoRuralReceitaDespesa> despesaList = null;
 		List<ProjetoCreditoRuralReceitaDespesa> receitaList = null;
+		List<SupervisaoCredito> supervisaoCreditoList = null;
 
 		List<ProjetoCreditoRuralArquivo> arquivoList = null;
 
@@ -140,6 +146,7 @@ public class SalvarCmd extends _SalvarCmd {
 		publicoAlvoPropriedadeRuralList = (List<ProjetoCreditoRuralPublicoAlvoPropriedadeRural>) limparChavePrimaria(result.getPublicoAlvoPropriedadeRuralList());
 		despesaList = (List<ProjetoCreditoRuralReceitaDespesa>) limparChavePrimaria(result.getDespesaList());
 		receitaList = (List<ProjetoCreditoRuralReceitaDespesa>) limparChavePrimaria(result.getReceitaList());
+		supervisaoCreditoList = (List<SupervisaoCredito>) limparChavePrimaria(result.getSupervisaoCreditoList());
 		arquivoList = (List<ProjetoCreditoRuralArquivo>) limparChavePrimaria(result.getArquivoList());
 
 		// salvar a tabela principal
@@ -199,6 +206,15 @@ public class SalvarCmd extends _SalvarCmd {
 		}
 		salvarTabelaDependente(result, "receitaList", projetoCreditoRuralReceitaDespesaDao, ProjetoCreditoRuralReceitaDespesa.class, receitaList);
 
+		// inserir o campo ordem
+		if (supervisaoCreditoList != null && supervisaoCreditoList.size() > 0) {
+			supervisaoCreditoList.sort((s1, s2) -> s1.getDataPrevista().compareTo(s2.getDataPrevista()));
+			for (int ordem = 1; ordem <= supervisaoCreditoList.size(); ordem++) {
+				supervisaoCreditoList.get(ordem-1).setOrdem(ordem);
+			}
+		}		
+		salvarTabelaDependente(result, "supervisaoCreditoList", supervisaoCreditoDao, SupervisaoCredito.class, supervisaoCreditoList);
+		
 		// salvar arquivos vinculados
 		List<ProjetoCreditoRuralArquivo> projetoCreditoRuralArquivoList = projetoCreditoRuralArquivoDao.findByProjetoCreditoRural(result);
 		if (!CollectionUtils.isEmpty(projetoCreditoRuralArquivoList)) {

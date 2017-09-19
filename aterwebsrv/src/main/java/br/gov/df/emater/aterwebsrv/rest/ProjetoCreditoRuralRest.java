@@ -59,6 +59,11 @@ public class ProjetoCreditoRuralRest {
 		return new Resposta(facadeBo.projetoCreditoRuralProjetoTecnicoRel(usuario, idList).getResposta());
 	}
 
+	@RequestMapping(value = "/supervisao-credito-rel", method = RequestMethod.GET)
+	public Resposta supervisaoCreditoRel(@RequestParam(value = "supervisaoIdList", required = true) Integer[] supervisaoIdList, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.projetoCreditoRuralSupervisaoCreditoRel(usuario, supervisaoIdList).getResposta());
+	}
+
 	@RequestMapping(value = "/planilha-upload", method = RequestMethod.POST)
 	public Resposta planilhaUpload(@RequestBody ProjetoCreditoRuralReceitaDespesaApoioDto registro, Principal usuario) throws Exception {
 		return new Resposta(facadeBo.projetoCreditoRuralPlanilhaUpload(usuario, registro).getResposta());

@@ -33,6 +33,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                    'MetaTatica'
                 ]}).success(function(resposta) {
                     if (resposta && resposta.resultado) {
+                        removerCampo(resposta.resultado, ['@jsonId']);
                         scp.cadastro.apoio.generoList = resposta.resultado[0];
                         scp.cadastro.apoio.pessoaGeracaoList = resposta.resultado[1];
                         scp.cadastro.apoio.pessoaSituacaoList = resposta.resultado[2];

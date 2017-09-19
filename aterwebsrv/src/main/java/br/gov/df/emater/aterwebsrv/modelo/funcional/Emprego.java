@@ -1,7 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.funcional;
 
-import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaReg;
 import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaList;
+import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaReg;
 
 import java.util.Calendar;
 

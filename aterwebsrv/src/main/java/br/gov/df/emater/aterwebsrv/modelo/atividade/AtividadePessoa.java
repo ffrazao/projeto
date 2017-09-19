@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.modelo.atividade;
 
+import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaReg;
+
 import java.util.Calendar;
 
 import javax.persistence.Entity;
@@ -20,6 +22,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.gov.df.emater.aterwebsrv.modelo.EntidadeBase;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo._ChavePrimaria;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.AtividadePessoaParticipacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
@@ -30,7 +33,7 @@ import br.gov.df.emater.aterwebsrv.rest.json.JsonSerializerData;
 
 @Entity
 @Table(name = "atividade_pessoa", schema = EntidadeBase.ATIVIDADE_SCHEMA)
-public class AtividadePessoa extends EntidadeBase implements _ChavePrimaria<Integer> {
+public class AtividadePessoa extends EntidadeBase implements _ChavePrimaria<Integer>, InfoBasica<AtividadePessoa> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -81,7 +84,24 @@ public class AtividadePessoa extends EntidadeBase implements _ChavePrimaria<Inte
 		super(id);
 	}
 
-	public AtividadePessoa(UnidadeOrganizacional unidadeOrganizacional, Pessoa pessoa, Calendar inicio, AtividadePessoaParticipacao participacao, Confirmacao responsavel) {
+	public AtividadePessoa(Integer id, Atividade atividade, Confirmacao ativo, Integer duracao, Calendar inicio,
+			AtividadePessoaParticipacao participacao, Pessoa pessoa, Confirmacao responsavel, Calendar termino,
+			UnidadeOrganizacional unidadeOrganizacional) {
+		super();
+		this.id = id;
+		this.atividade = atividade;
+		this.ativo = ativo;
+		this.duracao = duracao;
+		this.inicio = inicio;
+		this.participacao = participacao;
+		this.pessoa = pessoa;
+		this.responsavel = responsavel;
+		this.termino = termino;
+		this.unidadeOrganizacional = unidadeOrganizacional;
+	}
+
+	public AtividadePessoa(UnidadeOrganizacional unidadeOrganizacional, Pessoa pessoa, Calendar inicio,
+			AtividadePessoaParticipacao participacao, Confirmacao responsavel) {
 		super();
 		this.unidadeOrganizacional = unidadeOrganizacional;
 		this.pessoa = pessoa;
@@ -130,6 +150,13 @@ public class AtividadePessoa extends EntidadeBase implements _ChavePrimaria<Inte
 
 	public UnidadeOrganizacional getUnidadeOrganizacional() {
 		return unidadeOrganizacional;
+	}
+
+	@Override
+	public AtividadePessoa infoBasica() {
+		return new AtividadePessoa(this.id, new Atividade(this.atividade == null ? null : this.atividade.getId()),
+				this.ativo, this.duracao, this.inicio, this.participacao, infoBasicaReg(this.pessoa), this.responsavel,
+				this.termino, (UnidadeOrganizacional) infoBasicaReg(this.unidadeOrganizacional));
 	}
 
 	public void setAtividade(Atividade atividade) {
