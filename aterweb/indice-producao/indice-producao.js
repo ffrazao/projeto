@@ -1,5 +1,5 @@
 /* jslint evil: true, browser: true, plusplus: true, loopfunc: true */
-/* global criarEstadosPadrao, removerCampo, isUndefOrNull */
+/* global criarEstadosPadrao, removerCampo, isUndefOrNull, isUndefOrNullOrEmpty */
 
 (function(pNmModulo, pNmController, pNmFormulario, pUrlModulo) {
     'use strict';
@@ -11,13 +11,14 @@
             criarEstadosPadrao($stateProvider, pNmModulo, pNmController, pUrlModulo);
         }
     ]);
-    angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'IndiceProducaoSrv', 'PropriedadeRuralSrv', '$timeout',
-        function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, IndiceProducaoSrv, PropriedadeRuralSrv, $timeout) {
+    angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'IndiceProducaoSrv', 'PropriedadeRuralSrv', '$timeout', '$http', 
+        function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, IndiceProducaoSrv, PropriedadeRuralSrv, $timeout, $http) {
             'ngInject';
 
             // inicializacao
             $scope.crudInit($scope, $state, modalCadastro, pNmFormulario, IndiceProducaoSrv);
-
+            $scope.crudVaiPara($scope, $scope.stt, 'form');
+            
             $scope.produtoresNvg = new FrzNavegadorParams([]);
 
             // código para verificar se o modal está ou não ativo
@@ -133,42 +134,38 @@
                 // delete $scope.cadastro.apoio.unidadeOrganizacional;
                 // delete $scope.cadastro.apoio.porProdutor;
             };
+            $rootScope.confirmar = function(scp) {
+                scp.navegador.submetido = true;
+                return true;
+            };
+
             $scope.confirmarIncluir = function(scp) {
-                if (!scp.confirmar(scp)) {
-                    return;
-                }
+                if (!scp.confirmar(scp)) { return;}
                 if (scp.cadastro.registro.publicoAlvo && scp.cadastro.registro.publicoAlvo.pessoa) {
                     $scope.preparaClassePessoa(scp.cadastro.registro.publicoAlvo.pessoa);
                 }
-                var reg = angular.copy(scp.cadastro.registro);
-                removerCampo(reg, ['@jsonId', 'formula', 'bemClassificacao']);
 
-                // atualizar o bem classificado
-                reg.bemClassificado = angular.copy(reg.bemProducaoList[0]);
+                var tmp, reg;
 
-                if (reg.producaoProprietarioList && reg.producaoProprietarioList.length) {
-                    reg.producaoProprietarioList.forEach(function(v,k) {
-                        v.bemClassificado = angular.copy(reg.bemClassificado);
-                        v.ano = angular.copy(reg.ano);
-                    });
-                }
+                reg = { producaoProprietario : { unidadeOrganizacional :scp.cadastro.registro.unidadeOrganizacional,
+                                                 publicoAlvo: scp.cadastro.registro.publicoAlvo,
+                                                 propriedadeRural: scp.cadastro.registro.propriedadeRural,
+                                                 ano: scp.cadastro.registro.ano
+                                               },
+                        producaoAgricolaList : scp.cadastro.registro.producaoAgricolaList,
+                        producaoAninalList : scp.cadastro.registro.producaoAnimalList,
+                        producaoNaoAgricolaList : scp.cadastro.registro.producaoAgroindustria,
+                        producaoArtesanatoList : scp.cadastro.registro.producaoArtesanatoList,
+                        producaoFloriculturaList : scp.cadastro.registro.producaoFloriculturaList,
+                      };
+                removerCampo(reg, ['@jsonId', 'formula', 'bemClassificacao']); 
+
+                console.log(reg);
+
 
                 // preparar composicao da forma de producao
                 scp.servico.incluir(reg).success(function(resposta) {
                     if (resposta.mensagem && resposta.mensagem === 'OK') {
-                        scp.navegador.voltar(scp);
-                        scp.navegador.mudarEstado('VISUALIZANDO');
-                        scp.crudVaiPara(scp, scp.stt, 'form');
-                        scp.navegador.submetido = false;
-                        scp.navegador.dados.push(scp.cadastro.registro);
-                        if (scp.navegador.selecao.tipo === 'U') {
-                            scp.navegador.selecao.item = scp.cadastro.registro;
-                        } else {
-                            scp.navegador.folhaAtual = scp.navegador.selecao.items.length;
-                            scp.navegador.selecao.items.push(scp.cadastro.registro);
-                        }
-                        scp.navegador.refresh();
-
                         toastr.info('Operação realizada!', 'Informação');
 
                     } else {
@@ -177,6 +174,8 @@
                 }).error(function(erro) {
                     toastr.error(erro, 'Erro ao incluir');
                 });
+
+
             };
             $scope.encontraBemClassificacao = function(id, lista) {
                 if (!lista) {
@@ -319,6 +318,7 @@
             $scope.media = function(array, campo) {
                 return $scope.soma(array, campo) / (array && array.length ? array.length : 1);
             };
+            
             $scope.formula = function(formula, itemA, itemB, itemC, array, indice) {
                 if (!formula) {
                     return null;
@@ -334,6 +334,7 @@
                 if (array && indice) {
                     array[indice] = result;
                 }
+                console.log( formula );
                 return result;
             };
             $scope.toggleChildren = function(scope) {
@@ -577,6 +578,65 @@
                     $log.info('Modal dismissed at: ' + new Date());
                 });
             };
+
+            $scope.podeCarregar = function(){
+                if( !isUndefOrNullOrEmpty($scope.cadastro.registro.producaoAgricolaList) || !isUndefOrNullOrEmpty($scope.cadastro.registro.producaoAnimalList)       ||
+                    !isUndefOrNullOrEmpty($scope.cadastro.registro.producaoFloriculturaList) || !isUndefOrNullOrEmpty($scope.cadastro.registro.producaoAgrindustriaList) ||
+                    !isUndefOrNullOrEmpty($scope.cadastro.registro.producaoArtesanatoList) ) {
+                    mensagemSrv.confirmacao(false, 'Carregar o IPA, irá apagar os dados já em tela. Confirma a operação?').then(function (conteudo) {
+                        return true;    
+                    });
+                } else {  
+                    return true;  
+                }  
+                return false;
+            };
+
+            $scope.cargaEscritorio = function() {
+                if(  $scope.podeCarregar() ){
+                    var bem, forma, tmp;
+                    $scope.cadastro.filtro.ano =  $scope.cadastro.registro.ano;
+                    $scope.cadastro.filtro.unidadeOrganizacional =  $scope.cadastro.registro.unidadeOrganizacional;
+                    IndiceProducaoSrv.producao($scope.cadastro.filtro).success( function( resposta){
+                        $scope.cadastro.registro.producaoAgricolaList = resposta.resultado.producaoAgricolaList;
+                        for (var i in $scope.cadastro.registro.producaoAgricolaList ) {
+                            bem = $scope.procuraNaLista( $scope.cadastro.apoio.bemClassificadoAgricolaList, $scope.cadastro.registro.producaoAgricolaList[i].bemClassificado.id );
+                            $scope.cadastro.registro.producaoAgricolaList[i].bemClassificado.bemClassificacao = bem.bemClassificacao ;
+                            for( var j in $scope.cadastro.registro.producaoAgricolaList[i].producaoComposicaoList ){
+                                if( isUndefOrNull($scope.cadastro.registro.producaoAgricolaList[i].producaoComposicaoList[j].formaProducaoValor.id)){
+                                    tmp = $scope.procuraCampoNaLista( $scope.cadastro.registro.producaoAgricolaList, '@jsonId', $scope.cadastro.registro.producaoAgricolaList[i].producaoComposicaoList[j].formaProducaoValor);
+                                    $scope.cadastro.registro.producaoAgricolaList[i].producaoComposicaoList[j].formaProducaoValor = tmp;
+                                }
+                            }
+                        }
+                    });
+                }
+            };
+
+           $scope.procuraCampoNaLista = function(contexto, campo, procura) {
+                if (isUndefOrNull(contexto)) { return;} 
+                if (!isUndefOrNull(contexto[campo]) && contexto[campo]===procura ){ return contexto;  }
+                if (contexto instanceof Array || contexto instanceof Object) {
+                    for (var x in contexto){
+                        if (Object.hasOwnProperty.call(contexto, x)) {
+                            var result = $scope.procuraCampoNaLista(contexto[x], campo, procura);
+                            if (result !== undefined) { return result; }
+                        }
+                    }
+                }
+               
+            };
+
+           $scope.procuraNaLista = function( lista, obj ) {
+                for (var j=0; j < lista.length; ++j) {
+                   if (lista[j].id === obj ) {
+                        return  lista[j];
+
+                   }
+                }
+                return false;
+            };                
+
             // fim ações especiais
 
             // inicio trabalho tab
@@ -659,8 +719,7 @@
 
             $scope.$watch('cadastro.registro.publicoAlvo.id', function(novo) {
 
-                if ($scope.cadastro.apoio.tipoLancamento === 'PA' &&
-                    $scope.cadastro.registro.publicoAlvo &&
+                if ($scope.cadastro.registro.publicoAlvo &&
                     $scope.cadastro.registro.publicoAlvo.id) {
 
                     PropriedadeRuralSrv.filtrarPorPublicoAlvoUnidadeOrganizacionalComunidade({
@@ -723,7 +782,6 @@
             });
 
 
-
             $scope.$watch('cadastro.registro.producaoList', function(k, v) {
                 if (!$scope.cadastro.registro.producaoList || !$scope.cadastro.registro.producaoList.length) {
                     return;
@@ -749,6 +807,8 @@
                 $scope.cadastro.registro.propriedadeRural = null;
             }, true);
 
+
+
             // fim dos watches
 
             // quebra galho para funcionar a inclusao externa
@@ -764,4 +824,6 @@
             }
         }
     ]);
+
+
 })('indiceProducao', 'IndiceProducaoCtrl', 'Cadastro de Índices de Produção', 'indice-producao');

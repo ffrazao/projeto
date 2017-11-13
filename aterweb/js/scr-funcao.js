@@ -11,6 +11,10 @@ function isUndefOrNull(variavel) {
     return typeof variavel === "undefined" || variavel === null;
 }
 
+function isUndefOrNullOrEmpty(variavel) {
+    return typeof variavel === "undefined" || variavel === null || variavel.length === 0;
+}
+
 String.prototype.format = function() {
     var formatted = this;
     for (var i = 0; i < arguments.length; i++) {

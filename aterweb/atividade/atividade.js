@@ -211,6 +211,7 @@
             };
 
             $scope.confirmarIncluirAntes = function(cadastro) {
+                console.log(cadastro);
                 return confirmarSalvar(cadastro);
             };
 

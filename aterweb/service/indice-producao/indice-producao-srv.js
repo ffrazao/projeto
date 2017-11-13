@@ -78,21 +78,59 @@ angular.module(pNmModulo).factory(pNmFactory,
                 this.bemClassificacaoMatriz().success(function(resposta) {
                     if (resposta && resposta.resultado) {
                         removerCampo(resposta.resultado, ['@jsonId']);
-                        scp.cadastro.apoio.bemClassificadoList = resposta.resultado.bemClassificadoList;
+
+                        scp.cadastro.apoio.bemClassificadoAgricolaList = resposta.resultado.bemClassificadoAgricolaList;
+                        scp.cadastro.apoio.bemClassificadoAnimalList = resposta.resultado.bemClassificadoAnimalList;
+                        scp.cadastro.apoio.bemClassificadoFloriculturaList = resposta.resultado.bemClassificadoFloricuturaList;
+                        scp.cadastro.apoio.bemClassificadoArtesanatoList = resposta.resultado.bemClassificadoArtesanatoList;
+                        scp.cadastro.apoio.bemClassificadoAgroindustriaList = resposta.resultado.bemClassificadoAgroindustriaList;                        
+                        scp.cadastro.apoio.bemClassificadoAnimalList = resposta.resultado;
                         scp.cadastro.apoio.bemClassificacaoList = resposta.resultado.bemClassificacaoList;
                         scp.cadastro.apoio.bemClassificacaoMatrizList = resposta.resultado.bemClassificacaoMatrizList;
+                        
+                        scp.cadastro.apoio.agroindustriaTipo =  resposta.resultado.bemClassificacaoList[0].bemClassificacaoList[3].bemClassificacaoList[0].bemClassificacaoList;
+                        scp.cadastro.apoio.artesanatoTipo =  resposta.resultado.bemClassificacaoList[0].bemClassificacaoList[3].bemClassificacaoList[1].bemClassificacaoList;
+                        scp.cadastro.apoio.animalTipo =  resposta.resultado.bemClassificacaoList[0].bemClassificacaoList[2].bemClassificacaoList;
 
-                        scp.cadastro.filtro.bemClassificacaoListTemp = angular.copy(scp.cadastro.apoio.bemClassificacaoList);
-
-                        scp.cadastro.apoio.bemClassificadoList.forEach(function (v,k) {
+                        scp.cadastro.apoio.bemClassificadoAgricolaList.forEach(function (v,k) {
                             for (var classificacao in scp.cadastro.apoio.bemClassificacaoMatrizList) {
                                 if (v.bemClassificacao.id === scp.cadastro.apoio.bemClassificacaoMatrizList[classificacao].id) {
                                     v.bemClassificacao = angular.copy(scp.cadastro.apoio.bemClassificacaoMatrizList[classificacao]);
                                     break;
                                 }
-
                             }
                         });
+
+                        scp.cadastro.apoio.bemClassificadoFloriculturaList.forEach(function (v,k) {
+                            for (var classificacao in scp.cadastro.apoio.bemClassificacaoMatrizList) {
+                                if (v.bemClassificacao.id === scp.cadastro.apoio.bemClassificacaoMatrizList[classificacao].id) {
+                                    v.bemClassificacao = angular.copy(scp.cadastro.apoio.bemClassificacaoMatrizList[classificacao]);
+                                    break;
+                                }
+                            }
+                        });
+
+                        scp.cadastro.apoio.bemClassificadoAgroindustriaList.forEach(function (v,k) {
+                            for (var classificacao in scp.cadastro.apoio.bemClassificacaoMatrizList) {
+                                if (v.bemClassificacao.id === scp.cadastro.apoio.bemClassificacaoMatrizList[classificacao].id) {
+                                    v.bemClassificacao = angular.copy(scp.cadastro.apoio.bemClassificacaoMatrizList[classificacao]);
+                                    break;
+                                }
+                            }
+                        });
+
+                        scp.cadastro.apoio.bemClassificadoArtesanatoList.forEach(function (v,k) {
+                            for (var classificacao in scp.cadastro.apoio.bemClassificacaoMatrizList) {
+                                if (v.bemClassificacao.id === scp.cadastro.apoio.bemClassificacaoMatrizList[classificacao].id) {
+                                    v.bemClassificacao = angular.copy(scp.cadastro.apoio.bemClassificacaoMatrizList[classificacao]);
+                                    break;
+                                }
+                            }
+                        });
+
+                        
+
+
                     }
                 });
                 // fim captar as listas de apoio
@@ -141,6 +179,9 @@ angular.module(pNmModulo).factory(pNmFactory,
             },
             bemClassificacaoMatriz : function(id) {
                 return $http.get(this.endereco + '/bem-classificacao-matriz', {cache: true});
+            },
+            producao : function(filtro) {
+                return $http.post(this.endereco + '/producao', filtro );
             },
         };
         return IndiceProducaoSrv;

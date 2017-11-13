@@ -1,0 +1,135 @@
+<div class="panel panel-default" ng-class="{'ng-invalid': producaoArgicolaFrm.producaoList.$error.ngValorMin}" id="producaoArgicolaPnl">
+    <div class="panel-heading container-fluid">
+        <frz-navegador
+            ng-model="producaoArgicolaNvg" exibe-nome-botao="false"
+            dados="cadastro.registro.producaoAgricolaList"
+            acoes-especiais="acoesEspeciais"
+            on-abrir = "abrir()"
+            on-agir = "agir()"
+            on-editar = "editar()"
+            on-especial = "especial()"
+            on-excluir = "excluir()"
+            on-filtrar = "filtrar()"
+            on-incluir = "incluir()"
+            on-listar = "listar()"
+            on-navegar-primeiro = "navegarPrimeiro()"
+            on-navegar-anterior = "navegarAnterior()"
+            on-navegar-proximo = "navegarPosterior()"
+            on-navegar-ultimo = "navegarUltimo()"
+            on-proxima-pagina="proximaPagina()"
+            on-ultima-pagina="ultimaPagina()"
+            >
+        </frz-navegador>
+    </div>
+    <div class="painel-body"  ng-hide="cadastro.registro.producaoAgricolaList.length">
+        <div class="alert alert-warning" style="margin: 0px;" role="alert">
+            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+            Nenhum registro localizado!
+        </div>
+    </div>
+    <div class="table-responsive" >
+        <ng-form name="producaoArgicolaFrm">
+            <table class="table table-striped" >
+                <thead>
+                    <tr>
+                        <th rowspan="2">
+                            <frz-seletor ng-model="producaoArgicolaNvg"></frz-seletor>
+                            #
+                        </th>
+                        <th>Variedade</th>
+                        <th>Sistema</th>
+                        <th>Uso D`Água</th>
+                        <th>Proteção/Época/Forma</th>
+                        <th>Área</th>
+                        <th>Produtividade</th>
+                        <th>Produção</th>
+                        <th ng-show="cadastro.registro.publicoAlvo">Preço Unitário</th>
+                        <th ng-show="cadastro.registro.publicoAlvo">Valor Total</th>
+                        <th ng-show="!cadastro.registro.publicoAlvo && cadastro.registro.unidadeOrganizacional ">Qtd Produtores</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr ng-repeat="producaoAgricola in cadastro.registro.producaoAgricolaList " ng-click="producaoArgicolaNvg.folhaAtual = $index + ((producaoArgicolaNvg.paginaAtual-1) * producaoArgicolaNvg.tamanhoPagina)">
+                        <td width="30px">
+                            <input type="radio" ng-model="producaoArgicolaNvg.selecao.item" ng-value="producaoAgricola"/>
+                           {{$index + 1 + ((producaoArgicolaNvg.paginaAtual-1) * producaoArgicolaNvg.tamanhoPagina)}}
+                        </td>
+                        <td>
+                            <div class="form-group" >
+                                <select class="form-control input-sm" style="min-width: 100px;"
+                                    id="bemProducaoList_{{$index}}"
+                                    name="bemProducaoList_{{$index}}"
+                                    ng-model="producaoAgricola.bemClassificado" 
+                                    ng-options="sub as sub.nome for sub in cadastro.apoio.bemClassificadoAgricolaList | orderBy: 'ordem' track by sub.id" 
+                                    ng-required="true">
+                                </select>
+                                
+                            </div>
+                        </td>
+                        <td ng-repeat="forma in producaoAgricola.bemClassificado.bemClassificacao.bemClassificacaoFormaProducaoItemList | orderBy: 'ordem'" >
+                            <select class="form-control input-sm" style="min-width: 100px;"
+                                id="formaProducaoValor_{{$parent.$index}}_{{$index}}"
+                                name="formaProducaoValor_{{$parent.$index}}_{{$index}}"
+                                ng-model="cadastro.registro.producaoAgricolaList[$parent.$index].producaoComposicaoList[$index].formaProducaoValor" 
+                                ng-options="sub as sub.nome for sub in forma.formaProducaoItem.formaProducaoValorList | orderBy: 'ordem' track by sub.id" 
+                                ng-required="true">
+                            </select>
+                            <div class="label label-danger" ng-show="navegador.submetido && producaoArgicolaFrm.formaProducaoValor_{{$parent.$index}}_{{$parent.$parent.$index}}.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                        <td >
+                            <input class="form-control input-sm text-right" id="area_{{$index}}" name="area_{{$index}}" ng-model="producaoAgricola.itemAValor" ng-required="true" ui-number-mask="3" style="min-width: 50px;" ng-blur="calcula($index, 'itemAValor');" ng-show="producaoAgricola.bemClassificado">
+                            <div class="label label-danger" ng-show="navegador.submetido && producaoArgicolaFrm.itemAValor_{{$index}}.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                        <td>
+                            <input class="form-control input-sm text-right" id="produtividade_{{$index}}" name="produtividade_{{$index}}" 
+                                ng-model="producaoAgricola.itemBValor" ng-required="true" ui-number-mask="3" style="min-width: 50px;" 
+                                 ng-blur="calcula($index, 'itemBValor');" ng-show="producaoAgricola.bemClassificado"
+                                  title="Produtividade Min: {{producaoAgricola.bemClassificado.produtividadeMin}} Max: {{producaoAgricola.bemClassificado.produtividadeMax}}" >
+                            <span ng-show="producaoAgricola.bemClassificado">({{ producaoAgricola.bemClassificado.bemClassificacao.unidadeMedida.nome}})</span>
+                            <div class="label label-danger" ng-show="navegador.submetido && producaoArgicolaFrm.itemAValor_{{$index}}.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                        
+                        <td>
+                            <input class="form-control input-sm text-right" id="producao_{{$index}}" name="producao_{{$index}}" ng-model="producaoAgricola.volume" ng-required="true" ui-number-mask="3" style="min-width: 50px;" ng-blur="calcula($index, 'volume');" ng-show="producaoAgricola.bemClassificado">
+                            <div class="label label-danger" ng-show="navegador.submetido && producaoArgicolaFrm.itemAValor_{{$index}}.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                        <td ng-show="cadastro.registro.publicoAlvo && producaoAgricola.bemClassificado">
+                            <input class="form-control input-sm text-right" id="valorUnitario_{{$index}}" name="valorUnitario_{{$index}}" ng-model="producaoAgricola.valorUnitario" ng-required="false" ui-money-mask="2" style="min-width: 50px;" ng-show="cadastro.registro.publicoAlvo && producaoAgricola.bemClassificado">
+                            <div class="label label-danger" ng-show="navegador.submetido && producaoArgicolaFrm.valorUnitario_{{$index}}.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                        <td ng-show="cadastro.registro.publicoAlvo && producaoAgricola.bemClassificado">({{ producaoAgricola.volume * producaoAgricola.valorUnitario | currency }})
+                        </td>
+
+                        <td ng-if="cadastro.registro.unidadeOrganizacional && !cadastro.registro.publicoAlvo">
+                            <input class="form-control input-sm text-right" id="quantidadeProdutores_{{$index}}" name="quantidadeProdutores_{{$index}}" ng-model="producaoAgricola.quantidadeProdutores" ng-required="false" ui-number-mask="0" style="min-width: 50px;" ng-show="producaoAgricola.bemClassificado">
+                            <div class="label label-danger" ng-show="navegador.submetido && producaoArgicolaFrm.quantidadeProdutores_{{$index}}.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+        </ng-form>
+    </div>
+    <div class="panel-footer">
+    </div>
+</div>
