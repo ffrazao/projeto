@@ -2,6 +2,7 @@ package br.gov.df.emater.aterwebsrv.bo.indice_producao;
 
 import static br.gov.df.emater.aterwebsrv.bo.indice_producao.IndiceProducaoUtil.getComposicaoValorId;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -9,6 +10,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -24,13 +27,15 @@ import br.gov.df.emater.aterwebsrv.dao.indice_producao.BemDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoComposicaoDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.ProducaoProprietarioDao;
+import br.gov.df.emater.aterwebsrv.dto.indice_producao.ProducaoCadDto;
+import br.gov.df.emater.aterwebsrv.dto.indice_producao.ProducaoGravaDto;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioNumero;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FormulaProduto;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.UnidadeOrganizacionalClassificacao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoComposicao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoProprietario;
-
+          
 @Service("IndiceProducaoSalvarCmd")
 public class SalvarCmd extends _SalvarCmd {
 
@@ -60,14 +65,43 @@ public class SalvarCmd extends _SalvarCmd {
 
 	public SalvarCmd() {
 	}
-
+	
+	
+	
+	
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
+
+
+		final ProducaoGravaDto result = (ProducaoGravaDto) contexto.getRequisicao();
+		
+		
+		//ProducaoProprietario producaoProprietario =  result.getProducaoProprietario();
+		List<Object> producaoAgricolaList = result.getProducaoAgricolaList();
+
+
+		ObjectMapper mapper = new ObjectMapper();
+		String json = mapper.writeValueAsString(result);
+        System.out.println("JSON = " + json);
+			 
+		
+		// atualizar o log do registro
+		//logAtualizar(producao, contexto);
+
+	
+		//contexto.setResposta(producao.getId());
+		return false;
+	}
+
+
+	
+	public boolean executarOld(_Contexto contexto) throws Exception {
 
 		final ProducaoProprietario result = (ProducaoProprietario) contexto.getRequisicao();
 		
 		contexto.put("producaoProprietarioList", result.getProducaoProprietarioList());
 
+		
 		// criticar o registro
 		if (result.getUnidadeOrganizacional() == null && result.getPublicoAlvo() == null && result.getPropriedadeRural() == null) {
 			throw new BoException("Não foi informado o responsável pela produção.");
@@ -81,6 +115,7 @@ public class SalvarCmd extends _SalvarCmd {
 		if (CollectionUtils.isEmpty(result.getProducaoList())) {
 			throw new BoException("Não foi informado a forma de produção do bem.");
 		}
+		
 
 		// atualizar o log do registro
 		logAtualizar(result, contexto);

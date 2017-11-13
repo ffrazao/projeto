@@ -77,13 +77,13 @@ public class ProducaoProprietario extends EntidadeBase implements _ChavePrimaria
 	@OneToMany(mappedBy = "producaoProprietario")
 	private List<Producao> producaoList;
 
-	@Transient
 	// esta propriedade do objeto é exclusiva para envio à camada de visão do
 	// detalhamento, ou seja, os registros de producao dos produtores da unidade
 	// organizacional. É usado como argumento de filtro os registros cuja
 	// produçao dos produtores seja do mesmo ano, do mesmo produto e da mesma
 	// unidade organizacional vinculada à comunidade da propriedade rural do
 	// produtor
+	@Transient
 	private List<ProducaoProprietario> producaoProprietarioList;
 
 	@ManyToOne

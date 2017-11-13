@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.BemClassificacaoDao;
 import br.gov.df.emater.aterwebsrv.dto.indice_producao.BemClassificacaoCadDto;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacao;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacaoFormaProducao;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacaoFormaProducaoBemClassificado;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacaoFormaProducaoItem;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacaoFormaProducaoValor;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificado;
@@ -32,6 +34,35 @@ public class BemClassificacaoUtilSrv {
 			destino.setNome(destino.getNome() != null ? destino.getNome().concat("/") : "");
 			destino.setNome(destino.getNome().concat(origem.getNome()));
 		}
+
+
+
+		// acumular forma produção possíveis
+		if (origem.getBemClassificacaoFormaProducaoList() != null) {
+			if (destino.getBemClassificacaoFormaProducaoList() == null) {
+				destino.setBemClassificacaoFormaProducaoList(new ArrayList<>());
+			}
+			for (BemClassificacaoFormaProducao reg : origem.getBemClassificacaoFormaProducaoList()) {
+				boolean encontrou = false;
+				for (BemClassificacaoFormaProducao cadastrado : destino.getBemClassificacaoFormaProducaoList()) {
+					if (cadastrado.getId().equals(reg.getId())) {
+						encontrou = true;
+						break;
+					}
+				}
+				if (!encontrou) {
+					destino.getBemClassificacaoFormaProducaoList().add(infoBasicaReg(reg));
+					int tam = destino.getBemClassificacaoFormaProducaoList().size() - 1;
+					if (reg.getBemClassificacaoFormaProducaoBemClassificadoList() != null) {						
+						destino.getBemClassificacaoFormaProducaoList().get(tam).setBemClassificacaoFormaProducaoBemClassificadoList( new ArrayList<>() );												
+						for (BemClassificacaoFormaProducaoBemClassificado bem : reg.getBemClassificacaoFormaProducaoBemClassificadoList()  ) {
+								destino.getBemClassificacaoFormaProducaoList().get(tam).getBemClassificacaoFormaProducaoBemClassificadoList().add(infoBasicaReg(bem));								
+						}	
+					}
+				}
+			}
+		}
+
 		// acumular itens
 		if (origem.getBemClassificacaoFormaProducaoItemList() != null) {
 			if (destino.getBemClassificacaoFormaProducaoItemList() == null) {
@@ -123,7 +154,7 @@ public class BemClassificacaoUtilSrv {
 		}
 	}
 
-	@Cacheable("BemClassificacaoMatriz")
+	//@Cacheable("BemClassificacaoMatriz")
 	public BemClassificacaoCadDto geraMatriz() {
 		BemClassificacaoCadDto result = new BemClassificacaoCadDto();
 
@@ -136,7 +167,7 @@ public class BemClassificacaoUtilSrv {
 		if (bancoDados != null) {
 			for (BemClassificacao bemClassificacao : bancoDados) {
 				BemClassificacao item = new BemClassificacao(bemClassificacao.getId());
-
+				
 				List<BemClassificacao> paiList = null;
 				paiList = getBemClassificacaoPai(bemClassificacao, paiList);
 
@@ -160,8 +191,15 @@ public class BemClassificacaoUtilSrv {
 				item.setItemCNome(infoBasicaReg(item.getItemCNome()));
 				item.setBemClassificacaoFormaProducaoItemList(infoBasicaList(item.getBemClassificacaoFormaProducaoItemList()));
 				item.setBemClassificacaoFormaProducaoValorList(infoBasicaList(item.getBemClassificacaoFormaProducaoValorList()));
-
-				// teste
+				
+				if (item.getBemClassificacaoFormaProducaoList() != null) {						
+					for (BemClassificacaoFormaProducao clForma : item.getBemClassificacaoFormaProducaoList()  ) {
+						if( clForma.getBemClassificacaoFormaProducaoBemClassificadoList() != null ){
+							clForma.setBemClassificacaoFormaProducaoBemClassificadoList(infoBasicaList(clForma.getBemClassificacaoFormaProducaoBemClassificadoList()) );
+						}
+					}
+				}
+				
 				item.setBemClassificadoList(infoBasicaList(bemClassificacao.getBemClassificadoList()));
 				if (item.getBemClassificadoList() != null) {
 					bemClassificadoList.addAll(infoBasicaList(item.getBemClassificadoList()));
@@ -183,7 +221,30 @@ public class BemClassificacaoUtilSrv {
 		result.setBemClassificacaoList(bemClassificacaoList);
 
 		bemClassificadoList.sort((o1, o2) -> (o1 != null && o2 != null && o1.getNome() != null && o2.getNome() != null) ? Collator.getInstance().compare(o1.getNome(), o2.getNome()) : 0);
-		result.setBemClassificadoList(bemClassificadoList);
+		
+		List<BemClassificado> bemClassificadoAnimalList = new ArrayList<>();;
+		List<BemClassificado> bemClassificadoFloriculturaList = new ArrayList<>();;
+		List<BemClassificado> bemClassificadoAgricolaList = new ArrayList<>();;
+		List<BemClassificado> bemClassificadoAgroindustria = new ArrayList<>();;
+		List<BemClassificado> bemClassificadoArtesanatoList = new ArrayList<>();;
+		
+		for( BemClassificado bemC : bemClassificadoList ){
+			
+		   switch (bemC.getTipo()) { 
+             case "1":  bemClassificadoAgricolaList.add(bemC);      break;
+             case "2":  bemClassificadoFloriculturaList.add(bemC);  break;
+             case "3":  bemClassificadoAgroindustria.add(bemC);   	break;
+             case "4":  bemClassificadoArtesanatoList.add(bemC);    break;
+             case "5":  bemClassificadoAnimalList.add(bemC);        break;
+		   }
+		   
+		}
+		
+		result.setBemClassificadoAgricolaList(bemClassificadoAgricolaList);
+		result.setBemClassificadoFloricuturaList(bemClassificadoFloriculturaList);
+		result.setBemClassificadoAnimalList(bemClassificadoAnimalList);
+		result.setBemClassificadoAgroindustriaList(bemClassificadoAgroindustria);
+		result.setBemClassificadoArtesanatoList(bemClassificadoArtesanatoList);
 
 		return result;
 	}
@@ -198,5 +259,5 @@ public class BemClassificacaoUtilSrv {
 		}
 		return paiList;
 	}
-
+	
 }

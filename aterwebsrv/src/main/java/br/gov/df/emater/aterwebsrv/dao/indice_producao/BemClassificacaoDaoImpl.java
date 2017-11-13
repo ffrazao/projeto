@@ -13,6 +13,8 @@ import org.springframework.util.StringUtils;
 import br.gov.df.emater.aterwebsrv.dto.CadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.indice_producao.BemClassificacaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacao;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacaoFormaProducao;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacaoFormaProducaoBemClassificado;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacaoFormaProducaoItem;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacaoFormaProducaoValor;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.FormaProducaoValor;
@@ -27,6 +29,13 @@ public class BemClassificacaoDaoImpl implements BemClassificacaoDaoCustom {
 			List<Object> linha = new ArrayList<Object>();
 			linha.add(bc.getId());
 			linha.add(bc.getNome());
+
+			List<Object[]> bemClassificacaoFormaProducaoList = null;
+			if (bc.getBemClassificacaoFormaProducaoList() != null) {
+				for (BemClassificacaoFormaProducao b : bc.getBemClassificacaoFormaProducaoList()) {
+					bemClassificacaoFormaProducaoList = fetchBemClassificacaoFormaProducao(bemClassificacaoFormaProducaoList, b);
+				}
+			}
 
 			List<Object[]> bemClassificacaoFormaProducaoItemList = null;
 			if (bc.getBemClassificacaoFormaProducaoItemList() != null) {
@@ -86,9 +95,41 @@ public class BemClassificacaoDaoImpl implements BemClassificacaoDaoCustom {
 				}
 			}
 			linha.add(formaProducaoItem == null ? null : new Object[] { formaProducaoItem, bemClassificacaoFormaProducaoValorList });
+			
+			
+/*			if( bc.getBemClassificacaoFormaProducaoList() != null){
+				for (BemClassificacaoFormaProducao bcfp : bc.getBemClassificacaoFormaProducaoList()) {
+					linha.add( bcfp );
+				}
+			}
+			*/
+			
 
 			if (result == null) {
 				result = new ArrayList<Object>();
+			}
+			result.add(linha.toArray());
+		}
+		return result;
+	}
+
+	
+	private List<Object[]> fetchBemClassificacaoFormaProducao(List<Object[]> result, BemClassificacaoFormaProducao bc) {
+		if (bc != null) {
+			List<Object> linha = new ArrayList<Object>();
+
+			List<Object[]> bemClassificacaoFormaProducaoBemClassificadoList = new ArrayList<Object[]>();
+			for (BemClassificacaoFormaProducaoBemClassificado fpb : bc.getBemClassificacaoFormaProducaoBemClassificadoList()) {
+				List<Object> linhaSub = new ArrayList<Object>();
+				linhaSub.add(fpb.getId());
+				linhaSub.add(fpb.getBemClassificado() );
+				linhaSub.add(fpb.getFormula() );
+				bemClassificacaoFormaProducaoBemClassificadoList.add(linhaSub.toArray());
+			}
+			linha.add(bemClassificacaoFormaProducaoBemClassificadoList);
+
+			if (result == null) {
+				result = new ArrayList<Object[]>();
 			}
 			result.add(linha.toArray());
 		}
@@ -164,7 +205,7 @@ public class BemClassificacaoDaoImpl implements BemClassificacaoDaoCustom {
 	}
 
 	@Override
-	@Cacheable("BemClassificacao")
+	// @Cacheable("BemClassificacao")
 	public List<Object> filtrar(BemClassificacaoCadFiltroDto filtro) {
 		// objetos de trabalho
 		List<Object> result = null;

@@ -6,11 +6,18 @@ import org.springframework.stereotype.Service;
 import br.gov.df.emater.aterwebsrv.bo._Cadeia;
 import br.gov.df.emater.aterwebsrv.bo.seguranca.AutenticarUsuarioCmd;
 import br.gov.df.emater.aterwebsrv.bo.seguranca.LogCmd;
-
+          
 @Service("IndiceProducaoSalvarCh")
 public class SalvarCh extends _Cadeia {
 
 	@Autowired
+	public SalvarCh(AutenticarUsuarioCmd c1, SalvarCmd c2,  LogCmd c5) {
+		super.addCommand(c1);
+		super.addCommand(c2);
+		super.addCommand(c5);
+	}
+
+/*	@Autowired
 	public SalvarCh(AutenticarUsuarioCmd c1, SalvarCmd c2, SalvarPrincipalCmd c3, SalvarDescendenteCmd c4, LogCmd c5) {
 		super.addCommand(c1);
 		super.addCommand(c2);
@@ -18,5 +25,5 @@ public class SalvarCh extends _Cadeia {
 		super.addCommand(c4);
 		super.addCommand(c5);
 	}
-
+*/
 }

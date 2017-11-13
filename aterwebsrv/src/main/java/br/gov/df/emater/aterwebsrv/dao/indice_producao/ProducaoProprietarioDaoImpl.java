@@ -229,7 +229,11 @@ public class ProducaoProprietarioDaoImpl implements ProducaoProprietarioDaoCusto
 		sql.append("                f1.nome as nomeComunidade,").append("\n");
 		sql.append("                h.id as idPessoa,").append("\n");
 		sql.append("                h.nome as nomePessoa,").append("\n");
-		sql.append("                h.pessoa_tipo").append("\n");
+		sql.append("                h.pessoa_tipo,").append("\n");
+		sql.append("                d.tipo as tipoIPA,").append("\n");
+		sql.append("                d.formula,").append("\n");
+		sql.append("                d.produtividade_min,").append("\n");
+		sql.append("                d.produtividade_max").append("\n");
 		sql.append("FROM   indice_producao.producao_proprietario a").append("\n");
 		sql.append("JOIN   indice_producao.producao b").append("\n");
 		sql.append("ON     b.producao_proprietario_id = a.id").append("\n");
@@ -356,6 +360,8 @@ public class ProducaoProprietarioDaoImpl implements ProducaoProprietarioDaoCusto
 		}
 
 		sql.append("ORDER BY a.ano, d.nome, e1.nome, h.nome, f.nome").append("\n");
+		
+		// System.out.println(sql.toString());
 
 		Query query = sessionFactory.getCurrentSession().createSQLQuery(sql.toString()).setResultTransformer(new ResultTransformer() {
 
@@ -381,7 +387,7 @@ public class ProducaoProprietarioDaoImpl implements ProducaoProprietarioDaoCusto
 				result.setAlteracaoData(UtilitarioData.getInstance().sqlTimestampToCalendar((Timestamp) tuple[campos.indexOf("alteracao_data")]));
 				result.setAlteracaoUsuario(new Usuario((Integer) tuple[campos.indexOf("alteracao_usuario_id")]));
 				result.setAno((Integer) tuple[campos.indexOf("ano")]);
-				result.setBemClassificado(new BemClassificado((Integer) tuple[campos.indexOf("bem_classificado_id")], (String) tuple[campos.indexOf("nomeBemClassificado")], new BemClassificacao((Integer) tuple[campos.indexOf("bem_classificacao_id")])));
+				result.setBemClassificado(new BemClassificado((Integer) tuple[campos.indexOf("bem_classificado_id")], (String) tuple[campos.indexOf("nomeBemClassificado")], new BemClassificacao((Integer) tuple[campos.indexOf("bem_classificacao_id")]), (String) tuple[campos.indexOf("tipoIPA")] , (String) tuple[campos.indexOf("formula")] , (Integer) tuple[campos.indexOf("produtividade_min")], (Integer) tuple[campos.indexOf("produtividade_max")]  ));
 				result.setChaveSisater((String) tuple[campos.indexOf("chave_sisater")]);
 				result.setInclusaoData(UtilitarioData.getInstance().sqlTimestampToCalendar((Timestamp) tuple[campos.indexOf("inclusao_data")]));
 				result.setInclusaoUsuario(new Usuario((Integer) tuple[campos.indexOf("inclusao_usuario_id")]));
@@ -486,7 +492,7 @@ public class ProducaoProprietarioDaoImpl implements ProducaoProprietarioDaoCusto
 				} else {
 					result = new Producao();
 					result.setId((Integer) tuple[campos.indexOf("id")]);
-					result.setSituacao(situacao);
+					//result.setSituacao(situacao);
 					result.setProducaoComposicaoList(new ArrayList<>());
 					if (((Float) tuple[campos.indexOf("item_a_valor")]) != null) {
 						result.setItemAValor(new BigDecimal((Float) tuple[campos.indexOf("item_a_valor")]));

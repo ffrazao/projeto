@@ -14,8 +14,16 @@ public class BemClassificacaoCadDto extends CadFiltroDtoCustom {
 
 	private List<BemClassificacao> bemClassificacaoMatrizList;
 
-	private List<BemClassificado> bemClassificadoList;
+	private List<BemClassificado> bemClassificadoAgricolaList;
 
+	private List<BemClassificado> bemClassificadoAgroindustriaList;
+	
+	private List<BemClassificado> bemClassificadoArtesanatoList;
+	
+	private List<BemClassificado> bemClassificadoAnimalList;
+	
+	private List<BemClassificado> bemClassificadoFloricuturaList;
+	
 	public List<BemClassificacao> getBemClassificacaoList() {
 		return bemClassificacaoList;
 	}
@@ -24,9 +32,7 @@ public class BemClassificacaoCadDto extends CadFiltroDtoCustom {
 		return bemClassificacaoMatrizList;
 	}
 
-	public List<BemClassificado> getBemClassificadoList() {
-		return bemClassificadoList;
-	}
+	
 
 	public void setBemClassificacaoList(List<BemClassificacao> bemClassificacaoList) {
 		this.bemClassificacaoList = bemClassificacaoList;
@@ -36,7 +42,50 @@ public class BemClassificacaoCadDto extends CadFiltroDtoCustom {
 		this.bemClassificacaoMatrizList = bemClassificacaoMatrizList;
 	}
 
-	public void setBemClassificadoList(List<BemClassificado> bemClassificadoList) {
-		this.bemClassificadoList = bemClassificadoList;
+
+	public List<BemClassificado> getBemClassificadoAgricolaList() {
+		return bemClassificadoAgricolaList;
 	}
+
+	public void setBemClassificadoAgricolaList(List<BemClassificado> bemClassificadoAgricolaList) {
+		this.bemClassificadoAgricolaList = bemClassificadoAgricolaList;
+	}
+
+	public List<BemClassificado> getBemClassificadoAnimalList() {
+		return bemClassificadoAnimalList;
+	}
+
+	
+	
+	public void setBemClassificadoAnimalList(List<BemClassificado> bemClassificadoAnimalList) {
+		this.bemClassificadoAnimalList = bemClassificadoAnimalList;
+	}
+
+	public List<BemClassificado> getBemClassificadoFloricuturaList() {
+		return bemClassificadoFloricuturaList;
+	}
+
+	public void setBemClassificadoFloricuturaList(List<BemClassificado> bemClassificadoFloricuturaList) {
+		this.bemClassificadoFloricuturaList = bemClassificadoFloricuturaList;
+	}
+
+
+	public List<BemClassificado> getBemClassificadoArtesanatoList() {
+		return bemClassificadoArtesanatoList;
+	}
+
+	public void setBemClassificadoArtesanatoList(List<BemClassificado> bemClassificadoArtesanatoList) {
+		this.bemClassificadoArtesanatoList = bemClassificadoArtesanatoList;
+	}
+
+	public List<BemClassificado> getBemClassificadoAgroindustriaList() {
+		return bemClassificadoAgroindustriaList;
+	}
+
+	public void setBemClassificadoAgroindustriaList(List<BemClassificado> bemClassificadoAgroindustriaList) {
+		this.bemClassificadoAgroindustriaList = bemClassificadoAgroindustriaList;
+	}
+
+
+	
 }

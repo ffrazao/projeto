@@ -50,6 +50,12 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer>, _
 	@ManyToOne
 	@JoinColumn(name = "alteracao_usuario_id")
 	private Usuario alteracaoUsuario;
+	
+
+	@ManyToOne
+	@JoinColumn(name = "bem_classificado_id")
+	private BemClassificado bemClassificado;
+	
 
 	@Column(name = "data_confirmacao")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -112,7 +118,7 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer>, _
 	}
 
 	public Producao(Integer id, ProducaoProprietario producaoProprietario, List<ProducaoComposicao> producaoComposicaoList, BigDecimal itemAValor, BigDecimal itemBValor, BigDecimal itemCValor, BigDecimal volume, BigDecimal valorUnitario, BigDecimal valorTotal,
-			Usuario inclusaoUsuario, Calendar inclusaoData, Usuario alteracaoUsuario, Calendar alteracaoData, Integer quantidadeProdutores, Calendar dataConfirmacao) {
+			Usuario inclusaoUsuario, Calendar inclusaoData, Usuario alteracaoUsuario, Calendar alteracaoData, Integer quantidadeProdutores, Calendar dataConfirmacao, BemClassificado bemClassificado) {
 		super();
 		this.id = id;
 		this.producaoProprietario = producaoProprietario;
@@ -129,6 +135,7 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer>, _
 		this.alteracaoData = alteracaoData;
 		this.quantidadeProdutores = quantidadeProdutores;
 		this.dataConfirmacao = dataConfirmacao;
+		this.bemClassificado = bemClassificado;
 	}
 
 	public Producao(Producao producao) {
@@ -151,7 +158,7 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer>, _
 		this.itemCValor = producao.getItemCValor();
 		this.producaoProprietario = producao.getProducaoProprietario();
 		this.quantidadeProdutores = producao.getQuantidadeProdutores();
-		this.situacao = producao.getSituacao();
+//		this.situacao = producao.getSituacao();
 		this.valorTotal = producao.getValorTotal();
 		this.valorUnitario = producao.getValorUnitario();
 		this.volume = producao.getVolume();
@@ -229,7 +236,7 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer>, _
 	@Override
 	public Producao infoBasica() {
 		return new Producao(this.id, this.producaoProprietario == null ? null : new ProducaoProprietario(this.producaoProprietario.getId()), infoBasicaList(this.producaoComposicaoList), this.itemAValor, this.itemBValor, this.itemCValor, this.volume, this.valorUnitario,
-				this.valorTotal, infoBasicaReg(this.inclusaoUsuario), this.inclusaoData, infoBasicaReg(this.alteracaoUsuario), this.alteracaoData, this.quantidadeProdutores, this.dataConfirmacao);
+				this.valorTotal, infoBasicaReg(this.inclusaoUsuario), this.inclusaoData, infoBasicaReg(this.alteracaoUsuario), this.alteracaoData, this.quantidadeProdutores, this.dataConfirmacao, infoBasicaReg(this.bemClassificado));
 	}
 
 	@Override
@@ -300,5 +307,15 @@ public class Producao extends EntidadeBase implements _ChavePrimaria<Integer>, _
 	public void setVolume(BigDecimal volume) {
 		this.volume = volume;
 	}
+	
+
+	public BemClassificado getBemClassificado() {
+		return bemClassificado;
+	}
+
+	public void setBemClassificado(BemClassificado bemClassificado) {
+		this.bemClassificado = bemClassificado;
+	}
+
 
 }

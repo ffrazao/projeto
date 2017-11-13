@@ -11,6 +11,7 @@ import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
 import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificado;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoProprietario;
 
 @Repository("ProducaoProprietarioDao")
@@ -27,4 +28,8 @@ public interface ProducaoProprietarioDao extends JpaRepository<ProducaoProprieta
 	@Query("SELECT pp.id FROM ProducaoProprietario pp JOIN pp.propriedadeRural.comunidade.unidadeOrganizacional WHERE pp.ano = :ano AND pp.bemClassificado.id = :bemClassificadoId AND pp.propriedadeRural.comunidade.unidadeOrganizacional.id = :unidadeOrganizacionalId")
 	List<Integer> findAllByAnoAndBemClassificadoIdAndPropriedadeRuralComunidadeUnidadeOrganizacionalId(@Param("ano") Integer ano, @Param("bemClassificadoId") Integer bemClassificadoId, @Param("unidadeOrganizacionalId") Integer unidadeOrganizacionalId);
 
+	@Query("SELECT pp FROM ProducaoProprietario pp WHERE pp.ano = :ano AND pp.unidadeOrganizacional.id = :unidadeOrganizacionalId")
+	List<ProducaoProprietario> findByAnoUnidadeOrganizacional(@Param("ano") Integer ano, @Param("unidadeOrganizacionalId") Integer unidadeOrganizacionalId);
+
+	
 }

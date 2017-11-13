@@ -111,7 +111,7 @@ public class SalvarPrincipalCmd extends _Comando {
 				}
 			}
 			em.detach(producaoProprietarioPrincipal);
-			facadeBo.indiceProducaoSalvar(contexto.getUsuario(), producaoProprietarioPrincipal);
+			//facadeBo.indiceProducaoSalvar(contexto.getUsuario(), producaoProprietarioPrincipal);
 		}
 		
 		contexto.setResposta(id);

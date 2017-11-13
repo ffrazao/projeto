@@ -35,6 +35,9 @@ public class BemDaoImpl implements BemDaoCustom {
 		sql = new StringBuilder();
 		sql.append("select b.id").append("\n");
 		sql.append("     , b.nome").append("\n");
+		sql.append("     , b.formula").append("\n");
+		sql.append("     , b.produtividade_mim").append("\n");
+		sql.append("     , b.produtividade_max").append("\n");
 		sql.append("     , b.bemClassificacao").append("\n");
 		sql.append("from BemClassificado b").append("\n");
 		sql.append("join b.bemClassificacao").append("\n");

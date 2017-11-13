@@ -32,6 +32,7 @@ import br.gov.df.emater.aterwebsrv.dto.funcional.UnidadeOrganizacionalCadFiltroD
 import br.gov.df.emater.aterwebsrv.dto.indice_producao.BemClassificacaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.indice_producao.BemProducaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.indice_producao.IndiceProducaoCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.indice_producao.ProducaoGravaDto;
 import br.gov.df.emater.aterwebsrv.dto.pessoa.CarteiraProdutorRelFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.pessoa.DeclaracaoProdutorRelFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.pessoa.MesclarPessoaDto;
@@ -270,6 +271,12 @@ public class FacadeBo implements BeanFactoryAware {
 		return this._executar(usuario, "IndiceProducaoBemClassificacaoMatrizCmd");
 	}
 
+	@Transactional(readOnly = true)
+	public _Contexto indiceProducaoProducao(Principal usuario, ProducaoProprietario producaoProprietario) throws Exception {
+		return this._executar(usuario, "IndiceProducaoProducaoCmd", producaoProprietario);
+	}
+
+
 	@Transactional
 	public _Contexto indiceProducaoExcluir(Principal usuario, Integer id) throws Exception {
 		return this._executar(usuario, "IndiceProducaoExcluirCh", id);
@@ -301,7 +308,7 @@ public class FacadeBo implements BeanFactoryAware {
 	}
 
 	@Transactional
-	public _Contexto indiceProducaoSalvar(Principal usuario, ProducaoProprietario producaoProprietario) throws Exception {
+	public _Contexto indiceProducaoSalvar(Principal usuario, ProducaoGravaDto producaoProprietario) throws Exception {
 		return this._executar(usuario, "IndiceProducaoSalvarCh", producaoProprietario);
 	}
 
