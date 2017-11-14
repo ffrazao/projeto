@@ -57,6 +57,7 @@ import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FluxoCaixaTipo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FormularioDestino;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaTipo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Situacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.TelefoneTipo;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.Coleta;
@@ -162,11 +163,16 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 							relacionador.setRgOrgaoEmissor(relacionado.getRgOrgaoEmissor());
 							relacionador.setRgUf(relacionado.getRgUf());
 						} else {
+
+							if( relacionado.getPessoa().getPessoaTipo() != PessoaTipo.PF ){
+								continue;
+							}
+								
 							// informações principais
 							relacionador.setId(relacionado.getId());
 							relacionador.setRelacionamentoFuncao(infoBasicaReg(relacionado.getRelacionamentoFuncao()));
 							relacionador.setChaveSisater(relacionado.getChaveSisater());
-
+	
 							// captar os dados do relacionado
 							relacionador.setPessoa(infoBasicaReg(relacionado.getPessoa()));
 							
@@ -174,10 +180,10 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 							relacionador.setCpf( pessoaTemp.getCpf() );
 							relacionador.setGenero(pessoaTemp.getGenero());
 							relacionador.setNascimento(pessoaTemp.getNascimento());
-							if (pessoaTemp.getNascimentoMunicipio() != null) {
-								pessoaTemp.setNascimentoEstado(infoBasicaReg(relacionado.getNascimentoMunicipio().getEstado()));
-								pessoaTemp.setNascimentoMunicipio(infoBasicaReg(relacionado.getNascimentoMunicipio()));
-							}
+							//if (pessoaTemp.getNascimentoMunicipio() != null) {
+							//	pessoaTemp.setNascimentoEstado(infoBasicaReg(relacionado.getNascimentoMunicipio().getEstado()));
+							//	pessoaTemp.setNascimentoMunicipio(infoBasicaReg(relacionado.getNascimentoMunicipio()));
+							//}
 							relacionador.setNome(pessoaTemp.getNome());
 							relacionador.setNomeMae(pessoaTemp.getNomeMae());
 							relacionador.setProfissao(infoBasicaReg(pessoaTemp.getProfissao()));
@@ -185,8 +191,9 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 							relacionador.setRgNumero(pessoaTemp.getRgNumero());
 							relacionador.setRgOrgaoEmissor(pessoaTemp.getRgOrgaoEmissor());
 							relacionador.setRgUf(pessoaTemp.getRgUf());
-
 						}
+				
+
 
 												
 						if (this.funcaoConjuge.getId().equals(relacionador.getRelacionamentoFuncao().getId())) {
@@ -925,10 +932,16 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 		reg.setMoradoresDaPropriedadeFamilias(new BigDecimal(moradoresDaPropriedade.get("familias") == null ? "0" : moradoresDaPropriedade.get("familias").toString()));
 
 		Map<String, Object> maoDeObra = (Map<String, Object>) avaliacaoDaPropriedade.get("maoDeObra");
-		reg.setMaoDeObraFamiliar(new BigDecimal(maoDeObra.get("familiar") == null ? "0" : maoDeObra.get("familiar").toString()));
-		reg.setMaoDeObraContratada(new BigDecimal(maoDeObra.get("contratada") == null ? "0" : maoDeObra.get("contratada").toString()));
-		reg.setMaoDeObraTemporaria(new BigDecimal(maoDeObra.get("temporaria") == null ? "0" : maoDeObra.get("temporaria").toString()));
-
+		if( maoDeObra == null ){
+			reg.setMaoDeObraFamiliar(new BigDecimal( "0" ));
+			reg.setMaoDeObraContratada(new BigDecimal( "0" ));
+			reg.setMaoDeObraTemporaria(new BigDecimal( "0" ));
+			
+		} else {
+			reg.setMaoDeObraFamiliar(new BigDecimal(maoDeObra.get("familiar") == null ? "0" : maoDeObra.get("familiar").toString()));
+			reg.setMaoDeObraContratada(new BigDecimal(maoDeObra.get("contratada") == null ? "0" : maoDeObra.get("contratada").toString()));
+			reg.setMaoDeObraTemporaria(new BigDecimal(maoDeObra.get("temporaria") == null ? "0" : maoDeObra.get("temporaria").toString()));
+		}
 		// FIXME notebook de casa sem estes dados, remover em producaos
 		Map<String, Object> fonteDeAgua = (Map<String, Object>) avaliacaoDaPropriedade.get("fonteDAgua");
 		reg.setFonteDAguaPrincipal(fonteDeAgua == null ? "": (String) fonteDeAgua.get("fonteDAguaPrincipal"));
