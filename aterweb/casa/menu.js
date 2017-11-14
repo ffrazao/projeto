@@ -52,7 +52,7 @@
                     },
                     {
                         name: 'Painel de Resultados',
-                        link: 'info({"nome": "Painel de Resultados", "endereco": "http://extranet.emater.df.gov.br/painelresultados/"})',
+                        link: 'info({"nome": "Painel de Resultados", "endereco": "https://painel.emater.df.gov.br"})',
                         visivel: true,
                     },
                 ],
@@ -85,16 +85,16 @@
                         funcionalidade: 'CONTRATO',
                         visivel: false,
                     } ,
-                    {
+/*                    {
                         name: 'Formulários',
                         link: 'p.formulario.filtro',
                         funcionalidade: 'FORMULARIO',
                         visivel: false,
                     },  
-                ]
+*/                ]
             },
             {
-                name: 'Atividade',
+                name: 'ATER',
                 link: '#',
                 visivel: false,
                 subtree: [
@@ -105,12 +105,25 @@
                         visivel: false,
                     },
  */                   {
-                        name: 'Executar',
+                        name: 'Registro de Atividade',
                         link: 'p.atividade.filtro({opcao: "executar"})',
                         funcionalidade: 'ATIVIDADE',
                         visivel: false,
                     },
-/*                    {
+                    {
+                        name: 'Índice de Produção',
+                        link: 'p.indiceProducao.form',
+                        funcionalidade: 'INDICE_PRODUCAO',
+                        visivel: false,
+                    },
+
+   /*              {
+                        name: 'Projeto de Crédito Rural',
+                        link: 'p.projetoCreditoRural.filtro',
+                        funcionalidade: 'PROJETO_CREDITO_RURAL',
+                        visivel: false,
+                    },
+                    {
                         name: 'Demandar',
                         link: 'p.atividade.filtro({opcao: "demandar"})',
                         funcionalidade: 'ATIVIDADE',
@@ -122,14 +135,9 @@
                         funcionalidade: 'AGENDA',
                         visivel: false,
                     },
- */                   {
-                        name: 'Projeto de Crédito Rural',
-                        link: 'p.projetoCreditoRural.filtro',
-                        funcionalidade: 'PROJETO_CREDITO_RURAL',
-                        visivel: false,
-                    }
-                ]
+ */             ]
             },
+   /*              {
             {
                 name: 'Diagnóstico',
                 link: '#',
@@ -137,7 +145,7 @@
                 subtree: [
                     {
                         name: 'Índices de Produção',
-                        link: 'p.indiceProducao.filtro',
+                        link: 'p.indiceProducao.form',
                         funcionalidade: 'INDICE_PRODUCAO',
                         visivel: false,
                     },
@@ -180,7 +188,7 @@
                     },
                 ],
             },
-            {
+*/            {
                 name: 'Configuração',
                 link: 'login',
                 visivel: false,

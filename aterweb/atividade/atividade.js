@@ -281,6 +281,30 @@
                 return {'atividade-cancelada' : situacao === 'X', 'atividade-nao-iniciada' : situacao === 'N'};
             };
 
+            $scope.seProjetoDeCredito = function( ) {
+                if( $scope.cadastro.registro.metodo.codigo === "PROJETO_CREDITO_RURAL" ){
+
+                    var assuntoProjeto = $scope.cadastro.apoio.assuntoList[13];
+                    var tmp=false;
+                    for (var lst in $scope.cadastro.registro.assuntoList ) {
+                        if( $scope.cadastro.registro.assuntoList[lst].assunto === assuntoProjeto ){
+                            tmp=true;
+                        }
+                    }
+                    if( !tmp){
+                        if (!angular.isArray($scope.cadastro.registro.assuntoList)) {
+                            $scope.cadastro.registro.assuntoList = [];
+                        }
+                        if (!$scope.atividadeAssuntoNvg) {
+                            $scope.atividadeAssuntoNvg = new FrzNavegadorParams($scope.cadastro.registro.assuntoList, 4);
+                        }
+                        $scope.cadastro.registro.assuntoList.push($scope.criarElemento($scope.cadastro.registro, 'assuntoList', {}));
+                        $scope.cadastro.registro.assuntoList[$scope.cadastro.registro.assuntoList.length-1].assunto = assuntoProjeto;
+                    }
+                }
+
+            };
+
             // fim ações especiais
 
             // inicio trabalho tab

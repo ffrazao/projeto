@@ -112,7 +112,9 @@
                             <div class="form-control" ng-if="cadastro.registro.id">
                                 {{cadastro.registro.metodo.nome}}
                             </div>
-                            <select id="metodo" name="metodo" class="form-control" ng-model="cadastro.registro.metodo" ng-options="item as item.nome for item in cadastro.apoio.metodoList | orderBy: 'nome' | filter: {finalidade: cadastro.registro.finalidade, ativo: 'S'} track by item.id" required="true" ng-if="!cadastro.registro.id">
+                            <select id="metodo" name="metodo" class="form-control" ng-model="cadastro.registro.metodo" 
+                            ng-options="item as item.nome for item in cadastro.apoio.metodoList | orderBy: 'nome' | filter: {finalidade: cadastro.registro.finalidade, ativo: 'S'} track by item.id" 
+                              required="true" ng-if="!cadastro.registro.id" ng-change="seProjetoDeCredito();" >
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.metodo.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>

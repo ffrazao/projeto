@@ -31,7 +31,7 @@
 <div class="row" ng-controller="AtividadePessoaCtrl" >
     <div class="col-md-6" title="Demandantes">
         <div class="form-group" ng-class="{'ng-invalid': frm.formulario.demandanteTotal.$error.ngValorMin}">
-            <label class="control-label" for="demandanteTotal">Demandantes</label>
+            <label class="control-label" for="demandanteTotal">Público Alvo</label>
             
             <ng-include src="'atividade/sub-pessoa.html'" ng-controller="DemandanteAtividadePessoaCtrl" />
 
@@ -43,7 +43,7 @@
     </div>
     <div class="col-md-6" title="Executores">
         <div class="form-group" ng-class="{'ng-invalid': frm.formulario.executorTotal.$error.ngValorMin}">
-            <label class="control-label" for="executorTotal">Executores</label>
+            <label class="control-label" for="executorTotal">Técnico / Escritório</label>
             
             <ng-include src="'atividade/sub-pessoa.html'" ng-controller="ExecutorAtividadePessoaCtrl" />
 
