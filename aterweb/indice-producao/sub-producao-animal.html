@@ -1,49 +1,34 @@
 <div class="panel panel-default" ng-class="{'ng-invalid': producaoAnimalFrm.producaoList.$error.ngValorMin}" id="producaoNaoArgicolaPnl">
     <div class="panel-heading container-fluid">
-        <frz-navegador
-            ng-model="producaoAnimalNvg" exibe-nome-botao="false"
-            dados="cadastro.registro.producaoAnimalList"
-            acoes-especiais="acoesEspeciais"
-            on-abrir = "abrir()"
-            on-agir = "agir()"
-            on-editar = "editar()"
-            on-especial = "especial()"
-            on-excluir = "excluir()"
-            on-filtrar = "filtrar()"
-            on-incluir = "incluir()"
-            on-listar = "listar()"
-            on-navegar-primeiro = "navegarPrimeiro()"
-            on-navegar-anterior = "navegarAnterior()"
-            on-navegar-proximo = "navegarPosterior()"
-            on-navegar-ultimo = "navegarUltimo()"
-            on-proxima-pagina="proximaPagina()"
-            on-ultima-pagina="ultimaPagina()"
-            >
+        <frz-navegador ng-model="producaoAnimalNvg" exibe-nome-botao="false" dados="cadastro.registro.producaoAnimalList" acoes-especiais="acoesEspeciais"
+            on-abrir="abrir()" on-agir="agir()" on-editar="editar()" on-especial="especial()" on-excluir="excluir()" on-filtrar="filtrar()"
+            on-incluir="incluir()" on-listar="listar()" on-navegar-primeiro="navegarPrimeiro()" on-navegar-anterior="navegarAnterior()"
+            on-navegar-proximo="navegarPosterior()" on-navegar-ultimo="navegarUltimo()" on-proxima-pagina="proximaPagina()" on-ultima-pagina="ultimaPagina()">
         </frz-navegador>
     </div>
-    <div class="painel-body"  ng-hide="cadastro.registro.producaoAnimalList.length">
+    <div class="painel-body" ng-hide="cadastro.registro.producaoAnimalList.length">
         <div class="alert alert-warning" style="margin: 0px;" role="alert">
             <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
             Nenhum registro localizado!
         </div>
     </div>
-    <div class="table-responsive" >
+    <div class="table-responsive">
         <ng-form name="producaoAnimalFrm">
-            <table class="table table-striped" >
+            <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th >
+                        <th>
                             <frz-seletor ng-model="producaoAnimalNvg"></frz-seletor>
                             #
                         </th>
-                        <th>Cultura</th>
+                        <th>cultura</th>
                         <th>Modalidade</th>
                         <th>Sistema</th>
                         <th>Exploração</th>
                         <th>Rebanho / Colmeia / População</th>
                         <th>Matriz / Lâmina D´Água</th>
                         <th>Produto</th>
-                        <th>Produção</th>                        
+                        <th>Produção</th>
                         <th ng-show="cadastro.registro.publicoAlvo">Preço Unitário</th>
                         <th ng-show="cadastro.registro.publicoAlvo">Valor Total</th>
                         <th ng-show="!cadastro.registro.publicoAlvo && cadastro.registro.unidadeOrganizacional ">Qtd Produtores</th>
@@ -53,90 +38,80 @@
 
                     <tr ng-repeat="producaoAnimal in cadastro.registro.producaoAnimalList " ng-click="producaoAnimalNvg.folhaAtual = $index + ((producaoAnimalNvg.paginaAtual-1) * producaoAnimalNvg.tamanhoPagina)">
                         <td width="30px">
-                            <input type="radio" ng-model="producaoAnimalNvg.selecao.item" ng-value="producaoAnimal"/>
-                           {{$index + 1 + ((producaoAnimalNvg.paginaAtual-1) * producaoAnimalNvg.tamanhoPagina)}}
+                            <input type="radio" ng-model="producaoAnimalNvg.selecao.item" ng-value="producaoAnimal" /> {{$index + 1 + ((producaoAnimalNvg.paginaAtual-1) * producaoAnimalNvg.tamanhoPagina)}}
                         </td>
                         <td>
-                            <div class="form-group" > 
-                                <select class="form-control input-sm" style="min-width: 100px;"
-                                    id="bemProducaoTipoList_{{$index}}"
-                                    name="bemProducaoTipoList_{{$index}}"
-                                    ng-model="producaoAnimal.Cultura" 
-                                    ng-change="limpaClassifica( $index );"
-                                    ng-options="sub as sub.nome for sub in cadastro.apoio.animalTipo | orderBy: 'ordem' track by sub.id" 
+                            <div class="form-group">
+                                <select class="form-control input-sm" style="min-width: 100px;" id="bemProducaoTipoList_{{$index}}" name="bemProducaoTipoList_{{$index}}"
+                                    ng-model="producaoAnimal.cultura" ng-change="limpaClassifica( $index );" ng-options="sub as sub.nome for sub in cadastro.apoio.animalTipo | orderBy: 'ordem' track by sub.id"
                                     ng-required="true">
                                 </select>
                             </div>
                         </td>
 
-                        <td ng-repeat="forma in producaoAnimal.Cultura.bemClassificacaoFormaProducaoItemList | orderBy: 'ordem'" >
-                            <select class="form-control input-sm" style="min-width: 100px;"
-                                id="formaProducaoValor_{{$parent.$index}}_{{$index}}"
+                        <td ng-repeat="forma in producaoAnimal.cultura.bemClassificacaoFormaProducaoItemList | orderBy: 'ordem'">
+                            <select class="form-control input-sm" style="min-width: 100px;" 
+                            id="formaProducaoValor_{{$parent.$index}}_{{$index}}" 
                                 name="formaProducaoValor_{{$parent.$index}}_{{$index}}"
-                                ng-model="cadastro.registro.producaoAnimalList[$parent.$index].producaoComposicaoList[$index].formaProducaoValor" 
-                                ng-options="sub as sub.nome for sub in forma.formaProducaoItem.formaProducaoValorList | orderBy: 'ordem' track by sub.id" 
-                                ng-change="classifica( $parent.$index );"
-                                ng-required="true">
+                                ng-model="cadastro.registro.producaoAnimalList[$parent.$index].producaoComposicaoList[$index].formaProducaoValor"
+                                ng-options="sub as sub.nome for sub in forma.formaProducaoItem.formaProducaoValorList | orderBy: 'ordem' track by sub.id"
+                                ng-change="classifica( $parent.$index );" ng-required="true">
                             </select>
-                            
+
                         </td>
-                        <td >
-                            <input class="form-control input-sm text-right" id="itemAValor_{{$index}}" name="itemAValor_{{$index}}" 
-                                   ng-model="producaoAnimal.itemAValor" ng-required="true" ui-number-mask="0" style="min-width: 75px;" 
-                                    ng-show="producaoAnimal.Cultura.itemANome" ng-blur="formula($index);"
-                            >
-                            <div class="label label-danger" ng-show="navegador.submetido && producaoFormaFrm.itemAValor_{{$index}}.$error.required">
+                        <td>
+                            <input class="form-control input-sm text-right" id="rebanho_{{$index}}" name="rebanho_{{$index}}" ng-model="producaoAnimal.rebanho"
+                                ng-required="true" ui-number-mask="0" style="min-width: 75px;" ng-show="producaoAnimal.cultura.itemANome"
+                                ng-blur="formula($index);">
+                            <div class="label label-danger" ng-show="navegador.submetido && producaoFormaFrm.rebanho_{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
                         </td>
-                        <td >
-                            <input class="form-control input-sm text-right" id="itemBValor_{{$index}}" name="itemBValor_{{$index}}" 
-                                ng-model="producaoAnimal.itemBValor" ng-required="true" ui-number-mask="0" style="min-width: 75px;" 
-                                 ng-show="producaoAnimal.Cultura.itemBNome" ng-blur="formula($index);"
-                            >
-                            <div class="label label-danger" ng-show="navegador.submetido && producaoFormaFrm.itemBValor_{{$index}}.$error.required">
+                        <td>
+                            <input class="form-control input-sm text-right" id="matriz_{{$index}}" name="matriz_{{$index}}" ng-model="producaoAnimal.matriz"
+                                ng-required="true" ui-number-mask="0" style="min-width: 75px;" ng-show="producaoAnimal.cultura.itemBNome"
+                                ng-blur="formula($index);">
+                            <div class="label label-danger" ng-show="navegador.submetido && producaoFormaFrm.matriz_{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
                         </td>
 
-                        <td >
-                            <div ng-repeat="produto in cadastro.registro.producaoAnimalList[$index].ProdutoList " >
-                                <input class="form-control input-sm" id="produto_{{$parent.$index}}_{{$index}}"  name="produto_{{$parent.$index}}_{{$index}}"  
-                                       style="min-width: 50px;" 
-                                    ng-model="produto.bemClassificado.nome"
-                                 ng-disabled="true" ng-required="true">
+                        <td>
+                            <div ng-repeat="produto in cadastro.registro.producaoAnimalList[$index].produtoList ">
+                                <input class="form-control input-sm" id="produto_{{$parent.$index}}_{{$index}}" name="produto_{{$parent.$index}}_{{$index}}"
+                                    style="min-width: 50px;" ng-model="produto.bemClassificado.nome" ng-disabled="true" ng-required="true">
                         </td>
 
-                        <td >
-                            <div ng-repeat="produto in cadastro.registro.producaoAnimalList[$index].ProdutoList " >
-                                <input class="form-control input-sm text-right" id="producao_{{$parent.$index}}_{{$index}}"  name="producao_{{$parent.$index}}_{{$index}}"  
-                                       style="min-width: 50px;" 
-                                    ng-model="cadastro.registro.producaoAnimalList[$parent.$index].ProdutoList[$index].producao"
-                                 ng-required="true" ng-required="true" ui-number-mask="0" style="min-width: 50px;"  >
-                            </div>    
-                        </td>
-                        
-                        <td ng-if="cadastro.registro.publicoAlvo" >
-                            <div ng-repeat="produto in cadastro.registro.producaoAnimalList[$index].ProdutoList " >
-                                <input class="form-control input-sm text-right" id="preco_{{$parent.$index}}_{{$index}}"  name="preco_{{$parent.$index}}_{{$index}}"  
-                                       style="min-width: 50px;" 
-                                    ng-model="cadastro.registro.producaoAnimalList[$parent.$index].ProdutoList[$index].preco"
-                                 ng-required="true" ng-required="true" ui-money-mask="2" style="min-width: 50px;"  >
-                            </div>    
+                        <td>
+                            <div ng-repeat="produto in cadastro.registro.producaoAnimalList[$index].produtoList ">
+                                <input class="form-control input-sm text-right" id="producao_{{$parent.$index}}_{{$index}}" name="producao_{{$parent.$index}}_{{$index}}"
+                                    style="min-width: 50px;" ng-model="cadastro.registro.producaoAnimalList[$parent.$index].produtoList[$index].producao"
+                                    ng-required="true" ng-required="true" ui-number-mask="0" style="min-width: 50px;">
+                            </div>
                         </td>
 
-                        <td ng-show="cadastro.registro.publicoAlvo" >
-                            <div ng-repeat="produto in cadastro.registro.producaoAnimalList[$index].ProdutoList " align="right">
-                                ({{ cadastro.registro.producaoAnimalList[$parent.$index].ProdutoList[$index].producao * cadastro.registro.producaoAnimalList[$parent.$index].ProdutoList[$index].preco | currency }})
-                            </div>    
-                            
+                        <td ng-if="cadastro.registro.publicoAlvo">
+                            <div ng-repeat="produto in cadastro.registro.producaoAnimalList[$index].produtoList ">
+                                <input class="form-control input-sm text-right" id="valorUnitario_{{$parent.$index}}_{{$index}}" name="valorUnitario_{{$parent.$index}}_{{$index}}"
+                                    style="min-width: 50px;" ng-model="cadastro.registro.producaoAnimalList[$parent.$index].produtoList[$index].valorUnitario"
+                                    ng-required="true" ng-required="true" ui-money-mask="2" style="min-width: 50px;">
+                            </div>
+                        </td>
+
+                        <td ng-show="cadastro.registro.publicoAlvo">
+                            <div ng-repeat="produto in cadastro.registro.producaoAnimalList[$index].produtoList " align="right">
+                                ({{ cadastro.registro.producaoAnimalList[$parent.$index].produtoList[$index].producao * cadastro.registro.producaoAnimalList[$parent.$index].produtoList[$index].valorUnitario
+                                | currency }})
+                            </div>
+
                         </td>
 
                         <td ng-show="cadastro.registro.unidadeOrganizacional && !cadastro.registro.publicoAlvo">
-                            <input class="form-control input-sm text-right" id="quantidadeProdutores_{{$index}}" name="quantidadeProdutores_{{$index}}" 
-                                ng-model="producaoAnimal.quantidadeProdutores" ng-required="false" ui-number-mask="0" style="min-width: 50px;" ng-show="producaoAnimal.Cultura">
+                            <input class="form-control input-sm text-right" id="quantidadeProdutores_{{$index}}" name="quantidadeProdutores_{{$index}}"
+                                ng-model="producaoAnimal.quantidadeProdutores" ng-required="false" ui-number-mask="0" style="min-width: 50px;"
+                                ng-show="producaoAnimal.cultura">
                             <div class="label label-danger" ng-show="navegador.submetido && producaoAnimalFrm.quantidadeProdutores_{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
@@ -148,7 +123,7 @@
                 </tfoot>
             </table>
         </ng-form>
+        </div>
+        <div class="panel-footer">
+        </div>
     </div>
-    <div class="panel-footer">
-    </div>
-</div>

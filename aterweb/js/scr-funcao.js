@@ -91,6 +91,30 @@ $.fn.serializeAnything = function(tag) {
 
 };
 
+
+function campoComErro(obj) {
+    console.log(obj);
+    if( !isUndefOrNullOrEmpty(obj.$error) ){
+        if( !isUndefOrNullOrEmpty(obj.$error.required) ){
+            if (obj.$error.required instanceof Object) {    
+                $.each(obj.$error.required, function(chave, valor) {
+                    campoComErro( obj.$error.required[chave] );
+                });
+            } else {
+                console.log("Focus : "); console.log(obj);
+                jQuery('#'+obj.$name).focus();
+                return;
+            }
+
+    }
+        if (obj.$error instanceof Array || obj.$error instanceof Object) {    
+            campoComErro(obj.$error);
+        }
+    }
+
+}
+
+
 function removerCampo(contexto, campos) {
     if (isUndefOrNull(contexto)) {
         return;

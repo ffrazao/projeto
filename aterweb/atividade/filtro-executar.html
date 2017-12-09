@@ -1,0 +1,209 @@
+                    <div class="form-group" title="Demandante">
+                        <label class="col-md-4 control-label" for="demandante">
+                            Demandante
+                        </label>
+                        <div class="col-md-6">
+                            <tags-input id="demandanteList" name="demandanteList" ng-model="cadastro.filtro.demandanteList" placeholder="Digite o nome, ou parte dele, e tecle enter" replace-spaces-with-dashes="false"></tags-input>
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.demandante.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" title="Executor">
+                        <label class="col-md-4 control-label" for="executor">
+                            Executor
+                        </label>
+                        <div class="col-md-6">
+                            <tags-input id="executorList" name="executorList" ng-model="cadastro.filtro.executorList" placeholder="Digite o nome, ou parte dele, e tecle enter" replace-spaces-with-dashes="false"></tags-input>
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.executor.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" title="Código da Atividade">
+                        <label class="col-md-4 control-label" for="codigo">
+                            Código da Atividade
+                        </label>
+                        <div class="col-md-6">
+                            <tags-input id="codigoList" name="codigoList" ng-model="cadastro.filtro.codigoList" placeholder="Digite o nome, ou parte dele, e tecle enter" replace-spaces-with-dashes="false"></tags-input>
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.codigoList.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" title="Período">
+                        <label class="col-md-4 control-label" for="inicio">
+                            Período entre
+                        </label>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <input type="text" class="form-control" id="inicio" name="inicio" ng-model="cadastro.filtro.inicio" ui-date-mask ng-required="true">
+                                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.inicio.$error.required">
+                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                        Campo Obrigatório
+                                    </div>
+                                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.inicio.$error.date">
+                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                        Data Inválida!
+                                    </div>
+                                </div>
+                                <label class="col-md-2">
+                                    e 
+                                </label>
+                                <div class="col-md-5">
+                                    <input type="text" class="form-control" id="termino" name="termino" ng-model="cadastro.filtro.termino" ui-date-mask ng-required="true">
+                                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.termino.$error.required">
+                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                        Campo Obrigatório
+                                    </div>
+                                    <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.termino.$error.date">
+                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                        Data Inválida!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" title="Método">
+                        <label class="col-md-4 control-label" for="metodo">
+                            Método
+                        </label>
+                        <div class="col-md-6">
+                            <select class="form-control" id="metodo" name="metodo" ng-model="cadastro.filtro.metodo" ng-options="item as item.nome for item in cadastro.apoio.metodoList track by item.id">
+                                <option value="">-- Ignorar --</option>
+                            </select>
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.metodo.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" title="Assunto">
+                        <label class="col-md-4 control-label" for="assunto">
+                            Assunto
+                        </label>
+                        <div class="col-md-6">
+                            <select class="form-control" id="assunto" name="assunto" ng-model="cadastro.filtro.assunto" ng-options="item as item.nome for item in cadastro.apoio.assuntoList track by item.id">
+                                <option value="">-- Ignorar --</option>
+                            </select>
+
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.assunto.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" title="Meta Tática">
+                        <label class="col-md-4 control-label" for="metaTatica">
+                            Meta Tática
+                        </label>
+                        <div class="col-md-6">
+                            <select class="form-control" id="metaTatica" name="metaTatica" ng-model="cadastro.filtro.metaTatica" ng-options="item.id as item.descricao for item in cadastro.apoio.metaTaticaList">
+                                <option value="">-- Ignorar --</option>
+                            </select>
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.assunto.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+
+                    <legend>Beneficiários</legend>
+                    <div class="form-group" title="Segmento">
+                        <label class="col-md-4 control-label" for="segmento">Segmento</label>
+                        <div class="col-md-8">
+                            <label class="checkbox-inline" for="segmento-{{$index}}" ng-repeat="item in cadastro.apoio.publicoAlvoSegmentoList">
+                                <input type="checkbox" name="segmento" id="segmento-{{$index}}" checklist-model="cadastro.filtro.segmento" checklist-value="item.codigo">
+                                {{item.descricao}}
+                            </label>
+                        </div>
+                        <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.segmento.$error.required">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Campo Obrigatório
+                        </div>
+                    </div>
+                    <div class="form-group" title="Categoria">
+                        <label class="col-md-4 control-label" for="categoria">
+                            Categoria
+                        </label>
+                        <div class="col-md-8">
+                            <label class="checkbox-inline" for="categoria-{{$index}}" ng-repeat="item in cadastro.apoio.publicoAlvoCategoriaList">
+                                <input type="checkbox" name="categoria" id="categoria-{{$index}}" checklist-model="cadastro.filtro.categoria" checklist-value="item.codigo">
+                                {{item.descricao}}
+                            </label>
+
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.categoria.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" title="Gênero">
+                        <label class="col-md-4 control-label" for="genero">
+                            Gênero
+                        </label>
+                        <div class="col-md-8">
+                            <label class="checkbox-inline" for="genero-{{$index}}" ng-repeat="item in cadastro.apoio.generoList">
+                                <input type="checkbox" name="genero" id="genero-{{$index}}" checklist-model="cadastro.filtro.genero" checklist-value="item.codigo">
+                                {{item.descricao}}
+                            </label>
+
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.genero.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" title="Geração">
+                        <label class="col-md-4 control-label" for="geracao">
+                            Geração
+                        </label>
+                        <div class="col-md-8">
+                            <label class="checkbox-inline" for="pessoaGeracao-{{$index}}" ng-repeat="item in cadastro.apoio.pessoaGeracaoList">
+                                <input type="checkbox" name="pessoaGeracao" id="pessoaGeracao-{{$index}}" checklist-model="cadastro.filtro.geracao" checklist-value="item.codigo">
+                                {{item.descricao}}
+                            </label>
+
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.geracao.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" title="Organização">
+                        <label class="col-md-4 control-label" for="organizacao">
+                            Organização
+                        </label>
+                        <div class="col-md-8">
+                            <label class="checkbox-inline" for="organizacao-{{$index}}" ng-repeat="item in cadastro.apoio.confirmacaoList">
+                                <input type="checkbox" name="organizacao" id="organizacao-{{$index}}" checklist-model="cadastro.filtro.organizacao" checklist-value="item.codigo">
+                                {{item.descricao}}
+                            </label>
+
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.filtro.organizacao.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Unidade Organizacional/Comunidade -->
+                    <div class="form-group" title="Unidade Organizacional/Comunidade">
+                        <label class="col-md-4 control-label" for="unidadeOrganizacionalComunidade">
+                            Unidade Organizacional/Comunidade
+                        </label>
+                       <div class="col-md-7">
+                            <frz-unidade-comunidade id="unidadeOrganizacionalComunidade" name="unidadeOrganizacionalComunidade" ng-model="cadastro.apoio.localList">
+                            </frz-unidade-comunidade>
+                            <input type="hidden" id="unidadeOrganizacionalComunidadeTotal" name="unidadeOrganizacionalComunidadeTotal" ng-model="cadastro.apoio.localList.length" ng-valor-min="0">
+                        </div>
+                        <div class="label label-danger" ng-show="navegador.submetido && (frm.filtro.unidadeOrganizacionalComunidadeTotal.$error.required || frm.filtro.unidadeOrganizacionalComunidadeTotal.$error.ngValorMin)">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            Campo Obrigatório
+                        </div>
+                    </div>
+                    

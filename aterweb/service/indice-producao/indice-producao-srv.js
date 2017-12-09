@@ -84,7 +84,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                         scp.cadastro.apoio.bemClassificadoFloriculturaList = resposta.resultado.bemClassificadoFloricuturaList;
                         scp.cadastro.apoio.bemClassificadoArtesanatoList = resposta.resultado.bemClassificadoArtesanatoList;
                         scp.cadastro.apoio.bemClassificadoAgroindustriaList = resposta.resultado.bemClassificadoAgroindustriaList;                        
-                        scp.cadastro.apoio.bemClassificadoAnimalList = resposta.resultado;
+                        //scp.cadastro.apoio.bemClassificadoAnimalList = resposta.resultado.bemClassificadoAnimalList;
                         scp.cadastro.apoio.bemClassificacaoList = resposta.resultado.bemClassificacaoList;
                         scp.cadastro.apoio.bemClassificacaoMatrizList = resposta.resultado.bemClassificacaoMatrizList;
                         
@@ -128,6 +128,15 @@ angular.module(pNmModulo).factory(pNmFactory,
                             }
                         });
 
+                        scp.cadastro.apoio.bemClassificadoAnimalList.forEach(function (v,k) {
+                            for (var classificacao in scp.cadastro.apoio.bemClassificacaoMatrizList) {
+                                if (v.bemClassificacao.id === scp.cadastro.apoio.bemClassificacaoMatrizList[classificacao].id) {
+                                    v.bemClassificacao = angular.copy(scp.cadastro.apoio.bemClassificacaoMatrizList[classificacao]);
+                                    break;
+                                }
+                            }
+                        });
+
                         
 
 
@@ -150,18 +159,72 @@ angular.module(pNmModulo).factory(pNmFactory,
                 SegurancaSrv.acesso(this.funcionalidade, 'INCLUIR');
                 return $http.post(this.endereco + '/incluir', indiceProducao);
             },
+            //Floricultura
+
+            incluirFlor : function(indiceProducao) {
+                SegurancaSrv.acesso(this.funcionalidade, 'INCLUIR');
+                return $http.post(this.endereco + '/incluir-flor', indiceProducao);
+            },
+            //Arte
+            incluirArte : function(indiceProducao) {
+                SegurancaSrv.acesso(this.funcionalidade, 'INCLUIR');
+                console.log("mando pro java");
+                return $http.post(this.endereco + '/incluir-arte', indiceProducao);
+            },
+
+            //Agro
+            incluirAgro : function(indiceProducao) {
+                SegurancaSrv.acesso(this.funcionalidade, 'INCLUIR');
+                console.log("mando pro java");
+                return $http.post(this.endereco + '/incluir-agro', indiceProducao);
+            },
+
+            //Animal
+            incluirAnimal : function(indiceProducao) {
+                SegurancaSrv.acesso(this.funcionalidade, 'INCLUIR');
+                return $http.post(this.endereco + '/incluir-animal', indiceProducao);
+            },
+
+
             visualizar : function(id) {
                 SegurancaSrv.acesso(this.funcionalidade, 'VISUALIZAR');
                 return $http.get(this.endereco + '/visualizar', {params: {'id': id}});
             },
             editar : function(indiceProducao) {
                 SegurancaSrv.acesso(this.funcionalidade, 'EDITAR');
-                removerCampo(indiceProducao, ['@jsonId']);
+               //removerCampo(indiceProducao, ['@jsonId']);
                 return $http.post(this.endereco + '/editar', indiceProducao);
             },
+
+            editarFlor : function(indiceProducao) {
+                SegurancaSrv.acesso(this.funcionalidade, 'EDITAR');
+               //removerCampo(indiceProducao, ['@jsonId']);
+                return $http.post(this.endereco + '/editar-flor', indiceProducao);
+            },
+
+            editarAnimal : function(indiceProducao) {
+                SegurancaSrv.acesso(this.funcionalidade, 'EDITAR');
+               console.log("mando pro java");
+                return $http.post(this.endereco + '/editar-animal', indiceProducao);
+            },
+
+            editarAgro : function(indiceProducao) {
+                SegurancaSrv.acesso(this.funcionalidade, 'EDITAR');
+               console.log("mando pro java");
+                return $http.post(this.endereco + '/editar-agro', indiceProducao);
+            },
+
+            editarArte : function(indiceProducao) {
+                SegurancaSrv.acesso(this.funcionalidade, 'EDITAR');
+               console.log("mando pro java");
+                return $http.post(this.endereco + '/editar-arte', indiceProducao);
+            },
+
+
+
             excluir : function(registro) {
                 SegurancaSrv.acesso(this.funcionalidade, 'EXCLUIR');
-                return $http.delete(this.endereco + '/excluir', {params: {'id': registro.id}});
+                return $http.delete(this.endereco + '/excluir', {params: {'id': registro}});
             },
             tagBemClassificado : function(nome) {
                 return BemProducaoSrv.filtrar({nome: nome});

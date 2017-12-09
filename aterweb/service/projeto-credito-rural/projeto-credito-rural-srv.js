@@ -55,7 +55,9 @@ angular.module(pNmModulo).factory(pNmFactory,
                 return $http.post(this.endereco + '/filtro-novo');
             },
             filtrar : function(filtro) {
+                console.log( this );
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
+                console.log("passou");
                 return $http.post(this.endereco + '/filtro-executar', filtro);
             },
             executarFiltro : function() {

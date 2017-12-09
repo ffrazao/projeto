@@ -1,5 +1,5 @@
 /* jslint evil: true, browser: true, plusplus: true, loopfunc: true */
-/* global criarEstadosPadrao, segAutorizaAcesso, removerCampo, isUndefOrNull */ 
+/* global criarEstadosPadrao, segAutorizaAcesso, removerCampo, isUndefOrNull, campoComErro */ 
 
 (function(pNmModulo, pNmController, pNmFormulario, pUrlModulo) {
 
@@ -34,7 +34,7 @@
             'ngInject';
 
             if (!modalCadastro) {
-                if (!$state.params.opcao || !$state.params.opcao.length || ['executar', 'demandar'].indexOf($state.params.opcao) < 0) {
+                if (!$state.params.opcao || !$state.params.opcao.length || ['executar', 'demandar','projetoCredito'].indexOf($state.params.opcao) < 0) {
                     $state.go('p.atividade.filtro', {opcao: 'executar'}, {location: true});
                     return;
                 } else {
@@ -46,9 +46,11 @@
 
             if ($scope.opcao === 'demandar') {
                 pNmFormulario = 'Demanda de Atividades';
-            } else {
+            } else if ($scope.opcao === 'executar') {
                 pNmFormulario = 'Execução de Atividades';
-            }
+            } else if($scope.opcao === 'projetoCredito') {
+                pNmFormulario = 'Projeto de Crétido';
+            } 
 
             var ordem = 0;
             var ATIV_ASSUNTO_LIST = {
@@ -137,6 +139,8 @@
                 // Retorno da modal
                 $scope.navegador.submetido = true;
                 if ($scope.frm.formulario.$invalid) {
+                    //console.log( $scope.frm.formulario );
+                    //campoComErro( $scope.frm.formulario );
                     toastr.error('Verifique os campos marcados', 'Erro');
                     return false;
                 }
@@ -211,7 +215,6 @@
             };
 
             $scope.confirmarIncluirAntes = function(cadastro) {
-                console.log(cadastro);
                 return confirmarSalvar(cadastro);
             };
 
@@ -219,6 +222,68 @@
                 return confirmarSalvar(cadastro);
             };
 
+            $scope.abrir = function(scp) {
+                // ajustar o menu das acoes especiais
+                $scope.navegador.botao('acao', 'acao')['subFuncoes'] = [
+                    {
+                        nome: 'Projeto Técnico',
+                        descricao: 'Emitir o Projeto Técnico',
+                        acao: $scope.emitirProjetoTecnico,
+                        exibir: function() {
+                            return (
+                                ($scope.opcao === 'projetoCredito') && 
+                                (  ($scope.navegador.estadoAtual() === 'VISUALIZANDO' && $scope.cadastro.registro.id) || 
+                                   ($scope.navegador.estadoAtual() === 'LISTANDO' && 
+                                      ($scope.navegador.selecao.tipo === 'U' && $scope.navegador.selecao.selecionado) || 
+                                      ($scope.navegador.selecao.tipo === 'M' && $scope.navegador.selecao.marcado > 0) 
+                                    )
+                                )
+                            );
+                        },
+                    },
+                ];
+                $rootScope.abrir(scp);
+            };
+
+            $scope.emitirProjetoTecnico = function() {
+                var idList = [];
+                if ($scope.navegador.estadoAtual() === 'LISTANDO') {
+                    if ($scope.navegador.selecao.tipo === 'U' && $scope.navegador.selecao.selecionado) {
+                        idList.push($scope.navegador.selecao.item.projetoCreditoRuralId);
+                    } else if ($scope.navegador.selecao.tipo === 'M' && $scope.navegador.selecao.marcado > 0) {
+                        $scope.navegador.selecao.items.forEach(function(item) {
+                            idList.push(item.projetoCreditoRuralId);
+                        });
+                    }
+                } else if ($scope.navegador.estadoAtual() === 'VISUALIZANDO' && $scope.cadastro.registro.projetoCreditoRural.id) {
+                    idList.push($scope.cadastro.registro.projetoCreditoRural.id);
+                }
+
+                AtividadeSrv.projetoTecnicoRel(idList)
+                    .success(function(resposta) {
+                        if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {
+                            //console.log(resposta);
+                            window.open("data:application/zip;base64,"+(resposta.resultado));
+                        } else {
+                            toastr.error(resposta && resposta.mensagem ? resposta.mensagem : resposta, 'Erro ao emitir relatório');
+                        }
+                    })
+                    .error(function(resposta) {
+                        toastr.error(resposta, 'Erro ao emitir relatório');
+                    });
+            };
+
+/*
+            $scope.incluir = function(scp) {
+                $rootScope.incluir(scp);
+                if($scope.opcao === 'projetoCredito') {
+                    console.log( scp.cadastro.apoio.metodoList );
+                    scp.cadastro.registro.metodo = angular.copy( scp.cadastro.apoio.metodoList[43] );
+                    scp.seProjetoDeCredito(); 
+                }
+
+            };
+*/
             // Segurança by Emerson
             $scope.editar = function(scp) {
                 // if( ! segAutorizaAcesso( $rootScope.token, $scope.cadastro.registro ) ){
@@ -282,6 +347,7 @@
             };
 
             $scope.seProjetoDeCredito = function( ) {
+                //console.log( $scope.cadastro.registro.metodo.codigo );
                 if( $scope.cadastro.registro.metodo.codigo === "PROJETO_CREDITO_RURAL" ){
 
                     var assuntoProjeto = $scope.cadastro.apoio.assuntoList[13];

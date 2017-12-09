@@ -43,7 +43,7 @@ angular.module(pNmModulo).controller(pNmController,
     // inicio das operaçoes atribuidas ao navagador
     $scope.abrir = function() {
         $scope.producaoArtesanatoNvg.mudarEstado('ESPECIAL');
-        $scope.producaoArtesanatoNvg.botao('edicao').exibir = function() {return false;};
+       // $scope.producaoArtesanatoNvg.botao('edicao').exibir = function() {return false;};
     };
     $scope.incluir = function() {
         init();
@@ -56,6 +56,10 @@ angular.module(pNmModulo).controller(pNmController,
             var i, j;
             removerCampo($scope.cadastro.registro.producaoList, ['@jsonId']);
             if ($scope.producaoArtesanatoNvg.selecao.item) {
+                var id = $scope.producaoArtesanatoNvg.selecao.item.id;
+                if(id > 0){
+                    $scope.vamosExcluir(id);
+                }
                 $scope.excluirElemento($scope, $scope.cadastro.registro, 'producaoArtesanatoList', $scope.producaoArtesanatoNvg.selecao.item);
             }
             $scope.producaoArtesanatoNvg.selecao.item = null;
@@ -65,14 +69,30 @@ angular.module(pNmModulo).controller(pNmController,
         });
     };
 
+    $scope.editar = function(){
+        mensagemSrv.confirmacao(false, 'Confirme a alteração do registro').then(function (conteudo) {
+
+        var item = $scope.producaoArtesanatoNvg.selecao.item;
+        
+        removerCampo(item, ['ipaProducaoFormaList', 'ipaProducao', 'unidadeOrganizacional', 'propriedadeRural', 'publicoAlvo', 'ipaProducaoBemClassificadoList']);
+
+        item.forma = item.producaoComposicaoList.formaProducaoValor;
+        item.producaoComposicaoList = null;
+
+        console.log(item);
+            
+            $scope.vamosEditar(item, 'Arte');
+        });
+    };
+
 
     $scope.calcula = function( index, obj ) {
-        if( $scope.cadastro.registro.producaoArtesanatoList[index].itemAValor ){
-            if( obj === 'itemBValor' ) {
-                 $scope.cadastro.registro.producaoArtesanatoList[index].volume =  $scope.cadastro.registro.producaoArtesanatoList[index].itemAValor * $scope.cadastro.registro.producaoArtesanatoList[index].itemBValor ;
+        if( $scope.cadastro.registro.producaoArtesanatoList[index].area ){
+            if( obj === 'produtividade' ) {
+                 $scope.cadastro.registro.producaoArtesanatoList[index].producao =  $scope.cadastro.registro.producaoArtesanatoList[index].area * $scope.cadastro.registro.producaoArtesanatoList[index].produtividade ;
             }
-            if( obj === 'volume'  ) {
-                 $scope.cadastro.registro.producaoArtesanatoList[index].itemBValor =  $scope.cadastro.registro.producaoArtesanatoList[index].volume / $scope.cadastro.registro.producaoArtesanatoList[index].itemAValor ;
+            if( obj === 'producao'  ) {
+                 $scope.cadastro.registro.producaoArtesanatoList[index].produtividade =  $scope.cadastro.registro.producaoArtesanatoList[index].producao / $scope.cadastro.registro.producaoArtesanatoList[index].area ;
             }
 
         }

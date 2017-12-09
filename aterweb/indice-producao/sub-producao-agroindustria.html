@@ -1,4 +1,4 @@
-<div class="panel panel-default" ng-class="{'ng-invalid': producaoNaoArgicolaFrm.producaoList.$error.ngValorMin}" id="producaoNaoArgicolaPnl">
+<div class="panel panel-default" ng-class="{'ng-invalid': producaoAgroindustriaFrm.producaoList.$error.ngValorMin}" id="producaoAgroindustriaPnl">
     <div class="panel-heading container-fluid">
         <frz-navegador
             ng-model="producaoAgroindustriaNvg" exibe-nome-botao="false"
@@ -28,7 +28,7 @@
         </div>
     </div>
     <div class="table-responsive" >
-        <ng-form name="producaoNaoArgicolaFrm">
+        <ng-form name="producaoAgroindustriaFrm">
             <table class="table table-striped" >
                 <thead>
                     <tr>
@@ -71,7 +71,7 @@
                                 <select class="form-control input-sm" style="min-width: 100px;"
                                     id="bemProducaoCategoriaList_{{$index}}"
                                     name="bemProducaoCategoriaList_{{$index}}"
-                                    ng-model="producaoAgroindustria.categoria" 
+                                    ng-model="producaoAgroindustria.categoria"
                                     ng-options="sub as sub.nome for sub in producaoAgroindustria.tipo.bemClassificacaoList | orderBy: 'ordem' track by sub.id" 
                                     ng-required="true">
                                 </select>
@@ -93,8 +93,8 @@
                             <select class="form-control input-sm" style="min-width: 100px;"
                                 id="formaProducaoValor_0_{{$index}}"
                                 name="formaProducaoValor_0_{{$index}}"
-                                ng-model="cadastro.registro.producaoAgroindustriaList[0].producaoComposicaoList[$index].formaProducaoValor" 
-                                ng-options="sub as sub.nome for sub in producaoAgroindustria.tipo.bemClassificacaoFormaProducaoItemList[0].formaProducaoItem.formaProducaoValorList | orderBy: 'ordem' track by sub.id" 
+                                ng-model="cadastro.registro.producaoAgroindustriaList[$index].producaoComposicaoList[$index].formaProducaoValor"
+                                ng-options="sub as sub.nome for sub in producaoAgroindustria.tipo.bemClassificacaoFormaProducaoItemList[$index].formaProducaoItem.formaProducaoValorList | orderBy: 'ordem' track by sub.id" 
                                 ng-required="true">
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && producaoNaoArgicolaFrm.formaProducaoValor_{{$parent.$index}}_{{$parent.$parent.$index}}.$error.required">
@@ -103,23 +103,23 @@
                             </div>
                         </td>
                         <td ng-show="false">
-                            <input class="form-control input-sm text-right" id="area_{{$index}}" name="area_{{$index}}" ng-model="producaoAgroindustria.itemAValor" ng-required="true" ui-number-mask="3" style="min-width: 50px;" ng-blur="calcula($index, 'itemAValor');" ng-show="producaoAgroindustria.bemClassificado">
-                            <div class="label label-danger" ng-show="navegador.submetido && producaoNaoArgicolaFrm.itemAValor_{{$index}}.$error.required">
+                            <input class="form-control input-sm text-right" id="area_{{$index}}" name="area_{{$index}}" ng-model="producaoAgroindustria.area" ng-required="true" ui-number-mask="3" style="min-width: 50px;" ng-blur="calcula($index, 'area');" ng-show="producaoAgroindustria.bemClassificado">
+                            <div class="label label-danger" ng-show="navegador.submetido && producaoNaoArgicolaFrm.area_{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
                         </td>
                         <td ng-show="false" >
-                            <input class="form-control input-sm text-right" id="produtividade_{{$index}}" name="produtividade_{{$index}}" ng-model="producaoAgroindustria.itemBValor" ng-required="true" ui-number-mask="3" style="min-width: 50px;" ng-blur="calcula($index, 'itemBValor');" ng-show="producaoAgroindustria.bemClassificado">
-                            <div class="label label-danger" ng-show="navegador.submetido && producaoNaoArgicolaFrm.itemAValor_{{$index}}.$error.required">
+                            <input class="form-control input-sm text-right" id="produtividade_{{$index}}" name="produtividade_{{$index}}" ng-model="producaoAgroindustria.produtividade" ng-required="true" ui-number-mask="3" style="min-width: 50px;" ng-blur="calcula($index, 'produtividade');" ng-show="producaoAgroindustria.bemClassificado">
+                            <div class="label label-danger" ng-show="navegador.submetido && producaoNaoArgicolaFrm.area_{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
                         </td>
                         
                         <td >
-                            <input class="form-control input-sm text-right" id="producao_{{$index}}" name="producao_{{$index}}" ng-model="producaoAgroindustria.volume" ng-required="true" ui-number-mask="0" style="min-width: 50px;" ng-blur="calcula($index, 'volume');" ng-show="producaoAgroindustria.bemClassificado">
-                            <div class="label label-danger" ng-show="navegador.submetido && producaoNaoArgicolaFrm.itemAValor_{{$index}}.$error.required">
+                            <input class="form-control input-sm text-right" id="producao_{{$index}}" name="producao_{{$index}}" ng-model="producaoAgroindustria.producao" ng-required="true" ui-number-mask="0" style="min-width: 50px;" ng-blur="calcula($index, 'producao');" ng-show="producaoAgroindustria.bemClassificado">
+                            <div class="label label-danger" ng-show="navegador.submetido && producaoNaoArgicolaFrm.area_{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
@@ -131,7 +131,7 @@
                                 Campo Obrigatório
                             </div>
                         </td>
-                        <td ng-show="cadastro.registro.publicoAlvo && producaoAgroindustria.bemClassificado">({{ producaoAgroindustria.volume * producaoAgroindustria.valorUnitario | currency }})
+                        <td ng-show="cadastro.registro.publicoAlvo && producaoAgroindustria.bemClassificado">({{ producaoAgroindustria.producao * producaoAgroindustria.valorUnitario | currency }})
                         </td>
 
                         <td ng-if="cadastro.registro.unidadeOrganizacional && !cadastro.registro.publicoAlvo">

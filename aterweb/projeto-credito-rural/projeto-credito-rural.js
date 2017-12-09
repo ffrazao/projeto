@@ -79,6 +79,7 @@
             // inicio: atividades do Modal
             $scope.modalOk = function() {
                 // Retorno da modal
+                
                 $uibModalInstance.close({cadastro: angular.copy($scope.cadastro), selecao: angular.copy($scope.navegador.selecao)});
             };
             $scope.modalCancelar = function() {
@@ -110,7 +111,8 @@
                 });
             };
             // fim: atividades do Modal
-            
+
+
             // inicio das operaçoes atribuidas ao navagador
             var salvar = function(registro, modal) {
                 removerCampo(registro, ['@jsonId']);
@@ -198,6 +200,7 @@
                 }
             };
 
+
             $scope.incluir = function() {
                 editarItem();
             };
@@ -256,13 +259,13 @@
                 ProjetoCreditoRuralSrv.projetoTecnicoRel(idList)
                     .success(function(resposta) {
                         if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {
+                            //console.log(resposta);
                             window.open("data:application/zip;base64,"+(resposta.resultado));
                         } else {
                             toastr.error(resposta && resposta.mensagem ? resposta.mensagem : resposta, 'Erro ao emitir relatório');
                         }
                     })
                     .error(function(resposta) {
-                        console.log(resposta);
                         toastr.error(resposta, 'Erro ao emitir relatório');
                     });
             };

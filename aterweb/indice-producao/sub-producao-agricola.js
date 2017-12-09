@@ -42,21 +42,31 @@ angular.module(pNmModulo).controller(pNmController,
     // inicio das operaçoes atribuidas ao navagador
     $scope.abrir = function() {
         $scope.producaoArgicolaNvg.mudarEstado('ESPECIAL');
-        $scope.producaoArgicolaNvg.botao('edicao').exibir = function() {return false;};
+        //$scope.producaoArgicolaNvg.botao('edicao').exibir = function() {return false;};
     };
     $scope.incluir = function() {
         init();
         var item = $scope.criarElemento($scope.cadastro.registro, 'producaoAgricolaList', {});
         item.producaoComposicaoList = [];
+  
         $scope.cadastro.registro.producaoAgricolaList.push(item);
     };
+
     $scope.excluir = function() {
         mensagemSrv.confirmacao(false, 'Confirme a exclusão').then(function (conteudo) {
             var i, j;
             removerCampo($scope.cadastro.registro.producaoList, ['@jsonId']);
+
+            console.log("ITEM: " + $scope.producaoArgicolaNvg.selecao.item.id);
+
             if ($scope.producaoArgicolaNvg.selecao.item) {
+                var id = $scope.producaoArgicolaNvg.selecao.item.id;
+                if(id > 0){                    
+                    $scope.vamosExcluir(id);
+                }
                 $scope.excluirElemento($scope, $scope.cadastro.registro, 'producaoAgricolaList', $scope.producaoArgicolaNvg.selecao.item);
             }
+
             $scope.producaoArgicolaNvg.selecao.item = null;
             $scope.producaoArgicolaNvg.selecao.items = [];
             $scope.producaoArgicolaNvg.selecao.selecionado = false;
@@ -64,14 +74,23 @@ angular.module(pNmModulo).controller(pNmController,
         });
     };
 
+    $scope.editar = function(){
+        mensagemSrv.confirmacao(false, 'Confirme a alteração do registro').then(function (conteudo) {
+
+        var item = $scope.producaoArgicolaNvg.selecao.item;
+
+            $scope.vamosEditar(item, 'Agri');
+        });
+    };
+
 
     $scope.calcula = function( index, obj ) {
-        if( $scope.cadastro.registro.producaoAgricolaList[index].itemAValor ){
-            if( obj === 'itemBValor' ) {
-                 $scope.cadastro.registro.producaoAgricolaList[index].volume =  $scope.cadastro.registro.producaoAgricolaList[index].itemAValor * $scope.cadastro.registro.producaoAgricolaList[index].itemBValor ;
+        if( $scope.cadastro.registro.producaoAgricolaList[index].area ){
+            if( obj === 'produtividade' ) {
+                 $scope.cadastro.registro.producaoAgricolaList[index].producao =  $scope.cadastro.registro.producaoAgricolaList[index].area * $scope.cadastro.registro.producaoAgricolaList[index].produtividade ;
             }
-            if( obj === 'volume'  ) {
-                 $scope.cadastro.registro.producaoAgricolaList[index].itemBValor =  $scope.cadastro.registro.producaoAgricolaList[index].volume / $scope.cadastro.registro.producaoAgricolaList[index].itemAValor ;
+            if( obj === 'producao'  ) {
+                 $scope.cadastro.registro.producaoAgricolaList[index].produtividade =  $scope.cadastro.registro.producaoAgricolaList[index].producao / $scope.cadastro.registro.producaoAgricolaList[index].area ;
             }
 
         }

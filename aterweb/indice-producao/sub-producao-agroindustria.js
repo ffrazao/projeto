@@ -43,19 +43,24 @@ angular.module(pNmModulo).controller(pNmController,
     // inicio das operaçoes atribuidas ao navagador
     $scope.abrir = function() {
         $scope.producaoAgroindustriaNvg.mudarEstado('ESPECIAL');
-        $scope.producaoAgroindustriaNvg.botao('edicao').exibir = function() {return false;};
+       // $scope.producaoAgroindustriaNvg.botao('edicao').exibir = function() {return false;};
     };
     $scope.incluir = function() {
         init();
         var item = $scope.criarElemento($scope.cadastro.registro, 'producaoAgroindustriaList', {});
         item.producaoComposicaoList = [];
         $scope.cadastro.registro.producaoAgroindustriaList.push(item);
+        
     };
     $scope.excluir = function() {
         mensagemSrv.confirmacao(false, 'Confirme a exclusão').then(function (conteudo) {
             var i, j;
             removerCampo($scope.cadastro.registro.producaoList, ['@jsonId']);
             if ($scope.producaoAgroindustriaNvg.selecao.item) {
+                var id = $scope.producaoAgroindustriaNvg.selecao.item.id;
+                if(id > 0){
+                    $scope.vamosExcluir(id);
+                }
                 $scope.excluirElemento($scope, $scope.cadastro.registro, 'producaoAgroindustriaList', $scope.producaoAgroindustriaNvg.selecao.item);
             }
             $scope.producaoAgroindustriaNvg.selecao.item = null;
@@ -65,14 +70,34 @@ angular.module(pNmModulo).controller(pNmController,
         });
     };
 
+    $scope.editar = function(){
+        mensagemSrv.confirmacao(false, 'Confirme a alteração do registro').then(function (conteudo) {
+
+        var item = $scope.producaoAgroindustriaNvg.selecao.item;
+        removerCampo(item, ['unidadeOrganizacional', 'publicoAlvo', 'propriedadeRural', 'ipaProducao']);
+
+        //item.forma = item.producaoComposicaoList.formaProducaoValor;
+
+        //item.producaoComposicaoList = null;
+
+        // var i = [];
+        // i[0] = item.producaoComposicaoList;
+        // item.producaoComposicaoList = i;
+
+        //    console.log(item);
+            
+            $scope.vamosEditar(item, 'Agro');
+        });
+    };
+
 
     $scope.calcula = function( index, obj ) {
-        if( $scope.cadastro.registro.producaoAgroindustriaList[index].itemAValor ){
-            if( obj === 'itemBValor' ) {
-                 $scope.cadastro.registro.producaoAgroindustriaList[index].volume =  $scope.cadastro.registro.producaoAgroindustriaList[index].itemAValor * $scope.cadastro.registro.producaoAgroindustriaList[index].itemBValor ;
+        if( $scope.cadastro.registro.producaoAgroindustriaList[index].area ){
+            if( obj === 'produtividade' ) {
+                 $scope.cadastro.registro.producaoAgroindustriaList[index].producao =  $scope.cadastro.registro.producaoAgroindustriaList[index].area * $scope.cadastro.registro.producaoAgroindustriaList[index].produtividade ;
             }
-            if( obj === 'volume'  ) {
-                 $scope.cadastro.registro.producaoAgroindustriaList[index].itemBValor =  $scope.cadastro.registro.producaoAgroindustriaList[index].volume / $scope.cadastro.registro.producaoAgroindustriaList[index].itemAValor ;
+            if( obj === 'producao'  ) {
+                 $scope.cadastro.registro.producaoAgroindustriaList[index].produtividade =  $scope.cadastro.registro.producaoAgroindustriaList[index].producao / $scope.cadastro.registro.producaoAgroindustriaList[index].area ;
             }
 
         }

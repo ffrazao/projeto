@@ -105,6 +105,9 @@ angular.module(pNmModulo).controller(pNmController,
                 $scope.cadastro.registro.projetoCreditoRural['cronogramaPagamentoCusteioList'] = resposta.resultado['cronogramaPagamentoCusteioList'];
                 $scope.cadastro.registro.projetoCreditoRural['fluxoCaixaList'] = resposta.resultado['fluxoCaixaList'];
                 $scope.cadastro.registro.projetoCreditoRural['parecerTecnicoList'] = resposta.resultado['parecerTecnicoList'];
+
+                //console.log($scope.cadastro.registro.projetoCreditoRural );
+
             } else {
                 toastr.error(resposta && resposta.mensagem ? resposta.mensagem : resposta, 'Erro ao calcular dados');
             }

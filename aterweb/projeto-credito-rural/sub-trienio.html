@@ -63,7 +63,7 @@
                         </td>
                         <td>
                             <input class="form-control input-sm" id="descricao{{$index}}" name="descricao{{$index}}" ng-model="reg.descricao" ng-required="true" ng-model-options="{ updateOn: 'blur'}">
-                            <div class="label label-danger" ng-show="navegador.submetido && trienioListFrm['descricao' + $index].$error.required">
+                            <div class="label label-danger" ng-show="navegador.submetido && trienioListFrm['descricao' + $index].$error.required" 
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>

@@ -54,7 +54,7 @@
                             Valor Total (R$)
                         </th>
                     </tr>
-                    <tr ng-repeat="item in conteudo.registro.cultura.itens | filter: {custoProducaoInsumoServico: {tipo: 'I'}}">
+                    <tr ng-repeat="item in conteudo.registro.cultura.itens | orderBy: 'custoProducaoInsumoServico.especificacao' | filter: {custoProducaoInsumoServico: {tipo: 'I'}}">
                         <td>{{item.custoProducaoInsumoServico.especificacao}}</td>
                         <td class="text-right">{{item.quantidade | number: 2}}</td>
                         <td>{{item.custoProducaoInsumoServico.unidadeMedida.nome}}</td>
@@ -70,7 +70,7 @@
         </div>
     </div>
     <div class="row" ng-show="conteudo.registro.cultura">
-        <div class="col-md-12" title="Serviços">
+        <div class="col-md-12" title="Serviços">s
             <label class="control-label" for="servicoList">Serviços</label>
             <div class="table-responsive">
                 <table class="table table-striped table-hover">
@@ -91,7 +91,7 @@
                             Valor Total (R$)
                         </th>
                     </tr>
-                    <tr ng-repeat="item in conteudo.registro.cultura.itens | filter: {custoProducaoInsumoServico: {tipo: 'S'}}">
+                    <tr ng-repeat="item in conteudo.registro.cultura.itens | orderBy: 'custoProducaoInsumoServico.especificacao' | filter: {custoProducaoInsumoServico: {tipo: 'S'}}">
                         <td>{{item.custoProducaoInsumoServico.especificacao}}</td>
                         <td class="text-right">{{item.quantidade | number: 2}}</td>
                         <td>{{item.custoProducaoInsumoServico.unidadeMedida.nome}}</td>

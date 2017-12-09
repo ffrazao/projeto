@@ -45,7 +45,7 @@ angular.module(pNmModulo).controller(pNmController,
     // inicio das operaçoes atribuidas ao navagador
     $scope.abrir = function() {
         $scope.producaoAnimalNvg.mudarEstado('ESPECIAL');
-        $scope.producaoAnimalNvg.botao('edicao').exibir = function() {return false;};
+       // $scope.producaoAnimalNvg.botao('edicao').exibir = function() {return false;};
     };
     $scope.incluir = function() {
         init();
@@ -59,6 +59,11 @@ angular.module(pNmModulo).controller(pNmController,
             var i, j;
             removerCampo($scope.cadastro.registro.producaoList, ['@jsonId']);
             if ($scope.producaoAnimalNvg.selecao.item) {
+                var id = $scope.producaoAnimalNvg.selecao.item.id;
+                if(id > 0){                    
+                    $scope.vamosExcluir(id);
+                }
+
                 $scope.excluirElemento($scope, $scope.cadastro.registro, 'producaoAnimalList', $scope.producaoAnimalNvg.selecao.item);
             }
             $scope.producaoAnimalNvg.selecao.item = null;
@@ -68,8 +73,22 @@ angular.module(pNmModulo).controller(pNmController,
         });
     };
 
+    $scope.editar = function(){
+        mensagemSrv.confirmacao(false, 'Confirme a alteração do registro').then(function (conteudo) {
+
+        var item = $scope.producaoAnimalNvg.selecao.item;
+        removerCampo(item, ['ipaProducaoFormaList' ,'unidadeOrganizacional', 'publicoAlvo', 'propriedadeRural', 'ipaProducao', 'ipaProducaoBemClassificadoList']);
+        removerCampo(item.cultura, ['bemClassificacao']);
+        removerCampo(item.produtoList, ['bemClassificacao']);
+        removerCampo(item.producaoComposicaoList, ['formaProducaoItem']);
+        
+            
+            $scope.vamosEditar(item, 'Animal');
+        });
+    };
+
     $scope.limpaClassifica = function( paiIndex ) {
-        $scope.cadastro.registro.producaoAnimalList[paiIndex].ProdutoList = null;
+        $scope.cadastro.registro.producaoAnimalList[paiIndex].produtoList = null;
     };
 
     $scope.classifica = function( paiIndex ) {
@@ -77,13 +96,14 @@ angular.module(pNmModulo).controller(pNmController,
         //toastr.info( $scope.cadastro.registro.producaoAnimalList[paiIndex].producaoComposicaoList.length );
         var obj;
         if ( $scope.cadastro.registro.producaoAnimalList[paiIndex].producaoComposicaoList.length === 3 ){
-            for( var i in $scope.cadastro.registro.producaoAnimalList[paiIndex].Cultura.bemClassificacaoFormaProducaoList ){                     
-                obj = $scope.cadastro.registro.producaoAnimalList[paiIndex].Cultura.bemClassificacaoFormaProducaoList[i];
+            for( var i in $scope.cadastro.registro.producaoAnimalList[paiIndex].cultura.bemClassificacaoFormaProducaoList ){                     
+                obj = $scope.cadastro.registro.producaoAnimalList[paiIndex].cultura.bemClassificacaoFormaProducaoList[i];
+
                 if( obj.formaProducaoValor1.id === $scope.cadastro.registro.producaoAnimalList[paiIndex].producaoComposicaoList[0].formaProducaoValor.id &&  
                     obj.formaProducaoValor2.id === $scope.cadastro.registro.producaoAnimalList[paiIndex].producaoComposicaoList[1].formaProducaoValor.id &&
                     obj.formaProducaoValor3.id === $scope.cadastro.registro.producaoAnimalList[paiIndex].producaoComposicaoList[2].formaProducaoValor.id
                    ){
-                      $scope.cadastro.registro.producaoAnimalList[paiIndex].ProdutoList = angular.copy( obj.bemClassificacaoFormaProducaoBemClassificadoList );
+                      $scope.cadastro.registro.producaoAnimalList[paiIndex].produtoList = angular.copy( obj.bemClassificacaoFormaProducaoBemClassificadoList );
                 }
             }
         }
@@ -94,9 +114,9 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.formula = function( paiIndex ) {
 
         var obj;
-        for( var i in $scope.cadastro.registro.producaoAnimalList[paiIndex].ProdutoList ){                     
-            console.log($scope.cadastro.registro.producaoAnimalList[paiIndex].ProdutoList[i]);
-            obj = $scope.cadastro.registro.producaoAnimalList[paiIndex].ProdutoList[i];
+        for( var i in $scope.cadastro.registro.producaoAnimalList[paiIndex].produtoList ){                     
+            console.log($scope.cadastro.registro.producaoAnimalList[paiIndex].produtoList[i]);
+            obj = $scope.cadastro.registro.producaoAnimalList[paiIndex].produtoList[i];
             if( obj.formula ){
 
                 var formula = obj.formula;

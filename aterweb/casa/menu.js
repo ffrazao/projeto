@@ -104,10 +104,16 @@
                         funcionalidade: 'ATIVIDADE',
                         visivel: false,
                     },
- */                   {
+ */                 {
                         name: 'Registro de Atividade',
                         link: 'p.atividade.filtro({opcao: "executar"})',
                         funcionalidade: 'ATIVIDADE',
+                        visivel: false,
+                    },
+                    {
+                        name: 'Projeto de Crédito Rural',
+                        link: 'p.atividade.filtro({opcao: "projetoCredito"})',
+                        funcionalidade: 'PROJETO_CREDITO_RURAL',
                         visivel: false,
                     },
                     {
@@ -116,13 +122,13 @@
                         funcionalidade: 'INDICE_PRODUCAO',
                         visivel: false,
                     },
-                    {
-                        name: 'Projeto de Crédito Rural',
+/*                    {
+                        name: 'Projeto de Crédito ANTIGO',
                         link: 'p.projetoCreditoRural.filtro',
                         funcionalidade: 'PROJETO_CREDITO_RURAL',
                         visivel: false,
                     },
-/*                    {
+                    {
                         name: 'Demandar',
                         link: 'p.atividade.filtro({opcao: "demandar"})',
                         funcionalidade: 'ATIVIDADE',

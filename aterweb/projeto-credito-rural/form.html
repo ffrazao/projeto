@@ -106,7 +106,7 @@
                     <div class="col-sm-2" title="Agente Financeiro">
                         <div class="form-group">
                             <label class="control-label" for="agenteFinanceiro">Agente Financeiro</label>
-                            <select id="agenteFinanceiro" name="agenteFinanceiro" class="form-control" ng-model="cadastro.registro.projetoCreditoRural.agenteFinanceiro" ng-required="true" ng-options="item as item.pessoaJuridica.nome for item in cadastro.apoio.agenteFinanceiroList track by item.id">
+                            <select id="agenteFinanceiro" name="agenteFinanceiro" class="form-control" ng-model="cadastro.registro.projetoCreditoRural.agenteFinanceiro" ng-required="true" ng-options="item as item.pessoaJuridica.apelidoSigla for item in cadastro.apoio.agenteFinanceiroList track by item.id">
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formularioProjetoCreditoRural.agenteFinanceiro.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>

@@ -12,6 +12,7 @@ angular.module(pNmModulo).factory(pNmFactory,
         var AtividadeSrv = {
             funcionalidade: 'ATIVIDADE',
             endereco: $rootScope.servicoUrl + '/atividade',
+            enderecoProjetoCredito: $rootScope.servicoUrl + '/projeto-credito-rural',
             abrir : function(scp) {
               
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
@@ -83,12 +84,27 @@ angular.module(pNmModulo).factory(pNmFactory,
             },
             filtrar : function(filtro) {
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
-                return $http.post(this.endereco + '/filtro-executar', filtro);
+                if( $stateParams.opcao !== "projetoCredito" ){
+                    return $http.post(this.endereco + '/filtro-executar', filtro);
+                } else {
+                    return $http.post(this.enderecoProjetoCredito + '/filtro-executar', filtro );
+                }
             },
+
+            projetoTecnicoRel: function(idList) {
+                SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
+                if (idList && !angular.isArray(idList)) {
+                    var temp = idList;
+                    idList = [];
+                    idList.push(temp);
+                }
+                return $http.get(this.enderecoProjetoCredito + '/projeto-tecnico-rel', {params: {'idList': idList}});
+            }, 
+
+
             filtroNovo: function() {
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
                 return $http.get(this.endereco + '/filtro-novo', {params: {'opcao': $stateParams.opcao}});
-//                return $http.post(this.endereco + '/filtro-novo');
             },
             executarFiltro : function() {
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');

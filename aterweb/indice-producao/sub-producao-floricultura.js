@@ -42,7 +42,7 @@ angular.module(pNmModulo).controller(pNmController,
     // inicio das operaçoes atribuidas ao navagador
     $scope.abrir = function() {
         $scope.producaoFloriculturaNvg.mudarEstado('ESPECIAL');
-        $scope.producaoFloriculturaNvg.botao('edicao').exibir = function() {return false;};
+        //$scope.producaoFloriculturaNvg.botao('edicao').exibir = function() {return false;};
     };
     $scope.incluir = function() {
         init();
@@ -55,6 +55,10 @@ angular.module(pNmModulo).controller(pNmController,
             var i, j;
             removerCampo($scope.cadastro.registro.producaoList, ['@jsonId']);
             if ($scope.producaoFloriculturaNvg.selecao.item) {
+                var id = $scope.producaoFloriculturaNvg.selecao.item.id;
+                if(id > 0){
+                    $scope.vamosExcluir(id);
+                }
                 $scope.excluirElemento($scope, $scope.cadastro.registro, 'producaoFloriculturaList', $scope.producaoFloriculturaNvg.selecao.item);
             }
             $scope.producaoFloriculturaNvg.selecao.item = null;
@@ -64,14 +68,24 @@ angular.module(pNmModulo).controller(pNmController,
         });
     };
 
+    $scope.editar = function(){
+        mensagemSrv.confirmacao(false, 'Confirme a alteração do registro').then(function (conteudo) {
+
+        var item = $scope.producaoFloriculturaNvg.selecao.item;
+        removerCampo(item, ['ipaProducaoFormaList','unidadeOrganizacional', 'publicoAlvo', 'propriedadeRural', 'ipaProducao']);
+        
+            $scope.vamosEditar(item, 'Flor');
+        });
+    };
+
 
     $scope.calcula = function( index, obj ) {
-        if( $scope.cadastro.registro.producaoFloriculturaList[index].itemAValor ){
-            if( obj === 'itemBValor' ) {
-                 $scope.cadastro.registro.producaoFloriculturaList[index].volume =  $scope.cadastro.registro.producaoFloriculturaList[index].itemAValor * $scope.cadastro.registro.producaoFloriculturaList[index].itemBValor ;
+        if( $scope.cadastro.registro.producaoFloriculturaList[index].area ){
+            if( obj === 'produtividade' ) {
+                 $scope.cadastro.registro.producaoFloriculturaList[index].producao =  $scope.cadastro.registro.producaoFloriculturaList[index].area * $scope.cadastro.registro.producaoFloriculturaList[index].produtividade ;
             }
-            if( obj === 'volume'  ) {
-                 $scope.cadastro.registro.producaoFloriculturaList[index].itemBValor =  $scope.cadastro.registro.producaoFloriculturaList[index].volume / $scope.cadastro.registro.producaoFloriculturaList[index].itemAValor ;
+            if( obj === 'producao'  ) {
+                 $scope.cadastro.registro.producaoFloriculturaList[index].produtividade =  $scope.cadastro.registro.producaoFloriculturaList[index].producao / $scope.cadastro.registro.producaoFloriculturaList[index].area ;
             }
 
         }

@@ -71,7 +71,7 @@
                             <select class="form-control input-sm" style="min-width: 100px;"
                                 id="formaProducaoValor_{{$parent.$index}}_{{$index}}"
                                 name="formaProducaoValor_{{$parent.$index}}_{{$index}}"
-                                ng-model="cadastro.registro.producaoAgricolaList[$parent.$index].producaoComposicaoList[$index].formaProducaoValor" 
+                                ng-model="cadastro.registro.producaoAgricolaList[$parent.$index].producaoComposicaoList[$index]" 
                                 ng-options="sub as sub.nome for sub in forma.formaProducaoItem.formaProducaoValorList | orderBy: 'ordem' track by sub.id" 
                                 ng-required="true">
                             </select>
@@ -81,27 +81,27 @@
                             </div>
                         </td>
                         <td >
-                            <input class="form-control input-sm text-right" id="area_{{$index}}" name="area_{{$index}}" ng-model="producaoAgricola.itemAValor" ng-required="true" ui-number-mask="3" style="min-width: 50px;" ng-blur="calcula($index, 'itemAValor');" ng-show="producaoAgricola.bemClassificado">
-                            <div class="label label-danger" ng-show="navegador.submetido && producaoArgicolaFrm.itemAValor_{{$index}}.$error.required">
+                            <input class="form-control input-sm text-right" id="area_{{$index}}" name="area_{{$index}}" ng-model="producaoAgricola.area" ng-required="true" ui-number-mask="3" style="min-width: 50px;" ng-blur="calcula($index, 'area');" ng-show="producaoAgricola.bemClassificado">
+                            <div class="label label-danger" ng-show="navegador.submetido && producaoArgicolaFrm.area_{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
                         </td>
                         <td>
                             <input class="form-control input-sm text-right" id="produtividade_{{$index}}" name="produtividade_{{$index}}" 
-                                ng-model="producaoAgricola.itemBValor" ng-required="true" ui-number-mask="3" style="min-width: 50px;" 
-                                 ng-blur="calcula($index, 'itemBValor');" ng-show="producaoAgricola.bemClassificado"
+                                ng-model="producaoAgricola.produtividade" ng-required="true" ui-number-mask="3" style="min-width: 50px;" 
+                                 ng-blur="calcula($index, 'produtividade');" ng-show="producaoAgricola.bemClassificado"
                                   title="Produtividade Min: {{producaoAgricola.bemClassificado.produtividadeMin}} Max: {{producaoAgricola.bemClassificado.produtividadeMax}}" >
                             <span ng-show="producaoAgricola.bemClassificado">({{ producaoAgricola.bemClassificado.bemClassificacao.unidadeMedida.nome}})</span>
-                            <div class="label label-danger" ng-show="navegador.submetido && producaoArgicolaFrm.itemAValor_{{$index}}.$error.required">
+                            <div class="label label-danger" ng-show="navegador.submetido && producaoArgicolaFrm.area_{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
                         </td>
                         
                         <td>
-                            <input class="form-control input-sm text-right" id="producao_{{$index}}" name="producao_{{$index}}" ng-model="producaoAgricola.volume" ng-required="true" ui-number-mask="3" style="min-width: 50px;" ng-blur="calcula($index, 'volume');" ng-show="producaoAgricola.bemClassificado">
-                            <div class="label label-danger" ng-show="navegador.submetido && producaoArgicolaFrm.itemAValor_{{$index}}.$error.required">
+                            <input class="form-control input-sm text-right" id="producao_{{$index}}" name="producao_{{$index}}" ng-model="producaoAgricola.producao" ng-required="true" ui-number-mask="3" style="min-width: 50px;" ng-blur="calcula($index, 'producao');" ng-show="producaoAgricola.bemClassificado">
+                            <div class="label label-danger" ng-show="navegador.submetido && producaoArgicolaFrm.area_{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
@@ -113,7 +113,7 @@
                                 Campo Obrigatório
                             </div>
                         </td>
-                        <td ng-show="cadastro.registro.publicoAlvo && producaoAgricola.bemClassificado">({{ producaoAgricola.volume * producaoAgricola.valorUnitario | currency }})
+                        <td ng-show="cadastro.registro.publicoAlvo && producaoAgricola.bemClassificado">({{ producaoAgricola.producao * producaoAgricola.valorUnitario | currency }})
                         </td>
 
                         <td ng-if="cadastro.registro.unidadeOrganizacional && !cadastro.registro.publicoAlvo">
