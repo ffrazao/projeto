@@ -19,5 +19,15 @@ public final class IndiceProducaoUtil {
 		Collections.sort(lista);
 		return CollectionUtils.isEmpty(lista) ? "" : UtilitarioString.collectionToString(lista);
 	}
+	
+	//Teste
+//	public static String getFormaValorId(IpaProducao producao) {
+//		List<Integer> lista = new ArrayList<Integer>();
+//		if (!CollectionUtils.isEmpty(producao.getIpaProducaoFormaList())) {
+//			producao.getIpaProducaoFormaList().forEach((forma)-> lista.add(forma.getFormaProducaoValor().getId()));
+//		}
+//		Collections.sort(lista);
+//		return CollectionUtils.isEmpty(lista) ? "" : UtilitarioString.collectionToString(lista);
+//	}
 
 }

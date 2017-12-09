@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-03-10T09:03:18 -->
+<!-- 2017-11-20T09:26:37 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Capa" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4be54963-8492-4271-af5b-1a708b6a64c7">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="RelatorioNome" class="java.lang.String" isForPrompting="false">
@@ -13,6 +13,12 @@
 	</parameter>
 	<parameter name="Parte" class="java.lang.Integer">
 		<parameterDescription><![CDATA[Número da Parte do Relatório]]></parameterDescription>
+	</parameter>
+	<parameter name="Tecnico" class="java.lang.String">
+		<parameterDescription><![CDATA[$P{Tecnico}]]></parameterDescription>
+	</parameter>
+	<parameter name="Unidade" class="java.lang.String">
+		<parameterDescription><![CDATA[$P{Unidade}]]></parameterDescription>
 	</parameter>
 	<queryString>
 		<![CDATA[]]>
@@ -96,7 +102,7 @@
 				<text><![CDATA[PROJETO TÉCNICO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="614" width="200" height="15" uuid="66db5bcb-8222-49a6-9926-e8429ceeb939">
+				<reportElement x="0" y="594" width="200" height="15" uuid="66db5bcb-8222-49a6-9926-e8429ceeb939">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
@@ -107,49 +113,49 @@
 				<text><![CDATA[LINHA DE CRÉDITO:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="629" width="200" height="15" uuid="a52775f5-ec02-403d-9c08-9467404c8244"/>
+				<reportElement x="0" y="609" width="200" height="15" uuid="a52775f5-ec02-403d-9c08-9467404c8244"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[AGENTE FINANCEIRO:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="644" width="200" height="15" uuid="b57b8137-e2fa-4048-84e5-3e5e336cfd56"/>
+				<reportElement x="0" y="624" width="200" height="15" uuid="b57b8137-e2fa-4048-84e5-3e5e336cfd56"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[AGÊNCIA:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="659" width="200" height="15" uuid="600d9aa7-becc-4244-a3a3-05d458dc290a"/>
+				<reportElement x="0" y="639" width="200" height="15" uuid="600d9aa7-becc-4244-a3a3-05d458dc290a"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[EMPRESA:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="674" width="200" height="15" uuid="1c98dcc4-66d4-4b92-bba8-6fc8f65c7298"/>
+				<reportElement x="0" y="654" width="200" height="15" uuid="1c98dcc4-66d4-4b92-bba8-6fc8f65c7298"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[PROPONENTE:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="689" width="200" height="15" uuid="7d799726-4df2-43e8-85db-ca520a7c4726"/>
+				<reportElement x="0" y="684" width="200" height="15" uuid="7d799726-4df2-43e8-85db-ca520a7c4726"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[UNIDADE EMATER-DF:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="208" y="659" width="340" height="15" uuid="a82480a1-5031-4828-b420-f9b63003c236"/>
+				<reportElement x="208" y="639" width="340" height="15" uuid="a82480a1-5031-4828-b420-f9b63003c236"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font isBold="false"/>
 				</textElement>
 				<text><![CDATA[EMATER-DF]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="208" y="614" width="340" height="15" uuid="37d86c16-ee76-4582-8eb8-d151e9072ab4">
+				<reportElement x="208" y="594" width="340" height="15" uuid="37d86c16-ee76-4582-8eb8-d151e9072ab4">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -158,47 +164,61 @@
 				<textFieldExpression><![CDATA[$F{linhaCredito}.getNome()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="208" y="629" width="340" height="15" uuid="5acd0c74-c755-4be3-9740-5628270e1769"/>
+				<reportElement x="208" y="609" width="340" height="15" uuid="5acd0c74-c755-4be3-9740-5628270e1769"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{agenteFinanceiro}.getPessoaJuridica().getNome()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="208" y="644" width="340" height="15" uuid="60ffdaae-c06d-49c8-ab94-b2b0ede934b3"/>
+				<reportElement x="208" y="624" width="340" height="15" uuid="60ffdaae-c06d-49c8-ab94-b2b0ede934b3"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{agencia}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="208" y="674" width="340" height="15" uuid="37e36796-3a23-4e76-98e7-4085f8408067"/>
+				<reportElement x="208" y="654" width="340" height="15" uuid="37e36796-3a23-4e76-98e7-4085f8408067"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{publicoAlvo}.getPessoa().getNome()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="208" y="689" width="340" height="15" uuid="47525dc2-a30c-4732-9ef8-7300e8562235"/>
+				<reportElement x="208" y="684" width="340" height="15" uuid="47525dc2-a30c-4732-9ef8-7300e8562235"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA["UNIDADE EMATER-DF:"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{Unidade}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="704" width="200" height="15" uuid="d15ab846-a750-48c8-acc2-c683afd94622"/>
+				<reportElement x="0" y="699" width="200" height="15" uuid="d15ab846-a750-48c8-acc2-c683afd94622"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[CÓDIGO ATIVIDADE:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="207" y="704" width="340" height="15" uuid="72aada44-5b61-4b30-97a8-efda4ebed63c"/>
+				<reportElement x="207" y="699" width="340" height="15" uuid="72aada44-5b61-4b30-97a8-efda4ebed63c"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{atividade}.getCodigo()]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="208" y="669" width="340" height="15" uuid="adf626f6-7d76-4afa-86d2-75f0fba2b2d3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{Tecnico}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="669" width="200" height="15" uuid="3f5033be-406f-4a86-99a2-9632a2367ca8"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TÉCNICO EMATER:]]></text>
+			</staticText>
 		</band>
 	</detail>
 	<pageFooter>

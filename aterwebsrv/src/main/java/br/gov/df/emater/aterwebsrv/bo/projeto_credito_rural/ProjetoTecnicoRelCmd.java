@@ -53,6 +53,8 @@ import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoSetor;
+import br.gov.df.emater.aterwebsrv.modelo.atividade.AtividadePessoa;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.AtividadePessoaParticipacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FluxoCaixaTipo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FormularioDestino;
@@ -652,6 +654,9 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 			List<ProjetoTecnicoProponenteRelDto> prop = captarCadastroProponente(contexto, pList);
 			parametros.put("CPF", ((ProjetoTecnicoProponenteRelDto) prop.get(0)).getProponente().getCpf() );
 			
+			parametros.put("Tecnico", captarTecino( projeto.getAtividade().getPessoaExecutorList() ) );
+			parametros.put("Unidade", captarEscritorio( projeto.getAtividade().getPessoaExecutorList() ) );
+			
 			// montar as partes do relatório
 			montaParte("CAPA", "Capa", parametros, pList, parteList);
 			montaParte("CADASTRO DO PROPONENTE", "Proponente", parametros, prop, parteList);
@@ -709,7 +714,31 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 
 		return false;
 	}
-
+	
+	private String captarTecino( List<AtividadePessoa> atividadePessoaList ){
+		String res = null;
+		for (AtividadePessoa atividadePessoa : atividadePessoaList) {
+			if( atividadePessoa.getParticipacao() == AtividadePessoaParticipacao.E &&  
+				atividadePessoa.getResponsavel() ==  Confirmacao.S ){
+				res = atividadePessoa.getPessoa().getNome()  ;
+			}	
+		}
+		return res;	
+	}
+	
+	private String captarEscritorio( List<AtividadePessoa> atividadePessoaList ){
+		String res = null;
+		for (AtividadePessoa atividadePessoa : atividadePessoaList) {
+			if( atividadePessoa.getParticipacao() == AtividadePessoaParticipacao.E &&  
+				atividadePessoa.getPessoa().getPessoaTipo() == PessoaTipo.GS ){
+				res = atividadePessoa.getPessoa().getNome() ;
+			}	
+		}
+		return res;	
+	}
+	
+	
+	
 	private void iniciarRelacionamento() {
 		if (this.relacionamentoTipo == null) {
 			this.relacionamentoTipo = relacionamentoTipoDao.findOneByCodigo(RelacionamentoTipo.Codigo.FAMILIAR);

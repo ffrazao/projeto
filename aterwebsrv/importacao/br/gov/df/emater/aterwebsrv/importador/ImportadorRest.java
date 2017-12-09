@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.gov.df.emater.aterwebsrv.rest.Resposta;
 
 @RestController
+@RequestMapping("/importacao")
 public class ImportadorRest {
 
 	@Autowired
@@ -19,6 +20,7 @@ public class ImportadorRest {
 
 	@RequestMapping(value = "/importar")
 	public Resposta filtroExecutar(Principal usuario) throws Exception {
+		System.out.println("pasosu");
 		return new Resposta(facadeBo.importar(usuario).getResposta());
 	}
 

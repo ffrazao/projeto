@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Ipa;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoProprietario;
 
 @Service("IndiceProducaoProducaoCmd")
@@ -18,7 +19,13 @@ public class ProducaoCmd extends _Comando {
 		// foi necessário fazer assim para que o cache do spring funcione
 		// corretamente veja
 		// http://stackoverflow.com/questions/16899604/spring-cache-cacheable-not-working-while-calling-from-another-method-of-the-s
-		ProducaoProprietario producaoProprietario =  (ProducaoProprietario) contexto.getRequisicao();
+		
+		//ProducaoProprietario producaoProprietario =  (ProducaoProprietario) contexto.getRequisicao();
+		//contexto.setResposta(servico.geraProducao( producaoProprietario ));
+		
+		//ProducaoGravaDto result = (ProducaoGravaDto) contexto.getRequisicao();
+		
+		Ipa producaoProprietario = (Ipa) contexto.getRequisicao();
 		contexto.setResposta(servico.geraProducao( producaoProprietario ));
 		return false;
 	}

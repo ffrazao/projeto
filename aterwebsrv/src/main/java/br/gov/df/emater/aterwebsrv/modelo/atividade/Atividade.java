@@ -176,6 +176,7 @@ public class Atividade extends EntidadeBase
 	@Column(name = "situacao_motivo")
 	private String situacaoMotivo;
 
+	
 	public Atividade() {
 		super();
 	}

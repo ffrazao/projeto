@@ -11,9 +11,33 @@ import java.sql.SQLException;
 public class ConexaoFirebird {
 
 	public static enum DbSater {
-		ASBRA("GEPRE NORTE", "GO"), ASCRI("GEPRE SUDESTE", "GO"), ASFOR("GEPRE LESTE", "GO"), ASPBE("GEPRE NOROESTE", "GO"), ASSOB("GESOB", "GO"), // repetido
-		ELALG("GERAG", "DF"), ELBRA("GBRAZ", "DF"), ELCEI("GECEI", "DF"), ELGAM("GEGAM", "DF"), ELJAR("GEJAR", "DF"), ELPAD("GEPAD", "DF"), ELPAR("GEPAR", "DF"), ELPIP("GEPIP", "DF"), ELPLA("GEPLA", "DF"), ELRIP("GERIP", "DF"), ELRSS("GESEB", "DF"), ELSOB("GESOB",
-				"DF"), ELTAB("GETAB", "DF"), ELTAQ("GETAQ", "DF"), ELVAR("GEVAB", "DF");
+		ELGAM("GEGAM", "DF"), 
+		ELJAR("GEJAR", "DF"), 
+		ELPLA("GEPLA", "DF"), 
+		ELVAR("GEVAB", "DF");
+
+/*		ASBRA("GEPRE NORTE", "GO"), 
+		ASCRI("GEPRE SUDESTE", "GO"), 
+		ASFOR("GEPRE LESTE", "GO"), 
+		ASPBE("GEPRE NOROESTE", "GO"), 
+		ASSOB("GESOB", "GO"), // repetido
+		ELALG("GERAG", "DF"), 
+		ELBRA("GBRAZ", "DF"), 
+		ELCEI("GECEI", "DF"), 
+		ELGAM("GEGAM", "DF"), 
+		ELJAR("GEJAR", "DF"), 
+		ELPAD("GEPAD", "DF"), 
+		ELPAR("GEPAR", "DF"), 
+		ELPIP("GEPIP", "DF"), 
+		ELPLA("GEPLA", "DF"), 
+		ELRIP("GERIP", "DF"), 
+		ELRSS("GESEB", "DF"), 
+		ELSOB("GESOB", "DF"), 
+		ELTAB("GETAB", "DF"), 
+		ELTAQ("GETAQ", "DF"), 
+		ELVAR("GEVAB", "DF");
+*/
+		
 
 		private String sigla;
 

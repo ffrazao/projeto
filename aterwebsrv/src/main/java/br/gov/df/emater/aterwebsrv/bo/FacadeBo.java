@@ -32,6 +32,8 @@ import br.gov.df.emater.aterwebsrv.dto.funcional.UnidadeOrganizacionalCadFiltroD
 import br.gov.df.emater.aterwebsrv.dto.indice_producao.BemClassificacaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.indice_producao.BemProducaoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.indice_producao.IndiceProducaoCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.indice_producao.ProducaoCadDto;
+import br.gov.df.emater.aterwebsrv.dto.indice_producao.ProducaoEditDto;
 import br.gov.df.emater.aterwebsrv.dto.indice_producao.ProducaoGravaDto;
 import br.gov.df.emater.aterwebsrv.dto.pessoa.CarteiraProdutorRelFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.pessoa.DeclaracaoProdutorRelFiltroDto;
@@ -51,6 +53,7 @@ import br.gov.df.emater.aterwebsrv.modelo.atividade.Atividade;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.ArquivoTipo;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.Coleta;
 import br.gov.df.emater.aterwebsrv.modelo.formulario.Formulario;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Ipa;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoProprietario;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRural;
@@ -271,8 +274,14 @@ public class FacadeBo implements BeanFactoryAware {
 		return this._executar(usuario, "IndiceProducaoBemClassificacaoMatrizCmd");
 	}
 
+//	@Transactional(readOnly = true)
+//	public _Contexto indiceProducaoProducao(Principal usuario, ProducaoProprietario producaoProprietario) throws Exception {
+//		return this._executar(usuario, "IndiceProducaoProducaoCmd", producaoProprietario);
+//	}
+	
+	//Teste
 	@Transactional(readOnly = true)
-	public _Contexto indiceProducaoProducao(Principal usuario, ProducaoProprietario producaoProprietario) throws Exception {
+	public _Contexto indiceProducaoProducao(Principal usuario, Ipa producaoProprietario) throws Exception {
 		return this._executar(usuario, "IndiceProducaoProducaoCmd", producaoProprietario);
 	}
 
@@ -311,6 +320,62 @@ public class FacadeBo implements BeanFactoryAware {
 	public _Contexto indiceProducaoSalvar(Principal usuario, ProducaoGravaDto producaoProprietario) throws Exception {
 		return this._executar(usuario, "IndiceProducaoSalvarCh", producaoProprietario);
 	}
+	//Floricultura
+	@Transactional
+	public _Contexto indiceProducaoSalvarFlor(Principal usuario, ProducaoGravaDto producaoProprietario) throws Exception {
+		return this._executar(usuario, "IndiceProducaoSalvarFlorCh", producaoProprietario);
+	}
+	
+	//Arte
+	@Transactional
+	public _Contexto indiceProducaoSalvarArte(Principal usuario, ProducaoGravaDto producaoProprietario) throws Exception {
+		System.out.println("facade");
+		return this._executar(usuario, "IndiceProducaoSalvarArteCh", producaoProprietario);
+	}
+	
+	//Agro
+	@Transactional
+	public _Contexto indiceProducaoSalvarAgro(Principal usuario, ProducaoGravaDto producaoProprietario) throws Exception {
+		System.out.println("facade");
+		return this._executar(usuario, "IndiceProducaoSalvarAgroCh", producaoProprietario);
+	}	
+	//Animal
+	@Transactional
+	public _Contexto indiceProducaoSalvarAnimal(Principal usuario, ProducaoGravaDto producaoProprietario) throws Exception {
+		System.out.println("facade");
+		return this._executar(usuario, "IndiceProducaoSalvarAnimalCh", producaoProprietario);
+	}
+	
+	@Transactional
+	public _Contexto indiceProducaoEditar(Principal usuario, ProducaoCadDto producaoProprietario) throws Exception {
+		return this._executar(usuario, "IndiceProducaoEditarCh", producaoProprietario);
+	}
+	
+	@Transactional
+	public _Contexto indiceProducaoEditarFlor(Principal usuario, ProducaoCadDto producaoProprietario) throws Exception {
+		return this._executar(usuario, "IndiceProducaoEditarFlorCh", producaoProprietario);
+	}
+	
+	@Transactional
+	public _Contexto indiceProducaoEditarArte(Principal usuario, ProducaoCadDto producaoProprietario) throws Exception {
+		return this._executar(usuario, "IndiceProducaoEditarArteCh", producaoProprietario);
+	}
+	
+	@Transactional
+	public _Contexto indiceProducaoEditarAnimal(Principal usuario, ProducaoCadDto producaoProprietario) throws Exception {
+		return this._executar(usuario, "IndiceProducaoEditarAnimalCh", producaoProprietario);
+	}
+	
+	@Transactional
+	public _Contexto indiceProducaoEditarAgro(Principal usuario, ProducaoCadDto producaoProprietario) throws Exception {
+		return this._executar(usuario, "IndiceProducaoEditarAgroCh", producaoProprietario);
+	}
+	
+	//teste
+	//@Transactional
+	//public _Contexto indiceProducaoSalvar2(Principal usuario, Ipa ipa) throws Exception {
+	//	return this._executar(usuario, "IndiceProducaoSalvarCh", ipa);
+	//}
 
 	@Transactional
 	public _Contexto indiceProducaoSalvarDescendente(Principal usuario, ProducaoProprietario producaoProprietario) throws Exception {
