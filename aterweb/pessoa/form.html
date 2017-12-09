@@ -48,10 +48,6 @@
                             <div class="form-group col-md-4" title="Cadastro de Pessoa Física" ng-show="cadastro.registro.pessoaTipo === 'PF'">
                                 <label class="control-label" for="cpf">CPF</label>
                                 <input id="cpf" name="cpf" type="text" placeholder="" class="form-control input-md" ng-model="cadastro.registro.cpf" ui-br-cpf-mask>
-                                <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.cpf.$error.required">
-                                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                                    Campo Obrigatório
-                                </div>
                                 <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.cpf.$error.cpf">
                                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                     Número inválido!
