@@ -78,7 +78,7 @@ angular.module(pNmModulo).controller(pNmController,
         mensagemSrv.confirmacao(false, 'Confirme a alteração do registro').then(function (conteudo) {
 
         var item = $scope.producaoArgicolaNvg.selecao.item;
-
+        removerCampo(item.ipa, ['unidadeOrganizacional', 'propriedadeRural', 'publicoAlvo']);
             $scope.vamosEditar(item, 'Agri');
         });
     };

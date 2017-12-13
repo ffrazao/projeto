@@ -74,12 +74,11 @@ angular.module(pNmModulo).controller(pNmController,
 
         var item = $scope.producaoArtesanatoNvg.selecao.item;
         
-        removerCampo(item, ['ipaProducaoFormaList', 'ipaProducao', 'unidadeOrganizacional', 'propriedadeRural', 'publicoAlvo', 'ipaProducaoBemClassificadoList']);
+        removerCampo(item, ['ipaProducaoFormaList', 'ipaProducao', 'ipaProducaoBemClassificadoList']);
+        removerCampo(item.ipa, ['unidadeOrganizacional', 'propriedadeRural', 'publicoAlvo']);
 
-        item.forma = item.producaoComposicaoList.formaProducaoValor;
-        item.producaoComposicaoList = null;
-
-        console.log(item);
+        //item.forma = item.producaoComposicaoList.formaProducaoValor;
+        //item.producaoComposicaoList = null;
             
             $scope.vamosEditar(item, 'Arte');
         });

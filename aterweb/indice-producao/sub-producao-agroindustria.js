@@ -75,16 +75,6 @@ angular.module(pNmModulo).controller(pNmController,
 
         var item = $scope.producaoAgroindustriaNvg.selecao.item;
         removerCampo(item, ['unidadeOrganizacional', 'publicoAlvo', 'propriedadeRural', 'ipaProducao']);
-
-        //item.forma = item.producaoComposicaoList.formaProducaoValor;
-
-        //item.producaoComposicaoList = null;
-
-        // var i = [];
-        // i[0] = item.producaoComposicaoList;
-        // item.producaoComposicaoList = i;
-
-        //    console.log(item);
             
             $scope.vamosEditar(item, 'Agro');
         });

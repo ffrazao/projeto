@@ -94,7 +94,7 @@
                             <select class="form-control input-sm" style="min-width: 100px;"
                                 id="formaProducaoValor_0_{{$index}}"
                                 name="formaProducaoValor_0_{{$index}}"
-                                ng-model="cadastro.registro.producaoArtesanatoList[$index].producaoComposicaoList.formaProducaoValor"
+                                ng-model="cadastro.registro.producaoArtesanatoList[$index].producaoComposicaoList[0]"
                                 ng-options="sub as sub.nome for sub in producaoArtesanato.bemClassificado.bemClassificacao.bemClassificacaoFormaProducaoItemList[$index].formaProducaoItem.formaProducaoValorList | orderBy: 'ordem' track by sub.id" 
                                 ng-required="true">
                             </select>
