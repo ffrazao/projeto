@@ -47,26 +47,6 @@ public class IpaProducaoForma extends EntidadeBase{
 	}
 
 
-
-//	public IpaProducaoForma(Integer id, IpaProducao ipaProducao, FormaProducaoItem formaProducaoValor, Integer ordem) {
-//		super();
-//		this.id = id;
-//		this.ipaProducao = ipaProducao;
-//		this.formaProducaoValor = formaProducaoValor;
-//		this.ordem = ordem;
-//	}
-
-
-
-//	public IpaProducaoForma(IpaProducaoForma pbc) {
-//		this.id = pbc.getId();
-//		//this.ipaProducao = ipaProducao;
-//		this.formaProducaoValor = pbc.getFormaProducaoValor();
-//		this.ordem = pbc.getOrdem();
-//	}
-
-
-
 	public Integer getId() {
 		return id;
 	}

@@ -23,9 +23,6 @@ import br.gov.df.emater.aterwebsrv.modelo.indice_producao.IpaProducaoForma;
 public class EditarCmd extends _SalvarCmd {
 
 	@Autowired
-	private IpaDao dao;
-
-	@Autowired
 	private IpaProducaoDao ipaProducaoDao;
 	
 	@Autowired
@@ -49,22 +46,13 @@ public class EditarCmd extends _SalvarCmd {
 // TABELA IPA
 		
 		Ipa ipa2 = result.getIpa();
-		Ipa ipa = new Ipa();
 
-		ipa.setId(ipa2.getId());
-		ipa.setUnidadeOrganizacional(ipa2.getUnidadeOrganizacional());	
-		ipa.setAno(ipa2.getAno());
-		ipa.setPropriedadeRural(ipa2.getPropriedadeRural());
-		ipa.setPublicoAlvo(ipa2.getPublicoAlvo());
-		
-		dao.save(ipa);
-	
 // TABELA IPA PRODUCAO
 
 		IpaProducao ip = new IpaProducao();		
-		ip.setId(ipaProducaoDao.retornaId(ipa.getId()).getId());
+		ip.setId(result.getId());
 		ip.setArea(result.getArea());
-		ip.setIpaId(ipa);
+		ip.setIpaId(ipa2);
 			
 			if(ip.getMatriz() == null){
 				ip.setMatriz(0);

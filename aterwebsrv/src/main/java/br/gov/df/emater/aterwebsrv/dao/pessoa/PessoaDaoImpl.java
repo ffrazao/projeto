@@ -211,7 +211,7 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 			}
 		}
 		if (!CollectionUtils.isEmpty(filtro.getPendencia())) {
-			sql.append("join p.pendenciaList pendencia").append("\n");
+			sql.append("left join p.pendenciaList pendencia").append("\n");
 		}
 		sql.append("where (1 = 1)").append("\n");
 		if (filtrarPublicoAlvo(filtro)) {
@@ -328,6 +328,7 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 		// inserir os parametros
 		for (int i = 1; i <= params.size(); i++) {
 			query.setParameter(i, params.get(i - 1));
+			System.out.println(params.get(i - 1) );
 		}
 
 		// definir a pagina a ser consultada

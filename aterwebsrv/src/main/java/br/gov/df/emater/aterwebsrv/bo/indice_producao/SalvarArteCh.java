@@ -7,13 +7,12 @@ import br.gov.df.emater.aterwebsrv.bo._Cadeia;
 import br.gov.df.emater.aterwebsrv.bo.seguranca.AutenticarUsuarioCmd;
 import br.gov.df.emater.aterwebsrv.bo.seguranca.LogCmd;
           
-@Service("IndiceProducaoSalvarArteCh")
 public class SalvarArteCh extends _Cadeia {
 
 	@Autowired
 	public SalvarArteCh(AutenticarUsuarioCmd c1, SalvarArteCmd c2,  LogCmd c5) {
 		super.addCommand(c1);
-		super.addCommand(c2);
+		//super.addCommand(c2);
 		super.addCommand(c5);
 	}
 

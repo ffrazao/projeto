@@ -17,61 +17,31 @@ import br.gov.df.emater.aterwebsrv.dto.indice_producao.ProducaoGravaDto;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificado;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.FormaProducaoValor;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Ipa;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.IpaForma;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.IpaProducao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.IpaProducaoBemClassificado;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.IpaProducaoForma;
           
-@Service("IndiceProducaoSalvarAnimalCmd")
-public class SalvarAnimalCmd extends _SalvarCmd {
+//@Service("IndiceProducaoSalvarAnimalCmd")
+public class SalvarAnimalCmd {
 
-	@Autowired
-	private IpaDao dao;
-
-	@Autowired
-	private IpaProducaoDao ipaProducaoDao;
-	
-	@Autowired
-	private IpaProducaoBemClassificadoDao IpaProducaoBemClassificadoDao;
-	
-	@Autowired
-	private IpaProducaoFormaDao IpaProducaoFormaDao;
-	
-	@Autowired
-	private FormaProducaoValorDao formaDao;
+	private IpaProducao ipaProdAnimal;
+	private List<IpaProducaoBemClassificado> ipaBemAnimal;
+	private List<IpaProducaoForma> ipaFormaAnimal;
 
 	private Integer ordem;
 
 	public SalvarAnimalCmd() {
 	}
-	
-	@Override
-	public boolean executar(_Contexto contexto) throws Exception {
-		
-		final ProducaoGravaDto result = (ProducaoGravaDto) contexto.getRequisicao();
-		
-		List<IpaProducao> ipAnimal = (List<IpaProducao>) result.getProducaoAnimalList();
-		
-	for (IpaProducao iprod : ipAnimal) {
-		
-		
-// TABELA IPA
-		
-		Ipa ipa2 = result.getIpa();
-		
-		Ipa ipa = new Ipa();
 
-		ipa.setUnidadeOrganizacional(ipa2.getUnidadeOrganizacional());	
-		ipa.setAno(ipa2.getAno());
-		ipa.setPropriedadeRural(ipa2.getPropriedadeRural());
-		ipa.setPublicoAlvo(ipa2.getPublicoAlvo());
-		
-		dao.save(ipa);
+	public void salvarAnimal(IpaProducao ipAnimal, Ipa ipa, ProducaoGravaDto result) throws Exception {
+
 		
 // TABELA IPA PRODUCAO
 
 		List<IpaProducao> ipArrayList = new ArrayList<>();
 
-		ipArrayList.add(iprod);
+		ipArrayList.add(ipAnimal);
 		
 		IpaProducao ip = new IpaProducao();
 		
@@ -97,17 +67,15 @@ public class SalvarAnimalCmd extends _SalvarCmd {
 			}else{
 				ip.setCultura(i.getCultura());
 			}
-			
-			//System.out.println("Cultura1: " +iprod.getCultura());
-			//System.out.println("Cultura2: " + i.getCultura());
 	
 		});
 		
-		ipaProducaoDao.save(ip);
+		this.setIpaProdAnimal(ip);
 		
 // TABELA IPA PRODUCAO BEM CLASSIFICADO
 		
-		List<IpaProducaoBemClassificado> ListaAnimalBem =  iprod.getProdutoList();
+		List<IpaProducaoBemClassificado> ListaAnimalBem =  ipAnimal.getProdutoList();
+		ArrayList<IpaProducaoBemClassificado> listBem = new ArrayList<>();
 		
 		for (IpaProducaoBemClassificado bemClassificado : ListaAnimalBem) {
 			
@@ -116,32 +84,64 @@ public class SalvarAnimalCmd extends _SalvarCmd {
 			ipbc.setBemClassificado(bemClassificado.getBemClassificado());
 			ipbc.setIpaProducao(ip);
 			ipbc.setProducao(bemClassificado.getProducao());
-			ipbc.setQuantidadeProdutores(iprod.getQuantidadeProdutores());
+			ipbc.setQuantidadeProdutores(ipAnimal.getQuantidadeProdutores());
 			ipbc.setProdutividade(bemClassificado.getProdutividade());
 			ipbc.setValorUnitario(bemClassificado.getValorUnitario());
 
-			IpaProducaoBemClassificadoDao.save(ipbc);
+			listBem.add(ipbc);
 	}
+		
+		this.setIpaBemAnimal(listBem);
 		
 		
 // TABELA IPA PRODUCAO FORMA
-	
+		
+		ArrayList<IpaProducaoForma> list = new ArrayList<>();
 		ordem = 0;
-				iprod.getProducaoComposicaoList().forEach( (f) -> {
-					
-					IpaProducaoForma ipf = new IpaProducaoForma();
-					ipf.setFormaProducaoValor(formaDao.retornaForma(f.getFormaProducaoValor().getId()));
-					ipf.setIpaProducao(ip);
-					ipf.setOrdem(++ordem);
-					
-					IpaProducaoFormaDao.save(ipf);
-					
-				});
+		
+		for (IpaForma ipaProducaoForma : ipAnimal.getProducaoComposicaoList()) {
+
+				IpaProducaoForma ipf = new IpaProducaoForma();
+				FormaProducaoValor fpv = new FormaProducaoValor();
+				
+				fpv.setId(ipaProducaoForma.getFormaProducaoValor().getId());
+				
+				ipf.setFormaProducaoValor(fpv);
+				ipf.setIpaProducao(ip);
+				ipf.setOrdem(++ordem);
+				
+				list.add(ipf);	
 			
 		}
 		
-		return false;
-		
+				this.setIpaFormaAnimal(list);
 		
 	}
+
+	public IpaProducao getIpaProdAnimal() {
+		return ipaProdAnimal;
+	}
+
+	public void setIpaProdAnimal(IpaProducao ipaProdAnimal) {
+		this.ipaProdAnimal = ipaProdAnimal;
+	}
+
+	public List<IpaProducaoBemClassificado> getIpaBemAnimal() {
+		return ipaBemAnimal;
+	}
+
+	public void setIpaBemAnimal(List<IpaProducaoBemClassificado> ipaBemAnimal) {
+		this.ipaBemAnimal = ipaBemAnimal;
+	}
+
+	public List<IpaProducaoForma> getIpaFormaAnimal() {
+		return ipaFormaAnimal;
+	}
+
+	public void setIpaFormaAnimal(List<IpaProducaoForma> ipaFormaAnimal) {
+		this.ipaFormaAnimal = ipaFormaAnimal;
+	}
+
+
+	
 }

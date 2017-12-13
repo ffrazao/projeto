@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.bo._SalvarCmd;
+import br.gov.df.emater.aterwebsrv.dao.indice_producao.FormaProducaoValorDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.IpaProducaoBemClassificadoDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.IpaProducaoDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.IpaProducaoFormaDao;
@@ -28,6 +29,9 @@ public class EditarArteCmd extends _SalvarCmd {
 	
 	@Autowired
 	private IpaProducaoFormaDao IpaProducaoFormaDao;
+	
+	@Autowired
+	private FormaProducaoValorDao formaDao;
 
 
 	public EditarArteCmd() {
@@ -41,22 +45,13 @@ public class EditarArteCmd extends _SalvarCmd {
 // TABELA IPA
 		
 		Ipa ipa2 = result.getIpa();
-		Ipa ipa = new Ipa();
-
-		ipa.setId(ipa2.getId());
-//		ipa.setUnidadeOrganizacional(ipa2.getUnidadeOrganizacional());	
-//		ipa.setAno(ipa2.getAno());
-//		ipa.setPropriedadeRural(ipa2.getPropriedadeRural());
-//		ipa.setPublicoAlvo(ipa2.getPublicoAlvo());
-		
-//		dao.save(ipa);
 	
 // TABELA IPA PRODUCAO
 
 		IpaProducao ip = new IpaProducao();		
-		ip.setId(ipaProducaoDao.retornaId(ipa.getId()).getId());
+		ip.setId(result.getId());
 		ip.setArea(result.getArea());
-		ip.setIpaId(ipa);
+		ip.setIpaId(ipa2);
 			
 			if(result.getMatriz() == null){
 				ip.setMatriz(0);
@@ -120,13 +115,15 @@ public class EditarArteCmd extends _SalvarCmd {
 				
 				IpaProducaoForma ipf = new IpaProducaoForma();
 				ipf.setId(idpf[2]);
-				ipf.setFormaProducaoValor(result.getForma());
+				
+				result.getProducaoComposicaoList().forEach( (i) -> {
+					ipf.setFormaProducaoValor(formaDao.retornaForma(i.getId()));
+				});
+				
 				ipf.setIpaProducao(ip);
 				ipf.setOrdem(3);
 				IpaProducaoFormaDao.save(ipf);
 
-
-		
 		return false;	
 		
 	}

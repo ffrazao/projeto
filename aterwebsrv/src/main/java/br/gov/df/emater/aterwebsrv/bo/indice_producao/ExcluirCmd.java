@@ -27,10 +27,9 @@ public class ExcluirCmd extends _Comando {
 
 			IpaProducao idProducao = ipaProducaoDao.retornaId(result);
 				
-				ipbcDao.deleteBem(idProducao);
-
+			ipbcDao.deleteBem(idProducao);
 			ipaProducaoDao.deleteIpa(result);
-			dao.delete(result);
+			//dao.delete(result);
 			
 
 		contexto.setResposta(result);

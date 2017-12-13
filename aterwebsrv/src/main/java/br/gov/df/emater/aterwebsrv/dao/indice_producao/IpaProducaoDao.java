@@ -22,11 +22,11 @@ public interface IpaProducaoDao extends JpaRepository<IpaProducao, Integer> {
 
 	@Modifying(clearAutomatically = true)
     @Transactional
-	@Query("DELETE IpaProducao p WHERE p.ipa.id =:ipa")
-	void deleteIpa(@Param("ipa") Integer ipa);
+	@Query("DELETE IpaProducao p WHERE p.id =:id")
+	void deleteIpa(@Param("id") Integer id);
 
-	@Query("SELECT p FROM IpaProducao p WHERE p.ipa.id =:ipa ")
-	IpaProducao retornaId(@Param("ipa") Integer ipa);
+	@Query("SELECT p FROM IpaProducao p WHERE p.id =:id ")
+	IpaProducao retornaId(@Param("id") Integer id);
 	
 	@Query("SELECT a FROM IpaProducao a WHERE a.id =:ipa ")
 	List<IpaProducao> findByIp(@Param("ipa") Integer ipa);

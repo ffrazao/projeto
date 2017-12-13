@@ -3,71 +3,30 @@ package br.gov.df.emater.aterwebsrv.bo.indice_producao;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import br.gov.df.emater.aterwebsrv.bo._Contexto;
-import br.gov.df.emater.aterwebsrv.bo._SalvarCmd;
-import br.gov.df.emater.aterwebsrv.dao.indice_producao.FormaProducaoValorDao;
-import br.gov.df.emater.aterwebsrv.dao.indice_producao.IpaDao;
-import br.gov.df.emater.aterwebsrv.dao.indice_producao.IpaProducaoBemClassificadoDao;
-import br.gov.df.emater.aterwebsrv.dao.indice_producao.IpaProducaoDao;
-import br.gov.df.emater.aterwebsrv.dao.indice_producao.IpaProducaoFormaDao;
 import br.gov.df.emater.aterwebsrv.dto.indice_producao.ProducaoGravaDto;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.FormaProducaoValor;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Ipa;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.IpaForma;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.IpaProducao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.IpaProducaoBemClassificado;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.IpaProducaoForma;
           
-@Service("IndiceProducaoSalvarArteCmd")
-public class SalvarArteCmd extends _SalvarCmd {
+public class SalvarArteCmd{
 
-	@Autowired
-	private IpaDao dao;
-
-	@Autowired
-	private IpaProducaoDao ipaProducaoDao;
-	
-	@Autowired
-	private IpaProducaoBemClassificadoDao IpaProducaoBemClassificadoDao;
-	
-	@Autowired
-	private IpaProducaoFormaDao IpaProducaoFormaDao;
-	
-	@Autowired
-	private FormaProducaoValorDao formaDao;
+	private IpaProducao ipaProdArte;
+	private IpaProducaoBemClassificado ipaBemArte;
+	private List<IpaProducaoForma> ipaFormaArte;
 
 	public SalvarArteCmd() {
 	}
-	
-	@Override
-	public boolean executar(_Contexto contexto) throws Exception {
-		
-		final ProducaoGravaDto result = (ProducaoGravaDto) contexto.getRequisicao();
-		
-		List<IpaProducao> ipArte = (List<IpaProducao>) result.getProducaoArtesanatoList();
-		
-	for (IpaProducao iprod : ipArte) { 
-		
-		
-// TABELA IPA
-		
-		Ipa ipa2 = result.getIpa();
-		
-		Ipa ipa = new Ipa();
 
-		ipa.setUnidadeOrganizacional(ipa2.getUnidadeOrganizacional());	
-		ipa.setAno(ipa2.getAno());
-		ipa.setPropriedadeRural(ipa2.getPropriedadeRural());
-		ipa.setPublicoAlvo(ipa2.getPublicoAlvo());
-		
-		dao.save(ipa);
+	public void salvarArte(IpaProducao ipArte, Ipa ipa, ProducaoGravaDto result) throws Exception {
 		
 // TABELA IPA PRODUCAO
 
 		List<IpaProducao> ipArrayList = new ArrayList<>();
 
-		ipArrayList.add(iprod);
+		ipArrayList.add(ipArte);
 		
 		IpaProducao ip = new IpaProducao();
 		
@@ -89,56 +48,82 @@ public class SalvarArteCmd extends _SalvarCmd {
 	
 		});
 		
-		ipaProducaoDao.save(ip);
+		this.setIpaProdArte(ip);
 		
 // TABELA IPA PRODUCAO BEM CLASSIFICADO
 					
 				IpaProducaoBemClassificado ipbc = new IpaProducaoBemClassificado();
 				
-				ipbc.setBemClassificado(iprod.getBemClassificado());
+				ipbc.setBemClassificado(ipArte.getBemClassificado());
 				ipbc.setIpaProducao(ip);
-				ipbc.setProducao(iprod.getProducao());
-				ipbc.setProdutividade(iprod.getProdutividade());
-				ipbc.setQuantidadeProdutores(iprod.getQuantidadeProdutores());
-				ipbc.setValorUnitario(iprod.getValorUnitario());
-	
-				IpaProducaoBemClassificadoDao.save(ipbc);
+				ipbc.setProducao(ipArte.getProducao());
+				ipbc.setProdutividade(ipArte.getProdutividade());
+				ipbc.setQuantidadeProdutores(ipArte.getQuantidadeProdutores());
+				ipbc.setValorUnitario(ipArte.getValorUnitario());
+					
+				this.setIpaBemArte(ipbc);
 
 		
 // TABELA IPA PRODUCAO FORMA
 				
+				ArrayList<IpaProducaoForma> list = new ArrayList<>();
+				
 				IpaProducaoForma ipf1 = new IpaProducaoForma();
 
-				ipf1.setBemClassificacao(iprod.getTipo());
+				ipf1.setBemClassificacao(ipArte.getTipo());
 				ipf1.setIpaProducao(ip);
 				ipf1.setOrdem(1);
-				IpaProducaoFormaDao.save(ipf1);
+				list.add(ipf1);
 				
 				IpaProducaoForma ipf2 = new IpaProducaoForma();
 
-				ipf2.setBemClassificacao(iprod.getCategoria());
+				ipf2.setBemClassificacao(ipArte.getCategoria());
 				ipf2.setIpaProducao(ip);
 				ipf2.setOrdem(2);	
-				IpaProducaoFormaDao.save(ipf2);
-	
-		iprod.getProducaoComposicaoList().forEach( (f) -> {
+				list.add(ipf2);
+				
+		for (IpaForma ipaProducaoForma : ipArte.getProducaoComposicaoList()) {
+
+			System.out.println("entrou no composicao");
 					
 			IpaProducaoForma ipf = new IpaProducaoForma();
 					
-			System.out.println(f.getId());
-
-			ipf.setFormaProducaoValor(formaDao.retornaForma(f.getId()));
+			System.out.println(ipaProducaoForma.getId());
+			FormaProducaoValor fpv = new FormaProducaoValor();
+			fpv.setId(ipaProducaoForma.getId());
+			ipf.setFormaProducaoValor(fpv);
 			ipf.setIpaProducao(ip);
 			ipf.setOrdem(3);
 					
-			IpaProducaoFormaDao.save(ipf);
-					
-		});
-			
-		}
+			list.add(ipf);
+	}
 		
-		return false;
-		
+		this.setIpaFormaArte(list);
 		
 	}
+
+	public IpaProducao getIpaProdArte() {
+		return ipaProdArte;
+	}
+
+	public void setIpaProdArte(IpaProducao ipaProdArte) {
+		this.ipaProdArte = ipaProdArte;
+	}
+
+	public IpaProducaoBemClassificado getIpaBemArte() {
+		return ipaBemArte;
+	}
+
+	public void setIpaBemArte(IpaProducaoBemClassificado ipaBemArte) {
+		this.ipaBemArte = ipaBemArte;
+	}
+
+	public List<IpaProducaoForma> getIpaFormaArte() {
+		return ipaFormaArte;
+	}
+
+	public void setIpaFormaArte(List<IpaProducaoForma> ipaFormaArte) {
+		this.ipaFormaArte = ipaFormaArte;
+	}
+	
 }

@@ -6,9 +6,9 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope=IpaProducaoForma.class)
-@JsonIgnoreProperties(ignoreUnknown = true)
-@JsonIdentityReference(alwaysAsId = true)
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope=IpaProducaoForma.class)
+//@JsonIgnoreProperties(ignoreUnknown = true)
+//@JsonIdentityReference(alwaysAsId = true)
 public class IpaForma {
 	
 	private Integer id;

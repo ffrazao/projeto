@@ -3,129 +3,106 @@ package br.gov.df.emater.aterwebsrv.bo.indice_producao;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import br.gov.df.emater.aterwebsrv.bo._Contexto;
-import br.gov.df.emater.aterwebsrv.bo._SalvarCmd;
-import br.gov.df.emater.aterwebsrv.dao.indice_producao.IpaDao;
-import br.gov.df.emater.aterwebsrv.dao.indice_producao.IpaProducaoBemClassificadoDao;
-import br.gov.df.emater.aterwebsrv.dao.indice_producao.IpaProducaoDao;
-import br.gov.df.emater.aterwebsrv.dao.indice_producao.IpaProducaoFormaDao;
 import br.gov.df.emater.aterwebsrv.dto.indice_producao.ProducaoGravaDto;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.FormaProducaoValor;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Ipa;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.IpaForma;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.IpaProducao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.IpaProducaoBemClassificado;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.IpaProducaoForma;
           
-@Service("IndiceProducaoSalvarFlorCmd")
-public class SalvarFlorCmd extends _SalvarCmd {
-
-	@Autowired
-	private IpaDao dao;
-
-	@Autowired
-	private IpaProducaoDao ipaProducaoDao;
+public class SalvarFlorCmd {
 	
-	@Autowired
-	private IpaProducaoBemClassificadoDao IpaProducaoBemClassificadoDao;
-	
-	@Autowired
-	private IpaProducaoFormaDao IpaProducaoFormaDao;
+	private IpaProducao ipaProdFlor;
+	private IpaProducaoBemClassificado ipaBemFlor;
+	private List<IpaProducaoForma> ipaFormaFlor;
 
 	private Integer ordem;
 
 	public SalvarFlorCmd() {
 	}
 	
-	@Override
-	public boolean executar(_Contexto contexto) throws Exception {
-		
-		final ProducaoGravaDto result = (ProducaoGravaDto) contexto.getRequisicao();
-		
-		List<IpaProducao> ipflor = (List<IpaProducao>) result.getProducaoFloriculturaList();
-		
-		
-	for (IpaProducao iprod : ipflor) {
-		
-// TABELA IPA
-		
-		Ipa ipa2 = result.getIpa();
-		
-		Ipa ipa = new Ipa();
-
-		ipa.setUnidadeOrganizacional(ipa2.getUnidadeOrganizacional());	
-		ipa.setAno(ipa2.getAno());
-		ipa.setPropriedadeRural(ipa2.getPropriedadeRural());
-		ipa.setPublicoAlvo(ipa2.getPublicoAlvo());
-		
-		dao.save(ipa);
+	public void salvarFlor(IpaProducao ipflor, Ipa ipa, ProducaoGravaDto result) throws Exception {
 		
 // TABELA IPA PRODUCAO
-
-		List<IpaProducao> ipArrayList = new ArrayList<>();
-
-		ipArrayList.add(iprod);
 		
 		IpaProducao ip = new IpaProducao();
-		
-		ipArrayList.forEach((i) -> {
-			
-			ip.setArea(i.getArea());
+
+			ip.setArea(ipflor.getArea());
 			ip.setIpaId(ipa);
 			
-			if(i.getMatriz() == null){
+			if(ipflor.getMatriz() == null){
 				ip.setMatriz(0);
 			}else{
-				ip.setMatriz(i.getMatriz());
+				ip.setMatriz(ipflor.getMatriz());
 			}
-			if(i.getRebanho() == null){
+			if(ipflor.getRebanho() == null){
 				ip.setRebanho(0);
 			}else{
-				ip.setRebanho(i.getRebanho());
+				ip.setRebanho(ipflor.getRebanho());
 			}
-	
-		});
 		
-		ipaProducaoDao.save(ip);
+			this.setIpaProdFlor(ip);
 		
 // TABELA IPA PRODUCAO BEM CLASSIFICADO
 					
 				IpaProducaoBemClassificado ipbc = new IpaProducaoBemClassificado();
 				
-				ipbc.setBemClassificado(iprod.getBemClassificado());
+				ipbc.setBemClassificado(ipflor.getBemClassificado());
 				ipbc.setIpaProducao(ip);
-				ipbc.setProducao(iprod.getProducao());
-				ipbc.setProdutividade(iprod.getProdutividade());
-				ipbc.setQuantidadeProdutores(iprod.getQuantidadeProdutores());
-				ipbc.setValorUnitario(iprod.getValorUnitario());
+				ipbc.setProducao(ipflor.getProducao());
+				ipbc.setProdutividade(ipflor.getProdutividade());
+				ipbc.setQuantidadeProdutores(ipflor.getQuantidadeProdutores());
+				ipbc.setValorUnitario(ipflor.getValorUnitario());
 	
-				IpaProducaoBemClassificadoDao.save(ipbc);
+				this.setIpaBemFlor(ipbc);
 
 		
-// TABELA IPA PRODUCAO FORMA
+// TABELA IPA PRODUCAO FORMA	
 		
+		List<IpaForma> iff = ipflor.getProducaoComposicaoList();
 		ordem = 0;
-		iprod.getProducaoComposicaoList().forEach( (f) -> {
-			
-			IpaProducaoForma ipf = new IpaProducaoForma();
-			FormaProducaoValor fpv = new FormaProducaoValor();
-			
-			fpv.setId(f.getId());
-			fpv.setNome(f.getNome());
 
-			ipf.setFormaProducaoValor(fpv);
-			ipf.setIpaProducao(ip);
-			ipf.setOrdem(++ordem);
+		ArrayList<IpaProducaoForma> list = new ArrayList<>();
+		
+		for (IpaForma ipaForma : iff) {
 			
-			IpaProducaoFormaDao.save(ipf);
-			
-		});
+				IpaProducaoForma ipf = new IpaProducaoForma();
+				FormaProducaoValor fpv = new FormaProducaoValor();
+				
+				fpv.setId(ipaForma.getId());
+				ipf.setFormaProducaoValor(fpv);
+				ipf.setIpaProducao(ip);
+				ipf.setOrdem(++ordem);
+				
+				list.add(ipf);	
 			
 		}
+		this.setIpaFormaFlor(list);	
 		
-		return false;
-		
+	}
+	
+	public IpaProducao getIpaProdFlor() {
+		return ipaProdFlor;
+	}
+
+	public void setIpaProdFlor(IpaProducao ipaProdFlor) {
+		this.ipaProdFlor = ipaProdFlor;
+	}
+
+	public IpaProducaoBemClassificado getIpaBemFlor() {
+		return ipaBemFlor;
+	}
+
+	public void setIpaBemFlor(IpaProducaoBemClassificado ipaBemFlor) {
+		this.ipaBemFlor = ipaBemFlor;
+	}
+
+	public List<IpaProducaoForma> getIpaFormaFlor() {
+		return ipaFormaFlor;
+	}
+
+	public void setIpaFormaFlor(List<IpaProducaoForma> ipaFormaFlor) {
+		this.ipaFormaFlor = ipaFormaFlor;
 	}
 }

@@ -13,7 +13,7 @@ public class ConexaoFirebird {
 	public static enum DbSater {
 		
 		ELRIP("GERIP", "DF"),
-		ELVAR("GEVAB", "DF"),
+		ELVAR("GEVAR", "DF"),
 		ELGAM("GEGAM", "DF"),
 		ELPLA("GEPLA", "DF"); 
 

@@ -9,22 +9,15 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
+import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo;
+import br.gov.df.emater.aterwebsrv.modelo.funcional.UnidadeOrganizacional;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Ipa;
-import br.gov.df.emater.aterwebsrv.modelo.indice_producao.IpaProducao;
 
 @Repository("IpaDao")
 public interface IpaDao extends JpaRepository<Ipa, Integer>{
 
-//	@Query("SELECT p FROM"
-//			+ " Ipa p,"
-//			+ " IpaProducao ip,"
-//			+ " IpaProducaoForma ipf,"
-//			+ " IpaProducaoBemClassificado ipb"
-//			+ " left JOIN fetch ip.id"
-//			+ " inner JOIN fetch ipf.ipaProducao"
-//			+ " inner JOIN fetch ipb.ipaProducao"
-//			+ " WHERE p.ipa.ano = :ano "
-//			+ " AND p.unidadeOrganizacional.id = :unidadeOrganizacionalId")
+
 	@Query("SELECT p FROM Ipa p, IpaProducao ip WHERE p.ano = :ano AND p.unidadeOrganizacional.id = :unidadeOrganizacionalId")
 	List<Ipa> findByAnoUnidadeOrganizacional(@Param("ano") Integer ano, @Param("unidadeOrganizacionalId") Integer unidadeOrganizacionalId);
 
@@ -33,5 +26,12 @@ public interface IpaDao extends JpaRepository<Ipa, Integer>{
     @Transactional
 	@Query("DELETE Ipa p WHERE p.id =:ipa")
 	void deleteIpa(@Param("ipa") Integer ipa);
+
+	//@Query("SELECT p FROM Ipa p WHERE p.ano = :ano AND p.unidadeOrganizacional = :uo AND p.propriedadeRural = :pr AND p.publicoAlvo = :pa" )
+	//Ipa retornaId(@Param("ano") Integer ano, @Param("uo") UnidadeOrganizacional uo, @Param("pr") PropriedadeRural pr, @Param("pa") PublicoAlvo pa);
+
+	@Query("SELECT p FROM Ipa p WHERE p.ano = :ano AND p.unidadeOrganizacional = :uo AND p.propriedadeRural = :pr AND p.publicoAlvo = :pa" )
+	Ipa retornaId(@Param("ano") Integer ano, @Param("uo") UnidadeOrganizacional uo, @Param("pr") PropriedadeRural pr, @Param("pa") PublicoAlvo pa);
 	
+	Ipa findOneByAnoAndUnidadeOrganizacionalAndPropriedadeRuralIsNullAndPublicoAlvoIsNull(Integer ano, UnidadeOrganizacional uo);
 }

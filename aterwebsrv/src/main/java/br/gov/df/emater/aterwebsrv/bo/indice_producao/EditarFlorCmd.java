@@ -45,16 +45,13 @@ public class EditarFlorCmd extends _SalvarCmd {
 // TABELA IPA
 		
 		Ipa ipa2 = result.getIpa();
-		Ipa ipa = new Ipa();
-
-		ipa.setId(ipa2.getId());
 	
 // TABELA IPA PRODUCAO
 
-		IpaProducao ip = new IpaProducao();		
-		ip.setId(ipaProducaoDao.retornaId(ipa.getId()).getId());
+		IpaProducao ip = new IpaProducao();	
+		ip.setId(result.getId());
 		ip.setArea(result.getArea());
-		ip.setIpaId(ipa);
+		ip.setIpaId(ipa2);
 			
 			if(result.getMatriz() == null){
 				ip.setMatriz(0);

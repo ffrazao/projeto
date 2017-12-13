@@ -42,15 +42,13 @@ public class EditarAgroCmd extends _SalvarCmd {
 // TABELA IPA
 		
 		Ipa ipa2 = result.getIpa();
-		Ipa ipa = new Ipa();
-		ipa.setId(ipa2.getId());
 	
 // TABELA IPA PRODUCAO
 
 		IpaProducao ip = new IpaProducao();		
-		ip.setId(ipaProducaoDao.retornaId(ipa.getId()).getId());
+		ip.setId(result.getId());
 		ip.setArea(result.getArea());
-		ip.setIpaId(ipa);
+		ip.setIpaId(ipa2);
 			
 			if(result.getMatriz() == null){
 				ip.setMatriz(0);
@@ -113,20 +111,11 @@ public class EditarAgroCmd extends _SalvarCmd {
 
 			IpaProducaoFormaDao.save(ipf2);
 			
-			FormaProducaoValor fpv = new FormaProducaoValor();
-			
-			result.getProducaoComposicaoList().forEach( (i) -> {
-				
-				
-				fpv.setId(i.getFormaProducaoValor().getId());
-				
-				
-			});
-
 			IpaProducaoForma ipf = new IpaProducaoForma();
 			ipf.setId(idpf[2]);
-			//ipf.setFormaProducaoValor(result.getForma());
-			ipf.setFormaProducaoValor(fpv);
+			result.getProducaoComposicaoList().forEach( (i) -> {
+				ipf.setFormaProducaoValor(i.getFormaProducaoValor());
+			});
 			ipf.setIpaProducao(ip);
 			ipf.setOrdem(3);
 				

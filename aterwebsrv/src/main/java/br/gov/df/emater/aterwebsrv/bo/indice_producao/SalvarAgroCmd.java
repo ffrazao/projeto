@@ -16,64 +16,29 @@ import br.gov.df.emater.aterwebsrv.dao.indice_producao.IpaProducaoFormaDao;
 import br.gov.df.emater.aterwebsrv.dto.indice_producao.ProducaoGravaDto;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.FormaProducaoValor;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Ipa;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.IpaForma;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.IpaProducao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.IpaProducaoBemClassificado;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.IpaProducaoForma;
           
-@Service("IndiceProducaoSalvarAgroCmd")
-public class SalvarAgroCmd extends _SalvarCmd {
+public class SalvarAgroCmd {
 
-	@Autowired
-	private IpaDao dao;
-
-	@Autowired
-	private IpaProducaoDao ipaProducaoDao;
-	
-	@Autowired
-	private IpaProducaoBemClassificadoDao IpaProducaoBemClassificadoDao;
-	
-	@Autowired
-	private IpaProducaoFormaDao IpaProducaoFormaDao;
-	
-	@Autowired
-	private FormaProducaoValorDao formaDao;
-
-	private Integer ordem;
+	private IpaProducao ipaProdAgro;
+	private IpaProducaoBemClassificado ipaBemAgro;
+	private List<IpaProducaoForma> ipaFormaAgro;
 
 	public SalvarAgroCmd() {
 	}
 	
-	@Override
-	public boolean executar(_Contexto contexto) throws Exception {
-		
-		final ProducaoGravaDto result = (ProducaoGravaDto) contexto.getRequisicao();
-		
-		List<IpaProducao> ipAgro = (List<IpaProducao>) result.getProducaoAgroindustriaList();
-		
-		System.out.println("qse!");
-		
-	for (IpaProducao iprod : ipAgro) { //Insere Floricultura
-		
-		System.out.println("opa!");
-		
-// TABELA IPA
-		
-		Ipa ipa2 = result.getIpa();
-		
-		Ipa ipa = new Ipa();
+	public void salvarAgro(IpaProducao ipAgro, Ipa ipa, ProducaoGravaDto result) {
 
-		ipa.setUnidadeOrganizacional(ipa2.getUnidadeOrganizacional());	
-		ipa.setAno(ipa2.getAno());
-		ipa.setPropriedadeRural(ipa2.getPropriedadeRural());
-		ipa.setPublicoAlvo(ipa2.getPublicoAlvo());
-		
-		dao.save(ipa);
+
 		
 // TABELA IPA PRODUCAO
 
 		List<IpaProducao> ipArrayList = new ArrayList<>();
 
-		ipArrayList.add(iprod);
+		ipArrayList.add(ipAgro);
 		
 		IpaProducao ip = new IpaProducao();
 		
@@ -94,56 +59,83 @@ public class SalvarAgroCmd extends _SalvarCmd {
 			}
 	
 		});
-		
-		ipaProducaoDao.save(ip);
+				
+		this.setIpaProdAgro(ip);
 		
 // TABELA IPA PRODUCAO BEM CLASSIFICADO
 					
 				IpaProducaoBemClassificado ipbc = new IpaProducaoBemClassificado();
 				
-				ipbc.setBemClassificado(iprod.getBemClassificado());
+				ipbc.setBemClassificado(ipAgro.getBemClassificado());
 				ipbc.setIpaProducao(ip);
-				ipbc.setProducao(iprod.getProducao());
-				ipbc.setProdutividade(iprod.getProdutividade());
-				ipbc.setQuantidadeProdutores(iprod.getQuantidadeProdutores());
-				ipbc.setValorUnitario(iprod.getValorUnitario());
-				//ipbc.setValorTotal(100f);
+				ipbc.setProducao(ipAgro.getProducao());
+				ipbc.setProdutividade(ipAgro.getProdutividade());
+				ipbc.setQuantidadeProdutores(ipAgro.getQuantidadeProdutores());
+				ipbc.setValorUnitario(ipAgro.getValorUnitario());
 	
-				IpaProducaoBemClassificadoDao.save(ipbc);
+				this.setIpaBemAgro(ipbc);
 
 		
 // TABELA IPA PRODUCAO FORMA
 				
+				ArrayList<IpaProducaoForma> list = new ArrayList<>();
+				
 				IpaProducaoForma ipf1 = new IpaProducaoForma();
-				ipf1.setBemClassificacao(iprod.getTipo());
+				ipf1.setBemClassificacao(ipAgro.getTipo());
 				ipf1.setIpaProducao(ip);
 				ipf1.setOrdem(1);
 
-				IpaProducaoFormaDao.save(ipf1);
+				list.add(ipf1);
 				
 				IpaProducaoForma ipf2 = new IpaProducaoForma();
-				ipf2.setBemClassificacao(iprod.getCategoria());
+				ipf2.setBemClassificacao(ipAgro.getCategoria());
 				ipf2.setIpaProducao(ip);
 				ipf2.setOrdem(2);
 	
-				IpaProducaoFormaDao.save(ipf2);
+				list.add(ipf2);
 	
 		//ordem = 0;
-		iprod.getProducaoComposicaoList().forEach( (f) -> {
-			
-			IpaProducaoForma ipf = new IpaProducaoForma();
-			ipf.setFormaProducaoValor(formaDao.retornaForma(f.getId()));
-			ipf.setIpaProducao(ip);
-			ipf.setOrdem(3);
-			
-			IpaProducaoFormaDao.save(ipf);
-			
-		});
-			
-		}
+				for (IpaForma ipaProducaoForma : ipAgro.getProducaoComposicaoList()) {
+
+					IpaProducaoForma ipf = new IpaProducaoForma();
+					FormaProducaoValor fpv = new FormaProducaoValor();
+					
+					fpv.setId(ipaProducaoForma.getFormaProducaoValor().getId());
+					
+					ipf.setFormaProducaoValor(fpv);
+					ipf.setIpaProducao(ip);
+					ipf.setOrdem(3);
+					
+					list.add(ipf);	
+				
+			}
 		
-		return false;
-		
-		
+		this.setIpaFormaAgro(list);
+			
 	}
+
+	public IpaProducao getIpaProdAgro() {
+		return ipaProdAgro;
+	}
+
+	public void setIpaProdAgro(IpaProducao ipaProdAgro) {
+		this.ipaProdAgro = ipaProdAgro;
+	}
+
+	public IpaProducaoBemClassificado getIpaBemAgro() {
+		return ipaBemAgro;
+	}
+
+	public void setIpaBemAgro(IpaProducaoBemClassificado ipaBemAgro) {
+		this.ipaBemAgro = ipaBemAgro;
+	}
+
+	public List<IpaProducaoForma> getIpaFormaAgro() {
+		return ipaFormaAgro;
+	}
+
+	public void setIpaFormaAgro(List<IpaProducaoForma> ipaFormaAgro) {
+		this.ipaFormaAgro = ipaFormaAgro;
+	}
+	
 }
