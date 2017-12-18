@@ -1,8 +1,8 @@
-<div class="panel panel-default" ng-class="{'ng-invalid': indiceProducaoFrm.indiceProducaoList.$error.ngValorMin}">
+<div class="panel panel-default" >
     <div class="panel-heading container-fluid">
         <frz-navegador
-            ng-model="indiceProducaoNvg" exibe-nome-botao="false"
-            dados="cadastro.registro.publicoAlvo.indiceProducaoList"
+            ng-model="produtorCeasaProducaoNvg" exibe-nome-botao="false"
+            dados="cadastro.producaoCeasaList"
             acoes-especiais="acoesEspeciais"
             on-abrir = "abrir()"
             on-agir = "agir()"
@@ -21,40 +21,37 @@
             >
         </frz-navegador>
     </div>
-    <div class="painel-body"  ng-hide="cadastro.registro.publicoAlvo.indiceProducaoList.length">
+    <div class="painel-body"  >
         <div class="alert alert-warning" style="margin: 0px;" role="alert">
             <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
             Nenhum registro localizado!
         </div>
     </div>
-    <div class="table-responsive" ng-show="cadastro.registro.publicoAlvo.indiceProducaoList.length > 0">
-        <ng-form name="indiceProducaoFrm">
+    <div class="table-responsive" >
+        <ng-form name="produtorCeasaProducaoFrm">
             <table class="table table-hover table-striped">
                 <thead>
                     <tr>
                         <th>
-                            <frz-seletor ng-model="indiceProducaoNvg"></frz-seletor>
+                            <frz-seletor ng-model="produtorCeasaProducaoNvg"></frz-seletor>
                         </th>
                         <th width="30">
                             #
                         </th>
-                        <th>Ano</th>
-                        <th>Bem</th>
-                        <th>Classificacao</th>
-                        <th>Comunidade</th>
-                        <th>Propriedade Rural</th>
-                        <th><span class="sr-only">Ação</span></th>
+                        <th>Cultura/Produto</th>
+                        <th>Area</th>
+                        <th>Produção</th>
+                        <th>Período de Colheita/Produção</th>
                     </tr> 
                 </thead>
                 <tbody>
-                    <tr ng-repeat-start="item in indiceProducaoNvg.dados | orderBy: [PRODUCAO_PUBLICO_ALVO_NOME, PRODUCAO_COMUNIDADE_NOME, PRODUCAO_PROPRIEDADE_RURAL_NOME] | pagina: indiceProducaoNvg.paginaAtual : indiceProducaoNvg.tamanhoPagina | limitTo: indiceProducaoNvg.tamanhoPagina" ng-click="indiceProducaoNvg.folhaAtual = $index + ((indiceProducaoNvg.paginaAtual-1) * indiceProducaoNvg.tamanhoPagina)"
-                         title="Cadastrado por: {{item[PRODUCAO_INCLUSAO_NOME]}} em {{item[PRODUCAO_INCLUSAO_DATA] | date: 'dd/MM/yyyy'}}, alterado por: {{item[PRODUCAO_ALTERACAO_NOME]}} em {{item[PRODUCAO_ALTERACAO_DATA] | date: 'dd/MM/yyyy'}}">
+                    <tr ng-repeat-start="item in produtorCeasaProducaoNvg | pagina: produtorCeasaProducaoNvg.paginaAtual : produtorCeasaProducaoNvg.tamanhoPagina | limitTo: produtorCeasaProducaoNvg.tamanhoPagina" ng-click="produtorCeasaProducaoNvg.folhaAtual = $index + ((produtorCeasaProducaoNvg.paginaAtual-1) * produtorCeasaProducaoNvg.tamanhoPagina)"
                         <td width="30px" rowspan="2">
-                            <input type="radio" ng-show="indiceProducaoNvg.selecao.tipo === 'U'" ng-model="indiceProducaoNvg.selecao.item" ng-value="item"/>
-                            <input type="checkbox" ng-show="indiceProducaoNvg.selecao.tipo === 'M'" checklist-model="indiceProducaoNvg.selecao.items" checklist-value="item" ng-click="crudMataClick(scp, $event);"/>
+                            <input type="radio" ng-show="produtorCeasaProducaoNvg.selecao.tipo === 'U'" ng-model="produtorCeasaProducaoNvg.selecao.item" ng-value="item"/>
+                            <input type="checkbox" ng-show="produtorCeasaProducaoNvg.selecao.tipo === 'M'" checklist-model="produtorCeasaProducaoNvg.selecao.items" checklist-value="item" ng-click="crudMataClick(scp, $event);"/>
                         </td>
                         <td rowspan="2">
-                            {{$index + 1 + ((indiceProducaoNvg.paginaAtual-1) * indiceProducaoNvg.tamanhoPagina)}}
+                            {{$index + 1 + ((produtorCeasaProducaoNvg.paginaAtual-1) * produtorCeasaProducaoNvg.tamanhoPagina)}}
                         </td>
                         <td>{{item[PRODUCAO_ANO]}}</td>
                         <td>{{item[PRODUCAO_BEM_NOME]}}</td>
@@ -131,7 +128,7 @@
     </div>
     <div class="panel-footer">
     </div>
-    <div class="label label-danger" ng-show="indiceProducaoNvg.submetido && indiceProducaoFrm.indiceProducaoList.$error.ngValorMin">
+    <div class="label label-danger" ng-show="produtorCeasaProducaoNvg.submetido && indiceProducaoFrm.indiceProducaoList.$error.ngValorMin">
         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
         Campo Obrigatório
     </div>

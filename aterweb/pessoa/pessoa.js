@@ -328,7 +328,7 @@
                 }
                 PessoaSrv.declaracaoProdutorVerificar({pessoaIdList: pessoaIdList, publicoAlvoPropriedadeRuralIdList: publicoAlvoPropriedadeRuralIdList}).success(function(resposta) {
                     var conf = '<ng-include src=\"\'pessoa/sub-produtor-declaracao-verificar.html\'\"></ng-include>';
-
+                    
                     mensagemSrv.confirmacao(false, conf, 'Confirme emissão da Declaração do Produtor', resposta.resultado, null, null, null, function(escopo) {
                     }).then(function(conteudo) {
 
@@ -386,7 +386,7 @@
                         }
                     }
                 }
-                PessoaSrv.declaracaoCeasaVerificar({pessoaIdList: pessoaIdList, publicoAlvoPropriedadeRuralIdList: publicoAlvoPropriedadeRuralIdList}).success(function(resposta) {
+                PessoaSrv.declaracaoProdutorVerificar({pessoaIdList: pessoaIdList, publicoAlvoPropriedadeRuralIdList: publicoAlvoPropriedadeRuralIdList}).success(function(resposta) {
                     var conf =  '<ng-include src=\"\'pessoa/sub-produtor-declaracao-ceasa.html\'\"></ng-include>';
 
 
@@ -444,7 +444,7 @@
 
                             mensagemSrv.confirmacao(false, '<Font color=red size=4><center>NÃO É POSSÍVEL REVERTER ESSE PROCEDIMENTO! <BR> Tem certeza que você quer mesclar ??? </center></font> ').then(function (conteudo) {
                                PessoaSrv.mesclarPessoas( { pessoaIdList : pessoaIdList, principalId : principalId } ).success(function(resposta) {
-                                    toastr.error('MESCLAGEM CONFIRMADA!!'); 
+                                    toastr.info('MESCLAGEM CONFIRMADA!!'); 
                                 });    
                             });    
                         } else {
@@ -575,25 +575,25 @@
             var indice = 0;
             $scope.tabs = [
                 {
+                    'nome': 'Dados Básicos',
+                    'include': 'pessoa/tab-principal.html',
+                    'visivel': true,
+                    'indice': indice++,
+                    'ativo': true,
+                }, 
+                {
                     'nome': 'Beneficiário',
                     'include': 'pessoa/tab-beneficiario.html',
                     'visivel': false,
                     'indice': indice++,
                     'ativo': false,
                 }, 
-                {
+/*                {
                     'nome': 'Índice de Produção',
                     'include': 'pessoa/tab-publico-alvo-indice-producao.html',
                     'visivel': false,
                     'indice': indice++,
                     'ativo': false,
-                }, 
-                {
-                    'nome': 'Dados Básicos',
-                    'include': 'pessoa/tab-principal.html',
-                    'visivel': true,
-                    'indice': indice++,
-                    'ativo': true,
                 }, 
                 /*{
                     'nome': 'Colaborador',
