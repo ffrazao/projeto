@@ -149,8 +149,8 @@ public class SalvarCmd extends _SalvarCmd {
 		if (!CollectionUtils.isEmpty(result.getMetaTaticaList())) {
 			result.getMetaTaticaList().forEach((metaTatica) -> {
 				metaTatica.setAtividade(result);
-				MetaTatica mt = metaTaticaDao.findOne(metaTatica.getMetaTaticaId());
-				metaTatica.setMetaTaticaNome(mt.getDescricao());
+				//MetaTatica mt = metaTaticaDao.findOne(metaTatica.getMetaTaticaId());
+				//metaTatica.setMetaTaticaNome(mt.getDescricao());
 				atividadeMetaTaticaDao.save(metaTatica);
 			});
 		}

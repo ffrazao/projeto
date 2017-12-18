@@ -78,7 +78,7 @@ public class MesclarPessoasCmd extends _SalvarCmd {
 
         	if( !( pessoa == pessoaPrincipal ) ){
         		
-            	pessoa.setSituacao( PessoaSituacao.M ); 
+            	pessoa.setSituacao( PessoaSituacao.M );
             	pessoa.setSituacaoData(Calendar.getInstance());
             	PessoaDao.save(pessoa);
             	
@@ -87,39 +87,39 @@ public class MesclarPessoasCmd extends _SalvarCmd {
             		pessoaEndereco.setPrincipal(Confirmacao.N);
             		pessoaEnderecoDao.save(pessoaEndereco);
             	}
-            	pessoaEnderecoDao.flush();
+            	//pessoaEnderecoDao.flush();
             	
             	for ( PessoaTelefone pessoaTelefone : pessoa.getTelefoneList() ) {
             		pessoaTelefone.setPessoa(pessoaPrincipal);
             		pessoaTelefone.setPrincipal(Confirmacao.N);
             		pessoaTelefoneDao.save(pessoaTelefone);
             	}
-            	pessoaTelefoneDao.flush();
+            	//pessoaTelefoneDao.flush();
             	            	
             	for ( PessoaEmail pessoaEmail : pessoa.getEmailList() ) {
             		pessoaEmail.setPessoa(pessoaPrincipal);
             		pessoaEmail.setPrincipal(Confirmacao.N);
             		pessoaEmailDao.save(pessoaEmail);
             	}
-            	pessoaEmailDao.flush();
+            	//pessoaEmailDao.flush();
             	
             	for ( PessoaGrupoSocial pessoaGrupoSocial : pessoa.getGrupoSocialList() ) {
             		pessoaGrupoSocial.setPessoa(pessoaPrincipal);
             		pessoaGrupoSocialDao.save(pessoaGrupoSocial);
             	}
-            	pessoaGrupoSocialDao.flush();
+            	//pessoaGrupoSocialDao.flush();
 
             	for ( PessoaArquivo pessoaArquivo : pessoa.getArquivoList() ) {
             		pessoaArquivo.setPessoa(pessoaPrincipal);
             		pessoaArquivoDao.save(pessoaArquivo);
             	}
-            	pessoaArquivoDao.flush();
+            	//pessoaArquivoDao.flush();
 
             	for ( PessoaRelacionamento pessoaRelacionamento : pessoa.getRelacionamentoList() ) {
             		pessoaRelacionamento.setPessoa(pessoaPrincipal);
             		pessoaRelacionamentoDao.save(pessoaRelacionamento);
             	}
-        		pessoaRelacionamentoDao.flush();
+        		//pessoaRelacionamentoDao.flush();
             	
         		if ( ( Confirmacao.N.equals(pessoaPrincipal.getPublicoAlvoConfirmacao()) && Confirmacao.S.equals(pessoa.getPublicoAlvoConfirmacao()) ) ||
         			 ( pessoaPrincipal.getPublicoAlvo() == null && pessoa.getPublicoAlvo() != null ) ){
@@ -139,26 +139,19 @@ public class MesclarPessoasCmd extends _SalvarCmd {
 	                		publicoAlvoPropriedadeRural.setPrincipal(Confirmacao.N);
 	                		publicoAlvoPropriedadeRuralDao.save(publicoAlvoPropriedadeRural);
 	                	}
-	                	publicoAlvoPropriedadeRuralDao.flush();
+	                	//publicoAlvoPropriedadeRuralDao.flush();
             		}
             	}
-            	
             	
             	List<AtividadePessoa>  atividadePessoaList =  atividadePessoaDao.findByPessoa(pessoa );
             	for ( AtividadePessoa  atividadePessoa : atividadePessoaList ) {
             		atividadePessoa.setPessoa(pessoaPrincipal);
             		atividadePessoaDao.save(atividadePessoa);
             	}
-            	atividadePessoaDao.flush();            		
-            	
-
-            	
-            	
+            	//atividadePessoaDao.flush();
         	}
         }
          
 		return false;
-	}
-	
-	
+	}	
 }

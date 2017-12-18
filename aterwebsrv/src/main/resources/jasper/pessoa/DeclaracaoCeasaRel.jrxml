@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-04-17T13:49:29 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RelatorioTeste" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" uuid="74a58a1f-20c1-4882-a004-63331c202191">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<import value="br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica"/>
+	<parameter name="RelatorioNome" class="java.lang.String">
+		<parameterDescription><![CDATA[Nome do Relatório]]></parameterDescription>
+		<defaultValueExpression><![CDATA[$P{RelatorioNome}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Usuario" class="br.gov.df.emater.aterwebsrv.modelo.sistema.Usuario">
+		<parameterDescription><![CDATA[Usuário Autenticado pelo no Sistema]]></parameterDescription>
+		<defaultValueExpression><![CDATA[$P{Usuario}.getUsername()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="TipoPessoa" class="java.lang.String">
+		<parameterDescription><![CDATA[TipoPessoa]]></parameterDescription>
+		<defaultValueExpression><![CDATA[$P{TipoPessoa}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Observacao" class="java.lang.String">
+		<parameterDescription><![CDATA[Observacao]]></parameterDescription>
+		<defaultValueExpression><![CDATA[$P{Observacao}]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="comunidade" class="br.gov.df.emater.aterwebsrv.modelo.ater.Comunidade">
+		<fieldDescription><![CDATA[comunidade]]></fieldDescription>
+	</field>
+	<field name="publicoAlvo" class="br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvo">
+		<fieldDescription><![CDATA[publicoAlvo]]></fieldDescription>
+	</field>
+	<field name="propriedadeRural" class="br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural">
+		<fieldDescription><![CDATA[propriedadeRural]]></fieldDescription>
+	</field>
+	<field name="area" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[area]]></fieldDescription>
+	</field>
+	<field name="vinculo" class="br.gov.df.emater.aterwebsrv.modelo.dominio.PropriedadeRuralVinculoTipo">
+		<fieldDescription><![CDATA[vinculo]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="781" splitType="Stretch">
+			<rectangle>
+				<reportElement positionType="Float" isPrintRepeatedValues="false" x="1" y="51" width="555" height="730" uuid="ffc1cc6d-7275-4291-8cdd-815aec1970e3"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="1" y="0" width="555" height="40" uuid="2ff70637-166e-4b27-bc3d-89d2f033b5a3"/>
+			</rectangle>
+			<textField>
+				<reportElement x="80" y="13" width="440" height="15" uuid="d28a3c09-c4c2-4b15-aad0-5cacb24a7a54"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{RelatorioNome}]]></textFieldExpression>
+			</textField>
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement x="20" y="6" width="70" height="30" uuid="5c06334d-3316-4e6c-9566-f2b17213f909">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<imageExpression><![CDATA["jasper/imagens/logo-emater-df.jpg"]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement isPrintRepeatedValues="false" x="190" y="169" width="332" height="15" uuid="214e288d-6cbc-46b3-8fbc-1f620d550567"/>
+				<textFieldExpression><![CDATA[$F{comunidade}.getNome()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement isPrintRepeatedValues="false" x="190" y="187" width="332" height="15" uuid="b47ba2ba-dd15-4f82-a0b3-8b690e660087"/>
+				<textFieldExpression><![CDATA[$F{comunidade}.getCidade().getNome()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement isPrintRepeatedValues="false" x="190" y="319" width="332" height="15" uuid="8e9342a4-cadb-49d2-af79-fde092d5fc2b"/>
+				<textFieldExpression><![CDATA[$F{propriedadeRural}.getSituacaoFundiaria().toString()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="190" y="301" width="332" height="15" uuid="8d342d87-0fb6-4e6a-8f1a-c139d45ab6fb"/>
+				<textFieldExpression><![CDATA[$F{vinculo}.toString()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="190" y="97" width="332" height="15" uuid="24510be4-d8cf-49ac-999c-6c7d6697ee04">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{publicoAlvo}.getPessoa().getNome()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="190" y="115" width="332" height="15" uuid="6f9573c8-0154-4ff5-ab21-96784b2bbb70">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{publicoAlvo}.getPessoa().getClass().asSubclass(PessoaFisica.class).cast($F{publicoAlvo}.getPessoa()).getCpf() ]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="190" y="356" width="332" height="15" uuid="c12847fd-21dd-4977-b5b2-a9e4cec85190"/>
+				<textFieldExpression><![CDATA[$F{publicoAlvo}.getPessoa().getClass().asSubclass(PessoaFisica.class).cast($F{publicoAlvo}.getPessoa()).getNisNumero()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="479" y="227" width="43" height="15" uuid="c951ed8b-c25a-48ac-8375-4ce01b5ebb5d"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{area}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="16" y="51" width="540" height="43" uuid="24c1f90a-eb02-4c1f-acac-0599b04855b4"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12"/>
+				</textElement>
+				<text><![CDATA[ Declaramos para os devidos fins e a quem possa interessar, que o (a) Sr.(a), abaixo identificado, desenvolve atividade rurais e é assistido pela EMATER - DF.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="34" y="96" width="138" height="17" uuid="497166a3-448f-451f-ab15-d2a26136cd48"/>
+				<text><![CDATA[NOME DO PRODUTOR......:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="34" y="114" width="138" height="17" uuid="3797bba0-3910-42e2-a580-d3db12dc044a"/>
+				<text><![CDATA[CPF / CNPJ.........................:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="34" y="132" width="138" height="17" uuid="755e52bf-8334-4a3e-9c7e-a487ae75dd87"/>
+				<text><![CDATA[RG.......................................:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="34" y="150" width="138" height="17" uuid="55d37699-9a04-4e75-9d94-645fee2f374a"/>
+				<text><![CDATA[ENDEREÇO RESIDENCIAL:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="34" y="168" width="138" height="17" uuid="1924cf79-5a7a-47c9-b671-4dfda7e2fb03"/>
+				<text><![CDATA[COMUNIDADE.....................:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="34" y="186" width="138" height="17" uuid="5c627471-458c-46ca-9711-18079e2fba2c"/>
+				<text><![CDATA[REGIÃO ADMINISTRATIVA.:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="34" y="226" width="138" height="17" uuid="da4906fc-633c-4aa8-afab-befcdf9d889c"/>
+				<text><![CDATA[NOME DA PROPRIEDADE:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="34" y="244" width="138" height="17" uuid="49d07396-afbf-4f14-b887-b768a41115b4"/>
+				<text><![CDATA[NOME DO PROPRIETÁRIO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="34" y="262" width="138" height="17" uuid="56d62c91-7b9d-4d23-8f49-fb03c47528a3"/>
+				<text><![CDATA[COMUNIDADE.....................:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="34" y="280" width="138" height="17" uuid="e144b0ac-fe78-4a97-9b37-8da3fac05dd5"/>
+				<text><![CDATA[REGIÃO ADMINISTRATIVA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="34" y="318" width="138" height="17" uuid="3ee64e9d-4ead-444b-b8c2-e3c7f9380072"/>
+				<text><![CDATA[SITUAÇÃO FUNDIÁRIA.......:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="34" y="300" width="138" height="17" uuid="dec8183f-5e15-4e60-b82a-3c781633ed8a"/>
+				<text><![CDATA[REGIME DE EXPLORAÇÃO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="34" y="336" width="138" height="17" uuid="a5b4189c-9110-4635-b602-cbd2b6d905ab"/>
+				<text><![CDATA[ATIVIDADES PRODUTIVAS:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="34" y="354" width="138" height="17" uuid="d55a1f2b-ef99-47cf-8ec8-a6b76627b0a6"/>
+				<text><![CDATA[N° INSC. ESTADUAL...........:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="420" y="226" width="56" height="16" uuid="069de11d-ea2f-4136-9fc0-2689fd1a6b48"/>
+				<text><![CDATA[ÁREA(ha):]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="190" y="262" width="332" height="17" uuid="e73b6d00-89e7-4487-8099-0514d80b5c10"/>
+				<textFieldExpression><![CDATA[$F{propriedadeRural}.getComunidade().getNome()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="190" y="226" width="230" height="17" uuid="84140b03-c30e-417e-9b3d-9005fc0eccb5"/>
+				<textFieldExpression><![CDATA[$F{propriedadeRural}.getNome()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="34" y="394" width="138" height="17" uuid="79e29898-ec02-46aa-b67d-e1f730851bcf"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[OBSERVAÇÕES:]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement positionType="Float" x="35" y="545" width="487" height="70" uuid="563b83f0-7f12-4984-b2b1-fbde4d40ebf0"/>
+			</rectangle>
+			<staticText>
+				<reportElement positionType="Float" x="210" y="547" width="138" height="19" uuid="02760bd3-27eb-40c0-96ae-adf9562ca9cd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[UNIDADE DA EMATER ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="51" y="569" width="450" height="41" uuid="854571ec-0ecf-4549-b33a-8144041257c7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[Parque Estação Biológica, Ed. Sede EMATER-DF
+CEP: 70.770.915 Brasília - DF
+Telefone: 3311-9330, E-mail: emater@emater.df.gov.br.]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement positionType="Float" x="35" y="620" width="315" height="68" uuid="d8384745-0f98-4049-8dc1-a337839c8618"/>
+			</rectangle>
+			<staticText>
+				<reportElement positionType="Float" x="108" y="626" width="138" height="17" uuid="0646b9e8-4273-4319-a13c-5f4805b7112e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TÉCNICO RESPONSÁVEL]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement positionType="Float" x="363" y="620" width="159" height="68" uuid="51232ed2-770a-4249-8c20-78a1ea6ede91"/>
+			</rectangle>
+			<staticText>
+				<reportElement positionType="Float" x="405" y="632" width="79" height="22" uuid="1cf7bbb1-80e4-4ce4-8bb0-4cad2a17c886"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BRASÍLIA - DF]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="410" y="654" width="100" height="18" uuid="4238000a-a52e-47e6-844b-97200f4831db"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format(new Date())]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="35" y="692" width="491" height="30" uuid="81cf5e89-f719-498b-adc7-5b281e45623f"/>
+				<textElement textAlignment="Center" markup="none">
+					<font fontName="SansSerif" size="11"/>
+				</textElement>
+				<text><![CDATA[Está declaração não tem valor para fins de comprovação legal de ocupação da área. Válida por 30 (trinta) dias, a partir desta data.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="35" y="731" width="491" height="16" uuid="fed7001f-929a-4913-83ad-bbf610e10cb3"/>
+				<textElement textAlignment="Center" markup="none">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<text><![CDATA[MISSÃO DA EMATER-DF ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="35" y="744" width="491" height="32" uuid="d530ef99-828f-4f2c-b183-33fcc9b06d37"/>
+				<textElement textAlignment="Center" markup="none">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<text><![CDATA[Promover o desenvolvimento sustentável e a segurança alimentar, por meio de assistência técnica e extensão rural de excelência, em benefício da sociedade do Distrito Federal e Entorno.]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="35" y="411" width="487" height="129" uuid="1d478f3c-5177-4e08-a2ee-f32f96115a90">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+				</reportElement>
+			</rectangle>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="40" y="415" width="480" height="119" uuid="12739544-c9b7-4c27-9424-5ade52d84495"/>
+				<textFieldExpression><![CDATA[$P{Observacao}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="190" y="280" width="332" height="17" uuid="8381c3e9-0378-4eb8-af3e-2d9a563fa99f"/>
+				<textFieldExpression><![CDATA[$F{propriedadeRural}.getComunidade().getCidade().getNome()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="190" y="245" width="332" height="17" uuid="9dcd2fe9-3336-4e17-aade-db82801d572a"/>
+				<textFieldExpression><![CDATA[$F{publicoAlvo}.getPessoa().getNome()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="190" y="132" width="332" height="17" uuid="e1596366-ae8e-4d14-a8eb-8ff01e57953a"/>
+				<textFieldExpression><![CDATA[$F{publicoAlvo}.getPessoa().getClass().asSubclass(PessoaFisica.class).cast($F{publicoAlvo}.getPessoa()).getRgNumero()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="190" y="150" width="332" height="17" uuid="7c83163d-1b8b-440b-806e-2cf613a981a7"/>
+				<textFieldExpression><![CDATA[$F{propriedadeRural}.getEndereco().getLogradouro()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="189" y="337" width="332" height="15" uuid="8634683a-204f-4231-b463-8968897d9dec"/>
+				<textFieldExpression><![CDATA[$F{propriedadeRural}.getPrincipaisAtividadesProdutivas()]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

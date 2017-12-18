@@ -299,8 +299,12 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 			sql.append("and paPropriedadeRural.comunidade in ?").append(params.size()).append("\n");
 		}
 		if (!CollectionUtils.isEmpty(filtro.getUnidadeOrganizacionalList())) {
-			params.add(filtro.getUnidadeOrganizacionalList());
-			sql.append("and paPropriedadeRural.comunidade.unidadeOrganizacional in ?").append(params.size()).append("\n");
+			// params.add(filtro.getUnidadeOrganizacionalList());
+			sql.append("and paPropriedadeRural.comunidade.unidadeOrganizacional.id in (");
+			for (int i = 0; i < filtro.getUnidadeOrganizacionalList().size(); i++) {
+				sql.append(filtro.getUnidadeOrganizacionalList().get(i).getId() ).append(",");
+			}
+			sql.append("0 ) ");
 		}
 		if (!CollectionUtils.isEmpty(filtro.getEmpresaList())) {
 			params.add(filtro.getEmpresaList());
@@ -328,12 +332,12 @@ public class PessoaDaoImpl implements PessoaDaoCustom {
 		// inserir os parametros
 		for (int i = 1; i <= params.size(); i++) {
 			query.setParameter(i, params.get(i - 1));
-			System.out.println(params.get(i - 1) );
 		}
 
 		// definir a pagina a ser consultada
 		filtro.configuraPaginacao(query);
 
+		//System.out.println( sql );
 		// executar a consulta
 		result = query.getResultList();
 
