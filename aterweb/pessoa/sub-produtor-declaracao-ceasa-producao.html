@@ -45,7 +45,7 @@
                     </tr> 
                 </thead>
                 <tbody>
-                    <tr ng-repeat-start="item in produtorCeasaProducaoNvg | pagina: produtorCeasaProducaoNvg.paginaAtual : produtorCeasaProducaoNvg.tamanhoPagina | limitTo: produtorCeasaProducaoNvg.tamanhoPagina" ng-click="produtorCeasaProducaoNvg.folhaAtual = $index + ((produtorCeasaProducaoNvg.paginaAtual-1) * produtorCeasaProducaoNvg.tamanhoPagina)"
+                    <tr ng-repeat-start="item in produtorCeasaProducaoNvg | pagina: produtorCeasaProducaoNvg.paginaAtual : produtorCeasaProducaoNvg.tamanhoPagina | limitTo: produtorCeasaProducaoNvg.tamanhoPagina" ng-click="produtorCeasaProducaoNvg.folhaAtual = $index + ((produtorCeasaProducaoNvg.paginaAtual-1) * produtorCeasaProducaoNvg.tamanhoPagina)">
                         <td width="30px" rowspan="2">
                             <input type="radio" ng-show="produtorCeasaProducaoNvg.selecao.tipo === 'U'" ng-model="produtorCeasaProducaoNvg.selecao.item" ng-value="item"/>
                             <input type="checkbox" ng-show="produtorCeasaProducaoNvg.selecao.tipo === 'M'" checklist-model="produtorCeasaProducaoNvg.selecao.items" checklist-value="item" ng-click="crudMataClick(scp, $event);"/>
