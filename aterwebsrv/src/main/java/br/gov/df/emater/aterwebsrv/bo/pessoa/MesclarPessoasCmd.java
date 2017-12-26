@@ -11,6 +11,7 @@ import br.gov.df.emater.aterwebsrv.bo._SalvarCmd;
 import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoDao;
 import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoPropriedadeRuralDao;
 import br.gov.df.emater.aterwebsrv.dao.atividade.AtividadePessoaDao;
+import br.gov.df.emater.aterwebsrv.dao.indice_producao.IpaDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaArquivoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaEmailDao;
@@ -63,6 +64,9 @@ public class MesclarPessoasCmd extends _SalvarCmd {
 
 	@Autowired
 	private AtividadePessoaDao atividadePessoaDao;
+	
+	@Autowired
+	private IpaDao ipaDao;
 
 
 	@Override
@@ -75,6 +79,9 @@ public class MesclarPessoasCmd extends _SalvarCmd {
         for (Integer pessoaId :  filtro.getPessoaIdList() ) {
         	
         	Pessoa pessoa = PessoaDao.findOneById(pessoaId);
+        	
+        	//System.out.println("pessoa: " + pessoa.getNome() + " -> " + pessoa.getId());        
+        	//System.out.println("pessoa principal: " + pessoaPrincipal.getNome() + " -> " + pessoaPrincipal.getId()); 
 
         	if( !( pessoa == pessoaPrincipal ) ){
         		
@@ -148,7 +155,16 @@ public class MesclarPessoasCmd extends _SalvarCmd {
             		atividadePessoa.setPessoa(pessoaPrincipal);
             		atividadePessoaDao.save(atividadePessoa);
             	}
-            	//atividadePessoaDao.flush();
+            	//atividadePessoaDao.flush();          	            	
+            	
+            	List<Integer> ipaIdPessoa = ipaDao.retornaIdIpa(pessoa.getId());
+            	
+            	for (Integer id : ipaIdPessoa) {
+					ipaDao.UpdatePessoa(pessoaPrincipal.getId(), id);
+					//System.out.println("Entrou no for ipa");
+					//System.out.println("id: " + id);
+				}
+            	
         	}
         }
          
