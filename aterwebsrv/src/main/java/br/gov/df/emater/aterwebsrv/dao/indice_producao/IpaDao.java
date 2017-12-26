@@ -34,4 +34,11 @@ public interface IpaDao extends JpaRepository<Ipa, Integer>{
 	Ipa retornaId(@Param("ano") Integer ano, @Param("uo") UnidadeOrganizacional uo, @Param("pr") PropriedadeRural pr, @Param("pa") PublicoAlvo pa);
 	
 	Ipa findOneByAnoAndUnidadeOrganizacionalAndPropriedadeRuralIsNullAndPublicoAlvoIsNull(Integer ano, UnidadeOrganizacional uo);
+	
+	@Query("SELECT p.id FROM Ipa p WHERE p.publicoAlvo.id =:pa")
+	List<Integer> retornaIdIpa(@Param("pa") Integer pa);
+
+	@Modifying(clearAutomatically = true)
+	@Query("UPDATE Ipa SET publicoAlvo.id =:pessoa WHERE id =:id")
+	void UpdatePessoa(@Param("pessoa") Integer pessoa, @Param("id") Integer id);
 }
