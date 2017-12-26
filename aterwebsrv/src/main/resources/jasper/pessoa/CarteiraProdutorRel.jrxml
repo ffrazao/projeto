@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-03-24T09:37:38 -->
+<!-- 2017-12-26T10:51:51 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RelatorioTeste" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" uuid="74a58a1f-20c1-4882-a004-63331c202191">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -75,6 +75,7 @@
 	</columnHeader>
 	<detail>
 		<band height="193" splitType="Stretch">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
 			<image hAlign="Center">
 				<reportElement x="0" y="5" width="555" height="186" uuid="fd18ad58-7c27-4968-9031-56474f21ff0c">
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
@@ -113,10 +114,13 @@
 				<reportElement isPrintRepeatedValues="false" x="20" y="136" width="130" height="15" uuid="5e64ee1c-48ee-4821-900e-a37dd137a601"/>
 				<textFieldExpression><![CDATA[$F{comunidade}.getCidade().getNome()]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="287" y="43" width="160" height="15" uuid="997ddbcf-a7ad-4e8f-8995-eb59e4dde866">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="287" y="43" width="163" height="15" uuid="997ddbcf-a7ad-4e8f-8995-eb59e4dde866">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{publicoAlvo}.getPessoa().getNome()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
