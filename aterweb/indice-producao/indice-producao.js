@@ -150,8 +150,8 @@
                 for (var flor in scp.cadastro.registro.producaoFloriculturaList) {
                     var contFlor = 0;
                     if (scp.cadastro.registro.producaoFloriculturaList[flor].id < 0) {
-                            ideaFlor[contFlor] = scp.cadastro.registro.producaoFloriculturaList[flor];
-                            contFlor++;
+                        ideaFlor[contFlor] = scp.cadastro.registro.producaoFloriculturaList[flor];
+                        contFlor++;
                     }
 
                 }
@@ -210,20 +210,20 @@
                 IndiceProducaoSrv.incluir(reg).success(function (resposta) {
                     if (resposta.mensagem && resposta.mensagem === 'OK') {
                         toastr.info('Operação realizada!', 'Informação');
-                        
+
                         $scope.cadastro.registro.producaoAgricolaList = null;
                         $scope.cadastro.registro.producaoFloriculturaList = null;
                         $scope.cadastro.registro.producaoArtesanatoList = null;
                         $scope.cadastro.registro.producaoAgroindustriaList = null;
                         $scope.cadastro.registro.producaoAnimalList = null;
 
-                        if($scope.cadastro.registro.publicoAlvo != null){
+                        if ($scope.cadastro.registro.publicoAlvo != null) {
                             $scope.cargaProdutor();
-                        }else if($scope.cadastro.registro.publicoAlvo == null){
+                        } else if ($scope.cadastro.registro.publicoAlvo == null) {
                             $scope.cargaEscritorio();
                         }
 
-                        
+
 
                     } else {
                         toastr.error(resposta.mensagem, 'Erro ao incluir');
@@ -247,6 +247,7 @@
 
             $scope.vamosEditar = function (item, tipoEditar) {
                 console.log(item);
+
                 if (tipoEditar === 'Flor') {
                     IndiceProducaoSrv.editarFlor(item).success(function (resposta) {
                         if (resposta.mensagem && resposta.mensagem === 'OK') {
@@ -733,6 +734,8 @@
                     $scope.cadastro.filtro.propriedadeRural = null;
 
                     IndiceProducaoSrv.producao($scope.cadastro.filtro).success(function (resposta) {
+                        //$scope.animal = angular.toJson(resposta);
+                        //console.log($scope.animal);
                         $scope.cadastro.registro.producaoAgricolaList = resposta.resultado.producaoAgricolaList;
                         $scope.cadastro.registro.producaoFloriculturaList = resposta.resultado.producaoFloriculturaList;
                         $scope.cadastro.registro.producaoArtesanatoList = resposta.resultado.producaoArtesanatoList;
@@ -750,15 +753,19 @@
                         var arrFormas = [];
                         var arrIpa = [];
                         var recuperaIpa = [];
+                        var arrBem = [];
+                        //console.log("Agri");
                         //console.log($scope.cadastro.registro.producaoAgricolaList);
                         //console.log($scope.cadastro.registro.producaoFloriculturaList);
-                        //console.log("Arte");
-                        //console.log($scope.cadastro.registro.producaoArtesanatoList);
+                        // console.log("Arte");
+                        // console.log($scope.cadastro.registro.producaoArtesanatoList);
                         //console.log("Agro");
                         //console.log($scope.cadastro.registro.producaoAgroindustriaList);
+                        //console.log("Animal");
                         //console.log($scope.cadastro.registro.producaoAnimalList);
 
                         // AGRICOLA
+
                         for (var i in $scope.cadastro.registro.producaoAgricolaList) {
 
                             for (var agriIpa in $scope.cadastro.registro.producaoAgricolaList[i]) {
@@ -792,6 +799,23 @@
 
                             qtdProdutores = $scope.cadastro.registro.producaoAgricolaList[i].ipaProducaoBemClassificadoList[0].quantidadeProdutores;
                             $scope.cadastro.registro.producaoAgricolaList[i].quantidadeProdutores = qtdProdutores;
+
+
+                            for (var recuperaBem in $scope.cadastro.registro.producaoAgricolaList[i].ipaProducaoBemClassificadoList) {
+                                if ($scope.cadastro.registro.producaoAgricolaList[i].ipaProducaoBemClassificadoList[0].bemClassificado.id != null) {
+                                    var chave = $scope.cadastro.registro.producaoAgricolaList[i].ipaProducaoBemClassificadoList[0].bemClassificado['@jsonId'];
+                                    var valor = $scope.cadastro.registro.producaoAgricolaList[i].ipaProducaoBemClassificadoList[0].bemClassificado;
+                                    arrBem[chave] = valor;
+                                }
+                            }
+                            var recBem = [];
+                            for (var recuperaBem2 in $scope.cadastro.registro.producaoAgricolaList[i].ipaProducaoBemClassificadoList) {
+                                if ($scope.cadastro.registro.producaoAgricolaList[i].ipaProducaoBemClassificadoList[0].bemClassificado.id == null) {
+                                    var xBem = $scope.cadastro.registro.producaoAgricolaList[i].ipaProducaoBemClassificadoList[0].bemClassificado;
+                                    recBem = arrBem[xBem];
+                                    $scope.cadastro.registro.producaoAgricolaList[i].ipaProducaoBemClassificadoList[0].bemClassificado = recBem;
+                                }
+                            }
 
                             bem = $scope.procuraNaLista($scope.cadastro.apoio.bemClassificadoAgricolaList, $scope.cadastro.registro.producaoAgricolaList[i].ipaProducaoBemClassificadoList[0].bemClassificado.id);
                             $scope.cadastro.registro.producaoAgricolaList[i].bemClassificado = bem;
@@ -847,6 +871,23 @@
                                     $scope.cadastro.registro.producaoAnimalList[animal].ipa = recuperaIpa;
                                 }
 
+
+                                for (var recuperaBemAnimal in $scope.cadastro.registro.producaoAnimalList[animal].cultura) {
+                                    if ($scope.cadastro.registro.producaoAnimalList[animal].cultura.id != null) {
+                                        var chaveAnimal = $scope.cadastro.registro.producaoAnimalList[animal].cultura['@jsonId'];
+                                        var valorAnimal = $scope.cadastro.registro.producaoAnimalList[animal].cultura;
+                                        arrBem[chaveAnimal] = valorAnimal;
+                                    }
+                                }
+                                var recBemAnimal = [];
+                                for (var recuperaBemAnimal2 in $scope.cadastro.registro.producaoAnimalList[animal].cultura) {
+                                    if ($scope.cadastro.registro.producaoAnimalList[animal].cultura.id == null) {
+                                        var xBemAnimal = $scope.cadastro.registro.producaoAnimalList[animal].cultura;
+                                        recBemAnimal = arrBem[xBemAnimal];
+                                        $scope.cadastro.registro.producaoAnimalList[animal].cultura = recBemAnimal;
+                                    }
+                                }
+
                                 var cultura = $scope.procuraNaLista($scope.cadastro.apoio.animalTipo, $scope.cadastro.registro.producaoAnimalList[animal].cultura.id);
                                 $scope.cadastro.registro.producaoAnimalList[animal].cultura = cultura;
 
@@ -860,7 +901,11 @@
                                 var producaoListBem = [];
 
                                 for (var bemAnimal in $scope.cadastro.registro.producaoAnimalList[animal].ipaProducaoBemClassificadoList) {
-                                    producaoListBem = $scope.cadastro.registro.producaoAnimalList[animal].ipaProducaoBemClassificadoList;
+                                    if ($scope.cadastro.registro.producaoAnimalList[animal].ipaProducaoBemClassificadoList[0].bemClassificado.id != null) {
+                                        producaoListBem = $scope.cadastro.registro.producaoAnimalList[animal].ipaProducaoBemClassificadoList;
+                                    } else {
+                                        producaoListBem = $scope.cadastro.registro.producaoAnimalList[animal - 1].ipaProducaoBemClassificadoList;
+                                    }
                                 }
 
                                 $scope.cadastro.registro.producaoAnimalList[animal].produtoList = producaoListBem;
@@ -874,22 +919,26 @@
                                     }
                                     arrFormas[key] = val;
                                 }
-
+                                //console.log(arrFormas);
+                                var arrFormaAnimal = [];
                                 for (var formaAni in $scope.cadastro.registro.producaoAnimalList[animal].ipaProducaoFormaList) {
                                     if ($scope.cadastro.registro.producaoAnimalList[animal].ipaProducaoFormaList[formaAni].formaProducaoValor.id == null) {
                                         w5 = arrFormas[$scope.cadastro.registro.producaoAnimalList[animal].ipaProducaoFormaList[formaAni].formaProducaoValor];
-                                        $scope.cadastro.registro.producaoAnimalList[animal].ipaProducaoFormaList[formaAni].formaProducaoValor = arrFormas[$scope.cadastro.registro.producaoAnimalList[animal].ipaProducaoFormaList[formaAni].formaProducaoValor];
-
-                                        producaoComposicao5.push($scope.cadastro.registro.producaoAnimalList[animal].ipaProducaoFormaList[formaAni]);
+                                        arrFormaAnimal.push(w5);
                                     } else {
-
-                                        producaoComposicao5.push($scope.cadastro.registro.producaoAnimalList[animal].ipaProducaoFormaList[formaAni]);
-
+                                        arrFormaAnimal.push($scope.cadastro.registro.producaoAnimalList[animal].ipaProducaoFormaList[formaAni]);
                                     }
-                                    for (var formaAnim in producaoComposicao5) {
-                                        $scope.cadastro.registro.producaoAnimalList[animal].producaoComposicaoList = producaoComposicao5;
+                                    $scope.cadastro.registro.producaoAnimalList[animal].producaoComposicaoList = arrFormaAnimal;
+
+                                }
+
+                                for (var aba in $scope.cadastro.registro.producaoAnimalList[animal].producaoComposicaoList) {
+                                    if ($scope.cadastro.registro.producaoAnimalList[animal].producaoComposicaoList[aba].formaProducaoValor == null) {
+                                        $scope.cadastro.registro.producaoAnimalList[animal].producaoComposicaoList[aba].formaProducaoValor = $scope.cadastro.registro.producaoAnimalList[animal].producaoComposicaoList[aba];
                                     }
                                 }
+
+
                             } else {
                                 $scope.cadastro.registro.producaoAnimalList[animal] = null;
                             }
@@ -927,6 +976,22 @@
 
                             qtdProdutores = $scope.cadastro.registro.producaoFloriculturaList[x].ipaProducaoBemClassificadoList[0].quantidadeProdutores;
                             $scope.cadastro.registro.producaoFloriculturaList[x].quantidadeProdutores = qtdProdutores;
+
+                            for (var recuperaBemFlor in $scope.cadastro.registro.producaoFloriculturaList[x].ipaProducaoBemClassificadoList) {
+                                if ($scope.cadastro.registro.producaoFloriculturaList[x].ipaProducaoBemClassificadoList[0].bemClassificado.id != null) {
+                                    var chaveFlor = $scope.cadastro.registro.producaoFloriculturaList[x].ipaProducaoBemClassificadoList[0].bemClassificado['@jsonId'];
+                                    var valorFlor = $scope.cadastro.registro.producaoFloriculturaList[x].ipaProducaoBemClassificadoList[0].bemClassificado;
+                                    arrBem[chaveFlor] = valorFlor;
+                                }
+                            }
+                            var recBemFlor = [];
+                            for (var recuperaBemFlor2 in $scope.cadastro.registro.producaoFloriculturaList[x].ipaProducaoBemClassificadoList) {
+                                if ($scope.cadastro.registro.producaoFloriculturaList[x].ipaProducaoBemClassificadoList[0].bemClassificado.id == null) {
+                                    var xBemFlor = $scope.cadastro.registro.producaoFloriculturaList[x].ipaProducaoBemClassificadoList[0].bemClassificado;
+                                    recBemFlor = arrBem[xBemFlor];
+                                    $scope.cadastro.registro.producaoFloriculturaList[x].ipaProducaoBemClassificadoList[0].bemClassificado = recBemFlor;
+                                }
+                            }
 
                             bem = $scope.procuraNaLista($scope.cadastro.apoio.bemClassificadoFloriculturaList, $scope.cadastro.registro.producaoFloriculturaList[x].ipaProducaoBemClassificadoList[0].bemClassificado.id);
                             $scope.cadastro.registro.producaoFloriculturaList[x].bemClassificado = bem;
@@ -983,17 +1048,62 @@
                             qtdProdutores = $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoBemClassificadoList[0].quantidadeProdutores;
                             $scope.cadastro.registro.producaoArtesanatoList[arte].quantidadeProdutores = qtdProdutores;
 
+                            for (var recuperaBemArte in $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoBemClassificadoList) {
+                                if ($scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoBemClassificadoList[0].bemClassificado.id != null) {
+                                    var chaveArte = $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoBemClassificadoList[0].bemClassificado['@jsonId'];
+                                    var valorArte = $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoBemClassificadoList[0].bemClassificado;
+                                    arrBem[chaveArte] = valorArte;
+                                }
+                            }
+                            var recBemArte = [];
+                            for (var recuperaBemArte2 in $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoBemClassificadoList) {
+                                if ($scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoBemClassificadoList[0].bemClassificado.id == null) {
+                                    var xBemArte = $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoBemClassificadoList[0].bemClassificado;
+                                    recBemArte = arrBem[xBemArte];
+                                    $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoBemClassificadoList[0].bemClassificado = recBemArte;
+                                }
+                            }
+
                             bem = $scope.procuraNaLista($scope.cadastro.apoio.bemClassificadoArtesanatoList, $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoBemClassificadoList[0].bemClassificado.id);
                             $scope.cadastro.registro.producaoArtesanatoList[arte].bemClassificado = bem;
+
+                            for (var recuperaBemArteT in $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList) {
+                                if ($scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList[0].bemClassificacao.id != null) {
+                                    var chaveArteT = $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList[0].bemClassificacao['@jsonId'];
+                                    var valorArteT = $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList[0].bemClassificacao;
+                                    arrBem[chaveArteT] = valorArteT;
+                                }
+                            }
+                            var recBemArteT = [];
+                            for (var recuperaBemArteT2 in $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList) {
+                                if ($scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList[0].bemClassificacao.id == null) {
+                                    var xBemArteT = $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList[0].bemClassificacao;
+                                    recBemArteT = arrBem[xBemArteT];
+                                    $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList[0].bemClassificacao = recBemArteT;
+                                }
+                            }
 
                             var tipo2 = $scope.procuraNaLista($scope.cadastro.apoio.artesanatoTipo, $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList[0].bemClassificacao.id);
                             $scope.cadastro.registro.producaoArtesanatoList[arte].tipo = tipo2;
 
+                            for (var recuperaBemArteC in $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList) {
+                                if ($scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList[1].bemClassificacao.id != null) {
+                                    var chaveArteC = $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList[1].bemClassificacao['@jsonId'];
+                                    var valorArteC = $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList[1].bemClassificacao;
+                                    arrBem[chaveArteC] = valorArteC;
+                                }
+                            }
+                            var recBemArteC = [];
+                            for (var recuperaBemArteC2 in $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList) {
+                                if ($scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList[1].bemClassificacao.id == null) {
+                                    var xBemArteC = $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList[1].bemClassificacao;
+                                    recBemArteC = arrBem[xBemArteC];
+                                    $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList[1].bemClassificacao = recBemArteC;
+                                }
+                            }
+
                             var categoria2 = $scope.procuraNaLista($scope.cadastro.registro.producaoArtesanatoList[arte].tipo.bemClassificacaoList, $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList[1].bemClassificacao.id);
                             $scope.cadastro.registro.producaoArtesanatoList[arte].categoria = categoria2;
-                            // var compos2 = [];
-                            // compos2[0] = $scope.procuraNaLista($scope.cadastro.registro.producaoArtesanatoList[agro].tipo.bemClassificacaoFormaProducaoItemList[0].formaProducaoItem.formaProducaoValorList, $scope.cadastro.registro.producaoArtesanatoList[agro].ipaProducaoFormaList[2].formaProducaoValor.id);
-                            // $scope.cadastro.registro.producaoArtesanatoList[agro].producaoComposicaoList = compos2;
 
                             var producaoComposicaoArte = [];
                             for (var arteforma in $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList) {
@@ -1050,20 +1160,63 @@
                             qtdProdutores = $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoBemClassificadoList[0].quantidadeProdutores;
                             $scope.cadastro.registro.producaoAgroindustriaList[agro].quantidadeProdutores = qtdProdutores;
 
+
+                            for (var recuperaBemAgro in $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoBemClassificadoList) {
+                                if ($scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoBemClassificadoList[0].bemClassificado.id != null) {
+                                    var chaveAgroI = $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoBemClassificadoList[0].bemClassificado['@jsonId'];
+                                    var valorAgro = $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoBemClassificadoList[0].bemClassificado;
+                                    arrBem[chaveAgroI] = valorAgro;
+                                }
+                            }
+                            var recBemAgro = [];
+                            for (var recuperaBemAgro2 in $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoBemClassificadoList) {
+                                if ($scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoBemClassificadoList[0].bemClassificado.id == null) {
+                                    var xBemAgro = $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoBemClassificadoList[0].bemClassificado;
+                                    recBemAgro = arrBem[xBemAgro];
+                                    $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoBemClassificadoList[0].bemClassificado = recBemAgro;
+                                }
+                            }
+
                             bem = $scope.procuraNaLista($scope.cadastro.apoio.bemClassificadoAgroindustriaList, $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoBemClassificadoList[0].bemClassificado.id);
                             $scope.cadastro.registro.producaoAgroindustriaList[agro].bemClassificado = bem;
+
+                            for (var recuperaAgro in $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList) {
+                                if ($scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[0].bemClassificacao.id != null) {
+                                    var chaveAgroT = $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[0].bemClassificacao['@jsonId'];
+                                    var valorAgroT = $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[0].bemClassificacao;
+                                    arrBem[chaveAgroT] = valorAgroT;
+                                }
+                            }
+                            var recBemAgro2 = [];
+                            for (var recuperaAgro2 in $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList) {
+                                if ($scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[0].bemClassificacao.id == null) {
+                                    var xBemAgro2 = $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[0].bemClassificacao;
+                                    recBemAgro2 = arrBem[xBemAgro2];
+                                    $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[0].bemClassificacao = recBemAgro2;
+                                }
+                            }
 
                             var tipo = $scope.procuraNaLista($scope.cadastro.apoio.agroindustriaTipo, $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[0].bemClassificacao.id);
                             $scope.cadastro.registro.producaoAgroindustriaList[agro].tipo = tipo;
 
+                            for (var recuperaAgroCat in $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList) {
+                                if ($scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[1].bemClassificacao.id != null) {
+                                    var chaveAgroCat = $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[1].bemClassificacao['@jsonId'];
+                                    var valorAgroCat = $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[1].bemClassificacao;
+                                    arrBem[chaveAgroCat] = valorAgroCat;
+                                }
+                            }
+                            var recBemAgroCat = [];
+                            for (var recuperaAgroCatCat in $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList) {
+                                if ($scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[1].bemClassificacao.id == null) {
+                                    var xBemAgroCat = $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[1].bemClassificacao;
+                                    recBemAgroCat = arrBem[xBemAgroCat];
+                                    $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[1].bemClassificacao = recBemAgroCat;
+                                }
+                            }
+
                             var categoria = $scope.procuraNaLista($scope.cadastro.registro.producaoAgroindustriaList[agro].tipo.bemClassificacaoList, $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[1].bemClassificacao.id);
                             $scope.cadastro.registro.producaoAgroindustriaList[agro].categoria = categoria;
-
-                            // var compos = [];
-                            // var formaProducaoValor = [];
-                            // compos.push(formaProducaoValor);
-                            // compos[0].formaProducaoValor = $scope.procuraNaLista($scope.cadastro.registro.producaoAgroindustriaList[agro].tipo.bemClassificacaoFormaProducaoItemList[0].formaProducaoItem.formaProducaoValorList, $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[2]);
-                            // $scope.cadastro.registro.producaoAgroindustriaList[agro].producaoComposicaoList = compos;
 
                             var producaoComposicaoAgro = [];
                             var formaProducaoValor = [];
@@ -1075,40 +1228,27 @@
                                 arrFormas[key] = val;
                             }
 
-                         //   console.log(arrFormas);
-                            var chaveAgro = $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[2].formaProducaoValor;
+                            var jsonFormaAgro = $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[2].formaProducaoValor;
+                            producaoComposicaoAgro = arrFormas[jsonFormaAgro];
 
-                           // producaoComposicaoAgro = arrFormas[0];
+                            if (producaoComposicaoAgro) {
+                                var comPagro = [];
+                                comPagro.push(formaProducaoValor);
+                                comPagro[0].formaProducaoValor = producaoComposicaoAgro;
+                                $scope.cadastro.registro.producaoAgroindustriaList[agro].producaoComposicaoList = comPagro;
 
-                            for (var ag in arrFormas) {
+                            } else {
+                                var comagro = [];
+                                comagro[0] = $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[2];
+                                $scope.cadastro.registro.producaoAgroindustriaList[agro].producaoComposicaoList = comagro;
 
-                                if(arrFormas[ag]['@jsonId'] === chaveAgro){
-                                    producaoComposicaoAgro = arrFormas[ag];
-                                }
-                                
-                            }
-
-                            if (producaoComposicaoAgro != null) {
-                                var comPa = [];
-                                comPa.push(formaProducaoValor);
-                                comPa[0].formaProducaoValor = producaoComposicaoAgro;
-                                $scope.cadastro.registro.producaoAgroindustriaList[agro].producaoComposicaoList = comPa; 
-                            }
-                            else {
-                                var arrAgroForma = [];
-                                arrAgroForma[0] = $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[2];
-                                $scope.cadastro.registro.producaoAgroindustriaList[agro].producaoComposicaoList = arrAgroForma;
                             }
 
                         }// Fim AGROINDUSTRIA
 
-
-
                     });
                 }
             };
-
-
 
             $scope.cargaProdutor = function () {
 
@@ -1139,8 +1279,10 @@
                         var arrFormas = [];
                         var arrIpa = [];
                         var recuperaIpa = [];
+                        var arrBem = [];
 
                         // AGRICOLA
+
                         for (var i in $scope.cadastro.registro.producaoAgricolaList) {
 
                             for (var agriIpa in $scope.cadastro.registro.producaoAgricolaList[i]) {
@@ -1174,6 +1316,23 @@
 
                             qtdProdutores = $scope.cadastro.registro.producaoAgricolaList[i].ipaProducaoBemClassificadoList[0].quantidadeProdutores;
                             $scope.cadastro.registro.producaoAgricolaList[i].quantidadeProdutores = qtdProdutores;
+
+
+                            for (var recuperaBem in $scope.cadastro.registro.producaoAgricolaList[i].ipaProducaoBemClassificadoList) {
+                                if ($scope.cadastro.registro.producaoAgricolaList[i].ipaProducaoBemClassificadoList[0].bemClassificado.id != null) {
+                                    var chave = $scope.cadastro.registro.producaoAgricolaList[i].ipaProducaoBemClassificadoList[0].bemClassificado['@jsonId'];
+                                    var valor = $scope.cadastro.registro.producaoAgricolaList[i].ipaProducaoBemClassificadoList[0].bemClassificado;
+                                    arrBem[chave] = valor;
+                                }
+                            }
+                            var recBem = [];
+                            for (var recuperaBem2 in $scope.cadastro.registro.producaoAgricolaList[i].ipaProducaoBemClassificadoList) {
+                                if ($scope.cadastro.registro.producaoAgricolaList[i].ipaProducaoBemClassificadoList[0].bemClassificado.id == null) {
+                                    var xBem = $scope.cadastro.registro.producaoAgricolaList[i].ipaProducaoBemClassificadoList[0].bemClassificado;
+                                    recBem = arrBem[xBem];
+                                    $scope.cadastro.registro.producaoAgricolaList[i].ipaProducaoBemClassificadoList[0].bemClassificado = recBem;
+                                }
+                            }
 
                             bem = $scope.procuraNaLista($scope.cadastro.apoio.bemClassificadoAgricolaList, $scope.cadastro.registro.producaoAgricolaList[i].ipaProducaoBemClassificadoList[0].bemClassificado.id);
                             $scope.cadastro.registro.producaoAgricolaList[i].bemClassificado = bem;
@@ -1229,6 +1388,23 @@
                                     $scope.cadastro.registro.producaoAnimalList[animal].ipa = recuperaIpa;
                                 }
 
+
+                                for (var recuperaBemAnimal in $scope.cadastro.registro.producaoAnimalList[animal].cultura) {
+                                    if ($scope.cadastro.registro.producaoAnimalList[animal].cultura.id != null) {
+                                        var chaveAnimal = $scope.cadastro.registro.producaoAnimalList[animal].cultura['@jsonId'];
+                                        var valorAnimal = $scope.cadastro.registro.producaoAnimalList[animal].cultura;
+                                        arrBem[chaveAnimal] = valorAnimal;
+                                    }
+                                }
+                                var recBemAnimal = [];
+                                for (var recuperaBemAnimal2 in $scope.cadastro.registro.producaoAnimalList[animal].cultura) {
+                                    if ($scope.cadastro.registro.producaoAnimalList[animal].cultura.id == null) {
+                                        var xBemAnimal = $scope.cadastro.registro.producaoAnimalList[animal].cultura;
+                                        recBemAnimal = arrBem[xBemAnimal];
+                                        $scope.cadastro.registro.producaoAnimalList[animal].cultura = recBemAnimal;
+                                    }
+                                }
+
                                 var cultura = $scope.procuraNaLista($scope.cadastro.apoio.animalTipo, $scope.cadastro.registro.producaoAnimalList[animal].cultura.id);
                                 $scope.cadastro.registro.producaoAnimalList[animal].cultura = cultura;
 
@@ -1242,7 +1418,11 @@
                                 var producaoListBem = [];
 
                                 for (var bemAnimal in $scope.cadastro.registro.producaoAnimalList[animal].ipaProducaoBemClassificadoList) {
-                                    producaoListBem = $scope.cadastro.registro.producaoAnimalList[animal].ipaProducaoBemClassificadoList;
+                                    if ($scope.cadastro.registro.producaoAnimalList[animal].ipaProducaoBemClassificadoList[0].bemClassificado.id != null) {
+                                        producaoListBem = $scope.cadastro.registro.producaoAnimalList[animal].ipaProducaoBemClassificadoList;
+                                    } else {
+                                        producaoListBem = $scope.cadastro.registro.producaoAnimalList[animal - 1].ipaProducaoBemClassificadoList;
+                                    }
                                 }
 
                                 $scope.cadastro.registro.producaoAnimalList[animal].produtoList = producaoListBem;
@@ -1256,22 +1436,26 @@
                                     }
                                     arrFormas[key] = val;
                                 }
-
+                                //console.log(arrFormas);
+                                var arrFormaAnimal = [];
                                 for (var formaAni in $scope.cadastro.registro.producaoAnimalList[animal].ipaProducaoFormaList) {
                                     if ($scope.cadastro.registro.producaoAnimalList[animal].ipaProducaoFormaList[formaAni].formaProducaoValor.id == null) {
                                         w5 = arrFormas[$scope.cadastro.registro.producaoAnimalList[animal].ipaProducaoFormaList[formaAni].formaProducaoValor];
-                                        $scope.cadastro.registro.producaoAnimalList[animal].ipaProducaoFormaList[formaAni].formaProducaoValor = arrFormas[$scope.cadastro.registro.producaoAnimalList[animal].ipaProducaoFormaList[formaAni].formaProducaoValor];
-
-                                        producaoComposicao5.push($scope.cadastro.registro.producaoAnimalList[animal].ipaProducaoFormaList[formaAni]);
+                                        arrFormaAnimal.push(w5);
                                     } else {
-
-                                        producaoComposicao5.push($scope.cadastro.registro.producaoAnimalList[animal].ipaProducaoFormaList[formaAni]);
-
+                                        arrFormaAnimal.push($scope.cadastro.registro.producaoAnimalList[animal].ipaProducaoFormaList[formaAni]);
                                     }
-                                    for (var formaAnim in producaoComposicao5) {
-                                        $scope.cadastro.registro.producaoAnimalList[animal].producaoComposicaoList = producaoComposicao5;
+                                    $scope.cadastro.registro.producaoAnimalList[animal].producaoComposicaoList = arrFormaAnimal;
+
+                                }
+
+                                for (var aba in $scope.cadastro.registro.producaoAnimalList[animal].producaoComposicaoList) {
+                                    if ($scope.cadastro.registro.producaoAnimalList[animal].producaoComposicaoList[aba].formaProducaoValor == null) {
+                                        $scope.cadastro.registro.producaoAnimalList[animal].producaoComposicaoList[aba].formaProducaoValor = $scope.cadastro.registro.producaoAnimalList[animal].producaoComposicaoList[aba];
                                     }
                                 }
+
+
                             } else {
                                 $scope.cadastro.registro.producaoAnimalList[animal] = null;
                             }
@@ -1309,6 +1493,22 @@
 
                             qtdProdutores = $scope.cadastro.registro.producaoFloriculturaList[x].ipaProducaoBemClassificadoList[0].quantidadeProdutores;
                             $scope.cadastro.registro.producaoFloriculturaList[x].quantidadeProdutores = qtdProdutores;
+
+                            for (var recuperaBemFlor in $scope.cadastro.registro.producaoFloriculturaList[x].ipaProducaoBemClassificadoList) {
+                                if ($scope.cadastro.registro.producaoFloriculturaList[x].ipaProducaoBemClassificadoList[0].bemClassificado.id != null) {
+                                    var chaveFlor = $scope.cadastro.registro.producaoFloriculturaList[x].ipaProducaoBemClassificadoList[0].bemClassificado['@jsonId'];
+                                    var valorFlor = $scope.cadastro.registro.producaoFloriculturaList[x].ipaProducaoBemClassificadoList[0].bemClassificado;
+                                    arrBem[chaveFlor] = valorFlor;
+                                }
+                            }
+                            var recBemFlor = [];
+                            for (var recuperaBemFlor2 in $scope.cadastro.registro.producaoFloriculturaList[x].ipaProducaoBemClassificadoList) {
+                                if ($scope.cadastro.registro.producaoFloriculturaList[x].ipaProducaoBemClassificadoList[0].bemClassificado.id == null) {
+                                    var xBemFlor = $scope.cadastro.registro.producaoFloriculturaList[x].ipaProducaoBemClassificadoList[0].bemClassificado;
+                                    recBemFlor = arrBem[xBemFlor];
+                                    $scope.cadastro.registro.producaoFloriculturaList[x].ipaProducaoBemClassificadoList[0].bemClassificado = recBemFlor;
+                                }
+                            }
 
                             bem = $scope.procuraNaLista($scope.cadastro.apoio.bemClassificadoFloriculturaList, $scope.cadastro.registro.producaoFloriculturaList[x].ipaProducaoBemClassificadoList[0].bemClassificado.id);
                             $scope.cadastro.registro.producaoFloriculturaList[x].bemClassificado = bem;
@@ -1365,17 +1565,62 @@
                             qtdProdutores = $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoBemClassificadoList[0].quantidadeProdutores;
                             $scope.cadastro.registro.producaoArtesanatoList[arte].quantidadeProdutores = qtdProdutores;
 
+                            for (var recuperaBemArte in $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoBemClassificadoList) {
+                                if ($scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoBemClassificadoList[0].bemClassificado.id != null) {
+                                    var chaveArte = $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoBemClassificadoList[0].bemClassificado['@jsonId'];
+                                    var valorArte = $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoBemClassificadoList[0].bemClassificado;
+                                    arrBem[chaveArte] = valorArte;
+                                }
+                            }
+                            var recBemArte = [];
+                            for (var recuperaBemArte2 in $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoBemClassificadoList) {
+                                if ($scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoBemClassificadoList[0].bemClassificado.id == null) {
+                                    var xBemArte = $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoBemClassificadoList[0].bemClassificado;
+                                    recBemArte = arrBem[xBemArte];
+                                    $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoBemClassificadoList[0].bemClassificado = recBemArte;
+                                }
+                            }
+
                             bem = $scope.procuraNaLista($scope.cadastro.apoio.bemClassificadoArtesanatoList, $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoBemClassificadoList[0].bemClassificado.id);
                             $scope.cadastro.registro.producaoArtesanatoList[arte].bemClassificado = bem;
+
+                            for (var recuperaBemArteT in $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList) {
+                                if ($scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList[0].bemClassificacao.id != null) {
+                                    var chaveArteT = $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList[0].bemClassificacao['@jsonId'];
+                                    var valorArteT = $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList[0].bemClassificacao;
+                                    arrBem[chaveArteT] = valorArteT;
+                                }
+                            }
+                            var recBemArteT = [];
+                            for (var recuperaBemArteT2 in $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList) {
+                                if ($scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList[0].bemClassificacao.id == null) {
+                                    var xBemArteT = $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList[0].bemClassificacao;
+                                    recBemArteT = arrBem[xBemArteT];
+                                    $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList[0].bemClassificacao = recBemArteT;
+                                }
+                            }
 
                             var tipo2 = $scope.procuraNaLista($scope.cadastro.apoio.artesanatoTipo, $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList[0].bemClassificacao.id);
                             $scope.cadastro.registro.producaoArtesanatoList[arte].tipo = tipo2;
 
+                            for (var recuperaBemArteC in $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList) {
+                                if ($scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList[1].bemClassificacao.id != null) {
+                                    var chaveArteC = $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList[1].bemClassificacao['@jsonId'];
+                                    var valorArteC = $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList[1].bemClassificacao;
+                                    arrBem[chaveArteC] = valorArteC;
+                                }
+                            }
+                            var recBemArteC = [];
+                            for (var recuperaBemArteC2 in $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList) {
+                                if ($scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList[1].bemClassificacao.id == null) {
+                                    var xBemArteC = $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList[1].bemClassificacao;
+                                    recBemArteC = arrBem[xBemArteC];
+                                    $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList[1].bemClassificacao = recBemArteC;
+                                }
+                            }
+
                             var categoria2 = $scope.procuraNaLista($scope.cadastro.registro.producaoArtesanatoList[arte].tipo.bemClassificacaoList, $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList[1].bemClassificacao.id);
                             $scope.cadastro.registro.producaoArtesanatoList[arte].categoria = categoria2;
-                            // var compos2 = [];
-                            // compos2[0] = $scope.procuraNaLista($scope.cadastro.registro.producaoArtesanatoList[agro].tipo.bemClassificacaoFormaProducaoItemList[0].formaProducaoItem.formaProducaoValorList, $scope.cadastro.registro.producaoArtesanatoList[agro].ipaProducaoFormaList[2].formaProducaoValor.id);
-                            // $scope.cadastro.registro.producaoArtesanatoList[agro].producaoComposicaoList = compos2;
 
                             var producaoComposicaoArte = [];
                             for (var arteforma in $scope.cadastro.registro.producaoArtesanatoList[arte].ipaProducaoFormaList) {
@@ -1432,20 +1677,63 @@
                             qtdProdutores = $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoBemClassificadoList[0].quantidadeProdutores;
                             $scope.cadastro.registro.producaoAgroindustriaList[agro].quantidadeProdutores = qtdProdutores;
 
+
+                            for (var recuperaBemAgro in $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoBemClassificadoList) {
+                                if ($scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoBemClassificadoList[0].bemClassificado.id != null) {
+                                    var chaveAgroI = $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoBemClassificadoList[0].bemClassificado['@jsonId'];
+                                    var valorAgro = $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoBemClassificadoList[0].bemClassificado;
+                                    arrBem[chaveAgroI] = valorAgro;
+                                }
+                            }
+                            var recBemAgro = [];
+                            for (var recuperaBemAgro2 in $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoBemClassificadoList) {
+                                if ($scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoBemClassificadoList[0].bemClassificado.id == null) {
+                                    var xBemAgro = $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoBemClassificadoList[0].bemClassificado;
+                                    recBemAgro = arrBem[xBemAgro];
+                                    $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoBemClassificadoList[0].bemClassificado = recBemAgro;
+                                }
+                            }
+
                             bem = $scope.procuraNaLista($scope.cadastro.apoio.bemClassificadoAgroindustriaList, $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoBemClassificadoList[0].bemClassificado.id);
                             $scope.cadastro.registro.producaoAgroindustriaList[agro].bemClassificado = bem;
+
+                            for (var recuperaAgro in $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList) {
+                                if ($scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[0].bemClassificacao.id != null) {
+                                    var chaveAgroT = $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[0].bemClassificacao['@jsonId'];
+                                    var valorAgroT = $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[0].bemClassificacao;
+                                    arrBem[chaveAgroT] = valorAgroT;
+                                }
+                            }
+                            var recBemAgro2 = [];
+                            for (var recuperaAgro2 in $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList) {
+                                if ($scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[0].bemClassificacao.id == null) {
+                                    var xBemAgro2 = $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[0].bemClassificacao;
+                                    recBemAgro2 = arrBem[xBemAgro2];
+                                    $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[0].bemClassificacao = recBemAgro2;
+                                }
+                            }
 
                             var tipo = $scope.procuraNaLista($scope.cadastro.apoio.agroindustriaTipo, $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[0].bemClassificacao.id);
                             $scope.cadastro.registro.producaoAgroindustriaList[agro].tipo = tipo;
 
+                            for (var recuperaAgroCat in $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList) {
+                                if ($scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[1].bemClassificacao.id != null) {
+                                    var chaveAgroCat = $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[1].bemClassificacao['@jsonId'];
+                                    var valorAgroCat = $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[1].bemClassificacao;
+                                    arrBem[chaveAgroCat] = valorAgroCat;
+                                }
+                            }
+                            var recBemAgroCat = [];
+                            for (var recuperaAgroCatCat in $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList) {
+                                if ($scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[1].bemClassificacao.id == null) {
+                                    var xBemAgroCat = $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[1].bemClassificacao;
+                                    recBemAgroCat = arrBem[xBemAgroCat];
+                                    $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[1].bemClassificacao = recBemAgroCat;
+                                }
+                            }
+
                             var categoria = $scope.procuraNaLista($scope.cadastro.registro.producaoAgroindustriaList[agro].tipo.bemClassificacaoList, $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[1].bemClassificacao.id);
                             $scope.cadastro.registro.producaoAgroindustriaList[agro].categoria = categoria;
-
-                            // var compos = [];
-                            // var formaProducaoValor = [];
-                            // compos.push(formaProducaoValor);
-                            // compos[0].formaProducaoValor = $scope.procuraNaLista($scope.cadastro.registro.producaoAgroindustriaList[agro].tipo.bemClassificacaoFormaProducaoItemList[0].formaProducaoItem.formaProducaoValorList, $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[2]);
-                            // $scope.cadastro.registro.producaoAgroindustriaList[agro].producaoComposicaoList = compos;
 
                             var producaoComposicaoAgro = [];
                             var formaProducaoValor = [];
@@ -1457,29 +1745,20 @@
                                 arrFormas[key] = val;
                             }
 
-                         //   console.log(arrFormas);
-                            var chaveAgro = $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[2].formaProducaoValor;
+                            var jsonFormaAgro = $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[2].formaProducaoValor;
+                            producaoComposicaoAgro = arrFormas[jsonFormaAgro];
 
-                           // producaoComposicaoAgro = arrFormas[0];
+                            if (producaoComposicaoAgro) {
+                                var comPagro = [];
+                                comPagro.push(formaProducaoValor);
+                                comPagro[0].formaProducaoValor = producaoComposicaoAgro;
+                                $scope.cadastro.registro.producaoAgroindustriaList[agro].producaoComposicaoList = comPagro;
 
-                            for (var ag in arrFormas) {
+                            } else {
+                                var comagro = [];
+                                comagro[0] = $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[2];
+                                $scope.cadastro.registro.producaoAgroindustriaList[agro].producaoComposicaoList = comagro;
 
-                                if(arrFormas[ag]['@jsonId'] === chaveAgro){
-                                    producaoComposicaoAgro = arrFormas[ag];
-                                }
-                                
-                            }
-
-                            if (producaoComposicaoAgro != null) {
-                                var comPa = [];
-                                comPa.push(formaProducaoValor);
-                                comPa[0].formaProducaoValor = producaoComposicaoAgro;
-                                $scope.cadastro.registro.producaoAgroindustriaList[agro].producaoComposicaoList = comPa;
-                            }
-                            else {
-                                var arrAgroForma = [];
-                                arrAgroForma[0] = $scope.cadastro.registro.producaoAgroindustriaList[agro].ipaProducaoFormaList[2];
-                                $scope.cadastro.registro.producaoAgroindustriaList[agro].producaoComposicaoList = arrAgroForma;
                             }
 
                         }// Fim AGROINDUSTRIA

@@ -118,7 +118,7 @@
             };
             var validaRegistro = function(scp, acao) {
                 var registro = scp.cadastro.registro;
-                removerCampo(registro, ['@jsonId']);
+               // removerCampo(registro, ['@jsonId']);
                 if (registro.grupoSocialList) {
                     registro.grupoSocialList.forEach(function(v,k) {
                         v.grupoSocial['@class'] = 'br.gov.df.emater.aterwebsrv.modelo.pessoa.GrupoSocial';
@@ -193,8 +193,31 @@
                 validaRegistro(scp, 'editar');
                 //validaRegistro(scp.cadastro.registro);
                 $scope.preparaClassePessoa($scope.cadastro.registro);
-                
+
+
+                var arrGrpTipo = [];
+                for(var grpSocTip in $scope.cadastro.registro.grupoSocialList){
+                    if($scope.cadastro.registro.grupoSocialList[grpSocTip].grupoSocial.grupoSocialTipo.id != null){
+                    var key = $scope.cadastro.registro.grupoSocialList[grpSocTip].grupoSocial.grupoSocialTipo['@jsonId'];
+                    var value = $scope.cadastro.registro.grupoSocialList[grpSocTip].grupoSocial.grupoSocialTipo;
+                    arrGrpTipo[key] = value;
+                    }
+                } 
+
+                var gSocialTipo;
+                for(var grpTipo in $scope.cadastro.registro.grupoSocialList){
+                    if($scope.cadastro.registro.grupoSocialList[grpTipo].grupoSocial.grupoSocialTipo.id == null){
+                        var x = $scope.cadastro.registro.grupoSocialList[grpTipo].grupoSocial.grupoSocialTipo;
+                        gSocialTipo = arrGrpTipo[x];
+                     
+                    }
+                   $scope.cadastro.registro.grupoSocialList[grpTipo].grupoSocial.grupoSocialTipo = gSocialTipo;
+                }
+               
             };
+
+
+
             $scope.confirmarExcluir = function(scp) {
                 $scope.preparaClassePessoa($scope.cadastro.registro);
                 $rootScope.confirmarExcluir(scp);
@@ -328,7 +351,7 @@
                 }
                 PessoaSrv.declaracaoProdutorVerificar({pessoaIdList: pessoaIdList, publicoAlvoPropriedadeRuralIdList: publicoAlvoPropriedadeRuralIdList}).success(function(resposta) {
                     var conf = '<ng-include src=\"\'pessoa/sub-produtor-declaracao-verificar.html\'\"></ng-include>';
-                    
+
                     mensagemSrv.confirmacao(false, conf, 'Confirme emissão da Declaração do Produtor', resposta.resultado, null, null, null, function(escopo) {
                     }).then(function(conteudo) {
 
@@ -386,7 +409,7 @@
                         }
                     }
                 }
-                PessoaSrv.declaracaoProdutorVerificar({pessoaIdList: pessoaIdList, publicoAlvoPropriedadeRuralIdList: publicoAlvoPropriedadeRuralIdList}).success(function(resposta) {
+                PessoaSrv.declaracaoCeasaVerificar({pessoaIdList: pessoaIdList, publicoAlvoPropriedadeRuralIdList: publicoAlvoPropriedadeRuralIdList}).success(function(resposta) {
                     var conf =  '<ng-include src=\"\'pessoa/sub-produtor-declaracao-ceasa.html\'\"></ng-include>';
 
 
@@ -443,8 +466,8 @@
                             principalId = conteudo.principal.pessoa.id;
 
                             mensagemSrv.confirmacao(false, '<Font color=red size=4><center>NÃO É POSSÍVEL REVERTER ESSE PROCEDIMENTO! <BR> Tem certeza que você quer mesclar ??? </center></font> ').then(function (conteudo) {
-                               PessoaSrv.mesclarPessoas( { pessoaIdList : pessoaIdList, principalId : principalId } ).success(function(resposta) {
-                                    toastr.info('MESCLAGEM CONFIRMADA!!'); 
+                               PessoaSrv.mesclarPessoas( { pessoaIdList : pessoaIdList, principalId : principalId } ).success(function(resposta) {                                    
+                                    toastr.info('Mesclagem realizada!', 'Informação');
                                 });    
                             });    
                         } else {
@@ -575,25 +598,25 @@
             var indice = 0;
             $scope.tabs = [
                 {
-                    'nome': 'Dados Básicos',
-                    'include': 'pessoa/tab-principal.html',
-                    'visivel': true,
-                    'indice': indice++,
-                    'ativo': true,
-                }, 
-                {
                     'nome': 'Beneficiário',
                     'include': 'pessoa/tab-beneficiario.html',
                     'visivel': false,
                     'indice': indice++,
                     'ativo': false,
                 }, 
-/*                {
+                {
                     'nome': 'Índice de Produção',
                     'include': 'pessoa/tab-publico-alvo-indice-producao.html',
                     'visivel': false,
                     'indice': indice++,
                     'ativo': false,
+                }, 
+                {
+                    'nome': 'Dados Básicos',
+                    'include': 'pessoa/tab-principal.html',
+                    'visivel': true,
+                    'indice': indice++,
+                    'ativo': true,
                 }, 
                 /*{
                     'nome': 'Colaborador',

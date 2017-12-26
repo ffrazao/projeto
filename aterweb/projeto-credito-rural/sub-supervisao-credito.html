@@ -1,26 +1,12 @@
 <div class="panel panel-default">
     <div class="panel-heading container-fluid">
-        <frz-navegador
-            ng-model="supervisaoCreditoNvg" exibe-nome-botao="false"
-            dados="cadastro.registro.projetoCreditoRural.supervisaoCreditoList"
-            acoes-especiais="acoesEspeciais"
-            on-abrir = "abrir()"
-            on-agir = "agir()"
-            on-editar = "editar()"
-            on-especial = "especial()"
-            on-excluir = "excluir()"
-            on-filtrar = "filtrar()"
-            on-incluir = "incluir()"
-            on-listar = "listar()"
-            on-navegar-primeiro = "navegarPrimeiro()"
-            on-navegar-anterior = "navegarAnterior()"
-            on-navegar-proximo = "navegarPosterior()"
-            on-navegar-ultimo = "navegarUltimo()"
-            on-proxima-pagina="proximaPagina()"
-            on-ultima-pagina="ultimaPagina()"
-            ></frz-navegador>
+        <frz-navegador ng-model="supervisaoCreditoNvg" exibe-nome-botao="false" dados="cadastro.registro.projetoCreditoRural.supervisaoCreditoList"
+            acoes-especiais="acoesEspeciais" on-abrir="abrir()" on-agir="agir()" on-editar="editar()" on-especial="especial()"
+            on-excluir="excluir()" on-filtrar="filtrar()" on-incluir="incluir()" on-listar="listar()" on-navegar-primeiro="navegarPrimeiro()"
+            on-navegar-anterior="navegarAnterior()" on-navegar-proximo="navegarPosterior()" on-navegar-ultimo="navegarUltimo()"
+            on-proxima-pagina="proximaPagina()" on-ultima-pagina="ultimaPagina()"></frz-navegador>
     </div>
-    <div class="painel-body"  ng-hide="cadastro.registro.projetoCreditoRural.supervisaoCreditoList.length">
+    <div class="painel-body" ng-hide="cadastro.registro.projetoCreditoRural.supervisaoCreditoList.length">
         <div class="alert alert-warning" style="margin: 0px;" role="alert">
             <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
             Nenhum registro localizado!
@@ -32,7 +18,8 @@
                 <div class="col-sm-3">
                     <div class="form-group">
                         <label class="control-label" for="contratacao">Data da Contratação</label>
-                        <input type="text" class="form-control input-sm text-right" id="contratacao" name="contratacao" ng-required="cadastro.registro.projetoCreditoRural.supervisaoCreditoList.length" ng-model="cadastro.registro.projetoCreditoRural.contratacao" ui-date-mask>
+                        <input type="text" class="form-control input-sm text-right" id="contratacao" name="contratacao" ng-required="cadastro.registro.projetoCreditoRural.supervisaoCreditoList.length"
+                            ng-model="cadastro.registro.projetoCreditoRural.contratacao" ui-date-mask>
                         <div class="label label-danger" ng-show="navegador.submetido && supervisaoCreditoListFrm.contratacao.$error.required">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             Campo Obrigatório
@@ -42,7 +29,8 @@
                 <div class="col-sm-3">
                     <div class="form-group">
                         <label class="control-label" for="vencimento">Data do Vencimento</label>
-                        <input type="text" class="form-control input-sm text-right" id="vencimento" name="vencimento" ng-required="cadastro.registro.projetoCreditoRural.supervisaoCreditoList.length" ng-model="cadastro.registro.projetoCreditoRural.vencimento" ui-date-mask>
+                        <input type="text" class="form-control input-sm text-right" id="vencimento" name="vencimento" ng-required="cadastro.registro.projetoCreditoRural.supervisaoCreditoList.length"
+                            ng-model="cadastro.registro.projetoCreditoRural.vencimento" ui-date-mask>
                         <div class="label label-danger" ng-show="navegador.submetido && supervisaoCreditoListFrm.vencimento.$error.required">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             Campo Obrigatório
@@ -53,7 +41,9 @@
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
-                        <th><frz-seletor ng-model="supervisaoCreditoNvg" dados="cadastro.registro.projetoCreditoRural.supervisaoCreditoList"></frz-seletor></th>
+                        <th>
+                            <frz-seletor ng-model="supervisaoCreditoNvg" dados="cadastro.registro.projetoCreditoRural.supervisaoCreditoList"></frz-seletor>
+                        </th>
                         <th>#</th>
                         <th>Data Prevista</th>
                         <th>Data Realização</th>
@@ -63,14 +53,17 @@
                 <tbody>
                     <tr class="{{classSupervisao(reg.dataPrevista)}}" ng-repeat-start="reg in cadastro.registro.projetoCreditoRural.supervisaoCreditoList | orderBy: ['ordem'] track by reg.id">
                         <td>
-                            <input type="radio" ng-show="supervisaoCreditoNvg.selecao.tipo === 'U'" ng-model="supervisaoCreditoNvg.selecao.item" ng-value="reg"/>
-                            <input type="checkbox" ng-show="supervisaoCreditoNvg.selecao.tipo === 'M'" checklist-model="supervisaoCreditoNvg.selecao.items" checklist-value="reg"/>
+                            <input type="radio" ng-show="supervisaoCreditoNvg.selecao.tipo === 'U'" ng-model="supervisaoCreditoNvg.selecao.item" ng-value="reg"
+                            />
+                            <input type="checkbox" ng-show="supervisaoCreditoNvg.selecao.tipo === 'M'" checklist-model="supervisaoCreditoNvg.selecao.items"
+                                checklist-value="reg" />
                         </td>
                         <td>
                             {{$index + 1 + ((supervisaoCreditoNvg.paginaAtual-1) * supervisaoCreditoNvg.tamanhoPagina)}}
                         </td>
                         <td>
-                            <input type="text" class="form-control input-sm text-right" id="dataPrevista{{$index}}" name="dataPrevista{{$index}}" ng-required="true" ng-model="reg.dataPrevista" ui-date-mask>
+                            <input type="text" class="form-control input-sm text-right" id="dataPrevista{{$index}}" name="dataPrevista{{$index}}" ng-required="true"
+                                ng-model="reg.dataPrevista" ui-date-mask>
                             <div class="label label-danger" ng-show="navegador.submetido && supervisaoCreditoListFrm['dataPrevista' + $index].$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
@@ -81,7 +74,8 @@
                             </div>
                         </td>
                         <td>
-                            <input type="text" class="form-control input-sm text-right" id="dataRealizacao{{$index}}" name="dataRealizacao{{$index}}" ng-required="!(!reg.emprego)" ng-model="reg.dataRealizacao" ui-date-mask>
+                            <input type="text" class="form-control input-sm text-right" id="dataRealizacao{{$index}}" name="dataRealizacao{{$index}}"
+                                ng-required="!(!reg.emprego)" ng-model="reg.dataRealizacao" ui-date-mask>
                             <div class="label label-danger" ng-show="navegador.submetido && supervisaoCreditoListFrm['dataRealizacao' + $index].$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
@@ -93,13 +87,20 @@
                         </td>
                         <td>
                             <div class="input-group">
-                                <input type="text" class="form-control" id="emprego{{$index}}_nome" name="emprego{{$index}}_nome" aria-label="..." value="{{exibeEmpregado(reg.emprego)}}" ng-readonly="false" ng-disabled="true">
+                                <input type="text" class="form-control" id="emprego{{$index}}_nome" name="emprego{{$index}}_nome" aria-label="..." value="{{exibeEmpregado(reg.emprego)}}"
+                                    ng-readonly="false" ng-disabled="true">
                                 <input type="hidden" id="emprego{{$index}}" name="emprego{{$index}}" ng-required="!(!reg.dataRealizacao)" ng-model="reg.emprego">
                                 <div class="input-group-btn">
-                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ação <span class="caret"></span></button>
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ação
+                                        <span class="caret"></span>
+                                    </button>
                                     <ul class="dropdown-menu dropdown-menu-right">
-                                        <li><a ng-click="selecionaEmpregado(cadastro.registro.projetoCreditoRural, reg)">Selecionar</a></li>
-                                        <li><a ng-click="reg.emprego = null">Remover</a></li>
+                                        <li>
+                                            <a ng-click="selecionaEmpregado(cadastro.registro.projetoCreditoRural, reg)">Selecionar</a>
+                                        </li>
+                                        <li>
+                                            <a ng-click="reg.emprego = null">Remover</a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -112,8 +113,10 @@
                     <tr class="{{classSupervisao(reg.dataPrevista)}}">
                         <td>&nbsp;</td><td>&nbsp;</td>
                         <td colspan="3">
-                            <label>Situação Observação [{{$index + 1 + ((supervisaoCreditoNvg.paginaAtual-1) * supervisaoCreditoNvg.tamanhoPagina)}}]</label>
-                            <text-angular id="observacaoSituacao{{$index}}" name="observacaoSituacao{{$index}}" ng-model="reg.observacaoSituacao" ng-required="!(!reg.emprego && !reg.dataRealizacao)"></text-angular>
+                            <label data-toggle="collapse" data-target="#obs{{$index}}">Situação Observação [{{$index + 1 + ((supervisaoCreditoNvg.paginaAtual-1) * supervisaoCreditoNvg.tamanhoPagina)}}]</label>                           
+                            <div id="obs{{$index}}" class="collapse">
+                                <text-angular id="observacaoSituacao{{$index}}" name="observacaoSituacao{{$index}}" ng-model="reg.observacaoSituacao" ng-required="!(!reg.emprego && !reg.dataRealizacao)"></text-angular>
+                            </div>
                             <div class="label label-danger" ng-show="navegador.submetido && supervisaoCreditoListFrm['observacaoSituacao' + $index].$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
@@ -123,8 +126,10 @@
                     <tr class="{{classSupervisao(reg.dataPrevista)}}">
                         <td>&nbsp;</td><td>&nbsp;</td>
                         <td colspan="3">
-                            <label>Recomendação [{{$index + 1 + ((supervisaoCreditoNvg.paginaAtual-1) * supervisaoCreditoNvg.tamanhoPagina)}}]</label>
-                            <text-angular id="recomendacao{{$index}}" name="recomendacao{{$index}}" ng-model="reg.recomendacao" ng-required="!(!reg.emprego && !reg.dataRealizacao)"></text-angular>
+                            <label data-toggle="collapse" data-target="#rec{{$index}}">Recomendação [{{$index + 1 + ((supervisaoCreditoNvg.paginaAtual-1) * supervisaoCreditoNvg.tamanhoPagina)}}]</label>
+                            <div id="rec{{$index}}" class="collapse">
+                             <text-angular id="recomendacao{{$index}}" name="recomendacao{{$index}}" ng-model="reg.recomendacao" ng-required="!(!reg.emprego && !reg.dataRealizacao)"></text-angular>
+                            </div>
                             <div class="label label-danger" ng-show="navegador.submetido && supervisaoCreditoListFrm['recomendacao' + $index].$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
@@ -134,8 +139,10 @@
                     <tr class="{{classSupervisao(reg.dataPrevista)}}" ng-repeat-end>
                         <td>&nbsp;</td><td>&nbsp;</td>
                         <td colspan="3">
-                            <label>Liberação Prevista [{{$index + 1 + ((supervisaoCreditoNvg.paginaAtual-1) * supervisaoCreditoNvg.tamanhoPagina)}}]</label>
-                            <text-angular id="liberacaoPrevista{{$index}}" name="liberacaoPrevista{{$index}}" ng-model="reg.liberacaoPrevista" ng-required="!(!reg.emprego && !reg.dataRealizacao)"></text-angular>
+                            <label data-toggle="collapse" data-target="#lib{{$index}}">Liberação Prevista [{{$index + 1 + ((supervisaoCreditoNvg.paginaAtual-1) * supervisaoCreditoNvg.tamanhoPagina)}}]</label>
+                            <div id="lib{{$index}}" class="collapse">
+                                <text-angular id="liberacaoPrevista{{$index}}" name="liberacaoPrevista{{$index}}" ng-model="reg.liberacaoPrevista" ng-required="!(!reg.emprego && !reg.dataRealizacao)"></text-angular>
+                            </div>
                             <div class="label label-danger" ng-show="navegador.submetido && supervisaoCreditoListFrm['liberacaoPrevista' + $index].$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório

@@ -95,7 +95,7 @@
                                 id="formaProducaoValor_0_{{$index}}"
                                 name="formaProducaoValor_0_{{$index}}"
                                 ng-model="cadastro.registro.producaoArtesanatoList[$index].producaoComposicaoList[0]"
-                                ng-options="sub as sub.nome for sub in producaoArtesanato.bemClassificado.bemClassificacao.bemClassificacaoFormaProducaoItemList[$index].formaProducaoItem.formaProducaoValorList | orderBy: 'ordem' track by sub.id" 
+                                ng-options="sub as sub.nome for sub in producaoArtesanato.bemClassificado.bemClassificacao.bemClassificacaoFormaProducaoItemList[0].formaProducaoItem.formaProducaoValorList | orderBy: 'ordem' track by sub.id" 
                                 ng-required="true">
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && producaoNaoArgicolaFrm.formaProducaoValor_{{$parent.$index}}_{{$parent.$parent.$index}}.$error.required">

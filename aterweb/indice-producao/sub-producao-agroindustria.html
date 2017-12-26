@@ -93,8 +93,8 @@
                             <select class="form-control input-sm" style="min-width: 100px;"
                                 id="formaProducaoValor_0_{{$index}}"
                                 name="formaProducaoValor_0_{{$index}}"
-                                ng-model="cadastro.registro.producaoAgroindustriaList[$index].producaoComposicaoList[$index].formaProducaoValor"
-                                ng-options="sub as sub.nome for sub in producaoAgroindustria.tipo.bemClassificacaoFormaProducaoItemList[$index].formaProducaoItem.formaProducaoValorList | orderBy: 'ordem' track by sub.id" 
+                                ng-model="cadastro.registro.producaoAgroindustriaList[$index].producaoComposicaoList[0].formaProducaoValor"
+                                ng-options="sub as sub.nome for sub in producaoAgroindustria.tipo.bemClassificacaoFormaProducaoItemList[0].formaProducaoItem.formaProducaoValorList | orderBy: 'ordem' track by sub.id" 
                                 ng-required="true">
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && producaoNaoArgicolaFrm.formaProducaoValor_{{$parent.$index}}_{{$parent.$parent.$index}}.$error.required">

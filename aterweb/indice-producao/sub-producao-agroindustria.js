@@ -74,6 +74,20 @@ angular.module(pNmModulo).controller(pNmController,
         mensagemSrv.confirmacao(false, 'Confirme a alteração do registro').then(function (conteudo) {
 
         var item = $scope.producaoAgroindustriaNvg.selecao.item;
+        var comp = [];
+        var compb = [];
+        //var formaProducaoValor = [];
+        //compb.push(formaProducaoValor);
+        compb = { id : item.producaoComposicaoList[0].formaProducaoValor.id,
+            nome : item.producaoComposicaoList[0].formaProducaoValor.nome
+        };
+        comp = item.producaoComposicaoList[0].formaProducaoValor;
+
+        item.producaoComposicaoList[0] = comp;
+        item.producaoComposicaoList[0].formaProducaoValor = compb;
+
+        //console.log(item);
+
         removerCampo(item, ['unidadeOrganizacional', 'publicoAlvo', 'propriedadeRural', 'ipaProducao']);
             
             $scope.vamosEditar(item, 'Agro');

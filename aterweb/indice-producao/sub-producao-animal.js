@@ -121,8 +121,8 @@ angular.module(pNmModulo).controller(pNmController,
 
                 var formula = obj.formula;
                 console.log($scope.cadastro.registro.producaoAnimalList[paiIndex]);
-                formula = formula.replace(new RegExp('item_a_valor', 'g'), $scope.cadastro.registro.producaoAnimalList[paiIndex].itemAValor  );
-                formula = formula.replace(new RegExp('item_b_valor', 'g'), $scope.cadastro.registro.producaoAnimalList[paiIndex].itemBValor  );
+                formula = formula.replace(new RegExp('rebanho', 'g'), $scope.cadastro.registro.producaoAnimalList[paiIndex].rebanho  );
+                formula = formula.replace(new RegExp('matriz', 'g'), $scope.cadastro.registro.producaoAnimalList[paiIndex].matriz  );
                 console.log( formula );
 
                 var result = 0;
