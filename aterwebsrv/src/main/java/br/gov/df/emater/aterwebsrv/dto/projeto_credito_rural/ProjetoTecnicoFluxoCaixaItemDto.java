@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import br.gov.df.emater.aterwebsrv.dto.Dto;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FluxoCaixaCodigo;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.FluxoCaixaTipo;
 
 public class ProjetoTecnicoFluxoCaixaItemDto implements Dto {
 
@@ -30,6 +31,10 @@ public class ProjetoTecnicoFluxoCaixaItemDto implements Dto {
 	private BigDecimal ano10;
 
 	private FluxoCaixaCodigo codigo;
+	
+	private FluxoCaixaTipo tipo;
+	
+	
 
 	public BigDecimal getAno01() {
 		return ano01;
@@ -117,6 +122,14 @@ public class ProjetoTecnicoFluxoCaixaItemDto implements Dto {
 
 	public void setCodigo(FluxoCaixaCodigo codigo) {
 		this.codigo = codigo;
+	}
+
+	public FluxoCaixaTipo getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(FluxoCaixaTipo tipo) {
+		this.tipo = tipo;
 	}
 
 }

@@ -43,6 +43,8 @@ public class ProjetoTecnicoGarantiaAvalistaRelDto implements Dto {
 	private BigDecimal rendaLiquida;
 
 	private String telefoneCelular;
+	
+	private String conjuge;
 
 	public String getCep() {
 		return cep;
@@ -170,6 +172,14 @@ public class ProjetoTecnicoGarantiaAvalistaRelDto implements Dto {
 
 	public void setTelefoneCelular(String telefoneCelular) {
 		this.telefoneCelular = telefoneCelular;
+	}
+
+	public String getConjuge() {
+		return conjuge;
+	}
+
+	public void setConjuge(String conjuge) {
+		this.conjuge = conjuge;
 	}
 
 }

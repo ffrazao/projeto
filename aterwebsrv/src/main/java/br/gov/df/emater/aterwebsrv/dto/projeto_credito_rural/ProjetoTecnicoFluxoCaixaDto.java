@@ -50,6 +50,26 @@ public class ProjetoTecnicoFluxoCaixaDto implements Dto {
 	private BigDecimal fluxoLiquidoAno09;
 
 	private BigDecimal fluxoLiquidoAno10;
+	
+	private BigDecimal fluxoAcumuladoAno01;
+
+	private BigDecimal fluxoAcumuladoAno02;
+
+	private BigDecimal fluxoAcumuladoAno03;
+
+	private BigDecimal fluxoAcumuladoAno04;
+
+	private BigDecimal fluxoAcumuladoAno05;
+
+	private BigDecimal fluxoAcumuladoAno06;
+
+	private BigDecimal fluxoAcumuladoAno07;
+
+	private BigDecimal fluxoAcumuladoAno08;
+
+	private BigDecimal fluxoAcumuladoAno09;
+
+	private BigDecimal fluxoAcumuladoAno10;
 
 	private BigDecimal lucroAno01;
 
@@ -92,6 +112,88 @@ public class ProjetoTecnicoFluxoCaixaDto implements Dto {
 	private BigDecimal saldoDevedorAno09;
 
 	private BigDecimal saldoDevedorAno10;
+	
+	
+
+	public BigDecimal getFluxoAcumuladoAno01() {
+		return fluxoAcumuladoAno01;
+	}
+
+	public void setFluxoAcumuladoAno01(BigDecimal fluxoAcumuladoAno01) {
+		this.fluxoAcumuladoAno01 = fluxoAcumuladoAno01;
+	}
+
+	public BigDecimal getFluxoAcumuladoAno02() {
+		return fluxoAcumuladoAno02;
+	}
+
+	public void setFluxoAcumuladoAno02(BigDecimal fluxoAcumuladoAno02) {
+		this.fluxoAcumuladoAno02 = fluxoAcumuladoAno02;
+	}
+
+	public BigDecimal getFluxoAcumuladoAno03() {
+		return fluxoAcumuladoAno03;
+	}
+
+	public void setFluxoAcumuladoAno03(BigDecimal fluxoAcumuladoAno03) {
+		this.fluxoAcumuladoAno03 = fluxoAcumuladoAno03;
+	}
+
+	public BigDecimal getFluxoAcumuladoAno04() {
+		return fluxoAcumuladoAno04;
+	}
+
+	public void setFluxoAcumuladoAno04(BigDecimal fluxoAcumuladoAno04) {
+		this.fluxoAcumuladoAno04 = fluxoAcumuladoAno04;
+	}
+
+	public BigDecimal getFluxoAcumuladoAno05() {
+		return fluxoAcumuladoAno05;
+	}
+
+	public void setFluxoAcumuladoAno05(BigDecimal fluxoAcumuladoAno05) {
+		this.fluxoAcumuladoAno05 = fluxoAcumuladoAno05;
+	}
+
+	public BigDecimal getFluxoAcumuladoAno06() {
+		return fluxoAcumuladoAno06;
+	}
+
+	public void setFluxoAcumuladoAno06(BigDecimal fluxoAcumuladoAno06) {
+		this.fluxoAcumuladoAno06 = fluxoAcumuladoAno06;
+	}
+
+	public BigDecimal getFluxoAcumuladoAno07() {
+		return fluxoAcumuladoAno07;
+	}
+
+	public void setFluxoAcumuladoAno07(BigDecimal fluxoAcumuladoAno07) {
+		this.fluxoAcumuladoAno07 = fluxoAcumuladoAno07;
+	}
+
+	public BigDecimal getFluxoAcumuladoAno08() {
+		return fluxoAcumuladoAno08;
+	}
+
+	public void setFluxoAcumuladoAno08(BigDecimal fluxoAcumuladoAno08) {
+		this.fluxoAcumuladoAno08 = fluxoAcumuladoAno08;
+	}
+
+	public BigDecimal getFluxoAcumuladoAno09() {
+		return fluxoAcumuladoAno09;
+	}
+
+	public void setFluxoAcumuladoAno09(BigDecimal fluxoAcumuladoAno09) {
+		this.fluxoAcumuladoAno09 = fluxoAcumuladoAno09;
+	}
+
+	public BigDecimal getFluxoAcumuladoAno10() {
+		return fluxoAcumuladoAno10;
+	}
+
+	public void setFluxoAcumuladoAno10(BigDecimal fluxoAcumuladoAno10) {
+		this.fluxoAcumuladoAno10 = fluxoAcumuladoAno10;
+	}
 
 	public BigDecimal getAmortizacaoAno01() {
 		return amortizacaoAno01;
