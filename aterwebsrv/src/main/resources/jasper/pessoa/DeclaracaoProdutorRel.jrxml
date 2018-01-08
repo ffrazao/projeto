@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-04-17T13:49:29 -->
+<!-- 2018-01-05T16:38:05 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RelatorioTeste" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" uuid="74a58a1f-20c1-4882-a004-63331c202191">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -57,9 +57,9 @@
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="781" splitType="Stretch">
+		<band height="802" splitType="Stretch">
 			<rectangle>
-				<reportElement positionType="Float" isPrintRepeatedValues="false" x="1" y="51" width="555" height="730" uuid="ffc1cc6d-7275-4291-8cdd-815aec1970e3"/>
+				<reportElement positionType="Float" isPrintRepeatedValues="false" x="1" y="73" width="555" height="730" uuid="ffc1cc6d-7275-4291-8cdd-815aec1970e3"/>
 			</rectangle>
 			<rectangle>
 				<reportElement x="1" y="0" width="555" height="40" uuid="2ff70637-166e-4b27-bc3d-89d2f033b5a3"/>
@@ -82,7 +82,7 @@
 			</image>
 			<textField isBlankWhenNull="true">
 				<reportElement isPrintRepeatedValues="false" x="190" y="169" width="332" height="15" uuid="214e288d-6cbc-46b3-8fbc-1f620d550567"/>
-				<textFieldExpression><![CDATA[$F{comunidade}.getNome()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{comunidade}.getDapNumero()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement isPrintRepeatedValues="false" x="190" y="187" width="332" height="15" uuid="b47ba2ba-dd15-4f82-a0b3-8b690e660087"/>
@@ -107,7 +107,7 @@
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Left"/>
-				<textFieldExpression><![CDATA[$F{publicoAlvo}.getPessoa().getClass().asSubclass(PessoaFisica.class).cast($F{publicoAlvo}.getPessoa()).getCpf() ]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{publicoAlvo}.getPessoa().getClass().asSubclass(PessoaFisica.class).cast($F{publicoAlvo}.getPessoa()).getCpf()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="190" y="356" width="332" height="15" uuid="c12847fd-21dd-4977-b5b2-a9e4cec85190"/>
@@ -194,22 +194,22 @@
 				<textFieldExpression><![CDATA[$F{propriedadeRural}.getNome()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="34" y="394" width="138" height="17" uuid="79e29898-ec02-46aa-b67d-e1f730851bcf"/>
+				<reportElement x="34" y="380" width="138" height="17" uuid="79e29898-ec02-46aa-b67d-e1f730851bcf"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<text><![CDATA[OBSERVAÇÕES:]]></text>
+				<text><![CDATA[Pevisão de Produção:]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement positionType="Float" x="35" y="545" width="487" height="70" uuid="563b83f0-7f12-4984-b2b1-fbde4d40ebf0"/>
+				<reportElement positionType="Float" x="35" y="565" width="487" height="70" uuid="563b83f0-7f12-4984-b2b1-fbde4d40ebf0"/>
 			</rectangle>
 			<staticText>
-				<reportElement positionType="Float" x="210" y="547" width="138" height="19" uuid="02760bd3-27eb-40c0-96ae-adf9562ca9cd"/>
+				<reportElement positionType="Float" x="210" y="567" width="138" height="19" uuid="02760bd3-27eb-40c0-96ae-adf9562ca9cd"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[UNIDADE DA EMATER ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" x="51" y="569" width="450" height="41" uuid="854571ec-0ecf-4549-b33a-8144041257c7"/>
+				<reportElement positionType="Float" x="51" y="589" width="450" height="41" uuid="854571ec-0ecf-4549-b33a-8144041257c7"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
@@ -218,62 +218,58 @@ CEP: 70.770.915 Brasília - DF
 Telefone: 3311-9330, E-mail: emater@emater.df.gov.br.]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement positionType="Float" x="35" y="620" width="315" height="68" uuid="d8384745-0f98-4049-8dc1-a337839c8618"/>
+				<reportElement positionType="Float" x="35" y="640" width="315" height="68" uuid="d8384745-0f98-4049-8dc1-a337839c8618"/>
 			</rectangle>
 			<staticText>
-				<reportElement positionType="Float" x="108" y="626" width="138" height="17" uuid="0646b9e8-4273-4319-a13c-5f4805b7112e"/>
+				<reportElement positionType="Float" x="108" y="646" width="138" height="17" uuid="0646b9e8-4273-4319-a13c-5f4805b7112e"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[TÉCNICO RESPONSÁVEL]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement positionType="Float" x="363" y="620" width="159" height="68" uuid="51232ed2-770a-4249-8c20-78a1ea6ede91"/>
+				<reportElement positionType="Float" x="363" y="640" width="159" height="68" uuid="51232ed2-770a-4249-8c20-78a1ea6ede91"/>
 			</rectangle>
 			<staticText>
-				<reportElement positionType="Float" x="405" y="632" width="79" height="22" uuid="1cf7bbb1-80e4-4ce4-8bb0-4cad2a17c886"/>
+				<reportElement positionType="Float" x="405" y="652" width="79" height="22" uuid="1cf7bbb1-80e4-4ce4-8bb0-4cad2a17c886"/>
 				<textElement>
 					<font fontName="SansSerif" isBold="true"/>
 				</textElement>
 				<text><![CDATA[BRASÍLIA - DF]]></text>
 			</staticText>
 			<textField>
-				<reportElement positionType="Float" x="410" y="654" width="100" height="18" uuid="4238000a-a52e-47e6-844b-97200f4831db"/>
+				<reportElement positionType="Float" x="410" y="674" width="100" height="18" uuid="4238000a-a52e-47e6-844b-97200f4831db"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format(new Date())]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement positionType="Float" x="35" y="692" width="491" height="30" uuid="81cf5e89-f719-498b-adc7-5b281e45623f"/>
+				<reportElement positionType="Float" x="35" y="712" width="491" height="18" uuid="81cf5e89-f719-498b-adc7-5b281e45623f"/>
 				<textElement textAlignment="Center" markup="none">
-					<font fontName="SansSerif" size="11"/>
+					<font fontName="SansSerif" size="11" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Está declaração não tem valor para fins de comprovação legal de ocupação da área. Válida por 30 (trinta) dias, a partir desta data.]]></text>
+				<text><![CDATA[Está declaração não tem valor para fins de comprovação legal de ocupação da área.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" x="35" y="731" width="491" height="16" uuid="fed7001f-929a-4913-83ad-bbf610e10cb3"/>
+				<reportElement positionType="Float" x="35" y="751" width="491" height="16" uuid="fed7001f-929a-4913-83ad-bbf610e10cb3"/>
 				<textElement textAlignment="Center" markup="none">
 					<font fontName="SansSerif" size="10"/>
 				</textElement>
 				<text><![CDATA[MISSÃO DA EMATER-DF ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" x="35" y="744" width="491" height="32" uuid="d530ef99-828f-4f2c-b183-33fcc9b06d37"/>
+				<reportElement positionType="Float" x="35" y="764" width="491" height="32" uuid="d530ef99-828f-4f2c-b183-33fcc9b06d37"/>
 				<textElement textAlignment="Center" markup="none">
 					<font fontName="SansSerif" size="10"/>
 				</textElement>
 				<text><![CDATA[Promover o desenvolvimento sustentável e a segurança alimentar, por meio de assistência técnica e extensão rural de excelência, em benefício da sociedade do Distrito Federal e Entorno.]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="35" y="411" width="487" height="129" uuid="1d478f3c-5177-4e08-a2ee-f32f96115a90">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="35" y="397" width="487" height="163" uuid="1d478f3c-5177-4e08-a2ee-f32f96115a90">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 				</reportElement>
 			</rectangle>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="40" y="415" width="480" height="119" uuid="12739544-c9b7-4c27-9424-5ade52d84495"/>
-				<textFieldExpression><![CDATA[$P{Observacao}]]></textFieldExpression>
-			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="190" y="280" width="332" height="17" uuid="8381c3e9-0378-4eb8-af3e-2d9a563fa99f"/>
 				<textFieldExpression><![CDATA[$F{propriedadeRural}.getComunidade().getCidade().getNome()]]></textFieldExpression>
@@ -294,6 +290,32 @@ Telefone: 3311-9330, E-mail: emater@emater.df.gov.br.]]></text>
 				<reportElement x="189" y="337" width="332" height="15" uuid="8634683a-204f-4231-b463-8968897d9dec"/>
 				<textFieldExpression><![CDATA[$F{propriedadeRural}.getPrincipaisAtividadesProdutivas()]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="35" y="728" width="491" height="18" uuid="96522ec0-639d-4a78-b2c1-6b3e3ad5631e"/>
+				<textElement textAlignment="Center" markup="none">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Válida por 6 meses a partir desta data.]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement isPrintRepeatedValues="false" x="190" y="204" width="332" height="15" uuid="4982af70-b455-4078-b94c-cb823c45efec"/>
+				<textFieldExpression><![CDATA[$F{publicoAlvo}.getPessoa().getDAP()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="34" y="203" width="138" height="17" uuid="c86c1af2-e38e-4944-aecd-4bfbd30c0b85"/>
+				<text><![CDATA[DAP:]]></text>
+			</staticText>
+			<subreport>
+				<reportElement x="40" y="400" width="480" height="20" uuid="aac5b9ca-ad7c-4bc4-be56-4c4b718add83"/>
+				<subreportParameter name="Parte">
+					<subreportParameterExpression><![CDATA[$P{Parte}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="DiretorioJasper">
+					<subreportParameterExpression><![CDATA[$P{DiretorioJasper}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{producaoList})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{DiretorioJasper} + "/pessoa/DesclaracaoCeasaProducao.jasper"]]></subreportExpression>
+			</subreport>
 		</band>
 	</detail>
 	<columnFooter>

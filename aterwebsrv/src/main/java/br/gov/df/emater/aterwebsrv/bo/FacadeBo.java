@@ -36,6 +36,7 @@ import br.gov.df.emater.aterwebsrv.dto.indice_producao.ProducaoCadDto;
 import br.gov.df.emater.aterwebsrv.dto.indice_producao.ProducaoEditDto;
 import br.gov.df.emater.aterwebsrv.dto.indice_producao.ProducaoGravaDto;
 import br.gov.df.emater.aterwebsrv.dto.pessoa.CarteiraProdutorRelFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.pessoa.DeclaracaoCeasaRelFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.pessoa.DeclaracaoProdutorRelFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.pessoa.MesclarPessoaDto;
 import br.gov.df.emater.aterwebsrv.dto.pessoa.PessoaCadFiltroDto;
@@ -520,6 +521,11 @@ public class FacadeBo implements BeanFactoryAware {
 	@Transactional(readOnly = true)
 	public _Contexto pessoaCarteiraProdutorVerificar(Principal usuario, CarteiraProdutorRelFiltroDto filtro) throws Exception {
 		return this._executar(usuario, "PessoaCarteiraProdutorVerificarCmd", filtro);
+	}
+
+	@Transactional
+	public _Contexto pessoaDeclaracaoCeasaRel(Principal usuario, DeclaracaoCeasaRelFiltroDto filtro) throws Exception {
+		return this._executar(usuario, "PessoaDeclaracaoCeasaRelCmd", filtro);
 	}
 	
 	@Transactional

@@ -26,4 +26,5 @@ public class BemProducaoRest {
 		return new Resposta(facadeBo.bemProducaoFiltroExecutar(usuario, filtro).getResposta());
 	}
 
+
 }

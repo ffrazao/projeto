@@ -17,16 +17,23 @@ public class MetaTatica extends EntidadeBase implements _ChavePrimaria<Integer>,
 
 	private static final long serialVersionUID = 1L;
 
-	private String ano;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer id;
+	
+	private String codigo;
 
 	private String descricao;
+
+	private String objetivo;
+
+	private String filtro;
 
 	@Column(name="gerencia_tatica")
 	private String gerenciaTatica;
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
+
+	private String ano;
 
 	public MetaTatica() {
 		super();
@@ -36,10 +43,44 @@ public class MetaTatica extends EntidadeBase implements _ChavePrimaria<Integer>,
 		super(id);
 	}
 
-	public MetaTatica(Integer id, String descricao, String ano) {
+	public MetaTatica(Integer id, String codigo, String descricao, String objetivo, String filtro, String gerenciaTatica, String ano) {
+		this(id);
+		setDescricao(descricao);
+		setCodigo(codigo);
+		setObjetivo(objetivo);
+		setFiltro(filtro);
+		setGerenciaTatica(gerenciaTatica);
+		setAno(ano);
+	}
+
+	public MetaTatica( Integer id, String descricao, String ano  ){
 		this(id);
 		setDescricao(descricao);
 		setAno(ano);
+	}
+	
+	public String getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+
+	public String getObjetivo() {
+		return objetivo;
+	}
+
+	public void setObjetivo(String objetivo) {
+		this.objetivo = objetivo;
+	}
+
+	public String getFiltro() {
+		return filtro;
+	}
+
+	public void setFiltro(String filtro) {
+		this.filtro = filtro;
 	}
 
 	public String getAno() {
@@ -61,9 +102,9 @@ public class MetaTatica extends EntidadeBase implements _ChavePrimaria<Integer>,
 
 	@Override
 	public MetaTatica infoBasica() {
-		return new MetaTatica(getId(), getDescricao(), getAno());
+		return new MetaTatica(getId(), getCodigo(), getDescricao(), getObjetivo(), getFiltro(), getGerenciaTatica(), getAno());
 	}
-
+		
 	public void setAno(String ano) {
 		this.ano = ano;
 	}

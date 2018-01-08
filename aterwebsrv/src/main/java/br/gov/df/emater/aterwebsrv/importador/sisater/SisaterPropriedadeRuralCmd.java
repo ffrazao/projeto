@@ -305,6 +305,7 @@ public class SisaterPropriedadeRuralCmd extends _Comando {
 					captarDiagnosticoList(rs, propriedadeRural);
 
 					if (cont % 500 == 0) {
+						logger.info( cont );
 						long memo = Runtime.getRuntime().freeMemory();
 						if (logger.isInfoEnabled()) {
 							logger.info(String.format("memória atual [%d]", memo));

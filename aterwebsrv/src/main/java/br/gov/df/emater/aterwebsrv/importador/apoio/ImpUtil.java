@@ -741,6 +741,18 @@ public class ImpUtil {
 		if( registro == "GEPLA"){ registro = "ELPLA"; }
 		if( registro == "GERIP"){ registro = "ELRIP"; }
 		
+		if( registro == "GERAG"){ registro = "ELALG"; }
+		if( registro == "GBRAZ"){ registro = "ELBRA"; }
+		if( registro == "GECEI"){ registro = "ELCEI"; }
+		if( registro == "GEJAR"){ registro = "ELJAR"; }
+		if( registro == "GEPAD"){ registro = "ELPAD"; }
+		if( registro == "GEPAR"){ registro = "ELPAR"; }
+		if( registro == "GEPIP"){ registro = "ELRIP"; }
+		if( registro == "GESEB"){ registro = "ELRSS"; }
+		if( registro == "GESOB"){ registro = "ELSOB"; }
+		if( registro == "GETAB"){ registro = "ELTAB"; }
+		if( registro == "GETAQ"){ registro = "ELTAQ"; }
+				
 		for (UnidadeOrganizacional uo : unidadeOrganizacionalList) {
 			if (uo.getApelidoSigla().equalsIgnoreCase(registro)) {
 				return uo;

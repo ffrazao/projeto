@@ -11,35 +11,32 @@ import java.sql.SQLException;
 public class ConexaoFirebird {
 
 	public static enum DbSater {
-		
+/*		
 		ELRIP("GERIP", "DF"),
 		ELVAR("GEVAR", "DF"),
 		ELGAM("GEGAM", "DF"),
 		ELPLA("GEPLA", "DF"); 
 
-/*		ASBRA("GEPRE NORTE", "GO"), 
+		ASBRA("GEPRE NORTE", "GO"), 
 		ASCRI("GEPRE SUDESTE", "GO"), 
 		ASFOR("GEPRE LESTE", "GO"), 
 		ASPBE("GEPRE NOROESTE", "GO"), 
 		ASSOB("GESOB", "GO"), // repetido
-		
-		ELPLA("GEPLA", "DF"), 
-		ELALG("GERAG", "DF"), 
-		ELBRA("GBRAZ", "DF"), 
-		ELCEI("GECEI", "DF"), 
-		ELGAM("GEGAM", "DF"), 
+*/		
 		ELJAR("GEJAR", "DF"), 
 		ELPAD("GEPAD", "DF"), 
-		ELPAR("GEPAR", "DF"), 
+		ELTAB("GETAB", "DF"), 
+		ELTAQ("GETAQ", "DF"),
+		ELALG("GERAG", "DF"),
 		ELPIP("GEPIP", "DF"), 
+	
+		ELPAR("GEPAR", "DF"), 
+		ELBRA("GBRAZ", "DF"), 
 		ELRSS("GESEB", "DF"), 
 		ELSOB("GESOB", "DF"), 
-		ELTAB("GETAB", "DF"), 
-		ELTAQ("GETAQ", "DF"), 
-		ELVAR("GEVAB", "DF");
-*/
+		ELCEI("GECEI", "DF"), 
+		;
 		
-
 		private String sigla;
 
 		private String siglaEstado;

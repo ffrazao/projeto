@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2018-01-05T16:26:54 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ProponentePropriedade" pageWidth="555" pageHeight="842" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="4f3e2a9b-c98c-497f-9ccc-4d9c8fd3b19a">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<parameter name="DiretorioJasper" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[DiretorioJasper]]></parameterDescription>
+	</parameter>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="cronogramaPagamentoList" class="br.gov.df.emater.aterwebsrv.modelo.dominio.bemClassificado">
+		<fieldDescription><![CDATA[bemClassificado]]></fieldDescription>
+	</field>
+	<field name="selecionado" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[area]]></fieldDescription>
+	</field>
+	<field name="taxaJurosAnual" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[producao]]></fieldDescription>
+	</field>
+	<field name="quantidadeParcelas" class="java.lang.String">
+		<fieldDescription><![CDATA[unidade]]></fieldDescription>
+	</field>
+	<field name="quantidadeParcelas" class="java.lang.String">
+		<fieldDescription><![CDATA[colheita]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="31" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<staticText>
+				<reportElement x="0" y="0" width="110" height="15" uuid="89b19077-74e6-4e09-bc43-b15b48ec3f62">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cultura / Produto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="30" width="555" height="1" uuid="c4b82e86-c1ca-4e52-bfbb-b2a216ee4abe">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="126" y="0" width="34" height="15" uuid="ec901708-d5eb-40ec-b1e3-196ccc8f1a33">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Área]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="160" y="0" width="90" height="15" uuid="0e6d6b33-9541-4ffd-a05d-732cccb70b12">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Produção]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="403" y="0" width="75" height="15" uuid="dd1dabdb-9f69-4789-9a3e-69d3d12fe5b8">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data Carência]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="480" y="0" width="75" height="30" uuid="2354c7b8-851f-42c3-8304-3e645bd9f223">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data 1ª Parcela]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="0" width="110" height="15" uuid="1847eb73-de46-4640-8b6b-58a55d21e733">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Período de Colheita]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="110" height="15" uuid="70cd7bcf-f1e8-4e2f-b761-b49fe0d7a9e6">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{bemClassificado}.getNome()]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="126" y="0" width="34" height="15" uuid="effa2d9f-9fa4-4c95-ab1e-469d03181b61">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{area}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="160" y="0" width="60" height="15" uuid="3d884d95-0adb-43f8-9360-04dde2f131e3">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{producao}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="220" y="0" width="30" height="15" uuid="f7a8dc36-b04c-4804-8156-d459db6a3301">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{unidade}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#0" isBlankWhenNull="true">
+				<reportElement x="260" y="0" width="110" height="15" uuid="87b66718-8749-46ac-9ab5-69c7675259b0">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{colheita}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band>
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</detail>
+</jasperReport>

@@ -11,6 +11,7 @@ import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacao;
 @Repository("BemDao")
 public interface BemDao extends JpaRepository<BemClassificado, Integer>, BemDaoCustom {
 
+	List<BemClassificado> findAll();
 	List<BemClassificado> findByBemClassificacaoAndNomeLikeIgnoreCase(BemClassificacao bemClassificacao, String nome);
 
 }
