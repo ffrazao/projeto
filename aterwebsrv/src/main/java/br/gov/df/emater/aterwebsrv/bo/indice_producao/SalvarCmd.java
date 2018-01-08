@@ -55,7 +55,6 @@ public class SalvarCmd extends _SalvarCmd {
 			Ipa rs = dao.retornaId(ipaResult.getAno(), ipaResult.getUnidadeOrganizacional(), ipaResult.getPropriedadeRural(), ipaResult.getPublicoAlvo());
 			if (rs != null){
 				ipa.setId(rs.getId());
-				System.out.println("tem rs 2: " + rs.getId());
 			}
 		}
 		

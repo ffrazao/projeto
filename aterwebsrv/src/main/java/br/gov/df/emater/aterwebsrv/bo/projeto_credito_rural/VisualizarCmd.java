@@ -3,6 +3,7 @@ package br.gov.df.emater.aterwebsrv.bo.projeto_credito_rural;
 import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaList;
 import static br.gov.df.emater.aterwebsrv.modelo.UtilitarioInfoBasica.infoBasicaReg;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -27,6 +28,8 @@ public class VisualizarCmd extends _Comando {
 
 	@Autowired
 	private EntityManager em;
+	
+	BigDecimal contando = new BigDecimal("0");
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
@@ -39,10 +42,11 @@ public class VisualizarCmd extends _Comando {
 
 		// restaurar
 		ProjetoCreditoRural result = dao.findOneByAtividade(atividade);
+		
 		if (result == null) {
 			throw new BoException("Registro não localizado");
 		}
-
+		
 		// ajustar dados de retorno
 		List<PublicoAlvoPropriedadeRural> publicoAlvoPropriedadeRuralList = null;
 		if (result.getPublicoAlvo() != null && result.getPublicoAlvo().getPublicoAlvoPropriedadeRuralList() != null) {
@@ -55,6 +59,31 @@ public class VisualizarCmd extends _Comando {
 		result.setAtividade(new Atividade(atividade.getId()));
 
 		em.detach(result);
+		
+//		result.getFluxoCaixaList().forEach( (x) -> {
+//			x.getFluxoCaixaAnoList().forEach( (y) -> {
+//				x.getProjetoCreditoRural().getCronogramaPagamentoInvestimentoList()
+//			});
+//		});
+		
+		
+//		result.getInvestimentoList().forEach( (a) -> {
+//			System.out.println("desc" + a.getDescricao());
+//		});
+//		
+//		result.getCronogramaPagamentoInvestimentoList().forEach( (b) -> {
+//			System.out.println("valor" + b.getValorFinanciamento());
+//		});
+//		
+//		result.getCronogramaPagamentoInvestimentoList().forEach( (c) -> {
+//			c.getCronogramaPagamentoList().forEach( (d) -> {
+//				System.out.println("Amortizacao" + d.getAmortizacao());	
+//			});
+//		});
+//
+//		atividade.getProjetoCreditoRural().getFluxoCaixaList().forEach( (a) -> {
+//			a.setCodigo(codigo);
+//		});
 
 		// ATENÇÃO! este tipo de comando não altera o campo resposta do
 		// contexto, mas sim o objeto da resposta

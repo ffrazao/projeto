@@ -84,6 +84,16 @@ public class CalcularFluxoCaixaCmd extends _Comando {
 		List<Item> investimentoNomeLote, custeioNomeLote;
 		investimentoNomeLote = pegarNomeLote(result.getInvestimentoList());
 		custeioNomeLote = pegarNomeLote(result.getCusteioList());
+		
+//		investimentoNomeLote.forEach((x)->{
+//			System.out.println("inv" + x.getNomeLote());
+//		});
+//		
+//		custeioNomeLote.forEach((x)->{
+//			System.out.println("cust" +x.getNomeLote());
+//		});
+		
+	
 
 		if (investimentoNomeLote.size() == 0 && custeioNomeLote.size() == 0) {
 			throw new BoException("Nenhum lote informado", "Erro ao calcular fluxo de caixa");
@@ -178,7 +188,14 @@ public class CalcularFluxoCaixaCmd extends _Comando {
 			if (pcrfc.getId() == null) {
 				pcrfc.setId(--id);
 			}
+			
+//			pcrfc.getFluxoCaixaAnoList().forEach((x)->{
+//				System.out.println("Ano: "+ x.getAno());
+//				System.out.println("Valor: "+ x.getValor());				
+//			});
+			
 			fluxoCaixaList.add(pcrfc);
+			
 		}
 		fluxoCaixaList.sort((fc1, fc2) -> fc1.getOrdem().compareTo(fc2.getOrdem()));
 		result.setFluxoCaixaList(fluxoCaixaList);
@@ -199,7 +216,7 @@ public class CalcularFluxoCaixaCmd extends _Comando {
 		}
 		parecerTecnicoList.sort((pt1, pt2) -> pt1.getOrdem().compareTo(pt2.getOrdem()));
 		result.setParecerTecnicoList(parecerTecnicoList);
-
+		
 		contexto.setResposta(result);
 
 		return false;

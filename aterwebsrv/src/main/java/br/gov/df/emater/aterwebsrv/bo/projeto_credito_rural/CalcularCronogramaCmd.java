@@ -32,12 +32,14 @@ public class CalcularCronogramaCmd extends _Comando {
 		ProjetoCreditoRuralCronogramaPagamento result = null;
 
 		result = procuraCronogramaPagamento(projetoCreditoRural.getCronogramaPagamentoInvestimentoList(), FinanciamentoTipo.I, projetoCreditoRural.getInvestimentoList());
+		
 		if (result != null) {
 			result.setTipo(FinanciamentoTipo.I);
 			return result;
 		}
 
 		result = procuraCronogramaPagamento(projetoCreditoRural.getCronogramaPagamentoCusteioList(), FinanciamentoTipo.C, projetoCreditoRural.getCusteioList());
+		
 		if (result != null) {
 			result.setTipo(FinanciamentoTipo.C);
 			return result;
@@ -48,13 +50,21 @@ public class CalcularCronogramaCmd extends _Comando {
 
 	private ProjetoCreditoRuralCronogramaPagamento procuraCronogramaPagamento(List<ProjetoCreditoRuralCronogramaPagamento> cronogramaPagamentoList, FinanciamentoTipo financiamentoTipo, List<ProjetoCreditoRuralFinanciamento> financiamentoList) throws BoException {
 
+		System.out.println("entrou no metodo");
+		
 		if (cronogramaPagamentoList != null) {
+			
+			System.out.println("entrou no if");
+			
 			for (ProjetoCreditoRuralCronogramaPagamento cP : cronogramaPagamentoList) {
 				if (cP.getDataCalculo() == null) {
+					System.out.println("entrou no data");
 					BigDecimal valorFinanciado = new BigDecimal("0");
 					if (financiamentoList != null) {
+						System.out.println("entrou no fin");
 						for (ProjetoCreditoRuralFinanciamento f : financiamentoList) {
 							if (cP.getNomeLote().equals(f.getNomeLote())) {
+								System.out.println("entrou no note");
 								valorFinanciado = valorFinanciado.add(f.getValorFinanciado());
 							}
 						}
@@ -70,6 +80,9 @@ public class CalcularCronogramaCmd extends _Comando {
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
+		
+		System.out.println("Entrou no executar do ProjetoCreditoRural CalcularCronogramaCmd");
+		
 		ProjetoCreditoRural result = (ProjetoCreditoRural) contexto.getRequisicao();
 
 		ProjetoCreditoRuralCronogramaPagamento cronograma = getCronograma(result);
@@ -205,8 +218,10 @@ public class CalcularCronogramaCmd extends _Comando {
 			cronograma.setValorTotalJuros(cronograma.getValorTotalJuros().add(cronogramaPagamento.getJuros()));
 			cronograma.setValorTotalPrestacoes(cronograma.getValorTotalPrestacoes().add(cronogramaPagamento.getPrestacao()));
 
+			System.out.println(cronogramaPagamento.getAmortizacao());
 			cronogramaPagamentoList.add(cronogramaPagamento);
 			epoca++;
+			
 		}
 
 		cronograma.setCronogramaPagamentoList(cronogramaPagamentoList);
@@ -222,6 +237,7 @@ public class CalcularCronogramaCmd extends _Comando {
 			break;
 		}
 		cronograma.setSelecionado(Confirmacao.S);
+		
 
 		contexto.setResposta(result);
 

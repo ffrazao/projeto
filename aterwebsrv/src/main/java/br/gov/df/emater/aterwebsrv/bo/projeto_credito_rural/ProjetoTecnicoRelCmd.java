@@ -11,11 +11,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -34,8 +36,11 @@ import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
+import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaRelacionamentoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoFuncaoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.RelacionamentoTipoDao;
+import br.gov.df.emater.aterwebsrv.dao.projeto_credito_rural.CronogramaPagamentoDao;
+import br.gov.df.emater.aterwebsrv.dao.projeto_credito_rural.FluxoCaixaAnoDao;
 import br.gov.df.emater.aterwebsrv.dao.projeto_credito_rural.ProjetoCreditoRuralDao;
 import br.gov.df.emater.aterwebsrv.dto.Dto;
 import br.gov.df.emater.aterwebsrv.dto.formulario.FormularioColetaCadFiltroDto;
@@ -48,6 +53,8 @@ import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoTecnicoPropo
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoTecnicoPropriedadeRuralRelDto;
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.RelacaoItemRelDto;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioData;
+import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioFinanceiro;
+import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioFinanceiro.Periodicidade;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioPdf;
 import br.gov.df.emater.aterwebsrv.ferramenta.UtilitarioString;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PropriedadeRural;
@@ -56,6 +63,7 @@ import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoSetor;
 import br.gov.df.emater.aterwebsrv.modelo.atividade.AtividadePessoa;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.AtividadePessoaParticipacao;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.Confirmacao;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.FluxoCaixaCodigo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FluxoCaixaTipo;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.FormularioDestino;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaGenero;
@@ -74,10 +82,12 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaTelefone;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoFuncao;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.RelacionamentoTipo;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Telefone;
+import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.CronogramaPagamento;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.CustoProducao;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.FluxoCaixaAno;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRural;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralArquivo;
+import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralCronogramaPagamento;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralFinanciamento;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralFluxoCaixa;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralGarantia;
@@ -93,6 +103,13 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 
 	@Autowired
 	private ProjetoCreditoRuralDao dao;
+	
+	@Autowired
+	private FluxoCaixaAnoDao anoDao;
+	
+	@Autowired
+	private CronogramaPagamentoDao cronoDao;
+	
 
 	@Autowired
 	private FacadeBo facadeBo;
@@ -108,9 +125,21 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 
 	@Autowired
 	private RelacionamentoTipoDao relacionamentoTipoDao;
+	
+	@Autowired
+	private PessoaRelacionamentoDao pessoaRelacionamentoDao;
 
 	@Autowired
 	private _Relatorio relatorio;
+
+	private BigDecimal contando = new BigDecimal("0");
+	BigDecimal receita = new BigDecimal("0");
+	BigDecimal despesa = new BigDecimal("0");
+	BigDecimal prestacao = new BigDecimal("0");
+	
+	private Integer idMaster = 0;
+	
+	int co = 0;
 
 	public ProjetoTecnicoRelCmd() {
 	}
@@ -249,10 +278,10 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 					if (TelefoneTipo.CE.equals(pessoaTelefone.getTipo())) {
 						celular = pessoaTelefone.getTelefone();
 					}
-					if (TelefoneTipo.TF.equals(pessoaTelefone.getTipo())) {
-						if (Confirmacao.S.equals(pessoaTelefone.getPrincipal())) {
+					if (TelefoneTipo.FI.equals(pessoaTelefone.getTipo())) {
+						//if (Confirmacao.S.equals(pessoaTelefone.getPrincipal())) {
 							telefone = pessoaTelefone.getTelefone();
-						}
+						//}
 					}
 				}
 			}
@@ -423,6 +452,7 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 		ProjetoTecnicoFluxoCaixaDto ptfc = new ProjetoTecnicoFluxoCaixaDto();
 		ptfc.setReceitaItemList(new ArrayList<>());
 		ptfc.setDespesaItemList(new ArrayList<>());
+	
 
 		for (ProjetoCreditoRuralFluxoCaixa fluxoCaixa : fluxoCaixaList) {
 			ProjetoTecnicoFluxoCaixaItemDto item = captarFluxoCaixaItem(fluxoCaixa);
@@ -433,6 +463,8 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 				ptfc.getDespesaItemList().add(item);
 			}
 
+			//System.out.println(fluxoCaixa.getCodigo());
+			
 			switch (fluxoCaixa.getCodigo()) {
 			case DESPESA_AMORTIZACAO_DIVIDAS_EXISTENTE:
 				captarFluxoCaixaTotalizador(ptfc, "lucro", Confirmacao.N, item);
@@ -490,25 +522,171 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 	private ProjetoTecnicoFluxoCaixaItemDto captarFluxoCaixaItem(ProjetoCreditoRuralFluxoCaixa fluxoCaixa) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		ProjetoTecnicoFluxoCaixaItemDto result = new ProjetoTecnicoFluxoCaixaItemDto();
 		result.setCodigo(fluxoCaixa.getCodigo());
+		result.setTipo(fluxoCaixa.getTipo());
 		for (FluxoCaixaAno fca : fluxoCaixa.getFluxoCaixaAnoList()) {
 			MethodUtils.invokeMethod(result, String.format("setAno%02d", fca.getAno()), fca.getValor());
 		}
 		return result;
 	}
+	
+	BigDecimal[] rec = new BigDecimal[11];
 
 	private void captarFluxoCaixaTotalizador(ProjetoTecnicoFluxoCaixaDto objeto, String metodo, Confirmacao somar, ProjetoTecnicoFluxoCaixaItemDto item) throws Exception {
 		for (int i = 1; i <= 10; i++) {
+			
 			BigDecimal valor = (BigDecimal) MethodUtils.invokeMethod(item, String.format("getAno%02d", i));
+			
 			BigDecimal total = (BigDecimal) MethodUtils.invokeMethod(objeto, String.format("get%sAno%02d", StringUtils.capitalize(metodo), i));
 			if (valor == null) {
 				valor = new BigDecimal("0");
 			}
 			if (total == null) {
 				total = new BigDecimal("0");
-			}
+			}				
+			
 			MethodUtils.invokeMethod(objeto, String.format("set%sAno%02d", StringUtils.capitalize(metodo), i), Confirmacao.S.equals(somar) ? total.add(valor) : total.subtract(valor));
+			
 		}
-	}
+			
+			String a = String.format("set%s", StringUtils.capitalize(metodo));	
+			
+		for (int contador = 1; contador <= 10; contador++) {
+			contando = new BigDecimal("0");
+			if(a.equals("setAmortizacao")){
+				List<Integer> pcr = new ArrayList<>();
+
+				pcr.add(idMaster);
+				
+				List<ProjetoCreditoRural> cron = dao.findAll(pcr); 
+				
+				for (ProjetoCreditoRural projetoCreditoRural : cron) {
+					
+					for(ProjetoCreditoRuralCronogramaPagamento pc : projetoCreditoRural.getCronogramaPagamentoInvestimentoList()){
+						for (CronogramaPagamento cp : pc.getCronogramaPagamentoList()){																		
+							if(cp.getAno() != null){										
+								if (cp.getAno() == contador){
+									contando = contando.add(cp.getPrestacao());
+								}
+							}																				
+						}
+					}			
+					for(ProjetoCreditoRuralCronogramaPagamento pc : projetoCreditoRural.getCronogramaPagamentoCusteioList()){
+						for (CronogramaPagamento cp : pc.getCronogramaPagamentoList()){																											
+							if(cp.getAno() != null){										
+								if (cp.getAno() == contador){
+										contando = contando.add(cp.getPrestacao());
+								}
+							}																									
+						}
+					}	
+												
+				//System.out.println("total Prestacao: " + contando);
+				MethodUtils.invokeMethod(objeto, String.format("set%sAno%02d", StringUtils.capitalize(metodo), contador), Confirmacao.S.equals(somar) ? contando : contando);
+				
+				
+				}	
+			}
+				
+			}
+		
+		for (int contador = 1; contador <= 10; contador++) {
+			contando = new BigDecimal("0");
+			if(a.equals("setSaldoDevedor")){
+				List<Integer> pcr = new ArrayList<>();
+				pcr.add(idMaster);
+				
+				List<ProjetoCreditoRural> cron = dao.findAll(pcr); 
+				
+				for (ProjetoCreditoRural projetoCreditoRural : cron) {
+					
+					for(ProjetoCreditoRuralCronogramaPagamento pc : projetoCreditoRural.getCronogramaPagamentoInvestimentoList()){
+						for (CronogramaPagamento cp : pc.getCronogramaPagamentoList()){																		
+							if(cp.getAno() != null){										
+								if (cp.getAno() == contador){
+									contando = contando.add(cp.getSaldoDevedorFinal());
+								}
+							}																				
+						}
+					}			
+					for(ProjetoCreditoRuralCronogramaPagamento pc : projetoCreditoRural.getCronogramaPagamentoCusteioList()){
+						for (CronogramaPagamento cp : pc.getCronogramaPagamentoList()){																											
+							if(cp.getAno() != null){										
+								if (cp.getAno() == contador){
+										contando = contando.add(cp.getSaldoDevedorFinal());
+								}
+							}																									
+						}
+					}	
+												
+				//System.out.println("total SaldoDevedor: " + contando);
+				MethodUtils.invokeMethod(objeto, String.format("set%sAno%02d", StringUtils.capitalize(metodo), contador), Confirmacao.S.equals(somar) ? contando : contando);				
+				}	
+			}
+				
+			}
+		
+		for (int contador = 1; contador <= 10; contador++) {
+			contando = new BigDecimal("0");
+			if(a.equals("setFluxoLiquido")){
+				List<Integer> pcr = new ArrayList<>();
+				pcr.add(idMaster);
+				
+				List<ProjetoCreditoRural> cron = dao.findAll(pcr); 
+				
+				for (ProjetoCreditoRural projetoCreditoRural : cron) {
+					
+					for(ProjetoCreditoRuralCronogramaPagamento pc : projetoCreditoRural.getCronogramaPagamentoInvestimentoList()){
+						for (CronogramaPagamento cp : pc.getCronogramaPagamentoList()){																		
+							if(cp.getAno() != null){										
+								if (cp.getAno() == contador){
+									receita = anoDao.retornaValor(projetoCreditoRural, contador, FluxoCaixaTipo.R);
+									despesa = anoDao.retornaValor(projetoCreditoRural, contador, FluxoCaixaTipo.D);
+									prestacao = cronoDao.retornaPrestacao(projetoCreditoRural, contador);
+									
+									contando = contando.add(receita);
+									despesa = despesa.add(prestacao);									
+									contando = receita.subtract(despesa);
+								}
+							}																				
+						}
+					}			
+					for(ProjetoCreditoRuralCronogramaPagamento pc : projetoCreditoRural.getCronogramaPagamentoCusteioList()){
+						for (CronogramaPagamento cp : pc.getCronogramaPagamentoList()){																											
+							if(cp.getAno() != null){										
+								if (cp.getAno() == contador){
+									
+									
+									
+								}
+							}																									
+						}
+					}	
+												
+				//System.out.println("total fluxoLiquido: " + contando);
+				MethodUtils.invokeMethod(objeto, String.format("set%sAno%02d", StringUtils.capitalize(metodo), contador), Confirmacao.S.equals(somar) ? contando : contando);
+				
+				
+				if(contador == 1){
+					MethodUtils.invokeMethod(objeto, String.format("set%sAno%02d", StringUtils.capitalize("fluxoAcumulado"), contador), Confirmacao.S.equals(somar) ? contando : contando);
+					
+					rec[contador] =	(BigDecimal) MethodUtils.invokeMethod(objeto, String.format("get%sAno%02d", StringUtils.capitalize("fluxoAcumulado"), contador));
+				System.out.println("1+: " + rec[contador]);
+				}else{
+					
+					MethodUtils.invokeMethod(objeto, String.format("set%sAno%02d", StringUtils.capitalize("fluxoAcumulado"), contador), Confirmacao.S.equals(somar) ? contando.add(rec[contador-1]) : contando.add(rec[contador-1]));
+					rec[contador] = (BigDecimal) MethodUtils.invokeMethod(objeto, String.format("get%sAno%02d", StringUtils.capitalize("fluxoAcumulado"), contador));
+					System.out.println("2+: " + rec[contador]);
+				}
+				
+				
+				}	
+			}
+				
+			}
+		
+		
+		}
+			
 
 	private List<ProjetoTecnicoGarantiaRelDto> captarGarantia(List<ProjetoCreditoRural> projetoCreditoRuralList) throws Exception {
 		List<ProjetoTecnicoGarantiaAvalistaRelDto> garantiaAvalistaList = new ArrayList<>();
@@ -518,12 +696,22 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 			// encontrar o endereco principal
 			if (!CollectionUtils.isEmpty(pcrg.getPessoaFisica().getEnderecoList())) {
 				for (PessoaEndereco pEnd : pcrg.getPessoaFisica().getEnderecoList()) {
-					if (pEnd.getEndereco() != null && (garantiaAvalista.getLogradouro() == null || Confirmacao.S.equals(pEnd.getPrincipal()))) {
-						garantiaAvalista.setLogradouro(String.format("%s, %s, %s", pEnd.getEndereco().getLogradouro(), pEnd.getEndereco().getComplemento(), pEnd.getEndereco().getNumero()));
-						garantiaAvalista.setLocalidade(String.format("%s%s%s",
+					if (pEnd.getEndereco() != null && (garantiaAvalista.getLogradouro() == null || Confirmacao.S.equals(pEnd.getPrincipal()))) {												
+						
+						garantiaAvalista.setLogradouro(String.format("%s, %s, %s", 
+								pEnd.getEndereco().getLogradouro() == null ? "" : pEnd.getEndereco().getLogradouro(), 
+								pEnd.getEndereco().getComplemento() == null ? "" :pEnd.getEndereco().getComplemento(), 
+								pEnd.getEndereco().getNumero() == null ? "" :pEnd.getEndereco().getNumero()));
+						
+						//System.out.println(pEnd.getEndereco().getLogradouro());
+						//System.out.println(pEnd.getEndereco().getCidade());
+						//System.out.println(pEnd.getEndereco().getEstado());
+
+						garantiaAvalista.setLocalidade(String.format("%s%s",
 								pEnd.getEndereco().getBairro() == null ? "" : pEnd.getEndereco().getBairro().concat(", "), 
-								pEnd.getEndereco().getCidade() == null ? "" : pEnd.getEndereco().getCidade().getNome().concat(", "), 
+								pEnd.getEndereco().getCidade() == null ? "" : pEnd.getEndereco().getCidade().getNome().concat(", "),
 								pEnd.getEndereco().getEstado() == null ? "" : pEnd.getEndereco().getEstado().getSigla()));
+						
 						garantiaAvalista.setCep(pEnd.getEndereco().getCep());
 					}
 				}
@@ -540,26 +728,76 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 
 			// encontrar pai e mae
 			if (!CollectionUtils.isEmpty(pcrg.getPessoaFisica().getRelacionamentoList())) {
-				for (PessoaRelacionamento pRel : pcrg.getPessoaFisica().getRelacionamentoList()) {
-					if (RelacionamentoTipo.Codigo.FAMILIAR.name().equals(pRel.getRelacionamento().getRelacionamentoTipo().getCodigo())) {
-						if ("Pai".equals(pRel.getRelacionamentoFuncao().getNomeSeMasculino())) {
+				
+//				System.out.println("Nome Propoente = " + pcrg.getPessoaFisica().getNome());
+//				System.out.println("Id do Propoente = " + pcrg.getPessoaFisica().getId());
+				
+				pessoaRelacionamentoDao.retornaListaRel(pcrg.getPessoaFisica().getId());
+				
+				for (PessoaRelacionamento pRel : pessoaRelacionamentoDao.retornaListaRel(pcrg.getPessoaFisica().getId())) {
+
+					String a = RelacionamentoTipo.Codigo.FAMILIAR.name().toUpperCase();
+					String b = pRel.getRelacionamento().getRelacionamentoTipo().getNome().toUpperCase();
+					
+					if (a.equals(b)) {
+						
+						String pai = "Pai";
+						String seraPai = pRel.getRelacionamentoFuncao().getNomeSeMasculino();
+
+						if (pai.equals(seraPai)) {
+							
 							if (pRel.getPessoa() == null) {
-								if (PessoaGenero.M.equals(pRel.getGenero())) {
+																								
+								String gen = PessoaGenero.M.toString();
+								String seraGen = pRel.getGenero().toString();
+								String genF = PessoaGenero.F.toString();
+								
+								if (gen.equals(seraGen)) {
 									garantiaAvalista.setPaiNome(pRel.getNome());
-								} else if (PessoaGenero.F.equals(pRel.getGenero())) {
+								} else if (genF.equals(seraGen)) {
 									garantiaAvalista.setMaeNome(pRel.getNome());
 								}
 							} else {
-								if (PessoaGenero.M.equals(((PessoaFisica) pRel.getPessoa()).getGenero())) {
+								
+								String gen = PessoaGenero.M.toString();
+								String seraGen = ((PessoaFisica) pRel.getPessoa()).getGenero().toString();
+								String genF = PessoaGenero.F.toString();
+								
+								if (gen.equals(seraGen)) {
+									
 									garantiaAvalista.setPaiNome(pRel.getNome());
-								} else if (PessoaGenero.F.equals(((PessoaFisica) pRel.getPessoa()).getGenero())) {
+									
+								} else if (genF.equals(seraGen)) {
+									
 									garantiaAvalista.setMaeNome(pRel.getNome());
+									
 								}
 							}
-						}
+						}										
 					}
 				}
 			}
+			
+			if (!CollectionUtils.isEmpty(pcrg.getPessoaFisica().getRelacionamentoList())) {
+			
+				for (PessoaRelacionamento pRel : pessoaRelacionamentoDao.retornaListaRelConj(pcrg.getPessoaFisica().getId())) {
+					String esposo = "Esposo";
+					String seraEsposo = pRel.getRelacionamentoFuncao().getNomeSeMasculino();
+					
+//					System.out.println("N1 " + pRel.getNome());
+//					System.out.println("N2 "+ seraEsposo);
+
+					if (esposo.equals(seraEsposo)) {
+												
+								garantiaAvalista.setConjuge(pRel.getNome());
+												
+					}		
+				}
+			
+			}
+			
+			//System.out.println("Conjuge: " + garantiaAvalista.getConjuge());
+			
 			garantiaAvalista.setCpfCnpj(pcrg.getPessoaFisica().getCpf());
 			garantiaAvalista.setEstadoCivil(pcrg.getPessoaFisica().getEstadoCivil());
 			garantiaAvalista.setIdentidadeNumero(pcrg.getPessoaFisica().getRgNumero());
@@ -627,6 +865,8 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		Integer[] idList = (Integer[]) contexto.getRequisicao();
+		
+		idMaster = idList[0];
 
 		if (ArrayUtils.isEmpty(idList)) {
 			throw new BoException("Nenhum projeto informado");
