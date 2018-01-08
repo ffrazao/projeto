@@ -416,13 +416,21 @@
                     mensagemSrv.confirmacao(false, conf, 'Confirme emissão da Declaração da Ceasa', resposta.resultado, null, null, null, function(escopo) {
                     }).then(function(conteudo) {
                         var publicoAlvoPropriedadeRuralIdList = [];
+                        console.log( conteudo );
+
                         conteudo.forEach(function(item) {
                             if (item.emite) {
                                 publicoAlvoPropriedadeRuralIdList.push(item.emite);
                             }
                         });
                         if (publicoAlvoPropriedadeRuralIdList.length) {
-                            PessoaSrv.declaracaoCeasaRel({publicoAlvoPropriedadeRuralIdList: publicoAlvoPropriedadeRuralIdList}).success(function(resposta) {
+
+                            var requisicao = {
+                                publicoAlvoPropriedadeRuralIdList: publicoAlvoPropriedadeRuralIdList,
+                                producao: conteudo.produtorCeasaProducaoList
+                            };
+
+                            PessoaSrv.declaracaoCeasaRel(requisicao).success(function(resposta) {
                                 if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {
                                     window.open("data:application/pdf;base64,"+resposta.resultado);
                                 } else {

@@ -14,6 +14,10 @@ angular.module(pNmModulo).factory(pNmFactory,
             filtrar : function(filtro) {
                 return $http.post(this.endereco + '/filtro-executar', filtro);
             },
+            all : function() {
+                return $http.post(this.endereco + '/filtro-executar');
+            },
+
         };
         return BemProducaoSrv;
     }

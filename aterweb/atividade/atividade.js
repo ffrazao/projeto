@@ -119,7 +119,7 @@
                 ATIV_ALTERACAO_USUARIO_PESSOA_NOME : ordem++,
                 ATIV_ALTERACAO_DATA : ordem++,
                 ATIV_ASSUNTO_LIST : [ordem++, ATIV_ASSUNTO_LIST],
-                ATIV_CADEIA_PRODUTIVA_LIST : [ordem++, ATIV_CADEIA_PRODUTIVA_LIST],
+                ATIV_CADEIA_PRODUTIVA_LIST : [ordem, ATIV_CADEIA_PRODUTIVA_LIST],
                 DEMAND_LIST : [ordem++, ATIV_PESS_LIST],
                 EXECUT_LIST : [ordem++, ATIV_PESS_LIST],
                 OCORR_LIST : [ordem++, OCORR_LIST],

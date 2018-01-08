@@ -5,26 +5,46 @@
 'use strict';
 
 angular.module(pNmModulo).controller(pNmController,
-    ['$scope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv', 'mensagemSrv', '$log',
-    function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv, $log) {
+    ['$scope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv', 'mensagemSrv', '$log','IndiceProducaoSrv',
+    function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv, $log, IndiceProducaoSrv) {
     'ngInject';
 
     // inicio rotinas de apoio
     var init = function() {
-        if (!angular.isArray($scope.cadastro.produtorCeasaProducaoList)) {
-            $scope.cadastro.produtorCeasaProducaoList = [];
+        var i;
+        if (!angular.isArray($scope.conteudo.produtorCeasaProducaoList)) {
+            $scope.conteudo.produtorCeasaProducaoList = [];
         }
-        if (!$scope.atividadeAssuntoNvg) {
-            $scope.atividadeAssuntoNvg = new FrzNavegadorParams($scope.cadastro.produtorCeasaProducaoList, 4);
+        if (!$scope.produtorCeasaProducaoNvg) {
+            $scope.produtorCeasaProducaoNvg = new FrzNavegadorParams($scope.conteudo.produtorCeasaProducaoList, 4);
+        }
+        if (!angular.isArray($scope.ProdutoList)) {
+            $scope.produtoList = [];
+            IndiceProducaoSrv.bemClassificacaoMatriz().success( function( resposta ){  
+                console.log( resposta );
+                if( resposta.mensagem === "OK" ) {
+
+                    for (i in resposta.resultado.bemClassificadoAgricolaList ) {
+                        $scope.produtoList.push( resposta.resultado.bemClassificadoAgricolaList[i]  ) ;
+                    }
+                    for (i in resposta.resultado.bemClassificadoAnimalList ) {
+                        $scope.produtoList.push( resposta.resultado.bemClassificadoAnimalList[i]  ) ;
+                    }
+                    for (i in resposta.resultado.bemClassificadoFloricuturaList ) {
+                        $scope.produtoList.push( resposta.resultado.bemClassificadoFloricuturaList[i]  ) ;
+                    }
+                } 
+            } );
+            console.log( $scope.produtoList );
         }
     };
     init();
 
     var jaCadastrado = function(conteudo) {
         var i, id, produto;
-        for (i in $scope.cadastro.produtorCeasaProducaoList) {
-            id = $scope.cadastro.produtorCeasaProducaoList[i].id;
-            produto = $scope.cadastro.produtorCeasaProducaoList[i].produto;
+        for (i in $scope.conteudo.produtorCeasaProducaoList) {
+            id = $scope.conteudo.produtorCeasaProducaoList[i].id;
+            produto = $scope.conteudo.produtorCeasaProducaoList[i].produto;
             if (!angular.equals(id, conteudo.id) && angular.equals(produto.id, conteudo.produto.id)) {
                 toastr.error('Registro já cadastrado');
                 return false;
@@ -36,29 +56,29 @@ angular.module(pNmModulo).controller(pNmController,
 
     // inicio das operaçoes atribuidas ao navagador
     $scope.abrir = function() { 
-        $scope.atividadeAssuntoNvg.mudarEstado('ESPECIAL'); 
+        $scope.produtorCeasaProducaoNvg.mudarEstado('ESPECIAL'); 
         // desabilitar a edição
-        $scope.atividadeAssuntoNvg.botao('edicao').exibir = function() {return false;};
+        $scope.produtorCeasaProducaoNvg.botao('edicao').exibir = function() {return false;};
     };
     $scope.incluir = function() {
         init();
-        $scope.cadastro.produtorCeasaProducaoList.push($scope.criarElemento($scope.cadastro.registro, 'assuntoList', {}));
+        $scope.conteudo.produtorCeasaProducaoList.push($scope.criarElemento($scope.conteudo, 'produtorCeasaProducaoList', {}));
     };
     $scope.editar = function() {};
     $scope.excluir = function(nvg, dados) {
         mensagemSrv.confirmacao(false, 'confirme a exclusão').then(function (conteudo) {
             var i, j;
-            removerCampo($scope.cadastro.produtorCeasaProducaoList, ['@jsonId']);
-            if ($scope.atividadeAssuntoNvg.selecao.tipo === 'U' && $scope.atividadeAssuntoNvg.selecao.item) {
-                $scope.excluirElemento($scope, $scope.cadastro.registro, 'assuntoList', $scope.atividadeAssuntoNvg.selecao.item);
-            } else if ($scope.atividadeAssuntoNvg.selecao.items && $scope.atividadeAssuntoNvg.selecao.items.length) {
-                for (i in $scope.atividadeAssuntoNvg.selecao.items) {
-                    $scope.excluirElemento($scope, $scope.cadastro.registro, 'assuntoList', $scope.atividadeAssuntoNvg.selecao.items[i]);
+            removerCampo($scope.conteudo.produtorCeasaProducaoList, ['@jsonId']);
+            if ($scope.produtorCeasaProducaoNvg.selecao.tipo === 'U' && $scope.produtorCeasaProducaoNvg.selecao.item) {
+                $scope.excluirElemento($scope, $scope.cadastro.registro, 'assuntoList', $scope.produtorCeasaProducaoNvg.selecao.item);
+            } else if ($scope.produtorCeasaProducaoNvg.selecao.items && $scope.produtorCeasaProducaoNvg.selecao.items.length) {
+                for (i in $scope.produtorCeasaProducaoNvg.selecao.items) {
+                    $scope.excluirElemento($scope, $scope.cadastro.registro, 'assuntoList', $scope.produtorCeasaProducaoNvg.selecao.items[i]);
                 }
             }
-            $scope.atividadeAssuntoNvg.selecao.item = null;
-            $scope.atividadeAssuntoNvg.selecao.items = [];
-            $scope.atividadeAssuntoNvg.selecao.selecionado = false;
+            $scope.produtorCeasaProducaoNvg.selecao.item = null;
+            $scope.produtorCeasaProducaoNvg.selecao.items = [];
+            $scope.produtorCeasaProducaoNvg.selecao.selecionado = false;
         }, function () {
         });
     };
@@ -103,18 +123,18 @@ angular.module(pNmModulo).controller(pNmController,
     // fim das operaçoes atribuidas ao navagador
 
     $scope.$watch('cadastro.produtorCeasaProducaoList', function() {
-        if (angular.isArray($scope.cadastro.produtorCeasaProducaoList) && !angular.isArray($scope.atividadeAssuntoNvg.dados)) {
-            $scope.atividadeAssuntoNvg.setDados($scope.cadastro.produtorCeasaProducaoList);
-            $scope.atividadeAssuntoNvg.botao('edicao').visivel = false;
+        if (angular.isArray($scope.conteudo.produtorCeasaProducaoList) && !angular.isArray($scope.produtorCeasaProducaoNvg.dados)) {
+            $scope.produtorCeasaProducaoNvg.setDados($scope.conteudo.produtorCeasaProducaoList);
+            $scope.produtorCeasaProducaoNvg.botao('edicao').visivel = false;
             return;
         }
-        if (!angular.isArray($scope.cadastro.produtorCeasaProducaoList)) {
+        if (!angular.isArray($scope.conteudo.produtorCeasaProducaoList)) {
             return;
         }
-        if ($scope.cadastro.produtorCeasaProducaoList.length !== $scope.atividadeAssuntoNvg.dados.length) {
-            $scope.atividadeAssuntoNvg.setDados($scope.cadastro.produtorCeasaProducaoList);
-            if ($scope.atividadeAssuntoNvg.botao('edicao')) {
-                $scope.atividadeAssuntoNvg.botao('edicao').visivel = false;
+        if ($scope.conteudo.produtorCeasaProducaoList.length !== $scope.produtorCeasaProducaoNvg.dados.length) {
+            $scope.produtorCeasaProducaoNvg.setDados($scope.conteudo.produtorCeasaProducaoList);
+            if ($scope.produtorCeasaProducaoNvg.botao('edicao')) {
+                $scope.produtorCeasaProducaoNvg.botao('edicao').visivel = false;
             }
             return;
         }

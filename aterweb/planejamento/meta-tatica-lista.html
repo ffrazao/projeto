@@ -11,9 +11,15 @@
             <label class="control-label" for="filtroGerenciaTatica">Filtro Gerência Tática</label>
             <input class="form-control" type="text" id="filtroGerenciaTatica" name="filtroGerenciaTatica" ng-model=" filtroGerenciaTatica" ></input>
         </div>
-        <div class="col-md-8" >
+        <div class="col-md-6" >
             <label class="control-label" for="filtroMetaTatica">Filtro Descrição</label>
             <input class="form-control" type="text" id="filtroMetaTatica" name="filtroMetaTatica" ng-model=" filtroMetaTatica" ></input>
+        </div>
+        <div class="col-md-1">
+            <button class="btn btn-primary" ng-click="modalOk()" ng-show="navegador.selecao.selecionado">OK</button>
+        </div>
+        <div class="col-md-1">
+            <button class="btn btn-warning" ng-click="modalCancelar()">Cancelar</button>
         </div>
     </div>        
     <div class="table-responsive" ng-if="navegador.dados.length">
@@ -26,15 +32,16 @@
                     <th>Descrição</th>
                 </tr>
             </thead>
+
             <tbody>
-                <tr ng-repeat="item in navegador.dados | orderBy: 'nome' | filter:{ gerenciaTatica: filtroGerenciaTatica, descricao: filtroMetaTatica }" ng-click="crudSeleciona(scp, item); " >
+                <tr ng-repeat="item in navegador.dados | orderBy: 'id' | filter:{ gerenciaTatica: filtroGerenciaTatica, filtro: filtroMetaTatica }" ng-click="crudSeleciona(scp, item); " >
                     <td width="30px">
                         <input type="radio" ng-show="navegador.selecao.tipo === 'U'" ng-model="navegador.selecao.item" ng-value="item"/>
                         <input type="checkbox" ng-show="navegador.selecao.tipo === 'M'" checklist-model="navegador.selecao.items" checklist-value="item" ng-click="crudMataClick(scp, $event);"/>
                     </td>
-                    <td >{{item.id}}</td>
+                    <td >{{item.codigo}}</td>
                     <td >{{item.gerenciaTatica}}</td>
-                    <td align="justify">{{item.descricao}}</td>
+                    <td align="justify">&#x25B6;<B>{{item.codigo}}</B><BR>&#x25B6;{{item.descricao}}<BR>&#x25B6;{{item.objetivo}}</td>
                 </tr>
             </tbody>
         </table>

@@ -109,12 +109,9 @@
                     <div class="col-md-4" title="Método">
                         <div class="form-group">
                             <label class="control-label" for="metodo">Método</label>
-                            <div class="form-control" ng-if="cadastro.registro.id">
-                                {{cadastro.registro.metodo.nome}}
-                            </div>
                             <select id="metodo" name="metodo" class="form-control" ng-model="cadastro.registro.metodo" 
                             ng-options="item as item.nome for item in cadastro.apoio.metodoList | orderBy: 'nome' | filter: {finalidade: cadastro.registro.finalidade, ativo: 'S'} track by item.id" 
-                              required="true" ng-if="!cadastro.registro.id" ng-change="seProjetoDeCredito();" >
+                              required="true" ng-change="seProjetoDeCredito();" >
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.metodo.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -122,6 +119,26 @@
                             </div>
                         </div>
                     </div>
+
+
+                    <div class="col-md-3" title="Início">
+                        <div class="form-group">
+                            <label class="control-label" for="inicio">Data</label>
+                            
+                            <input class="form-control" type="text" id="inicio" name="inicio" ng-model="cadastro.registro.inicio" required="true" ui-date-mask></input>
+                            
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.inicio.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
+                            <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.inicio.$error.date">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Data Inválida!
+                            </div>
+                        </div>
+                    </div>
+
+
                 </div>
 
                 <div class="row" ng-if="cadastro.registro.situacao === 'X' || cadastro.registro.situacao === 'S'">

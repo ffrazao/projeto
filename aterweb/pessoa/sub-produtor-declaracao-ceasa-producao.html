@@ -1,135 +1,83 @@
-<div class="panel panel-default" >
+<div class="panel panel-default">
     <div class="panel-heading container-fluid">
         <frz-navegador
-            ng-model="produtorCeasaProducaoNvg" exibe-nome-botao="false"
-            dados="cadastro.producaoCeasaList"
-            acoes-especiais="acoesEspeciais"
-            on-abrir = "abrir()"
-            on-agir = "agir()"
-            on-editar = "editar()"
-            on-especial = "especial()"
-            on-excluir = "excluir()"
-            on-filtrar = "filtrar()"
-            on-incluir = "incluir()"
-            on-listar = "listar()"
-            on-navegar-primeiro = "navegarPrimeiro()"
-            on-navegar-anterior = "navegarAnterior()"
-            on-navegar-proximo = "navegarPosterior()"
-            on-navegar-ultimo = "navegarUltimo()"
-            on-proxima-pagina="proximaPagina()"
-            on-ultima-pagina="ultimaPagina()"
-            >
-        </frz-navegador>
+        ng-model="produtorCeasaProducaoNvg" exibe-nome-botao="false"
+        dados="conteudo.produtorCeasaProducaoList"
+        acoes-especiais="acoesEspeciais"
+        on-abrir = "abrir()"
+        on-agir = "agir()"
+        on-editar = "editar()"
+        on-especial = "especial()"
+        on-excluir = "excluir()"
+        on-filtrar = "filtrar()"
+        on-incluir = "incluir()"
+        on-listar = "listar()"
+        on-navegar-primeiro = "navegarPrimeiro()"
+        on-navegar-anterior = "navegarAnterior()"
+        on-navegar-proximo = "navegarPosterior()"
+        on-navegar-ultimo = "navegarUltimo()"
+        on-proxima-pagina="proximaPagina()"
+        on-ultima-pagina="ultimaPagina()"
+        ></frz-navegador>
     </div>
-    <div class="painel-body"  >
-        <div class="alert alert-warning" style="margin: 0px;" role="alert">
-            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-            Nenhum registro localizado!
-        </div>
-    </div>
-    <div class="table-responsive" >
-        <ng-form name="produtorCeasaProducaoFrm">
-            <table class="table table-hover table-striped">
+    <div class="table-responsive" ng-show="conteudo.produtorCeasaProducaoList.length > 0">
+        <ng-form name="metaTaticaListFrm">
+            <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>
-                            <frz-seletor ng-model="produtorCeasaProducaoNvg"></frz-seletor>
-                        </th>
-                        <th width="30">
-                            #
-                        </th>
+                        <th><frz-seletor ng-model="produtorCeasaProducaoNvg" dados="conteudo.produtorCeasaProducaoList"></frz-seletor></th>
+                        <th>#</th>
                         <th>Cultura/Produto</th>
-                        <th>Area</th>
+                        <th>Área</th>
                         <th>Produção</th>
-                        <th>Período de Colheita/Produção</th>
-                    </tr> 
+                        <th>Unidade</th>
+                        <th>Período Colheita</th>
+                    </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat-start="item in produtorCeasaProducaoNvg | pagina: produtorCeasaProducaoNvg.paginaAtual : produtorCeasaProducaoNvg.tamanhoPagina | limitTo: produtorCeasaProducaoNvg.tamanhoPagina" ng-click="produtorCeasaProducaoNvg.folhaAtual = $index + ((produtorCeasaProducaoNvg.paginaAtual-1) * produtorCeasaProducaoNvg.tamanhoPagina)">
-                        <td width="30px" rowspan="2">
-                            <input type="radio" ng-show="produtorCeasaProducaoNvg.selecao.tipo === 'U'" ng-model="produtorCeasaProducaoNvg.selecao.item" ng-value="item"/>
-                            <input type="checkbox" ng-show="produtorCeasaProducaoNvg.selecao.tipo === 'M'" checklist-model="produtorCeasaProducaoNvg.selecao.items" checklist-value="item" ng-click="crudMataClick(scp, $event);"/>
+                    <tr ng-repeat="reg in conteudo.produtorCeasaProducaoList ">
+                        <td>
+                            <input type="radio" ng-show="produtorCeasaProducaoNvg.selecao.tipo === 'U'" ng-model="produtorCeasaProducaoNvg.selecao.item" ng-value="reg"/>
+                            <input type="checkbox" ng-show="produtorCeasaProducaoNvg.selecao.tipo === 'M'" checklist-model="produtorCeasaProducaoNvg.selecao.items" checklist-value="reg"/>
                         </td>
-                        <td rowspan="2">
+                        <td>
                             {{$index + 1 + ((produtorCeasaProducaoNvg.paginaAtual-1) * produtorCeasaProducaoNvg.tamanhoPagina)}}
                         </td>
-                        <td>{{item[PRODUCAO_ANO]}}</td>
-                        <td>{{item[PRODUCAO_BEM_NOME]}}</td>
-                        <td>{{item[PRODUCAO_BEM_CLASSIFICACAO]}}</td>
-                        <td>{{item[PRODUCAO_COMUNIDADE_NOME]}}</td>
                         <td>
-                            <a ng-click="modalVerPropriedadeRural(item[PRODUCAO_PROPRIEDADE_RURAL_ID])">{{item[PRODUCAO_PROPRIEDADE_RURAL_NOME]}}</a>
+                            <div class="form-group col-md-3" > 
+                                <select class="form-control input-sm"  id="cultura_{{$index}}"  name="cultura_{{$index}}" ng-model="reg.cultura" ng-required="true" style="min-width: 200px;"
+                                    ng-options="item as item.nome for item in produtoList | orderBy: 'nome' track by item.id" >
+                                </select>
+                            </div>
                         </td>
-                        <td><button class="btn btn-primary btn-sm sr-only">Confirmar</button></td>
-                    </tr>
-                    <tr ng-repeat-end  title="Cadastrado por: {{item[PRODUCAO_INCLUSAO_NOME]}} em {{item[PRODUCAO_INCLUSAO_DATA] | date: 'dd/MM/yyyy'}}, alterado por: {{item[PRODUCAO_ALTERACAO_NOME]}} em {{item[PRODUCAO_ALTERACAO_DATA] | date: 'dd/MM/yyyy'}}">
-                        <td colspan="6">
-                            <table class="table table-hover table-striped table-condensed" style="font-size: 12px;">
-                                <thead>
-                                    <tr>
-                                        <th colspan="{{item[PRODUCAO_FORMA_LIST][0][FORMA_COMPOSICAO_LIST].length}}"><span>Forma de Producao</span></th>
-                                        <th>A</th>
-                                        <th>B</th>
-                                        <th>C</th>
-                                        <th>Volume</th>
-                                        <th rowspan="2">Valor Unitário</th>
-                                        <th rowspan="2">Valor Total</th>
-                                        <th rowspan="2">Data de Confirmação</th>
-                                    </tr> 
-                                    <tr>
-                                        <th ng-repeat="composicao in item[PRODUCAO_FORMA_LIST][0][FORMA_COMPOSICAO_LIST]">
-                                            <span>{{composicao[COMPOSICAO_FORMA_PRODUCAO_VALOR_ITEM_NOME]}}</span>
-                                        </th>
-                                        <th><small ng-if="item[PRODUCAO_NOME_ITEM_A]">({{item[PRODUCAO_NOME_ITEM_A]}})</small></th>
-                                        <th><small ng-if="item[PRODUCAO_NOME_ITEM_B]">({{item[PRODUCAO_NOME_ITEM_B]}})</small></th>
-                                        <th><small ng-if="item[PRODUCAO_NOME_ITEM_C]">({{item[PRODUCAO_NOME_ITEM_C]}})</small></th>
-                                        <th><small ng-if="item[PRODUCAO_FORMULA]">({{item[PRODUCAO_FORMULA]}})</small></th>
-                                    </tr> 
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="forma in item[PRODUCAO_FORMA_LIST] | limitTo: item[PRODUCAO_FORMA_LIST].length - 2" ng-class="{danger: (!forma[FORMA_DATA_CONFIRMACAO])}" title="Cadastrado por: {{forma[FORMA_INCLUSAO_NOME]}} em {{forma[FORMA_INCLUSAO_DATA] | date: 'dd/MM/yyyy'}}, alterado por: {{forma[FORMA_ALTERACAO_NOME]}} em {{forma[FORMA_ALTERACAO_DATA] | date: 'dd/MM/yyyy'}}">
-                                        <td ng-repeat="composicao in forma[FORMA_COMPOSICAO_LIST]">
-                                            {{composicao[COMPOSICAO_FORMA_PRODUCAO_VALOR_NOME]}}
-                                        </td>
-                                        <td class="text-right">{{forma[FORMA_VALOR_ITEM_A] | number: globalFracaoHectares}}</td>
-                                        <td class="text-right">{{forma[FORMA_VALOR_ITEM_B] | number: globalFracaoHectares}}</td>
-                                        <td class="text-right">{{forma[FORMA_VALOR_ITEM_C] | number: globalFracaoHectares}}</td>
-                                        <td class="text-right">{{forma[FORMA_VOLUME] | number: globalFracaoHectares}}</td>
-                                        <td class="text-right">{{forma[FORMA_VLR_UNIT] | currency}}</td>
-                                        <td class="text-right">{{forma[FORMA_VLR_TOTAL] | currency}}</td>
-                                        <td>{{forma[FORMA_DATA_CONFIRMACAO] | date: 'dd/MM/yyyy'}}</td>
-                                    </tr>
-                                </tbody>
-                                <tfoot>
-                                    <tr ng-repeat="forma in item[PRODUCAO_FORMA_LIST] | limitTo: -2">
-                                        <td class="text-right" colspan="{{item[PRODUCAO_FORMA_LIST][0][FORMA_COMPOSICAO_LIST].length}}">Total {{forma[FORMA_NOME_CALCULO]}}</td>
-                                        <td class="text-right">{{forma[FORMA_VALOR_ITEM_A] | number: globalFracaoHectares}}</td>
-                                        <td class="text-right">{{forma[FORMA_VALOR_ITEM_B] | number: globalFracaoHectares}}</td>
-                                        <td class="text-right">{{forma[FORMA_VALOR_ITEM_C] | number: globalFracaoHectares}}</td>
-                                        <td class="text-right">{{forma[FORMA_VOLUME] | number: globalFracaoHectares}}</td>
-                                        <td class="text-right">{{forma[FORMA_VLR_UNIT] | currency}}</td>
-                                        <td class="text-right">{{forma[FORMA_VLR_TOTAL] | currency}}</td>
-                                        <td>--</td>
-                                    </tr>
-                                </tfoot>
-                            </table>
+
+                        <td>
+                            <div class="form-group col-md-1" >
+                                <input class="form-control input-sm text-right" id="area_{{$index}}" name="area_{{$index}}" ng-model="reg.area" ui-number-mask="3" ng-required="true" style="min-width: 100px;" >                                
+                            </div>
                         </td>
-                    </tr>
+
+                        <td>
+                            <div class="form-group col-md-2" >
+                                <input class="form-control input-sm text-right" id="producao_{{$index}}" name="producao_{{$index}}" ng-model="reg.producao" ui-number-mask="3" ng-required="true" style="min-width: 100px;" >                                
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group col-md-1">
+                                <input class="form-control input-sm text-right" id="unidade_{{$index}}" name="unidade_{{$index}}" ng-model="reg.unidade" ng-required="true" style="min-width: 50px;" >                                
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group col-md-2" > 
+                                <input class="form-control input-sm " id="colheita_{{$index}}" name="colheita_{{$index}}" ng-model="reg.colheita" ng-required="true" style="min-width: 150px;" >                                
+                            </div>
+                        </td>
                 </tbody>
                 <tfoot>
-                    <tr>
-                        <th></th>
-                    </tr> 
                 </tfoot>
             </table>
-            <input type="hidden" id="indiceProducaoList" name="indiceProducaoList" ng-model="cadastro.registro.publicoAlvo.indiceProducaoList.length">
-
         </ng-form>
     </div>
     <div class="panel-footer">
-    </div>
-    <div class="label label-danger" ng-show="produtorCeasaProducaoNvg.submetido && indiceProducaoFrm.indiceProducaoList.$error.ngValorMin">
-        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-        Campo Obrigatório
     </div>
 </div>

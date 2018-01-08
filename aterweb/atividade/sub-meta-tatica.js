@@ -5,8 +5,8 @@
 'use strict';
 
 angular.module(pNmModulo).controller(pNmController,
-    ['$scope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv', 'mensagemSrv',  'MetaTaticaSrv', '$log',
-    function($scope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv, MetaTaticaSrv, $log) {
+    ['$scope', '$rootScope', 'FrzNavegadorParams', '$uibModal', '$uibModalInstance', 'toastr', 'UtilSrv', 'mensagemSrv',  'MetaTaticaSrv', '$log',
+    function($scope, $rootScope, FrzNavegadorParams, $uibModal, $uibModalInstance, toastr, UtilSrv, mensagemSrv, MetaTaticaSrv, $log) {
     'ngInject';
 
     // inicio rotinas de apoio
@@ -36,6 +36,16 @@ angular.module(pNmModulo).controller(pNmController,
 
 $scope.modalSelecinarMetaTatica = function (destino) {
         // abrir a modal
+
+        var tmp;
+        tmp = angular.copy( $scope.$parent.cadastro.registro.inicio ) ;
+
+        if( typeof(tmp) === 'string' ) {
+            $rootScope.MetaTaticaFiltro =  tmp.substring(6,10); 
+        } else {
+            $rootScope.MetaTaticaFiltro =  tmp.getFullYear();
+        }
+
         var modalInstance = $uibModal.open({
             animation: true,
             templateUrl: 'planejamento/meta-tatica-modal.html',
@@ -58,7 +68,7 @@ $scope.modalSelecinarMetaTatica = function (destino) {
             if (resultado.selecao.tipo === 'U') {
                 reg = { metaTatica : resultado.selecao.item,
                         metaTaticaId : resultado.selecao.item.id,
-                        metaTaticaNome : resultado.selecao.item.descricao,
+                        metaTaticaNome : resultado.selecao.item.codigo + " - " + resultado.selecao.item.descricao,
                         id : resultado.selecao.item.id,
                         descricao : resultado.selecao.item.descricao
                 };
@@ -71,7 +81,7 @@ $scope.modalSelecinarMetaTatica = function (destino) {
 
                     reg = { metaTatica : value,
                             metaTaticaId : value.id,
-                            metaTaticaNome : value.descricao,
+                            metaTaticaNome : value.codigo + " - " + value.descricao,
                             id : value.id,
                             descricao : value.descricao
                     };

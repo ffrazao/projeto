@@ -20,7 +20,8 @@
             $scope.crudInit($scope, $state, null, pNmFormulario);
 
             var filtro = {};
-            filtro.ano = 2017;
+            filtro.ano = $rootScope.MetaTaticaFiltro;
+
             MetaTaticaSrv.filtrar( filtro ).success( function( resposta ){  
                 if( resposta.mensagem === "OK" ) {
                     $scope.navegador.dados = resposta.resultado ; 
