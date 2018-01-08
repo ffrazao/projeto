@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-03-24T16:38:18 -->
+<!-- 2018-01-03T08:52:41 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Capa" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4be54963-8492-4271-af5b-1a708b6a64c7">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="RelatorioNome" class="java.lang.String" isForPrompting="false">
@@ -19,6 +19,9 @@
 	</parameter>
 	<parameter name="Parte" class="java.lang.Integer">
 		<parameterDescription><![CDATA[Número da Parte do Relatório]]></parameterDescription>
+	</parameter>
+	<parameter name="Tecnico" class="java.lang.String">
+		<parameterDescription><![CDATA[$P{Tecnico}]]></parameterDescription>
 	</parameter>
 	<queryString>
 		<![CDATA[]]>
@@ -96,38 +99,18 @@
 				<reportElement x="0" y="7" width="555" height="165" uuid="f45da899-0788-45c8-b4f0-1c691655d88f"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="211" y="7" width="135" height="16" uuid="922e83ef-39cb-4ae2-a53c-e63fa68d3625"/>
+				<reportElement x="5" y="49" width="135" height="16" uuid="922e83ef-39cb-4ae2-a53c-e63fa68d3625"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[RESPONSÁVEL TÉCNICO]]></text>
-			</staticText>
-			<staticText>
-				<reportElement stretchType="RelativeToBandHeight" x="7" y="36" width="360" height="1" uuid="d3fde933-a2f1-42dc-850f-f8c26cab45d3"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-				</box>
-				<text><![CDATA[]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="26" y="38" width="61" height="13" uuid="56ffee0d-6670-4d81-ad0a-14cf93e90289"/>
-				<textElement textAlignment="Right">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[TÉCNICO:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="26" y="53" width="61" height="13" uuid="8d9e5c84-e82a-4b05-9e28-e95df9832418"/>
-				<textElement textAlignment="Right">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[REGISTRO:]]></text>
+				<text><![CDATA[RESPONSÁVEL TÉCNICO:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="93" y="37" width="274" height="14" uuid="ac425d49-f441-41d5-ac46-2f656164880d"/>
-			</textField>
-			<textField>
-				<reportElement x="93" y="52" width="274" height="14" uuid="b6d4ffd6-9824-4c23-97df-6cf2e000fa1c"/>
+				<reportElement stretchType="RelativeToBandHeight" x="100" y="36" width="360" height="1" uuid="adf626f6-7d76-4afa-86d2-75f0fba2b2d3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{Tecnico}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="492" y="22" width="74" height="19" uuid="833ecfd2-cbfe-4328-b3ae-e2f117c39d44"/>
@@ -141,46 +124,46 @@
 				<text><![CDATA[DATA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="5" y="70" width="140" height="20" uuid="700f5b06-ed58-4dee-a999-fd4d75a6075c"/>
+				<reportElement x="190" y="10" width="160" height="20" uuid="700f5b06-ed58-4dee-a999-fd4d75a6075c"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[TERMO DE COMPROMISSO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="45" y="85" width="465" height="38" uuid="ea365f52-346b-4e45-9ed8-89551cb5e1c5"/>
+				<reportElement x="45" y="78" width="465" height="38" uuid="ea365f52-346b-4e45-9ed8-89551cb5e1c5"/>
 				<textElement textAlignment="Center">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Comprometo-me a aplicar os recursos de acordo com o orçamento apresentado, seguir as recomendações técnicas e comunicar a EMATER-DF quaisquer alterações referentes às condições expressas no presente projeto]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="96" y="143" width="274" height="14" uuid="d7b4e627-fb75-4567-9047-f36ece4e09e6"/>
+				<reportElement x="174" y="143" width="274" height="14" uuid="d7b4e627-fb75-4567-9047-f36ece4e09e6"/>
 				<textFieldExpression><![CDATA[$F{publicoAlvo}.getPessoa().getNome()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement stretchType="RelativeToBandHeight" x="10" y="143" width="360" height="1" uuid="b6b68b04-f79b-4836-91db-d5aeef7602ec"/>
+				<reportElement stretchType="RelativeToBandHeight" x="89" y="143" width="360" height="1" uuid="b6b68b04-f79b-4836-91db-d5aeef7602ec"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 				</box>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="5" y="143" width="84" height="13" uuid="d079b5e3-b8fb-423c-a082-93669cab2946"/>
+				<reportElement x="83" y="143" width="84" height="13" uuid="d079b5e3-b8fb-423c-a082-93669cab2946"/>
 				<textElement textAlignment="Right">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[PROPONENTE:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="28" y="158" width="61" height="13" uuid="46b89099-ccbc-46e5-b58e-f49d2ee1228f"/>
+				<reportElement x="56" y="158" width="61" height="13" uuid="46b89099-ccbc-46e5-b58e-f49d2ee1228f"/>
 				<textElement textAlignment="Right">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[CPF:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="96" y="158" width="274" height="14" uuid="d7cf5909-6582-42ca-abac-f14973fae643"/>
+				<reportElement x="124" y="158" width="274" height="14" uuid="d7cf5909-6582-42ca-abac-f14973fae643"/>
 				<textFieldExpression><![CDATA[$P{CPF}]]></textFieldExpression>
 			</textField>
 		</band>

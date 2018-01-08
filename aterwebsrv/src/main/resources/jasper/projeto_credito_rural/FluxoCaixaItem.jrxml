@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-03-13T15:58:31 -->
+<!-- 2017-12-28T15:46:06 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ProponentePropriedade" pageWidth="842" pageHeight="555" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="4f3e2a9b-c98c-497f-9ccc-4d9c8fd3b19a">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -32,6 +32,9 @@
 	<field name="codigo" class="br.gov.df.emater.aterwebsrv.modelo.dominio.FluxoCaixaCodigo">
 		<fieldDescription><![CDATA[codigo]]></fieldDescription>
 	</field>
+	<field name="tipo" class="br.gov.df.emater.aterwebsrv.modelo.dominio.FluxoCaixaTipo">
+		<fieldDescription><![CDATA[tipo]]></fieldDescription>
+	</field>
 	<field name="ano07" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[ano07]]></fieldDescription>
 	</field>
@@ -60,18 +63,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<columnHeader>
-		<band height="21" splitType="Stretch">
-			<staticText>
-				<reportElement x="0" y="0" width="150" height="15" uuid="89b19077-74e6-4e09-bc43-b15b48ec3f62">
-					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-				</reportElement>
-				<textElement>
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[RECEITAS]]></text>
-			</staticText>
+		<band height="20" splitType="Stretch">
 			<staticText>
 				<reportElement stretchType="RelativeToBandHeight" x="0" y="16" width="842" height="1" uuid="c4b82e86-c1ca-4e52-bfbb-b2a216ee4abe">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
@@ -191,6 +183,13 @@
 				</textElement>
 				<text><![CDATA[[  ANO 10  ]]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="4" y="0" width="99" height="20" uuid="83d6dce0-9fa7-4b89-aaf5-7db438ace94d"/>
+				<textElement>
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipo}.toString()]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 	<detail>

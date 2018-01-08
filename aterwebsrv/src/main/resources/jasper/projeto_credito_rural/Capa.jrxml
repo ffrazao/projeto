@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-11-20T09:26:37 -->
+<!-- 2017-12-27T09:08:13 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Capa" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4be54963-8492-4271-af5b-1a708b6a64c7">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="RelatorioNome" class="java.lang.String" isForPrompting="false">
@@ -168,7 +168,7 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{agenteFinanceiro}.getPessoaJuridica().getNome()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{agenteFinanceiro}.getPessoaJuridica().getApelidoSigla()]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="208" y="624" width="340" height="15" uuid="60ffdaae-c06d-49c8-ab94-b2b0ede934b3"/>
@@ -190,20 +190,6 @@
 					<font isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{Unidade}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="0" y="699" width="200" height="15" uuid="d15ab846-a750-48c8-acc2-c683afd94622"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[CÓDIGO ATIVIDADE:]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="207" y="699" width="340" height="15" uuid="72aada44-5b61-4b30-97a8-efda4ebed63c"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{atividade}.getCodigo()]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="208" y="669" width="340" height="15" uuid="adf626f6-7d76-4afa-86d2-75f0fba2b2d3"/>

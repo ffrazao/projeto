@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-03-06T15:13:24 -->
+<!-- 2017-12-28T13:14:03 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Capa" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4be54963-8492-4271-af5b-1a708b6a64c7">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="net.sf.jasperreports.print.create.bookmarks" value="false"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
@@ -73,6 +74,15 @@
 	<variable name="totalServico" class="java.lang.Double" resetType="None">
 		<initialValueExpression><![CDATA[0d]]></initialValueExpression>
 	</variable>
+	<group name="cultura2" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{formaProducaoList}]]></groupExpression>
+		<groupHeader>
+			<band height="8"/>
+		</groupHeader>
+		<groupFooter>
+			<band height="8"/>
+		</groupFooter>
+	</group>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -195,7 +205,7 @@
 				<subreportExpression><![CDATA[$P{DiretorioJasper} + "/projeto_credito_rural/CustoProducaoItem.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
-		<band height="64">
+		<band height="52">
 			<staticText>
 				<reportElement x="240" y="2" width="204" height="15" uuid="bd69f13c-530d-499c-aff9-5c17951de2aa">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>

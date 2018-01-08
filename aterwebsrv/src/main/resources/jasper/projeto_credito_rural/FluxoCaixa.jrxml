@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-03-14T09:03:25 -->
+<!-- 2018-01-06T10:42:03 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Capa" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="BlankPage" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4be54963-8492-4271-af5b-1a708b6a64c7">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -30,6 +30,36 @@
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
+	<field name="fluxoAcumuladoAno01" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[fluxoAcumuladoAno01]]></fieldDescription>
+	</field>
+	<field name="fluxoAcumuladoAno02" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[fluxoAcumuladoAno02]]></fieldDescription>
+	</field>
+	<field name="fluxoAcumuladoAno03" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[fluxoAcumuladoAno03]]></fieldDescription>
+	</field>
+	<field name="fluxoAcumuladoAno04" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[fluxoAcumuladoAno04]]></fieldDescription>
+	</field>
+	<field name="fluxoAcumuladoAno05" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[fluxoAcumuladoAno05]]></fieldDescription>
+	</field>
+	<field name="fluxoAcumuladoAno06" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[fluxoAcumuladoAno06]]></fieldDescription>
+	</field>
+	<field name="fluxoAcumuladoAno07" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[fluxoAcumuladoAno07]]></fieldDescription>
+	</field>
+	<field name="fluxoAcumuladoAno08" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[fluxoAcumuladoAno08]]></fieldDescription>
+	</field>
+	<field name="fluxoAcumuladoAno09" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[fluxoAcumuladoAno09]]></fieldDescription>
+	</field>
+	<field name="fluxoAcumuladoAno10" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[fluxoAcumuladoAno10]]></fieldDescription>
+	</field>
 	<field name="fluxoLiquidoAno09" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[fluxoLiquidoAno09]]></fieldDescription>
 	</field>
@@ -202,9 +232,9 @@
 				<subreportExpression><![CDATA[$P{DiretorioJasper} + "/projeto_credito_rural/FluxoCaixaItem.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
-		<band height="70">
+		<band height="107">
 			<staticText>
-				<reportElement x="0" y="0" width="160" height="15" uuid="73775229-e284-470d-945f-1e4df4de9680">
+				<reportElement x="0" y="0" width="180" height="15" uuid="73775229-e284-470d-945f-1e4df4de9680">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
@@ -610,6 +640,104 @@
 				</reportElement>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{fluxoLiquidoAno10}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="74" width="156" height="15" uuid="1bea900d-f2e5-46cc-a3fb-27e09746c6a1"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[FLUXO ACUMULADO DE CAIXA]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="607" y="73" width="60" height="15" uuid="0e4c950b-315d-4347-b341-b53bcb3f18dd">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{fluxoAcumuladoAno08}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="349" y="73" width="60" height="15" uuid="de9ada61-7ef7-4b73-a7e8-ee50dc26b815">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{fluxoAcumuladoAno04}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="478" y="73" width="60" height="15" uuid="8bd93902-7654-42f5-b081-6af5d3ed2902">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{fluxoAcumuladoAno06}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="413" y="73" width="60" height="15" uuid="75d48c77-5ab5-4da5-9125-0c88c1957f4b">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{fluxoAcumuladoAno05}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="158" y="73" width="60" height="15" uuid="16452722-a83f-47ea-9edc-aeb1e029d8c2">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{fluxoAcumuladoAno01}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="670" y="73" width="60" height="15" uuid="9dbe090f-c9fa-4e83-979f-4c7c621c47a7">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{fluxoAcumuladoAno09}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="542" y="73" width="60" height="15" uuid="9522eb2c-83ad-4937-8532-3213fe77b468">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{fluxoAcumuladoAno07}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="222" y="73" width="60" height="15" uuid="e5419513-1b12-4cf5-9d41-1cafaad5189b">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{fluxoAcumuladoAno02}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="285" y="73" width="60" height="15" uuid="22910989-bea5-492d-9e4b-8776b49e4d4a">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{fluxoAcumuladoAno03}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="735" y="73" width="60" height="15" uuid="d4f64be3-7c08-4e1e-9cfd-532e3fefe4cd">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{fluxoAcumuladoAno10}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-03-22T16:08:03 -->
+<!-- 2017-12-27T11:54:41 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Capa" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4be54963-8492-4271-af5b-1a708b6a64c7">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Sample DB"/>
 	<parameter name="RelatorioNome" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[Nome do Relatório]]></parameterDescription>
 		<defaultValueExpression><![CDATA[$P{RelatorioNome}]]></defaultValueExpression>
@@ -194,23 +194,14 @@
 				<text><![CDATA[Órgao Expedidor]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="480" y="19" width="75" height="13" uuid="60c89dd8-f7f0-4e05-b324-95cc292b1b0c">
-					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-				</reportElement>
-				<textElement>
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Data Expedição]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="51" width="100" height="13" uuid="56f9ccc7-5ca5-4faa-8cec-b8829af73c18"/>
+				<reportElement x="484" y="19" width="170" height="13" uuid="afb76f76-d96f-4ae0-8b26-2ba6d563ccd6"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Nascimento]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="63" y="51" width="170" height="13" uuid="afb76f76-d96f-4ae0-8b26-2ba6d563ccd6"/>
+				<reportElement x="0" y="51" width="170" height="13" uuid="afb76f76-d96f-4ae0-8b26-2ba6d563ccd6"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
@@ -296,14 +287,14 @@
 				<text><![CDATA[Inscrição Estadual]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="114" y="154" width="316" height="13" uuid="c8db5fa2-2b24-4557-a2ac-e65d6106a621"/>
+				<reportElement x="182" y="154" width="248" height="13" uuid="c8db5fa2-2b24-4557-a2ac-e65d6106a621"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Principais Atividades Produtivas]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="440" y="154" width="115" height="13" uuid="47886a35-5b79-4b29-bef0-3972f5d3a62a"/>
+				<reportElement x="438" y="154" width="122" height="13" uuid="47886a35-5b79-4b29-bef0-3972f5d3a62a"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
@@ -362,20 +353,7 @@
 				<textFieldExpression><![CDATA[$F{proponente}.getRgOrgaoEmissor() + " / " + $F{proponente}.getRgUf()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="480" y="34" width="75" height="13" uuid="1a486cfb-69c2-4389-9bbd-571317fd8ee8"/>
-				<box>
-					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement>
-					<font isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{proponente}.getRgDataEmissao().getTimeInMillis())]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="66" width="60" height="13" uuid="7c3cd723-97f2-4092-bb2c-fc124e6363e5"/>
+				<reportElement x="484" y="34" width="60" height="13" uuid="7c3cd723-97f2-4092-bb2c-fc124e6363e5"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -388,7 +366,7 @@
 				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{proponente}.getNascimento().getTimeInMillis())]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="63" y="66" width="170" height="13" uuid="79b156d3-a5e4-4f8c-b1b0-b032fe6b6438"/>
+				<reportElement x="0" y="66" width="230" height="13" uuid="79b156d3-a5e4-4f8c-b1b0-b032fe6b6438"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -437,7 +415,7 @@
 				<textElement>
 					<font isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{proponente}.getNascimentoMunicipio().getNome() + "/" + $F{proponente}.getNascimentoEstado().getSigla()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{proponente}.getNascimentoMunicipio().getNome() + "/" + $F{proponente}.getNascimentoMunicipio().getEstado().getSigla()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="98" width="96" height="13" uuid="36b6553b-f98c-4f3d-a009-52e5faa04a3b"/>
@@ -476,7 +454,7 @@
 				<textElement>
 					<font isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{telefone}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{telefone}.getNumero()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="304" y="98" width="97" height="13" uuid="cb4304d3-c163-41c3-807e-4feb007e41ce"/>
@@ -531,7 +509,7 @@
 				<textFieldExpression><![CDATA[$F{mae}.getNome()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="169" width="104" height="13" uuid="3d6b31b2-84d1-4ca6-b1b7-3e31a923fdbb"/>
+				<reportElement x="0" y="169" width="170" height="13" uuid="3d6b31b2-84d1-4ca6-b1b7-3e31a923fdbb"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -544,7 +522,7 @@
 				<textFieldExpression><![CDATA[$F{proponente}.getInscricaoEstadual()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="114" y="169" width="316" height="13" uuid="dc97399f-8cbe-458c-9da5-e9f3ea46f012"/>
+				<reportElement x="182" y="169" width="248" height="13" uuid="dc97399f-8cbe-458c-9da5-e9f3ea46f012"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -579,7 +557,7 @@
 				<text><![CDATA[PROPONENTE:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="224" width="140" height="13" uuid="6319db00-35ac-4298-8883-e2c1bb69f68d"/>
+				<reportElement x="0" y="224" width="290" height="13" uuid="6319db00-35ac-4298-8883-e2c1bb69f68d"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -612,7 +590,7 @@
 				<text><![CDATA[CÔNJUGE:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="157" y="224" width="124" height="13" uuid="86750061-bed0-443b-bae5-d1d6f16b20f1"/>
+				<reportElement x="300" y="224" width="124" height="13" uuid="86750061-bed0-443b-bae5-d1d6f16b20f1"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -625,7 +603,7 @@
 				<textFieldExpression><![CDATA[$F{conjuge}.getCpf()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="157" y="211" width="140" height="13" uuid="acbd1ec8-fc81-4704-a201-89841c95506a">
+				<reportElement x="300" y="211" width="140" height="13" uuid="acbd1ec8-fc81-4704-a201-89841c95506a">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
@@ -636,7 +614,7 @@
 				<text><![CDATA[CPF]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="287" y="224" width="117" height="13" uuid="b6e1f270-a106-40f5-bebd-5a58e0728672"/>
+				<reportElement x="438" y="224" width="117" height="13" uuid="b6e1f270-a106-40f5-bebd-5a58e0728672"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -649,7 +627,7 @@
 				<textFieldExpression><![CDATA[$F{conjuge}.getRgNumero()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="287" y="213" width="140" height="13" uuid="89de34bc-7c62-4c7a-80c6-2446514bfa53">
+				<reportElement x="440" y="210" width="140" height="13" uuid="89de34bc-7c62-4c7a-80c6-2446514bfa53">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
@@ -660,7 +638,7 @@
 				<text><![CDATA[RG]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="415" y="224" width="140" height="13" uuid="94fa1c24-5e39-4b42-b7f7-dc7c764969af"/>
+				<reportElement x="0" y="260" width="140" height="13" uuid="94fa1c24-5e39-4b42-b7f7-dc7c764969af"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -673,7 +651,7 @@
 				<textFieldExpression><![CDATA[$F{conjuge}.getRgOrgaoEmissor() + " / " + $F{conjuge}.getRgUf()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="415" y="211" width="140" height="13" uuid="5e45fc84-a1da-44ae-b76a-f161463ad77e">
+				<reportElement x="0" y="245" width="140" height="13" uuid="5e45fc84-a1da-44ae-b76a-f161463ad77e">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
@@ -682,30 +660,6 @@
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Órgão Expedidor]]></text>
-			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="260" width="140" height="13" uuid="edda2585-d373-4303-b2f7-68a447f8700d"/>
-				<box>
-					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement>
-					<font isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{conjuge}.getRgDataEmissao().getTimeInMillis())]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="0" y="245" width="140" height="13" uuid="ba5ae345-362b-44ad-9d07-7b06db29003b">
-					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<textElement>
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Data Expedição]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="150" y="260" width="140" height="13" uuid="ab83a902-34e0-46b9-9388-291e1cdd3aee"/>
@@ -718,7 +672,7 @@
 				<textElement>
 					<font isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{conjuge}.getNascimentoMunicipio().getNome() + "/" + $F{conjuge}.getNascimentoEstado().getSigla()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{conjuge}.getNascimentoMunicipio().getNome() + "/" + $F{conjuge}.getNascimentoMunicipio().getEstado().getSigla()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="150" y="245" width="140" height="13" uuid="ea10b5dd-8f30-4e07-b8f0-180463b07830">
@@ -742,7 +696,7 @@
 				<textElement>
 					<font isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{proponente}.getProfissao().getNome()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{conjuge}.getProfissao().getNome()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="300" y="245" width="140" height="13" uuid="e60c0d44-024d-4db9-921e-208c4088254f">
@@ -765,7 +719,7 @@
 				<text><![CDATA[DADOS SÓCIO-ECONÔMICOS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="314" width="63" height="13" uuid="7ae725f8-6581-4653-a5e5-72c8166bca18">
+				<reportElement x="0" y="314" width="70" height="13" uuid="7ae725f8-6581-4653-a5e5-72c8166bca18">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
@@ -809,7 +763,7 @@
 				<textFieldExpression><![CDATA[$F{rendaBrutaAnualPropriedadePercentual}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="422" width="63" height="13" uuid="69f1f1a9-93a3-4680-b9eb-845a31343bfe">
+				<reportElement x="0" y="422" width="70" height="13" uuid="69f1f1a9-93a3-4680-b9eb-845a31343bfe">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
@@ -846,7 +800,7 @@
 				<textFieldExpression><![CDATA[$F{rendaBrutaAnualTotalPercentual}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="350" width="63" height="13" uuid="07d2666e-25f4-4367-aa0c-7b18a2dec286">
+				<reportElement x="0" y="350" width="70" height="13" uuid="07d2666e-25f4-4367-aa0c-7b18a2dec286">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
@@ -883,7 +837,7 @@
 				<textFieldExpression><![CDATA[$F{rendaBrutaAnualAssalariadoPercentual}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="386" width="63" height="13" uuid="0d1321c1-6939-4b1f-b3c7-965002324ca3">
+				<reportElement x="0" y="386" width="70" height="13" uuid="0d1321c1-6939-4b1f-b3c7-965002324ca3">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>

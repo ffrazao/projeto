@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
-<!-- 2016-12-13T16:16:29 -->
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2018-01-02T15:08:18 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ProponentePropriedade" pageWidth="555" pageHeight="842" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="4f3e2a9b-c98c-497f-9ccc-4d9c8fd3b19a">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -58,14 +58,17 @@
 	<field name="paiNome" class="java.lang.String">
 		<fieldDescription><![CDATA[paiNome]]></fieldDescription>
 	</field>
+	<field name="conjuge" class="java.lang.String">
+		<fieldDescription><![CDATA[conjuge]]></fieldDescription>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
-		<band height="190" splitType="Stretch">
+		<band height="245" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<staticText>
-				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="555" height="190" uuid="f9666f8f-a78c-4a1d-b8f4-cd5edeb806d8">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="555" height="245" uuid="f9666f8f-a78c-4a1d-b8f4-cd5edeb806d8">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -424,7 +427,9 @@
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Left"/>
+				<textElement textAlignment="Left">
+					<paragraph firstLineIndent="1"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{paiNome}]]></textFieldExpression>
 			</textField>
 			<staticText>
@@ -448,8 +453,30 @@
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Left"/>
+				<textElement textAlignment="Left">
+					<paragraph firstLineIndent="1"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{maeNome}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="11" y="178" width="46" height="21" uuid="e559d728-d39a-4c00-8125-067d9638bdc0"/>
+				<textElement verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Conjuge]]></text>
+			</staticText>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="10" y="202" width="260" height="15" uuid="d165ad15-d8fb-4b74-b353-1afa6f62f549"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left">
+					<paragraph firstLineIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{conjuge}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
