@@ -147,8 +147,8 @@
                 }
                 var tmp, reg;
                 var ideaFlor = [];
-                for (var flor in scp.cadastro.registro.producaoFloriculturaList) {
-                    var contFlor = 0;
+                var contFlor = 0;
+                for (var flor in scp.cadastro.registro.producaoFloriculturaList) {                    
                     if (scp.cadastro.registro.producaoFloriculturaList[flor].id < 0) {
                         ideaFlor[contFlor] = scp.cadastro.registro.producaoFloriculturaList[flor];
                         contFlor++;
@@ -156,32 +156,32 @@
 
                 }
                 var ideaArte = [];
-                for (var Arte in scp.cadastro.registro.producaoArtesanatoList) {
-                    var contArte = 0;
+                var contArte = 0;
+                for (var Arte in scp.cadastro.registro.producaoArtesanatoList) {                    
                     if (scp.cadastro.registro.producaoArtesanatoList[Arte].id < 0) {
                         ideaArte[contArte] = scp.cadastro.registro.producaoArtesanatoList[Arte];
                         contArte++;
                     }
                 }
                 var ideaAgri = [];
-                for (var Agricola in scp.cadastro.registro.producaoAgricolaList) {
-                    var contAgri = 0;
+                var contAgri = 0;
+                for (var Agricola in scp.cadastro.registro.producaoAgricolaList) {                    
                     if (scp.cadastro.registro.producaoAgricolaList[Agricola].id < 0) {
                         ideaAgri[contAgri] = scp.cadastro.registro.producaoAgricolaList[Agricola];
                         contAgri++;
                     }
                 }
                 var ideaAgro = [];
-                for (var agro in scp.cadastro.registro.producaoAgroindustriaList) {
-                    var contAgro = 0;
+                var contAgro = 0;
+                for (var agro in scp.cadastro.registro.producaoAgroindustriaList) {                    
                     if (scp.cadastro.registro.producaoAgroindustriaList[agro].id < 0) {
                         ideaAgro[contAgro] = scp.cadastro.registro.producaoAgroindustriaList[agro];
                         contAgro++;
                     }
                 }
                 var ideaAnimal = [];
-                for (var animal in scp.cadastro.registro.producaoAnimalList) {
-                    var contAnimal = 0;
+                var contAnimal = 0;
+                for (var animal in scp.cadastro.registro.producaoAnimalList) {                    
                     if (scp.cadastro.registro.producaoAnimalList[animal].id < 0) {
                         ideaAnimal[contAnimal] = scp.cadastro.registro.producaoAnimalList[animal];
                         contAnimal++;

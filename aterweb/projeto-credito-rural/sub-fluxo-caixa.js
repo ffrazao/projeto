@@ -44,6 +44,8 @@ angular.module(pNmModulo).controller(pNmController,
         if (!$scope.cadastro.apoio.fluxoCaixa.FluxoLiquidoCaixaAcumulado) {
             $scope.cadastro.apoio.fluxoCaixa.FluxoLiquidoCaixaAcumulado = {fluxoCaixaAnoList: []};
         }
+
+        console.log($scope.cadastro.apoio.fluxoCaixa);
     };
     init();
 
