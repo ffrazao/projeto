@@ -903,13 +903,14 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 			montaParte("CADASTRO DA PROPRIEDADE RURAL", "PropriedadeRural", parametros, captarCadastroPropriedadeRural(contexto, pList), parteList);
 			montaParte("TRIÊNIO, INVERSÕES, CUSTOS E RECEITAS", "Solicitacao", parametros, pList, parteList);
 
-			// TODO criar
-			montaParte("CUSTO DE PRODUÇÃO", "CustoProducao", parametros, captarCustoProducao(pList.get(0)), parteList);
+			
 
 			montaParte("CRONOGRAMA DE REEMBOLSO", "Cronograma", parametros, pList, parteList);
 			montaParte("FLUXO DE CAIXA", "FluxoCaixa", parametros, captarFluxoCaixa(pList.get(0).getFluxoCaixaList()), parteList);
 			montaParte("OBJETIVOS E PARECER TÉCNICO", "ParecerTecnico", parametros, pList, parteList);
 			montaParte("GARANTIAS - AVALISTAS", "Garantia", parametros, captarGarantia(pList), parteList);
+			// TODO criar
+			montaParte("CUSTO DE PRODUÇÃO", "CustoProducao", parametros, captarCustoProducao(pList.get(0)), parteList);
 
 			// juntar as partes do relatório
 			// é necessário quebrar por orientação da página
