@@ -221,7 +221,7 @@ class FluxoCaixaCodigoDespesaAmortizacaoDividasExistente extends FluxoCaixaCodig
 		List<Integer> reguaPrincipal = null;
 		reguaPrincipal = calcularReguaFinanciamento(projetoCreditoRural.getCronogramaPagamentoInvestimentoList(), reguaPrincipal);
 		reguaPrincipal = calcularReguaFinanciamento(projetoCreditoRural.getCronogramaPagamentoCusteioList(), reguaPrincipal);
-
+		
 		for (Map<String, Object> item : lista) {
 			String dataStr[] = new String[2];
 			Calendar data[] = new Calendar[2];
@@ -246,8 +246,9 @@ class FluxoCaixaCodigoDespesaAmortizacaoDividasExistente extends FluxoCaixaCodig
 					}
 				}
 			}
+			
 		}
-
+		//System.out.println("amort: " + modelo.getDescricao());
 		return modelo;
 	}
 
