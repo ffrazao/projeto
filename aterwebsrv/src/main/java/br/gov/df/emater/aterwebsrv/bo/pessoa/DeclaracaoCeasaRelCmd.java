@@ -31,12 +31,20 @@ public class DeclaracaoCeasaRelCmd extends _Comando {
 
 	@Autowired
 	private _Relatorio relatorio;
-
+	
+	
+	int cont;
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 		DeclaracaoCeasaRelFiltroDto filtro = (DeclaracaoCeasaRelFiltroDto) contexto.getRequisicao();
+		 cont = 1;
+		filtro.getProducaoList().forEach( (x) -> {
+			x.setId(cont);
+			cont++;
+		});
+		
 		List<PublicoAlvoPropriedadeRural> lista = null;
-		lista = (List<PublicoAlvoPropriedadeRural>) dao.findAll(filtro.getDeclaracaoProdutorRelFiltroDto().getPublicoAlvoPropriedadeRuralIdList());
+		lista = (List<PublicoAlvoPropriedadeRural>) dao.findAll(filtro.getPublicoAlvoPropriedadeRuralIdList());
 		String principalAtividadeProdutiva = "";
 		String tipoPessoa = "";
 		
@@ -56,12 +64,9 @@ public class DeclaracaoCeasaRelCmd extends _Comando {
 					publicoAlvoPropriedadeRural.getPropriedadeRural().setPrincipaisAtividadesProdutivas(principalAtividadeProdutiva);
 				}
 				tipoPessoa = publicoAlvoPropriedadeRural.getPublicoAlvo().getPessoa().getPessoaTipo().toString();
-			}
-
-			
+			}	
 		}
 		
-
 		Map<String, Object> parametros = new HashMap<String, Object>();
 		parametros.put("Usuario", getUsuario(contexto.getUsuario().getName()));
 		parametros.put("RelatorioNome", "DECLARAÇÃO DE ATIVIDADE RURAL");
