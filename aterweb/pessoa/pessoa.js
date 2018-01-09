@@ -427,10 +427,17 @@
 
                             var requisicao = {
                                 publicoAlvoPropriedadeRuralIdList: publicoAlvoPropriedadeRuralIdList,
-                                producao: conteudo.produtorCeasaProducaoList
+                                producaoList: conteudo.produtorCeasaProducaoList
                             };
 
+                            console.log("requisicao");
+                            console.log(requisicao);
+
                             PessoaSrv.declaracaoCeasaRel(requisicao).success(function(resposta) {
+                                console.log("resposta");
+                            console.log(resposta);
+
+
                                 if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {
                                     window.open("data:application/pdf;base64,"+resposta.resultado);
                                 } else {
