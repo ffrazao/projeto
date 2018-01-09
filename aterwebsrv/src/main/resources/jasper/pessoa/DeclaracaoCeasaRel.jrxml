@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-04-17T13:49:29 -->
+<!-- 2018-01-09T11:19:37 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RelatorioTeste" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" uuid="74a58a1f-20c1-4882-a004-63331c202191">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -12,7 +12,20 @@
 	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<import value="org.apache.commons.collections.CollectionUtils"/>
 	<import value="br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica"/>
+	<subDataset name="Dataset1" uuid="0454908c-d0dd-474c-8978-9dbfdcc8b412">
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+	</subDataset>
+	<parameter name="DiretorioJasper" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[DiretorioJasper]]></parameterDescription>
+	</parameter>
+	<parameter name="Producao" class="java.util.List">
+		<parameterDescription><![CDATA[Producao]]></parameterDescription>
+		<defaultValueExpression><![CDATA[$P{Producao}]]></defaultValueExpression>
+	</parameter>
 	<parameter name="RelatorioNome" class="java.lang.String">
 		<parameterDescription><![CDATA[Nome do Relatório]]></parameterDescription>
 		<defaultValueExpression><![CDATA[$P{RelatorioNome}]]></defaultValueExpression>
@@ -24,10 +37,6 @@
 	<parameter name="TipoPessoa" class="java.lang.String">
 		<parameterDescription><![CDATA[TipoPessoa]]></parameterDescription>
 		<defaultValueExpression><![CDATA[$P{TipoPessoa}]]></defaultValueExpression>
-	</parameter>
-	<parameter name="Observacao" class="java.lang.String">
-		<parameterDescription><![CDATA[Observacao]]></parameterDescription>
-		<defaultValueExpression><![CDATA[$P{Observacao}]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[]]>
@@ -107,7 +116,7 @@
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Left"/>
-				<textFieldExpression><![CDATA[$F{publicoAlvo}.getPessoa().getClass().asSubclass(PessoaFisica.class).cast($F{publicoAlvo}.getPessoa()).getCpf() ]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{publicoAlvo}.getPessoa().getClass().asSubclass(PessoaFisica.class).cast($F{publicoAlvo}.getPessoa()).getCpf()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="190" y="356" width="332" height="15" uuid="c12847fd-21dd-4977-b5b2-a9e4cec85190"/>
@@ -196,7 +205,7 @@
 			<staticText>
 				<reportElement x="34" y="394" width="138" height="17" uuid="79e29898-ec02-46aa-b67d-e1f730851bcf"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<text><![CDATA[OBSERVAÇÕES:]]></text>
+				<text><![CDATA[PREVISÃO DE PRODUÇÃO:]]></text>
 			</staticText>
 			<rectangle>
 				<reportElement positionType="Float" x="35" y="545" width="487" height="70" uuid="563b83f0-7f12-4984-b2b1-fbde4d40ebf0"/>
@@ -270,10 +279,6 @@ Telefone: 3311-9330, E-mail: emater@emater.df.gov.br.]]></text>
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 				</reportElement>
 			</rectangle>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="40" y="415" width="480" height="119" uuid="12739544-c9b7-4c27-9424-5ade52d84495"/>
-				<textFieldExpression><![CDATA[$P{Observacao}]]></textFieldExpression>
-			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="190" y="280" width="332" height="17" uuid="8381c3e9-0378-4eb8-af3e-2d9a563fa99f"/>
 				<textFieldExpression><![CDATA[$F{propriedadeRural}.getComunidade().getCidade().getNome()]]></textFieldExpression>
@@ -294,6 +299,14 @@ Telefone: 3311-9330, E-mail: emater@emater.df.gov.br.]]></text>
 				<reportElement x="189" y="337" width="332" height="15" uuid="8634683a-204f-4231-b463-8968897d9dec"/>
 				<textFieldExpression><![CDATA[$F{propriedadeRural}.getPrincipaisAtividadesProdutivas()]]></textFieldExpression>
 			</textField>
+			<subreport>
+				<reportElement x="35" y="411" width="485" height="129" uuid="075c3d16-2978-4db7-ae74-3a3b4a559cc8"/>
+				<subreportParameter name="Producao">
+					<subreportParameterExpression><![CDATA[$P{Producao}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{Producao})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{DiretorioJasper} + "/pessoa/DeclaracaoCeasaProducao.jasper"]]></subreportExpression>
+			</subreport>
 		</band>
 	</detail>
 	<columnFooter>
