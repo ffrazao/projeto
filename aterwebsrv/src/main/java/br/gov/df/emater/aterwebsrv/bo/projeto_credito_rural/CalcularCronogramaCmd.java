@@ -50,21 +50,18 @@ public class CalcularCronogramaCmd extends _Comando {
 
 	private ProjetoCreditoRuralCronogramaPagamento procuraCronogramaPagamento(List<ProjetoCreditoRuralCronogramaPagamento> cronogramaPagamentoList, FinanciamentoTipo financiamentoTipo, List<ProjetoCreditoRuralFinanciamento> financiamentoList) throws BoException {
 
-		System.out.println("entrou no metodo");
-		
+			
 		if (cronogramaPagamentoList != null) {
-			
-			System.out.println("entrou no if");
-			
+		
 			for (ProjetoCreditoRuralCronogramaPagamento cP : cronogramaPagamentoList) {
 				if (cP.getDataCalculo() == null) {
-					System.out.println("entrou no data");
+					
 					BigDecimal valorFinanciado = new BigDecimal("0");
 					if (financiamentoList != null) {
-						System.out.println("entrou no fin");
+						
 						for (ProjetoCreditoRuralFinanciamento f : financiamentoList) {
 							if (cP.getNomeLote().equals(f.getNomeLote())) {
-								System.out.println("entrou no note");
+								
 								valorFinanciado = valorFinanciado.add(f.getValorFinanciado());
 							}
 						}
@@ -80,8 +77,6 @@ public class CalcularCronogramaCmd extends _Comando {
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
-		
-		System.out.println("Entrou no executar do ProjetoCreditoRural CalcularCronogramaCmd");
 		
 		ProjetoCreditoRural result = (ProjetoCreditoRural) contexto.getRequisicao();
 
@@ -201,6 +196,7 @@ public class CalcularCronogramaCmd extends _Comando {
 			}
 			if ((epoca) <= cronograma.getPeriodicidade().getMaxEpoca()) {
 				cronogramaPagamento.setEpoca(epoca);
+				cronogramaPagamento.setAno(ano);
 			} else {
 				epoca = 1;
 				cronogramaPagamento.setAno(++ano);
