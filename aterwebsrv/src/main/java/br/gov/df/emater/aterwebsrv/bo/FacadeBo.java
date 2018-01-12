@@ -40,6 +40,7 @@ import br.gov.df.emater.aterwebsrv.dto.pessoa.DeclaracaoCeasaRelFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.pessoa.DeclaracaoProdutorRelFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.pessoa.MesclarPessoaDto;
 import br.gov.df.emater.aterwebsrv.dto.pessoa.PessoaCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.pessoa.PessoaSimplesDto;
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoCreditoRuralCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoCreditoRuralReceitaDespesaApoioDto;
 import br.gov.df.emater.aterwebsrv.dto.sistema.FuncionalidadeCadFiltroDto;
@@ -760,6 +761,10 @@ public class FacadeBo implements BeanFactoryAware {
 		requisicao.put("tipo", tipo);
 
 		return this._executar(usuario, "UtilArquivoSubirCh", requisicao);
+	}
+
+	public _Contexto pessoaTransformar(PessoaSimplesDto ps, Principal usuario) throws Exception {
+		return this._executar(usuario, "PessoaTransformarCh", ps);
 	}
 
 }
