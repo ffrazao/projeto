@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2018-01-09T11:19:37 -->
+<!-- 2018-01-12T15:37:16 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RelatorioTeste" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" uuid="74a58a1f-20c1-4882-a004-63331c202191">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -186,6 +186,14 @@
 				<reportElement x="34" y="336" width="138" height="17" uuid="a5b4189c-9110-4635-b602-cbd2b6d905ab"/>
 				<text><![CDATA[ATIVIDADES PRODUTIVAS:]]></text>
 			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="190" y="204" width="328" height="19" uuid="4d7c839b-dfea-49ec-9398-3952595bf16e"/>
+				<textFieldExpression><![CDATA[$F{publicoAlvo}.getDapNumero()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="35" y="205" width="136" height="14" uuid="661b13b4-0682-4f0b-b216-b29f70fd2f34"/>
+				<text><![CDATA[DAP......................................:]]></text>
+			</staticText>
 			<staticText>
 				<reportElement x="34" y="354" width="138" height="17" uuid="d55a1f2b-ef99-47cf-8ec8-a6b76627b0a6"/>
 				<text><![CDATA[N° INSC. ESTADUAL...........:]]></text>
@@ -258,7 +266,8 @@ Telefone: 3311-9330, E-mail: emater@emater.df.gov.br.]]></text>
 				<textElement textAlignment="Center" markup="none">
 					<font fontName="SansSerif" size="11"/>
 				</textElement>
-				<text><![CDATA[Está declaração não tem valor para fins de comprovação legal de ocupação da área. Válida por 30 (trinta) dias, a partir desta data.]]></text>
+				<text><![CDATA[Está declaração não tem valor para fins de comprovação legal de ocupação da área. 
+Válida por 6 meses, a partir desta data.]]></text>
 			</staticText>
 			<staticText>
 				<reportElement positionType="Float" x="35" y="731" width="491" height="16" uuid="fed7001f-929a-4913-83ad-bbf610e10cb3"/>
