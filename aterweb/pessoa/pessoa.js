@@ -623,33 +623,19 @@
             var indice = 0;
             $scope.tabs = [
                 {
-                    'nome': 'Beneficiário',
-                    'include': 'pessoa/tab-beneficiario.html',
-                    'visivel': false,
-                    'indice': indice++,
-                    'ativo': false,
-                }, 
-                {
-                    'nome': 'Índice de Produção',
-                    'include': 'pessoa/tab-publico-alvo-indice-producao.html',
-                    'visivel': false,
-                    'indice': indice++,
-                    'ativo': false,
-                }, 
-                {
                     'nome': 'Dados Básicos',
                     'include': 'pessoa/tab-principal.html',
                     'visivel': true,
                     'indice': indice++,
                     'ativo': true,
                 }, 
-                /*{
-                    'nome': 'Colaborador',
-                    'include': 'pessoa/tab-colaborador.html',
+                {
+                    'nome': 'Beneficiário',
+                    'include': 'pessoa/tab-beneficiario.html',
                     'visivel': false,
                     'indice': indice++,
                     'ativo': false,
-                }, */
+                }, 
                 {
                     'nome': 'Diagnósticos',
                     'include': 'pessoa/tab-diagnostico.html',
@@ -667,13 +653,6 @@
                     'indice': indice++,
                     'ativo': false,
                 },
-                /*{
-                    'nome': 'Atividades',
-                    'include': 'pessoa/tab-atividade.html',
-                    'visivel': true,
-                    'indice': indice++,
-                    'ativo': false,
-                },*/
                 {
                     'nome': 'Arquivos',
                     'include': 'pessoa/tab-arquivo.html',
@@ -688,6 +667,28 @@
                     'indice': indice++,
                     'ativo': false,
                 }, 
+                /*{
+                    'nome': 'Colaborador',
+                    'include': 'pessoa/tab-colaborador.html',
+                    'visivel': false,
+                    'indice': indice++,
+                    'ativo': false,
+                }, 
+                {
+                    'nome': 'Índice de Produção',
+                    'include': 'pessoa/tab-publico-alvo-indice-producao.html',
+                    'visivel': false,
+                    'indice': indice++,
+                    'ativo': false,
+                }, 
+                {
+                    'nome': 'Atividades',
+                    'include': 'pessoa/tab-atividade.html',
+                    'visivel': true,
+                    'indice': indice++,
+                    'ativo': false,
+                },*/
+                
             ];
             $scope.setTabAtiva = function(nome) {
                 $scope.tabs.forEach(function(item, idx) {

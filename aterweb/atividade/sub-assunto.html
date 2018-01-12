@@ -33,8 +33,7 @@
                     <tr>
                         <th><frz-seletor ng-model="atividadeAssuntoNvg" dados="cadastro.registro.assuntoList"></frz-seletor></th>
                         <th>#</th>
-                        <th>Assunto</th>
-                        <th>Descrição</th>
+                        <th>Assunto / Descrição</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -58,8 +57,6 @@
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
-                        </td>
-                        <td>
                             <textarea class="form-control input-sm" id="observacao{{$index}}" name="observacao{{$index}}" ng-model="reg.observacao"></textarea>
                             <div class="label label-danger" ng-show="navegador.submetido && assuntoListFrm.observacao{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
