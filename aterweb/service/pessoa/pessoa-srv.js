@@ -195,6 +195,9 @@ angular.module(pNmModulo).factory(pNmFactory,
             mesclarPessoas : function (filtro) {
                 return $http.post(this.endereco + '/mesclar-pessoas', filtro);
             },
+            transformar : function (pessoa) {
+                return $http.post(this.endereco + '/transformar', pessoa);
+            },
         };
         return PessoaSrv;
     }
