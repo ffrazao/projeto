@@ -17,6 +17,7 @@ import br.gov.df.emater.aterwebsrv.dto.pessoa.DeclaracaoCeasaRelFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.pessoa.DeclaracaoProdutorRelFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.pessoa.MesclarPessoaDto;
 import br.gov.df.emater.aterwebsrv.dto.pessoa.PessoaCadFiltroDto;
+import br.gov.df.emater.aterwebsrv.dto.pessoa.PessoaSimplesDto;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 
 @RestController
@@ -107,5 +108,9 @@ public class PessoaRest {
 	public Resposta visualizar(@RequestParam Integer id, Principal usuario) throws Exception {
 		return new Resposta(facadeBo.pessoaVisualizar(usuario, id).getResposta());
 	}
-
+	
+	@RequestMapping(value = "/transformar", method = RequestMethod.POST)
+	public Resposta transformar(@RequestBody PessoaSimplesDto pessoa, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.pessoaTransformar(pessoa, usuario).getResposta());
+	}
 }
