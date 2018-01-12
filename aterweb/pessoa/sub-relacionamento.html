@@ -36,6 +36,7 @@
                         <th>Nome</th>
                         <th>Tipo</th>
                         <th>Relacionamento</th>
+                        <th>Transformar</th>
                         <th>Informações Complementares</th>
                         <th>Início</th>
                         <th>Término</th>
@@ -63,6 +64,11 @@
                             <span ng-if="reg.pessoa && reg.pessoa.genero !== 'F'">{{reg.relacionamentoFuncao.nomeSeMasculino}}</span>
                             <span ng-if="!reg.pessoa && reg.genero === 'F'">{{reg.relacionamentoFuncao.nomeSeFeminino}}</span>
                             <span ng-if="!reg.pessoa && reg.genero !== 'F'">{{reg.relacionamentoFuncao.nomeSeMasculino}}</span>
+                        </td>
+                        <td>
+                            <button ng-if="!reg.pessoa && reg.relacionamentoFuncao.id === 7" type="button" id="transformar" ng-click="transformar(reg)" class="btn btn-primary">
+                                Cadastro Completo
+                            </button>
                         </td>
                         <td>
                             <uib-accordion ng-if="!reg.pessoa">

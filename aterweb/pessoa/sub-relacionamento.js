@@ -324,6 +324,15 @@ angular.module(pNmModulo).controller(pNmController,
         });
     };
 
+    $scope.transformar = function(pessoa){
+        mensagemSrv.confirmacao(false, '<Font color=red size=4><center><strong>ATENÇÃO!</strong> Ao clicar em <strong>OK</strong> o Cadastro SIMPLES será transformado em Cadastro COMPLETO. Deseja continuar?</center></font> ').then(function (conteudo) {
+
+        $scope.confirmarTransformar(pessoa);
+
+        });
+        
+    };
+
     $scope.agir = function() {};
     $scope.ajudar = function() {};
     $scope.alterarTamanhoPagina = function() {};

@@ -189,6 +189,19 @@
             $scope.confirmarIncluir = function(scp) {
                 validaRegistro(scp, 'incluir');
             };
+
+            $scope.confirmarTransformar = function(pessoa) {
+                PessoaSrv.transformar(pessoa).success(function (resposta) {
+                    if (resposta.mensagem && resposta.mensagem === 'OK') {
+                        toastr.info('Operação realizada!', 'Informação');
+
+                    } else {
+                        toastr.error(resposta.mensagem, 'Erro ao incluir');
+                    }
+
+                });
+            };
+
             $scope.confirmarEditar = function(scp) {
                 validaRegistro(scp, 'editar');
                 //validaRegistro(scp.cadastro.registro);
@@ -430,12 +443,9 @@
                                 producaoList: conteudo.produtorCeasaProducaoList
                             };
 
-                            console.log("requisicao");
-                            console.log(requisicao);
 
                             PessoaSrv.declaracaoCeasaRel(requisicao).success(function(resposta) {
-                                console.log("resposta");
-                            console.log(resposta);
+                            
 
 
                                 if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {
