@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2018-01-12T15:37:16 -->
+<!-- 2018-01-16T14:29:11 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RelatorioTeste" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" uuid="74a58a1f-20c1-4882-a004-63331c202191">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -283,11 +283,6 @@ Válida por 6 meses, a partir desta data.]]></text>
 				</textElement>
 				<text><![CDATA[Promover o desenvolvimento sustentável e a segurança alimentar, por meio de assistência técnica e extensão rural de excelência, em benefício da sociedade do Distrito Federal e Entorno.]]></text>
 			</staticText>
-			<rectangle>
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="35" y="411" width="487" height="129" uuid="1d478f3c-5177-4e08-a2ee-f32f96115a90">
-					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-				</reportElement>
-			</rectangle>
 			<textField isBlankWhenNull="true">
 				<reportElement x="190" y="280" width="332" height="17" uuid="8381c3e9-0378-4eb8-af3e-2d9a563fa99f"/>
 				<textFieldExpression><![CDATA[$F{propriedadeRural}.getComunidade().getCidade().getNome()]]></textFieldExpression>
@@ -309,7 +304,7 @@ Válida por 6 meses, a partir desta data.]]></text>
 				<textFieldExpression><![CDATA[$F{propriedadeRural}.getPrincipaisAtividadesProdutivas()]]></textFieldExpression>
 			</textField>
 			<subreport>
-				<reportElement x="35" y="411" width="485" height="129" uuid="075c3d16-2978-4db7-ae74-3a3b4a559cc8"/>
+				<reportElement x="35" y="411" width="491" height="119" uuid="075c3d16-2978-4db7-ae74-3a3b4a559cc8"/>
 				<subreportParameter name="Producao">
 					<subreportParameterExpression><![CDATA[$P{Producao}]]></subreportParameterExpression>
 				</subreportParameter>
