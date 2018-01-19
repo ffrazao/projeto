@@ -22,5 +22,7 @@ public interface PessoaFisicaDao extends JpaRepository<PessoaFisica, Integer> {
 	List<PessoaFisica> findByRgNumeroAndRgUf(String numero, String uf);
 
 	PessoaFisica findOneByNomeAndGenero(String nomeExcel, PessoaGenero genero);
+	
+	PessoaFisica findOneById(Integer id);
 
 }
