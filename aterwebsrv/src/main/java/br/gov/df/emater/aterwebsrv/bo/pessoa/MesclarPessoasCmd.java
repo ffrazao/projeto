@@ -11,11 +11,13 @@ import br.gov.df.emater.aterwebsrv.bo._SalvarCmd;
 import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoDao;
 import br.gov.df.emater.aterwebsrv.dao.ater.PublicoAlvoPropriedadeRuralDao;
 import br.gov.df.emater.aterwebsrv.dao.atividade.AtividadePessoaDao;
+import br.gov.df.emater.aterwebsrv.dao.formulario.ColetaDao;
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.IpaDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaArquivoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaEmailDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaEnderecoDao;
+import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaFisicaDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaGrupoSocialDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaRelacionamentoDao;
 import br.gov.df.emater.aterwebsrv.dao.pessoa.PessoaTelefoneDao;
@@ -28,6 +30,7 @@ import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaArquivo;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaEmail;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaEndereco;
+import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaGrupoSocial;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaRelacionamento;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaTelefone;
@@ -67,24 +70,37 @@ public class MesclarPessoasCmd extends _SalvarCmd {
 	
 	@Autowired
 	private IpaDao ipaDao;
-
+	
+	@Autowired
+	private PessoaFisicaDao pessoaFisicaDao;
+	
+	@Autowired
+	private ColetaDao coletaDao;
+	
 
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
 
 		MesclarPessoaDto filtro = (MesclarPessoaDto) contexto.getRequisicao();
 				
-    	Pessoa pessoaPrincipal = PessoaDao.findOneById(filtro.getPrincipalId());
+		PessoaFisica pessoaPrincipal = pessoaFisicaDao.findOneById(filtro.getPrincipalId());
 				
         for (Integer pessoaId :  filtro.getPessoaIdList() ) {
         	
-        	Pessoa pessoa = PessoaDao.findOneById(pessoaId);
+        	PessoaFisica pessoa = pessoaFisicaDao.findOneById(pessoaId);
         	
-        	//System.out.println("pessoa: " + pessoa.getNome() + " -> " + pessoa.getId());        
-        	//System.out.println("pessoa principal: " + pessoaPrincipal.getNome() + " -> " + pessoaPrincipal.getId()); 
+        	int a = pessoa.getId();
+        	int b = pessoaPrincipal.getId();
 
-        	if( !( pessoa == pessoaPrincipal ) ){
+        	if( a != b ){
         		
+        		if(
+        				(pessoa.getCpf() != null) && 
+        				(pessoaPrincipal.getCpf() == null)
+        		){
+        			pessoaPrincipal.setCpf(pessoa.getCpf());
+        		}
+    		
             	pessoa.setSituacao( PessoaSituacao.M );
             	pessoa.setSituacaoData(Calendar.getInstance());
             	PessoaDao.save(pessoa);
@@ -164,6 +180,12 @@ public class MesclarPessoasCmd extends _SalvarCmd {
 					//System.out.println("Entrou no for ipa");
 					//System.out.println("id: " + id);
 				}
+            	
+            	List<Integer> coletaIdPessoa = coletaDao.findOneByPessoa(pessoa.getId());
+            	
+            	for(Integer id : coletaIdPessoa){
+            		coletaDao.UpdatePessoa(pessoaPrincipal.getId(), id);
+            	}
             	
         	}
         }
