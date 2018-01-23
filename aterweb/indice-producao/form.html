@@ -11,7 +11,7 @@
                             <div class="form-control" ng-if="cadastro.registro.id">
                                 {{cadastro.registro.ano}}
                             </div>
-                            <select id="ano" name="ano" class="form-control" ng-model="cadastro.registro.ano" ng-options="item as item for item in cadastro.apoio.anoList track by item" ng-required="true" ng-if="!cadastro.registro.id">
+                            <select id="ano" name="ano" class="form-control" ng-change="limparIpa();" ng-model="cadastro.registro.ano" ng-options="item as item for item in cadastro.apoio.anoList track by item" ng-required="true" ng-if="!cadastro.registro.id">
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && frm.formulario.ano.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -22,7 +22,7 @@
                     <div class="col-md-6" title="">
                         <div class="form-group">
                             <label class="label-form" for="tipoLancamento-UO">Unidade Organizacional</label>
-                            <select class="form-control" id="unidadeOrganizacional" name="unidadeOrganizacional" ng-model="cadastro.registro.unidadeOrganizacional" ng-options="item as item.nome for item in cadastro.apoio.unidadeOrganizacionalList | filter: {'classificacao': 'OP'} | orderBy:'nome' track by item.id" ng-required="true" >
+                            <select ng-change="limparIpa();" class="form-control" id="unidadeOrganizacional" name="unidadeOrganizacional" ng-model="cadastro.registro.unidadeOrganizacional" ng-options="item as item.nome for item in cadastro.apoio.unidadeOrganizacionalList | filter: {'classificacao': 'OP'} | orderBy:'nome' track by item.id" ng-required="true" >
                             </select>
                             <div class="label label-danger" ng-if="navegador.submetido && frm.formulario.unidadeOrganizacional.$error.required && (!cadastro.registro.id && cadastro.apoio.tipoLancamento === 'UO')">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -46,7 +46,7 @@
                             <input id="publicoAlvo" name="publicoAlvo" class="form-control" placeholder="Produtor" type="text" ng-model="cadastro.registro.publicoAlvo.pessoa.nome" readonly="true">
                             <span class="input-group-btn">
                                 <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <button ng-click="limparIpa()" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <span class="glyphicon glyphicon-menu-hamburger"></span>
                                     </button>
                                     <ul class="dropdown-menu">
@@ -61,7 +61,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label" for="propriedadeRural">Propriedade Rural</label>
-                            <select id="propriedadeRural" name="propriedadeRural" class="form-control" ng-model="cadastro.registro.propriedadeRural" ng-options="item as item.nome for item in cadastro.apoio.propriedadeRuralList | orderBy:'nome' track by item.id" ng-required="true">
+                            <select ng-change="limparIpa();" id="propriedadeRural" name="propriedadeRural" class="form-control" ng-model="cadastro.registro.propriedadeRural" ng-options="item as item.nome for item in cadastro.apoio.propriedadeRuralList | orderBy:'nome' track by item.id" ng-required="true">
                             </select>
                         </div>
 

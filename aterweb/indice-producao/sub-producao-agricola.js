@@ -43,6 +43,8 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.abrir = function() {
         $scope.producaoArgicolaNvg.mudarEstado('ESPECIAL');
         //$scope.producaoArgicolaNvg.botao('edicao').exibir = function() {return false;};
+       // $scope.producaoArgicolaNvg.botao('mult').exibir = function() {return false;};
+        //directive
     };
     $scope.incluir = function() {
         init();
@@ -57,7 +59,7 @@ angular.module(pNmModulo).controller(pNmController,
             var i, j;
             removerCampo($scope.cadastro.registro.producaoList, ['@jsonId']);
 
-            console.log("ITEM: " + $scope.producaoArgicolaNvg.selecao.item.id);
+                // console.log("ITEM: " + $scope.producaoArgicolaNvg.selecao.item.id);
 
             if ($scope.producaoArgicolaNvg.selecao.item) {
                 var id = $scope.producaoArgicolaNvg.selecao.item.id;
@@ -76,7 +78,7 @@ angular.module(pNmModulo).controller(pNmController,
 
     $scope.editar = function(){
         mensagemSrv.confirmacao(false, 'Confirme a alteração do registro').then(function (conteudo) {
-
+           // console.log($scope.producaoArgicolaNvg.selecao.item);
         var item = $scope.producaoArgicolaNvg.selecao.item;
         removerCampo(item.ipa, ['unidadeOrganizacional', 'propriedadeRural', 'publicoAlvo']);
             $scope.vamosEditar(item, 'Agri');
