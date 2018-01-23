@@ -63,6 +63,10 @@
                             <label class="control-label" for="propriedadeRural">Propriedade Rural</label>
                             <select ng-change="limparIpa();" id="propriedadeRural" name="propriedadeRural" class="form-control" ng-model="cadastro.registro.propriedadeRural" ng-options="item as item.nome for item in cadastro.apoio.propriedadeRuralList | orderBy:'nome' track by item.id" ng-required="true">
                             </select>
+                            <div class="label label-danger" ng-show="!publicoAlvo && navegador.submetido && frm.formulario.propriedadeRural.$error.required">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                Campo Obrigatório
+                            </div>
                         </div>
 
                     </div>

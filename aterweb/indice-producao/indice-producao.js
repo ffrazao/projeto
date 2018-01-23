@@ -141,6 +141,12 @@
             };
 
             $scope.confirmarIncluir = function (scp) {
+
+
+                if((scp.cadastro.registro.publicoAlvo != null) && (scp.cadastro.registro.propriedadeRural == null)){
+                    toastr.error('Preencha o campo Propriedade Rural.', 'ATENÇÃO: O ITEM NÃO FOI SALVO!');
+                }else{
+
                 if (!scp.confirmar(scp)) { return; }
                 if (scp.cadastro.registro.publicoAlvo && scp.cadastro.registro.publicoAlvo.pessoa) {
                     $scope.preparaClassePessoa(scp.cadastro.registro.publicoAlvo.pessoa);
@@ -231,6 +237,7 @@
                 }).error(function (erro) {
                     toastr.error(erro, 'Erro ao incluir');
                 });
+            }
             };
 
             $scope.vamosExcluir = function (id) {
@@ -446,9 +453,23 @@
                         }
                     }
 
+                    if($scope.cadastro.registro.unidadeOrganizacional !== $scope.cadastro.registro.unidadeOrganizacional){                            
+                        $scope.cadastro.registro.publicoAlvo = null;
+                    }
+
                     if(gatilho === "temNovo"){
 
-                    mensagemSrv.confirmacao(false, 'Deseja salvar seus registros? ' + $scope.cadastro.filtro.unidadeOrganizacional.nome).then(function (conteudo) {                 
+                        var pa = null;
+                        if($scope.cadastro.registro.publicoAlvo != null){
+                           pa = ' <br /><strong> Produtor: </strong>' + $scope.cadastro.registro.publicoAlvo.pessoa.nome;
+                        }else{
+                            pa = "";
+                        }
+
+                        console.log($scope.cadastro.registro.publicoAlvo);
+
+                    mensagemSrv.confirmacao(false, '<strong>Há registros que não foram salvos. <br /><br />  Unidade Organizacional:</strong> ' + 
+                                            $scope.cadastro.filtro.unidadeOrganizacional.nome + pa + '<br /><br /><strong> Deseja salvar seus registros?</strong>').then(function (conteudo) {               
                         
                         if($scope.cadastro.filtro.unidadeOrganizacional != null){
                             $scope.cadastro.registro.unidadeOrganizacional = $scope.cadastro.filtro.unidadeOrganizacional;
@@ -471,6 +492,8 @@
                         $scope.cadastro.registro.producaoArtesanatoList = null;
                         $scope.cadastro.registro.producaoAgroindustriaList = null;
                         $scope.cadastro.registro.producaoAnimalList = null;
+                        $scope.cadastro.registro.publicoAlvo = null;
+                        $scope.cadastro.registro.propriedadeRural = null;
                     });
                 }else{
                     $scope.cadastro.registro.producaoAgricolaList = null;
@@ -478,6 +501,8 @@
                         $scope.cadastro.registro.producaoArtesanatoList = null;
                         $scope.cadastro.registro.producaoAgroindustriaList = null;
                         $scope.cadastro.registro.producaoAnimalList = null;
+                        $scope.cadastro.registro.publicoAlvo = null;
+                        $scope.cadastro.registro.propriedadeRural = null;
                 }
                    
                 }
