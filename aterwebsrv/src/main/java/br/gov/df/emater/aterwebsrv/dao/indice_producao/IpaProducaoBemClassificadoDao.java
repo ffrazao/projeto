@@ -30,8 +30,8 @@ public interface IpaProducaoBemClassificadoDao extends JpaRepository<IpaProducao
 
 	@Modifying
     @Transactional
-	@Query("DELETE IpaProducaoBemClassificado p WHERE p.ipaProducao = :ipaProducao")
-	void deleteBem(@Param("ipaProducao") IpaProducao ipaProducao);
+	@Query("DELETE IpaProducaoBemClassificado WHERE ipaProducao.id = :ipaProducao")
+	void deleteBem(@Param("ipaProducao") Integer ipaProducao);
 	
 	//void deleteByIpaProducao(IpaProducao ipaProducao);
 	

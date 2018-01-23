@@ -14,11 +14,11 @@ import br.gov.df.emater.aterwebsrv.modelo.indice_producao.IpaProducao;
 @Repository("IpaProducaoDao")
 public interface IpaProducaoDao extends JpaRepository<IpaProducao, Integer> {
 	
-	@Query("SELECT p FROM IpaProducao p, Ipa ipa WHERE  p.ipa = ipa.id  AND ipa.ano = :ano AND ipa.unidadeOrganizacional.id = :unidadeOrganizacionalId")
+	@Query("SELECT p FROM IpaProducao p, Ipa ipa WHERE  p.ipa = ipa.id  AND ipa.ano = :ano AND ipa.unidadeOrganizacional.id = :unidadeOrganizacionalId AND ipa.propriedadeRural = NULL AND ipa.publicoAlvo = NULL")
 	List<IpaProducao> findByIpaProducao(@Param("ano") Integer ano, @Param("unidadeOrganizacionalId") Integer unidadeOrganizacionalId);
 	
-	@Query("SELECT p FROM IpaProducao p, Ipa ipa WHERE ipa.id = p.ipa  AND ipa.publicoAlvo.id = :publicoAlvo AND ipa.propriedadeRural.id = :propriedadeRuralId")
-	List<IpaProducao> findByIpaProd(@Param("publicoAlvo") Integer ano, @Param("propriedadeRuralId") Integer propriedadeRuralId);
+	@Query("SELECT p FROM IpaProducao p, Ipa ipa WHERE ipa.id = p.ipa  AND ipa.publicoAlvo.id = :publicoAlvo AND ipa.propriedadeRural.id = :propriedadeRuralId AND ipa.unidadeOrganizacional.id=:unidadeOrganizacionalId AND ipa.ano = :ano")
+	List<IpaProducao> findByIpaProd(@Param("publicoAlvo") Integer pa, @Param("propriedadeRuralId") Integer propriedadeRuralId, @Param("unidadeOrganizacionalId") Integer unidadeOrganizacionalId, @Param("ano") Integer ano);
 
 	@Modifying(clearAutomatically = true)
     @Transactional
@@ -30,6 +30,9 @@ public interface IpaProducaoDao extends JpaRepository<IpaProducao, Integer> {
 	
 	@Query("SELECT a FROM IpaProducao a WHERE a.id =:ipa ")
 	List<IpaProducao> findByIp(@Param("ipa") Integer ipa);
+
+	@Query("SELECT p FROM IpaProducao p, Ipa ipa WHERE ipa.id = p.ipa  AND ipa.publicoAlvo.id = :publicoAlvo AND ipa.propriedadeRural.id = :propriedadeRuralId AND ipa.ano = :ano")
+	List<IpaProducao> findByIpaProdSemUO(@Param("publicoAlvo") Integer pa, @Param("propriedadeRuralId") Integer propriedadeRuralId, @Param("ano") Integer ano);
 	
 	
 	//@Query("SELECT distinct p FROM IpaProducao pp, IpaProducaoBemClassificado p, IpaProducaoForma f, Ipa ipa WHERE pp.id = f.ipaProducao AND pp.id = p.ipaProducao AND ipa.id = pp.ipa  AND ipa.ano = :ano AND ipa.unidadeOrganizacional.id = :unidadeOrganizacionalId")
