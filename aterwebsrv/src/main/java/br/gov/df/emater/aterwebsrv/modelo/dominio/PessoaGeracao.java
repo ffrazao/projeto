@@ -2,7 +2,7 @@ package br.gov.df.emater.aterwebsrv.modelo.dominio;
 
 public enum PessoaGeracao {
 
-	A("Adulto", 3, 18, 60), C("Criança", 1, 0, 11), I("Idoso", 4, 61, 130), J("Jovem", 2, 12, 18);
+	A("Adulto", 3, 18, 60), C("Criança", 1, 0, 11), I("Idoso", 4, 61, 130), J("Jovem", 2, 12, 17);
 
 	private String descricao;
 

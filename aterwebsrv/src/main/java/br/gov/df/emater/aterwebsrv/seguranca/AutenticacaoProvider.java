@@ -57,9 +57,9 @@ public class AutenticacaoProvider extends DaoAuthenticationProvider {
 				t++;
 				e = new BadCredentialsException(String.format("Tentativa (%d de %d) de acesso inválido", t, MAX_TENTATIVA_ACESSO_INVALIDO), e);
 				u.setTentativaAcessoInvalido(t);
-				if (t >= MAX_TENTATIVA_ACESSO_INVALIDO) {
-					u.setUsuarioStatusConta(UsuarioStatusConta.B);
-				}
+//				if (t >= MAX_TENTATIVA_ACESSO_INVALIDO) {
+//					u.setUsuarioStatusConta(UsuarioStatusConta.B);
+//				}
 				dao.saveAndFlush(u);
 				if (UsuarioStatusConta.B.equals(u.getUsuarioStatusConta())) {
 					e = new BadCredentialsException("Esta conta foi bloqueada por diversas tentativas de acesso inválido", e);
