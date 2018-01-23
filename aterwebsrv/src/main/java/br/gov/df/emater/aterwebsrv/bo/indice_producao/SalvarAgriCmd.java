@@ -56,7 +56,6 @@ public class SalvarAgriCmd{
 // TABELA IPA PRODUCAO BEM CLASSIFICADO
 		
 		for (IpaProducaoBemClassificado b : result.getProducaoAgricolaList()) {
-		System.out.println(b.getId());
 			if(b.getId() == ipAgri.getId()){
 			
 				IpaProducaoBemClassificado ipbc = new IpaProducaoBemClassificado();
@@ -80,19 +79,24 @@ public class SalvarAgriCmd{
 		
 		for (IpaForma ipaForma : iff) {
 			
-			for (FormaProducaoItem iForma : ipaForma.getProducaoComposicaoList()) {
-				IpaProducaoForma ipf = new IpaProducaoForma();
-				FormaProducaoValor fpv = new FormaProducaoValor();
-				fpv.setId(iForma.getId());
-				ipf.setFormaProducaoValor(fpv);
-				ipf.setIpaProducao(ip);
-				ipf.setOrdem(++ordem);
-				
-				list.add(ipf);
+				for (FormaProducaoItem iForma : ipaForma.getProducaoComposicaoList()) {
+					
+					if(ipAgri.getId() == ipaForma.getId()){
+						IpaProducaoForma ipf = new IpaProducaoForma();
+						FormaProducaoValor fpv = new FormaProducaoValor();
+						
+							fpv.setId(iForma.getId());
+							ipf.setFormaProducaoValor(fpv);
+							ipf.setIpaProducao(ip);
+							ipf.setOrdem(++ordem);
+							list.add(ipf);
+					}					
 			}	
+			
+			this.setIpaFormaAgri(list);
 		}
 		
-		this.setIpaFormaAgri(list);
+		
 				
 	}
 	

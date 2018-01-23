@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import br.gov.df.emater.aterwebsrv.bo._Comando;
 import br.gov.df.emater.aterwebsrv.bo._Contexto;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Ipa;
-import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoProprietario;
 
 @Service("IndiceProducaoProducaoCmd")
 public class ProducaoCmd extends _Comando {

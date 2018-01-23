@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.IpaProducaoBemClassificadoDao;
@@ -38,10 +37,14 @@ public class ProducaoSrv {
 		List<IpaProducao> producaoAgroindustriaList= new ArrayList<>();
 		List<IpaProducao> producaoAnimalList= new ArrayList<>();
 		
-		if(ipa.getUnidadeOrganizacional() != null){
+		if(ipa.getPublicoAlvo() != null){
+			if(ipa.getUnidadeOrganizacional() != null){
+				producaoList = IpaProducaoDao.findByIpaProd(ipa.getPublicoAlvo().getId(), ipa.getPropriedadeRural().getId(), ipa.getUnidadeOrganizacional().getId(), ipa.getAno());
+			}else {
+				producaoList = IpaProducaoDao.findByIpaProdSemUO(ipa.getPublicoAlvo().getId(), ipa.getPropriedadeRural().getId(), ipa.getAno());
+			}
+		}else{			
 			producaoList = IpaProducaoDao.findByIpaProducao(ipa.getAno(), ipa.getUnidadeOrganizacional().getId());
-		}else{
-			producaoList = IpaProducaoDao.findByIpaProd(ipa.getPublicoAlvo().getId(), ipa.getPropriedadeRural().getId());
 		}
 
 		if (producaoList != null){
