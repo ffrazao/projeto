@@ -466,7 +466,7 @@
                             pa = "";
                         }
 
-                        console.log($scope.cadastro.registro.publicoAlvo);
+                        
 
                     mensagemSrv.confirmacao(false, '<strong>Há registros que não foram salvos. <br /><br />  Unidade Organizacional:</strong> ' + 
                                             $scope.cadastro.filtro.unidadeOrganizacional.nome + pa + '<br /><br /><strong> Deseja salvar seus registros?</strong>').then(function (conteudo) {               
