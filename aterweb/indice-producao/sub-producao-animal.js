@@ -45,13 +45,14 @@ angular.module(pNmModulo).controller(pNmController,
     // inicio das operaçoes atribuidas ao navagador
     $scope.abrir = function() {
         $scope.producaoAnimalNvg.mudarEstado('ESPECIAL');
-       // $scope.producaoAnimalNvg.botao('edicao').exibir = function() {return false;};
+        $scope.producaoAnimalNvg.botao('edicao').exibir = function() {return false;};
     };
     $scope.incluir = function() {
         init();
         var item = $scope.criarElemento($scope.cadastro.registro, 'producaoAnimalList', {});
         item.producaoComposicaoList = [];
         $scope.cadastro.registro.producaoAnimalList.push(item);
+        
     };
     
     $scope.excluir = function() {

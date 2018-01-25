@@ -42,7 +42,7 @@ angular.module(pNmModulo).controller(pNmController,
     // inicio das operaçoes atribuidas ao navagador
     $scope.abrir = function() {
         $scope.producaoFloriculturaNvg.mudarEstado('ESPECIAL');
-        //$scope.producaoFloriculturaNvg.botao('edicao').exibir = function() {return false;};
+        $scope.producaoFloriculturaNvg.botao('edicao').exibir = function() {return false;};
     };
     $scope.incluir = function() {
         init();

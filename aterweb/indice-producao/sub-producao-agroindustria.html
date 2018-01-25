@@ -40,7 +40,7 @@
                         <th>Categoria</th>
                         <th>Produto</th>
                         <th>Condição</th>
-                        <th>Produção</th>
+                        <th>Produção Anual</th>
                         <th ng-show="cadastro.registro.publicoAlvo">Preço Unitário</th>
                         <th ng-show="cadastro.registro.publicoAlvo">Valor Total</th>
                         <th ng-show="!cadastro.registro.publicoAlvo && cadastro.registro.unidadeOrganizacional ">Qtd Produtores</th>
@@ -103,7 +103,7 @@
                             </div>
                         </td>
                         <td ng-show="false">
-                            <input class="form-control input-sm text-right" id="area_{{$index}}" name="area_{{$index}}" ng-model="producaoAgroindustria.area" ng-required="true" ui-number-mask="3" style="min-width: 50px;" ng-blur="calcula($index, 'area');" ng-show="producaoAgroindustria.bemClassificado">
+                            <input class="form-control input-sm text-right" id="area_{{$index}}" name="area_{{$index}}" ng-model="producaoAgroindustria.area" ng-required="true" ui-number-mask="3" style="min-width: 50px;" ng-blur="calcula($index, 'area');" ng-show="producaoAgroindustria.bemClassificado">                            
                             <div class="label label-danger" ng-show="navegador.submetido && producaoNaoArgicolaFrm.area_{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
@@ -119,6 +119,7 @@
                         
                         <td >
                             <input class="form-control input-sm text-right" id="producao_{{$index}}" name="producao_{{$index}}" ng-model="producaoAgroindustria.producao" ng-required="true" ui-number-mask="0" style="min-width: 50px;" ng-blur="calcula($index, 'producao');" ng-show="producaoAgroindustria.bemClassificado">
+                            <p class="text-right" ng-show="producaoAgroindustria.bemClassificado">({{producaoAgroindustria.bemClassificado.unidadeMedida.nome}})</p>
                             <div class="label label-danger" ng-show="navegador.submetido && producaoNaoArgicolaFrm.area_{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório

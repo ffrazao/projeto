@@ -42,9 +42,10 @@ angular.module(pNmModulo).controller(pNmController,
     // inicio das operaçoes atribuidas ao navagador
     $scope.abrir = function() {
         $scope.producaoArgicolaNvg.mudarEstado('ESPECIAL');
-        //$scope.producaoArgicolaNvg.botao('edicao').exibir = function() {return false;};
+        $scope.producaoArgicolaNvg.botao('edicao').exibir = function() {return false;};
        // $scope.producaoArgicolaNvg.botao('mult').exibir = function() {return false;};
         //directive
+        
     };
     $scope.incluir = function() {
         init();
@@ -52,6 +53,7 @@ angular.module(pNmModulo).controller(pNmController,
         item.producaoComposicaoList = [];
   
         $scope.cadastro.registro.producaoAgricolaList.push(item);
+        console.log($scope.cadastro.registro.producaoAgricolaList);
     };
 
     $scope.excluir = function() {

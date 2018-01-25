@@ -40,7 +40,7 @@
                         <th>Categoria</th>
                         <th>Produto</th>
                         <th>Condicao</th>
-                        <th>Produção</th>
+                        <th>Produção Anual</th>
                         <th ng-show="cadastro.registro.publicoAlvo">Preço Unitário</th>
                         <th ng-show="cadastro.registro.publicoAlvo">Valor Total</th>
                         <th ng-show="!cadastro.registro.publicoAlvo && cadastro.registro.unidadeOrganizacional ">Qtd Produtores</th>
@@ -120,6 +120,7 @@
                         
                         <td>
                             <input class="form-control input-sm text-right" id="producao_{{$index}}" name="producao_{{$index}}" ng-model="producaoArtesanato.producao" ng-required="true" ui-number-mask="0" style="min-width: 50px;" ng-show="producaoArtesanato.bemClassificado">
+                            <p class="text-right" ng-show="producaoArtesanato.bemClassificado">({{producaoArtesanato.bemClassificado.unidadeMedida.nome}})</p>
                             <div class="label label-danger" ng-show="navegador.submetido && producaoNaoArgicolaFrm.area_{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório

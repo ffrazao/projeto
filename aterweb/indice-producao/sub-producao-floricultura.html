@@ -39,9 +39,9 @@
                         <th>Variedade</th>
                         <th>Proteção</th>
                         <th>Uso D`Água</th>
-                        <th>Área</th>
+                        <th>Área (ha)</th>
                         <th>Produtividade</th>
-                        <th>Produção</th>
+                        <th>Produção Anual</th>
                         <th ng-show="cadastro.registro.publicoAlvo">Preço Unitário</th>
                         <th ng-show="cadastro.registro.publicoAlvo">Valor Total</th>
                         <th ng-show="!cadastro.registro.publicoAlvo && cadastro.registro.unidadeOrganizacional ">Qtd Produtores</th>
@@ -94,7 +94,7 @@
                         <td >
                             <input class="form-control input-sm text-right" id="produtividade_{{$index}}" name="produtividade_{{$index}}" ng-model="producaoFloricultura.produtividade" ng-required="true" ui-number-mask="3" style="min-width: 50px;" ng-blur="calcula($index, 'produtividade');" ng-show="producaoFloricultura.bemClassificado"
                                    title="Produtividade Min: {{producaoFloricultura.bemClassificado.produtividadeMin}} Max: {{producaoFloricultura.bemClassificado.produtividadeMax}}" >
-                            <span ng-show="producaoFloricultura.bemClassificado">({{ producaoFloricultura.bemClassificado.bemClassificacao.unidadeMedida.nome}})</span>
+                            <span ng-show="producaoFloricultura.bemClassificado">({{ producaoFloricultura.bemClassificado.unidadeMedida.nome}}/ha)</span>
                             <div class="label label-danger" ng-show="navegador.submetido && producaoFloriculturaFrm.area_{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
