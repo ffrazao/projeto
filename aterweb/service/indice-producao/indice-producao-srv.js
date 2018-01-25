@@ -78,7 +78,7 @@ angular.module(pNmModulo).factory(pNmFactory,
                 this.bemClassificacaoMatriz().success(function(resposta) {
                     if (resposta && resposta.resultado) {
                         removerCampo(resposta.resultado, ['@jsonId']);
-
+                     
                         scp.cadastro.apoio.bemClassificadoAgricolaList = resposta.resultado.bemClassificadoAgricolaList;
                         scp.cadastro.apoio.bemClassificadoAnimalList = resposta.resultado.bemClassificadoAnimalList;
                         scp.cadastro.apoio.bemClassificadoFloriculturaList = resposta.resultado.bemClassificadoFloricuturaList;
@@ -168,14 +168,12 @@ angular.module(pNmModulo).factory(pNmFactory,
             //Arte
             incluirArte : function(indiceProducao) {
                 SegurancaSrv.acesso(this.funcionalidade, 'INCLUIR');
-                console.log("mando pro java");
                 return $http.post(this.endereco + '/incluir-arte', indiceProducao);
             },
 
             //Agro
             incluirAgro : function(indiceProducao) {
                 SegurancaSrv.acesso(this.funcionalidade, 'INCLUIR');
-                console.log("mando pro java");
                 return $http.post(this.endereco + '/incluir-agro', indiceProducao);
             },
 
@@ -204,19 +202,16 @@ angular.module(pNmModulo).factory(pNmFactory,
 
             editarAnimal : function(indiceProducao) {
                 SegurancaSrv.acesso(this.funcionalidade, 'EDITAR');
-               console.log("mando pro java");
                 return $http.post(this.endereco + '/editar-animal', indiceProducao);
             },
 
             editarAgro : function(indiceProducao) {
                 SegurancaSrv.acesso(this.funcionalidade, 'EDITAR');
-               console.log("mando pro java");
                 return $http.post(this.endereco + '/editar-agro', indiceProducao);
             },
 
             editarArte : function(indiceProducao) {
                 SegurancaSrv.acesso(this.funcionalidade, 'EDITAR');
-               console.log("mando pro java");
                 return $http.post(this.endereco + '/editar-arte', indiceProducao);
             },
 

@@ -12,6 +12,7 @@ angular.module(pNmModulo).factory(pNmFactory,
         var BemClassificacaoSrv = {
             endereco: $rootScope.servicoUrl + '/bem-classificacao',
             filtrar : function(filtro) {
+                console.log("10");
                 return $http.post(this.endereco + '/filtro-executar', filtro);
             },
         };
