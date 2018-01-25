@@ -67,9 +67,9 @@ public class BemClassificacao extends EntidadeBase implements _ChavePrimaria<Int
 
 	private String nome;
 
-	@ManyToOne
-	@JoinColumn(name = "unidade_medida_id")
-	private UnidadeMedida unidadeMedida;
+//	@ManyToOne
+//	@JoinColumn(name = "unidade_medida_id")
+//	private UnidadeMedida unidadeMedida;
 
 	public BemClassificacao() {
 		super();
@@ -136,9 +136,9 @@ public class BemClassificacao extends EntidadeBase implements _ChavePrimaria<Int
 		return nome;
 	}
 
-	public UnidadeMedida getUnidadeMedida() {
-		return unidadeMedida;
-	}
+//	public UnidadeMedida getUnidadeMedida() {
+//		return unidadeMedida;
+//	}
 
 	@Override
 	public BemClassificacao infoBasica() {
@@ -195,8 +195,8 @@ public class BemClassificacao extends EntidadeBase implements _ChavePrimaria<Int
 		this.nome = nome;
 	}
 
-	public void setUnidadeMedida(UnidadeMedida unidadeMedida) {
-		this.unidadeMedida = unidadeMedida;
-	}
+//	public void setUnidadeMedida(UnidadeMedida unidadeMedida) {
+//		this.unidadeMedida = unidadeMedida;
+//	}
 
 }

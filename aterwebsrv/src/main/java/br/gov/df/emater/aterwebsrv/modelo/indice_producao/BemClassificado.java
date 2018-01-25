@@ -38,7 +38,11 @@ public class BemClassificado extends EntidadeBase implements _ChavePrimaria<Inte
 
 	@Column(name = "produtividade_min")
 	private Integer produtividadeMin;
-	                
+	
+	@ManyToOne
+	@JoinColumn(name = "unidade_medida_id")
+	private UnidadeMedida unidadeMedida;
+
 
 	private String tipo;
 
@@ -47,7 +51,7 @@ public class BemClassificado extends EntidadeBase implements _ChavePrimaria<Inte
 		super();
 	}
 
-	public BemClassificado(Integer id, String nome, BemClassificacao bemClassificacao, String tipo, String formula, Integer produtividadeMin, Integer produtividadeMax) {
+	public BemClassificado(Integer id, String nome, BemClassificacao bemClassificacao, String tipo, String formula, Integer produtividadeMin, Integer produtividadeMax, UnidadeMedida unidadeMedida) {
 		this(id);
 		setNome(nome);
 		setBemClassificacao(bemClassificacao);
@@ -55,6 +59,7 @@ public class BemClassificado extends EntidadeBase implements _ChavePrimaria<Inte
 		setFormula(formula);
 		setProdutividadeMin(produtividadeMin);
 		setProdutividadeMax(produtividadeMax);
+		setUnidadeMedida(unidadeMedida);
 	}
 
 	public BemClassificado(Serializable id) {
@@ -93,7 +98,7 @@ public class BemClassificado extends EntidadeBase implements _ChavePrimaria<Inte
 
 	@Override
 	public BemClassificado infoBasica() {
-		return new BemClassificado(this.id, this.nome, this.bemClassificacao != null ? new BemClassificacao(this.bemClassificacao.getId()) : null, this.tipo, this.formula, this.produtividadeMin, this.produtividadeMax);
+		return new BemClassificado(this.id, this.nome, this.bemClassificacao != null ? new BemClassificacao(this.bemClassificacao.getId()) : null, this.tipo, this.formula, this.produtividadeMin, this.produtividadeMax, this.unidadeMedida != null ? new UnidadeMedida(this.unidadeMedida.getId(), this.unidadeMedida.getNome()) : null);
 	}
 
 	public void setBemClassificacao(BemClassificacao bemClassificacao) {
@@ -124,5 +129,15 @@ public class BemClassificado extends EntidadeBase implements _ChavePrimaria<Inte
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
+
+	public UnidadeMedida getUnidadeMedida() {
+		return unidadeMedida;
+	}
+
+	public void setUnidadeMedida(UnidadeMedida unidadeMedida) {
+		this.unidadeMedida = unidadeMedida;
+	}
+	
+	
 
 }
