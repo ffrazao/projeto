@@ -25,10 +25,11 @@
                         <th>Modalidade</th>
                         <th>Sistema</th>
                         <th>Exploração</th>
-                        <th>Rebanho / Colmeia / População</th>
-                        <th>Matriz / Lâmina D´Água (m²) / Nº Tanques (Alevinos)</th>
+                        <th class="text-center">Rebanho <br /> Colmeia <br /> População</th>
+                        <th class="text-center">Matriz <br /> Lâmina D´Água (m²) <br /> Nº Tanques (Alevinos)</th>
                         <th>Produto</th>
                         <th>Produção Anual</th>
+                        <th></th>
                         <th ng-show="cadastro.registro.publicoAlvo">Preço Unitário</th>
                         <th ng-show="cadastro.registro.publicoAlvo">Valor Total</th>
                         <th ng-show="!cadastro.registro.publicoAlvo && cadastro.registro.unidadeOrganizacional ">Qtd Produtores</th>
@@ -89,7 +90,12 @@
                                 <input class="form-control input-sm text-right" id="producao_{{$parent.$index}}_{{$index}}" name="producao_{{$parent.$index}}_{{$index}}"
                                     style="min-width: 50px;" ng-model="cadastro.registro.producaoAnimalList[$parent.$index].produtoList[$index].producao"
                                     ng-required="true" ng-required="true" ui-number-mask="0" style="min-width: 50px;">
-                                    <p class="text-right" ng-show="produto.bemClassificado">({{produto.bemClassificado.unidadeMedida.nome}})</p>
+                                    
+                            </div>
+                        </td>
+                        <td>
+                            <div ng-repeat="produto in cadastro.registro.producaoAnimalList[$index].produtoList ">
+                                <p ng-show="produto.bemClassificado">({{produto.bemClassificado.unidadeMedida.nome}})</p>
                             </div>
                         </td>
 

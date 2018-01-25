@@ -41,6 +41,7 @@
                         <th>Produto</th>
                         <th>Condicao</th>
                         <th>Produção Anual</th>
+                        <th></th>
                         <th ng-show="cadastro.registro.publicoAlvo">Preço Unitário</th>
                         <th ng-show="cadastro.registro.publicoAlvo">Valor Total</th>
                         <th ng-show="!cadastro.registro.publicoAlvo && cadastro.registro.unidadeOrganizacional ">Qtd Produtores</th>
@@ -120,12 +121,15 @@
                         
                         <td>
                             <input class="form-control input-sm text-right" id="producao_{{$index}}" name="producao_{{$index}}" ng-model="producaoArtesanato.producao" ng-required="true" ui-number-mask="0" style="min-width: 50px;" ng-show="producaoArtesanato.bemClassificado">
-                            <p class="text-right" ng-show="producaoArtesanato.bemClassificado">({{producaoArtesanato.bemClassificado.unidadeMedida.nome}})</p>
+                            
                             <div class="label label-danger" ng-show="navegador.submetido && producaoNaoArgicolaFrm.area_{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
                         </td>
+                        <td>                            
+                                <p class="text-right" ng-show="producaoArtesanato.bemClassificado">({{producaoArtesanato.bemClassificado.unidadeMedida.nome}})</p>
+                        </td> 
                         <td ng-show="cadastro.registro.publicoAlvo && producaoArtesanato.bemClassificado">
                             <input class="form-control input-sm text-right" id="valorUnitario_{{$index}}" name="valorUnitario_{{$index}}" ng-model="producaoArtesanato.valorUnitario" ng-required="false" ui-money-mask="2" style="min-width: 50px;" ng-show="cadastro.registro.publicoAlvo && producaoArtesanato.bemClassificado">
                             <div class="label label-danger" ng-show="navegador.submetido && producaoNaoArgicolaFrm.valorUnitario_{{$index}}.$error.required">
