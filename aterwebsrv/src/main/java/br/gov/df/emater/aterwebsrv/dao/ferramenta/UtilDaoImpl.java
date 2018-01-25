@@ -196,9 +196,9 @@ public class UtilDaoImpl implements UtilDao {
 			BemClassificacao b = bemClassificacao;
 			do {
 				bemClassificacaoList.add(b);
-				if (unidadeMedida == null && b.getUnidadeMedida() != null) {
-					unidadeMedida = b.getUnidadeMedida();
-				}
+//				if (unidadeMedida == null && b.getUnidadeMedida() != null) {
+//					unidadeMedida = b.getUnidadeMedida();
+//				}
 				if (formulaProduto == null && b.getFormula() != null) {
 					formulaProduto = b.getFormula();
 				}
