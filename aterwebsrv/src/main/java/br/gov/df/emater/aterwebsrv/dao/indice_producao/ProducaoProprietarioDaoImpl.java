@@ -36,6 +36,7 @@ import br.gov.df.emater.aterwebsrv.modelo.indice_producao.FormaProducaoValor;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Producao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoComposicao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.ProducaoProprietario;
+import br.gov.df.emater.aterwebsrv.modelo.indice_producao.UnidadeMedida;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.GrupoSocial;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.Pessoa;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica;
@@ -387,7 +388,7 @@ public class ProducaoProprietarioDaoImpl implements ProducaoProprietarioDaoCusto
 				result.setAlteracaoData(UtilitarioData.getInstance().sqlTimestampToCalendar((Timestamp) tuple[campos.indexOf("alteracao_data")]));
 				result.setAlteracaoUsuario(new Usuario((Integer) tuple[campos.indexOf("alteracao_usuario_id")]));
 				result.setAno((Integer) tuple[campos.indexOf("ano")]);
-				result.setBemClassificado(new BemClassificado((Integer) tuple[campos.indexOf("bem_classificado_id")], (String) tuple[campos.indexOf("nomeBemClassificado")], new BemClassificacao((Integer) tuple[campos.indexOf("bem_classificacao_id")]), (String) tuple[campos.indexOf("tipoIPA")] , (String) tuple[campos.indexOf("formula")] , (Integer) tuple[campos.indexOf("produtividade_min")], (Integer) tuple[campos.indexOf("produtividade_max")]  ));
+				result.setBemClassificado(new BemClassificado((Integer) tuple[campos.indexOf("bem_classificado_id")], (String) tuple[campos.indexOf("nomeBemClassificado")], new BemClassificacao((Integer) tuple[campos.indexOf("bem_classificacao_id")]), (String) tuple[campos.indexOf("tipoIPA")] , (String) tuple[campos.indexOf("formula")] , (Integer) tuple[campos.indexOf("produtividade_min")], (Integer) tuple[campos.indexOf("produtividade_max")], new UnidadeMedida((Integer) tuple[campos.indexOf("unidade_medida_id")])  ));
 				result.setChaveSisater((String) tuple[campos.indexOf("chave_sisater")]);
 				result.setInclusaoData(UtilitarioData.getInstance().sqlTimestampToCalendar((Timestamp) tuple[campos.indexOf("inclusao_data")]));
 				result.setInclusaoUsuario(new Usuario((Integer) tuple[campos.indexOf("inclusao_usuario_id")]));

@@ -56,11 +56,11 @@ public class BemClassificacaoDaoImpl implements BemClassificacaoDaoCustom {
 			}
 			linha.add(bemClassificacaoList);
 
-			if (bc.getUnidadeMedida() != null) {
-				linha.add(bc.getUnidadeMedida().getNome());
-			} else {
-				linha.add(null);
-			}
+//			if (bc.getUnidadeMedida() != null) {
+//				linha.add(bc.getUnidadeMedida().getNome());
+//			} else {
+//				linha.add(null);
+//			}
 			if (bc.getItemANome() != null) {
 				linha.add(bc.getItemANome().getNome());
 			} else {

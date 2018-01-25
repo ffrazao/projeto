@@ -39,6 +39,7 @@ public class BemDaoImpl implements BemDaoCustom {
 		sql.append("     , b.produtividadeMin").append("\n");
 		sql.append("     , b.produtividadeMax").append("\n");
 		sql.append("     , b.bemClassificacao").append("\n");
+		sql.append("     , b.unidadeMedida").append("\n");
 		sql.append("from BemClassificado b").append("\n");
 		sql.append("join b.bemClassificacao").append("\n");
 		sql.append("where 1 = 1").append("\n");
@@ -78,7 +79,7 @@ public class BemDaoImpl implements BemDaoCustom {
 				fetchBemClassificacao((BemClassificacao) o[5]);
 			}
 		}
-
+		System.out.println(sql);
 		// retornar
 		return result;
 	}
