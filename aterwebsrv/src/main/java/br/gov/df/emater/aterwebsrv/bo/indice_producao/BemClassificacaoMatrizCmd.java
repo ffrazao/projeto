@@ -17,6 +17,7 @@ public class BemClassificacaoMatrizCmd extends _Comando {
 		// foi necessário fazer assim para que o cache do spring funcione
 		// corretamente veja
 		// http://stackoverflow.com/questions/16899604/spring-cache-cacheable-not-working-while-calling-from-another-method-of-the-s
+		
 		contexto.setResposta(servico.geraMatriz());
 		return false;
 	}

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import br.gov.df.emater.aterwebsrv.dao.indice_producao.BemClassificacaoDao;
 import br.gov.df.emater.aterwebsrv.dto.indice_producao.BemClassificacaoCadDto;
+import br.gov.df.emater.aterwebsrv.modelo.InfoBasica;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacaoFormaProducao;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificacaoFormaProducaoBemClassificado;
@@ -137,7 +138,7 @@ public class BemClassificacaoUtilSrv {
 		destino.setItemANome(origem.getItemANome() != null ? infoBasicaReg(origem.getItemANome()) : destino.getItemANome());
 		destino.setItemBNome(origem.getItemBNome() != null ? infoBasicaReg(origem.getItemBNome()) : destino.getItemBNome());
 		destino.setItemCNome(origem.getItemCNome() != null ? infoBasicaReg(origem.getItemCNome()) : destino.getItemCNome());
-		destino.setUnidadeMedida(origem.getUnidadeMedida() != null ? infoBasicaReg(origem.getUnidadeMedida()) : destino.getUnidadeMedida());
+		//destino.setUnidadeMedida(origem.getUnidadeMedida() != null ? infoBasicaReg(origem.getUnidadeMedida()) : destino.getUnidadeMedida());
 	}
 
 	private void ajustaLista(List<BemClassificacao> lista, List<BemClassificacao> matriz) {
@@ -185,7 +186,7 @@ public class BemClassificacaoUtilSrv {
 					bemClassificacaoMatrizList = new ArrayList<>();
 				}
 
-				item.setUnidadeMedida(infoBasicaReg(item.getUnidadeMedida()));
+				//item.setUnidadeMedida(infoBasicaReg(item.getUnidadeMedida()));
 				item.setItemANome(infoBasicaReg(item.getItemANome()));
 				item.setItemBNome(infoBasicaReg(item.getItemBNome()));
 				item.setItemCNome(infoBasicaReg(item.getItemCNome()));

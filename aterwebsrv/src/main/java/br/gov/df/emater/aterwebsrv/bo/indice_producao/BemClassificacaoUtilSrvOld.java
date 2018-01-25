@@ -131,7 +131,7 @@ public class BemClassificacaoUtilSrvOld {
 		destino.setItemANome(origem.getItemANome() != null ? infoBasicaReg(origem.getItemANome()) : destino.getItemANome());
 		destino.setItemBNome(origem.getItemBNome() != null ? infoBasicaReg(origem.getItemBNome()) : destino.getItemBNome());
 		destino.setItemCNome(origem.getItemCNome() != null ? infoBasicaReg(origem.getItemCNome()) : destino.getItemCNome());
-		destino.setUnidadeMedida(origem.getUnidadeMedida() != null ? infoBasicaReg(origem.getUnidadeMedida()) : destino.getUnidadeMedida());
+		//destino.setUnidadeMedida(origem.getUnidadeMedida() != null ? infoBasicaReg(origem.getUnidadeMedida()) : destino.getUnidadeMedida());
 	}
 
 	private void ajustaLista(List<BemClassificacao> lista, List<BemClassificacao> matriz) {
@@ -180,7 +180,7 @@ public class BemClassificacaoUtilSrvOld {
 					bemClassificacaoMatrizList = new ArrayList<>();
 				}
 
-				item.setUnidadeMedida(infoBasicaReg(item.getUnidadeMedida()));
+				//item.setUnidadeMedida(infoBasicaReg(item.getUnidadeMedida()));
 				item.setItemANome(infoBasicaReg(item.getItemANome()));
 				item.setItemBNome(infoBasicaReg(item.getItemBNome()));
 				item.setItemCNome(infoBasicaReg(item.getItemCNome()));
