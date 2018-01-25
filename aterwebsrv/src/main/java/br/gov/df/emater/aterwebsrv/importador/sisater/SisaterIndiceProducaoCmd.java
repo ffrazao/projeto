@@ -82,16 +82,16 @@ public class SisaterIndiceProducaoCmd extends _Comando {
 
 		private void bemClassificacaoAtualizaUnidadeMedida(BemClassificacao bemClassificacao, String nomeUnidadeMedida) throws BoException {
 			UnidadeMedida unidadeMedida = unidadeMedidaPegar(nomeUnidadeMedida);
-			if (bemClassificacao.getUnidadeMedida() == null && unidadeMedida != null) {
-				bemClassificacao.setUnidadeMedida(unidadeMedida);
-				bemClassificacao = bemClassificacaoDao.save(bemClassificacao);
-			} else if (unidadeMedida != null && !unidadeMedida.getId().equals(bemClassificacao.getUnidadeMedida().getId())) {
-				logger.error(String.format("Unidade de Medida duplicada [%s, já tem %s, tentando inserir %s]", bemClassificacao.getNome(), bemClassificacao.getUnidadeMedida().getNome(), unidadeMedida.getNome()));
-				// throw new BoException("Unidade de Medida duplicada [%s, já
-				// tem %s, tentando inserir %s]", bemClassificacao.getNome(),
-				// bemClassificacao.getUnidadeMedida().getNome(),
-				// unidadeMedida.getNome());
-			}
+//			if (bemClassificacao.getUnidadeMedida() == null && unidadeMedida != null) {
+//				bemClassificacao.setUnidadeMedida(unidadeMedida);
+//				bemClassificacao = bemClassificacaoDao.save(bemClassificacao);
+//			} else if (unidadeMedida != null && !unidadeMedida.getId().equals(bemClassificacao.getUnidadeMedida().getId())) {
+//				logger.error(String.format("Unidade de Medida duplicada [%s, já tem %s, tentando inserir %s]", bemClassificacao.getNome(), bemClassificacao.getUnidadeMedida().getNome(), unidadeMedida.getNome()));
+//				// throw new BoException("Unidade de Medida duplicada [%s, já
+//				// tem %s, tentando inserir %s]", bemClassificacao.getNome(),
+//				// bemClassificacao.getUnidadeMedida().getNome(),
+//				// unidadeMedida.getNome());
+//			}
 		}
 
 		private BemClassificacao bemClassificacaoPegar(String nome, String nomePai) throws BoException {
