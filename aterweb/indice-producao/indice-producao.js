@@ -2110,7 +2110,13 @@
             }, true);
 
             $scope.$watch('cadastro.apoio.tipoLancamento', function (k, v) {
-                $scope.cadastro.registro.unidadeOrganizacional = null;
+
+                if($rootScope.token.classificacao === 'OP'){
+                    $scope.cadastro.registro.unidadeOrganizacional.selectedOption = {id : $rootScope.token.lotacaoAtual.id};
+                }else{
+                    $scope.cadastro.registro.unidadeOrganizacional = null;
+                }
+                
                 $scope.cadastro.registro.publicoAlvo = null;
                 $scope.cadastro.registro.propriedadeRural = null;
             }, true);

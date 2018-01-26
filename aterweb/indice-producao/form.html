@@ -22,7 +22,7 @@
                     <div class="col-md-6" title="">
                         <div class="form-group">
                             <label class="label-form" for="tipoLancamento-UO">Unidade Organizacional</label>
-                            <select ng-change="limparIpa();" class="form-control" id="unidadeOrganizacional" name="unidadeOrganizacional" ng-model="cadastro.registro.unidadeOrganizacional" ng-options="item as item.nome for item in cadastro.apoio.unidadeOrganizacionalList | filter: {'classificacao': 'OP'} | orderBy:'nome' track by item.id" ng-required="true" >
+                            <select ng-change="limparIpa();" class="form-control" id="unidadeOrganizacional" name="unidadeOrganizacional" ng-model="cadastro.registro.unidadeOrganizacional.selectedOption" ng-options="item as item.nome for item in cadastro.apoio.unidadeOrganizacionalList | filter: {'classificacao': 'OP'} | orderBy:'nome' track by item.id" ng-required="true" >                                   
                             </select>
                             <div class="label label-danger" ng-if="navegador.submetido && frm.formulario.unidadeOrganizacional.$error.required && (!cadastro.registro.id && cadastro.apoio.tipoLancamento === 'UO')">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -36,9 +36,7 @@
                             <button type="button" class="btn btn-success" ng-click="cargaProdutor();" ng-show="cadastro.registro.publicoAlvo && cadastro.registro.propriedadeRural" >Carregar IPA Produtor</button>                        
                         </div>
                     </div>
-
                 </div>
-
                 <div class="row" >
                     <div class="col-md-6">
                         <label class="control-label" for="publicoAlvo">Produtor Rural</label>
@@ -124,7 +122,7 @@
                     </uib-tabset>
 
                 </div>
-
+<!--
               <div class="row">
                     <div class="col-md-6">
                         <span>&nbsp;</span>
@@ -157,7 +155,7 @@
                         </div>
                     </div>
                 </div>
-
+            -->
 
             </fieldset>
         </form>
