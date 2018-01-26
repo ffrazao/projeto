@@ -60,7 +60,7 @@
                                     id="bemProducaoTipoList_{{$index}}"
                                     name="bemProducaoTipoList_{{$index}}"
                                     ng-model="producaoAgroindustria.tipo" 
-                                    ng-options="sub as sub.nome for sub in cadastro.apoio.agroindustriaTipo | orderBy: 'ordem' track by sub.id" 
+                                    ng-options="sub as sub.nome for sub in cadastro.apoio.agroindustriaTipo | orderBy: 'nome' track by sub.id" 
                                     ng-required="true">
                                 </select>
                                 
@@ -73,7 +73,7 @@
                                     id="bemProducaoCategoriaList_{{$index}}"
                                     name="bemProducaoCategoriaList_{{$index}}"
                                     ng-model="producaoAgroindustria.categoria"
-                                    ng-options="sub as sub.nome for sub in producaoAgroindustria.tipo.bemClassificacaoList | orderBy: 'ordem' track by sub.id" 
+                                    ng-options="sub as sub.nome for sub in producaoAgroindustria.tipo.bemClassificacaoList | orderBy: 'nome' track by sub.id" 
                                     ng-required="true">
                                 </select>
                             </div>
@@ -85,7 +85,7 @@
                                     id="bemProducaoList_{{$index}}"
                                     name="bemProducaoList_{{$index}}"
                                     ng-model="producaoAgroindustria.bemClassificado" 
-                                    ng-options="sub as sub.nome for sub in producaoAgroindustria.categoria.bemClassificadoList | orderBy: 'ordem' track by sub.id" 
+                                    ng-options="sub as sub.nome for sub in producaoAgroindustria.categoria.bemClassificadoList | orderBy: 'nome' track by sub.id" 
                                     ng-required="true">
                                 </select>
                             </div>
@@ -95,7 +95,7 @@
                                 id="formaProducaoValor_0_{{$index}}"
                                 name="formaProducaoValor_0_{{$index}}"
                                 ng-model="cadastro.registro.producaoAgroindustriaList[$index].producaoComposicaoList[0].formaProducaoValor"
-                                ng-options="sub as sub.nome for sub in producaoAgroindustria.tipo.bemClassificacaoFormaProducaoItemList[0].formaProducaoItem.formaProducaoValorList | orderBy: 'ordem' track by sub.id" 
+                                ng-options="sub as sub.nome for sub in producaoAgroindustria.tipo.bemClassificacaoFormaProducaoItemList[0].formaProducaoItem.formaProducaoValorList | orderBy: 'nome' track by sub.id" 
                                 ng-required="true">
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && producaoNaoArgicolaFrm.formaProducaoValor_{{$parent.$index}}_{{$parent.$parent.$index}}.$error.required">
