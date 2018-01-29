@@ -62,18 +62,18 @@
                                     id="bemProducaoList_{{$index}}"
                                     name="bemProducaoList_{{$index}}"
                                     ng-model="producaoAgricola.bemClassificado" 
-                                    ng-options="sub as sub.nome for sub in cadastro.apoio.bemClassificadoAgricolaList | orderBy: 'ordem' track by sub.id" 
+                                    ng-options="sub as sub.nome for sub in cadastro.apoio.bemClassificadoAgricolaList | orderBy: 'nome' track by sub.id" 
                                     ng-required="true">
                                 </select>
                                 
                             </div>
                         </td>
-                        <td ng-repeat="forma in producaoAgricola.bemClassificado.bemClassificacao.bemClassificacaoFormaProducaoItemList | orderBy: 'ordem'" >
+                        <td ng-repeat="forma in producaoAgricola.bemClassificado.bemClassificacao.bemClassificacaoFormaProducaoItemList | orderBy: 'nome'" >
                             <select class="form-control input-sm" style="min-width: 100px;"
                                 id="formaProducaoValor_{{$parent.$index}}_{{$index}}"
                                 name="formaProducaoValor_{{$parent.$index}}_{{$index}}"
                                 ng-model="cadastro.registro.producaoAgricolaList[$parent.$index].producaoComposicaoList[$index]" 
-                                ng-options="sub as sub.nome for sub in forma.formaProducaoItem.formaProducaoValorList | orderBy: 'ordem' track by sub.id" 
+                                ng-options="sub as sub.nome for sub in forma.formaProducaoItem.formaProducaoValorList | orderBy: 'nome' track by sub.id" 
                                 ng-required="true">
                             </select>
                             <div class="label label-danger" ng-show="navegador.submetido && producaoArgicolaFrm.formaProducaoValor_{{$parent.$index}}_{{$parent.$parent.$index}}.$error.required">

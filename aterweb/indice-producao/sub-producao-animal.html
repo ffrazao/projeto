@@ -44,18 +44,18 @@
                         <td>
                             <div class="form-group">
                                 <select class="form-control input-sm" style="min-width: 100px;" id="bemProducaoTipoList_{{$index}}" name="bemProducaoTipoList_{{$index}}"
-                                    ng-model="producaoAnimal.cultura" ng-change="limpaClassifica( $index );" ng-options="sub as sub.nome for sub in cadastro.apoio.animalTipo | orderBy: 'ordem' track by sub.id"
+                                    ng-model="producaoAnimal.cultura" ng-change="limpaClassifica( $index );" ng-options="sub as sub.nome for sub in cadastro.apoio.animalTipo | orderBy: 'nome' track by sub.id"
                                     ng-required="true">
                                 </select>
                             </div>
                         </td>
 
-                        <td ng-repeat="forma in producaoAnimal.cultura.bemClassificacaoFormaProducaoItemList | orderBy: 'ordem'">
+                        <td ng-repeat="forma in producaoAnimal.cultura.bemClassificacaoFormaProducaoItemList | orderBy: 'nome'">
                             <select class="form-control input-sm" style="min-width: 100px;" 
                             id="formaProducaoValor_{{$parent.$index}}_{{$index}}" 
                                 name="formaProducaoValor_{{$parent.$index}}_{{$index}}"
                                 ng-model="cadastro.registro.producaoAnimalList[$parent.$index].producaoComposicaoList[$index].formaProducaoValor"
-                                ng-options="sub as sub.nome for sub in forma.formaProducaoItem.formaProducaoValorList | orderBy: 'ordem' track by sub.id"
+                                ng-options="sub as sub.nome for sub in forma.formaProducaoItem.formaProducaoValorList | orderBy: 'nome' track by sub.id"
                                 ng-change="classifica( $parent.$index );" ng-required="true">
                             </select>
 
