@@ -52,7 +52,6 @@ angular.module(pNmModulo).controller(pNmController,
         var item = $scope.criarElemento($scope.cadastro.registro, 'producaoAnimalList', {});
         item.producaoComposicaoList = [];
         $scope.cadastro.registro.producaoAnimalList.push(item);
-        
     };
     
     $scope.excluir = function() {
