@@ -116,6 +116,7 @@
             // inicio das operaçoes atribuidas ao navagador
             var salvar = function(registro, modal) {
                 removerCampo(registro, ['@jsonId']);
+                console.log(registro);
                 ProjetoCreditoRuralSrv.salvar(registro.cadastro).success(function(resposta) {
                     if (resposta && resposta.mensagem && resposta.mensagem === 'OK') {
                         $scope.confirmarFiltrar($scope, $scope.cadastro.filtro.numeroPagina, $scope.cadastro.filtro.temMaisRegistros);

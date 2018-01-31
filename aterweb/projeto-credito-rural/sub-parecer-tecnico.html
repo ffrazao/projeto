@@ -69,6 +69,7 @@
                             <h3>Parecer - <b>{{UtilSrv.indiceDePorCampo(cadastro.apoio.parecerTecnicoCodigoList, reg.codigo, 'codigo').descricao}}</b></h3>
                             <h4 class="azul"><b>{{UtilSrv.indiceDePorCampo(cadastro.apoio.parecerTecnicoCodigoList, reg.codigo, 'codigo').explicacao}}</b></h4>
                             <text-angular id="parecer{{$index}}" name="parecer{{$index}}" ng-model="reg.conteudo"></text-angular>
+
                             <div class="label label-danger" ng-show="navegador.submetido && parecerTecnicoListFrm['parecer' + $index].$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
