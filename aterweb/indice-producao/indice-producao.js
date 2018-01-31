@@ -821,7 +821,9 @@
 
             $scope.cargaEscritorio = function () {
                 
-                    var bem, forma, tmp, area, producao, produtividade, valorUnitario, valorTotal, qtdProdutores, id, idprod, key, val, chaveIpa, valorIpa, w, w2, w3, w4, w5, producaoCompAgro, producaoCompArte, rebanho, matriz;
+                    var bem, forma, tmp, area, producao, produtividade, valorUnitario, valorTotal, 
+                    qtdProdutores, id, idprod, key, val, chaveIpa, valorIpa, w, w2, w3, w4, w5, 
+                    producaoCompAgro, producaoCompArte, rebanho, matriz, chaveUN, valorUN;
 
                     $scope.cadastro.filtro.ano = $scope.cadastro.registro.ano;
                     $scope.cadastro.filtro.unidadeOrganizacional = $scope.cadastro.registro.unidadeOrganizacional;
@@ -831,10 +833,10 @@
                     IndiceProducaoSrv.producao($scope.cadastro.filtro).success(function (resposta) {
                         //$scope.animal = angular.toJson(resposta);
                         //console.log($scope.animal);
-                        $scope.cadastro.registro.producaoAgricolaList = resposta.resultado.producaoAgricolaList;
-                        $scope.cadastro.registro.producaoFloriculturaList = resposta.resultado.producaoFloriculturaList;
-                        $scope.cadastro.registro.producaoArtesanatoList = resposta.resultado.producaoArtesanatoList;
-                        $scope.cadastro.registro.producaoAgroindustriaList = resposta.resultado.producaoAgroindustriaList;
+                        $scope.cadastro.registro.producaoAgricolaList = angular.copy(resposta.resultado.producaoAgricolaList);
+                        $scope.cadastro.registro.producaoFloriculturaList = angular.copy(resposta.resultado.producaoFloriculturaList);
+                        $scope.cadastro.registro.producaoArtesanatoList = angular.copy(resposta.resultado.producaoArtesanatoList);
+                        $scope.cadastro.registro.producaoAgroindustriaList = angular.copy(resposta.resultado.producaoAgroindustriaList);
 
                         for (var result in resposta.resultado.producaoAnimalList) {
                             if (resposta.resultado.producaoAnimalList[result].id > 0) {
@@ -843,22 +845,24 @@
                                 resposta.resultado.producaoAnimalList.splice(result, 1);
                             }
                         }
-                        $scope.cadastro.registro.producaoAnimalList = resposta.resultado.producaoAnimalList;
-
+                        //removerCampo(resposta.resultado.producaoAnimalList, ['@jsonId']);
+                        $scope.cadastro.registro.producaoAnimalList = angular.copy(resposta.resultado.producaoAnimalList);
                         var arrFormas = [];
                         var arrIpa = [];
                         var recuperaIpa = [];
+                        var recuperaUN = [];
+                        var arrUN = [];
                         var arrBem = [];
                         var arrProduto = [];
                         //  console.log("Agri");
-                        //  console.log($scope.cadastro.registro.producaoAgricolaList);
+                          console.log($scope.cadastro.registro.producaoAgricolaList);
                         // console.log($scope.cadastro.registro.producaoFloriculturaList);
                         //  console.log("Arte");
                         //  console.log($scope.cadastro.registro.producaoArtesanatoList);
                         // console.log("Agro");
                         // console.log($scope.cadastro.registro.producaoAgroindustriaList);
                         // console.log("Animal");
-                        //  console.log($scope.cadastro.registro.producaoAnimalList);
+                          console.log($scope.cadastro.registro.producaoAnimalList);
 
                         // AGRICOLA
 
@@ -876,10 +880,7 @@
 
                             if (recuperaIpa != null) {
                                 $scope.cadastro.registro.producaoAgricolaList[i].ipa = recuperaIpa;
-                            }
-
-                            // id = $scope.cadastro.registro.producaoAgricolaList[i].ipaProducaoBemClassificadoList[0].id;
-                            // $scope.cadastro.registro.producaoAgricolaList[i].id = id;
+                            }                            
 
                             producao = $scope.cadastro.registro.producaoAgricolaList[i].ipaProducaoBemClassificadoList[0].producao;
                             $scope.cadastro.registro.producaoAgricolaList[i].producao = producao;
@@ -966,6 +967,22 @@
                                 if (recuperaIpa != null) {
                                     $scope.cadastro.registro.producaoAnimalList[animal].ipa = recuperaIpa;
                                 }
+
+                            // for (var agriUndMed in $scope.cadastro.registro.producaoAnimalList[i]) {
+                            //     if ($scope.cadastro.registro.producaoAnimalList[i].ipa.id != null) {
+                            //         chaveUN = $scope.cadastro.registro.producaoAnimalList[i].produtoList[0].bemClassificado.unidadeMedida['@jsonId'];
+                            //         valorUN = $scope.cadastro.registro.producaoAnimalList[i].produtoList[0].bemClassificado.unidadeMedida;
+                            //     }
+                            //     arrUN[chaveUN] = valorUN;
+                            // }
+
+                            // recuperaUN = arrUN[$scope.cadastro.registro.producaoAnimalList[i].produtoList[0].bemClassificado.unidadeMedida];
+
+                            // if (recuperaUN != null) {
+                            //     $scope.cadastro.registro.producaoAnimalList[i].produtoList[0].bemClassificado.unidadeMedida = recuperaUN;
+                            // }
+
+
 
 
                                 for (var recuperaBemAnimal in $scope.cadastro.registro.producaoAnimalList[animal].cultura) {
@@ -2115,7 +2132,7 @@
                 //     $scope.cadastro.registro.unidadeOrganizacional.selectedOption = {id : $rootScope.token.lotacaoAtual.id};
                 // }else{
                     $scope.cadastro.registro.unidadeOrganizacional = null;
-                // }
+                //}
                 
                 $scope.cadastro.registro.publicoAlvo = null;
                 $scope.cadastro.registro.propriedadeRural = null;

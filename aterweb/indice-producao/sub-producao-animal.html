@@ -21,7 +21,7 @@
                             <frz-seletor ng-model="producaoAnimalNvg"></frz-seletor>
                             #
                         </th>
-                        <th>cultura</th>
+                        <th>Cultura</th>
                         <th>Modalidade</th>
                         <th>Sistema</th>
                         <th>Exploração</th>
@@ -44,7 +44,7 @@
                         <td>
                             <div class="form-group">
                                 <select class="form-control input-sm" style="min-width: 100px;" id="bemProducaoTipoList_{{$index}}" name="bemProducaoTipoList_{{$index}}"
-                                    ng-model="producaoAnimal.cultura" ng-change="limpaClassifica( $index );" ng-options="sub as sub.nome for sub in cadastro.apoio.animalTipo | orderBy: 'ordem' track by sub.id"
+                                    ng-model="producaoAnimal.cultura" ng-change="limpaClassifica( $index );" ng-options="sub as sub.nome for sub in cadastro.apoio.animalTipo | orderBy: 'nome' track by sub.id"
                                     ng-required="true">
                                 </select>
                             </div>
@@ -55,7 +55,7 @@
                             id="formaProducaoValor_{{$parent.$index}}_{{$index}}" 
                                 name="formaProducaoValor_{{$parent.$index}}_{{$index}}"
                                 ng-model="cadastro.registro.producaoAnimalList[$parent.$index].producaoComposicaoList[$index].formaProducaoValor"
-                                ng-options="sub as sub.nome for sub in forma.formaProducaoItem.formaProducaoValorList | orderBy: 'ordem' track by sub.id"
+                                ng-options="sub as sub.nome for sub in forma.formaProducaoItem.formaProducaoValorList | orderBy: 'nome' track by sub.id"
                                 ng-change="classifica( $parent.$index );" ng-required="true">
                             </select>
 
@@ -83,6 +83,7 @@
                             <div ng-repeat="produto in cadastro.registro.producaoAnimalList[$index].produtoList ">
                                 <input class="form-control input-sm" id="produto_{{$parent.$index}}_{{$index}}" name="produto_{{$parent.$index}}_{{$index}}"
                                     style="min-width: 50px;" ng-model="produto.bemClassificado.nome" ng-disabled="true" ng-required="true">
+                            </div>
                         </td>
 
                         <td>
@@ -93,9 +94,14 @@
                             </div>
                         </td>
                         <td>
-                                <div ng-repeat="produto in cadastro.registro.producaoAnimalList[$index].produtoList ">
-                                    <p ng-show="produto.bemClassificado">({{produto.bemClassificado.unidadeMedida.nome}})</p>
-                                </div>
+                                <div ng-repeat="prod in cadastro.registro.producaoAnimalList[$index].produtoList ">
+                                <!-- <div ng-repeat="produto in cadastro.registro.producaoAnimalList[$index].cultura.bemClassificadoList"> -->
+                                  <!-- {{$index}}:  {{prod.bemClassificado.id}}
+                                  {{$index}}:  {{producaoAnimal.cultura.bemClassificadoList[$index].id}} -->
+                                    <p ng-show="prod.bemClassificado.id === producaoAnimal.cultura.bemClassificadoList[$index].id">({{producaoAnimal.cultura.bemClassificadoList[$index].unidadeMedida.nome}})</p>
+                                    <p ng-show="!producaoAnimal.cultura.bemClassificadoList[$index].id">({{prod.bemClassificado.unidadeMedida.nome}})</p>                                                                
+                                <!-- </div> -->
+                                </div>                                
                             </td>
 
                         <td ng-if="cadastro.registro.publicoAlvo">
