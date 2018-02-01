@@ -19,7 +19,7 @@ public class ProducaoCadDto extends CadFiltroDtoCustom {
 	
 	private Float area;
 	
-	private Integer matriz;
+	private Float matriz;
 	
 	private Integer rebanho;
 	
@@ -154,11 +154,11 @@ public class ProducaoCadDto extends CadFiltroDtoCustom {
 		this.area = area;
 	}
 
-	public Integer getMatriz() {
+	public Float getMatriz() {
 		return matriz;
 	}
 
-	public void setMatriz(Integer matriz) {
+	public void setMatriz(Float matriz) {
 		this.matriz = matriz;
 	}
 
