@@ -149,18 +149,7 @@ module.exports = function (grunt) {
       main: {
         src: 'temp/app.full.js',
         dest:'dist/app.full.min.js'
-      },
-      options: {
-        mangle: true,
-        compress: true,
-        wrap: true
-    },
-      my_target: {
-        files: {
-            'bower_components/textAngular/dist/textAngular.min.js': ['src/textAngularSetup.js','src/textAngular.js'],
-            'bower_components/textAngular/dist/textAngular-sanitize.min.js': ['src/textAngular-sanitize.js']
-        }
-    }
+      }
     },
     htmlmin: {
       main: {
