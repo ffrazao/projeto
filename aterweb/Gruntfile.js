@@ -157,8 +157,8 @@ module.exports = function (grunt) {
     },
       my_target: {
         files: {
-            'dist/textAngular.min.js': ['src/textAngularSetup.js','src/textAngular.js'],
-            'dist/textAngular-sanitize.min.js': ['src/textAngular-sanitize.js']
+            'bower_components/textAngular/dist/textAngular.min.js': ['src/textAngularSetup.js','src/textAngular.js'],
+            'bower_components/textAngular/dist/textAngular-sanitize.min.js': ['src/textAngular-sanitize.js']
         }
     }
     },
