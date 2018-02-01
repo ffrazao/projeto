@@ -35,7 +35,7 @@ public class IpaProducao extends EntidadeBase{
 	private Ipa ipa;
 	
 	private Integer rebanho;
-	private Integer matriz;
+	private Float matriz;
 	private Float area;
 	
 	@ManyToOne
@@ -127,11 +127,11 @@ public class IpaProducao extends EntidadeBase{
 		this.rebanho = rebanho;
 	}
 
-	public Integer getMatriz() {
+	public Float getMatriz() {
 		return matriz;
 	}
 
-	public void setMatriz(Integer matriz) {
+	public void setMatriz(Float matriz) {
 		this.matriz = matriz;
 	}
 
