@@ -54,7 +54,7 @@ public class EditarFlorCmd extends _SalvarCmd {
 		ip.setIpaId(ipa2);
 			
 			if(result.getMatriz() == null){
-				ip.setMatriz(0);
+				ip.setMatriz(0f);
 			}else{
 				ip.setMatriz(result.getMatriz());
 			}

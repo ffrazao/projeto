@@ -32,7 +32,7 @@ public class SalvarFlorCmd {
 			ip.setIpaId(ipa);
 			
 			if(ipflor.getMatriz() == null){
-				ip.setMatriz(0);
+				ip.setMatriz(0f);
 			}else{
 				ip.setMatriz(ipflor.getMatriz());
 			}

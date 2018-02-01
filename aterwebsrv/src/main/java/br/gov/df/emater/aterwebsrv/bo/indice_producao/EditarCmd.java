@@ -55,7 +55,7 @@ public class EditarCmd extends _SalvarCmd {
 		ip.setIpaId(ipa2);
 			
 			if(ip.getMatriz() == null){
-				ip.setMatriz(0);
+				ip.setMatriz(0f);
 			}else{
 				ip.setMatriz(result.getMatriz());
 			}

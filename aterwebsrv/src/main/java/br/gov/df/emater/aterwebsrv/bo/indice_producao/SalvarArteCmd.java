@@ -36,7 +36,7 @@ public class SalvarArteCmd{
 			ip.setIpaId(ipa);
 			
 			if(i.getMatriz() == null){
-				ip.setMatriz(0);
+				ip.setMatriz(0f);
 			}else{
 				ip.setMatriz(i.getMatriz());
 			}
