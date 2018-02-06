@@ -327,6 +327,7 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.transformar = function(pessoa){
         mensagemSrv.confirmacao(false, '<Font color=red size=4><center><strong>ATENÇÃO!</strong> Ao clicar em <strong>OK</strong> o Cadastro SIMPLES será transformado em Cadastro COMPLETO. <br> <strong>CUIDADO!</strong> Esse procedimento <strong>NÃO</strong> tem retorno!</font><br> <br><Font color=Black size=3> <strong>OBS.:</strong> Para visualizar a modificação é necessário realizar o filtro novamente após a confirmação do procedimento! <br> <br> Deseja continuar?</center></font> ').then(function (conteudo) {
             $scope.confirmarTransformar(pessoa);
+            $scope.navegador.mudarEstado('VISUALIZANDO');
         });
         
     };
