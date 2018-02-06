@@ -70,10 +70,9 @@ public class PessoaTransformarCmd extends _Comando {
 			pf.setInclusaoUsuario(userDao.findByUsername(nome));
 		}
 		
-	
 		if("F".equals(ps.getGenero())){
 			pf.setGenero(PessoaGenero.F);
-		}else if(ps.getGenero() == "M"){
+		}else if("M".equals(ps.getGenero())){
 			pf.setGenero(PessoaGenero.M);
 		}
 		
