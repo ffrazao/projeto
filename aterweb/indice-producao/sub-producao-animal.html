@@ -104,7 +104,8 @@
                                   <!-- {{$index}}:  {{prod.bemClassificado.id}}
                                   {{$index}}:  {{producaoAnimal.cultura.bemClassificadoList[$index].id}} -->
                                     <p ng-show="prod.bemClassificado.id === producaoAnimal.cultura.bemClassificadoList[$index].id">({{producaoAnimal.cultura.bemClassificadoList[$index].unidadeMedida.nome}})</p>
-                                    <p ng-show="!producaoAnimal.cultura.bemClassificadoList[$index].id">({{prod.bemClassificado.unidadeMedida.nome}})</p>                                                                
+                                    <p ng-show="!producaoAnimal.cultura.bemClassificadoList[$index].id">({{prod.bemClassificado.unidadeMedida.nome}})</p>
+                                    <p ng-show="prod.bemClassificado.id !== producaoAnimal.cultura.bemClassificadoList[$index].id && producaoAnimal.cultura.bemClassificadoList[$index].id">({{prod.bemClassificado.unidadeMedida.nome}})</p>                                                          
                                 <!-- </div> -->
                                 </div>                                
                             </td>
