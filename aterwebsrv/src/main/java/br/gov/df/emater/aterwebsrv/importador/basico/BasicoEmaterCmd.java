@@ -42,7 +42,7 @@ public class BasicoEmaterCmd extends _Comando {
 		while ((emater = (Empregador) pessoaDao.findOneByNome("Empresa de Assistência Técnica e Extensão Rural do Distrito Federal")) == null) {
 			PlatformTransactionManager transactionManager = (PlatformTransactionManager) contexto.get("transactionManager");
 			DefaultTransactionDefinition transactionDefinition = (DefaultTransactionDefinition) contexto.get("transactionDefinition");
-
+/*
 			TransactionStatus transactionStatus = transactionManager.getTransaction(transactionDefinition);
 			try {
 				emater = new Empregador();
@@ -67,8 +67,8 @@ public class BasicoEmaterCmd extends _Comando {
 				transactionManager.rollback(transactionStatus);
 				throw e;
 			}
+*/			
 		}
-
 		contexto.put("emater", emater);
 
 		if (logger.isInfoEnabled()) {

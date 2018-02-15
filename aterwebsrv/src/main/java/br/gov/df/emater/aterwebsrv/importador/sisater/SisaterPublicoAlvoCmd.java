@@ -413,7 +413,7 @@ public class SisaterPublicoAlvoCmd extends _Comando {
 
 	private static final String SISATER_TABELA = "BENEF00";
 
-	private static final String SQL = String.format("SELECT T.* FROM %s T ORDER BY T.%s", SISATER_TABELA, SISATER_CAMPO);
+	private static final String SQL = String.format("SELECT T.* FROM %s T WHERE (CHAVE_ATER_WEB IS NULL) ORDER BY T.%s", SISATER_TABELA, SISATER_CAMPO);
 
 	private static final String SQL_DIVIDA = "SELECT T.* FROM DIVIDA T WHERE T.IDBEN = ?";
 	private static final String SQL_FOTO = "SELECT T.BFFOTO FROM BENEF02 T WHERE T.IDBEN = ?";
@@ -641,7 +641,7 @@ public class SisaterPublicoAlvoCmd extends _Comando {
 		PlatformTransactionManager transactionManager = (PlatformTransactionManager) contexto.get("transactionManager");
 		DefaultTransactionDefinition transactionDefinition = (DefaultTransactionDefinition) contexto.get("transactionDefinition");
 
-		impUtil.criarMarcaTabelaSisater(con, SISATER_TABELA);
+		// impUtil.criarMarcaTabelaSisater(con, SISATER_TABELA);
 
 		try (Statement st = con.createStatement(); ResultSet rs = st.executeQuery(SQL);) {
 			int cont = 0;
@@ -699,7 +699,7 @@ public class SisaterPublicoAlvoCmd extends _Comando {
 					// salvar no MySQL e no Firebird
 					pessoa.setId((Integer) facadeBo.pessoaSalvar(contexto.getUsuario(), pessoa).getResposta());
 					
-					impUtil.chaveAterWebAtualizar(base, pessoa.getId(), agora, SISATER_TABELA, "IDUND = ? AND IDBEN =  ?", rs.getString("IDUND"), rs.getString("IDBEN"));
+					//impUtil.chaveAterWebAtualizar(base, pessoa.getId(), agora, SISATER_TABELA, "IDUND = ? AND IDBEN =  ?", rs.getString("IDUND"), rs.getString("IDBEN"));
 
 					// identificar último usuario que atualizou o registro
 					Usuario atualizador = impUtil.deParaUsuario(rs.getString("IDEMP"));

@@ -141,7 +141,7 @@ public class SisaterEmpregadoCmd extends _Comando {
 
 		PlatformTransactionManager transactionManager = (PlatformTransactionManager) contexto.get("transactionManager");
 		DefaultTransactionDefinition transactionDefinition = (DefaultTransactionDefinition) contexto.get("transactionDefinition");
-
+/*
 		impUtil.criarMarcaTabelaSisater(con, TABELA);
 		int cont = 0;
 		try (Statement st = con.createStatement(); ResultSet rs = st.executeQuery(String.format(SQL, TABELA));) {
@@ -246,6 +246,7 @@ public class SisaterEmpregadoCmd extends _Comando {
 		if (logger.isDebugEnabled()) {
 			logger.debug(String.format("[%s] importado %d empregados", base.name(), cont));
 		}
+*/	
 
 		return false;
 	}

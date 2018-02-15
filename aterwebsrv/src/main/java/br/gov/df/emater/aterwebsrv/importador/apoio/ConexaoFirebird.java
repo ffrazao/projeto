@@ -23,18 +23,20 @@ public class ConexaoFirebird {
 		ASPBE("GEPRE NOROESTE", "GO"), 
 		ASSOB("GESOB", "GO"), // repetido
 */		
-		ELJAR("GEJAR", "DF"), 
+		ELPIP("GEPIP", "DF"), 
+
+/*	    ELJAR("GEJAR", "DF"), 
 		ELPAD("GEPAD", "DF"), 
 		ELTAB("GETAB", "DF"), 
 		ELTAQ("GETAQ", "DF"),
 		ELALG("GERAG", "DF"),
-		ELPIP("GEPIP", "DF"), 
 	
 		ELPAR("GEPAR", "DF"), 
 		ELBRA("GBRAZ", "DF"), 
 		ELRSS("GESEB", "DF"), 
 		ELSOB("GESOB", "DF"), 
 		ELCEI("GECEI", "DF"), 
+*/
 		;
 		
 		private String sigla;
