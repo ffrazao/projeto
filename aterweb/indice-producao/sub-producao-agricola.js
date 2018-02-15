@@ -17,6 +17,7 @@ angular.module(pNmModulo).controller(pNmController,
         if (!$scope.producaoArgicolaNvg) {
             $scope.producaoArgicolaNvg = new FrzNavegadorParams($scope.cadastro.registro.producaoAgricolaList, 4);
         }
+        $scope.desabilitarBotao(true);
     };
     if (!$uibModalInstance) { init(); }
 

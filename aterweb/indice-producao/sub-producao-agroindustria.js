@@ -17,7 +17,7 @@ angular.module(pNmModulo).controller(pNmController,
         if (!$scope.producaoAgroindustriaNvg) {
             $scope.producaoAgroindustriaNvg = new FrzNavegadorParams($scope.cadastro.registro.producaoAgroindustriaList, 4);
         }
-
+        $scope.desabilitarBotao(true);
     };
     if (!$uibModalInstance) { init(); }
 

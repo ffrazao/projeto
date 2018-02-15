@@ -19,7 +19,7 @@ angular.module(pNmModulo).controller(pNmController,
         if (!$scope.producaoAnimalNvg) {
             $scope.producaoAnimalNvg = new FrzNavegadorParams($scope.cadastro.registro.producaoAnimalList, 4);
         }
-
+        $scope.desabilitarBotao(true);
     };
     if (!$uibModalInstance) { init(); }
 

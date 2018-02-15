@@ -17,7 +17,7 @@ angular.module(pNmModulo).controller(pNmController,
         if (!$scope.producaoArtesanatoNvg) {
             $scope.producaoArtesanatoNvg = new FrzNavegadorParams($scope.cadastro.registro.producaoArtesanatoList, 4);
         }
-
+        $scope.desabilitarBotao(true);
     };
     if (!$uibModalInstance) { init(); }
 

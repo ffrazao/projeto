@@ -417,6 +417,8 @@
 
             $scope.limparIpa = function() {
 
+                $scope.desabilitarBotao(false);
+
                 if(
                     ($scope.cadastro.registro.producaoAgricolaList != null) ||
                     ($scope.cadastro.registro.producaoFloriculturaList != null) ||
@@ -817,9 +819,13 @@
                 });
             };
 
-            
+            $scope.desabilitarBotao = function(condicao){
+                $scope.cadastro.registro.condicao = condicao;
+            };
 
             $scope.cargaEscritorio = function () {
+
+                $scope.desabilitarBotao(true);
                 
                     var bem, forma, tmp, area, producao, produtividade, valorUnitario, valorTotal, 
                     qtdProdutores, id, idprod, key, val, chaveIpa, valorIpa, w, w2, w3, w4, w5, 
@@ -1379,7 +1385,11 @@
                     });               
             };
 
+            
+
             $scope.cargaProdutor = function () {
+
+                $scope.desabilitarBotao(true);
 
                     var bem, forma, tmp, area, producao, produtividade, valorUnitario, valorTotal, qtdProdutores, id, idprod, key, val, chaveIpa, valorIpa, w, w2, w3, w4, w5, producaoCompAgro, producaoCompArte, rebanho, matriz;
 

@@ -17,6 +17,7 @@ angular.module(pNmModulo).controller(pNmController,
         if (!$scope.producaoFloriculturaNvg) {
             $scope.producaoFloriculturaNvg = new FrzNavegadorParams($scope.cadastro.registro.producaoFloriculturaList, 4);
         }
+        $scope.desabilitarBotao(true);
     };
     if (!$uibModalInstance) { init(); }
 
