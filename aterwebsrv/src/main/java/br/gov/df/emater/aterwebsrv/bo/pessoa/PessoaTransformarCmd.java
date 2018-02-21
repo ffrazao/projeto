@@ -80,7 +80,7 @@ public class PessoaTransformarCmd extends _Comando {
 		pf.setSituacaoData(Calendar.getInstance());
 		pf.setSituacao(PessoaSituacao.A);
 		pf.setPublicoAlvoConfirmacao(Confirmacao.S);
-		pf.setObservacoes("Esse cadastro foi criado pela opção: Transformar cadastro simples em cadastro Composto!");
+		pf.setObservacoes("Esse cadastro foi criado pela opção: Transformar cadastro Simples em cadastro Completo!");
 		
 		pessoaDao.save(pf);
 		

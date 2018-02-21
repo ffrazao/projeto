@@ -30,6 +30,15 @@ public class PessoaRest {
 	public PessoaRest() {
 	}
 
+	@RequestMapping(value = "/verificaCPF", method = RequestMethod.GET)
+	public Resposta verificaCPF(@RequestParam("cpf") String cpf, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.verificaCPF(usuario, cpf).getResposta());
+	}
+	@RequestMapping(value = "/verificaCNPJ", method = RequestMethod.GET)
+	public Resposta verificaCNPJ(@RequestParam("cnpj") String cnpj, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.verificaCNPJ(usuario, cnpj).getResposta());
+	}
+
 	@RequestMapping(value = "/buscar-cep", method = RequestMethod.GET)
 	public Resposta buscaCep(@RequestParam("cep") String cep, Principal usuario) throws Exception {
 		return new Resposta(facadeBo.pessoaBuscarCep(usuario, cep).getResposta());
