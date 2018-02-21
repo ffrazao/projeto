@@ -4,14 +4,24 @@
                         <thead>
                                 <tr>
                                         <th>#</th>
+                                        <th>Foto</th>
                                         <th>Pessoa</th>
+                                        <th>CPF/CNPJ</th>
                                         <th>Principal</th>
                                 </tr>
                         </thead>
                         <tbody>
                                 <tr ng-repeat-start="item in conteudo">
                                         <td>{{$index + 1}}.</td>
+                                        <td width="96px" rowspan="2">
+                                                {{servicoUrl}}/arquivo-descer?arquivo={{item.pessoa.perfilArquivo.md5}}<BR>
+                                                <img class="img-thumbnail" src="img/foto.gif" ng-hide="item.pessoa.perfilArquivo.md5.length" width="180px" height="180px" />
+                                                <img class="img-thumbnail" ng-src="{{servicoUrl}}/arquivo-descer?arquivo={{item.pessoa.perfilArquivo.md5}}" ng-if="item.pessoa.perfilArquivo.md5.length" width="180px" height="180px" />
+                                        </td>
+
                                         <td><a ng-click="modalVerPessoa(item.pessoa.id)">{{item.pessoa.nome}}</a></td>
+                                        <td><span ng-show="item.pessoa.pessoaTipo==='PF'">{{item.pessoa.cpf}}</span><span ng-show="item.pessoa.pessoaTipo==='PJ'">{{item.pessoa.cnpj}}</span></td>
+
                                         <td style="vertical-align:middle">
                                                 <input type="radio" ng-model="conteudo.principal" ng-value="item"/>              
                                 </tr>

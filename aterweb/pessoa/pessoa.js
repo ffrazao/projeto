@@ -1,4 +1,4 @@
-/* global criarEstadosPadrao, segAutorizaAcesso, moment, removerCampo */
+/* global criarEstadosPadrao, segAutorizaAcesso, moment, removerCampo, isUndefOrNullOrEmpty */
 
 (function(pNmModulo, pNmController, pNmFormulario, pUrlModulo) {
     'use strict';
@@ -508,6 +508,36 @@
             };
 
 
+            $scope.verificaCPF = function(){
+               var cpf = $scope.cadastro.registro.cpf;
+                console.log(cpf);
+                if( !isUndefOrNullOrEmpty(cpf) ){
+                    PessoaSrv.verificaCPF(cpf).success(function (resposta) {
+                        console.log(resposta);
+                        if (resposta.mensagem && resposta.mensagem === 'OK') {
+                            if( resposta.resultado ){
+                                toastr.error(  resposta.resultado );
+                            } 
+                        }
+                    });
+                }
+            };
+
+            $scope.verificaCNPJ = function(){
+               var cnpj = $scope.cadastro.registro.cnpj;
+                console.log(cnpj);
+                if( !isUndefOrNullOrEmpty(cnpj) ){
+                    PessoaSrv.verificaCNPJ(cnpj).success(function (resposta) {
+                        console.log(resposta);
+                        if (resposta.mensagem && resposta.mensagem === 'OK') {
+                            if( resposta.resultado ){
+                                toastr.error(  resposta.resultado );
+                            } 
+                        }
+                    });
+                }
+            };
+
             // Filtros de segurança by Emerson
             $scope.editar = function(scp) {
                 if( ! segAutorizaAcesso( $rootScope.token, $scope.cadastro.registro ) ){
@@ -929,6 +959,7 @@
                 }
                 $scope.frm.formulario.$setValidity("emailPrincipal", encontrou);
             },true);
+
             // fim dos watches
 
             $scope.selecionaFotoPerfil = function() {

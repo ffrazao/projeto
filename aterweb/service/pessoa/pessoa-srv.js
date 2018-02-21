@@ -198,6 +198,13 @@ angular.module(pNmModulo).factory(pNmFactory,
             transformar : function (pessoa) {
                 return $http.post(this.endereco + '/transformar', pessoa);
             },
+            verificaCPF : function (cpf) {
+                return $http.get(this.endereco + '/verificaCPF', {params: {'cpf': cpf}});
+            },
+            verificaCNPJ : function (cnpj) {
+                return $http.get(this.endereco + '/verificaCNPJ', {params: {'cnpj': cnpj}});
+            },
+
         };
         return PessoaSrv;
     }
