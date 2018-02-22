@@ -91,6 +91,7 @@ import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRu
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralFinanciamento;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralFluxoCaixa;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralGarantia;
+import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralParecerTecnico;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralPublicoAlvoPropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRuralReceitaDespesa;
 import br.gov.df.emater.aterwebsrv.relatorio._Relatorio;
@@ -670,12 +671,12 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 					MethodUtils.invokeMethod(objeto, String.format("set%sAno%02d", StringUtils.capitalize("fluxoAcumulado"), contador), Confirmacao.S.equals(somar) ? contando : contando);
 					
 					rec[contador] =	(BigDecimal) MethodUtils.invokeMethod(objeto, String.format("get%sAno%02d", StringUtils.capitalize("fluxoAcumulado"), contador));
-				System.out.println("1+: " + rec[contador]);
+				//System.out.println("1+: " + rec[contador]);
 				}else{
 					
 					MethodUtils.invokeMethod(objeto, String.format("set%sAno%02d", StringUtils.capitalize("fluxoAcumulado"), contador), Confirmacao.S.equals(somar) ? contando.add(rec[contador-1]) : contando.add(rec[contador-1]));
 					rec[contador] = (BigDecimal) MethodUtils.invokeMethod(objeto, String.format("get%sAno%02d", StringUtils.capitalize("fluxoAcumulado"), contador));
-					System.out.println("2+: " + rec[contador]);
+					//System.out.println("2+: " + rec[contador]);
 				}
 				
 				
@@ -1004,6 +1005,18 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 		}
 		parametros.put("RelatorioNome", relatorioNome);
 		parametros.put("Parte", parteList.size() + 1);
+		
+		// Retirar Fluxo de Caixa do Parecer Tecnico.
+		if(nomeArquivo == "ParecerTecnico"){
+			
+			List<ProjetoCreditoRural> lTec = new ArrayList<ProjetoCreditoRural>();
+			lTec = (List<ProjetoCreditoRural>) pList;
+			
+			lTec.forEach( (a) ->{
+				a.getParecerTecnicoList().remove(5);
+			});
+
+		}
 		
 		JasperPrint impressao = relatorio.montarRelatorio(String.format("projeto_credito_rural/%s", nomeArquivo), parametros, pList);
 			
