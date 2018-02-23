@@ -145,6 +145,8 @@
 
                 if((scp.cadastro.registro.publicoAlvo != null) && (scp.cadastro.registro.propriedadeRural == null)){
                     toastr.error('Preencha o campo Propriedade Rural.', 'ATENÇÃO: O ITEM NÃO FOI SALVO!');
+                }else if((scp.cadastro.registro.publicoAlvo == null) && (scp.cadastro.registro.propriedadeRural != null)){
+                    toastr.error('Preencha o campo Produtor Rural.', 'ATENÇÃO: O ITEM NÃO FOI SALVO!');
                 }else{
 
                 if (!scp.confirmar(scp)) { return; }
