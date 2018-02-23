@@ -3,16 +3,7 @@ package br.gov.df.emater.aterwebsrv.bo.indice_producao;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import br.gov.df.emater.aterwebsrv.bo._Contexto;
-import br.gov.df.emater.aterwebsrv.bo._SalvarCmd;
-import br.gov.df.emater.aterwebsrv.dao.indice_producao.FormaProducaoValorDao;
-import br.gov.df.emater.aterwebsrv.dao.indice_producao.IpaDao;
-import br.gov.df.emater.aterwebsrv.dao.indice_producao.IpaProducaoBemClassificadoDao;
-import br.gov.df.emater.aterwebsrv.dao.indice_producao.IpaProducaoDao;
-import br.gov.df.emater.aterwebsrv.dao.indice_producao.IpaProducaoFormaDao;
+import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.dto.indice_producao.ProducaoGravaDto;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.FormaProducaoValor;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Ipa;
@@ -30,7 +21,7 @@ public class SalvarAgroCmd {
 	public SalvarAgroCmd() {
 	}
 	
-	public void salvarAgro(IpaProducao ipAgro, Ipa ipa, ProducaoGravaDto result) {
+	public void salvarAgro(IpaProducao ipAgro, Ipa ipa, ProducaoGravaDto result) throws BoException {
 
 
 		
@@ -65,6 +56,10 @@ public class SalvarAgroCmd {
 // TABELA IPA PRODUCAO BEM CLASSIFICADO
 					
 				IpaProducaoBemClassificado ipbc = new IpaProducaoBemClassificado();
+				
+				if(ipAgro.getBemClassificado() == null){
+					throw new BoException("Favor inserir a Cultura!");
+				}
 				
 				ipbc.setBemClassificado(ipAgro.getBemClassificado());
 				ipbc.setIpaProducao(ip);

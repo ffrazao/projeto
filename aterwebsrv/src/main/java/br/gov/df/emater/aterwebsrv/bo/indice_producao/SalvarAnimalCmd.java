@@ -3,18 +3,8 @@ package br.gov.df.emater.aterwebsrv.bo.indice_producao;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import br.gov.df.emater.aterwebsrv.bo._Contexto;
-import br.gov.df.emater.aterwebsrv.bo._SalvarCmd;
-import br.gov.df.emater.aterwebsrv.dao.indice_producao.FormaProducaoValorDao;
-import br.gov.df.emater.aterwebsrv.dao.indice_producao.IpaDao;
-import br.gov.df.emater.aterwebsrv.dao.indice_producao.IpaProducaoBemClassificadoDao;
-import br.gov.df.emater.aterwebsrv.dao.indice_producao.IpaProducaoDao;
-import br.gov.df.emater.aterwebsrv.dao.indice_producao.IpaProducaoFormaDao;
+import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.dto.indice_producao.ProducaoGravaDto;
-import br.gov.df.emater.aterwebsrv.modelo.indice_producao.BemClassificado;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.FormaProducaoValor;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Ipa;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.IpaForma;
@@ -76,8 +66,12 @@ public class SalvarAnimalCmd {
 		
 		List<IpaProducaoBemClassificado> ListaAnimalBem =  ipAnimal.getProdutoList();
 		ArrayList<IpaProducaoBemClassificado> listBem = new ArrayList<>();
-		
+			
 		for (IpaProducaoBemClassificado bemClassificado : ListaAnimalBem) {
+			
+			if(bemClassificado.getBemClassificado() == null){
+				throw new BoException("Favor inserir a Cultura!");
+			}
 			
 			IpaProducaoBemClassificado ipbc = new IpaProducaoBemClassificado();
 			

@@ -3,6 +3,7 @@ package br.gov.df.emater.aterwebsrv.bo.indice_producao;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.gov.df.emater.aterwebsrv.bo.BoException;
 import br.gov.df.emater.aterwebsrv.dto.indice_producao.ProducaoGravaDto;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.FormaProducaoValor;
 import br.gov.df.emater.aterwebsrv.modelo.indice_producao.Ipa;
@@ -47,6 +48,10 @@ public class SalvarFlorCmd {
 // TABELA IPA PRODUCAO BEM CLASSIFICADO
 					
 				IpaProducaoBemClassificado ipbc = new IpaProducaoBemClassificado();
+				
+				if(ipflor.getBemClassificado() == null){
+					throw new BoException("Favor inserir a Cultura!");
+				}
 				
 				ipbc.setBemClassificado(ipflor.getBemClassificado());
 				ipbc.setIpaProducao(ip);
