@@ -71,6 +71,22 @@
             };
             // fim: atividades do Modal
 
+            // $scope.autorizacao = function(){
+            //     if (['INCLUINDO'].indexOf(navegador.estadoAtual()) < 0){
+            //         console.log("primeiro if");
+            //         return true;                    
+            //     }else{
+            //         if($scope.cadastro.registro.comunidade.id === 217){
+            //             console.log("segunda if");
+            //             return true;                        
+            //         }else{
+            //             console.log("terceiro");
+            //             return false;
+            //         }
+            //     }
+                
+            // };
+
             $scope.UtilSrv = UtilSrv;
 
             var editarItem = function(destino, item) {
@@ -790,6 +806,7 @@
             ponteControllerSrv.setScp($scope);
             // fim: mapa filtro
 
+        
         }
     ]);
 
