@@ -55,10 +55,13 @@ angular.module(pNmModulo).factory(pNmFactory,
                 return $http.post(this.endereco + '/filtro-novo');
             },
             filtrar : function(filtro) {
-                console.log( this );
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
-                console.log("passou");
                 return $http.post(this.endereco + '/filtro-executar', filtro);
+            },
+            listaAntigos : function(filtro) {
+                console.log("ListaAntigos");
+                SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
+                return $http.post(this.endereco + '/lista-antigos', filtro);
             },
             executarFiltro : function() {
                 SegurancaSrv.acesso(this.funcionalidade, 'CONSULTAR');
@@ -78,6 +81,7 @@ angular.module(pNmModulo).factory(pNmFactory,
             salvar: function(registro) {
                 removerCampo(registro, ['@jsonId']);
                 if (registro.id) {
+                    console.log(registro);
                     return AtividadeSrv.editar(registro);
                 } else {
                     return AtividadeSrv.incluir(registro);
