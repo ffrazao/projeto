@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.gov.df.emater.aterwebsrv.bo.FacadeBo;
+import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoCreditoAntigoCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoCreditoRuralCadFiltroDto;
 import br.gov.df.emater.aterwebsrv.dto.projeto_credito_rural.ProjetoCreditoRuralReceitaDespesaApoioDto;
+import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoAntigo;
 import br.gov.df.emater.aterwebsrv.modelo.projeto_credito_rural.ProjetoCreditoRural;
 
 @RestController
@@ -42,6 +44,11 @@ public class ProjetoCreditoRuralRest {
 	@RequestMapping(value = "/filtro-executar", method = RequestMethod.POST)
 	public Resposta filtroExecutar(@RequestBody ProjetoCreditoRuralCadFiltroDto filtro, Principal usuario) throws Exception {
 		return new Resposta(facadeBo.projetoCreditoRuralFiltroExecutar(usuario, filtro).getResposta());
+	}
+	
+	@RequestMapping(value = "/lista-antigos", method = RequestMethod.POST)
+	public Resposta listaAntigos(@RequestBody ProjetoCreditoAntigo filtro, Principal usuario) throws Exception {
+		return new Resposta(facadeBo.projetoCreditoRuralAntigos(usuario, filtro).getResposta());
 	}
 
 	@RequestMapping("/filtro-novo")
