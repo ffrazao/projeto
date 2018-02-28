@@ -190,6 +190,7 @@ public class SalvarCmd extends _SalvarCmd {
 
 		if (!CollectionUtils.isEmpty(parecerTecnicoList)) {
 			parecerTecnicoList.forEach((parecer) -> parecer.setUsuario(parecer.getUsuario() == null ? null : getUsuario(parecer.getUsuario().getUsername())));
+			System.out.println("passou!");
 			salvarTabelaDependente(result, "parecerTecnicoList", projetoCreditoRuralParecerTecnicoDao, ProjetoCreditoRuralParecerTecnico.class, parecerTecnicoList);
 		}
 
