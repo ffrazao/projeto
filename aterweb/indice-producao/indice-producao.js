@@ -2150,6 +2150,7 @@
                 $scope.cadastro.registro.propriedadeRural = null;
             }, true);
 
+
             // fim dos watches
 
             // quebra galho para funcionar a inclusao externa
