@@ -1,0 +1,69 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Supervisão de Crédito - Antigo</h4>
+    </div>
+    <div class="panel-body" ng-if="!navegador.listaSuper">
+        <div class="alert alert-warning" style="margin: 0px;" role="alert">
+            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+            Nenhum registro localizado!
+        </div>
+    </div>
+    <!-- {{navegador}} -->
+    <div class="table-responsive" ng-if="navegador.listaSuper">
+                <div>
+                    <div class="modal-body">
+                        <fieldset class="scheduler-border" disabled>
+                            <legend class="scheduler-border">Proponente</legend>
+                            <form>
+                                <div class="row">
+                                    <div class="col-xs-4 form-group">
+                                        <label>Nome</label>
+                                        <input class="form-control" type="text" value="{{navegador.listaSuper.resultado.nomeBeneficiario}}"/>
+                                    </div>
+                                    <div class="col-xs-2 form-group">
+                                        <label>CPF</label>
+                                        <input class="form-control" type="text" value="{{navegador.listaSuper.resultado.cpfBeneficiario}}"/>
+                                    </div>
+                                    <div class="col-xs-4 form-group">
+                                        <label>Propriedade</label>
+                                        <input class="form-control" type="text" value="{{navegador.listaSuper.resultado.nomePropriedade}}"/>
+                                    </div>
+                                    <div class="col-xs-2 form-group">
+                                        <label>Nº Cédula</label>
+                                        <input class="form-control" type="text" value="{{navegador.listaSuper.resultado.numeroDoCredito}}"/>
+                                    </div>
+                                    <div class="col-xs-3 form-group">
+                                        <label>Agente Financeiro</label>
+                                        <input class="form-control" type="text" value="{{navegador.listaSuper.resultado.banco}}"/>
+                                    </div>
+                                    <div class="col-xs-2 form-group">
+                                        <label>Agência</label>
+                                        <input class="form-control" type="text" value="{{navegador.listaSuper.resultado.agencia}}"/>
+                                    </div>
+                                    <div class="col-xs-3 form-group">
+                                        <label>Linha de Crédito</label>
+                                        <input class="form-control" type="text" value="{{navegador.listaSuper.resultado.linhaDeCredito}}"/>
+                                    </div>
+                                    <div class="col-xs-2 form-group">
+                                        <label>Dt.Contratação</label>
+                                        <input class="form-control" type="text" value="{{navegador.listaSuper.resultado.contratacao}}"/>
+                                    </div>
+                                    <div class="col-xs-2 form-group">
+                                        <label>Dt.Vencimento</label>
+                                        <input class="form-control" type="text" value="{{navegador.listaSuper.resultado.vencimento}}"/>
+                                    </div>
+                                    <div class="col-xs-4 form-group">
+                                        <label>Unidade</label>
+                                        <input class="form-control" type="text" value="{{navegador.listaSuper.resultado.nomeUnidade}}"/>
+                                    </div>
+                                    <div class="col-xs-4 form-group">
+                                        <label>Responsável Técnico</label>
+                                        <input class="form-control" type="text" value="{{}}"/>
+                                    </div>
+                                </div>
+                            </form>
+                        </fieldset>
+                    </div>
+                </div>
+    </div>
+</div>

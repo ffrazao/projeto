@@ -171,12 +171,12 @@
                         $scope.$broadcast('abaDiagnosticoAtivada');
                     },
                 }, 
-                {
+/*                {
                     'nome': 'Índice de Produção',
                     'include': 'propriedade-rural/tab-indice-producao.html',
                     'visivel': true,
                 }, 
-                {
+*/                {
                     'nome': 'Arquivos',
                     'include': 'propriedade-rural/tab-arquivo.html',
                     'visivel': true,

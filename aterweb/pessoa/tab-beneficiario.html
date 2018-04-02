@@ -139,7 +139,8 @@
         <ng-include src="'pessoa/sub-publico-alvo-propriedade-rural.html'" ng-controller="PublicoAlvoPropriedadeRuralCtrl" />
     </div>
 </div>
-<div class="row" ng-if="cadastro.registro.publicoAlvo.id">
+
+<div class="row" ng-if="cadastro.registro.publicoAlvo.id" ng-show="false">
     <div class="form-group col-md-12">
         <label class="control-label">Índices de Produção</label>
         <ng-include src="'pessoa/sub-publico-alvo-indice-producao.html'" ng-controller="PublicoAlvoIndiceProducaoCtrl" />

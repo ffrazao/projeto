@@ -1,0 +1,73 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        
+        <div>
+                <h4>Antigos Projetos de Crédito</h4>
+            </div> 
+                <div >
+                    <label>Filtro </label>
+                    <input type="text" ng-model="procurar" class="form-control" placeholder="Procurar...">
+                </div>
+                <div>
+                    <dir-pagination-controls max-size="14" boundary-links="true"></dir-pagination-controls>
+                </div>            
+    </div>
+    <div class="panel-body" ng-if="!navegador.lista">
+        <div class="alert alert-warning" style="margin: 0px;" role="alert">
+            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+            Nenhum registro localizado!
+        </div>
+    </div>
+    <div class="table-responsive" ng-if="navegador.lista">
+        
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th width="30">
+                        #
+                    </th>
+                    <th>Beneficiário</th>
+                    <th>Data</th>
+                    <th>Unidade Organizacional</th>
+                    <th>Status</th>
+                    <th>Agente Financiador</th>
+                    <th>Agência</th>
+                    <th>Linha de Crédito</th>
+                    <th>Número Cédula</th>
+                    <th>Imprimir</th>
+                    <th>Supervisionar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- <tr ng-repeat="item in navegador.dados | orderBy: ['nomeBeneficiario', '-inicio'] | pagina: navegador.paginaAtual : navegador.tamanhoPagina | limitTo: navegador.tamanhoPagina" ng-click="crudSeleciona(scp, item); navegador.folhaAtual = $index + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)"> -->
+                <!-- instalar ->> bower install angular-utils-pagination -->
+                    <tr dir-paginate="item in navegador.lista.resultado | filter:procurar|itemsPerPage:10">
+                    <!-- <tr ng-repeat="item in navegador.dados"> -->
+
+                    <td>
+                        {{$index + 1 + ((navegador.paginaAtual-1) * navegador.tamanhoPagina)}}
+                    </td>
+                    <td>{{item.nomeBeneficiario}}</td>
+                    <td>{{item.contratacao | date: 'dd/MM/yyyy'}}</td>
+                    <td>{{item.nomeUnidade}}</td>
+                    <td>{{item.status}}</td>
+                    <td>{{item.banco}}</td>
+                    <td>{{item.agencia}}</td>
+                    <td>{{item.linhaDeCredito}}</td>
+                    <td>{{item.numeroDoCredito}}</td>
+                    <td>
+                        <button type="button" class="btn btn-default active">
+                            <span class="glyphicon glyphicon-print" aria-hidden="true"></span>
+                        </button>
+                    </td>
+                    <td>
+                        <button type="submit" class="btn btn-default active" ng-click="pegaId(item.id);">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                            <!-- <a href="/#/projeto-credito-rural/listaAntigosSuper/{{item.id}}" ><span class="glyphicon glyphicon-pencil"></span></a> -->
+                        </button>
+                    </td>
+                </tr>
+            </tbody>            
+        </table>
+    </div>
+</div>

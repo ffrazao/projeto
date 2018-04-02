@@ -117,6 +117,11 @@ angular.module(pNmModulo).factory(pNmFactory,
                 SegurancaSrv.acesso(this.funcionalidade, 'INCLUIR');
                 return $http.post(this.endereco + '/incluir', atividade);
             },
+            incluirAtividade : function(atividade) {
+                SegurancaSrv.acesso(this.funcionalidade, 'INCLUIR');
+                return $http.post(this.endereco + '/incluirAtividade', atividade);
+               //console.log(atividade);
+            },
             visualizar : function(id) {
                 SegurancaSrv.acesso(this.funcionalidade, 'VISUALIZAR');
                 return $http.get(this.endereco + '/visualizar', {params: {'id': id}});

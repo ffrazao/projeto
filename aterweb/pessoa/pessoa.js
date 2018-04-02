@@ -7,8 +7,8 @@
         'ngInject';
         criarEstadosPadrao($stateProvider, pNmModulo, pNmController, pUrlModulo);
     }]);
-    angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'PessoaSrv', '$rootScope', '$interval',
-        function($scope, toastr, FrzNavegadorParams, $state, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, PessoaSrv, $rootScope, $interval) {
+    angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'PessoaSrv', '$rootScope', '$interval', 'AtividadeSrv',
+        function($scope, toastr, FrzNavegadorParams, $state, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, PessoaSrv, $rootScope, $interval, AtividadeSrv) {
             'ngInject';
 
             // inicializacao
@@ -318,6 +318,7 @@
                         conteudo.forEach(function(item) {
                             if (item.emite) {
                                 publicoAlvoPropriedadeRuralIdList.push(item.emite);
+                                $scope.salvarAtividade(pessoaIdList, 5, 119);
                             }
                         });
                         if (publicoAlvoPropriedadeRuralIdList.length) {
@@ -559,9 +560,10 @@
                                 ($scope.navegador.estadoAtual() === 'VISUALIZANDO' && $scope.cadastro.registro.id) || 
                                 ($scope.navegador.estadoAtual() === 'LISTANDO' && 
                                     ($scope.navegador.selecao.tipo === 'U' && $scope.navegador.selecao.selecionado) || 
-                                    ($scope.navegador.selecao.tipo === 'M' && $scope.navegador.selecao.marcado > 0))
-                            );
+                                    ($scope.navegador.selecao.tipo === 'M' && $scope.navegador.selecao.marcado > 0))                                    
+                            );                            
                         },
+                        
                     },
                     {
                         nome: 'Declaração do Produtor',
@@ -603,6 +605,23 @@
 
                 ];
                 $rootScope.abrir(scp);
+            };
+
+            $scope.salvarAtividade = function(demandante, metodo, assunto) {
+                
+                var atividade = {
+                    metodo: {
+                        id: metodo
+                    },
+                    assunto: {
+                        id: assunto
+                    },
+                    demandante: {
+                        id: demandante[0]
+                    },
+                };
+
+                AtividadeSrv.incluirAtividade(atividade);
             };
 
             $scope.limpar = function(scp) {

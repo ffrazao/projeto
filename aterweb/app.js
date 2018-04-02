@@ -14,7 +14,7 @@ var TIMEOUT_TEMPO = 10 * 60;
         'mensagemSrv', 'segurancaSrv', 'utilSrv', 'frz.form', 'frz.tabela', 'frz.arquivo', 'frz.endereco', 'frz.painel.vidro', 'frz.navegador',
         'frz.indice.producao', 'frz.unidade.comunidade', 'frz.unidade.colaborador', 
         'casa', 'contrato', 'info', 'offline', 'pessoa', 'formulario', 'propriedadeRural', 'atividade', 'indiceProducao', 
-        'funcionalidade', 'perfil', 'usuario', 'logAcao', 'projetoCreditoRural', 'agenda', 'metaTatica',
+        'funcionalidade', 'perfil', 'usuario', 'logAcao', 'projetoCreditoRural', 'agenda', 'metaTatica', 'angularUtils.directives.dirPagination',
         ]);
 
     // inicio: codigo para habilitar o modal recursivo

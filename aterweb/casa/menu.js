@@ -122,14 +122,14 @@
                         funcionalidade: 'INDICE_PRODUCAO',
                         visivel: false,
                     },
-                    {
+/*                    {
                         name: 'Antigos Projetos de Crédito',
                         link: 'p.projetoCreditoRural.listaAntigos',
                         funcionalidade: 'PROJETO_CREDITO_RURAL',
                         visivel: false,
                     },
 
-/*                    
+                    
                     {
                         name: 'Demandar',
                         link: 'p.atividade.filtro({opcao: "demandar"})',

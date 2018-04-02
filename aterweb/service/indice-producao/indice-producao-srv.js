@@ -79,6 +79,9 @@ angular.module(pNmModulo).factory(pNmFactory,
                 this.bemClassificacaoMatriz().success(function(resposta) {
                     if (resposta && resposta.resultado) {
                         removerCampo(resposta.resultado, ['@jsonId']);
+
+
+                        console.log( resposta );
                      
                         scp.cadastro.apoio.bemClassificadoAgricolaList = resposta.resultado.bemClassificadoAgricolaList;
                         scp.cadastro.apoio.bemClassificadoAnimalList = resposta.resultado.bemClassificadoAnimalList;
@@ -94,11 +97,12 @@ angular.module(pNmModulo).factory(pNmFactory,
                         scp.cadastro.apoio.animalTipo =  resposta.resultado.bemClassificacaoList[0].bemClassificacaoList[2].bemClassificacaoList;
 
                         scp.cadastro.apoio.bemClassificadoAgricolaList.forEach(function (v,k) {
+
                             for (var classificacao in scp.cadastro.apoio.bemClassificacaoMatrizList) {
                                 if (v.bemClassificacao.id === scp.cadastro.apoio.bemClassificacaoMatrizList[classificacao].id) {
                                     v.bemClassificacao = angular.copy(scp.cadastro.apoio.bemClassificacaoMatrizList[classificacao]);
                                     break;
-                                }
+                                }                                
                             }
                         });
 
@@ -137,8 +141,6 @@ angular.module(pNmModulo).factory(pNmFactory,
                                 }
                             }
                         });
-
-                        
 
 
                     }

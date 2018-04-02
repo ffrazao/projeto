@@ -41,7 +41,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat-start="reg in cadastro.registro.projetoCreditoRural.parecerTecnicoList | orderBy: ['data'] track by reg.id">
+                    <tr ng-repeat-start="reg in cadastro.registro.projetoCreditoRural.parecerTecnicoList | orderBy: ['data'] track by reg.id">                       
                         <td rowspan="2">
                             <input type="radio" ng-show="parecerTecnicoNvg.selecao.tipo === 'U'" ng-model="parecerTecnicoNvg.selecao.item" ng-value="reg"/>
                             <input type="checkbox" ng-show="parecerTecnicoNvg.selecao.tipo === 'M'" checklist-model="parecerTecnicoNvg.selecao.items" checklist-value="reg"/>
@@ -68,9 +68,8 @@
                         <td colspan="2">
                             <h3>Parecer - <b>{{UtilSrv.indiceDePorCampo(cadastro.apoio.parecerTecnicoCodigoList, reg.codigo, 'codigo').descricao}}</b></h3>
                             <h4 class="azul"><b>{{UtilSrv.indiceDePorCampo(cadastro.apoio.parecerTecnicoCodigoList, reg.codigo, 'codigo').explicacao}}</b></h4>
-                            <div text-angular id="parecer{{$index}}" name="parecer{{$index}}" ng-model="reg.conteudo"></div>
-                            <!-- <text-angular id="parecer{{$index}}" name="parecer{{$index}}" ng-model="reg.conteudo"></text-angular>                             -->
-                            <!-- <textarea rows="15" cols="120" id="parecer{{$index}}" name="parecer{{$index}}" ng-model="reg.conteudo"></textarea> -->
+                            <!-- https://github.com/textAngular/textAngular/issues/1471 -->
+                            <text-angular id="parecer{{$index}}" name="parecer{{$index}}" ng-model="reg.conteudo"></text-angular>                            
                             <div class="label label-danger" ng-show="navegador.submetido && parecerTecnicoListFrm['parecer' + $index].$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório

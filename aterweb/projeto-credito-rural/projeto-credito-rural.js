@@ -3,10 +3,13 @@
 
 (function(pNmModulo, pNmController, pNmFormulario, pUrlModulo) {
     'use strict';
-    angular.module(pNmModulo, ['ui.bootstrap', 'ui.utils', 'ui.router', 'ngAnimate', 'frz.navegador', 'frz.form', 'ngSanitize']);
+    angular.module(pNmModulo, ['ui.bootstrap', 'ui.utils', 'ui.router', 'ngAnimate', 'frz.navegador', 'frz.form', 'ngSanitize',  ]);
     angular.module(pNmModulo).config(['$stateProvider', function($stateProvider) {
         'ngInject';
-
+        $stateProvider.state('p.' + pNmModulo + '.listaAntigos', {
+            templateUrl: pUrlModulo + '/listaAntigos.html',
+            url: '/listaAntigos',
+        });
         $stateProvider.state('p.' + pNmModulo, {
             abstract: true,
             controller: pNmController,
@@ -21,10 +24,48 @@
             templateUrl: pUrlModulo + '/lista.html',
             url: '/lista',
         });
+        $stateProvider.state('p.' + pNmModulo + '.listaAntigosSuper', {
+            templateUrl: pUrlModulo + '/lista-antigos-supervisao.html',
+            url: '/listaAntigosSuper',
+        });
+        
     }]);
-    angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'ProjetoCreditoRuralSrv',
+    
+    angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'ProjetoCreditoRuralSrv',  
         function($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, ProjetoCreditoRuralSrv) {
             'ngInject';
+            
+            var lista = null;
+            var listaSuper = null;
+
+            var filtro = {
+                id : 0
+            };
+
+            if ($state.current.url === "/listaAntigos"){
+
+                ProjetoCreditoRuralSrv.listaAntigos(filtro).success(function (listaAntigos) {
+                    removerCampo(listaAntigos, ['@jsonId', 'mensagem']);
+                    $scope.navegador.lista = listaAntigos;
+                    console.log(listaAntigos.resultado);                            
+                });
+            }
+  
+            $scope.pegaId = function(id){
+
+                window.location.href = "/#/projeto-credito-rural/listaAntigosSuper";
+
+                filtro = {
+                    id : id
+                };
+                
+                ProjetoCreditoRuralSrv.listaAntigos(filtro).success(function (listaAntigosSuper) {
+                    removerCampo(listaAntigosSuper, ['@jsonId', 'mensagem']);
+                    $scope.navegador.listaSuper = listaAntigosSuper;
+                    console.log(listaAntigosSuper.resultado);                              
+                });
+
+            };
 
             var ordem = 0;
             var ATIV_ASSUNTO_LIST = {
@@ -66,6 +107,8 @@
 
             // inicializacao
             var navegador = $scope.navegador;
+            // console.log("scope ");
+            // console.log($scope);
 
             $scope.crudInit($scope, $state, $scope.cadastro, pNmFormulario, ProjetoCreditoRuralSrv);
 
