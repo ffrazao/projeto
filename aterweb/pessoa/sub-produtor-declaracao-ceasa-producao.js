@@ -70,10 +70,10 @@ angular.module(pNmModulo).controller(pNmController,
             var i, j;
             removerCampo($scope.conteudo.produtorCeasaProducaoList, ['@jsonId']);
             if ($scope.produtorCeasaProducaoNvg.selecao.tipo === 'U' && $scope.produtorCeasaProducaoNvg.selecao.item) {
-                $scope.excluirElemento($scope, $scope.cadastro.registro, 'assuntoList', $scope.produtorCeasaProducaoNvg.selecao.item);
+                $scope.excluirElemento($scope, $scope.conteudo.produtorCeasaProducaoList, 'produtorCeasaProducaoList', $scope.produtorCeasaProducaoNvg.selecao.item);
             } else if ($scope.produtorCeasaProducaoNvg.selecao.items && $scope.produtorCeasaProducaoNvg.selecao.items.length) {
                 for (i in $scope.produtorCeasaProducaoNvg.selecao.items) {
-                    $scope.excluirElemento($scope, $scope.cadastro.registro, 'assuntoList', $scope.produtorCeasaProducaoNvg.selecao.items[i]);
+                    $scope.excluirElemento($scope, $scope.conteudo.produtorCeasaProducaoList, 'produtorCeasaProducaoList', $scope.produtorCeasaProducaoNvg.selecao.items[i]);
                 }
             }
             $scope.produtorCeasaProducaoNvg.selecao.item = null;
