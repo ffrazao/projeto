@@ -25,6 +25,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -1036,7 +1037,9 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 			lTec = (List<ProjetoCreditoRural>) pList;
 			
 			lTec.forEach( (a) ->{
-				a.getParecerTecnicoList().remove(5);
+				if( a.getParecerTecnicoList().size() > 0 ){
+					a.getParecerTecnicoList().remove(5);
+				}
 			});
 
 		}
@@ -1198,20 +1201,20 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 		List<Map<String, Object>> benfeitoriaListMapList = (List<Map<String, Object>>) valor.get("benfeitoriaList");
 
 		if (!CollectionUtils.isEmpty(usoDoSoloMap)) {
-			BigDecimal benfeitoriasArea = new BigDecimal(usoDoSoloMap.get("benfeitoriasArea") == null ? null : usoDoSoloMap.get("benfeitoriasArea").toString());
-			BigDecimal benfeitoriasValorUnitario = new BigDecimal(usoDoSoloMap.get("benfeitoriasValorUnitario") == null ? null : usoDoSoloMap.get("benfeitoriasValorUnitario").toString());
-			BigDecimal culturasPerenesArea = new BigDecimal(usoDoSoloMap.get("culturasPerenesArea") == null ? null : usoDoSoloMap.get("culturasPerenesArea").toString());
-			BigDecimal culturasPerenesValorUnitario = new BigDecimal(usoDoSoloMap.get("culturasPerenesValorUnitario") == null ? null : usoDoSoloMap.get("culturasPerenesValorUnitario").toString());
-			BigDecimal culturasTemporariasArea = new BigDecimal(usoDoSoloMap.get("culturasTemporariasArea") == null ? null : usoDoSoloMap.get("culturasTemporariasArea").toString());
-			BigDecimal culturasTemporariasValorUnitario = new BigDecimal(usoDoSoloMap.get("culturasTemporariasValorUnitario") == null ? null : usoDoSoloMap.get("culturasTemporariasValorUnitario").toString());
-			BigDecimal outrasArea = new BigDecimal(usoDoSoloMap.get("outrasArea") == null ? null : usoDoSoloMap.get("outrasArea").toString());
-			BigDecimal outrasValorUnitario = new BigDecimal(usoDoSoloMap.get("outrasValorUnitario") == null ? null : usoDoSoloMap.get("outrasValorUnitario").toString());
-			BigDecimal pastagensArea = new BigDecimal(usoDoSoloMap.get("pastagensArea") == null ? null : usoDoSoloMap.get("pastagensArea").toString());
-			BigDecimal pastagensValorUnitario = new BigDecimal(usoDoSoloMap.get("pastagensValorUnitario") == null ? null : usoDoSoloMap.get("pastagensValorUnitario").toString());
-			BigDecimal preservacaoPermanenteArea = new BigDecimal(usoDoSoloMap.get("preservacaoPermanenteArea") == null ? null : usoDoSoloMap.get("preservacaoPermanenteArea").toString());
-			BigDecimal preservacaoPermanenteValorUnitario = new BigDecimal(usoDoSoloMap.get("preservacaoPermanenteValorUnitario") == null ? null : usoDoSoloMap.get("preservacaoPermanenteValorUnitario").toString());
-			BigDecimal reservaLegalArea = new BigDecimal(usoDoSoloMap.get("reservaLegalArea") == null ? null : usoDoSoloMap.get("reservaLegalArea").toString());
-			BigDecimal reservaLegalValorUnitario = new BigDecimal(usoDoSoloMap.get("reservaLegalValorUnitario") == null ? null : usoDoSoloMap.get("reservaLegalValorUnitario").toString());
+			BigDecimal benfeitoriasArea = new BigDecimal(usoDoSoloMap.get("benfeitoriasArea") == null ? "0" : usoDoSoloMap.get("benfeitoriasArea").toString());
+			BigDecimal benfeitoriasValorUnitario = new BigDecimal(usoDoSoloMap.get("benfeitoriasValorUnitario") == null ? "0" : usoDoSoloMap.get("benfeitoriasValorUnitario").toString());
+			BigDecimal culturasPerenesArea = new BigDecimal(usoDoSoloMap.get("culturasPerenesArea") == null ? "0" : usoDoSoloMap.get("culturasPerenesArea").toString());
+			BigDecimal culturasPerenesValorUnitario = new BigDecimal(usoDoSoloMap.get("culturasPerenesValorUnitario") == null ? "0" : usoDoSoloMap.get("culturasPerenesValorUnitario").toString());
+			BigDecimal culturasTemporariasArea = new BigDecimal(usoDoSoloMap.get("culturasTemporariasArea") == null ? "0" : usoDoSoloMap.get("culturasTemporariasArea").toString());
+			BigDecimal culturasTemporariasValorUnitario = new BigDecimal(usoDoSoloMap.get("culturasTemporariasValorUnitario") == null ? "0" : usoDoSoloMap.get("culturasTemporariasValorUnitario").toString());
+			BigDecimal outrasArea = new BigDecimal(usoDoSoloMap.get("outrasArea") == null ? "0" : usoDoSoloMap.get("outrasArea").toString());
+			BigDecimal outrasValorUnitario = new BigDecimal(usoDoSoloMap.get("outrasValorUnitario") == null ? "0" : usoDoSoloMap.get("outrasValorUnitario").toString());
+			BigDecimal pastagensArea = new BigDecimal(usoDoSoloMap.get("pastagensArea") == null ? "0" : usoDoSoloMap.get("pastagensArea").toString());
+			BigDecimal pastagensValorUnitario = new BigDecimal(usoDoSoloMap.get("pastagensValorUnitario") == null ? "0" : usoDoSoloMap.get("pastagensValorUnitario").toString());
+			BigDecimal preservacaoPermanenteArea = new BigDecimal(usoDoSoloMap.get("preservacaoPermanenteArea") == null ? "0" : usoDoSoloMap.get("preservacaoPermanenteArea").toString());
+			BigDecimal preservacaoPermanenteValorUnitario = new BigDecimal(usoDoSoloMap.get("preservacaoPermanenteValorUnitario") == null ? "0" : usoDoSoloMap.get("preservacaoPermanenteValorUnitario").toString());
+			BigDecimal reservaLegalArea = new BigDecimal(usoDoSoloMap.get("reservaLegalArea") == null ? "0" : usoDoSoloMap.get("reservaLegalArea").toString());
+			BigDecimal reservaLegalValorUnitario = new BigDecimal(usoDoSoloMap.get("reservaLegalValorUnitario") == null ? "0" : usoDoSoloMap.get("reservaLegalValorUnitario").toString());
 			reg.setPatrimonioTerras(reg.getPatrimonioTerras().add(benfeitoriasArea.multiply(benfeitoriasValorUnitario).add(culturasPerenesArea.multiply(culturasPerenesValorUnitario).add(culturasTemporariasArea.multiply(culturasTemporariasValorUnitario)
 					.add(outrasArea.multiply(outrasValorUnitario).add(pastagensArea.multiply(pastagensValorUnitario).add(preservacaoPermanenteArea.multiply(preservacaoPermanenteValorUnitario).add(reservaLegalArea.multiply(reservaLegalValorUnitario)))))))));
 		}
