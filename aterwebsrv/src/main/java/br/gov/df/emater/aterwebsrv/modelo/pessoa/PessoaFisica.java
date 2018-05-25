@@ -190,6 +190,19 @@ public class PessoaFisica extends Pessoa implements PessoaFisicaDadosBasicos {
 	// @Field(index = Index.YES, store = Store.YES)
 	private String tituloZona;
 
+	@Column(name = "registro")
+	// @Field(index = Index.YES, store = Store.YES)
+	private String registro;
+
+	
+	public String getRegistro() {
+		return registro;
+	}
+
+	public void setRegistro( String registro) { 
+		this.registro = registro;
+	}
+
 	public PessoaFisica() {
 		this(null, null, null, null, null, null, null, null);
 	}

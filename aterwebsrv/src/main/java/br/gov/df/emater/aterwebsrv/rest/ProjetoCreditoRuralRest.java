@@ -46,10 +46,10 @@ public class ProjetoCreditoRuralRest {
 		return new Resposta(facadeBo.projetoCreditoRuralFiltroExecutar(usuario, filtro).getResposta());
 	}
 	
-	@RequestMapping(value = "/lista-antigos", method = RequestMethod.POST)
-	public Resposta listaAntigos(@RequestBody ProjetoCreditoAntigo filtro, Principal usuario) throws Exception {
-		return new Resposta(facadeBo.projetoCreditoRuralAntigos(usuario, filtro).getResposta());
-	}
+	//@RequestMapping(value = "/lista-antigos", method = RequestMethod.POST)
+	//public Resposta listaAntigos(@RequestBody ProjetoCreditoAntigo filtro, Principal usuario) throws Exception {
+	//	return new Resposta(facadeBo.projetoCreditoRuralAntigos(usuario, filtro).getResposta());
+	//}
 
 	@RequestMapping("/filtro-novo")
 	public Resposta filtroNovo(Principal usuario) throws Exception {

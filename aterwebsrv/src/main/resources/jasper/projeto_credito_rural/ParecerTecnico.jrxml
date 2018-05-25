@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2018-01-03T08:52:41 -->
+<!-- 2018-05-24T15:09:24 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Capa" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4be54963-8492-4271-af5b-1a708b6a64c7">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="RelatorioNome" class="java.lang.String" isForPrompting="false">
@@ -22,6 +22,9 @@
 	</parameter>
 	<parameter name="Tecnico" class="java.lang.String">
 		<parameterDescription><![CDATA[$P{Tecnico}]]></parameterDescription>
+	</parameter>
+	<parameter name="Registro" class="java.lang.String">
+		<parameterDescription><![CDATA[$P{Registro}]]></parameterDescription>
 	</parameter>
 	<queryString>
 		<![CDATA[]]>
@@ -87,7 +90,7 @@
 		</band>
 	</pageFooter>
 	<lastPageFooter>
-		<band height="180">
+		<band height="684">
 			<staticText>
 				<reportElement stretchType="RelativeToBandHeight" x="0" y="172" width="555" height="5" uuid="ce6a8542-5463-4dd8-ab79-442baca94637"/>
 				<box>
@@ -100,7 +103,7 @@
 			</rectangle>
 			<staticText>
 				<reportElement x="5" y="49" width="135" height="16" uuid="922e83ef-39cb-4ae2-a53c-e63fa68d3625"/>
-				<textElement>
+				<textElement verticalAlignment="Bottom">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[RESPONSÁVEL TÉCNICO:]]></text>
@@ -165,6 +168,27 @@
 			<textField>
 				<reportElement x="124" y="158" width="274" height="14" uuid="d7cf5909-6582-42ca-abac-f14973fae643"/>
 				<textFieldExpression><![CDATA[$P{CPF}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="141" y="50" width="229" height="15" uuid="af348df8-cb90-449b-959b-3d1f24966bdc"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{Tecnico}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="410" y="50" width="135" height="16" uuid="48f52e25-11dd-4b82-8c0d-9a1678b0192c"/>
+				<textElement verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Registro:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="460" y="51" width="93" height="15" uuid="c0d0114a-f957-4d49-ad03-20db03de06bb"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{Registro}]]></textFieldExpression>
 			</textField>
 		</band>
 	</lastPageFooter>

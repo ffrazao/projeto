@@ -28,6 +28,8 @@ public class Emprego extends Relacionamento {
 
 	private String matricula;
 
+	private String registro;
+
 	public Emprego() {
 		super();
 	}
@@ -55,6 +57,7 @@ public class Emprego extends Relacionamento {
 		Emprego result = new Emprego(getId(), getInicio(), getTermino(), getRelacionamentoTipo().infoBasica());
 		result.setCargo(infoBasicaReg(this.cargo));
 		result.setMatricula(this.matricula);
+		result.setRegistro(this.registro);
 		result.setPessoaRelacionamentoList(infoBasicaList(this.getPessoaRelacionamentoList()));
 		
 		return result;
@@ -66,6 +69,14 @@ public class Emprego extends Relacionamento {
 
 	public void setMatricula(String matricula) {
 		this.matricula = matricula;
+	}
+
+	public String getRegistro() {
+		return registro;
+	}
+
+	public void setRegistro(String registro) {
+		this.registro = registro;
 	}
 
 }
