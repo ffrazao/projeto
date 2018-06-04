@@ -54,6 +54,9 @@
             // inicio das operaçoes atribuidas ao navagador
             var executaIncluir = function() {
                 var conf = 
+                    '<div class="col-md-12 " >' + 
+                    '<Font color=red size=4>Antes de Incluir um novo cadastro, tenha certeza que que essa pessoa não foi cadastrada em outro escritório. Para isso limpe os filtros e pesquise novamente.</Font>'+
+                    '</div>    '+
                     '<div class="form-group">' + 
                     '    <label class="col-md-4 control-label" for="cnfTipoPessoa">Incluir que tipo de Pessoa?</label>' + 
                     '    <div class="col-md-8">';

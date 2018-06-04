@@ -325,7 +325,12 @@ angular.module(pNmModulo).controller(pNmController,
     };
 
     $scope.transformar = function(pessoa){
-        mensagemSrv.confirmacao(false, '<Font color=red size=4><center><strong>ATENÇÃO!</strong> Ao clicar em <strong>OK</strong> o Cadastro SIMPLES será transformado em Cadastro COMPLETO. <br> <strong>CUIDADO!</strong> Esse procedimento <strong>NÃO</strong> tem retorno!</font><br> <br><Font color=Black size=3> <strong>OBS.:</strong> Para visualizar a modificação é necessário realizar o filtro novamente após a confirmação do procedimento! <br> <br> Deseja continuar?</center></font> ').then(function (conteudo) {
+        var msg = '';
+        msg = msg + '<Font color=red size=4><center><strong>ATENÇÃO!</strong> Ao clicar em <strong>OK</strong> o Cadastro SIMPLES será transformado em Cadastro COMPLETO.</font><br><BR>';
+        msg = msg + '<Font color=green size=3>Para não haver Cadastros Completos duplicados, antes de realizar essa operação, verifique se esse cadastro já existe!<BR>Não esqueça de limpar os filtros antes da pesquisa, pois esssa pessoa pode já estar cadastrada em outro escritório.</font><BR><BR>';
+        msg = msg + '<Font color=red size=4><strong>CUIDADO!</strong> Esse procedimento <strong>NÃO</strong> tem retorno!</font><br> <br>';
+        msg = msg + '<Font color=Black size=3> <strong>OBS.:</strong> Para visualizar a modificação é necessário realizar o filtro novamente após a confirmação do procedimento! <br> <br> Deseja continuar?</center></font> ';        
+        mensagemSrv.confirmacao(false, msg ).then(function (conteudo) {
             $scope.confirmarTransformar(pessoa);
             $scope.navegador.mudarEstado('VISUALIZANDO');
         });
