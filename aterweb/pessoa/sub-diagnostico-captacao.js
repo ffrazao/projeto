@@ -98,11 +98,13 @@ angular.module(pNmModulo).controller(pNmController,
                     //lista[item] = null;
                 },
             },
+/*            
             {
                 nome: 'Formulário',
                 codigo: 'valor',
                 tipo: 'objeto',
             },
+*/            
         ],
         funcaoIncluirAntes: function(form, dd) {
             dd.formularioVersao = {id: $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[9].id};
