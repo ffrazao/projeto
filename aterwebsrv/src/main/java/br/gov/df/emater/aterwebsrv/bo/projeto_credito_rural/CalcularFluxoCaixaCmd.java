@@ -93,11 +93,12 @@ public class CalcularFluxoCaixaCmd extends _Comando {
 //			System.out.println("cust" +x.getNomeLote());
 //		});
 		
-	
-
-		if (investimentoNomeLote.size() == 0 && custeioNomeLote.size() == 0) {
-			throw new BoException("Nenhum lote informado", "Erro ao calcular fluxo de caixa");
+		if( result.getLinhaCredito().getId() != 17  ) {                             // Só tem lote de financiamento se não for prorural
+			if (investimentoNomeLote.size() == 0 && custeioNomeLote.size() == 0) {
+				throw new BoException("Nenhum lote informado", "Erro ao calcular fluxo de caixa");
+			}
 		}
+		
 		Collections.sort(investimentoNomeLote, (n1, n2) -> n1.getNomeLote().compareTo(n2.getNomeLote()));
 		Collections.sort(custeioNomeLote, (n1, n2) -> n1.getNomeLote().compareTo(n2.getNomeLote()));
 
