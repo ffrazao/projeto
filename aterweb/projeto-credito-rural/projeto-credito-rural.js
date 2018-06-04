@@ -598,14 +598,14 @@
                 {
                     'nome': 'Cronograma',
                     'include': 'projeto-credito-rural/tab-cronograma.html',
-                    'visivel': false,
+                    'visivel': true,
                     'indice': indice++,
                     'ativo': false,
                 }, 
                 {
                     'nome': 'Fluxo de Caixa',
                     'include': 'projeto-credito-rural/tab-fluxo-caixa.html',
-                    'visivel': false,
+                    'visivel': true,
                     'indice': indice++,
                     'ativo': false,
                 }, 
