@@ -102,6 +102,7 @@ angular.module(pNmModulo).controller(pNmController,
                 nome: 'Formulário',
                 codigo: 'valor',
                 tipo: 'objeto',
+                escondeLista: 'S',
             },
         ],
         funcaoIncluirAntes: function(form, dd) {
