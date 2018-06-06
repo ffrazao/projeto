@@ -17,6 +17,7 @@ import br.gov.df.emater.aterwebsrv.dto.pessoa.DeclaracaoProdutorRelFiltroDto;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoPropriedadeRural;
 import br.gov.df.emater.aterwebsrv.modelo.ater.PublicoAlvoSetor;
 import br.gov.df.emater.aterwebsrv.modelo.dominio.PessoaTipo;
+import br.gov.df.emater.aterwebsrv.modelo.dominio.PropriedadeRuralVinculoTipo;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaFisica;
 import br.gov.df.emater.aterwebsrv.modelo.pessoa.PessoaJuridica;
 import br.gov.df.emater.aterwebsrv.relatorio._Relatorio;
@@ -39,7 +40,7 @@ public class DeclaracaoProdutorRelCmd extends _Comando {
 		List<PublicoAlvoPropriedadeRural> lista = null;
 		lista = (List<PublicoAlvoPropriedadeRural>) dao.findAll(filtro.getPublicoAlvoPropriedadeRuralIdList());
 		String principalAtividadeProdutiva = "";
-		String tipoPessoa = "", cpf = "", rg = "", ie = "";
+		String tipoPessoa = "", cpf = "", rg = "", ie = "", proprietario = "";
 		
 
 		Calendar emissao = Calendar.getInstance();
@@ -71,15 +72,21 @@ public class DeclaracaoProdutorRelCmd extends _Comando {
 					
 				}
 				
+				if(publicoAlvoPropriedadeRural.getVinculo() == PropriedadeRuralVinculoTipo.PR ){
+					proprietario = publicoAlvoPropriedadeRural.getPublicoAlvo().getPessoa().getNome();
+				} else {
+					List<PublicoAlvoPropriedadeRural> publicoAlvoPropriedadeRuralList = (List<PublicoAlvoPropriedadeRural>) publicoAlvoPropriedadeRural.getPropriedadeRural().getPublicoAlvoPropriedadeRuralList();
+					for( PublicoAlvoPropriedadeRural pa : publicoAlvoPropriedadeRuralList ){
+						if( pa.getPublicoAlvo().getPessoa() != publicoAlvoPropriedadeRural.getPublicoAlvo().getPessoa() ){
+							if( pa.getVinculo() == PropriedadeRuralVinculoTipo.PR ){
+								proprietario = pa.getPublicoAlvo().getPessoa().getNome();
+							}
+						}
+					}
+				}
+				
 			}
-
 			
-
-//			if (carteiraExpiracao == null || carteiraExpiracao.before(fimCarencia)) {
-//				publicoAlvoPropriedadeRural.getPublicoAlvo().setCarteiraProdutorEmissao(emissao);
-//				publicoAlvoPropriedadeRural.getPublicoAlvo().setCarteiraProdutorExpiracao(expiracao);
-//				publicoAlvoDao.save(publicoAlvoPropriedadeRural.getPublicoAlvo());
-//			}
 			
 		}
 		
@@ -88,6 +95,7 @@ public class DeclaracaoProdutorRelCmd extends _Comando {
 		parametros.put("Usuario", getUsuario(contexto.getUsuario().getName()));
 		parametros.put("RelatorioNome", "DECLARAÇÃO DE ATIVIDADE RURAL");
 		parametros.put("Observacao", filtro.getObservacao());
+		parametros.put("Proprietario", proprietario);
 		parametros.put("TipoPessoa", tipoPessoa);
 		parametros.put("Cpf", cpf);
 		parametros.put("Rg", rg);

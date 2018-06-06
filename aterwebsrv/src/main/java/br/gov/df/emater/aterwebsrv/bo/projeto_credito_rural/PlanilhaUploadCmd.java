@@ -51,7 +51,7 @@ public class PlanilhaUploadCmd extends _Comando {
 		
 		captarValores(result, "Despesa", produto, arqExcel, result.getCodigo().getLinhaDespesa());
 
-		captarValores(result, "Receita", produto, arqExcel, result.getCodigo().getLinhaDespesa());
+		captarValores(result, "Receita", produto, arqExcel, result.getCodigo().getLinhaReceita());
 
 		// ajustar o arquivo
 		List<ProjetoCreditoRuralArquivo> arquivoList = result.getProjetoCreditoRural().getArquivoList();
