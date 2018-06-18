@@ -1,4 +1,4 @@
-/* global StringMask:false, converterStringParaData */ /* jslint evil: true */
+/* global StringMask:false, converterStringParaData, dataToInputData */ /* jslint evil: true */
 
 (function(pNmModulo, pNmController, pNmFormulario) {
 
@@ -12,17 +12,7 @@ angular.module(pNmModulo).controller(pNmController,
     $scope.cadastro.apoio.tecnicoUnidadeList = [
         {username: 'a', nome: 'Jose',},
         {username: 'b', nome: 'Maria',},
-    ];
-
-    /*UtilSrv.dominioLista($scope.cadastro.apoio.tecnicoUnidadeList, {ent:['Usuario']}, function(resultado) {
-        if (!$scope.cadastro.apoio.tecnicoUnidadeList) {
-            $scope.cadastro.apoio.tecnicoUnidadeList = [];
-        }
-        $scope.cadastro.apoio.tecnicoUnidadeList.length = 0;
-        for (var i in resultado) {
-            $scope.cadastro.apoio.tecnicoUnidadeList.push({username: resultado[i]['username'], nome: resultado[i]['pessoa']['nome'],});
-        }
-    });*/
+    ]; 
 
     $scope.cadastro.apoio.coletaFrm = {
         nome: 'Coleta do Formulário',
@@ -103,33 +93,56 @@ angular.module(pNmModulo).controller(pNmController,
                 nome: 'Formulário',
                 codigo: 'valor',
                 tipo: 'objeto',
-                escondeLista: 'S'
+                escondeLista: 'S',
             },
             
         ],
         funcaoIncluirAntes: function(form, dd) {
-            dd.formularioVersao = {id: $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[9].id};
+
+            var i, coleta ={};
+            var ultimaColeta = { id: null, dataColeta: "01/01/1800"} ; 
+            for (i in $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[9].coletaList ){
+                coleta = $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[9].coletaList[i];
+                if( coleta.finalizada === 'N' ){
+                    toastr.warning('Há coleta não finalizada! Finalize primeiro essa coleta!', 'Não pode crirar nova coleta.');
+                    return false;
+                }
+                if( dataToInputData(ultimaColeta.dataColeta) < dataToInputData(coleta.dataColeta) ){
+                    ultimaColeta =  angular.copy(coleta);
+                }
+            }
+
+            var id = $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[0];
+            var versao = $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[9].versao;
+            if (!id || !versao) {
+                toastr.error('Não foi possível identificar o formulário', 'Identificar formulário');
+                return { valida : false, reg : {} };
+            }
+
+            dd = angular.copy(ultimaColeta);
             dd.dataColeta = $scope.hoje();
             dd.finalizada = 'N';
             dd.inclusaoUsuario = $scope.token;
             dd.alteracaoUsuario = $scope.token;
 
-            var id = $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[0];
-            var versao = $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[9].versao;
+            if( ultimaColeta.id === null ){                
+                dd.formularioVersao = {id: $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[9].id};
+            } else { 
+                dd.id = null;
+            }
 
             var f = this.opcao[5];
-            if (!id || !versao) {
-                toastr.error('Não foi possível identificar o formulário', 'Identificar formulário');
-                return;
-            }
             FormularioSrv.visualizar(id).success(function (resposta) {
                 if (resposta.mensagem === 'OK') {
                     var formulario = FormularioSrv.montar($scope, resposta.resultado.formulario, versao);
                     f.opcao = formulario.opcao;
                 }
             });
+            return { valida : true, reg : dd };
+
         },
         funcaoEditarAntes: function(form, dd) {
+                
             dd.formularioVersao = {id: $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[9].id};
 
             if (dd.valorString && !dd.valor) {
@@ -145,7 +158,7 @@ angular.module(pNmModulo).controller(pNmController,
             var versao = $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[9].versao;
             var f = this.opcao[5];
             if (!id || !versao) {
-                toastr.error('Não foi possível identificar o formulário', 'Identificar formulário');
+                toastr.warning('Não foi possível identificar o formulário', 'Identificar formulário');
                 return;
             }
             FormularioSrv.visualizar(id).success(function (resposta) {
@@ -154,6 +167,27 @@ angular.module(pNmModulo).controller(pNmController,
                     f.opcao = formulario.opcao;
                 }
             });
+            if( dd.finalizada !== "N" ){
+                toastr.warning('Coleta já finalizada, não é permitido alterar. Só é possível visualizar!', 'Erro ao Editar');
+                return false;
+            }
+        },
+        funcaoExcluirAntes: function(form, dd) {
+            if( dd.finalizada === "S" ){
+                toastr.warning('Coleta já finalizada, não é permitido alterar. Faça uma nova outra coleta!', 'Erro ao Escluir');
+                return false;
+            } else {
+                return true;
+            }
+        },
+        funcaoExibirAntes: function(form, dd) {
+            var id = $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[0];
+            var versao = $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[9].versao;
+            var f = this.opcao[5];
+            if (!id || !versao) {
+                toastr.warning('Não foi possível identificar o formulário', 'Identificar formulário');
+                return;
+            }
         },
     };
 
@@ -214,7 +248,7 @@ angular.module(pNmModulo).controller(pNmController,
                 if ($scope.cadastro.registro.diagnosticoList[j].cadastroAcao === 'E') {
                     return true;
                 } else {
-                    toastr.error('Registro já cadastrado');
+                    toastr.warning('Registro já cadastrado');
                     return false;
                 }
             }

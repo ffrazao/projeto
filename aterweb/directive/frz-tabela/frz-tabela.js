@@ -33,56 +33,77 @@
             var dados = angular.copy(dd);
             var conteudo = {formulario: form, dados: dados};
             var conf = '<frz-form ng-model="conteudo.formulario" dados="conteudo.dados">';
-            mensagemSrv.confirmacao(false, conf, form.nome, conteudo).then(function(conteudo) {
-                // processar o retorno positivo da modal
-                if (acao === 'incluir') {
-                    $scope.dados.push(conteudo.dados);
-                } else {
-                    for (var i in $scope.dados) {
-                        if (angular.equals($scope.dados[i], dd)) {
-                            angular.copy(conteudo.dados, $scope.dados[i]);
-                            angular.copy(conteudo.dados, dd);
-                            break;
+
+            if (acao === 'visualizar'){
+                mensagemSrv.vizualiza(false, conf, form.nome, conteudo).then(function(conteudo){});
+                
+            } else {
+
+                mensagemSrv.confirmacao(false, conf, form.nome, conteudo).then(function(conteudo) {
+                    // processar o retorno positivo da modal
+                    if (acao === 'incluir') {
+                        $scope.dados.push(conteudo.dados);
+                    } else if (acao === 'editar') {
+                        for (var i in $scope.dados) {
+                            if (angular.equals($scope.dados[i], dd)) {
+                                angular.copy(conteudo.dados, $scope.dados[i]);
+                                angular.copy(conteudo.dados, dd);
+                                break;
+                            }
                         }
                     }
-                }
-                if ($scope.ngModel.funcaoSalvarDepois) {
-                    $scope.ngModel.funcaoSalvarDepois(form, dd, acao);
-                }
-            }, function() {
-                // processar o retorno negativo da modal
-                //$log.info('Modal dismissed at: ' + new Date());
-            });
+                    if ($scope.ngModel.funcaoSalvarDepois) {
+                        $scope.ngModel.funcaoSalvarDepois(form, dd, acao);
+                    }
+                }, function() {
+                    // processar o retorno negativo da modal
+                    //$log.info('Modal dismissed at: ' + new Date());
+                });
+            }
         };
         $scope.incluir = function (form) {
             try {
-                var dd = {};
+                var dd = {}, ret ={};
+                var validaIncluirAntes = true;
                 if ($scope.ngModel.funcaoIncluirAntes) {
-                    $scope.ngModel.funcaoIncluirAntes(form, dd);
+                    ret = $scope.ngModel.funcaoIncluirAntes(form, dd);
+                    validaIncluirAntes = ret.valida ? ret.valida : false;
+                    dd = ret.reg ? ret.reg : {};
                 }
-                abrirForm(form, dd, 'incluir');
+                if( (validaIncluirAntes!==false) ){
+                    abrirForm(form, dd, 'incluir');
+                }
                 $scope.selecao = $scope.navegadorFrm.selecao;
             } catch (exception) {
             }
         };
         $scope.editar = function (form) {
             try {
+                var validaEditarAntes = true;
                 if ($scope.navegadorFrm.selecao.tipo === 'U') {
                     if ($scope.ngModel.funcaoEditarAntes) {
-                        $scope.ngModel.funcaoEditarAntes(form, $scope.navegadorFrm.selecao.item);
+                        validaEditarAntes = $scope.ngModel.funcaoEditarAntes(form, $scope.navegadorFrm.selecao.item);
                     }
-                    abrirForm(form, $scope.navegadorFrm.selecao.item, 'editar');
-                    if ($scope.ngModel.funcaoEditarDepois) {
-                        $scope.ngModel.funcaoEditarDepois(form, $scope.navegadorFrm.selecao.item);
+                    if( (validaEditarAntes!==false) ){
+                        abrirForm(form, $scope.navegadorFrm.selecao.item, 'editar');
+                        if ($scope.ngModel.funcaoEditarDepois) {
+                            $scope.ngModel.funcaoEditarDepois(form, $scope.navegadorFrm.selecao.item);
+                        }
+                    }
+                    if( (validaEditarAntes===false) ){
+                        abrirForm(form, $scope.navegadorFrm.selecao.item, 'visualizar');
                     }
                 } else {
                     for (var i in $scope.navegadorFrm.selecao.items) {
+                        validaEditarAntes = true;
                         if ($scope.ngModel.funcaoEditarAntes) {
-                            $scope.ngModel.funcaoEditarAntes(form, $scope.navegadorFrm.selecao.items[i]);
+                            validaEditarAntes = $scope.ngModel.funcaoEditarAntes(form, $scope.navegadorFrm.selecao.items[i]);
                         }
-                        abrirForm(form, $scope.navegadorFrm.selecao.items[i], 'editar');
-                        if ($scope.ngModel.funcaoEditarDepois) {
-                            $scope.ngModel.funcaoEditarDepois(form, $scope.navegadorFrm.selecao.items[i]);
+                        if( (validaEditarAntes!==false) ){
+                            abrirForm(form, $scope.navegadorFrm.selecao.items[i], 'editar');
+                            if ($scope.ngModel.funcaoEditarDepois) {
+                                $scope.ngModel.funcaoEditarDepois(form, $scope.navegadorFrm.selecao.items[i]);
+                            }
                         }
                     }
                 }
@@ -91,27 +112,33 @@
             }
         };
         var remove = function (reg) {
-            $scope.navegadorFrm.dados.splice(UtilSrv.indiceDe($scope.navegadorFrm.dados, reg), 1);
+            var pos = UtilSrv.indiceDe($scope.navegadorFrm.dados, reg);
+            $scope.navegadorFrm.dados.splice(pos, 1);
         };
         $scope.excluir = function (form) {
             try {
+                var validaExcluirAntes = true;
                 if ($scope.navegadorFrm.selecao.tipo === 'U') {
                     if ($scope.ngModel.funcaoExcluirAntes) {
-                        $scope.ngModel.funcaoExcluirAntes(form, $scope.navegadorFrm.selecao.item);
+                       validaExcluirAntes =  $scope.ngModel.funcaoExcluirAntes(form, $scope.navegadorFrm.selecao.item);
                     }
-                    remove($scope.navegadorFrm.selecao.item);
-                    if ($scope.ngModel.funcaoExcluirDepois) {
-                        $scope.ngModel.funcaoExcluirDepois(form, $scope.navegadorFrm.selecao.item);
+                    if( (validaExcluirAntes!==false) ){
+                        remove($scope.navegadorFrm.selecao.item);
+                        if ($scope.ngModel.funcaoExcluirDepois) {
+                            $scope.ngModel.funcaoExcluirDepois(form, $scope.navegadorFrm.selecao.item, validaExcluirAntes);
+                        }
                     }
                     $scope.navegadorFrm.selecao.item = null;
                 } else {
                     for (var i in $scope.navegadorFrm.selecao.items) {
                         if ($scope.ngModel.funcaoExcluirAntes) {
-                            $scope.ngModel.funcaoExcluirAntes(form, $scope.navegadorFrm.selecao.items[i]);
+                            validaExcluirAntes = $scope.ngModel.funcaoExcluirAntes(form, $scope.navegadorFrm.selecao.items[i]);
                         }
-                        remove($scope.navegadorFrm.selecao.items[i]);
-                        if ($scope.ngModel.funcaoExcluirDepois) {
-                            $scope.ngModel.funcaoExcluirDepois(form, $scope.navegadorFrm.selecao.items[i]);
+                        if( (validaExcluirAntes!==false) ){
+                            remove($scope.navegadorFrm.selecao.items[i]);
+                            if ($scope.ngModel.funcaoExcluirDepois) {
+                                $scope.ngModel.funcaoExcluirDepois(form, $scope.navegadorFrm.selecao.items[i], validaExcluirAntes);
+                            }
                         }
                     }
                     $scope.navegadorFrm.selecao.items.length = 0;
@@ -159,6 +186,7 @@
             return null;
         };
         $scope.verArray = function(form, dd) {
+
             verificaDados($scope);
             var acao = null;
             var dados = null;
@@ -180,6 +208,12 @@
             });
         };
         $scope.verObjeto = function(form, dd) {
+
+
+            if ($scope.ngModel.funcaoExibirAntes) {
+                $scope.ngModel.funcaoExibirAntes(form, dd);
+            }   
+
             verificaDados($scope);
             var acao = null;
             var dados = null;

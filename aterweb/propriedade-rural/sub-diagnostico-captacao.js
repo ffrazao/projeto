@@ -1,4 +1,4 @@
-/* global criarEstadosPadrao, isUndefOrNull, removerCampo, StringMask:false, converterStringParaData */ /* jslint evil: true */
+/* global criarEstadosPadrao, isUndefOrNull, removerCampo, StringMask:false, converterStringParaData, dataToInputData */ /* jslint evil: true */
 
 (function(pNmModulo, pNmController, pNmFormulario) {
 
@@ -106,52 +106,94 @@ angular.module(pNmModulo).controller(pNmController,
             },
         ],
         funcaoIncluirAntes: function(form, dd) {
-            dd.formularioVersao = {id: $scope.propriedadeRuralDiagnosticoCaptacaoNvg.selecao.item[9].id};
+            var i, coleta ={};
+            var ultimaColeta = { id: null, dataColeta: "01/01/1800"} ; 
+            for (i in $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[9].coletaList ){
+                coleta = $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[9].coletaList[i];
+                if( coleta.finalizada === 'N' ){
+                    toastr.warning('Há coleta não finalizada! Finalize primeiro essa coleta!', 'Não pode crirar nova coleta.');
+                    return false;
+                }
+                if( dataToInputData(ultimaColeta.dataColeta) < dataToInputData(coleta.dataColeta) ){
+                    ultimaColeta =  angular.copy(coleta);
+                }
+            }
+
+            var id = $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[0];
+            var versao = $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[9].versao;
+            if (!id || !versao) {
+                toastr.error('Não foi possível identificar o formulário', 'Identificar formulário');
+                return { valida : false, reg : {} };
+            }
+
+
+            dd = angular.copy(ultimaColeta);
             dd.dataColeta = $scope.hoje();
             dd.finalizada = 'N';
-            //dd.inclusaoUsuario = $scope.token;
-            //dd.alteracaoUsuario = $scope.token;
+            dd.inclusaoUsuario = $scope.token;
+            dd.alteracaoUsuario = $scope.token;
 
-            var id = $scope.propriedadeRuralDiagnosticoCaptacaoNvg.selecao.item[0];
-            var versao = $scope.propriedadeRuralDiagnosticoCaptacaoNvg.selecao.item[9].versao;
+            if( ultimaColeta.id === null ){                
+                dd.formularioVersao = {id: $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[9].id};
+            } else { 
+                dd.id = null;
+            }
 
             var f = this.opcao[5];
-            if (!id || !versao) {
-                toastr.error('Não foi possível identificar o formulário', 'Identificar formulário');
-                return;
-            }
-            FormularioSrv.visualizar(id).success(function (resposta) {
-                if (resposta.mensagem === 'OK') {
-                    var formulario = FormularioSrv.montar($scope, resposta.resultado, versao);
-                    f.opcao = formulario.opcao;
-                }
-            });
-        },
-        funcaoEditarAntes: function(form, dd) {
-            dd.formularioVersao = {id: $scope.propriedadeRuralDiagnosticoCaptacaoNvg.selecao.item[9].id};
-
-            if (dd.valorString && !dd.valor) {
-                var x = null;
-                eval('x = ' + dd.valorString);
-                // converter string para data
-                x = converterStringParaData(x);
-                //console.log(x);
-                dd.valor = x;
-            }
-
-            var id = $scope.propriedadeRuralDiagnosticoCaptacaoNvg.selecao.item[0];
-            var versao = $scope.propriedadeRuralDiagnosticoCaptacaoNvg.selecao.item[9].versao;
-            var f = this.opcao[5];
-            if (!id || !versao) {
-                toastr.error('Não foi possível identificar o formulário', 'Identificar formulário');
-                return;
-            }
             FormularioSrv.visualizar(id).success(function (resposta) {
                 if (resposta.mensagem === 'OK') {
                     var formulario = FormularioSrv.montar($scope, resposta.resultado.formulario, versao);
                     f.opcao = formulario.opcao;
                 }
             });
+            return { valida : true, reg : dd };
+        },
+        funcaoExcluirAntes: function(form, dd) {
+            if( dd.finalizada === "S" ){
+                toastr.error('Coleta já finalizada, não é permitodo alterar. Faça uma nova outra coleta', 'Erro ao Excluir');
+                return false;
+            } else {
+                return true;
+            }
+        },
+        funcaoExcluirDepois: function(form, dd, exclui) {
+            if( exclui ){
+                $scope.propriedadeRuralDiagnosticoCaptacaoNvg.splice(UtilSrv.indiceDe($scope.propriedadeRuralDiagnosticoCaptacaoNvg, dd), 1);
+            }
+        },
+
+        funcaoEditarAntes: function(form, dd) {
+
+            if( dd.finalizada === "N" ){
+
+                dd.formularioVersao = {id: $scope.propriedadeRuralDiagnosticoCaptacaoNvg.selecao.item[9].id};
+                if (dd.valorString && !dd.valor) {
+                    var x = null;
+                    eval('x = ' + dd.valorString);
+                    // converter string para data
+                    x = converterStringParaData(x);
+                    //console.log(x);
+                    dd.valor = x;
+                }
+
+                var id = $scope.propriedadeRuralDiagnosticoCaptacaoNvg.selecao.item[0];
+                var versao = $scope.propriedadeRuralDiagnosticoCaptacaoNvg.selecao.item[9].versao;
+                var f = this.opcao[5];
+                if (!id || !versao) {
+                    toastr.error('Não foi possível identificar o formulário', 'Identificar formulário');
+                    return;
+                }
+
+                FormularioSrv.visualizar(id).success(function (resposta) {
+                    if (resposta.mensagem === 'OK') {
+                        var formulario = FormularioSrv.montar($scope, resposta.resultado.formulario, versao);
+                        f.opcao = formulario.opcao;
+                    }
+                });
+            } else {
+                toastr.error('Coleta já finalizada, não é permitodo alterar. Faça uma nova outra coleta!', 'Erro ao Editar');
+                return false;
+            }
         },
         funcaoSalvarDepois: function(form, dd, acao) {
             dd.propriedadeRural = { id : $scope.cadastro.registro.id };

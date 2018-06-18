@@ -47,6 +47,9 @@ angular.module(pNmModulo).factory(pNmFactory,
                  botaoCancelar = '<button class="btn btn-warning" ng-click=\"modalCancelar()\">Cancelar</button>';
             }
             var nomeForm = tipo + 'Frm';
+            var ok = '<div class="modal-footer">' +
+                     '  <button class="btn btn-primary" ng-click=\"modalOk()\" ng-show="' + nomeForm + '.$valid">OK</button>' + botaoCancelar +
+                     '</div>';
             var modalInstance = $uibModal.open({
                       animation: true,
                       controller: pNmController,
@@ -61,10 +64,8 @@ angular.module(pNmModulo).factory(pNmFactory,
                       (url ? '<ng-include src="\'' + mensagem + '\'"></ng-include>' : mensagem) +
                       '     <fieldset>' +
                       '  </ng-form>' +
-                      '</div>' +
-                      '<div class="modal-footer">' +
-                      '  <button class="btn btn-primary" ng-click=\"modalOk()\" ng-show="' + nomeForm + '.$valid">OK</button>' + botaoCancelar +
-                      '</div>',
+                      '</div>' + 
+                      ( tipo !== 'vizualiza' ? ok : '' ),
                       resolve: {
                           conteudo: function() {
                             return conteudo;
@@ -89,6 +90,9 @@ angular.module(pNmModulo).factory(pNmFactory,
             },
             confirmacao: function (url, mensagem, titulo, conteudo, tamanho, funcaoOk, funcaoCancelar, funcaoIncializar) {
                 return formModal('confirmacao', url, mensagem, titulo, conteudo, tamanho, funcaoOk, funcaoCancelar, funcaoIncializar);
+            },
+            vizualiza: function (url, mensagem, titulo, conteudo, tamanho, funcaoOk, funcaoCancelar, funcaoIncializar) {
+                return formModal('vizualiza', url, mensagem, titulo, conteudo, tamanho, funcaoOk, funcaoCancelar, funcaoIncializar);
             },
         };
         return mensagemSrv;
