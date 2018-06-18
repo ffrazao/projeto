@@ -163,35 +163,33 @@ angular.module(pNmModulo).controller(pNmController,
         },
 
         funcaoEditarAntes: function(form, dd) {
+                
+            dd.formularioVersao = {id: $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[9].id};
 
-            if( dd.finalizada === "N" ){
+            if (dd.valorString && !dd.valor) {
+                var x = null;
+                eval('x = ' + dd.valorString);
+                // converter string para data
+                x = converterStringParaData(x);
+                //console.log(x);
+                dd.valor = x;
+            }
 
-                dd.formularioVersao = {id: $scope.propriedadeRuralDiagnosticoCaptacaoNvg.selecao.item[9].id};
-                if (dd.valorString && !dd.valor) {
-                    var x = null;
-                    eval('x = ' + dd.valorString);
-                    // converter string para data
-                    x = converterStringParaData(x);
-                    //console.log(x);
-                    dd.valor = x;
+            var id = $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[0];
+            var versao = $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[9].versao;
+            var f = this.opcao[5];
+            if (!id || !versao) {
+                toastr.warning('Não foi possível identificar o formulário', 'Identificar formulário');
+                return;
+            }
+            FormularioSrv.visualizar(id).success(function (resposta) {
+                if (resposta.mensagem === 'OK') {
+                    var formulario = FormularioSrv.montar($scope, resposta.resultado.formulario, versao);
+                    f.opcao = formulario.opcao;
                 }
-
-                var id = $scope.propriedadeRuralDiagnosticoCaptacaoNvg.selecao.item[0];
-                var versao = $scope.propriedadeRuralDiagnosticoCaptacaoNvg.selecao.item[9].versao;
-                var f = this.opcao[5];
-                if (!id || !versao) {
-                    toastr.error('Não foi possível identificar o formulário', 'Identificar formulário');
-                    return;
-                }
-
-                FormularioSrv.visualizar(id).success(function (resposta) {
-                    if (resposta.mensagem === 'OK') {
-                        var formulario = FormularioSrv.montar($scope, resposta.resultado.formulario, versao);
-                        f.opcao = formulario.opcao;
-                    }
-                });
-            } else {
-                toastr.error('Coleta já finalizada, não é permitodo alterar. Faça uma nova outra coleta!', 'Erro ao Editar');
+            });
+            if( dd.finalizada !== "N" ){
+                toastr.warning('Coleta já finalizada, não é permitido alterar. Só é possível visualizar!', 'Erro ao Editar');
                 return false;
             }
         },
