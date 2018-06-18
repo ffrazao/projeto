@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2018-01-16T14:29:11 -->
+<!-- 2018-06-18T10:28:31 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RelatorioTeste" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" uuid="74a58a1f-20c1-4882-a004-63331c202191">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -37,6 +37,26 @@
 	<parameter name="TipoPessoa" class="java.lang.String">
 		<parameterDescription><![CDATA[TipoPessoa]]></parameterDescription>
 		<defaultValueExpression><![CDATA[$P{TipoPessoa}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Observacao" class="java.lang.String">
+		<parameterDescription><![CDATA[Observacao]]></parameterDescription>
+		<defaultValueExpression><![CDATA[$P{Observacao}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Proprietario" class="java.lang.String">
+		<parameterDescription><![CDATA[Proprietario]]></parameterDescription>
+		<defaultValueExpression><![CDATA[$P{Proprietario}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Cpf" class="java.lang.String">
+		<parameterDescription><![CDATA[Cpf]]></parameterDescription>
+		<defaultValueExpression><![CDATA[$P{Cpf}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Rg" class="java.lang.String">
+		<parameterDescription><![CDATA[Rg]]></parameterDescription>
+		<defaultValueExpression><![CDATA[$P{Rg}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Ie" class="java.lang.String">
+		<parameterDescription><![CDATA[Ie]]></parameterDescription>
+		<defaultValueExpression><![CDATA[$P{Ie}]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[]]>
@@ -116,11 +136,11 @@
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Left"/>
-				<textFieldExpression><![CDATA[$F{publicoAlvo}.getPessoa().getClass().asSubclass(PessoaFisica.class).cast($F{publicoAlvo}.getPessoa()).getCpf()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{Cpf}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="190" y="356" width="332" height="15" uuid="c12847fd-21dd-4977-b5b2-a9e4cec85190"/>
-				<textFieldExpression><![CDATA[$F{publicoAlvo}.getPessoa().getClass().asSubclass(PessoaFisica.class).cast($F{publicoAlvo}.getPessoa()).getNisNumero()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{Ie}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="479" y="227" width="43" height="15" uuid="c951ed8b-c25a-48ac-8375-4ce01b5ebb5d"/>
@@ -289,11 +309,11 @@ Válida por 6 meses, a partir desta data.]]></text>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="190" y="245" width="332" height="17" uuid="9dcd2fe9-3336-4e17-aade-db82801d572a"/>
-				<textFieldExpression><![CDATA[$F{publicoAlvo}.getPessoa().getNome()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{Proprietario}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="190" y="132" width="332" height="17" uuid="e1596366-ae8e-4d14-a8eb-8ff01e57953a"/>
-				<textFieldExpression><![CDATA[$F{publicoAlvo}.getPessoa().getClass().asSubclass(PessoaFisica.class).cast($F{publicoAlvo}.getPessoa()).getRgNumero()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{Rg}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="190" y="150" width="332" height="17" uuid="7c83163d-1b8b-440b-806e-2cf613a981a7"/>
