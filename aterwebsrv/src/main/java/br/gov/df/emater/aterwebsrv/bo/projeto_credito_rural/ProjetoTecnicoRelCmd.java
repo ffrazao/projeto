@@ -697,6 +697,7 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 
 	private List<ProjetoTecnicoGarantiaRelDto> captarGarantia(List<ProjetoCreditoRural> projetoCreditoRuralList) throws Exception {
 		List<ProjetoTecnicoGarantiaAvalistaRelDto> garantiaAvalistaList = new ArrayList<>();
+		
 		for (ProjetoCreditoRuralGarantia pcrg : projetoCreditoRuralList.get(0).getGarantiaList()) {
 			ProjetoTecnicoGarantiaAvalistaRelDto garantiaAvalista = new ProjetoTecnicoGarantiaAvalistaRelDto();
 
@@ -733,25 +734,33 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 				}
 			}
 
-			// encontrar pai e mae
+			// encontrar pai, mae e conjuge
 			if (!CollectionUtils.isEmpty(pcrg.getPessoaFisica().getRelacionamentoList())) {
 				
-//				System.out.println("Nome Propoente = " + pcrg.getPessoaFisica().getNome());
-//				System.out.println("Id do Propoente = " + pcrg.getPessoaFisica().getId());
+				System.out.println("Nome Avalista = " + pcrg.getPessoaFisica().getNome());
 				
-				pessoaRelacionamentoDao.retornaListaRel(pcrg.getPessoaFisica().getId());
-				
+                //pessoaRelacionamentoDao.retornaListaRel(pcrg.getPessoaFisica().getId());
 				for (PessoaRelacionamento pRel : pessoaRelacionamentoDao.retornaListaRel(pcrg.getPessoaFisica().getId())) {
 
+
+					System.out.println("       Tipo Relacionamento = " + pRel.getRelacionamento().getRelacionamentoTipo().getNome().toUpperCase() );
+
+					if( pRel.getPessoa() == null ){
+						System.out.println("       Nome Relacionamento = " + pRel.getNome() );
+					} else {
+						System.out.println("       Nome Relacionamento = " + pRel.getPessoa().getNome() );
+					}
+
+					
 					String a = RelacionamentoTipo.Codigo.FAMILIAR.name().toUpperCase();
 					String b = pRel.getRelacionamento().getRelacionamentoTipo().getNome().toUpperCase();
 					
 					if (a.equals(b)) {
 						
-						String pai = "Pai";
-						String seraPai = pRel.getRelacionamentoFuncao().getNomeSeMasculino();
+						String pai = "Pai", esposo="Esposo";
+						String tpRelacionamento = pRel.getRelacionamentoFuncao().getNomeSeMasculino();
 
-						if (pai.equals(seraPai)) {
+						if (pai.equals(tpRelacionamento)) {
 							
 							if (pRel.getPessoa() == null) {
 																								
@@ -772,38 +781,33 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 								
 								if (gen.equals(seraGen)) {
 									
-									garantiaAvalista.setPaiNome(pRel.getNome());
+									garantiaAvalista.setPaiNome(pRel.getPessoa().getNome());
 									
 								} else if (genF.equals(seraGen)) {
 									
-									garantiaAvalista.setMaeNome(pRel.getNome());
+									garantiaAvalista.setMaeNome(pRel.getPessoa().getNome());
 									
 								}
 							}
-						}										
+						}
+						
+						if (esposo.equals(tpRelacionamento)) {
+
+							if (pRel.getPessoa() == null) {
+								garantiaAvalista.setConjuge(pRel.getNome());
+							} else {
+								if(pRel.getPessoa().getId() != pcrg.getPessoaFisica().getId() ){
+									garantiaAvalista.setConjuge(pRel.getPessoa().getNome());	
+								}
+							}
+
+						}
 					}
 				}
 			}
 			
-			if (!CollectionUtils.isEmpty(pcrg.getPessoaFisica().getRelacionamentoList())) {
 			
-				for (PessoaRelacionamento pRel : pessoaRelacionamentoDao.retornaListaRelConj(pcrg.getPessoaFisica().getId())) {
-					String esposo = "Esposo";
-					String seraEsposo = pRel.getRelacionamentoFuncao().getNomeSeMasculino();
-					
-//					System.out.println("N1 " + pRel.getNome());
-//					System.out.println("N2 "+ seraEsposo);
-
-					if (esposo.equals(seraEsposo)) {
-												
-								garantiaAvalista.setConjuge(pRel.getNome());
-												
-					}		
-				}
-			
-			}
-			
-			//System.out.println("Conjuge: " + garantiaAvalista.getConjuge());
+			System.out.println("Conjuge: " + garantiaAvalista.getConjuge());
 			
 			garantiaAvalista.setCpfCnpj(pcrg.getPessoaFisica().getCpf());
 			garantiaAvalista.setEstadoCivil(pcrg.getPessoaFisica().getEstadoCivil());
