@@ -737,20 +737,8 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 			// encontrar pai, mae e conjuge
 			if (!CollectionUtils.isEmpty(pcrg.getPessoaFisica().getRelacionamentoList())) {
 				
-				System.out.println("Nome Avalista = " + pcrg.getPessoaFisica().getNome());
-				
                 //pessoaRelacionamentoDao.retornaListaRel(pcrg.getPessoaFisica().getId());
 				for (PessoaRelacionamento pRel : pessoaRelacionamentoDao.retornaListaRel(pcrg.getPessoaFisica().getId())) {
-
-
-					System.out.println("       Tipo Relacionamento = " + pRel.getRelacionamento().getRelacionamentoTipo().getNome().toUpperCase() );
-
-					if( pRel.getPessoa() == null ){
-						System.out.println("       Nome Relacionamento = " + pRel.getNome() );
-					} else {
-						System.out.println("       Nome Relacionamento = " + pRel.getPessoa().getNome() );
-					}
-
 					
 					String a = RelacionamentoTipo.Codigo.FAMILIAR.name().toUpperCase();
 					String b = pRel.getRelacionamento().getRelacionamentoTipo().getNome().toUpperCase();
@@ -806,9 +794,7 @@ public class ProjetoTecnicoRelCmd extends _Comando {
 				}
 			}
 			
-			
-			System.out.println("Conjuge: " + garantiaAvalista.getConjuge());
-			
+
 			garantiaAvalista.setCpfCnpj(pcrg.getPessoaFisica().getCpf());
 			garantiaAvalista.setEstadoCivil(pcrg.getPessoaFisica().getEstadoCivil());
 			garantiaAvalista.setIdentidadeNumero(pcrg.getPessoaFisica().getRgNumero());

@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-12-27T15:58:48 -->
+<!-- 2018-06-20T09:43:27 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ProponentePropriedade" pageWidth="555" pageHeight="842" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="4f3e2a9b-c98c-497f-9ccc-4d9c8fd3b19a">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<parameter name="totItens" class="java.lang.Integer">
+		<parameterDescription><![CDATA[totItens]]></parameterDescription>
+	</parameter>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -44,8 +47,12 @@
 		<fieldDescription><![CDATA[valorUnitario]]></fieldDescription>
 	</field>
 	<sortField name="ano"/>
-	<variable name="total" class="java.lang.Double" incrementType="Column" calculation="Sum">
-		<variableExpression><![CDATA[$F{valorTotal}.doubleValue() + $V{total}]]></variableExpression>
+	<variable name="total" class="java.lang.Double" incrementType="Column">
+		<variableExpression><![CDATA[$V{total}.doubleValue() + $F{valorTotal}.doubleValue()]]></variableExpression>
+		<initialValueExpression><![CDATA[0d]]></initialValueExpression>
+	</variable>
+	<variable name="repItens" class="java.lang.Double" incrementType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$V{repItens} + 1]]></variableExpression>
 		<initialValueExpression><![CDATA[0d]]></initialValueExpression>
 	</variable>
 	<background>
@@ -117,7 +124,7 @@
 				<text><![CDATA[Valor Total]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="40" y="0" width="232" height="15" uuid="6df78748-bd29-4f59-b4fd-dc91c3036a3b">
+				<reportElement x="40" y="0" width="120" height="15" uuid="6df78748-bd29-4f59-b4fd-dc91c3036a3b">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
@@ -129,7 +136,7 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="16" splitType="Stretch">
+		<band height="18" splitType="Stretch">
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="40" height="15" uuid="70cd7bcf-f1e8-4e2f-b761-b49fe0d7a9e6">
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
@@ -181,6 +188,7 @@
 	</detail>
 	<columnFooter>
 		<band height="35">
+			<printWhenExpression><![CDATA[$P{totItens}.equals($V{REPORT_COUNT})]]></printWhenExpression>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="455" y="-1" width="100" height="15" uuid="24d6bae8-6641-4031-adb8-2217e54e4f63">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
