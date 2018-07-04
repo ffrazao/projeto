@@ -108,8 +108,8 @@ angular.module(pNmModulo).controller(pNmController,
         funcaoIncluirAntes: function(form, dd) {
             var i, coleta ={};
             var ultimaColeta = { id: null, dataColeta: "01/01/1800"} ; 
-            for (i in $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[9].coletaList ){
-                coleta = $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[9].coletaList[i];
+            for (i in $scope.propriedadeRuralDiagnosticoCaptacaoNvg.selecao.item[9].coletaList ){
+                coleta = $scope.propriedadeRuralDiagnosticoCaptacaoNvg.selecao.item[9].coletaList[i];
                 if( coleta.finalizada === 'N' ){
                     toastr.warning('Há coleta não finalizada! Finalize primeiro essa coleta!', 'Não pode crirar nova coleta.');
                     return false;
@@ -119,8 +119,8 @@ angular.module(pNmModulo).controller(pNmController,
                 }
             }
 
-            var id = $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[0];
-            var versao = $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[9].versao;
+            var id = $scope.propriedadeRuralDiagnosticoCaptacaoNvg.selecao.item[0];
+            var versao = $scope.propriedadeRuralDiagnosticoCaptacaoNvg.selecao.item[9].versao;
             if (!id || !versao) {
                 toastr.error('Não foi possível identificar o formulário', 'Identificar formulário');
                 return { valida : false, reg : {} };
@@ -134,7 +134,7 @@ angular.module(pNmModulo).controller(pNmController,
             dd.alteracaoUsuario = $scope.token;
 
             if( ultimaColeta.id === null ){                
-                dd.formularioVersao = {id: $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[9].id};
+                dd.formularioVersao = {id: $scope.propriedadeRuralDiagnosticoCaptacaoNvg.selecao.item[9].id};
             } else { 
                 dd.id = null;
             }
@@ -164,7 +164,7 @@ angular.module(pNmModulo).controller(pNmController,
 
         funcaoEditarAntes: function(form, dd) {
                 
-            dd.formularioVersao = {id: $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[9].id};
+            dd.formularioVersao = {id: $scope.propriedadeRuralDiagnosticoCaptacaoNvg.selecao.item[9].id};
 
             if (dd.valorString && !dd.valor) {
                 var x = null;
@@ -175,8 +175,8 @@ angular.module(pNmModulo).controller(pNmController,
                 dd.valor = x;
             }
 
-            var id = $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[0];
-            var versao = $scope.pessoaDiagnosticoCaptacaoNvg.selecao.item[9].versao;
+            var id = $scope.propriedadeRuralDiagnosticoCaptacaoNvg.selecao.item[0];
+            var versao = $scope.propriedadeRuralDiagnosticoCaptacaoNvg.selecao.item[9].versao;
             var f = this.opcao[5];
             if (!id || !versao) {
                 toastr.warning('Não foi possível identificar o formulário', 'Identificar formulário');
