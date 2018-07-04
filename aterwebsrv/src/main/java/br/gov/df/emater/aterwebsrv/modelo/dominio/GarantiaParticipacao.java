@@ -3,7 +3,7 @@ package br.gov.df.emater.aterwebsrv.modelo.dominio;
 public enum GarantiaParticipacao {
 
 	PA("Primeiro Avalista", 1),
-	CPA("Cônjute do Primeiro Avalista", 2),
+	CPA("Cônjuge do Primeiro Avalista", 2),
 	SA("Segundo Avalista", 3),
 	CSA("Cônjuge do Segundo Avalista", 4);
 
