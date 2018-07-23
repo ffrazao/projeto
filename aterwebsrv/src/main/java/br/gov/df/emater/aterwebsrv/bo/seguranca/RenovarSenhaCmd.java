@@ -56,7 +56,7 @@ public class RenovarSenhaCmd extends _Comando {
 		if (usuarioSalvo == null) {
 			throw new BoException("Usuário não cadastrado");
 		}
-		if (usuarioSalvo.getPessoa() instanceof PessoaFisica) {
+/*		if (usuarioSalvo.getPessoa() instanceof PessoaFisica) {
 			Calendar aniversario = ((PessoaFisica) usuarioSalvo.getPessoa()).getNascimento();
 			if (aniversario != null) {
 				String ano = UtilitarioString.zeroEsquerda(Integer.toString(aniversario.get(Calendar.YEAR)), 4);
@@ -68,7 +68,10 @@ public class RenovarSenhaCmd extends _Comando {
 				}
 			}
 		}
-
+		if (senhaPassadaDao.findOneByUsuarioIdAndSenha(usuarioSalvo.getId(), novaSenha) != null) {
+			throw new BoException("Não utilize senhas passadas.");
+		}
+*/
 		String senhaAtual = Criptografia.MD5(usuarioSalvo.getId() + usuario.getPassword());
 		if (!senhaAtual.equals(usuarioSalvo.getPassword())) {
 			throw new BoException("A senha atual é inválida!");
@@ -76,9 +79,6 @@ public class RenovarSenhaCmd extends _Comando {
 		novaSenha = Criptografia.MD5(usuarioSalvo.getId() + usuario.getNewPassword());
 		if (novaSenha.equals(usuarioSalvo.getPassword())) {
 			throw new BoException("A nova senha não pode ser a mesma que a atual");
-		}
-		if (senhaPassadaDao.findOneByUsuarioIdAndSenha(usuarioSalvo.getId(), novaSenha) != null) {
-			throw new BoException("Não utilize senhas passadas.");
 		}
 
 		usuarioSalvo.setUsuarioStatusConta(UsuarioStatusConta.A);
