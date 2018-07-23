@@ -98,13 +98,7 @@
                 link: '#',
                 visivel: false,
                 subtree: [
-/*                    {
-                        name: 'Agenda',
-                        link: 'p.agenda.filtro',
-                        funcionalidade: 'ATIVIDADE',
-                        visivel: false,
-                    },
- */                 {
+                 {
                         name: 'Registro de Atividade',
                         link: 'p.atividade.filtro({opcao: "executar"})',
                         funcionalidade: 'ATIVIDADE',
@@ -119,83 +113,20 @@
                     {
                         name: 'Índice de Produção',
                         link: 'p.indiceProducao.form',
+                        //link: 'p.indiceProducao.filtro({opcao: "projetoCredito"})',
                         funcionalidade: 'INDICE_PRODUCAO',
                         visivel: false,
                     },
-/*                    {
-                        name: 'Antigos Projetos de Crédito',
-                        link: 'p.projetoCreditoRural.listaAntigos',
-                        funcionalidade: 'PROJETO_CREDITO_RURAL',
-                        visivel: false,
+                    {
+                        name: 'Visualizar Índice de Produção',
+                        link: 'info({"nome": "teste", "endereco": "ematerweb","programa":"ipa"})',
+                        visivel: true,
                     },
 
-                    
-                    {
-                        name: 'Demandar',
-                        link: 'p.atividade.filtro({opcao: "demandar"})',
-                        funcionalidade: 'ATIVIDADE',
-                        visivel: false,
-                    },
-                    {
-                        name: 'Agenda',
-                        link: 'login',
-                        funcionalidade: 'AGENDA',
-                        visivel: false,
-                    },
- */             ]
+             ]
             },
-   /*              {
+
             {
-                name: 'Diagnóstico',
-                link: '#',
-                visivel: false,
-                subtree: [
-                    {
-                        name: 'Índices de Produção',
-                        link: 'p.indiceProducao.form',
-                        funcionalidade: 'INDICE_PRODUCAO',
-                        visivel: false,
-                    },
-                    {
-                        name: 'Índices Sociais',
-                        link: 'p.modeloCadastro.filtro',
-                        funcionalidade: 'IDCR',
-                        visivel: false,
-                    },
-                    {
-                        name: 'Enquete',
-                        link: 'login',
-                        visivel: false,
-                        subtree: [
-                            {
-                                name: 'Configuração',
-                                link: '#',
-                                funcionalidade: 'ENQUETE_CONFIGURACAO',
-                                visivel: false,
-                            },
-                            {
-                                name: 'Responder',
-                                link: 'p.modeloCadastro.filtro',
-                                subtree: [
-                                    {
-                                        name: 'Anônimo',
-                                        link: '#',
-                                        funcionalidade: 'ENQUETE_ANONIMO',
-                                        visivel: false,
-                                    },
-                                    {
-                                        name: 'Identificado',
-                                        link: 'p.modeloCadastro.filtro',
-                                        funcionalidade: 'ENQUETE_RESPONDER',
-                                        visivel: false,
-                                    },
-                                ],
-                            },
-                        ],
-                    },
-                ],
-            },
-*/            {
                 name: 'Configuração',
                 link: 'login',
                 visivel: false,

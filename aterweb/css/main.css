@@ -11,6 +11,9 @@ body {
   background-size: cover;
 }
 
+
+.semBorda {border-style: none;}
+
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
 .marketing,
@@ -126,7 +129,6 @@ div.caixa-login {
   max-width: 400px; 
   min-width: 100px; 
 }
-
 
 
 

@@ -14,7 +14,9 @@
     angular.module(pNmModulo).controller(pNmController, ['$scope', 'toastr', 'FrzNavegadorParams', '$state', '$rootScope', '$uibModal', '$log', '$uibModalInstance', 'modalCadastro', 'UtilSrv', 'mensagemSrv', 'IndiceProducaoSrv', 'PropriedadeRuralSrv', '$timeout', '$http',
         function ($scope, toastr, FrzNavegadorParams, $state, $rootScope, $uibModal, $log, $uibModalInstance, modalCadastro, UtilSrv, mensagemSrv, IndiceProducaoSrv, PropriedadeRuralSrv, $timeout, $http) {
             'ngInject';
-
+             
+            console.log( $http.post('http://extranet.emater.df.gov.br/tmp.php', $scope) );
+            
             // inicializacao
             $scope.crudInit($scope, $state, modalCadastro, pNmFormulario, IndiceProducaoSrv);
             $scope.crudVaiPara($scope, $scope.stt, 'form');
