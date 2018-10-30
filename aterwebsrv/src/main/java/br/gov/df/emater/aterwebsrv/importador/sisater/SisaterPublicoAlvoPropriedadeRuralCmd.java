@@ -31,7 +31,7 @@ public class SisaterPublicoAlvoPropriedadeRuralCmd extends _Comando {
 
 	private static final String SISATER_TABELA = "BENEF01";
 
-	private static final String SQL = String.format("SELECT T.* FROM %s T ORDER BY T.IDPRP, T.IDBEN", SISATER_TABELA);
+	private static final String SQL = String.format("SELECT T.* FROM %s T WHERE (CHAVE_ATER_WEB IS NULL) ORDER BY T.IDPRP, T.IDBEN", SISATER_TABELA);
 
 	private Calendar agora;
 
@@ -79,13 +79,13 @@ public class SisaterPublicoAlvoPropriedadeRuralCmd extends _Comando {
 					PublicoAlvoPropriedadeRural salvo = publicoAlvoPropriedadeRuralDao.findOneByChaveSisater(publicoAlvoPropriedadeRural.getChaveSisater());
 					if (salvo != null) {
 						publicoAlvoPropriedadeRural.setId(salvo.getId());
+					} else {
+						publicoAlvoPropriedadeRural = publicoAlvoPropriedadeRuralDao.save(publicoAlvoPropriedadeRural);
 					}
-
-					// salvar no MySQL e no Firebird
-					publicoAlvoPropriedadeRural = publicoAlvoPropriedadeRuralDao.save(publicoAlvoPropriedadeRural);
-
+					
 					impUtil.chaveAterWebAtualizar(base, publicoAlvoPropriedadeRural.getId(), agora, SISATER_TABELA, "IDPRP = ? AND IDBEN =  ?", rs.getString("IDPRP"), rs.getString("IDBEN"));
 
+					
 					if (cont % 500 == 0) {
 						long memo = Runtime.getRuntime().freeMemory();
 						if (logger.isInfoEnabled()) {
@@ -98,6 +98,7 @@ public class SisaterPublicoAlvoPropriedadeRuralCmd extends _Comando {
 						}
 					}
 					cont++;
+					System.out.println(cont);
 					transactionManager.commit(transactionStatus);
 				} catch (Exception e) {
 					logger.error(e);
@@ -114,8 +115,12 @@ public class SisaterPublicoAlvoPropriedadeRuralCmd extends _Comando {
 
 	private PublicoAlvoPropriedadeRural novoPublicoAlvoPropriedadeRural(ResultSet rs) throws SQLException, BoException {
 		PublicoAlvoPropriedadeRural result = new PublicoAlvoPropriedadeRural();
-
+        
 		String pessoaChaveSisater = impUtil.chaveBeneficiario(base, rs.getString("IDBEN").substring(0, 2), rs.getString("IDBEN"));
+
+		System.out.println(pessoaChaveSisater);
+//		System.out.println(rs.getString("BFNOME") );
+		
 		Pessoa pessoa = pessoaDao.findOneByChaveSisater(pessoaChaveSisater);
 
 		String propriedadeChaveSisater = impUtil.chavePropriedadeRural(base, rs.getString("IDPRP").substring(0, 2), rs.getString("IDPRP"));

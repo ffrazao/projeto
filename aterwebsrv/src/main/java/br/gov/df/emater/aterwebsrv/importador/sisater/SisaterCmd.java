@@ -62,7 +62,8 @@ public class SisaterCmd extends _Comando {
 						}
 
 						if (!con.isClosed()) {
-							con.commit();
+							con.rollback();
+							//con.commit();
 							if (logger.isDebugEnabled()) {
 								logger.debug(String.format("[%s] Commit NO SISATER", base.name()));
 							}

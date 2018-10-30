@@ -32,13 +32,14 @@ public class VerifPendCnpjCmd extends VerificarPendenciasCmd {
 			pessoa.setCnpj(null);
 			return null;
 		}
+		/*
 		if (!Util.isCnpjValido(numero)) {
 			pessoa.setCnpj(null);
 			return String.format("O número de CNPJ informado [%s] é inválido", numero);
 		}
-
+        
 		// formatar o número
-		numero = UtilitarioString.formataCnpj(numero);
+		/* numero = UtilitarioString.formataCnpj(numero);
 		
 		// pesquisa de PessoaJuridica
 		List<PessoaJuridica> salvoList = null;
@@ -51,6 +52,7 @@ public class VerifPendCnpjCmd extends VerificarPendenciasCmd {
 				}
 			}
 		}
+		*/
 		return null;
 	}
 

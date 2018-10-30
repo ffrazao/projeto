@@ -34,6 +34,7 @@ public class VerifPendCpfCmd extends VerificarPendenciasCmd {
 		PessoaRelacionamento pessoaRelacionamento = null;
 		String numero = null;
 
+		
 		if (contexto.getRequisicao() instanceof PessoaRelacionamento) {
 			pessoaRelacionamento = (PessoaRelacionamento) contexto.getRequisicao();
 			numero = pessoaRelacionamento.getCpf();
@@ -43,6 +44,7 @@ public class VerifPendCpfCmd extends VerificarPendenciasCmd {
 		} else {
 			return null;
 		}
+		
 		// TODO fazer verificacao no proprio registro se pf ver em seus relac.
 		// se relac ver principa e outros relacs
 		if (StringUtils.isBlank(numero)) {
@@ -53,6 +55,7 @@ public class VerifPendCpfCmd extends VerificarPendenciasCmd {
 			}
 			return null;
 		}
+		/*
 		if (!Util.isCpfValido(numero)) {
 			if (pessoaFisica == null) {
 				pessoaRelacionamento.setCpf(null);
@@ -62,10 +65,12 @@ public class VerifPendCpfCmd extends VerificarPendenciasCmd {
 				return String.format("O número de CPF informado [%s] é inválido", numero);
 			}
 		}
-
+		
+		
 		// formatar o número
 		numero = UtilitarioString.formataCpf(numero);
-
+		
+		/*
 		// pesquisa de PessoaFisica ou PessoaRelacionamento em PessoaFisica
 		List<PessoaFisica> salvoPessoaFisicaList = pessoaFisicaDao.findByCpf(numero);
 		if (salvoPessoaFisicaList != null) {
@@ -113,7 +118,7 @@ public class VerifPendCpfCmd extends VerificarPendenciasCmd {
 				}
 			}
 		}
-
+		*/
 		// atualizar o cpf com valor formatado
 		if (pessoaFisica == null) {
 			pessoaRelacionamento.setCpf(numero);

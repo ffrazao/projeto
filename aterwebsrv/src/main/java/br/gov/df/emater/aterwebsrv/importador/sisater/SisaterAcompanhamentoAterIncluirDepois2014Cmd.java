@@ -128,7 +128,7 @@ public class SisaterAcompanhamentoAterIncluirDepois2014Cmd extends _Comando {
 		void importar(DbSater base, Principal usuario) throws Exception {
 
 			impUtil.criarMarcaTabelaSisater(con, TABELA);
-			demandantePs = con.prepareStatement(String.format("SELECT IDUND, IDBEN FROM %s WHERE IDUND = ? AND IDATR = ?", TABELA_SUB));
+			demandantePs = con.prepareStatement(String.format("SELECT IDUND, IDBEN FROM %s WHERE (CHAVE_ATER_WEB IS NULL) ", TABELA_SUB));
 			idUnd = null;
 			idAtr = null;
 			atividade = null;

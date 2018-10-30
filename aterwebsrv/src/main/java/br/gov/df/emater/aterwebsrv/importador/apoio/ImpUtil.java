@@ -532,7 +532,7 @@ public class ImpUtil {
 	}
 
 	public PessoaGenero deParaGenero(String registro) {
-		if (registro == null) {
+		if (registro == null || registro.trim() =="" ) {
 			return PessoaGenero.M;
 		}
 		switch (UtilitarioString.semAcento(registro.trim().toLowerCase())) {

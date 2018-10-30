@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.bo.formulario;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +23,10 @@ public class VisualizarPorCodigoCmd extends _Comando {
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean executar(_Contexto contexto) throws Exception {
+		
+		SimpleDateFormat d =  new SimpleDateFormat("yyyyMMdd-HH:mm:ss.SSS");  
+		System.out.print("Formulario Por Codigo:" ); System.out.println(d.format(new Date()));
+		
 		Map<String, Object> requisicao = (Map<String, Object>) contexto.getRequisicao();
 		String codigoStr = (String) requisicao.get("codigo");
 		String posicaoStr = (String) requisicao.get("posicao");

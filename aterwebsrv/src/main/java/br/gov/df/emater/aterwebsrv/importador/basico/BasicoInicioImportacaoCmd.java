@@ -82,9 +82,15 @@ public class BasicoInicioImportacaoCmd extends _Comando {
 
 		contexto.put("brasil", paisDao.findByPadrao(Confirmacao.S).get(0));
 
+		System.out.println(estadoDao.findByCapitalAndPais(Confirmacao.S, (Pais) contexto.get("brasil")).get(0) );
+		
 		contexto.put("distritoFederal", estadoDao.findByCapitalAndPais(Confirmacao.S, (Pais) contexto.get("brasil")).get(0));
+		
+		System.out.println( ((Estado) contexto.get("distritoFederal")).getNome() );
+		System.out.println( ( municipioDao.findByCapitalAndEstado(Confirmacao.S, (Estado) contexto.get("distritoFederal")).get(0)) );
+		
+		
 		contexto.put("brasilia", municipioDao.findByCapitalAndEstado(Confirmacao.S, (Estado) contexto.get("distritoFederal")).get(0));
-
 		contexto.put("goias", estadoDao.findOneByPaisAndSigla((Pais) contexto.get("brasil"), "GO"));
 		contexto.put("cristalina", municipioDao.findByEstadoAndNomeLike((Estado) contexto.get("goias"), "Cristalina").get(0));
 		contexto.put("formosa", municipioDao.findByEstadoAndNomeLike((Estado) contexto.get("goias"), "Formosa").get(0));

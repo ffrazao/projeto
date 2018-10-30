@@ -29,7 +29,7 @@ public class _PlanejamentoDaoConfig {
 
 	public static final String MODELO = "br.gov.df.emater.aterwebsrv.modelo_planejamento";
 
-	public static final String PERSISTENCE_UNIT = "planejamento";
+	public static final String PERSISTENCE_UNIT = "default";
 
 	@Bean(name = "planejamentoDataSource")
 	@Qualifier(value = "planejamentoDataSource")

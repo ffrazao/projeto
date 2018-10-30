@@ -650,6 +650,8 @@ public class SisaterPublicoAlvoCmd extends _Comando {
 				try {
 					Pessoa pessoa = null;
 
+				    System.out.println( rs.getString("BFNOME") );
+				    
 					String natureza = UtilitarioString.semAcento(rs.getString("BFNATUREZA"));
 					if (natureza.equalsIgnoreCase("fisica")) {
 						pessoa = novoPessoaFisica(rs);
@@ -729,6 +731,7 @@ public class SisaterPublicoAlvoCmd extends _Comando {
 						}
 					}
 					cont++;
+					System.out.println(cont);
 					transactionManager.commit(transactionStatus);
 				} catch (Exception e) {
 					logger.error(e);

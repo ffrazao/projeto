@@ -1,5 +1,7 @@
 package br.gov.df.emater.aterwebsrv.bo.formulario;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,6 +32,9 @@ public class VisualizarCmd extends _Comando {
 	public boolean executar(_Contexto contexto) throws Exception {
 		Integer id = null;
 		String posicao = null;
+		
+		SimpleDateFormat d =  new SimpleDateFormat("yyyyMMdd-HH:mm:ss.SSS");  
+		System.out.print("Formulario :" ); System.out.println(d.format(new Date()));
 
 		if (contexto.getResposta() != null && contexto.getResposta() instanceof Map) {
 			@SuppressWarnings("unchecked")

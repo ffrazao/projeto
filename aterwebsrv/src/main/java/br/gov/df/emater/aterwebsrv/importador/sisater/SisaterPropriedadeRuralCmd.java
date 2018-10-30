@@ -166,7 +166,7 @@ public class SisaterPropriedadeRuralCmd extends _Comando {
 
 	private static final String SISATER_TABELA = "PROP00";
 
-	private static final String SQL = String.format("SELECT T.*, C.COMUNIDADE, C.BACIA, C.REGIAO FROM %s T LEFT JOIN COM00 C ON C.IDUND = T.IDUND AND C.IDCOM = T.IDCOM ORDER BY T.%s", SISATER_TABELA, SISATER_CAMPO);
+	private static final String SQL = String.format("SELECT T.*, C.COMUNIDADE, C.BACIA, C.REGIAO FROM %s T LEFT JOIN COM00 C ON C.IDUND = T.IDUND AND C.IDCOM = T.IDCOM ORDER BY T.%s  WHERE (CHAVE_ATER_WEB IS NULL)  ", SISATER_TABELA, SISATER_CAMPO);
 
 	private static final String SQL_BENFEITORIA = "SELECT * FROM PROP01 WHERE IDPRP = ? ORDER BY ITEM";
 

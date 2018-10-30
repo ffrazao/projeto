@@ -12,10 +12,6 @@ public class ConexaoFirebird {
 
 	public static enum DbSater {
 /*		
-		ELRIP("GERIP", "DF"),
-		ELVAR("GEVAR", "DF"),
-		ELGAM("GEGAM", "DF"),
-		ELPLA("GEPLA", "DF"); 
 
 		ASBRA("GEPRE NORTE", "GO"), 
 		ASCRI("GEPRE SUDESTE", "GO"), 
@@ -23,20 +19,25 @@ public class ConexaoFirebird {
 		ASPBE("GEPRE NOROESTE", "GO"), 
 		ASSOB("GESOB", "GO"), // repetido
 */		
-		ELPIP("GEPIP", "DF"), 
+//		ELPIP("GEPIP", "DF"), 
+//		ELRIP("GERIP", "DF"),
+//		ELALG("GERAG", "DF"),
+//		ELRSS("GESEB", "DF"), 
+//		ELTAB("GETAB", "DF"), 
+//		ELPAD("GEPAD", "DF"), 		
+//		ELVAR("GEVAR", "DF"),
+		
+		ELGAM("GEGAM", "DF"),
+		ELPLA("GEPLA", "DF"), 
 
-/*	    ELJAR("GEJAR", "DF"), 
-		ELPAD("GEPAD", "DF"), 
-		ELTAB("GETAB", "DF"), 
+	    ELJAR("GEJAR", "DF"), 
 		ELTAQ("GETAQ", "DF"),
-		ELALG("GERAG", "DF"),
 	
 		ELPAR("GEPAR", "DF"), 
 		ELBRA("GBRAZ", "DF"), 
-		ELRSS("GESEB", "DF"), 
 		ELSOB("GESOB", "DF"), 
-		ELCEI("GECEI", "DF"), 
-*/
+		ELCEI("GECEI", "DF") 
+
 		;
 		
 		private String sigla;
