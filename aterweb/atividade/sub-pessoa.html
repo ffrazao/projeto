@@ -47,7 +47,7 @@
                     <tr>
                         <th><frz-seletor ng-model="atividadePessoaNvg" dados="cadastro.registro[lista]"></frz-seletor></th>
                         <th>#</th>
-                        <th>Principal</th>
+                        <!--  <th>Principal</th> -->
                         <th>Nome</th>
                         <!-- <th>Início</th>
                         <th>Ativo</th>
@@ -57,14 +57,14 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="reg in cadastro.registro[lista] | orderBy: ['pessoa.nome'] track by reg.id">
-                        <td>
+                        <td >
                             <input type="radio" ng-show="atividadePessoaNvg.selecao.tipo === 'U'" ng-model="atividadePessoaNvg.selecao.item" ng-value="reg"/>
                             <input type="checkbox" ng-show="atividadePessoaNvg.selecao.tipo === 'M'" checklist-model="atividadePessoaNvg.selecao.items" checklist-value="reg"/>
                         </td>
-                        <td>
+                        <td >
                             {{$index + 1 + ((atividadePessoaNvg.paginaAtual-1) * atividadePessoaNvg.tamanhoPagina)}}
                         </td>
-                        <td>
+                        <!-- <td>
                             <div class="radio">
                                 <label for="principal_{{lista}}">
                                     <input type="radio" id="principal_{{lista}}_{{$index}}" name="principal_{{lista}}" ng-click="definirResponsavel(cadastro.registro[lista], reg)" ng-checked="reg.responsavel === 'S'" ng-required="true" ng-disabled="!reg.pessoa">
@@ -74,7 +74,7 @@
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
                             </div>
-                        </td>
+                        </td> -->
                         <td>
                             <a ng-click="modalVerPessoa(pessoa.id)" ng-if="reg.pessoa.nome">{{reg.pessoa.nome}}</a>
                             <span ng-if="reg.unidadeOrganizacional.nome">{{reg.unidadeOrganizacional.nome}}</span>
@@ -110,7 +110,7 @@
                         </td> -->
                     </tr>
                 </tbody>
-                <tfoot>
+<!--                <tfoot>
                     <tr>
                         <td colspan="8">
                             <div class="container">
@@ -123,7 +123,7 @@
                             </div>
                         </td>
                     </tr>
-                </tfoot>
+                </tfoot> -->
             </table>
         </ng-form>
     </div>

@@ -36,15 +36,16 @@
                         visivel: true,
                     },
                     {
-                        name: 'Internet',
-                        link: 'info({"nome": "Internet", "endereco": "http://www.emater.df.gov.br"})',
-                        visivel: true,
-                    },
-                    {
                         name: 'Extranet',
                         link: 'info({"nome": "Extranet", "endereco": "http://extranet.emater.df.gov.br"})',
                         visivel: true,
                     },
+                    {
+                        name: 'Internet',
+                        link: 'info({"nome": "Internet", "endereco": "http://www.emater.df.gov.br"})',
+                        visivel: true,
+                    },
+                    /*
                     {
                         name: 'Planejamento',
                         link: 'info({"nome": "Planejamento", "endereco": "http://extranet.emater.df.gov.br/planejamento"})',
@@ -55,6 +56,8 @@
                         link: 'info({"nome": "Painel de Resultados", "endereco": "https://painel.emater.df.gov.br"})',
                         visivel: true,
                     },
+                    */
+
                 ],
             },
             {
@@ -66,12 +69,6 @@
                         link: 'p.pessoa.filtro',
                         funcionalidade: 'PESSOA',
                         visivel: false,
-                        },
-                    {
-                        name: 'Grupo Social',
-                        link: 'p.grupoSocial.filtro',
-                        funcionalidade: 'GRUPO_SOCIAL',
-                        visivel: false,
                     },
                     {
                         name: 'Propriedade Rural',
@@ -80,18 +77,29 @@
                         visivel: false,
                     },
                     {
-                        name: 'Contratos & Convênios',
-                        link: 'p.contrato.filtro',
-                        funcionalidade: 'CONTRATO',
-                        visivel: false,
-                    } ,
+                        name: 'Diagonósticos',
+                        link: 'info({"nome": "teste", "endereco": "ematerweb", "programa":"coleta"})',
+                        visivel: true,
+                    },
 /*                    {
                         name: 'Formulários',
                         link: 'p.formulario.filtro',
                         funcionalidade: 'FORMULARIO',
                         visivel: false,
                     },  
-*/                ]
+*/                    {
+                        name: 'Grupo Social',
+                        link: 'p.grupoSocial.filtro',
+                        funcionalidade: 'GRUPO_SOCIAL',
+                        visivel: false,
+                    },
+                    {
+                        name: 'Contratos & Convênios',
+                        link: 'p.contrato.filtro',
+                        funcionalidade: 'CONTRATO',
+                        visivel: false,
+                    } ,
+                ]
             },
             {
                 name: 'ATER',
@@ -111,7 +119,7 @@
                         visivel: false,
                     },
                     {
-                        name: 'Índice de Produção',
+                        name: 'Digitar Índice de Produção',
                         link: 'p.indiceProducao.form',
                         //link: 'p.indiceProducao.filtro({opcao: "projetoCredito"})',
                         funcionalidade: 'INDICE_PRODUCAO',

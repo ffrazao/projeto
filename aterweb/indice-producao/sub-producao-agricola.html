@@ -90,7 +90,7 @@
                         </td>
                         <td>
                             <input class="form-control input-sm text-right" id="produtividade_{{$index}}" name="produtividade_{{$index}}" 
-                                ng-model="producaoAgricola.produtividade" ng-required="true" ui-number-mask="3" style="min-width: 50px;" 
+                                ng-model="producaoAgricola.produtividade" ng-required="true" ui-number-mask="0" style="min-width: 50px;" 
                                  ng-blur="calcula($index, 'produtividade');" ng-show="producaoAgricola.bemClassificado"
                                   title="Produtividade Min: {{producaoAgricola.bemClassificado.produtividadeMin}} Max: {{producaoAgricola.bemClassificado.produtividadeMax}}" >
                             
@@ -103,7 +103,7 @@
                                 <span ng-show="producaoAgricola.bemClassificado">({{ producaoAgricola.bemClassificado.unidadeMedida.nome}}/ha)</span>                            
                         </td>                                            
                         <td>
-                            <input class="form-control input-sm text-right" id="producao_{{$index}}" name="producao_{{$index}}" ng-model="producaoAgricola.producao" ng-required="true" ui-number-mask="3" style="min-width: 50px;" ng-blur="calcula($index, 'producao');" ng-show="producaoAgricola.bemClassificado">
+                            <input class="form-control input-sm text-right" id="producao_{{$index}}" name="producao_{{$index}}" ng-model="producaoAgricola.producao" ng-required="true" ui-number-mask="0" style="min-width: 50px;" ng-blur="calcula($index, 'producao');" ng-show="producaoAgricola.bemClassificado">
                             <div class="label label-danger" ng-show="navegador.submetido && producaoArgicolaFrm.area_{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 Campo Obrigatório
