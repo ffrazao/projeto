@@ -106,7 +106,13 @@
                 link: '#',
                 visivel: false,
                 subtree: [
-                 {
+                    {
+                        name: 'Novo Registro de Atividade',
+                        link: 'info({"nome": "teste", "endereco": "ematerweb","programa":"atividade"})',
+                        visivel: true,
+                    },
+
+                    {  
                         name: 'Registro de Atividade',
                         link: 'p.atividade.filtro({opcao: "executar"})',
                         funcionalidade: 'ATIVIDADE',

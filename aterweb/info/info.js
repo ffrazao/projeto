@@ -15,6 +15,7 @@
 
         $sceDelegateProvider.resourceUrlWhitelist([
             'self',
+            'http://localhost/**',
             'https://cas.gdfnet.df.gov.br',
             'http://www.emater.df.gov.br',
             'http://extranet.emater.df.gov.br',
@@ -43,11 +44,12 @@
                 if(src.indexOf("ematerweb")<0){
                     return $scope.trustSrc(src);
                 } else  {
-                    var url = "http://extranet.emater.df.gov.br/ematerweb/index.php";
+                    var url = "http://extranet.emater.df.gov.br/ematerweb/index-java.php";
+                    var url = "http://localhost/aterphp/index-java.php";
+                    console.log( url );
                     return $scope.trustSrc(url) + "?user="+ $scope.trustUsr() + 
                                                   "&modulo="+$scope.programa +
-                                                  "&unidade="+$scope.unidade +
-                                                  "&unidadeTipo="+$scope.unidadeTipo;
+                                                  "&usuario="+$scope.ser ;
                 }
             };
 
