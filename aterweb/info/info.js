@@ -18,6 +18,8 @@
             'http://localhost/**',
             'https://cas.gdfnet.df.gov.br',
             'http://www.emater.df.gov.br',
+            'http:/homologa.emater.df.gov.br',
+            'http:/homologa.emater.df.gov.br/**',
             'http://extranet.emater.df.gov.br',
             'http://extranet.emater.df.gov.br/**',
             'https://painel.emater.df.gov.br',
@@ -49,7 +51,7 @@
                     console.log( url );
                     return $scope.trustSrc(url) + "?user="+ $scope.trustUsr() + 
                                                   "&modulo="+$scope.programa +
-                                                  "&usuario="+$scope.ser ;
+                                                  "&usuario="+$scope.user ;
                 }
             };
 
