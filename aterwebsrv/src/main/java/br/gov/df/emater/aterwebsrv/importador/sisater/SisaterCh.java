@@ -18,7 +18,7 @@ public class SisaterCh extends _Cadeia {
 		super.addCommand(c4);
 		//super.addCommand(c5);
 		//super.addCommand(c6);
-		super.addCommand(c7);
+		//super.addCommand(c7);
 		//super.addCommand(c8);
 		//super.addCommand(c9);
 	}

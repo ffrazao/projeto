@@ -27,16 +27,17 @@ public class ConexaoFirebird {
 //		ELPAD("GEPAD", "DF"), 		
 //		ELVAR("GEVAR", "DF"),
 		
-		ELGAM("GEGAM", "DF"),
-		ELPLA("GEPLA", "DF"), 
-
-	    ELJAR("GEJAR", "DF"), 
 		ELTAQ("GETAQ", "DF"),
+
+//		ELGAM("GEGAM", "DF"),
+//		ELPLA("GEPLA", "DF"), 
+
+//	    ELJAR("GEJAR", "DF"), 
 	
-		ELPAR("GEPAR", "DF"), 
-		ELBRA("GBRAZ", "DF"), 
-		ELSOB("GESOB", "DF"), 
-		ELCEI("GECEI", "DF") 
+//		ELPAR("GEPAR", "DF"), 
+//		ELBRA("GBRAZ", "DF"), 
+//		ELSOB("GESOB", "DF"), 
+//		ELCEI("GECEI", "DF") 
 
 		;
 		
