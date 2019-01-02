@@ -106,13 +106,13 @@
                 link: '#',
                 visivel: false,
                 subtree: [
-/*                    {
+                    {
                         name: 'Registro de Atividade - 2019 ',
                         link: 'info({"nome": "teste", "endereco": "ematerweb","programa":"atividade"})',
                         visivel: true,
                     },
 
-*/                    {  
+/*                    {  
                         name: 'Registro de Atividade - 2019 ',
                         link: 'p.atividade.filtro({opcao: "executar"})',
                         funcionalidade: 'ATIVIDADE',
@@ -125,7 +125,7 @@
                         funcionalidade: 'PROJETO_CREDITO_RURAL',
                         visivel: false,
                     },
-                    
+*/                    
                     {
                         name: 'Digitar Índice de Produção',
                         link: 'p.indiceProducao.form',
