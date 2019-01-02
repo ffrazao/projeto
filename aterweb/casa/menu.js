@@ -106,24 +106,26 @@
                 link: '#',
                 visivel: false,
                 subtree: [
-                    {
-                        name: 'Novo Registro de Atividade',
+/*                    {
+                        name: 'Registro de Atividade - 2019 ',
                         link: 'info({"nome": "teste", "endereco": "ematerweb","programa":"atividade"})',
                         visivel: true,
                     },
 
-                    {  
-                        name: 'Registro de Atividade',
+*/                    {  
+                        name: 'Registro de Atividade - 2019 ',
                         link: 'p.atividade.filtro({opcao: "executar"})',
                         funcionalidade: 'ATIVIDADE',
                         visivel: false,
                     },
+                    
                     {
                         name: 'Projeto de Crédito Rural',
                         link: 'p.atividade.filtro({opcao: "projetoCredito"})',
                         funcionalidade: 'PROJETO_CREDITO_RURAL',
                         visivel: false,
                     },
+                    
                     {
                         name: 'Digitar Índice de Produção',
                         link: 'p.indiceProducao.form',

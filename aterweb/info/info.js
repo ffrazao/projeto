@@ -46,8 +46,8 @@
                 if(src.indexOf("ematerweb")<0){
                     return $scope.trustSrc(src);
                 } else  {
-                    //var url = "http://extranet.emater.df.gov.br/ematerweb/index-java.php";
-                    var url = "http://homologa.emater.df.gov.br/aterphp/index-java.php";
+                    var url = "http://extranet.emater.df.gov.br/ematerweb/index.php";
+                    //var url = "http://homologa.emater.df.gov.br/aterphp/index-java.php";
                     console.log( url );
                     return $scope.trustSrc(url) + "?user="+ $scope.trustUsr() + 
                                                   "&modulo="+$scope.programa +

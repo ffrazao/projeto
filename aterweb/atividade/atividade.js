@@ -273,24 +273,19 @@
                     });
             };
 
-/*
+
             $scope.incluir = function(scp) {
-                $rootScope.incluir(scp);
-                if($scope.opcao === 'projetoCredito') {
-                    console.log( scp.cadastro.apoio.metodoList );
-                    scp.cadastro.registro.metodo = angular.copy( scp.cadastro.apoio.metodoList[43] );
-                    scp.seProjetoDeCredito(); 
-                }
+                toastr.error('Estamos adequando o sistema. Por enquanto não é possível incluir novas atividades.');
+                //$rootScope.incluir(scp);
+                return false;
 
             };
-*/
+
             // Segurança by Emerson
             $scope.editar = function(scp) {
-                // if( ! segAutorizaAcesso( $rootScope.token, $scope.cadastro.registro ) ){
-                //     toastr.error('Ativiade registrada em outra unidade organizacional!', 'Erro'); 
-                // } else {
-                    $rootScope.editar(scp);
-                // }   
+                toastr.error('Estamos adequando o sistema. Por enquanto não é possível editar atividades.', '');
+                //$rootScope.editar(scp);
+                return false;
             };
 
             $scope.limpar = function(scp) {
