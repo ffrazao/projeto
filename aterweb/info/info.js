@@ -49,8 +49,8 @@
                 } else  {
                     //var url = "http://extranet.emater.df.gov.br/ematerweb/index.php";
                     //var url = "http://web.emater.df.gov.br/aterphp/index-java.php";
-                    //var url = "http://homologa.emater.df.gov.br/aterphp/index-java.php";
-                    var url = "http://localhost:8888/aterphp/index-java.php";
+                    var url = "http://homologa.emater.df.gov.br/aterphp/index-java.php";
+                    //var url = "http://localhost:8888/aterphp/index-java.php";
                     return $scope.trustSrc(url) + "?user="+ $scope.trustUsr() + 
                                                   "&modulo="+$scope.programa ;
                 }
