@@ -107,10 +107,17 @@
                 visivel: false,
                 subtree: [
                     {
-                        name: 'Registro de Atividade - 2019 ',
+                        name: 'Planejamento - Novo ',
+                        link: 'info({"nome": "teste", "endereco": "ematerweb","programa":"planejamento"})',
+                        visivel: true,
+                    },
+
+                   {
+                        name: 'Registro de Atividade - Novo ',
                         link: 'info({"nome": "teste", "endereco": "ematerweb","programa":"atividade"})',
                         visivel: true,
                     },
+ 
  
 /*                    {  
                         name: 'Registro de Atividade - 2019 ',
