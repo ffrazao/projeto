@@ -8,7 +8,7 @@
         'ngInject';
 
         $stateProvider.state('info', {
-          url: '/info/:nome/:endereco/:programa',
+          url: '/info/:nome/:endereco/:programa/:xw_width/:xw_height',
           templateUrl: 'info/info.html',
           controller: 'InfoCtrl'
         });
@@ -24,6 +24,8 @@
             'http://extranet.emater.df.gov.br',
             'http://extranet.emater.df.gov.br/**',
             'https://painel.emater.df.gov.br',
+            'http://web.emater.df.gov.br',
+            'http://web.emater.df.gov.br/**',
         ]);
     }]);
   
@@ -34,6 +36,8 @@
             $scope.nome           = $state.params.nome;
             $scope.endereco       = $state.params.endereco;
             $scope.programa       = $state.params.programa;
+            $scope.xw_width       = $state.params.xw_width;
+            $scope.xw_height      = $state.params.xw_height;
             $scope.user           = $rootScope.token.username;
             $scope.unidade        = $rootScope.token.lotacaoAtual.apelidoSigla;
             $scope.unidadeTipo    = $rootScope.token.lotacaoAtual.classificacao;
@@ -44,15 +48,20 @@
                 return $rootScope.token.username;
             };
             $scope.trustURL = function(src) {
-                if(src.indexOf("ematerweb")<0){
-                    return $scope.trustSrc(src);
-                } else  {
-                    //var url = "http://extranet.emater.df.gov.br/ematerweb/index.php";
-                    var url = "http://web.emater.df.gov.br/aterphp/index-java.php";
-                    //var url = "http://homologa.emater.df.gov.br/aterphp/index-java.php";
-                    //var url = "http://localhost:8888/aterphp/index-java.php";
+                var url = "";
+                if(src.indexOf("ematerweb")===0){
+                    //url = "http://extranet.emater.df.gov.br/ematerweb/index.php";
+                    url = "http://web.emater.df.gov.br/aterphp/index-java.php";
+                    //url = "http://homologa.emater.df.gov.br/aterphp/index-java.php";
+                    //url = "http://localhost:8888/aterphp/index-java.php";
                     return $scope.trustSrc(url) + "?user="+ $scope.trustUsr() + 
                                                   "&modulo="+$scope.programa ;
+                } else if(src.indexOf("video")===0){
+                    url = "http://web.emater.df.gov.br/aterphp/videos/videos.php?video=";
+                    //url = "http://localhost:8888/aterphp/videos/videos.php?video=";
+                    return $scope.trustSrc(url) + $scope.programa ;
+                } else  {
+                    return $scope.trustSrc(src);
                 }
             };
 

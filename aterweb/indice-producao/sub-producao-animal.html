@@ -37,9 +37,10 @@
                 </thead>
                 <tbody>
 
-                    <tr ng-repeat="producaoAnimal in cadastro.registro.producaoAnimalList " ng-click="producaoAnimalNvg.folhaAtual = $index + ((producaoAnimalNvg.paginaAtual-1) * producaoAnimalNvg.tamanhoPagina)">
+                    <tr ng-repeat="producaoAnimal in cadastro.registro.producaoAnimalList" ng-click="producaoAnimalNvg.folhaAtual = $index + ((producaoAnimalNvg.paginaAtual-1) * producaoAnimalNvg.tamanhoPagina)">
                         <td width="30px">
                             <input type="radio" ng-model="producaoAnimalNvg.selecao.item" ng-value="producaoAnimal" /> {{$index + 1 + ((producaoAnimalNvg.paginaAtual-1) * producaoAnimalNvg.tamanhoPagina)}}
+                            
                         </td>
                         <td>
                             <div class="form-group">
@@ -70,11 +71,8 @@
                             </div>
                         </td>
                         <td>
-                            <input ng-if="producaoAnimal.cultura.nome === 'Piscicultura' && producaoAnimal.producaoComposicaoList[0].formaProducaoValor.nome === 'Corte'" class="form-control input-sm text-right" id="matriz_{{$index}}" name="matriz_{{$index}}" ng-model="producaoAnimal.matriz"
-                                ng-required="true" ui-number-mask="3" style="min-width: 75px;" ng-show="producaoAnimal.cultura.itemBNome"
-                                ng-blur="formula($index);">
 
-                            <input ng-if="!(producaoAnimal.cultura.nome === 'Piscicultura' && producaoAnimal.producaoComposicaoList[0].formaProducaoValor.nome === 'Corte')" class="form-control input-sm text-right" id="matriz_{{$index}}" name="matriz_{{$index}}" ng-model="producaoAnimal.matriz"
+                            <input class="form-control input-sm text-right" id="matriz_{{$index}}" name="matriz_{{$index}}" ng-model="producaoAnimal.matriz"
                                 ng-required="true" ui-number-mask="0" style="min-width: 75px;" ng-show="producaoAnimal.cultura.itemBNome"
                                 ng-blur="formula($index);">
 

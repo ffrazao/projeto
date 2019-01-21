@@ -49,7 +49,7 @@
                 </thead>
                 <tbody>
 
-                    <tr ng-repeat="producaoAgroindustria in cadastro.registro.producaoAgroindustriaList " ng-click="producaoAgroindustriaNvg.folhaAtual = $index + ((producaoAgroindustriaNvg.paginaAtual-1) * producaoAgroindustriaNvg.tamanhoPagina)">
+                    <tr ng-repeat="producaoAgroindustria in cadastro.registro.producaoAgroindustriaList" ng-click="producaoAgroindustriaNvg.folhaAtual = $index + ((producaoAgroindustriaNvg.paginaAtual-1) * producaoAgroindustriaNvg.tamanhoPagina)">
                         <td width="30px">
                             <input type="radio" ng-model="producaoAgroindustriaNvg.selecao.item" ng-value="producaoAgroindustria"/>
                            {{$index + 1 + ((producaoAgroindustriaNvg.paginaAtual-1) * producaoAgroindustriaNvg.tamanhoPagina)}}

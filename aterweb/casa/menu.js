@@ -32,17 +32,17 @@
                 subtree: [
                     {
                         name: 'Webmail',
-                        link: 'info({"nome": "Webmail", "endereco": "https://cas.gdfnet.df.gov.br"})',
+                        link: 'info({"nome": "Webmail", "endereco": "https://cas.gdfnet.df.gov.br","xw_width":"100%" , "xw_height":"750"})',
                         visivel: true,
                     },
                     {
                         name: 'Extranet',
-                        link: 'info({"nome": "Extranet", "endereco": "http://extranet.emater.df.gov.br"})',
+                        link: 'info({"nome": "Extranet", "endereco": "http://extranet.emater.df.gov.br","xw_width":"100%" , "xw_height":"750"})',
                         visivel: true,
                     },
                     {
                         name: 'Internet',
-                        link: 'info({"nome": "Internet", "endereco": "http://www.emater.df.gov.br"})',
+                        link: 'info({"nome": "Internet", "endereco": "http://www.emater.df.gov.br","xw_width":"100%" , "xw_height":"750"})',
                         visivel: true,
                     },
                     /*
@@ -78,7 +78,7 @@
                     },
                     {
                         name: 'Diagonósticos',
-                        link: 'info({"nome": "teste", "endereco": "ematerweb", "programa":"coleta"})',
+                        link: 'info({"nome": "teste", "endereco": "ematerweb", "programa":"coleta", "xw_width":"100%" , "xw_height":"750" })',
                         visivel: true,
                     },
 /*                    {
@@ -106,15 +106,21 @@
                 link: '#',
                 visivel: false,
                 subtree: [
-                    {
-                        name: 'Planejamento - Novo ',
-                        link: 'info({"nome": "teste", "endereco": "ematerweb","programa":"planejamento"})',
-                        visivel: true,
-                    },
 
                    {
                         name: 'Registro de Atividade - Novo ',
-                        link: 'info({"nome": "teste", "endereco": "ematerweb","programa":"atividade"})',
+                        link: 'info({"nome": "teste", "endereco": "ematerweb","programa":"atividade", "xw_width":"100%" , "xw_height":"750" })',
+                        visivel: true,
+                    },
+ 
+                    {
+                        name: 'Planejamento - Novo ',
+                        link: 'info({"nome": "teste", "endereco": "ematerweb","programa":"planejamento", "xw_width":"100%" , "xw_height":"750" })',
+                        visivel: true,
+                    },
+                   {
+                        name: 'Vídeo Ajuda ( Novos Módulos do Sistema ) ',
+                        link: 'info({"nome": "teste", "endereco": "video","programa":"planejamento", "xw_width":"950" , "xw_height":"650" })',
                         visivel: true,
                     },
  
@@ -142,7 +148,7 @@
                     },
                     {
                         name: 'Visualizar Índice de Produção',
-                        link: 'info({"nome": "teste", "endereco": "ematerweb","programa":"ipa"})',
+                        link: 'info({"nome": "teste", "endereco": "ematerweb","programa":"ipa", "xw_width":"100%" , "xw_height":"900" })',
                         visivel: true,
                     },
 

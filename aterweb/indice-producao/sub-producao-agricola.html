@@ -51,7 +51,8 @@
                 </thead>
                 <tbody>
 
-                    <tr ng-repeat="producaoAgricola in cadastro.registro.producaoAgricolaList " ng-click="producaoArgicolaNvg.folhaAtual = $index + ((producaoArgicolaNvg.paginaAtual-1) * producaoArgicolaNvg.tamanhoPagina)">
+                    <tr ng-repeat="producaoAgricola in cadastro.registro.producaoAgricolaList" ng-click="producaoArgicolaNvg.folhaAtual = $index + ((producaoArgicolaNvg.paginaAtual-1) * producaoArgicolaNvg.tamanhoPagina)">
+                        
                         <td width="30px">
                             <input type="radio" ng-model="producaoArgicolaNvg.selecao.item" ng-value="producaoAgricola"/>
                            {{$index + 1 + ((producaoArgicolaNvg.paginaAtual-1) * producaoArgicolaNvg.tamanhoPagina)}}
@@ -91,8 +92,8 @@
                         <td>
                             <input class="form-control input-sm text-right" id="produtividade_{{$index}}" name="produtividade_{{$index}}" 
                                 ng-model="producaoAgricola.produtividade" ng-required="true" ui-number-mask="0" style="min-width: 50px;" 
-                                 ng-blur="calcula($index, 'produtividade');" ng-show="producaoAgricola.bemClassificado"
-                                  title="Produtividade Min: {{producaoAgricola.bemClassificado.produtividadeMin}} Max: {{producaoAgricola.bemClassificado.produtividadeMax}}" >
+                                 ng-blur="calcula($index, 'produtividade');" ng-show="producaoAgricola.bemClassificado" >
+                                  <!-- title="Produtividade Min: {{producaoAgricola.bemClassificado.produtividadeMin}} Max: {{producaoAgricola.bemClassificado.produtividadeMax}}" -->
                             
                             <div class="label label-danger" ng-show="navegador.submetido && producaoArgicolaFrm.area_{{$index}}.$error.required">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>

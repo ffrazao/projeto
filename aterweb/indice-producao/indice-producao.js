@@ -511,10 +511,19 @@
                         $scope.cadastro.registro.propriedadeRural = null;
                 }
                    
-                }
-                    
+                }                    
 
             };
+
+            $scope.limparIpaPropriedade = function() {
+                $scope.cadastro.registro.producaoAgricolaList = null;
+                $scope.cadastro.registro.producaoFloriculturaList = null;
+                $scope.cadastro.registro.producaoArtesanatoList = null;
+                $scope.cadastro.registro.producaoAgroindustriaList = null;
+                $scope.cadastro.registro.producaoAnimalList = null;
+                $scope.desabilitarBotao(false);
+            };
+
 
             $scope.limpar = function (scp) {
                 var e = scp.navegador.estadoAtual();
