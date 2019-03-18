@@ -132,20 +132,22 @@
                         visivel: false,
                     },
                      
-                    {
+                    {   
                         name: 'Projeto de Crédito Rural',
                         link: 'p.atividade.filtro({opcao: "projetoCredito"})',
                         funcionalidade: 'PROJETO_CREDITO_RURAL',
                         visivel: false,
                     },
+*/                    
                     {
-                        name: 'Digitar Índice de Produção ',
-                        link: 'p.indiceProducao.form',
+                        name: 'Digitar Índice de Produção  (desabilitado)',
+                        link: 'xxXSSS',
+                        //link: 'p.indiceProducao.form',
                         //link: 'p.indiceProducao.filtro({opcao: "projetoCredito"})',
                         funcionalidade: 'INDICE_PRODUCAO',
                         visivel: false,
                     },
-*/                    
+                    
                     {
                         name: 'Visualizar Índice de Produção',
                         link: 'info({"nome": "teste", "endereco": "ematerweb","programa":"ipa", "xw_width":"100%" , "xw_height":"900" })',
