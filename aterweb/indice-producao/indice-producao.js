@@ -874,14 +874,14 @@
                         var arrBem = [];
                         var arrProduto = [];
                         //  console.log("Agri");
-                          console.log($scope.cadastro.registro.producaoAgricolaList);
+                        //  console.log($scope.cadastro.registro.producaoAgricolaList);
                         // console.log($scope.cadastro.registro.producaoFloriculturaList);
                         //  console.log("Arte");
                         //  console.log($scope.cadastro.registro.producaoArtesanatoList);
                         // console.log("Agro");
-                        // console.log($scope.cadastro.registro.producaoAgroindustriaList);
+                         console.log($scope.cadastro.registro.producaoAgroindustriaList);
                         // console.log("Animal");
-                          console.log($scope.cadastro.registro.producaoAnimalList);
+                        //  console.log($scope.cadastro.registro.producaoAnimalList);
 
                         // AGRICOLA
 

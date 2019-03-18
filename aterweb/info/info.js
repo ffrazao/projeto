@@ -57,8 +57,8 @@
                     return $scope.trustSrc(url) + "?user="+ $scope.trustUsr() + 
                                                   "&modulo="+$scope.programa ;
                 } else if(src.indexOf("video")===0){
-                    url = "http://web.emater.df.gov.br/aterphp/videos/videos.php?video=";
-                    //url = "http://localhost:8888/aterphp/videos/videos.php?video=";
+                    //url = "http://web.emater.df.gov.br/aterphp/videos/videos.php?video=";
+                    url = "http://localhost:8888/aterphp/videos/videos.php?video=";
                     return $scope.trustSrc(url) + $scope.programa ;
                 } else  {
                     return $scope.trustSrc(src);
