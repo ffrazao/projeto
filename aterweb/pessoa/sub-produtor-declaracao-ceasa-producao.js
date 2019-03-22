@@ -33,6 +33,10 @@ angular.module(pNmModulo).controller(pNmController,
                     for (i in resposta.resultado.bemClassificadoFloricuturaList ) {
                         $scope.produtoList.push( resposta.resultado.bemClassificadoFloricuturaList[i]  ) ;
                     }
+                    for (i in resposta.resultado.bemClassificadoAgroindustriaList ) {
+                        $scope.produtoList.push( resposta.resultado.bemClassificadoAgroindustriaList[i]  ) ;
+                    }
+                    
                 } 
             } );
             console.log( $scope.produtoList );
