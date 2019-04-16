@@ -32,124 +32,69 @@
                 subtree: [
                     {
                         name: 'Webmail',
-                        link: 'info({"nome": "Webmail", "endereco": "https://cas.gdfnet.df.gov.br","xw_width":"100%" , "xw_height":"750"})',
+                        link: 'info({"nome": "Webmail", "endereco": "https://cas.gdfnet.df.gov.br"})',
                         visivel: true,
                     },
                     {
                         name: 'Extranet',
-                        link: 'info({"nome": "Extranet", "endereco": "http://extranet.emater.df.gov.br","xw_width":"100%" , "xw_height":"750"})',
+                        link: 'info({"nome": "Extranet", "endereco": "http://extranet.emater.df.gov.br"})',
                         visivel: true,
                     },
                     {
                         name: 'Internet',
-                        link: 'info({"nome": "Internet", "endereco": "http://www.emater.df.gov.br","xw_width":"100%" , "xw_height":"750"})',
+                        link: 'info({"nome": "Internet", "endereco": "http://www.emater.df.gov.br"})',
                         visivel: true,
                     },
-                    /*
-                    {
-                        name: 'Planejamento',
-                        link: 'info({"nome": "Planejamento", "endereco": "http://extranet.emater.df.gov.br/planejamento"})',
-                        visivel: true,
-                    },
-                    {
-                        name: 'Painel de Resultados',
-                        link: 'info({"nome": "Painel de Resultados", "endereco": "https://painel.emater.df.gov.br"})',
-                        visivel: true,
-                    },
-                    */
-
                 ],
             },
             {
                 name: 'Cadastro',
-                visivel: false,
+                visivel: true,
                 subtree: [
                     {
                         name: 'Pessoa',
                         link: 'p.pessoa.filtro',
                         funcionalidade: 'PESSOA',
-                        visivel: false,
+                        visivel: true,
                     },
                     {
                         name: 'Propriedade Rural',
                         link: 'p.propriedadeRural.filtro',
                         funcionalidade: 'PROPRIEDADE_RURAL',
-                        visivel: false,
+                        visivel: true,
                     },
                     {
                         name: 'Diagonósticos',
-                        link: 'info({"nome": "teste", "endereco": "ematerweb", "programa":"coleta", "xw_width":"100%" , "xw_height":"900" })',
+                        link: 'info({"nome": "teste", "endereco": "ematerweb", "programa":"coleta"})',
                         visivel: true,
                     },
                     {
-                        name: 'Oganizações Sociais',
-                        link: 'info({"nome": "teste", "endereco": "ematerweb", "programa":"associacao", "xw_width":"100%" , "xw_height":"900" })',
+                        name: 'Organizações Sociais',
+                        link: 'info({"nome": "teste", "endereco": "ematerweb", "programa":"associacao"})',
                         visivel: true,
                     },
-/*                    {
-                        name: 'Formulários',
-                        link: 'p.formulario.filtro',
-                        funcionalidade: 'FORMULARIO',
-                        visivel: false,
-                    },  
-*/                    {
-                        name: 'Grupo Social',
-                        link: 'p.grupoSocial.filtro',
-                        funcionalidade: 'GRUPO_SOCIAL',
-                        visivel: false,
-                    },
-                    {
-                        name: 'Contratos & Convênios',
-                        link: 'p.contrato.filtro',
-                        funcionalidade: 'CONTRATO',
-                        visivel: false,
-                    } ,
                 ]
             },
             {
                 name: 'ATER',
                 link: '#',
-                visivel: false,
+                visivel: true,
                 subtree: [
 
                    {
-                        name: 'Registro de Atividade - Novo ',
+                        name: 'Registro de Atividade',
                         link: 'info({"nome": "teste", "endereco": "ematerweb","programa":"atividade", "xw_width":"100%" , "xw_height":"900" })',
                         visivel: true,
                     },
- 
+
                     {
-                        name: 'Planejamento - Novo ',
+                        name: 'Planejamento',
                         link: 'info({"nome": "teste", "endereco": "ematerweb","programa":"planejamento", "xw_width":"100%" , "xw_height":"900" })',
                         visivel: true,
                     },
  
- 
-/*                    {  
-                        name: 'Registro de Atividade - 2019 ',
-                        link: 'p.atividade.filtro({opcao: "executar"})',
-                        funcionalidade: 'ATIVIDADE',
-                        visivel: false,
-                    },
-                     
-                    {   
-                        name: 'Projeto de Crédito Rural',
-                        link: 'p.atividade.filtro({opcao: "projetoCredito"})',
-                        funcionalidade: 'PROJETO_CREDITO_RURAL',
-                        visivel: false,
-                    },
-*/                    
                     {
-                        name: 'Digitar Índice de Produção  (desabilitado)',
-                        link: 'xxXSSS',
-                        //link: 'p.indiceProducao.form',
-                        //link: 'p.indiceProducao.filtro({opcao: "projetoCredito"})',
-                        funcionalidade: 'INDICE_PRODUCAO',
-                        visivel: false,
-                    },
-                    
-                    {
-                        name: 'Visualizar Índice de Produção',
+                        name: 'Índice de Produção',
                         link: 'info({"nome": "teste", "endereco": "ematerweb","programa":"ipa", "xw_width":"100%" , "xw_height":"900" })',
                         visivel: true,
                     },
@@ -158,58 +103,61 @@
             },
 
             {
-                name: 'Vídeo Ajuda',
+                name: 'Video Ajuda',
                 link: 'login',
-                visivel: false,
+                visivel: true,
                 subtree: [
-
-                   {
-                        name: 'IPA - Novo  ',
-                        link: 'info({"nome": "teste", "endereco": "video","programa":"ipa", "xw_width":"950" , "xw_height":"650" })',
-                        visivel: true,
-                    },
-
-                   {
-                        name: 'Organizações Sociais  ',
-                        link: 'info({"nome": "teste", "endereco": "video","programa":"associacoes", "xw_width":"950" , "xw_height":"650" })',
-                        visivel: true,
-                    },
-
-                   {
+                    {
                         name: 'Planejamento  ',
                         link: 'info({"nome": "teste", "endereco": "video","programa":"planejamento", "xw_width":"950" , "xw_height":"650" })',
                         visivel: true,
                     },
+                    {
+                        name: 'Indice Produção',
+                        link: 'info({"nome": "teste", "endereco": "video","programa":"ipa", "xw_width":"950" , "xw_height":"650" })',
+                        visivel: true,
+                    },
+                    {
+                        name: 'Diagnósticos',
+                        link: 'info({"nome": "teste", "endereco": "video","programa":"diagnostico", "xw_width":"950" , "xw_height":"650" })',
+                        visivel: true,
+                    },
+                    {
+                        name: 'Organizações Sociais',
+                        link: 'info({"nome": "teste", "endereco": "video","programa":"organizacao", "xw_width":"950" , "xw_height":"650" })',
+                    },
+
              ]
             },
+
             {
                 name: 'Configuração',
                 link: 'login',
-                visivel: false,
+                visivel: true,
                 subtree: [
                     {
                         name: 'Funcionalidade',
                         link: 'p.funcionalidade.filtro',
                         funcionalidade: 'FUNCIONALIDADE',
-                        visivel: false,
+                        visivel: true,
                     },
                     {
                         name: 'Perfil',
                         link: 'p.perfil.filtro',
                         funcionalidade: 'PERFIL',
-                        visivel: false,
+                        visivel: true,
                     },
                     {
                         name: 'Usuário',
                         link: 'p.usuario.filtro',
                         funcionalidade: 'USUARIO',
-                        visivel: false,
+                        visivel: true,
                     },
                     {
                         name: 'Log',
                         link: 'p.logAcao.filtro',
                         funcionalidade: 'LOG_ACAO',
-                        visivel: false,
+                        visivel: true,
                     },
                 ],
             },
@@ -260,9 +208,39 @@
     };
 
     $scope.$watch('token', function (newValue) {
+
+        initTree();
+        if (!newValue){
+            $scope.tree = [
+                {
+                name: 'Info',
+                visivel: true,
+                subtree: [
+                    {
+                        name: 'Webmail',
+                        link: 'info({"nome": "Webmail", "endereco": "https://cas.gdfnet.df.gov.br"})',
+                        visivel: true,
+                    },
+                    {
+                        name: 'Extranet',
+                        link: 'info({"nome": "Extranet", "endereco": "http://extranet.emater.df.gov.br"})',
+                        visivel: true,
+                    },
+                    {
+                        name: 'Internet',
+                        link: 'info({"nome": "Internet", "endereco": "http://www.emater.df.gov.br"})',
+                        visivel: true,
+                    },
+                ],
+            },
+        ];
+        }
+
+/*
         if (!$scope.tree) {
             initTree();
         }
+
         if (!newValue) {
             initTree();
         } else {
@@ -271,6 +249,7 @@
             }
             removerInvisiveis($scope.tree);
         }
+*/        
     });
 
     $scope.cadastro = {apoio: {moduloList: []}};
