@@ -78,7 +78,12 @@
                     },
                     {
                         name: 'Diagonósticos',
-                        link: 'info({"nome": "teste", "endereco": "ematerweb", "programa":"coleta", "xw_width":"100%" , "xw_height":"750" })',
+                        link: 'info({"nome": "teste", "endereco": "ematerweb", "programa":"coleta", "xw_width":"100%" , "xw_height":"900" })',
+                        visivel: true,
+                    },
+                    {
+                        name: 'Oganizações Sociais',
+                        link: 'info({"nome": "teste", "endereco": "ematerweb", "programa":"associacao", "xw_width":"100%" , "xw_height":"900" })',
                         visivel: true,
                     },
 /*                    {
@@ -109,18 +114,13 @@
 
                    {
                         name: 'Registro de Atividade - Novo ',
-                        link: 'info({"nome": "teste", "endereco": "ematerweb","programa":"atividade", "xw_width":"100%" , "xw_height":"750" })',
+                        link: 'info({"nome": "teste", "endereco": "ematerweb","programa":"atividade", "xw_width":"100%" , "xw_height":"900" })',
                         visivel: true,
                     },
  
                     {
                         name: 'Planejamento - Novo ',
-                        link: 'info({"nome": "teste", "endereco": "ematerweb","programa":"planejamento", "xw_width":"100%" , "xw_height":"750" })',
-                        visivel: true,
-                    },
-                   {
-                        name: 'Vídeo Ajuda ( Novos Módulos do Sistema ) ',
-                        link: 'info({"nome": "teste", "endereco": "video","programa":"planejamento", "xw_width":"950" , "xw_height":"650" })',
+                        link: 'info({"nome": "teste", "endereco": "ematerweb","programa":"planejamento", "xw_width":"100%" , "xw_height":"900" })',
                         visivel: true,
                     },
  
@@ -157,6 +157,31 @@
              ]
             },
 
+            {
+                name: 'Vídeo Ajuda',
+                link: 'login',
+                visivel: false,
+                subtree: [
+
+                   {
+                        name: 'IPA - Novo  ',
+                        link: 'info({"nome": "teste", "endereco": "video","programa":"ipa", "xw_width":"950" , "xw_height":"650" })',
+                        visivel: true,
+                    },
+
+                   {
+                        name: 'Organizações Sociais  ',
+                        link: 'info({"nome": "teste", "endereco": "video","programa":"associacoes", "xw_width":"950" , "xw_height":"650" })',
+                        visivel: true,
+                    },
+
+                   {
+                        name: 'Planejamento  ',
+                        link: 'info({"nome": "teste", "endereco": "video","programa":"planejamento", "xw_width":"950" , "xw_height":"650" })',
+                        visivel: true,
+                    },
+             ]
+            },
             {
                 name: 'Configuração',
                 link: 'login',
