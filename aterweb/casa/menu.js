@@ -65,12 +65,12 @@
                     },
                     {
                         name: 'Diagonósticos',
-                        link: 'info({"nome": "teste", "endereco": "ematerweb", "programa":"coleta"})',
+                        link: 'info({"nome": "teste", "endereco": "ematerweb", "programa":"coleta", "xw_width":"100%" , "xw_height":"900"})',
                         visivel: true,
                     },
                     {
                         name: 'Organizações Sociais',
-                        link: 'info({"nome": "teste", "endereco": "ematerweb", "programa":"associacao"})',
+                        link: 'info({"nome": "teste", "endereco": "ematerweb", "programa":"associacao", "xw_width":"100%" , "xw_height":"900"})',
                         visivel: true,
                     },
                 ]
