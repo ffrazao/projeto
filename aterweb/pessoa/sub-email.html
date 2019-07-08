@@ -88,7 +88,7 @@
                 <div class="row">
                     <div class="col-md-8">
                         <label class="form-label">Email</label>
-                        <input type="text" class="form-control" name="endereco" ng-model="conteudo.email.endereco" required="true" ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/">
+                        <input type="text" class="form-control" name="endereco" ng-model="conteudo.email.endereco" required="true" ng-pattern="/^[-_a-z0-9]+(\.[-_a-z0-9]+)*@[-a-z0-9-]+(\.[-a-z0-9-]+)*(\.[a-z]{2,4})$/"> 
                         <div class="label label-danger" ng-show="confirmacaoFrm.endereco.$error.required">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                              Campo Obrigatório
