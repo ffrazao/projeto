@@ -27,27 +27,6 @@
     var initTree = function() {
         $scope.tree = [
             {
-                name: 'Info',
-                visivel: true,
-                subtree: [
-                    {
-                        name: 'Webmail',
-                        link: 'info({"nome": "Webmail", "endereco": "https://cas.gdfnet.df.gov.br"})',
-                        visivel: true,
-                    },
-                    {
-                        name: 'Extranet',
-                        link: 'info({"nome": "Extranet", "endereco": "http://extranet.emater.df.gov.br"})',
-                        visivel: true,
-                    },
-                    {
-                        name: 'Internet',
-                        link: 'info({"nome": "Internet", "endereco": "http://www.emater.df.gov.br"})',
-                        visivel: true,
-                    },
-                ],
-            },
-            {
                 name: 'Cadastro',
                 visivel: true,
                 subtree: [
@@ -94,8 +73,24 @@
                     },
  
                     {
-                        name: 'Índice de Produção',
+                        name: 'IPA',
                         link: 'info({"nome": "teste", "endereco": "ematerweb","programa":"ipa", "xw_width":"100%" , "xw_height":"900" })',
+                        visivel: true,
+                    },
+                    {
+                        name: 'IPA Produtor',
+                        link: 'info({"nome": "teste", "endereco": "ematerweb","programa":"ipa_p", "xw_width":"100%" , "xw_height":"900" })',
+                        visivel: true,
+                    },
+                    {
+                        name: 'Compras Institucionais - PAA',
+                        link: 'info({"nome": "teste", "endereco": "ematerweb","programa":"paa", "xw_width":"100%" , "xw_height":"900" })',
+                        visivel: true,
+                    },
+
+                    {
+                        name: 'Projeto de Crédito',
+                        link: 'info({"nome": "teste", "endereco": "ematerweb","programa":"projetocredito", "xw_width":"100%" , "xw_height":"900" })',
                         visivel: true,
                     },
 
