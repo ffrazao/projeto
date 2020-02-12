@@ -88,12 +88,12 @@
                         visivel: true,
                     },
 
-                    {
+/*                    {
                         name: 'Projeto de Crédito',
                         link: 'info({"nome": "teste", "endereco": "ematerweb","programa":"projetocredito", "xw_width":"100%" , "xw_height":"900" })',
                         visivel: true,
                     },
-
+*/
              ]
             },
 
