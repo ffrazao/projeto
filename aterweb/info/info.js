@@ -50,8 +50,8 @@
             $scope.trustURL = function(src) {
                 var url = "";
                 if(src.indexOf("ematerweb")===0){
-                    url = "http://extranet.emater.df.gov.br/ematerweb/index.php";
-                    //url = "http://web.emater.df.gov.br/aterphp/index-java.php";
+                    //url = "http://extranet.emater.df.gov.br/ematerweb/index.php";
+                    url = "http://web.emater.df.gov.br/aterphp/index-java.php";
                     //url = "http://homologa.emater.df.gov.br/aterphp/index-java.php";
                     //url = "http://localhost:8888/aterphp/index-java.php";
                     return $scope.trustSrc(url) + "?user="+ $scope.trustUsr() + 
