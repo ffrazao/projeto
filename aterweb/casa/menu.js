@@ -13,6 +13,8 @@
                 // For display purposes only
                 if ($rootScope.isAuthenticated(user.username)) {
                     return;
+                } else {
+                    $scope.tree = [];
                 }
             }
             if (!$state.is('info')) {
@@ -88,12 +90,12 @@
                         visivel: true,
                     },
 
-/*                    {
+                    {
                         name: 'Projeto de Crédito',
-                        link: 'info({"nome": "teste", "endereco": "ematerweb","programa":"projetocredito", "xw_width":"100%" , "xw_height":"900" })',
+                        link: 'info({"nome": "teste", "endereco": "ematerweb","programa":"projetocredito", "xw_width":"100%" , "xw_height":"1000" })',
                         visivel: true,
                     },
-*/
+
              ]
             },
 
@@ -162,6 +164,7 @@
     var ativar = function(item, arvore, raiz) {
         var retorno = false;
         for (var ramo in arvore) {
+            console.log( item );
             if (arvore[ramo].funcionalidade === item) {
                 arvore[ramo].visivel = true;
                 if (raiz) {
@@ -199,12 +202,19 @@
                     removerInvisiveis(arvore[ramo].subtree);
                 }
             }
+            if( (typeof arvore[ramo] !== 'undefined') ){
+                var und = $rootScope.token.lotacaoAtual.id;
+                if( arvore[ramo].name === 'Projeto de Crédito' && und !== 19 && und !== 84 && und !== 25 && und !== 98 && und !== 15 && und !== 82 ){
+                    arvore.splice(ramo, 1);
+                }
+            }
         }
     };
 
     $scope.$watch('token', function (newValue) {
 
         initTree();
+        /*
         if (!newValue){
             $scope.tree = [
                 {
@@ -230,21 +240,26 @@
             },
         ];
         }
+        */
 
-/*
-        if (!$scope.tree) {
-            initTree();
-        }
+        if( (typeof $rootScope.token !== 'undefined') && ( $rootScope.token !== null) ){
 
-        if (!newValue) {
-            initTree();
-        } else {
-            for (var fc in newValue.funcionalidadeComandoList) {
-                ativar(fc, $scope.tree);
+            if (!$scope.tree) {
+                initTree();
             }
-            removerInvisiveis($scope.tree);
+
+            if (!newValue) {
+                initTree();
+            } else {
+                for (var fc in newValue.funcionalidadeComandoList) {
+                    ativar(fc, $scope.tree);
+                }
+                removerInvisiveis($scope.tree);
+            }
+        } else {
+            $scope.tree = [];
         }
-*/        
+        
     });
 
     $scope.cadastro = {apoio: {moduloList: []}};
