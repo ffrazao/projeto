@@ -124,9 +124,21 @@
                         link: 'info({"nome": "teste", "endereco": "video","programa":"organizacao", "xw_width":"950" , "xw_height":"650" })',
                     },
 
-             ]
+                ]
             },
-
+            {
+                name: 'Recomendações Técnicas',
+                link: 'login',
+                visivel: true,
+                subtree: [
+                    {
+                        name: 'BPA - COVID19',
+                        link: 'info({"nome": "teste", "endereco": "pdf","programa":"bpa-covid19.pdf", "xw_width":"100%" , "xw_height":"900" })',
+                        visivel: true,
+                    },
+                ]
+            },
+    
             {
                 name: 'Configuração',
                 link: 'login',
@@ -164,7 +176,6 @@
     var ativar = function(item, arvore, raiz) {
         var retorno = false;
         for (var ramo in arvore) {
-            console.log( item );
             if (arvore[ramo].funcionalidade === item) {
                 arvore[ramo].visivel = true;
                 if (raiz) {
