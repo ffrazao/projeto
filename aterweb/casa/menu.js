@@ -204,7 +204,7 @@
             }
             if( (typeof arvore[ramo] !== 'undefined') ){
                 var und = $rootScope.token.lotacaoAtual.id;
-                if( arvore[ramo].name === 'Projeto de Crédito' && und !== 19 && und !== 84 && und !== 25 && und !== 98 && und !== 15 && und !== 82 ){
+                if( arvore[ramo].name === 'Projeto de Crédito' && und !== 19 && und !== 84 && und !== 25 && und !== 98 && und !== 15 && und !== 82 && und !== 113 && und !== 76 && und !== 101 ){
                     arvore.splice(ramo, 1);
                 }
             }
